@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!-- 打包配置文件 -->
+<!-- solution 一个方案 name 显示的方案的名字  xmlfilepath 就是这个方案下的根目录./同目录下，../上一个目录下  outputpath -->
+<config>
+	<solution name="服务器" xmlfilepath="./xml/" excelfilepath="./excel/" outputpath="./tbl/server/" >
+		<!--<package xml="mission_config_server.xml" />-->
+		<package xml="test_server.xml" />	
+	</solution>
+</config>

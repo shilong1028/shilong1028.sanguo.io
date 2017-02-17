@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!-- 打包配置文件 -->
+<config>
+	<table name="test" ExcelFile="test.xlsx" sheet="Sheet1" OutputFile="test_client.tbl">			
+		<field name="data1" type="short" size="2"/>
+		<field name="data2" type="int" size="4"/>
+		<field name="data3" type="longlong" size="8"/>
+		<field name="data4" type="double" size="8"/>
+		<field name="data5" type="string" size="64"/>
+		<field name="data6" type="string" size="256"/>
+	</table>
+</config>
