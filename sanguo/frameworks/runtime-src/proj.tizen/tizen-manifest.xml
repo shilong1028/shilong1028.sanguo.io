@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3" package="com.YingChuan.SanGuo" version="1.0.0">
+    <ui-application appid="com.YingChuan.SanGuo" exec="hellolua" type="capp" multiple="false" taskmanage="true" nodisplay="false">
+        <icon>sanguo.png</icon>
+        <label>sanguo</label>
+	</ui-application>
+</manifest>
