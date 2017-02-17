@@ -53,7 +53,7 @@ require "cocos.extension.ExtensionConstants"
 require "cocos.network.NetworkConstants"
 -- Spine
 if nil ~= sp then
-    require "cocos.spine.SpineConstants"
+    --require "cocos.spine.SpineConstants"
 end
 
 require "cocos.cocos2d.deprecated"
@@ -76,7 +76,7 @@ end
 
 
 -- register_cocosbuilder_module
-require "cocos.cocosbuilder.DeprecatedCocosBuilderClass"
+--require "cocos.cocosbuilder.DeprecatedCocosBuilderClass"
 
 -- register_cocosdenshion_module
 require "cocos.cocosdenshion.DeprecatedCocosDenshionClass"
@@ -99,10 +99,10 @@ if nil ~= ccui then
 end
 
 -- cocosbuilder
-require "cocos.cocosbuilder.CCBReaderLoad"
+--require "cocos.cocosbuilder.CCBReaderLoad"
 
 -- physics3d
-require "cocos.physics3d.physics3d-constants"
+--require "cocos.physics3d.physics3d-constants"
 
 if CC_USE_FRAMEWORK then
     require "cocos.framework.init"
