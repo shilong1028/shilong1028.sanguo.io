@@ -4,6 +4,10 @@
 #include "cocos2d.h"
 #include "scripting/lua-bindings/manual/lua_module_register.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "LoggerHelper.h"
+#endif
+
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -51,6 +55,10 @@ bool AppDelegate::applicationDidFinishLaunching()
     ScriptEngineManager::getInstance()->setScriptEngine(engine);
     lua_State* L = engine->getLuaStack()->getLuaState();
     lua_module_register(L);
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	luaRegister_loggerHelper(L);
+#endif
 
     register_all_packages();
 
