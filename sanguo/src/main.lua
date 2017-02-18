@@ -8,9 +8,41 @@ cc.FileUtils:getInstance():addSearchPath("res/")
 require "config"
 require "cocos.init"
 --cocos.init文件根据配置信息初始化Cocos2d-lua框架（require加载lua模块时必须使用”.”来代替路径中的”/”符号）
+require "GlobalDef.init"  --用户全局自定义
+require "Manager.init"  --用户全局管理器
 
 local function main()
-    require("app.MyApp"):create():run()
+    collectgarbage("collect")
+    -- avoid memory leak
+    collectgarbage("setpause", 100)
+    collectgarbage("setstepmul", 5000)
+    math.randomseed(os.time())
+
+	--set FPS. the default value is 1.0/60 if you don't call this
+	G_Director:setAnimationInterval(1.0 / 30)
+
+	--turn on display FPS
+	if CC_SHOW_FPS == true then      
+		G_Director:setDisplayStats(true)
+	else
+		G_Director:setDisplayStats(false)
+    end
+
+    --是否支持视频mp4（苹果或安卓）
+    if (cc.PLATFORM_OS_IPHONE == G_AppPlatform or cc.PLATFORM_OS_IPAD == G_AppPlatform or cc.PLATFORM_OS_ANDROID == G_AppPlatform) then
+        G_bSupportVideoPlayer = true
+    else
+        G_bSupportVideoPlayer = false
+    end
+
+    --健康公告场景
+    local scene = require("Scene.HealthAnnouncementScene")
+    scene = scene:new()
+    if cc.Director:getInstance():getRunningScene() then
+        cc.Director:getInstance():replaceScene(cc.TransitionFade:create(1.0, scene, cc.c3b(0,0,0)))
+    else
+        cc.Director:getInstance():runWithScene(scene)
+    end
 end
 
 --使用xpcall可以解决这个问题, 比pcall多了一个参数。使用debug.traceback可以将traceback的信息存储到msg变量。
