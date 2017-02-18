@@ -9,7 +9,8 @@ CC_USE_FRAMEWORK = true
 CC_SHOW_FPS = true
 
 -- disable create unexpected global variable
-CC_DISABLE_GLOBAL = true
+--关闭全局变量的检测功能，使用户可以随意定义全局变量
+CC_DISABLE_GLOBAL = false  --true
 
 -- for module display
 CC_DESIGN_RESOLUTION = {
