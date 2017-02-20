@@ -5,94 +5,66 @@ local GameScene = class("GameScene",function()
 end)
 
 function GameScene:create()   --自定义的create()创建方法
+    G_Log_Info("GameScene:create()")
     local scene = GameScene.new()
     return scene
 end
 
-function GameScene:ctor()   --new()会自动调用ctor()
+function GameScene:ctor()   --new()会自动调用ctor()，如果直接调用.new()或:new()方法则会直接调用ctor()而不再调用create()
+    G_Log_Info("GameScene:ctor()")
 	--GameScene.super.ctor(self)
+
+    self:initNodeEvent()
 	self:init()
 end
 
-function GameScene:init()  
-
-    local function onNodeEvent(event)  
-        if "enter" == event then  
-        elseif "exit" == event then  
-            --self:unregisterScriptHandler()
-            --self:unscheduleUpdate()
+function GameScene:initNodeEvent()
+    G_Log_Info("GameScene:initNodeEvent()")
+    local function onNodeEvent(eventName)  
+        if "enter" == eventName then 
+            self:onEnter() 
+        elseif "exit" == eventName then  
+            self:onExit()
+        elseif "enterTransitionFinish" == eventName then
+            self:onEnterTransitionFinish()
+        elseif "exitTransitionStart" == eventName then    
+            self:onExitTransitionStart()
+        elseif "cleanup" == eventName then
+            self:onCleanup()
         end  
     end  
   
-    self:registerScriptHandler(onNodeEvent)  
-
-    --local mainMenu = require "Layer/MainMenuLayer"
-    --self.mainMenuLayer = mainMenu.new()
-    --主菜单层
-    self.mainMenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
-    --主城层
-    self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
-    --全国地图层
-    self.chinaMapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "ChinaMapLayer")
-        
+    self:registerScriptHandler(onNodeEvent) 
 end
 
-function GameScene:AddChild(uid, className, funcName, userTable)
-    print("AddChild:", uid, className)
-   
-    local layer = self:getChildByTag(uid)
-    if layer ~= nil then
-        self:removeChildByTag(uid)
-    end
+function GameScene:onEnter()
+    G_Log_Info("GameScene:onEnter()")
+end
+
+function GameScene:onExit()
+    G_Log_Info("GameScene:onExit()")
+end
+
+function GameScene:onEnterTransitionFinish()
+    G_Log_Info("GameScene:onEnterTransitionFinish()")
+end
+
+function GameScene:onExitTransitionStart()
+    G_Log_Info("GameScene:onExitTransitionStart()")
+end
+
+function GameScene:onCleanup()
+    G_Log_Info("GameScene:onCleanup()")
+end
+
+function GameScene:init()  
+    G_Log_Info("GameScene:init()")
     
-    layer = require("Layer/"..className)
-    local child = layer.new()  --layer:create()
-    child:setTag(uid)
-    self:addChild(child)
+    local gameLayer = require("layer.GameLayer")
+    g_pGameScene = gameLayer:create()  --gameLayer:new()
+    self:addChild(g_pGameScene)
 
-    if uid == g_GameLayerTag.LAYER_TAG_MAINMENU then  --主界面
-        child:setLocalZOrder(-1)
-    elseif uid == g_GameLayerTag.LAYER_TAG_MAINCITY then  --主城
-        child:setLocalZOrder(-2)
-    elseif uid == g_GameLayerTag.LAYER_TAG_CHINAMAP then  --全国地图
-        child:setLocalZOrder(-3)
-    end
-    
-    --初始数据
-    if funcName then
-        local fun = child[funcName]
-        fun(child,userTable)
-    end
-    
-    return child
 end
-
-function GameScene:RemoveChildByUid(uid)
-    local layer = self:getChildByTag(uid)
-    if layer ~= nil then
-        self:removeChildByTag(uid)
-    end
-end
-
-function GameScene:RemoveAllChild()
-    local children = self:getChildren()
-    for i = 1,#(children) do
-        if children[i]:getTag() < g_GameLayerTag.LAYER_TAG_MAINMENU 
-            or children[i]:getTag() > g_GameLayerTag.LAYER_TAG_CHINAMAP then
-            children[i]:removeFromParent()
-        end
-    end
-end
-
-function GameScene:GetLayerByUid(uid)
-    local layer = self:getChildByTag(uid)
-    if layer ~= nil then
-        return layer
-    end
-    return nil
-end
-
-
 
 
 return GameScene

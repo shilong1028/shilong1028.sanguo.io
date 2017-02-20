@@ -19,21 +19,24 @@ local function main()
     math.randomseed(os.time())
 
 	--set FPS. the default value is 1.0/60 if you don't call this
-	G_Director:setAnimationInterval(1.0 / 30)
+	g_Director:setAnimationInterval(1.0 / 30)
 
 	--turn on display FPS
 	if CC_SHOW_FPS == true then      
-		G_Director:setDisplayStats(true)
+		g_Director:setDisplayStats(true)
 	else
-		G_Director:setDisplayStats(false)
+		g_Director:setDisplayStats(false)
     end
 
     --是否支持视频mp4（苹果或安卓）
-    if (cc.PLATFORM_OS_IPHONE == G_AppPlatform or cc.PLATFORM_OS_IPAD == G_AppPlatform or cc.PLATFORM_OS_ANDROID == G_AppPlatform) then
-        G_bSupportVideoPlayer = true
+    if (cc.PLATFORM_OS_IPHONE == g_AppPlatform or cc.PLATFORM_OS_IPAD == g_AppPlatform or cc.PLATFORM_OS_ANDROID == g_AppPlatform) then
+        g_bSupportVideoPlayer = true
     else
-        G_bSupportVideoPlayer = false
+        g_bSupportVideoPlayer = false
     end
+    
+    --自定义的LayerEx, 作为游戏各功能Layer的父类
+    CCLayerEx = require("Layer.CCLayerEx")
 
     --健康公告场景
     local scene = require("Scene.HealthAnnouncementScene")
