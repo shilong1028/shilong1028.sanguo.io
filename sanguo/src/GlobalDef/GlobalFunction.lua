@@ -57,3 +57,33 @@ function  G_Log_Fatal(msg, ...)    --致命错误输出红色
 		end
 	end
 end 
+
+function G_Resolution_BgImage(bg, layerSize, autoscale)   --根据适配方案，调整代码创建的背景图片
+	if CC_DESIGN_RESOLUTION then
+		--local view = cc.Director:getInstance():getOpenGLView()
+		local framesize = layerSize  --view:getFrameSize()
+		local bgSize = bg:getContentSize()
+		local scaleX = framesize.width/bgSize.width
+		local scaleY = framesize.height/bgSize.height
+
+		if autoscale == "FIXED_WIDTH" then
+			scaleY = scaleX
+		elseif autoscale == "FIXED_HEIGHT" then
+			scaleX = scaleY
+		elseif autoscale == "NO_BORDER" then
+			scaleX = math.max(scaleX, scaleY)
+			scaleY = math.max(scaleX, scaleY)
+		elseif autoscale == "SHOW_ALL" then
+			scaleX = math.min(scaleX, scaleY)
+			scaleY = math.min(scaleX, scaleY)
+		else
+			G_Log_Warning(string.format("display - invalid r.autoscale \"%s\"", autoscale))
+			return 
+		end
+
+		G_Log_Info("G_Resolution_BgImage scaleX = %0.2f, scaleY = %0.2f", scaleX, scaleY)
+
+		bg:setContentSize(cc.size(scaleX*bgSize.width, scaleY*bgSize.height))
+	end
+end
+

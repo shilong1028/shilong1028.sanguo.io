@@ -62,6 +62,9 @@ function HealthAnnouncementScene:init()
         
     --游戏健康公告
     local bkSprite = cc.Sprite:create("Image/HealthAnnouncement.png")
+    --local bkSprite = cc.Scale9Sprite:create("Image/HealthAnnouncement.png", cc.rect(10, 10, 10, 10))
+    --bkSprite:setContentSize(frameSize)
+    G_Resolution_BgImage(bkSprite, frameSize, "NO_BORDER")
     bkSprite:setPosition(cc.p(frameSize.width/2, frameSize.height/2))
     layer:addChild(bkSprite)
     
