@@ -1,0 +1,30 @@
+<Solution>
+  <PropertyGroup Name="sanguoUI" Version="3.10.0.0" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <Folder Name="csd">
+          <Project Name="aniToolCell.csd" Type="Layer" />
+          <Project Name="aniToolLayer.csd" Type="Layer" />
+        </Folder>
+        <Folder Name="font">
+          <TTF Name="DFYuanW7-GB2312.ttf" />
+        </Folder>
+        <Folder Name="plist">
+          <PlistImageFolder Image="aniTool.png" PListFile="aniTool.plist" Name=".aniTool_PList.Dir">
+            <PlistImageFile Name="aniTool_add.png" Key="aniTool_add.png" />
+            <PlistImageFile Name="aniTool_bg.png" Key="aniTool_bg.png" />
+            <PlistImageFile Name="aniTool_bg2.png" Key="aniTool_bg2.png" />
+            <PlistImageFile Name="aniTool_bg3.png" Key="aniTool_bg3.png" />
+            <PlistImageFile Name="aniTool_bg4.png" Key="aniTool_bg4.png" />
+            <PlistImageFile Name="aniTool_btn.png" Key="aniTool_btn.png" />
+            <PlistImageFile Name="aniTool_close.png" Key="aniTool_close.png" />
+            <PlistImageFile Name="aniTool_input.png" Key="aniTool_input.png" />
+            <PlistImageFile Name="aniTool_jian.png" Key="aniTool_jian.png" />
+          </PlistImageFolder>
+        </Folder>
+        <Project Name="MainScene.csd" Type="Scene" />
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>
