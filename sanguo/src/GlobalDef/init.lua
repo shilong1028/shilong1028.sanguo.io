@@ -5,3 +5,4 @@
 require "GlobalDef.GlobalConstant"
 require "GlobalDef.GlobalEnum"
 require "GlobalDef.GlobalFunction"
+require "GlobalDef.GlobalStruct"

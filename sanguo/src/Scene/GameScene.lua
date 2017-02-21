@@ -5,21 +5,19 @@ local GameScene = class("GameScene",function()
 end)
 
 function GameScene:create()   --自定义的create()创建方法
-    G_Log_Info("GameScene:create()")
+    --G_Log_Info("GameScene:create()")
     local scene = GameScene.new()
     return scene
 end
 
 function GameScene:ctor()   --new()会自动调用ctor()，如果直接调用.new()或:new()方法则会直接调用ctor()而不再调用create()
-    G_Log_Info("GameScene:ctor()")
-	--GameScene.super.ctor(self)
-
+    --G_Log_Info("GameScene:ctor()")
     self:initNodeEvent()
 	self:init()
 end
 
 function GameScene:initNodeEvent()
-    G_Log_Info("GameScene:initNodeEvent()")
+    --G_Log_Info("GameScene:initNodeEvent()")
     local function onNodeEvent(eventName)  
         if "enter" == eventName then 
             self:onEnter() 
@@ -38,28 +36,27 @@ function GameScene:initNodeEvent()
 end
 
 function GameScene:onEnter()
-    G_Log_Info("GameScene:onEnter()")
+    --G_Log_Info("GameScene:onEnter()")
 end
 
 function GameScene:onExit()
-    G_Log_Info("GameScene:onExit()")
+    --G_Log_Info("GameScene:onExit()")
 end
 
 function GameScene:onEnterTransitionFinish()
-    G_Log_Info("GameScene:onEnterTransitionFinish()")
+    --G_Log_Info("GameScene:onEnterTransitionFinish()")
 end
 
 function GameScene:onExitTransitionStart()
-    G_Log_Info("GameScene:onExitTransitionStart()")
+    --G_Log_Info("GameScene:onExitTransitionStart()")
 end
 
 function GameScene:onCleanup()
-    G_Log_Info("GameScene:onCleanup()")
+    --G_Log_Info("GameScene:onCleanup()")
 end
 
 function GameScene:init()  
-    G_Log_Info("GameScene:init()")
-    
+    --G_Log_Info("GameScene:init()")   
     local gameLayer = require("layer.GameLayer")
     g_pGameScene = gameLayer:create()  --gameLayer:new()
     self:addChild(g_pGameScene)

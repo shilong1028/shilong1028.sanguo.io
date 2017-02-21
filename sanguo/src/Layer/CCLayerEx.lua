@@ -5,22 +5,20 @@ local CCLayerEx = class("CCLayerEx", function()
 end) 
 
 function CCLayerEx:create()   --自定义的create()创建方法
-    G_Log_Info("CCLayerEx:create()")
+    --G_Log_Info("CCLayerEx:create()")
     local layer = CCLayerEx.new()
     return layer
 end
 
 function CCLayerEx:ctor()   --new()会自动调用ctor()，如果直接调用.new()或:new()方法则会直接调用ctor()而不再调用create()
-    G_Log_Info("CCLayerEx:ctor()")
-    self.owner = self.owner or {}
-
+    --G_Log_Info("CCLayerEx:ctor()")
     self:initTouchEvent()
     self:initNodeEvent()
 	self:init()
 end
 
 function CCLayerEx:initNodeEvent()
-    G_Log_Info("CCLayerEx:initNodeEvent()")
+    --G_Log_Info("CCLayerEx:initNodeEvent()")
     local function onNodeEvent(eventName)  
         if "enter" == eventName then 
             self:onEnter() 
@@ -39,27 +37,27 @@ function CCLayerEx:initNodeEvent()
 end
 
 function CCLayerEx:onEnter()
-    G_Log_Info("CCLayerEx:onEnter()")
+    --G_Log_Info("CCLayerEx:onEnter()")
 end
 
 function CCLayerEx:onExit()
-    G_Log_Info("CCLayerEx:onExit()")
+    --G_Log_Info("CCLayerEx:onExit()")
 end
 
 function CCLayerEx:onEnterTransitionFinish()
-    G_Log_Info("CCLayerEx:onEnterTransitionFinish()")
+    --G_Log_Info("CCLayerEx:onEnterTransitionFinish()")
 end
 
 function CCLayerEx:onExitTransitionStart()
-    G_Log_Info("CCLayerEx:onExitTransitionStart()")
+    --G_Log_Info("CCLayerEx:onExitTransitionStart()")
 end
 
 function CCLayerEx:onCleanup()
-    G_Log_Info("CCLayerEx:onCleanup()")
+    --G_Log_Info("CCLayerEx:onCleanup()")
 end
 
 function CCLayerEx:initTouchEvent()
-    G_Log_Info("CCLayerEx:initTouchEvent()")
+    --G_Log_Info("CCLayerEx:initTouchEvent()")
     local function onTouchBegan(touch, event)
          self:onTouchBegan(touch, event);
     end
@@ -83,21 +81,30 @@ function CCLayerEx:initTouchEvent()
 end
 
 function CCLayerEx:onTouchBegan(touch, event)
-    G_Log_Info("CCLayerEx:onTouchBegan()")
+    --G_Log_Info("CCLayerEx:onTouchBegan()")
     return true   --只有当onTouchBegan的返回值是true时才执行后面的onTouchMoved和onTouchEnded触摸事件
 end
 
 function CCLayerEx:onTouchMoved(touch, event)
-    G_Log_Info("CCLayerEx:onTouchMoved()")
+    --G_Log_Info("CCLayerEx:onTouchMoved()")
 end
 
 function CCLayerEx:onTouchEnded(touch, event)
-    G_Log_Info("CCLayerEx:onTouchEnded()")
+    --G_Log_Info("CCLayerEx:onTouchEnded()")
 end
 
 function CCLayerEx:init()  
-    G_Log_Info("CCLayerEx:init()")
+   --G_Log_Info("CCLayerEx:init()")
        
+end
+
+--屏幕适配
+function CCLayerEx:showInTheMiddle(csb)  
+    --G_Log_Info("CCLayerEx:showInTheMiddle()")
+    local wsize = g_WinSize  --g_VisibleSize
+    local csize = csb:getContentSize()
+    csb:ignoreAnchorPointForPosition(true)
+    csb:setPosition(cc.p((wsize.width - csize.width)/2,(wsize.height - csize.height)/2))
 end
 
 return CCLayerEx

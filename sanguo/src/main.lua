@@ -19,7 +19,7 @@ local function main()
     math.randomseed(os.time())
 
 	--set FPS. the default value is 1.0/60 if you don't call this
-	g_Director:setAnimationInterval(1.0 / 30)
+	g_Director:setAnimationInterval(1.0 / 60)
 
 	--turn on display FPS
 	if CC_SHOW_FPS == true then      
@@ -34,7 +34,7 @@ local function main()
     else
         g_bSupportVideoPlayer = false
     end
-    
+
     --自定义的LayerEx, 作为游戏各功能Layer的父类
     CCLayerEx = require("Layer.CCLayerEx")
 
