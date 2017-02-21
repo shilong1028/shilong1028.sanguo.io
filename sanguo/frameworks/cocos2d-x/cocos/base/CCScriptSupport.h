@@ -261,7 +261,28 @@ enum ScriptEventType
     kCommonEvent,
     kComponentEvent,
     kRestartGame,
-    kScriptActionEvent
+    kScriptActionEvent,
+
+	kCustomLuaEvent,
+};
+
+//自定义lua数据
+struct LuaScriptData
+{
+	void* nativeObject;
+	//void* value;
+	std::vector<std::string> keys;
+	std::vector<void*> values;
+	std::string objectTypeName = "";
+	LuaScriptData(void* inObject, std::string objectTypename_ = "Ref")
+		: nativeObject(inObject), objectTypeName(objectTypename_)
+	{
+	}
+	void push(std::string key, void* data)
+	{
+		keys.push_back(key);
+		values.push_back(data);
+	}
 };
 
 /**
