@@ -50,6 +50,7 @@ const std::string get_lua_print(lua_State* L)
 
 enum logger_type
 {
+	nil,
 	info,
 	debug,
 	warning,
@@ -66,20 +67,23 @@ int SetConsoleColorful(logger_type type)
 	BOOL bRet = FALSE;
 	switch (type)
 	{
+	case logger_type::nil:
+		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED );  //白色
+		break;
 	case logger_type::info:
-		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_INTENSITY | FOREGROUND_INTENSITY);
+		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_RED);   //黄色
 		break;
 	case logger_type::debug:
-		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_RED);   //紫色
 		break;
 	case logger_type::warning:
-		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
 		break;
 	case logger_type::error:
-		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);  // | BACKGROUND_INTENSITY);
+		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_RED ); 
 		break;
 	case logger_type::fatal:
-		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);  // | BACKGROUND_GREEN);
+		bRet = SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);  // 如果没有FOREGROUND_INTENSITY 只有 FOREGROUND_RED  那么颜色就偏暗  BACKGROUND_INTENSITY 会有阴影
 		break;
 	}
 	return bRet;
@@ -93,7 +97,7 @@ int SetConsoleColorful(logger_type type)
 		const std::string logInfo = get_lua_print(L);    \
 		SetConsoleColorful(logger_type::##NAME);        \
 		CCLOG("[logger-%s] %s",#NAME,logInfo.c_str());    \
-		SetConsoleColorful(logger_type::info);            \
+		SetConsoleColorful(logger_type::nil);            \
 		return 0;                                        \
 	}
 

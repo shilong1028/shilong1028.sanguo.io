@@ -2,11 +2,9 @@
 #include "scripting/lua-bindings/manual/CCLuaEngine.h"
 #include "audio/include/SimpleAudioEngine.h"
 #include "cocos2d.h"
-#include "scripting/lua-bindings/manual/lua_module_register.h"
+//#include "scripting/lua-bindings/manual/lua_module_register.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-#include "LoggerHelper.h"
-#endif
+#include "LuaMgr.h"
 
 using namespace CocosDenshion;
 
@@ -50,20 +48,21 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set default FPS
     Director::getInstance()->setAnimationInterval(1.0 / 60.0f);
 
+	//register lua
+	LuaMgr::GetInstance()->initEnv();
+
     // register lua module
     auto engine = LuaEngine::getInstance();
+	/*
     ScriptEngineManager::getInstance()->setScriptEngine(engine);
     lua_State* L = engine->getLuaStack()->getLuaState();
     lua_module_register(L);
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	luaRegister_loggerHelper(L);
-#endif
 
     register_all_packages();
 
     LuaStack* stack = engine->getLuaStack();
     stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
+	*/
 
     //register custom function
     //LuaStack* stack = engine->getLuaStack();
