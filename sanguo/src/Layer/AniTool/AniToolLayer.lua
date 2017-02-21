@@ -56,7 +56,7 @@ function AniToolLayer:init()
 
     local tableView = cc.TableView:create(cc.size(515,600))
     tableView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL)
-    tableView:ignoreAnchorPointForPosition(true)
+    tableView:setIgnoreAnchorPointForPosition(true)
     tableView:setPosition(cc.p(3, 0))
     tableView:setDelegate()
     tableView:setVerticalFillOrder(cc.TABLEVIEW_FILL_TOPDOWN)

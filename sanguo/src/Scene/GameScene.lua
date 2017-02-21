@@ -58,8 +58,8 @@ end
 function GameScene:init()  
     --G_Log_Info("GameScene:init()")   
     local gameLayer = require("layer.GameLayer")
-    g_pGameScene = gameLayer:create()  --gameLayer:new()
-    self:addChild(g_pGameScene)
+    g_pGameLayer = gameLayer:create()  --gameLayer:new()
+    self:addChild(g_pGameLayer)
 
 end
 

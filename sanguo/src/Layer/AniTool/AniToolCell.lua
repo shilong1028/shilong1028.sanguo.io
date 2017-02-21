@@ -192,8 +192,6 @@ function AniToolCell:initAniData(aniPath)   --Monster/btm1_gj
     if not self.fullAnimPath or self.fullAnimPath == "" then
         G_Log_Warning("self.fullAnimPath = %s", self.fullAnimPath or "nil")
         return;
-    else
-        G_Log_Info("self.fullAnimPath = %s", self.fullAnimPath)
     end
     local actionVec = self:getAnimActionVec(self.fullAnimPath)   --ImodAnim
     self.actionVec = actionVec

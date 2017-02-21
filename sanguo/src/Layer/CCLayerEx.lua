@@ -103,7 +103,7 @@ function CCLayerEx:showInTheMiddle(csb)
     --G_Log_Info("CCLayerEx:showInTheMiddle()")
     local wsize = g_WinSize  --g_VisibleSize
     local csize = csb:getContentSize()
-    csb:ignoreAnchorPointForPosition(true)
+    csb:setIgnoreAnchorPointForPosition(true)
     csb:setPosition(cc.p((wsize.width - csize.width)/2,(wsize.height - csize.height)/2))
 end
 
