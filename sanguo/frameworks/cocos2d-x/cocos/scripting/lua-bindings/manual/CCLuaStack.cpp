@@ -342,6 +342,11 @@ void LuaStack::pushNil(void)
     lua_pushnil(_state);
 }
 
+void LuaStack::pushUserdata(void* p)
+{
+	lua_pushlightuserdata(_state, p);
+}
+
 void LuaStack::pushObject(Ref* objectValue, const char* typeName)
 {
     toluafix_pushusertype_ccobject(_state, objectValue->_ID, &objectValue->_luaID, objectValue, typeName);

@@ -197,6 +197,8 @@ public:
      * Pushes a nil value onto the stack.
      */
     virtual void pushNil(void);
+
+	virtual void pushUserdata(void* p);   //myself add
     
     /**
      * Pushes a Ref object onto the stack.
