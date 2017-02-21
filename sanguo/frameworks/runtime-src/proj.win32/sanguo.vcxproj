@@ -190,7 +190,16 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\ark_File.h" />
+    <ClInclude Include="..\Classes\ark_Stream.h" />
+    <ClInclude Include="..\Classes\ark_typedef.h" />
+    <ClInclude Include="..\Classes\ark_Utility.h" />
+    <ClInclude Include="..\Classes\iconv.h" />
+    <ClInclude Include="..\Classes\ImodAnim.h" />
     <ClInclude Include="..\Classes\LoggerHelper.h" />
+    <ClInclude Include="..\Classes\LuaMgr.h" />
+    <ClInclude Include="..\Classes\lua_ark_Stream_auto.hpp" />
+    <ClInclude Include="..\Classes\lua_ImodAnim_auto.hpp" />
     <ClInclude Include="..\Classes\lua_module_register.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />
@@ -200,6 +209,13 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\ark_File.cpp" />
+    <ClCompile Include="..\Classes\ark_Stream.cpp" />
+    <ClCompile Include="..\Classes\ark_Utility.cpp" />
+    <ClCompile Include="..\Classes\ImodAnim.cpp" />
+    <ClCompile Include="..\Classes\LuaMgr.cpp" />
+    <ClCompile Include="..\Classes\lua_ark_Stream_auto.cpp" />
+    <ClCompile Include="..\Classes\lua_ImodAnim_auto.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SimulatorWin.cpp" />
     <ClCompile Include="stdafx.cpp" />
