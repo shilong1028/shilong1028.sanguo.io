@@ -68,15 +68,14 @@
 -- @return ImodAnim#ImodAnim self (return value: ImodAnim)
         
 --------------------------------
--- @overload self, string, char, char         
--- @overload self, char, char, bool         
--- @function [parent=#ImodAnim] initAnimWithName
+-- 
+-- @function [parent=#ImodAnim] initAnimWithName 
 -- @param self
 -- @param #char utfPic
 -- @param #char utfAni
 -- @param #bool clearSpr
 -- @return ImodAnim#ImodAnim self (return value: ImodAnim)
-
+        
 --------------------------------
 -- 
 -- @function [parent=#ImodAnim] SetFrameCallBack 
