@@ -44,9 +44,6 @@
     <ClInclude Include="..\Classes\iconv.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\LuaMgr.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\ark_typedef.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -78,9 +75,6 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ark_File.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\LuaMgr.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ark_Utility.cpp">
