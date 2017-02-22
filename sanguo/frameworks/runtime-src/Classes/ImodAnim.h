@@ -92,6 +92,8 @@ private:
 
 private:
 	void initAnimWithName(const string& utfPic, const string& utfAni); //这个不导出，避免重载导出问题
+	void initAnimWithName(const string& utfFile, const char* picExt, const char* aniExt);
+
 	void createAniSprite(int animateIdx,int frameIdx);				   //公用方法，创建每帧动画切片精灵
 	void clearAniSprite(int startIdx=0);							   //清除切片从某个idx开始默认为零全部清除
 	void doFrameCallback(int curFrame);								   //执行帧回调
@@ -118,7 +120,7 @@ public:
 public:
     //初始化数据(注意：次函数会清空重置成员变量，必须先调用次函数，再设置其他属性),默认不会清除已创建的精灵，有需要设置参数为true
 	void initAnimWithName(const char * utfPic, const char * utfAni,bool clearSpr=true);
-    void initAnimWithName(const string& utfFile, const char* picExt, const char* aniExt);
+    
     //加入附加动画模块
 	int addAnimWithName(const char * utfPic, const char * utfAni, int Zorder = 1, Color3B color = Color3B::WHITE);
 	//删除特定层动画
