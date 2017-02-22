@@ -2,7 +2,8 @@
 #include "ark_typedef.h"
 #include "ark_Stream.h"
 #include "ark_Utility.h"
-#include "LuaMgr.h"
+
+#include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
 
 //////////////////////////////////////////////////////////////////////////
 static GLProgramState*				_GBlendglprogramstate = nullptr;
@@ -510,7 +511,6 @@ ImodAnim::~ImodAnim()
 	this->resetAniData();
 	unscheduleAllCallbacks();
 	ScriptHandlerMgr::getInstance()->removeObjectAllHandlers(this);
-
 
 	ImodAnimAsynLoadMgr::getInstance()->deleteByImodeAnim(this);
 }

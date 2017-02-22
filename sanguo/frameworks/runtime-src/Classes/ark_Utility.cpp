@@ -1,6 +1,6 @@
 ﻿#include "iconv.h"
 #include "ark_Utility.h"
-#include "LuaMgr.h"
+#include "scripting/lua-bindings/manual/CCLuaEngine.h"
 
 //////////////////////////////  SystemHelper   ////////////////////////////////////////////
 //返回毫秒
@@ -58,9 +58,10 @@ string SystemHelper::FilterLimitedMsg(string &msg, bool isReg)
 	//auto timer1 = GetCurTick();
 	if (!IsMsgLoaded)
 	{
-		LuaMgr::GetInstance()->executeScriptFile("str/ForbiddenWord.lua"); //lua/
-		LuaMgr::GetInstance()->executeReadLuaTable("LIMITED_MSG",LIMITED_MSG);
-		LuaMgr::GetInstance()->executeReadLuaTable("REG_LIMITED_MSG",REG_LIMITED_MSG);
+		LuaEngine::getInstance()->executeScriptFile("str/ForbiddenWord.lua");
+		//LuaMgr::GetInstance()->executeScriptFile("str/ForbiddenWord.lua"); //lua/
+		//LuaMgr::GetInstance()->executeReadLuaTable("LIMITED_MSG",LIMITED_MSG);
+		//LuaMgr::GetInstance()->executeReadLuaTable("REG_LIMITED_MSG",REG_LIMITED_MSG);
 		IsMsgLoaded = true;
 	}
 
