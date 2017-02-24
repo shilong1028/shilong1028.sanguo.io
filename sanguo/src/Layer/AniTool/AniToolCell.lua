@@ -37,13 +37,17 @@ function AniToolCell:init()
     self.m_inputString4 = ""    --文件夹名
 
     local function TextFieldEvent(sender, eventType)
-        G_Log_Info("TextFieldEvent")
         self:TextFieldEvent(sender, eventType)
     end
     self.TextField_4:addEventListener(TextFieldEvent)
     self.TextField_1:addEventListener(TextFieldEvent)
     self.TextField_2:addEventListener(TextFieldEvent)
     self.TextField_3:addEventListener(TextFieldEvent)
+
+    self.TextField_4:setCursorEnabled(true)
+    self.TextField_1:setCursorEnabled(true)
+    self.TextField_2:setCursorEnabled(true)
+    self.TextField_3:setCursorEnabled(true)
 
     local function BtnPlayCallback(sender, eventType)
         self:onTouchButton(sender, eventType)
@@ -72,14 +76,15 @@ function AniToolCell:init()
 end
 
 function AniToolCell:TextFieldEvent(sender, eventType)
+    --G_Log_Info("AniToolCell:TextFieldEvent()")
     if eventType == ccui.TextFiledEventType.attach_with_ime then   --获得输入焦点
-        G_Log_Info("ATTACH_WITH_IME")
+        --G_Log_Info("ATTACH_WITH_IME")
     elseif eventType == ccui.TextFiledEventType.detach_with_ime then   --失去输入焦点
-        G_Log_Info("DETACH_WITH_IME")
+        --G_Log_Info("DETACH_WITH_IME")
     elseif eventType == ccui.TextFiledEventType.insert_text then  --输入了文本
-        G_Log_Info("INSERT_TEXT")
+        --G_Log_Info("INSERT_TEXT")
     elseif eventType == ccui.TextFiledEventType.delete_backward then   --删除了文字
-        G_Log_Info("DELETE_BACKWARD")
+        --G_Log_Info("DELETE_BACKWARD")
     end
 end
 
@@ -193,7 +198,7 @@ function AniToolCell:initAniData(aniPath)   --Monster/btm1_gj
         G_Log_Warning("self.fullAnimPath = %s", self.fullAnimPath or "nil")
         return;
     end
-    local actionVec = self:getAnimActionVec(self.fullAnimPath)   --ImodAnim
+    local actionVec = self:getAnimActionVec(self.fullAnimPath)  
     self.actionVec = actionVec
 
     if actionVec then

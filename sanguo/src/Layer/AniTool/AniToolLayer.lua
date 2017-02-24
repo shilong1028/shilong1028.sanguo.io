@@ -92,7 +92,8 @@ function AniToolLayer:init()
     self.playPos = cc.p(550,200)
 
     self.enemyAni = ImodAnim:create()
-    self.enemyAni:initAnimWithName("Monster/btm7_zd.png", "Monster/btm7_zd.ani")
+    self.enemyAni:initAnimWithName("Monster/btm7_zd.png", "Monster/btm7_zd.ani", true)   
+    --调用initAnimWithName方法，会连报三个[LUA ERROR] function refid '1' does not reference a Lua function
     self.enemyAni:PlayActionRepeat(0, 0.1)
     self.enemyAni:setPosition(self.enemyPos)
     self.backBg1:addChild(self.enemyAni)
