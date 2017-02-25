@@ -41,9 +41,6 @@
     <ClInclude Include="..\Classes\ark_File.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\iconv.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\ark_typedef.h">
       <Filter>Classes</Filter>
     </ClInclude>
