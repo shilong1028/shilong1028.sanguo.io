@@ -1,6 +1,15 @@
-﻿#include "iconv.h"
+﻿
 #include "ark_Utility.h"
 #include "scripting/lua-bindings/manual/CCLuaEngine.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "../cocos2d-x/external/win32-specific/icon/include/iconv.h"
+#endif
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#include "../cocos2d-x/iconv/include/iconv.h"
+//#include "../../../../Android/android-ndk-r10c/sources/android/support/include/iconv.h"
+#endif
+#pragma comment(lib,"libiconv.lib")
 
 //////////////////////////////  SystemHelper   ////////////////////////////////////////////
 //返回毫秒
@@ -308,12 +317,20 @@ int code_convert(const char *from_charset, const char *to_charset, const char *i
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
 	iconv_t cd;
 	const char *temp = inbuf;
-	const char **pin = &temp;
 	char **pout = &outbuf;
 	memset(outbuf, 0, outlen);
 	cd = iconv_open(to_charset, from_charset);
 	if (cd == 0) return -1;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	char ** pin2 = const_cast<char **>(&temp);
+	if (iconv(cd, pin2, &inlen, pout, &outlen) == -1) return -1;
+#endif
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	const char **pin = &temp;
 	if (iconv(cd, pin, &inlen, pout, &outlen) == -1) return -1;
+#endif
+	
 	iconv_close(cd);
 #endif
 	return 0;
@@ -354,7 +371,17 @@ int StringHelper::Utf8ToUnicode(char *to, size_t toLen, const char *from, size_t
 {
 	static iconv_t sCdUnicodeGbk = iconv_open("UNICODELITTLE", "utf-8");
 	size_t oldToLen = toLen;
-	iconv(sCdUnicodeGbk, (const char**)&from, &fromLen, &to, &toLen);
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	char ** fm2 = const_cast<char **>(&from);
+	iconv(sCdUnicodeGbk, fm2, &fromLen, &to, &toLen);
+#endif
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	const char **fm = &from;
+	iconv(sCdUnicodeGbk, fm, &fromLen, &to, &toLen);
+#endif
+
 	return (oldToLen - toLen);
 }
 
@@ -362,7 +389,17 @@ int StringHelper::UnicodeToUtf8(char *to, size_t toLen, const char *from, size_t
 {
 	static iconv_t sCdUnicodeGbk = iconv_open("utf-8", "UNICODELITTLE");
 	size_t oldToLen = toLen;
-	iconv(sCdUnicodeGbk, (const char**)&from, &fromLen, &to, &toLen);
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	char ** fm2 = const_cast<char **>(&from);
+	iconv(sCdUnicodeGbk, fm2, &fromLen, &to, &toLen);
+#endif
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	const char **fm = &from;
+	iconv(sCdUnicodeGbk, fm, &fromLen, &to, &toLen);
+#endif
+
 	return (oldToLen - toLen);
 }
 
