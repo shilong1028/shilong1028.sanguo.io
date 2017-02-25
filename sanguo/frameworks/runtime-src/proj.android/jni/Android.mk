@@ -23,6 +23,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 # _COCOS_HEADER_ANDROID_END
 
 LOCAL_STATIC_LIBRARIES := cocos2d_lua_static
+LOCAL_WHOLE_STATIC_LIBRARIES += libiconv
 
 # _COCOS_LIB_ANDROID_BEGIN
 # _COCOS_LIB_ANDROID_END
@@ -30,6 +31,7 @@ LOCAL_STATIC_LIBRARIES := cocos2d_lua_static
 include $(BUILD_SHARED_LIBRARY)
 
 $(call import-module,scripting/lua-bindings/proj.android)
+$(call import-module,iconv)
 
 # _COCOS_LIB_IMPORT_ANDROID_BEGIN
 # _COCOS_LIB_IMPORT_ANDROID_END
