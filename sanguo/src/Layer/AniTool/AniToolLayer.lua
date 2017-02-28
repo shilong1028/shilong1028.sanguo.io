@@ -20,7 +20,6 @@ end
 function AniToolLayer:init()  
     --G_Log_Info("AniToolLayer:init()")
     local csb = cc.CSLoader:createNode("csd/aniToolLayer.csb")
-    self.csb = csb
     self:addChild(csb)
     self:showInTheMiddle(csb)
 

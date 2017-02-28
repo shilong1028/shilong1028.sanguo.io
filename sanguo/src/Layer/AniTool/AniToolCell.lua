@@ -11,7 +11,7 @@ end
 --初始化UI界面
 function AniToolCell:init()  
     --G_Log_Info("AniToolCell:init()")
-    local csb = cc.CSLoader:createNode("csd/AniToolCell.csb")
+    local csb = cc.CSLoader:createNode("csd/aniToolCell.csb")
     self:addChild(csb)
 
     self.Image_bg = csb:getChildByName("Image_bg")  

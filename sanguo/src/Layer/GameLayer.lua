@@ -18,7 +18,7 @@ function GameLayer:init()
     --G_Log_Info("GameLayer:init()")
     self.requireLuaVec = {}   --每个功能的Lua文件仅require一次即可
    
-    self:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool/AniToolLayer")
+    self:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")
     -- --主菜单层
     -- self.mainMenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
     -- --主城层
@@ -38,7 +38,7 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --className�
     if type(className) == "string" then
         local file = self.requireLuaVec["uid"..uid]
         if not file then
-            file = require("Layer/"..className)
+            file = require("Layer."..className)
             self.requireLuaVec["uid"..uid] = file
         end
         local child = file:create()  --file:new()
