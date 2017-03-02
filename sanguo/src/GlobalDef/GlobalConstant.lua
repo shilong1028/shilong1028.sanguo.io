@@ -15,6 +15,9 @@ g_WinSize = g_Director:getWinSize()
 --VisibleSize就是画布显示在画框中的部分，注意：它的大小是用WinSize来表示的。
 --VisibleOrigin就是VisibleSize在画框中的左下角坐标点，注意也是用WinSize来表示的。
 
+--定时器单例
+g_Scheduler = cc.Director:getInstance():getScheduler()
+
 --自定义的LayerEx, 作为游戏各功能Layer的父类
 CCLayerEx = nil  
 
@@ -31,3 +34,6 @@ g_sDefaultTTFpath = "font/DFYuanW7-GB2312.ttf"
 
 --是否支持视频mp4（苹果或安卓）
 g_bSupportVideoPlayer = false
+
+--AStar寻路
+g_bAStarPathSmooth = true --false --寻路拉直

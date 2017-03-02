@@ -67,7 +67,7 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --classNameä¸
     return child
 end
 
-function GameLayer:RemoveChildByUid(uid)
+function GameLayer:RemoveChildByUId(uid)
     local layer = self:getChildByTag(uid)
     if layer ~= nil then
         self:removeChildByTag(uid)
@@ -84,7 +84,7 @@ function GameLayer:RemoveAllChild()
     end
 end
 
-function GameLayer:GetLayerByUid(uid)
+function GameLayer:GetLayerByUId(uid)
     local layer = self:getChildByTag(uid)
     if layer ~= nil then
         return layer

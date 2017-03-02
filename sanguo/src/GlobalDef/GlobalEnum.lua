@@ -14,3 +14,17 @@ g_GameLayerTag = {
 
 	LAYER_TAG_AniToolLayer = 101,    --动画工具界面,
 }
+
+--人物移动的方向状态标识
+g_PlayerState = {
+	HMS_NUM = 9,   --状态数量
+	HMS_NOR = -1,  --站立姿态
+	HMS_RDOWN = 0, --移动中的几个方向标记  cc.p(1,-1)
+	HMS_DOWN = 1,  --cc.p(0,-1)
+	HMS_LDOWN = 2, --cc.p(-1,-1)
+	HMS_LEFT = 3,  --cc.p(-1,0)
+	HMS_LUP = 4,   --cc.p(-1,1)
+	HMS_UP = 5,    --cc.p(0,1)
+	HMS_RUP = 6,   --cc.p(1,1)
+	HMS_RIGHT = 7, --cc.p(1,0)
+}

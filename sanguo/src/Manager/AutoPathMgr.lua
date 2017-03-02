@@ -37,7 +37,25 @@ function AutoPathMgr:AStarSetCanWalk(bWalk, titleX, titleY)
 	end
 end
 
+function AutoPathMgr:AStarFindPath(startPtx, startPty, endPtx, endPty)   --地图块为32*32大小，且从0开始计数
+	if self.AStar then
+		self.AStar:FindPath(startPtx, startPty, endPtx, endPty)
+	end
+end
 
+function AutoPathMgr:AStarGetPath(bAStarPathSmooth)
+	if self.AStar then
+		return self.AStar:GetPath(bAStarPathSmooth)
+	end
+	return nil
+end
+
+function AutoPathMgr:AStarCanWalk(movePtx, movePty)
+	if self.AStar then
+		return self.AStar:CanWalk(movePtx, movePty)
+	end
+	return false
+end
 
 
 
