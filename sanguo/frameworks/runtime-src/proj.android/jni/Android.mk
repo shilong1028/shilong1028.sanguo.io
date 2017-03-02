@@ -12,8 +12,11 @@ LOCAL_SRC_FILES := \
 ../../Classes/ark_File.cpp \
 ../../Classes/ark_Stream.cpp \
 ../../Classes/ark_Utility.cpp \
+../../Classes/astar.cpp \
 ../../Classes/ImodAnim.cpp \
 ../../Classes/lua_ark_Stream_auto.cpp \
+../../Classes/lua_ark_Utility_auto.cpp \
+../../Classes/lua_astar_auto.cpp \
 ../../Classes/lua_ImodAnim_auto.cpp \
 hellolua/main.cpp
 
