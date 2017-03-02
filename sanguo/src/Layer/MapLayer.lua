@@ -13,8 +13,8 @@ function MapLayer:onExit()
 end
 
 function MapLayer:init()  
-    G_Log_Info("MapLayer:init()")
-    self:ShowMapImg(1)  
+    --G_Log_Info("MapLayer:init()")
+    self:ShowMapImg(1)  --全国地图
 
 
 end
@@ -50,7 +50,6 @@ function MapLayer:ShowMapImg(mapId)
 		Spr:setAnchorPoint(cc.p(0, 1))
 		Spr:setPosition(cc.p(posX, posY))
 		self.rootNode:addChild(Spr, 1)
-		G_Log_Info("posX = %f, posY = %f", posX, posY)
 
 		if i>=self.mapConfigData.column and i%self.mapConfigData.column == 0 then
 			posX = 0
@@ -71,15 +70,19 @@ end
 
 --主角在屏幕上的坐标
 function MapLayer:setRoleWinPosition(winPos)
-	G_Log_Dump(winPos, "winPos = ")
 	local rootNodePos = cc.p(self.rootNode:getPosition())
 	local rolePos = cc.p(winPos.x - rootNodePos.x, winPos.y - rootNodePos.y)
+	if rolePos.x > self.mapConfigData.width then
+		rolePos.x = self.mapConfigData.width
+	end
+	if rolePos.y > self.mapConfigData.height then
+		rolePos.y = self.mapConfigData.height
+	end
 	self:setRoleMapPosition(rolePos)
 end
 
 --主角在地图上的坐标
 function MapLayer:setRoleMapPosition(rolePos)
-	G_Log_Dump(rolePos, "rolePos = ")
 	if self.playerNode then
 		self.playerNode:setPosition(rolePos)
 		self:resetRootNodePos(rolePos)
@@ -89,29 +92,24 @@ end
 --以主角为屏幕中心，适配地图
 function MapLayer:resetRootNodePos(rolePos)
 	local rootPos = cc.p(0,0)
-	print("x = ", self.mapConfigData.width - g_WinSize.width/2)
+
 	if rolePos.x >= self.mapConfigData.width - g_WinSize.width/2 then
-		print("############")
-		rootPos.x = g_WinSize.width/2 - self.mapConfigData.width
+		rootPos.x = g_WinSize.width - self.mapConfigData.width
 	elseif rolePos.x >= g_WinSize.width/2 then
-		print("**************")
 		rootPos.x = g_WinSize.width/2 - rolePos.x
 	end
-	print("y=", self.mapConfigData.height - g_WinSize.height/2)
+
 	if rolePos.y >= self.mapConfigData.height - g_WinSize.height/2 then
-		print("############")
-		rootPos.y = g_WinSize.height/2 -self.mapConfigData.height
+		rootPos.y = g_WinSize.height -self.mapConfigData.height
 	elseif rolePos.y >= g_WinSize.height/2 then
-		print("**************")
 		rootPos.y = g_WinSize.height/2 - rolePos.y
 	end
-	G_Log_Dump(rootPos, "rootPos = ")
 	self.rootNode:setPosition(rootPos)
 end
 
 
 function MapLayer:onTouchBegan(touch, event)
-    G_Log_Info("MapLayer:onTouchBegan()")
+    --G_Log_Info("MapLayer:onTouchBegan()")
     local beginPos = touch:getLocation()   --直接从touch中获取,在getLocation()源码里会将坐标转成OpenGL坐标系,原点在屏幕左下角，x轴向右，y轴向上
     --local point = touch:getLocationInView() --获得屏幕坐标系,原点在屏幕左上角，x轴向右，y轴向下
     --point = cc.Director:getInstance():convertToGL(point)  --先获得屏幕坐标，在调用convertToGL转成OpenGl坐标系
@@ -120,11 +118,11 @@ function MapLayer:onTouchBegan(touch, event)
 end
 
 function MapLayer:onTouchMoved(touch, event)
-    G_Log_Info("MapLayer:onTouchMoved()")
+    --G_Log_Info("MapLayer:onTouchMoved()")
 end
 
 function MapLayer:onTouchEnded(touch, event)
-    G_Log_Info("MapLayer:onTouchEnded()")
+    --G_Log_Info("MapLayer:onTouchEnded()")
 end
 
 return MapLayer

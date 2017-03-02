@@ -4,12 +4,12 @@
 local MapMgr = class("MapMgr")
 
 function MapMgr:ctor()
-	G_Log_Info("MapMgr:ctor()")
+	--G_Log_Info("MapMgr:ctor()")
     self:init()
 end
 
 function MapMgr:init()
-	G_Log_Info("MapMgr:init()")
+	--G_Log_Info("MapMgr:init()")
 	self.instance = nil
 
 	self.mapConfigData = nil  --地图表配置数据
@@ -18,7 +18,7 @@ function MapMgr:init()
 end
 
 function MapMgr:GetInstance()
-	G_Log_Info("MapMgr:GetInstance()")
+	--G_Log_Info("MapMgr:GetInstance()")
     if self.instance == nil then
         self.instance = MapMgr:new()
     end
@@ -27,7 +27,7 @@ end
 
 --加载并显示地图
 function MapMgr:LoadMapStreamData(mapId)
-	G_Log_Info("MapMgr:LoadMapStreamData()")
+	--G_Log_Info("MapMgr:LoadMapStreamData()")
 	self._VecOpacity = nil   --地图中快透明数据
 	--地图表配置数据
 	self.mapConfigData = g_pTBLMgr:getMapConfigTBLDataById(mapId)
@@ -35,7 +35,7 @@ function MapMgr:LoadMapStreamData(mapId)
 		G_Log_Error("MapMgr--getMapConfigTBLDataById() failed, mapId = %d", mapId)
 		return nil
 	end
-	G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
+	--G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
 
     --读取寻路点配置信息
 	local l_stream = ark_Stream:new()
