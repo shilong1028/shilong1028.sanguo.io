@@ -6,6 +6,8 @@
 
 #include "lua_ark_Stream_auto.hpp"
 #include "lua_ImodAnim_auto.hpp"
+#include "lua_ark_Utility_auto.hpp"
+#include "lua_astar_auto.hpp"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include "LoggerHelper.h"
@@ -66,6 +68,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	register_all_ImodAnim(L);
 	register_all_ark_Stream(L);
+	register_all_ark_Utility(L);
+	register_all_astar(L);
 
     register_all_packages();
 

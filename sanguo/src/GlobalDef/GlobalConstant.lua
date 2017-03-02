@@ -22,6 +22,10 @@ CCLayerEx = nil
 g_pGameScene = nil  --g_pGameScene包含g_pGameLayer以及一些游戏初始化及网络连接的内容
 g_pGameLayer = nil  --g_pGameLayer是g_pGameScene的子层，用于承载游戏各种功能界面
 
+g_pAutoPathMgr = nil  --寻路管理器单例
+g_pMapMgr = nil       --州郡地图管理单例
+g_pTBLMgr = nil       --本地tbl表格数据单例
+
 --默认的华康圆体路径
 g_sDefaultTTFpath = "font/DFYuanW7-GB2312.ttf"
 

@@ -17,14 +17,15 @@ end
 function GameLayer:init()  
     --G_Log_Info("GameLayer:init()")
     self.requireLuaVec = {}   --每个功能的Lua文件仅require一次即可
-   
-    self:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")
+    
+    --动画修改工具
+    --self:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")
     -- --主菜单层
-    -- self.mainMenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
+    -- self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
     -- --主城层
     -- self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
-    -- --全国地图层
-    -- self.chinaMapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "ChinaMapLayer")
+    --地图层
+    self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
 end
 
 function GameLayer:AddChild(uid, className, funcName, userTable)   --className为Layer目录下的界面类路径，funcName为初始化方法，userTable初始数据
@@ -44,18 +45,19 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --className�
         local child = file:create()  --file:new()
         child:setTag(uid)
         self:addChild(child)
+
+        if uid == g_GameLayerTag.LAYER_TAG_MAINMENU then  --主菜单层
+            child:setLocalZOrder(-1)
+        elseif uid == g_GameLayerTag.LAYER_TAG_MAINCITY then  --主城层
+            child:setLocalZOrder(-10)
+        elseif uid == g_GameLayerTag.LAYER_TAG_CHINAMAP then  --地图层
+            child:setLocalZOrder(-20)
+        end
+
     else
         G_Log_Fatal("the lua file is nin, file = ", className) 
     end
-
-    if uid == g_GameLayerTag.LAYER_TAG_MAINMENU then  --主界面
-        child:setLocalZOrder(-1)
-    elseif uid == g_GameLayerTag.LAYER_TAG_MAINCITY then  --主城
-        child:setLocalZOrder(-2)
-    elseif uid == g_GameLayerTag.LAYER_TAG_CHINAMAP then  --全国地图
-        child:setLocalZOrder(-3)
-    end
-    
+  
     --初始数据
     if funcName then
         local fun = child[funcName]

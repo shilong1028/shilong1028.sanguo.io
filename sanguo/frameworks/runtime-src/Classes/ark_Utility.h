@@ -62,7 +62,7 @@ public:
     static string GetVersionStr(int vCode);
     //获取指定内存的16进制字符串
     static string GetHexString(const char* buf, int len, bool blank=false);
-    static int GetBufFromHexString(const string& str, char* buf, int maxLen);
+    
 	//pos指起始偏移量，没有就是0
 	static string GetHexStringByStream(ark_Stream* stream, int pos,int len, bool blank = false);
 	static string GetHexStringByBuf(const char* buf, int len, bool blank = false);
@@ -87,6 +87,9 @@ public:
 
 	//获得染色shader_state
 	static GLProgramState* getHSLGlprogramState();
+
+private:
+	static int GetBufFromHexString(const string& str, char* buf, int maxLen);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,7 +110,21 @@ public:
 	//字符串比较，不区分大小写
 	static int  My_strnicmp(const char *dst,const char *src,int count);
 
-public:
+    //计算Unicode字符长度
+    static int CalcUnicodeLen(const char* pUtf8);
+    //截断到指定Unicode字符长度
+    static string TruncateByUnicode(const char* pUtf8, unsigned int maxLen);
+
+    //替换字符串
+    static string ReplaceStr(const string& str, const char* pOldStr, const char* pNewStr);
+    
+	//拆分字符串，返回长度
+	static int splitStr( std::vector<std::string>& arr,std::string str, char tagChar);
+    //是否是以指定字符开头
+    static bool IsBeginWith(const string& s, char c) { return s.size() > 0 && s[0] == c; }
+    //是否是以指定字符结尾
+    static bool IsEndWidth(const string& s, char c) { return s.size() > 0 && s[s.size()-1] == c; }
+
 	//GBK和UTF8互转
 	static std::string AnsiToUtf8(const char* buf);
 	static std::string Utf8ToAnsi(const char* buf);
@@ -116,45 +133,15 @@ public:
 	static int Utf8ToUnicode(char *to, size_t toLen, const char *from, size_t fromLen);
 	static int UnicodeToUtf8(char *to, size_t toLen, const char *from, size_t fromLen);
 
-public:
-    //计算Unicode字符长度
-    static int CalcUnicodeLen(const char* pUtf8);
-    //截断到指定Unicode字符长度
-    static string TruncateByUnicode(const char* pUtf8, unsigned int maxLen);
+private:
+	//读取指定字符前的字符串，并返回指定字符的偏移
+	static int ReadBeforeCharStr(const string& s, char tagChar, int offset, string& str);
+	//读取指定字符前的整数，并返回指定字符的偏移
+	static int ReadBeforeCharInt(const string& s, char tagChar, int offset, int& intv);
+	//读取指定字符前的浮点数，并返回指定字符的偏移
+	static int ReadBeforeCharFloat(const string& s, char tagChar, int offset, float& v);
 
-public:
-    //替换字符串
-    static string ReplaceStr(const string& str, const char* pOldStr, const char* pNewStr);
-    //读取指定字符前的字符串，并返回指定字符的偏移
-    static int ReadBeforeCharStr(const string& s, char tagChar, int offset, string& str);
-    //读取指定字符前的整数，并返回指定字符的偏移
-    static int ReadBeforeCharInt(const string& s, char tagChar, int offset, int& intv);
-    //读取指定字符前的浮点数，并返回指定字符的偏移
-    static int ReadBeforeCharFloat(const string& s, char tagChar, int offset, float& v);
-	//拆分字符串，返回长度
-	static int splitStr( std::vector<std::string>& arr,std::string str, char tagChar);
-    //是否是以指定字符开头
-    static bool IsBeginWith(const string& s, char c) { return s.size() > 0 && s[0] == c; }
-    //是否是以指定字符结尾
-    static bool IsEndWidth(const string& s, char c) { return s.size() > 0 && s[s.size()-1] == c; }
+
 };
-
-#define INT2STR(v) (StringHelper::IntToStr(v))
-#define STR2INT(v) (StringHelper::StrToInt(v))
-#define FLOAT2STR(v) (StringHelper::FloatToStr(v))
-#define STR2FLOAT(v) (StringHelper::StrToFloat(v))
-
-#define CCSTR_FMT1(fmt, p) (__String::createWithFormat(fmt,p)->getCString())
-#define CCSTR_FMT2(fmt, p1, p2) (__String::createWithFormat(fmt,p1,p2)->getCString())
-#define CCSTR_FMT3(fmt, p1, p2,p3) (__String::createWithFormat(fmt,p1,p2,p3)->getCString())
-
-#define U2W StringHelper::Utf8ToUnicode
-#define W2U StringHelper::UnicodeToUtf8
-
-#define EQUAL_ANY2(v,r1,r2) SystemHelper::IsEqualAny(v,r1,r2)
-#define EQUAL_ANY3(v,r1,r2,r3) SystemHelper::IsEqualAny(v,r1,r2,r3)
-#define EQUAL_ANY4(v,r1,r2,r3,r4) SystemHelper::IsEqualAny(v,r1,r2,r3,r4)
-#define EQUAL_ANY5(v,r1,r2,r3,r4,r5) SystemHelper::IsEqualAny(v,r1,r2,r3,r4,r5)
-#define EQUAL_ANY6(v,r1,r2,r3,r4,r5,r6) SystemHelper::IsEqualAny(v,r1,r2,r3,r4,r5,r6)
 
 #endif

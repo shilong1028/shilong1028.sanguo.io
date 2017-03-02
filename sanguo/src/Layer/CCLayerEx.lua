@@ -7,11 +7,13 @@ end)
 function CCLayerEx:create()   --自定义的create()创建方法
     --G_Log_Info("CCLayerEx:create()")
     local layer = CCLayerEx.new()
+    layer:setContentSize(g_WinSize)
     return layer
 end
 
 function CCLayerEx:ctor()   --new()会自动调用ctor()，如果直接调用.new()或:new()方法则会直接调用ctor()而不再调用create()
     --G_Log_Info("CCLayerEx:ctor()")
+    self.touchListener = nil
     self:initTouchEvent()
     self:initNodeEvent()
 	self:init()
@@ -78,6 +80,14 @@ function CCLayerEx:initTouchEvent()
 
     local eventDispatcher = self:getEventDispatcher()
     eventDispatcher:addEventListenerWithSceneGraphPriority(listener, self)
+
+    self.touchListener = listener
+end
+
+function CCLayerEx:setSwallowTouches(bSwallow)
+    if self.touchListener then
+        self.touchListener:setSwallowTouches(bSwallow)
+    end
 end
 
 function CCLayerEx:onTouchBegan(touch, event)
