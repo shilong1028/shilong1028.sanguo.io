@@ -4,5 +4,6 @@
 <config>
 	<solution name="¿Í»§¶Ë" xmlfilepath="./xml/" excelfilepath="./excel/" outputpath="./tbl/client/" >
 		<package xml="test_client.xml"/>
+		<package xml="mapConfig_client.xml"/>
 	</solution>
 </config>

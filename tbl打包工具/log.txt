@@ -761,3 +761,53 @@ parseEXCEL: ./excel/test.xlsx
 max row: 1	max column: 6
 row 	data1:1	data2:2	data3:3	data4:4	data5:5	data6:6
 total_size : 348
+config
+config
+config
+config
+./xml/mapConfig_client.xml
+table	mapConfig	mapConfig.xlsx	Sheet1	mapConfig_client.tbl
+parseEXCEL: ./excel/mapConfig.xlsx
+max row: 1	max column: 8
+row 	id:1	name:2	path:3	width:4	height:5	default_pt:6	jump_pt:7	npc_id:8
+total_size : 726
+config
+config
+./xml/mapConfig_client.xml
+table	mapConfig	mapConfig.xlsx	Sheet1	mapConfig_client.tbl
+parseEXCEL: ./excel/mapConfig.xlsx
+max row: 1	max column: 8
+row 	id:1	name:2	path:3	width:4	height:5	default_pt:6	jump_pt:7	npc_id:8
+total_size : 726
+config
+config
+./xml/mapConfig_client.xml
+table	mapConfig	mapConfig.xlsx	Sheet1	mapConfig_client.tbl
+parseEXCEL: ./excel/mapConfig.xlsx
+max row: 1	max column: 8
+row 	id:1	name:2	path:3	width:4	height:5	default_pt:6	jump_pt:7	npc_id:8
+total_size : 726
+config
+config
+./xml/mapConfig_client.xml
+table	mapConfig	mapConfig.xlsx	Sheet1	mapConfig_client.tbl
+parseEXCEL: ./excel/mapConfig.xlsx
+max row: 1	max column: 9
+row 	id:1	name:2	path:3	width:4	height:5	default_pt:6	jump_pt:7	npc_id:8	img_count:9
+total_size : 730
+config
+config
+./xml/mapConfig_client.xml
+table	mapConfig	mapConfig.xlsx	Sheet1	mapConfig_client.tbl
+parseEXCEL: ./excel/mapConfig.xlsx
+max row: 1	max column: 11
+row 	id:1	name:2	path:3	width:4	height:5	default_pt:6	jump_pt:7	npc_id:8	img_count:9	row:10	column:11
+total_size : 738
+config
+config
+./xml/mapConfig_client.xml
+table	mapConfig	mapConfig.xlsx	Sheet1	mapConfig_client.tbl
+parseEXCEL: ./excel/mapConfig.xlsx
+max row: 1	max column: 11
+row 	id:1	name:2	path:3	width:4	height:5	default_pt:6	jump_pt:7	npc_id:8	img_count:9	row:10	column:11
+total_size : 738
