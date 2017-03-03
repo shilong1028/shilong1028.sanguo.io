@@ -28,7 +28,7 @@ function PlayerNode:init()
     self.AutoPathEntry = nil  --自动寻路定时器实体
 
     --self.MoveDirectionPt = cc.p(0,0)   --移动方向，8个向量方向
-    self.MoveSpeed = 100   --人物移动速度，默认180,从人物3属性中读取
+    self.MoveSpeed = 160   --人物移动速度，默认180,从人物3属性中读取
 
     self.FollowPathVec = {}  --跟随路径点
     self.FollowPathCount = 20   --最多的跟随点数量
@@ -61,6 +61,17 @@ function PlayerNode:showPlayerImodAni(bStandUp)
 	end
 end
 
+function PlayerNode:StopLastAutoPath()   --停止上一个自动寻路
+	if self.AutoPathEntry then
+    	g_Scheduler:unscheduleScriptEntry(self.AutoPathEntry)
+    	self.AutoPathEntry = nil
+    end
+
+    self.bAutoMoving = false
+    self.bPauseAutoMoving = false
+    self.AutoPathVec = nil
+end
+
 function PlayerNode:StartAutoPath(autoPath)
 	--G_Log_Info("PlayerNode:StartAutoPath()")
 	if autoPath and #autoPath >0 then
@@ -72,11 +83,8 @@ function PlayerNode:StartAutoPath(autoPath)
 		    end
     	end
 
-    	self.AutoPathVec = {}   --自动寻路路径
-    	local mapHeight = g_pMapMgr:getMapConfigHeight() 
-		for k,v in pairs(autoPath) do  --SPoint转ccp, autoPath为32*32的块坐标，self.AutoPathVec为像素坐标
-			table.insert(self.AutoPathVec, cc.p(v:getX(), mapHeight - v:getY()))
-		end
+    	self.AutoPathVec = nil   --自动寻路路径--self.AutoPathVec为像素坐标, 非32*32的块坐标，
+    	self.AutoPathVec = autoPath 
 		--G_Log_Dump(self.AutoPathVec, "self.AutoPathVec = ")
 
 		self.bAutoMoving = true
@@ -129,6 +137,7 @@ function PlayerNode:AutoPathUpdate(dt)
 
 	if self.bAutoMoving == false or not self.AutoPathVec or #self.AutoPathVec <= 0 then
 		EndAutoPathUpdate()
+		return
 	end
 
 	if #self.AutoPathVec <= 0 then  --最后一个自动寻路的点索引
@@ -136,14 +145,6 @@ function PlayerNode:AutoPathUpdate(dt)
         G_Log_Info("PlayerNode:AutoPathUpdate()--移动结束回调")
 	else   --继续寻路
 		local dirPos = cc.p(self.AutoPathVec[1].x, self.AutoPathVec[1].y)   --self.AutoPathVec为像素坐标		
-		--判断这个位置是否可以移动
-		-- local movePt = cc.p(math.floor(dirPos.x/32), math.floor(dirPos.y/32))
-		-- if g_pAutoPathMgr:AStarCanWalk(movePt.x, movePt.y) ~= true then
-		-- 	G_Log_Info("PlayerNode:AutoPathUpdate()--位置不可以移动")
-		-- 	EndAutoPathUpdate()
-		-- 	return
-		-- end
-
 		local nowPos = cc.p(self:getPosition())
 		local dirPt, dirIdx = g_pMapMgr:CalcMoveDirection(nowPos, dirPos)
 		
@@ -160,16 +161,37 @@ function PlayerNode:AutoPathUpdate(dt)
 		
         --计算距离进行移动
 		local StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)      --cc.pDistanceSQ(nowPos, dirPos) 
-		if StepLen < 32 then  --距离小于32, 地图块大小
+		if StepLen < 32 then  --32为地图块大小
 			table.remove(self.AutoPathVec,1)  --删掉astar,取下一个点
 		else 
 			--走到一半的时候，不删除点P，生成P中间点，到达中间点后再删除P
-			--dirPos = cc.pMidpoint(nowPos, dirPos)
-			--StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)
+			local midPos = cc.pMidpoint(nowPos, dirPos)
+			--判断这个位置是否可以移动
+			local movePt = cc.p(math.floor(midPos.x/32), math.floor(midPos.y/32))
+			if g_pAutoPathMgr:AStarCanWalk(movePt.x, movePt.y) == true then
+				dirPos = midPos
+				StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)
+			else
+				local newMid = cc.pMidpoint(nowPos, midPos)
+				movePt = cc.p(math.floor(newMid.x/32), math.floor(newMid.y/32))
+				if g_pAutoPathMgr:AStarCanWalk(movePt.x, movePt.y) == true then
+					dirPos = newMid
+					StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)
+				else
+					newMid = cc.pMidpoint(midPos, dirPos)
+					movePt = cc.p(math.floor(newMid.x/32), math.floor(newMid.y/32))
+					if g_pAutoPathMgr:AStarCanWalk(movePt.x, movePt.y) == true then
+						dirPos = newMid
+						StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)
+					else
+						G_Log_Info("PlayerNode:AutoPathUpdate()--位置不可以移动")
+					end
+				end		
+			end
 		end
 
 		--保存跟随点
-		self:AddFollowPathPos(movePos)
+		--self:AddFollowPathPos(movePos)
 
 		--重新定位人物坐标，并向服务器发送最新位置信息（服务器为地图坐标，即左上角为原点）
 		--MsgDealMgr:QueryHeroMove(MSG_CLIENT_UPDATE_POS,math.floor(movePos.x),math.floor(gameMap:GetMapSize().height - movePos.y));
@@ -180,7 +202,10 @@ function PlayerNode:AutoPathUpdate(dt)
 				self:AutoPathUpdate()
 			end
 
-			local moveTime = StepLen/self.MoveSpeed			
+			local moveTime = StepLen/self.MoveSpeed	
+			if moveTime < 0.1 then
+				moveTime = 0.1
+			end		
 			local moveTo = cc.MoveTo:create(moveTime, dirPos)
 			self:runAction(cc.Sequence:create(moveTo, cc.CallFunc:create(function() 
 				MoveEndCallBack()
@@ -227,16 +252,18 @@ function PlayerNode:ChangeMoveAnimate(nowState, nextState)
 		durTime = 0.07
 	end
 
-	heroImod:setFlippedX(self.bAniFlipX)  --是否反转
-	heroImod:PlayActionRepeat(self.ImodAni_FrameIdx, durTime, true)   --ani对应的图片文件的方向序列，每8帧图一个方向序号，从0-7
-
 	local faceDir = nextState  --人物脸朝向，等于非站立状态
 	if nextState ~= g_PlayerState.HMS_NOR then
 		self.FaceDirection = nextState
 	else
 		faceDir = self.FaceDirection
 	end
+
+	self.bAniFlipX = false   --是否反转
 	self:UpdateFace(faceDir)
+
+	heroImod:setFlippedX(self.bAniFlipX)  --是否反转
+	heroImod:PlayActionRepeat(self.ImodAni_FrameIdx, durTime, true)   --ani对应的图片文件的方向序列，每8帧图一个方向序号，从0-7
 end
 
 --控制4方向还是8方向

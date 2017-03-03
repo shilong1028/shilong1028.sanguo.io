@@ -16,8 +16,15 @@ end
 
 function MapLayer:init()  
     --G_Log_Info("MapLayer:init()")
-    self:ShowMapImg(1)  --全国地图
+    self.rootNode = nil    --根节点
+    self.playerNode = nil  --主角节点
 
+	self.m_touchImg = nil  --点击动画
+    self.m_arrowImgVec = {}  --路径箭头
+
+    self.mapConfigData = nil  --地图表配置数据 
+
+    self:ShowMapImg(1)  --全国地图
 
 end
 
@@ -77,6 +84,9 @@ function MapLayer:setRoleWinPosition(winPos, bAutoPath)
 	if rolePos.y > self.mapConfigData.height then
 		rolePos.y = self.mapConfigData.height
 	end
+
+	self:showTouchImg(rolePos)
+
 	if bAutoPath == true then
 		self:starAutoPath(rolePos)
 	else
@@ -126,6 +136,34 @@ function MapLayer:resetRootNodePos(rolePos, moveTime)
 	end
 end
 
+function MapLayer:showTouchImg(pos)
+    if(self.m_touchImg == nil)then   --点击屏幕时的显示图片
+        self.m_touchImg = cc.Sprite:create("Image/Image_Click1.png")
+        self.m_touchImg:setVisible(false)
+        self.rootNode:addChild(self.m_touchImg, 2)
+    end
+
+    if(self.m_touchImg:isVisible() == true)then
+        self.m_touchImg:stopAllActions()
+        self.m_touchImg:setVisible(false)
+    end
+
+    self.m_touchImg:setPosition(pos)
+    
+    local animation = cc.Animation:create()
+    animation:addSpriteFrameWithFile("Image/Image_Click1.png")
+    animation:addSpriteFrameWithFile("Image/Image_Click2.png")
+    animation:addSpriteFrameWithFile("Image/Image_Click3.png")
+
+    -- should last 0.3 seconds. And there are 3 frames.
+    animation:setDelayPerUnit(0.3 / 3)
+    animation:setRestoreOriginalFrame(true)
+    local animate = cc.Animate:create(animation)
+
+    self.m_touchImg:setVisible(true)
+    self.m_touchImg:runAction(cc.Sequence:create(cc.Show:create(), animate, cc.Hide:create()))
+end
+
 
 function MapLayer:onTouchBegan(touch, event)
     --G_Log_Info("MapLayer:onTouchBegan()")
@@ -134,14 +172,6 @@ function MapLayer:onTouchBegan(touch, event)
     --point = cc.Director:getInstance():convertToGL(point)  --先获得屏幕坐标，在调用convertToGL转成OpenGl坐标系
     self:setRoleWinPosition(beginPos, true)
     return true   --只有当onTouchBegan的返回值是true时才执行后面的onTouchMoved和onTouchEnded触摸事件
-end
-
-function MapLayer:onTouchMoved(touch, event)
-    --G_Log_Info("MapLayer:onTouchMoved()")
-end
-
-function MapLayer:onTouchEnded(touch, event)
-    --G_Log_Info("MapLayer:onTouchEnded()")
 end
 
 --开始astar寻路
@@ -154,14 +184,85 @@ function MapLayer:starAutoPath(endPos)
 	end
 
 	if self.playerNode then
+		self.playerNode:StopLastAutoPath()   --停止上一个自动寻路
 		local startPos = cc.p(self.playerNode:getPosition())
 		local startPt = cc.p(math.floor(startPos.x / 32), math.floor((self.mapConfigData.height - startPos.y) / 32))    --地图块为32*32大小，且从0开始计数
 		local endPt = cc.p(math.floor(endPos.x / 32), math.floor((self.mapConfigData.height - endPos.y) / 32))
 
 		g_pAutoPathMgr:AStarFindPath(startPt.x, startPt.y, endPt.x, endPt.y)
 		local autoPath = g_pAutoPathMgr:AStarGetPath(g_bAStarPathSmooth)
-		self.playerNode:StartAutoPath(autoPath)
+		self:drawAutoPathArrow(autoPath, true)
 	end
 end
+
+
+--设置任务标志路径
+function MapLayer:drawAutoPathArrow(autoPath, bDrawPath)
+	if autoPath and #autoPath >0 then
+		local AutoPathVec = {}   --自动寻路路径
+		local pt0 = cc.p(autoPath[1]:getX(), self.mapConfigData.height - autoPath[1]:getY())
+	    local pt1 = pt0
+	    table.insert(AutoPathVec, pt0)
+		for k=2, #autoPath do   --SPoint转ccp, autoPath为32*32的块坐标，AutoPathVec为像素坐标
+			pt1 = cc.p(autoPath[k]:getX(), self.mapConfigData.height - autoPath[k]:getY())
+            local StepLen = g_pMapMgr:CalcDistance(pt0, pt1)   --箭头长度49
+            local count = math.floor(StepLen/50)
+            local ptoffset = cc.p((pt1.x - pt0.x)/(count+1), (pt1.y - pt0.y)/(count+1) )
+        	for i=1, count do
+                local pathPos = cc.p(pt0.x + ptoffset.x*i, pt0.y + ptoffset.y*i )
+                table.insert(AutoPathVec, pathPos)
+            end
+			table.insert(AutoPathVec, pt1)
+            pt0 = pt1
+		end
+		--G_Log_Dump(AutoPathVec, "AutoPathVec = ")
+		if bDrawPath == true then   --绘制路径箭头
+			for k, arrow in pairs(self.m_arrowImgVec) do 
+		        arrow:setVisible(false)
+		        arrow:removeFromParent(true)
+		    end
+		    self.m_arrowImgVec = {}
+
+		    local pt0 = AutoPathVec[1]
+	    	local pt1 = pt0
+		    for k=2, #AutoPathVec do 
+				local arrowImg =  ccui.ImageView:create("public_arrow.png",ccui.TextureResType.plistType)
+	            arrowImg:setPosition(pt0)
+	            self.rootNode:addChild(arrowImg, 1)
+	            table.insert(self.m_arrowImgVec, arrowImg)
+
+	            pt1 = AutoPathVec[k]
+				local countX = pt1.x - pt0.x
+	            local countY = pt1.y - pt0.y
+	            if(countX > 0) then   
+	                if(countY > 0)then --右下箭头
+	                    arrowImg:setRotation(-45)
+	                elseif(countY < 0)then --右上箭头
+	                    arrowImg:setRotation(45)
+	                else
+	                	arrowImg:setRotation(0)  --右箭头
+	                end
+	            elseif(countX < 0)then  
+	                if(countY > 0)then --左下箭头
+	                    arrowImg:setRotation(-135)
+	                elseif(countY < 0)then --左上箭头
+	                    arrowImg:setRotation(135)
+	                else
+	                	arrowImg:setRotation(180)  --左箭头
+	                end
+	            else
+	                if(countY > 0)then --下箭头
+	                    arrowImg:setRotation(-90)
+	                elseif(countY < 0)then --上箭头
+	                    arrowImg:setRotation(90)
+	                end
+	            end
+                pt0 = pt1
+		    end
+		end
+		self.playerNode:StartAutoPath(AutoPathVec)
+	end
+end
+
 
 return MapLayer

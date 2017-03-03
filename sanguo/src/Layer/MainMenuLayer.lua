@@ -18,8 +18,8 @@ function MainMenuLayer:init()
     self:setSwallowTouches(false)
 
     local csb = cc.CSLoader:createNode("csd/MainMenuLayer.csb")
-    csb:setContentSize(g_WinSize)
-    ccui.Helper:doLayout(csb)
+    -- csb:setContentSize(g_WinSize)
+    -- ccui.Helper:doLayout(csb)
     self:addChild(csb)
 
     --左上角，玩家头像等节点

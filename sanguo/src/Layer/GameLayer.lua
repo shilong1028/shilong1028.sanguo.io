@@ -19,11 +19,11 @@ function GameLayer:init()
     self.requireLuaVec = {}   --每个功能的Lua文件仅require一次即可
     
     --动画修改工具
-    --self:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")
-    -- --主菜单层
-    -- self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
-    -- --主城层
+    --self:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")  
+    --主城层
     -- self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
+    --主菜单层
+    self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
     --地图层
     self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
 end
@@ -79,7 +79,7 @@ function GameLayer:RemoveAllChild()
     for i = 1,#(children) do
         if children[i]:getTag() < g_GameLayerTag.LAYER_TAG_MAINMENU 
             or children[i]:getTag() > g_GameLayerTag.LAYER_TAG_CHINAMAP then
-            children[i]:removeFromParent()
+            children[i]:removeFromParent(true)
         end
     end
 end
