@@ -6,6 +6,12 @@
         <Folder Name="csd">
           <Project Name="aniToolCell.csd" Type="Layer" />
           <Project Name="aniToolLayer.csd" Type="Layer" />
+          <Project Name="MainBottomNode.csd" Type="Node" />
+          <Project Name="MainChatNode.csd" Type="Node" />
+          <Project Name="MainHeadNode.csd" Type="Node" />
+          <Project Name="MainMenuLayer.csd" Type="Layer" />
+          <Project Name="MainTimeNode.csd" Type="Node" />
+          <Project Name="MainTopNode.csd" Type="Node" />
         </Folder>
         <Folder Name="font">
           <TTF Name="DFYuanW7-GB2312.ttf" />
@@ -21,6 +27,88 @@
             <PlistImageFile Name="aniTool_close.png" Key="aniTool_close.png" />
             <PlistImageFile Name="aniTool_input.png" Key="aniTool_input.png" />
             <PlistImageFile Name="aniTool_jian.png" Key="aniTool_jian.png" />
+          </PlistImageFolder>
+          <PlistImageFolder Image="PublicRes.png" PListFile="PublicRes.plist" Name=".PublicRes_PList.Dir">
+            <PlistImageFile Name="public_add.png" Key="public_add.png" />
+            <PlistImageFile Name="public_arrow.png" Key="public_arrow.png" />
+            <PlistImageFile Name="public_bar1.png" Key="public_bar1.png" />
+            <PlistImageFile Name="public_bar2.png" Key="public_bar2.png" />
+            <PlistImageFile Name="public_bar3.png" Key="public_bar3.png" />
+            <PlistImageFile Name="public_bar4.png" Key="public_bar4.png" />
+            <PlistImageFile Name="public_bar5.png" Key="public_bar5.png" />
+            <PlistImageFile Name="public_bar6.png" Key="public_bar6.png" />
+            <PlistImageFile Name="public_beibao.png" Key="public_beibao.png" />
+            <PlistImageFile Name="public_bgkuang.png" Key="public_bgkuang.png" />
+            <PlistImageFile Name="public_bi_icon.png" Key="public_bi_icon.png" />
+            <PlistImageFile Name="public_btn_green1.png" Key="public_btn_green1.png" />
+            <PlistImageFile Name="public_btn_green2.png" Key="public_btn_green2.png" />
+            <PlistImageFile Name="public_btn_orange2.png" Key="public_btn_orange2.png" />
+            <PlistImageFile Name="public_btn_red1.png" Key="public_btn_red1.png" />
+            <PlistImageFile Name="public_btn_red2.png" Key="public_btn_red2.png" />
+            <PlistImageFile Name="public_bubing.png" Key="public_bubing.png" />
+            <PlistImageFile Name="public_bubing2.png" Key="public_bubing2.png" />
+            <PlistImageFile Name="public_budui.png" Key="public_budui.png" />
+            <PlistImageFile Name="public_caocao.png" Key="public_caocao.png" />
+            <PlistImageFile Name="public_caoyuan.png" Key="public_caoyuan.png" />
+            <PlistImageFile Name="public_chongzhi.png" Key="public_chongzhi.png" />
+            <PlistImageFile Name="public_chuzheng.png" Key="public_chuzheng.png" />
+            <PlistImageFile Name="public_city.png" Key="public_city.png" />
+            <PlistImageFile Name="public_close.png" Key="public_close.png" />
+            <PlistImageFile Name="public_close2.png" Key="public_close2.png" />
+            <PlistImageFile Name="public_down.png" Key="public_down.png" />
+            <PlistImageFile Name="public_glod_icon.png" Key="public_glod_icon.png" />
+            <PlistImageFile Name="public_gold_icon2.png" Key="public_gold_icon2.png" />
+            <PlistImageFile Name="public_gongbing.png" Key="public_gongbing.png" />
+            <PlistImageFile Name="public_gonggao.png" Key="public_gonggao.png" />
+            <PlistImageFile Name="public_han.png" Key="public_han.png" />
+            <PlistImageFile Name="public_hanxiandi.png" Key="public_hanxiandi.png" />
+            <PlistImageFile Name="public_head_mask.png" Key="public_head_mask.png" />
+            <PlistImageFile Name="public_head_node.png" Key="public_head_node.png" />
+            <PlistImageFile Name="public_hm_down.png" Key="public_hm_down.png" />
+            <PlistImageFile Name="public_hm_up.png" Key="public_hm_up.png" />
+            <PlistImageFile Name="public_huodong.png" Key="public_huodong.png" />
+            <PlistImageFile Name="public_inputBg.png" Key="public_inputBg.png" />
+            <PlistImageFile Name="public_jingji.png" Key="public_jingji.png" />
+            <PlistImageFile Name="public_junqing.png" Key="public_junqing.png" />
+            <PlistImageFile Name="public_kefu.png" Key="public_kefu.png" />
+            <PlistImageFile Name="public_liang_icon.png" Key="public_liang_icon.png" />
+            <PlistImageFile Name="public_lianmeng.png" Key="public_lianmeng.png" />
+            <PlistImageFile Name="public_libao.png" Key="public_libao.png" />
+            <PlistImageFile Name="public_liubei.png" Key="public_liubei.png" />
+            <PlistImageFile Name="public_loading_icon.png" Key="public_loading_icon.png" />
+            <PlistImageFile Name="public_loading_icon2.png" Key="public_loading_icon2.png" />
+            <PlistImageFile Name="public_mi_icon.png" Key="public_mi_icon.png" />
+            <PlistImageFile Name="public_mi_icon2.png" Key="public_mi_icon2.png" />
+            <PlistImageFile Name="public_ok.png" Key="public_ok.png" />
+            <PlistImageFile Name="public_peiyang.png" Key="public_peiyang.png" />
+            <PlistImageFile Name="public_qiandao.png" Key="public_qiandao.png" />
+            <PlistImageFile Name="public_qibing.png" Key="public_qibing.png" />
+            <PlistImageFile Name="public_red_dot.png" Key="public_red_dot.png" />
+            <PlistImageFile Name="public_red_dot2.png" Key="public_red_dot2.png" />
+            <PlistImageFile Name="public_red_mask.png" Key="public_red_mask.png" />
+            <PlistImageFile Name="public_renwu.png" Key="public_renwu.png" />
+            <PlistImageFile Name="public_scene_loading.png" Key="public_scene_loading.png" />
+            <PlistImageFile Name="public_scene_loading_bg.png" Key="public_scene_loading_bg.png" />
+            <PlistImageFile Name="public_shangcheng.png" Key="public_shangcheng.png" />
+            <PlistImageFile Name="public_shejiao.png" Key="public_shejiao.png" />
+            <PlistImageFile Name="public_shezhi.png" Key="public_shezhi.png" />
+            <PlistImageFile Name="public_shoudu.png" Key="public_shoudu.png" />
+            <PlistImageFile Name="public_shu.png" Key="public_shu.png" />
+            <PlistImageFile Name="public_shushi.png" Key="public_shushi.png" />
+            <PlistImageFile Name="public_star.png" Key="public_star.png" />
+            <PlistImageFile Name="public_star_gray.png" Key="public_star_gray.png" />
+            <PlistImageFile Name="public_sunjian.png" Key="public_sunjian.png" />
+            <PlistImageFile Name="public_up.png" Key="public_up.png" />
+            <PlistImageFile Name="public_update_loading.png" Key="public_update_loading.png" />
+            <PlistImageFile Name="public_update_loading_bg.png" Key="public_update_loading_bg.png" />
+            <PlistImageFile Name="public_vip.png" Key="public_vip.png" />
+            <PlistImageFile Name="public_vs.png" Key="public_vs.png" />
+            <PlistImageFile Name="public_wei.png" Key="public_wei.png" />
+            <PlistImageFile Name="public_wu.png" Key="public_wu.png" />
+            <PlistImageFile Name="public_youjian.png" Key="public_youjian.png" />
+            <PlistImageFile Name="public_yuanshao.png" Key="public_yuanshao.png" />
+            <PlistImageFile Name="public_zhao.png" Key="public_zhao.png" />
+            <PlistImageFile Name="public_zhucheng.png" Key="public_zhucheng.png" />
           </PlistImageFolder>
         </Folder>
         <Project Name="MainScene.csd" Type="Scene" />
