@@ -57,14 +57,14 @@
                 <EndColor A="255" R="255" G="255" B="255" />
                 <ColorVector ScaleY="1.0000" />
               </AbstractNodeData>
-              <AbstractNodeData Name="Button_push" ActionTag="-430569119" Tag="161" RotationSkewX="90.0000" RotationSkewY="90.0000" IconVisible="False" LeftMargin="-30.0000" RightMargin="200.0000" TopMargin="40.0000" BottomMargin="40.0000" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="1" RightEage="1" TopEage="1" BottomEage="1" Scale9OriginX="1" Scale9OriginY="1" Scale9Width="18" Scale9Height="10" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
-                <Size X="80.0000" Y="20.0000" />
+              <AbstractNodeData Name="Button_push" ActionTag="-430569119" Tag="161" RotationSkewX="90.0000" RotationSkewY="90.0000" IconVisible="False" LeftMargin="-20.0000" RightMargin="210.0000" TopMargin="40.0000" BottomMargin="40.0000" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="1" RightEage="1" TopEage="1" BottomEage="1" Scale9OriginX="1" Scale9OriginY="1" Scale9Width="18" Scale9Height="10" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+                <Size X="60.0000" Y="20.0000" />
                 <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
                 <Position X="10.0000" Y="50.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="255" B="255" />
                 <PrePosition X="0.0400" Y="0.5000" />
-                <PreSize X="0.3200" Y="0.2000" />
+                <PreSize X="0.2400" Y="0.2000" />
                 <TextColor A="255" R="65" G="65" B="70" />
                 <NormalFileData Type="PlistSubImage" Path="public_hm_up.png" Plist="plist/PublicRes.plist" />
                 <OutlineColor A="255" R="255" G="0" B="0" />
