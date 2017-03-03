@@ -108,6 +108,7 @@ function AniToolLayer:init()
     self.dajiData = nil
 
     self.bPause = false
+    self.bPlayerAll = false
     self.pausedTargets = nil
 end
 
@@ -182,6 +183,7 @@ end
 function AniToolLayer:playAni(beginZhenIdx, cellIdx, aniPath, time_ms)
     --G_Log_Info("AniToolLayer:playAni()")
     self.bPause = false
+
     if not beginZhenIdx then
         beginZhenIdx = 0
     end
@@ -230,71 +232,164 @@ function AniToolLayer:playAni(beginZhenIdx, cellIdx, aniPath, time_ms)
     end
 
     imod:PlayActionRepeat(beginZhenIdx, time_ms/1000)
-    imod:setPosition(pos);
+    imod:setPosition(pos)
+    imod:setVisible(true)
 
-    if cellIdx == 2 then   --飞行特效
-        if self.dajiAni then
-            self.dajiAni:setVisible(false)
-        end
+    -- if cellIdx == 2 then   --飞行特效
+    --     if self.dajiAni then
+    --         self.dajiAni:setVisible(false)
+    --     end
 
-        local function ActionSequenceCallback()
-            self.feixingAni:setVisible(false)
-            if self.dajiAni then
-                self.dajiAni:setVisible(true)
-            end
-        end
+    --     local function ActionSequenceCallback()
+    --         self.feixingAni:setVisible(false)
+    --         if self.dajiAni then
+    --             self.dajiAni:setVisible(true)
+    --         end
+    --     end
 
-        local function ActionSequenceCallback2()
-            self.feixingAni:setPosition(self.playPos)  --cc.p(self.playPos.x, self.playPos.y + 50))
-            self.feixingAni:setVisible(true)
-            if self.dajiAni then
-                self.dajiAni:setVisible(false)
-            end
-        end
+    --     local function ActionSequenceCallback2()
+    --         self.feixingAni:setPosition(self.playPos)  --cc.p(self.playPos.x, self.playPos.y + 50))
+    --         self.feixingAni:setVisible(true)
+    --         if self.dajiAni then
+    --             self.dajiAni:setVisible(false)
+    --         end
+    --     end
 
-        local actionMove = cc.MoveTo:create(1.0, self.enemyPos)   
-        local actionSequence = cc.Sequence:create(actionMove, cc.CallFunc:create(ActionSequenceCallback), cc.DelayTime:create(1), cc.CallFunc:create(ActionSequenceCallback2))
-        local actionRepeat = cc.RepeatForever:create(actionSequence)
-        self.feixingAni:runAction(actionRepeat)
-    end
+    --     local actionMove = cc.MoveTo:create(1.0, self.enemyPos)   
+    --     local actionSequence = cc.Sequence:create(actionMove, cc.CallFunc:create(ActionSequenceCallback), cc.DelayTime:create(1), cc.CallFunc:create(ActionSequenceCallback2))
+    --     local actionRepeat = cc.RepeatForever:create(actionSequence)
+    --     self.feixingAni:runAction(actionRepeat)
+    -- end
 end
 
-function AniToolLayer:playAllAni()
-    --G_Log_Info("AniToolLayer:playAllAni()")
+function AniToolLayer:playAllAni(mask)
+    G_Log_Info("AniToolLayer:playAllAni(), mask = %d", mask or 0)
     --攻击动作    --Monster/btm101_gj
-    if self.gongjiAni and self.gongjiData then
+    local bReturn = true
+    if self.gongjiAni then
+        self.gongjiAni:setVisible(false)
+        bReturn = false
+    end
+    if self.shifaAni then
+        self.shifaAni:setVisible(false)
+        bReturn = false
+    end
+    if self.feixingAni then
+        self.feixingAni:setVisible(false)
+        bReturn = false
+    end
+    if self.dajiAni then
+        self.dajiAni:setVisible(false)
+        bReturn = false
+    end
+
+    if bReturn == true then
+        return
+    end
+
+    if self.bPlayerAll == true and self.bPause == false then
+        return
+    end
+    self.bPlayerAll = true
+
+    if self.bPause == true then
+        if self.pausedTargets ~= nil then
+            g_Director:getActionManager():resumeTargets(self.pausedTargets)
+            self.pausedTargets = nil
+            self.bPause = false
+            return
+        end          
+    end 
+
+    local function BeginShiFaFunc(mask1)
+         G_Log_Error("施法特效  BeginShiFaFunc, mask = %d", mask1 or 0)
+
+        local function BeginFeiXingFunc(mask2)
+            G_Log_Info("飞行特效  BeginFeiXingFunc, mask = %d", mask2 or 0)
+
+            local function BeginDaJiFunc(mask3)
+                G_Log_Error("打击特效  BeginDaJiFunc, mask = %d", mask3 or 0)
+
+                local function ActionSequenceCallback()
+                    self.dajiAni:setVisible(false)
+                    self.bPlayerAll = false
+                    self:playAllAni(1)
+                end
+
+                if self.dajiAni and self.dajiData then
+                    self.dajiAni:setVisible(true)
+                    if self.bPause == true then
+                        --self.dajiAni:resume()           
+                    end 
+                    self.dajiAni:PlayActionRepeat(self.dajiData.idx, self.dajiData.ms/1000) 
+                    --self.dajiAni:registerScriptEndCBHandler(ActionSequenceCallback)
+                    self.dajiAni:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(ActionSequenceCallback)))
+                else
+                    self.bPlayerAll = false
+                    self:playAllAni(2)
+                end
+            end
+
+            local function ActionSequenceCallback2()
+                self.feixingAni:setVisible(false)
+                self.feixingAni:setPosition(self.playPos)  --cc.p(self.playPos.x, self.playPos.y + 50))
+                BeginDaJiFunc(1)
+            end
+
+            if self.feixingAni and self.feixingData then
+                self.feixingAni:setVisible(true)
+                if self.bPause == true then
+                    --self.feixingAni:resume()            
+                end 
+                self.feixingAni:PlayActionRepeat(self.feixingData.idx, self.feixingData.ms/1000)
+
+                local actionMove = cc.MoveTo:create(1.0, self.enemyPos)   
+                local actionSequence = cc.Sequence:create(actionMove, cc.CallFunc:create(ActionSequenceCallback2))
+                self.feixingAni:runAction(actionSequence)
+            else
+                BeginDaJiFunc(2)
+            end
+        end
+
+        local function ActionSequenceCallback3()
+            if self.gongjiAni then
+                self.gongjiAni:setVisible(false)
+            end
+            self.shifaAni:setVisible(false)
+            BeginFeiXingFunc(1)
+        end
+
+        if self.shifaAni and self.shifaData then    --施法特效
+            self.shifaAni:setVisible(true)
+            if self.bPause == true then
+                --self.shifaAni:resume()          
+            end    
+            self.shifaAni:PlayActionRepeat(self.shifaData.idx, self.shifaData.ms/1000) 
+            --self.shifaAni:registerScriptEndCBHandler(ActionSequenceCallback3)
+            self.shifaAni:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(ActionSequenceCallback3)))
+        else
+            BeginFeiXingFunc(2)
+        end
+    end
+
+    if self.gongjiAni and self.gongjiData then   --攻击动作
+        G_Log_Info("攻击动作")
+        self.gongjiAni:setVisible(true)
         if self.bPause == true then
-            self.gongjiAni:resume() 
+            --self.gongjiAni:resume() 
+        end
+
+        local function ActionSequenceCallback4()
+            BeginShiFaFunc(1)
         end
         self.gongjiAni:PlayActionRepeat(self.gongjiData.idx, self.gongjiData.ms/1000)
+        --self.gongjiAni:registerScriptEndCBHandler(ActionSequenceCallback4)
+        self.gongjiAni:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(ActionSequenceCallback4)))
+    else
+        BeginShiFaFunc(2)
     end
-    --施法特效    --Skill/skill_1_s
-    if self.shifaAni and self.shifaData then
-        if self.bPause == true then
-            self.shifaAni:resume()          
-        end     
-        self.shifaAni:PlayActionRepeat(self.shifaData.idx, self.shifaData.ms/1000)  
-    end
-    --飞行特效   --Skill/skill_1_f
-    if self.feixingAni and self.feixingData then
-        if self.bPause == true then
-            self.feixingAni:resume()            
-        end 
-        self.feixingAni:PlayActionRepeat(self.feixingData.idx, self.feixingData.ms/1000)
-    end
-    --打击特效    --Skill/skill_2_h
-    if self.dajiAni and self.dajiData then
-        if self.bPause == true then
-            self.dajiAni:resume()           
-        end 
-        self.dajiAni:PlayActionRepeat(self.dajiData.idx, self.dajiData.ms/1000) 
-    end
-    self.bPause = false
 
-    if self.pausedTargets ~= nil then
-        g_Director:getActionManager():resumeTargets(self.pausedTargets)
-    end
-    self.pausedTargets = nil
+    self.bPause = false
 end
 
 function AniToolLayer:pauseAllAni()
@@ -317,8 +412,10 @@ function AniToolLayer:pauseAllAni()
         self.dajiAni:stop() 
     end
 
-    local director = cc.Director:getInstance()
-    self.pausedTargets = director:getActionManager():pauseAllRunningActions()
+    if self.bPlayerAll == true then
+        local director = cc.Director:getInstance()
+        self.pausedTargets = director:getActionManager():pauseAllRunningActions()
+    end
 end
 
 function AniToolLayer:removeAllAni()
@@ -326,6 +423,7 @@ function AniToolLayer:removeAllAni()
     for i=1, #self.tableViewCell do
         self.tableViewCell[i]:removeAni()
     end
+    self.bPlayerAll = false
 end
 
 return AniToolLayer

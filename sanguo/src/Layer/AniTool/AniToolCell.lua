@@ -83,8 +83,26 @@ function AniToolCell:TextFieldEvent(sender, eventType)
         --G_Log_Info("DETACH_WITH_IME")
     elseif eventType == ccui.TextFiledEventType.insert_text then  --输入了文本
         --G_Log_Info("INSERT_TEXT")
+        if sender == self.TextField_4 then
+            self.m_inputString4 = self.TextField_4:getString()
+        elseif sender == self.TextField_1 then
+            self.m_inputString1 = self.TextField_1:getString()
+        elseif sender == self.TextField_2 then
+            self.m_inputString2 = self.TextField_2:getString()
+        elseif sender == self.TextField_3 then
+            self.m_inputString3 = self.TextField_3:getString()
+        end
     elseif eventType == ccui.TextFiledEventType.delete_backward then   --删除了文字
         --G_Log_Info("DELETE_BACKWARD")
+        if sender == self.TextField_4 then
+            self.m_inputString4 = self.TextField_4:getString()
+        elseif sender == self.TextField_1 then
+            self.m_inputString1 = self.TextField_1:getString()
+        elseif sender == self.TextField_2 then
+            self.m_inputString2 = self.TextField_2:getString()
+        elseif sender == self.TextField_3 then
+            self.m_inputString3 = self.TextField_3:getString()
+        end
     end
 end
 
@@ -92,6 +110,11 @@ function AniToolCell:onTouchButton(sender, eventType)
     --G_Log_Info("AniToolCell:onTouchButton()")
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_save then  --保存（之后会重新播放）
+            if not self.m_action1OptVec then
+                G_Log_Warning("file load failed, path = %s", self.m_inputString4.."/"..self.m_inputString1..".ani")
+                return
+            end
+
             local frameVec = {}   --添加复用的帧序列集合
             local timeVec = {}    --添加复用的帧序列重复次数集合
 
@@ -108,6 +131,7 @@ function AniToolCell:onTouchButton(sender, eventType)
             end
             local aniInstance = ImodAnim:create()
             aniInstance:setExtFrameData(self.txtFullPath, frameVec, timeVec, time_ms)
+            G_Log_Warning("self.txtFullPath = %s, time_ms = %d", self.txtFullPath or "nil", time_ms)
         elseif sender == self.Button_play then 
             self:playAni()
         elseif sender == self.Button_reset then  --重置（放弃之前的修改）
@@ -153,10 +177,14 @@ function AniToolCell:InitRealy(idx, target)
         self.m_inputString1 = "skill_1_h"
         self.TextField_1:setString("skill_1_h")
     end
-    self:resetAniFile(self.m_inputString1) 
+
+    self.m_inputString3 = "0"
+    self.TextField_3:setString(self.m_inputString3)
+
+    self:resetAniFile() 
 end
 
-function AniToolCell:resetAniFile(inputStr) 
+function AniToolCell:resetAniFile() 
     --G_Log_Info("AniToolCell:resetAniFile()")
     for i=1, #self.aniZhenMenuVec do
         local zhenMenu = self.aniZhenMenuVec[i]
@@ -169,33 +197,19 @@ function AniToolCell:resetAniFile(inputStr)
     self.fullAnimPath = ""
     self.txtFullPath = ""
 
-    self.m_inputString2 = "100"
-    self.TextField_2:setString(self.m_inputString2)
-    self.m_inputString3 = "0"
-    self.TextField_3:setString(self.m_inputString3)
-
-    if inputStr and inputStr ~= "" then   --重新输入内容之后的重置
-        self.m_inputString1 = inputStr
-    else   --点击重置按钮之后，原文件重置
-        inputStr = self.aniPathInput
-        self.m_inputString1 = self.aniPathInput
-        self.TextField_1:setString(self.m_inputString1)
-    end
-
-    self:initAniData(inputStr)
-
     self:removeAni()
+    self:initAniData()
 end
 
-function AniToolCell:initAniData(aniPath)   --Monster/btm1_gj
+function AniToolCell:initAniData()   --Monster/btm1_gj
     --G_Log_Info("AniToolCell:initAniData(), aniPath = %s", aniPath)
-    self.aniPathInput = aniPath
-    local utfPic = self.m_inputString4.."/"..aniPath..".png"
-    local utfAnim = self.m_inputString4.."/"..aniPath..".ani"
+    self.aniPathInput = self.m_inputString1
+    local utfPic = self.m_inputString4.."/"..self.m_inputString1..".png"
+    local utfAnim = self.m_inputString4.."/"..self.m_inputString1..".ani"
     --//读取动画文件并解析
     self.fullAnimPath = cc.FileUtils:getInstance():fullPathForFilename(utfAnim)
     if not self.fullAnimPath or self.fullAnimPath == "" then
-        G_Log_Warning("self.fullAnimPath = %s", self.fullAnimPath or "nil")
+        G_Log_Warning("file load failed, path = %s", self.m_inputString4.."/"..self.m_inputString1..".ani")
         return;
     end
     local actionVec = self:getAnimActionVec(self.fullAnimPath)  
@@ -241,6 +255,11 @@ end
 
 function AniToolCell:playAni()
     --G_Log_Info("AniToolCell:playAni()")
+    if not self.m_action1OptVec then
+        G_Log_Warning("file load failed, path = %s", self.m_inputString4.."/"..self.m_inputString1..".ani")
+        return
+    end
+
     local beginZhenIdx = 0
     if self.m_inputString3 and self.m_inputString3 ~= "" then
         beginZhenIdx = tonumber(self.m_inputString3)
