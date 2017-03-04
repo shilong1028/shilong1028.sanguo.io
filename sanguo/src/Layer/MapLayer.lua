@@ -128,6 +128,7 @@ function MapLayer:resetRootNodePos(rolePos, moveTime)
 	elseif rolePos.y >= g_WinSize.height/2 then
 		rootPos.y = g_WinSize.height/2 - rolePos.y
 	end
+	--G_Log_Info("MapLayer:resetRootNodePos, rootPos.x = %f, rootPos.y = %f", rootPos.x, rootPos.y)
 
 	if moveTime then
 		self.rootNode:runAction(cc.MoveTo:create(moveTime, rootPos))

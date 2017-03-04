@@ -3,8 +3,8 @@
        "isLandscape": true,
        "isWindowTop": false,
        "name": "sanguo",
-       "width": 1280,
-       "height": 720,
+       "width": 960,
+       "height": 640,
        "entry": "src/main.lua",
        "consolePort": 6050,
        "uploadPort": 6060

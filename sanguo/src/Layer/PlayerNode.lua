@@ -9,10 +9,7 @@ end
 
 function PlayerNode:onExit()
     --G_Log_Info("PlayerNode:onExit()")
-    if self.AutoPathEntry then
-    	g_Scheduler:unscheduleScriptEntry(self.AutoPathEntry)
-    	self.AutoPathEntry = nil
-    end
+    self:DelAutoPathUpdateEntry()
 end
 
 function PlayerNode:init()  
@@ -26,6 +23,7 @@ function PlayerNode:init()
     self.bAutoMoving = false  --正在自动寻路
     self.bPauseAutoMoving = false  --暂停自动寻路，比如触发战斗，打开界面等
     self.AutoPathEntry = nil  --自动寻路定时器实体
+    self.AutoPathOneByOneData = nil  --自动寻路一步步走的步伐数据
 
     --self.MoveDirectionPt = cc.p(0,0)   --移动方向，8个向量方向
     self.MoveSpeed = 160   --人物移动速度，默认180,从人物3属性中读取
@@ -62,14 +60,19 @@ function PlayerNode:showPlayerImodAni(bStandUp)
 end
 
 function PlayerNode:StopLastAutoPath()   --停止上一个自动寻路
-	if self.AutoPathEntry then
-    	g_Scheduler:unscheduleScriptEntry(self.AutoPathEntry)
-    	self.AutoPathEntry = nil
-    end
+	self:DelAutoPathUpdateEntry()
 
     self.bAutoMoving = false
     self.bPauseAutoMoving = false
     self.AutoPathVec = nil
+end
+
+function PlayerNode:DelAutoPathUpdateEntry()
+	if self.AutoPathEntry then
+    	g_Scheduler:unscheduleScriptEntry(self.AutoPathEntry)
+    	self.AutoPathEntry = nil
+    	self.AutoPathOneByOneData = nil  --自动寻路一步步走的步伐数据
+    end
 end
 
 function PlayerNode:StartAutoPath(autoPath)
@@ -77,10 +80,7 @@ function PlayerNode:StartAutoPath(autoPath)
 	if autoPath and #autoPath >0 then
     	if self.bAutoMoving == true then  --正在自动寻路
     		self.bAutoMoving = false
-    		if self.AutoPathEntry then
-		    	g_Scheduler:unscheduleScriptEntry(self.AutoPathEntry)
-		    	self.AutoPathEntry = nil
-		    end
+    		self:DelAutoPathUpdateEntry()
     	end
 
     	self.AutoPathVec = nil   --自动寻路路径--self.AutoPathVec为像素坐标, 非32*32的块坐标，
@@ -90,7 +90,6 @@ function PlayerNode:StartAutoPath(autoPath)
 		self.bAutoMoving = true
 		--self.bPauseAutoMoving = false  --暂停自动寻路，比如触发战斗，打开界面等
 
-		--self.AutoPathEntry = g_Scheduler:scheduleScriptFunc(AutoPathUpdate, 0.02, false) 
 		self:AutoPathUpdate()
 	end
 end
@@ -99,12 +98,8 @@ function PlayerNode:setPauseAutoPath(bPause)
 	if self.bAutoMoving == true and #self.AutoPathVec > 0 then  --正在自动寻路
 		self.bPauseAutoMoving =  bPause
 		if self.bPauseAutoMoving == true then
-			if self.AutoPathEntry then
-		    	g_Scheduler:unscheduleScriptEntry(self.AutoPathEntry)
-		    	self.AutoPathEntry = nil
-		    end
+			self:DelAutoPathUpdateEntry()
 		else
-			--self.AutoPathEntry = g_Scheduler:scheduleScriptFunc(AutoPathUpdate, 0.02, false) 
 			self:AutoPathUpdate()
 		end
 	end
@@ -119,7 +114,7 @@ function PlayerNode:AddFollowPathPos(pos)
 	end
 end
 
-function PlayerNode:AutoPathUpdate(dt)
+function PlayerNode:AutoPathUpdate()
 	--G_Log_Info("PlayerNode:AutoPathUpdate()")
 	if self.bPauseAutoMoving == true then  --暂停自动寻路，比如触发战斗，打开界面等
 		return
@@ -127,10 +122,7 @@ function PlayerNode:AutoPathUpdate(dt)
 
 	local function EndAutoPathUpdate()
 		--G_Log_Info("************** PlayerNode:EndAutoPathUpdate()")
-		if self.AutoPathEntry then
-	    	g_Scheduler:unscheduleScriptEntry(self.AutoPathEntry)
-	    	self.AutoPathEntry = nil
-	    end
+		self:DelAutoPathUpdateEntry()
 	    self.bAutoMoving = false
 		self:ChangeMoveAnimate(self.curMoveState, g_PlayerState.HMS_NOR)   --切换站立或跑步动画
 	end
@@ -184,7 +176,7 @@ function PlayerNode:AutoPathUpdate(dt)
 						dirPos = newMid
 						StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)
 					else
-						G_Log_Info("PlayerNode:AutoPathUpdate()--位置不可以移动")
+						--G_Log_Info("PlayerNode:AutoPathUpdate()--位置不可以移动")
 					end
 				end		
 			end
@@ -195,24 +187,54 @@ function PlayerNode:AutoPathUpdate(dt)
 
 		--重新定位人物坐标，并向服务器发送最新位置信息（服务器为地图坐标，即左上角为原点）
 		--MsgDealMgr:QueryHeroMove(MSG_CLIENT_UPDATE_POS,math.floor(movePos.x),math.floor(gameMap:GetMapSize().height - movePos.y));
-		local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
-		if mapLayer then
+		self.mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+		if self.mapLayer then
 			--移动完成后延时继续执行下一步操作
-			local function MoveEndCallBack()
-				self:AutoPathUpdate()
-			end
+			-- local function MoveEndCallBack()
+			-- 	self:AutoPathUpdate()
+			-- end
 
-			local moveTime = StepLen/self.MoveSpeed	
-			if moveTime < 0.1 then
-				moveTime = 0.1
-			end		
-			local moveTo = cc.MoveTo:create(moveTime, dirPos)
-			self:runAction(cc.Sequence:create(moveTo, cc.CallFunc:create(function() 
-				MoveEndCallBack()
-		    end)))
+			-- local moveTime = StepLen/self.MoveSpeed	
+			-- local moveTo = cc.MoveTo:create(moveTime, dirPos)
+			-- self:runAction(cc.Sequence:create(moveTo, cc.CallFunc:create(function() 
+			-- 	MoveEndCallBack()
+		 --    end)))
+		 --    mapLayer:resetRootNodePos(dirPos, moveTime)
 
-		    mapLayer:resetRootNodePos(dirPos, moveTime)
+		    local moveTime = StepLen/self.MoveSpeed	
+		    local step = moveTime/0.02
+		    local posOffset = cc.p((dirPos.x - nowPos.x)/step, (dirPos.y - nowPos.y)/step )
+		    self.AutoPathOneByOneData = {}  --自动寻路一步步走的步伐数据
+		    self.AutoPathOneByOneData.step = math.floor(step)
+		    self.AutoPathOneByOneData.stepIdx = 1
+		    self.AutoPathOneByOneData.posOffset = cc.p((dirPos.x - nowPos.x)/step, (dirPos.y - nowPos.y)/step )
+		    self.AutoPathOneByOneData.dirPos = dirPos
+		    self.AutoPathOneByOneData.nextPos = cc.p(nowPos.x + posOffset.x, nowPos.y + posOffset.y)
+
+		    local function AutoPathUpdateOneByOne(dt)
+		    	self:AutoPathUpdateOneByOne(dt)
+		    end
+		    self.AutoPathEntry = g_Scheduler:scheduleScriptFunc(AutoPathUpdateOneByOne, 0.01, false) 
 		end
+	end
+end
+
+function PlayerNode:AutoPathUpdateOneByOne(dt)
+	if self.mapLayer and self.AutoPathOneByOneData then
+		if self.AutoPathOneByOneData.stepIdx >= self.AutoPathOneByOneData.step then
+			self.mapLayer:setRoleMapPosition(self.AutoPathOneByOneData.dirPos)
+			self:DelAutoPathUpdateEntry()
+			self:AutoPathUpdate()
+		else
+			self.mapLayer:setRoleMapPosition(self.AutoPathOneByOneData.nextPos)
+			self.AutoPathOneByOneData.stepIdx = self.AutoPathOneByOneData.stepIdx + 1
+			local nowPos = self.AutoPathOneByOneData.nextPos
+			local posOffset = self.AutoPathOneByOneData.posOffset
+			self.AutoPathOneByOneData.nextPos = cc.p(nowPos.x + posOffset.x, nowPos.y + posOffset.y)
+		end
+	else
+		self:DelAutoPathUpdateEntry()
+		self:AutoPathUpdate()
 	end
 end
 
