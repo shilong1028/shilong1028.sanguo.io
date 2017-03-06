@@ -110,7 +110,7 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_chat then   --聊天
         elseif sender == self.chatButton_push then  --聊天列表收放
         elseif sender == self.Button_zhucheng then  --主城/地图切换
-            local mainCityLayer = g_pGameScene:GetLayerByUid(g_GameLayerTag.LAYER_TAG_MAINCITY)
+            local mainCityLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_MAINCITY)
             if mainCityLayer then
                 if mainCityLayer:isVisible() == true then
                     mainCityLayer:setVisible(false)
@@ -131,17 +131,5 @@ function MainMenuLayer:touchEvent(sender, eventType)
         end
     end
 end
-
--- function MainMenuLayer:onTouchBegan(touch, event)
---     --G_Log_Info("MainMenuLayer:onTouchBegan()")
---     local beginPos = touch:getLocation()   --直接从touch中获取,在getLocation()源码里会将坐标转成OpenGL坐标系,原点在屏幕左下角，x轴向右，y轴向上
---     --local point = touch:getLocationInView() --获得屏幕坐标系,原点在屏幕左上角，x轴向右，y轴向下
---     --point = cc.Director:getInstance():convertToGL(point)  --先获得屏幕坐标，在调用convertToGL转成OpenGl坐标系
---     local mapLayer = g_pGameScene:GetLayerByUid(g_GameLayerTag.LAYER_TAG_CHINAMAP)
---     if mapLayer then
---         mapLayer:setRoleWinPosition(beginPos, true)
---     end
---     return true   --只有当onTouchBegan的返回值是true时才执行后面的onTouchMoved和onTouchEnded触摸事件
--- end
 
 return MainMenuLayer

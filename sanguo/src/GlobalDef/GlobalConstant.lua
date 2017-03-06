@@ -37,3 +37,9 @@ g_bSupportVideoPlayer = false
 
 --AStar寻路
 g_bAStarPathSmooth = true --false --寻路拉直
+
+--默认文本大小
+g_defaultFontSize = 20
+
+--定义一个Zorder用于显示一些最上层数据
+g_TopZOrder = 100

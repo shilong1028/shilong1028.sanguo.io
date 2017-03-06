@@ -14,7 +14,13 @@ function  g_ImodAnim_ActionOpt:ctor()
 	self.times = {}   --重复次数，0为原帧，>0则表示在原帧之后，重复n次
 end
 
-
+--滚动文本提示数据结构体
+g_ScrollTips_text = class("g_ScrollTips_text",__BaseStruct)
+function  g_ScrollTips_text:ctor()
+	self.text = ""
+	self.color = g_ColorDef.White
+	self.fontSize = g_defaultFontSize
+end
 
 
 
@@ -54,5 +60,7 @@ function  g_tbl_mapConfig:ctor()
 	self.wTitleCount = 0   --32*32为单位块的横向数量
 	self.hTitleCount = 0   --32*32为单位块的纵向数量
 end
+
+
 
 

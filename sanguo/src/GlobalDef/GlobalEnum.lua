@@ -13,6 +13,7 @@ g_GameLayerTag = {
 	--tag < 100 为特殊层，100之后为一般功能界面层tag
 
 	LAYER_TAG_AniToolLayer = 101,    --动画工具界面,
+	LAYER_TAG_ScrollTipsLayer = 102,    --滚动提示文本界面,
 }
 
 --人物移动的方向状态标识
@@ -27,4 +28,10 @@ g_PlayerState = {
 	HMS_UP = 5,    --cc.p(0,1)
 	HMS_RUP = 6,   --cc.p(1,1)
 	HMS_RIGHT = 7, --cc.p(1,0)
+}
+
+--用户自定义颜色值
+g_ColorDef = {
+	["White"] = cc.c3b(255,255,255),
+
 }

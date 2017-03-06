@@ -42,16 +42,16 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --className�
             file = require("Layer."..className)
             self.requireLuaVec["uid"..uid] = file
         end
-        local child = file:create()  --file:new()
-        child:setTag(uid)
-        self:addChild(child)
+        layer = file:create()  --file:new()
+        layer:setTag(uid)
+        self:addChild(layer)
 
         if uid == g_GameLayerTag.LAYER_TAG_MAINMENU then  --主菜单层
-            child:setLocalZOrder(-1)
+            layer:setLocalZOrder(-1)
         elseif uid == g_GameLayerTag.LAYER_TAG_MAINCITY then  --主城层
-            child:setLocalZOrder(-10)
+            layer:setLocalZOrder(-10)
         elseif uid == g_GameLayerTag.LAYER_TAG_CHINAMAP then  --地图层
-            child:setLocalZOrder(-20)
+            layer:setLocalZOrder(-20)
         end
 
     else
@@ -60,11 +60,11 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --className�
   
     --初始数据
     if funcName then
-        local fun = child[funcName]
+        local fun = layer[funcName]
         fun(userTable)
     end
     
-    return child
+    return layer
 end
 
 function GameLayer:RemoveChildByUId(uid)
@@ -92,6 +92,45 @@ function GameLayer:GetLayerByUId(uid)
     return nil
 end
 
+--[[
+--滚动列表叠加显示提示界面
+tipsArr = {
+{text, color, height},
+{text, color, height}
+}
+]]
+function GameLayer:ShowScrollTips(tips, color, fontSize)
+    local tipsArr = {}
+    if type(tips) == "string" then
+        local cell = g_ScrollTips_text:new()
+        cell.text = tips
+        table.insert(tipsArr, cell)
+    elseif type(tips) == "table" then
+        for i=1, #(tips)do
+            if(tips[i].text and tips[i].text ~= "")then
+                table.insert(tipsArr, tips[i])
+            end
+        end
+    else
+        g_Log_Error("ShowScrollTips, type(tips) is error!")
+        return
+    end
+
+    if #tipsArr < 1 then
+        g_Log_Warning("ShowScrollTips, tipsArr is empty!")
+        return
+    end
+
+    local scrollTipsLayer = self:getChildByTag(g_GameLayerTag.LAYER_TAG_ScrollTipsLayer)
+    if(scrollTipsLayer == nil) then
+        scrollTipsLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_ScrollTipsLayer, "TipsOrDialog.ScrollTipsLayer")
+        scrollTipsLayer:setLocalZOrder(g_TopZOrder)
+    end
+
+    scrollTipsLayer:setTexts(tipsArr)   
+
+    return scrollTipsLayer
+end
 
 
 
