@@ -6,6 +6,7 @@
         <Folder Name="csd">
           <Project Name="aniToolCell.csd" Type="Layer" />
           <Project Name="aniToolLayer.csd" Type="Layer" />
+          <Project Name="LoginLayer.csd" Type="Layer" />
           <Project Name="MainBottomNode.csd" Type="Node" />
           <Project Name="MainChatNode.csd" Type="Node" />
           <Project Name="MainHeadNode.csd" Type="Node" />
@@ -15,6 +16,10 @@
         </Folder>
         <Folder Name="font">
           <TTF Name="DFYuanW7-GB2312.ttf" />
+        </Folder>
+        <Folder Name="img">
+          <Image Name="studio_listBg.png" />
+          <Image Name="studio_loginBg.png" />
         </Folder>
         <Folder Name="plist">
           <PlistImageFolder Image="aniTool.png" PListFile="aniTool.plist" Name=".aniTool_PList.Dir">
