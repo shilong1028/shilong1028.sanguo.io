@@ -58,6 +58,17 @@ function G_Log_Fatal(msg, ...)    --致命错误输出亮红色
 	end
 end 
 
+--打印调用堆栈
+function G_Log_Traceback()
+	if DEBUG > 1 then
+	    local msg = debug.traceback()
+	    print("-----------------------------------")
+	    print(msg)
+	    print("-----------------------------------")
+	end
+end
+
+--打印表数据
 function G_Log_Dump(value, description, nesting)  --打印出lua的table数据
 	if DEBUG > 1 then
 		dump(value, description, nesting)
