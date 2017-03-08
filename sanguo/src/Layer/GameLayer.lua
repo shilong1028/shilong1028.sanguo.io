@@ -19,13 +19,17 @@ function GameLayer:init()
     self.requireLuaVec = {}   --每个功能的Lua文件仅require一次即可
     
     --动画修改工具
-    self:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")  
+    --self:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")  
+
+    --登录界面
+    self:AddChild(g_GameLayerTag.LAYER_TAG_LoginLayer, "Login.LoginLayer")
+
     --主城层
     -- self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
-    --主菜单层
-    --self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
-    --地图层
-    --self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
+    -- --主菜单层
+    -- self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
+    -- --地图层
+    -- self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
 end
 
 function GameLayer:AddChild(uid, className, funcName, userTable)   --className为Layer目录下的界面类路径，funcName为初始化方法，userTable初始数据

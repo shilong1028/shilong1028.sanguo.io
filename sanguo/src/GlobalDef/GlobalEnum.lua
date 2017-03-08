@@ -11,7 +11,7 @@ g_GameLayerTag = {
 	--主菜单层，主城层，全国地图层，不删除仅仅隐藏， 
 
 	--tag < 100 为特殊层，100之后为一般功能界面层tag
-
+	LAYER_TAG_LoginLayer = 100, --登录界面
 	LAYER_TAG_AniToolLayer = 101,    --动画工具界面,
 	LAYER_TAG_ScrollTipsLayer = 102,    --滚动提示文本界面,
 }

@@ -278,7 +278,7 @@
                 <OutlineColor A="255" R="101" G="9" B="9" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="serverListView" ActionTag="2144051435" Tag="40" IconVisible="False" LeftMargin="50.0000" RightMargin="50.0000" TopMargin="115.0000" BottomMargin="85.0000" TouchEnable="True" ClipAble="False" BackColorAlpha="110" ColorAngle="90.0000" ScrollDirectionType="0" DirectionType="Vertical" ctype="ListViewObjectData">
+              <AbstractNodeData Name="serverListView" ActionTag="2144051435" Tag="40" IconVisible="False" LeftMargin="50.0000" RightMargin="50.0000" TopMargin="115.0000" BottomMargin="85.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="110" ColorAngle="90.0000" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="5" DirectionType="Vertical" HorizontalType="Align_HorizontalCenter" ctype="ListViewObjectData">
                 <Size X="400.0000" Y="200.0000" />
                 <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
                 <Position X="250.0000" Y="185.0000" />

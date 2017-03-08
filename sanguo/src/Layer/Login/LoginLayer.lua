@@ -15,7 +15,7 @@ end
 
 --初始化UI界面
 function LoginLayer:init()  
-    --G_Log_Info("LoginLayer:init()")
+    G_Log_Info("LoginLayer:init()")
     local csb = cc.CSLoader:createNode("csd/LoginLayer.csb")
     self:addChild(csb)
     csb:setContentSize(g_WinSize)
@@ -27,9 +27,11 @@ function LoginLayer:init()
     end
     self.serverBtn = csb:getChildByName("serverBtn")    --选择服务器页面
     self.serverBtn:addTouchEventListener(BtnCallback) 
+    self.serverBtn:setVisible(false)
 
     self.startGameBtn = csb:getChildByName("startGameBtn")    --开始游戏
-    self.startGameBtn:addTouchEventListener(startGameBtnCallback)
+    self.startGameBtn:addTouchEventListener(BtnCallback)
+    self.startGameBtn:setVisible(false)
 
     local function TextFieldEvent(sender, eventType)
         self:TextFieldEvent(sender, eventType)
@@ -37,7 +39,7 @@ function LoginLayer:init()
 
     --登录界面
     self.loginNode = csb:getChildByName("nameBg")   
-    self.loginNode:setVisible(false)
+    --self.loginNode:setVisible(false)
 
     --登录用户名
     self.userNameStr = ""  
@@ -81,11 +83,8 @@ function LoginLayer:init()
     self.register_registerBtn:addTouchEventListener(BtnCallback)
 
     --服务器界面
-    self.serverNode = csb:getChildByName("nameBg")   
+    self.serverNode = csb:getChildByName("serverListBg")   
     self.serverNode:setVisible(false)
-
-    --服务器列表
-    self.serverListView  = self.serverNode:getChildByName("serverListView") 
 
     self.lastSerBtn = self.serverNode:getChildByName("lastSerBtn")     --上一次登录服务器
     self.lastSerBtn:addTouchEventListener(BtnCallback)
@@ -95,6 +94,57 @@ function LoginLayer:init()
 
     self.server_backBtn = self.serverNode:getChildByName("backBtn")    --服务器返回
     self.server_backBtn:addTouchEventListener(BtnCallback)
+
+    local function listViewEvent(sender, eventType)
+        if eventType == ccui.ListViewEventType.ONSELECTEDITEM_START then
+            print("select child index = ",sender:getCurSelectedIndex())
+        end
+    end
+
+    local function scrollViewEvent(sender, evenType)
+        if evenType == ccui.ScrollviewEventType.scrollToBottom then
+            print("SCROLL_TO_BOTTOM")
+        elseif evenType ==  ccui.ScrollviewEventType.scrollToTop then
+            print("SCROLL_TO_TOP")
+        end
+    end
+
+    --服务器列表
+    self.serverListView  = self.serverNode:getChildByName("serverListView") 
+    -- local listView = ccui.ListView:create()
+    -- listView:setDirection(ccui.ScrollViewDir.vertical)
+    -- listView:setBounceEnabled(true)
+    -- listView:setBackGroundImage("cocosui/green_edit.png")
+    -- listView:setBackGroundImageScale9Enabled(true)
+    -- listView:setContentSize(cc.size(240, 130))
+    -- listView:setPosition(cc.p((x, y))
+    self.serverListView:addEventListener(listViewEvent)
+    self.serverListView:addScrollViewEventListener(scrollViewEvent)
+
+    self.serverListView:removeAllChildren()
+
+    --add custom item
+    -- for i = 1,math.floor(count / 4) do
+    --     local custom_button = ccui.Button:create("cocosui/button.png", "cocosui/buttonHighlighted.png")
+    --     custom_button:setName("Title Button")
+    --     custom_button:setScale9Enabled(true)
+    --     custom_button:setContentSize(default_button:getContentSize())
+
+    --     local custom_item = ccui.Layout:create()
+    --     custom_item:setContentSize(custom_button:getContentSize())
+    --     custom_button:setPosition(cc.p(custom_item:getContentSize().width / 2.0, custom_item:getContentSize().height / 2.0))
+    --     custom_item:addChild(custom_button)
+
+    --     listView:addChild(custom_item)
+    -- end
+
+    -- remove item by index
+    -- items_count = table.getn(listView:getItems())
+    -- listView:removeItem(items_count - 1)
+    -- -- set all items layout gravity
+    -- listView:setGravity(ccui.ListViewGravity.centerVertical)
+    -- --set items margin
+    -- listView:setItemsMargin(2.0)
 end
 
 
@@ -102,15 +152,27 @@ function LoginLayer:touchEvent(sender, eventType)
     --G_Log_Info("LoginLayer:touchEvent")
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.serverBtn then     --选择服务器页面
-
+            self.serverBtn:setVisible(true)
+            self.startGameBtn:setVisible(true)
+            self.loginNode:setVisible(false)
+            self.registerNode:setVisible(false)
+            self.serverNode:setVisible(false)
         elseif sender == self.startGameBtn then   --开始游戏
 
         elseif sender == self.loginBtn then   --登录
 
         elseif sender == self.registerBtn then   --注册界面
-
+            self.serverBtn:setVisible(false)
+            self.startGameBtn:setVisible(false)
+            self.loginNode:setVisible(false)
+            self.registerNode:setVisible(true)
+            self.serverNode:setVisible(false)
         elseif sender == self.register_backBtn then   --注册返回
-
+            self.serverBtn:setVisible(false)
+            self.startGameBtn:setVisible(false)
+            self.loginNode:setVisible(true)
+            self.registerNode:setVisible(false)
+            self.serverNode:setVisible(false)
         elseif sender == self.register_registerBtn then   --注册用户
 
         elseif sender == self.lastSerBtn then   --上一次登录服务器
@@ -118,7 +180,11 @@ function LoginLayer:touchEvent(sender, eventType)
         elseif sender == self.selectBtn then   --选好了服务器
 
         elseif sender == self.server_backBtn then   --服务器返回
-
+            self.serverBtn:setVisible(true)
+            self.startGameBtn:setVisible(true)
+            self.loginNode:setVisible(false)
+            self.registerNode:setVisible(false)
+            self.serverNode:setVisible(false)
         end
     end
 end
