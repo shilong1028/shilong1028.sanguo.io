@@ -21,7 +21,9 @@ function AniToolLayer:init()
     --G_Log_Info("AniToolLayer:init()")
     local csb = cc.CSLoader:createNode("csd/aniToolLayer.csb")
     self:addChild(csb)
-    self:showInTheMiddle(csb)
+    csb:setContentSize(g_WinSize)
+    ccui.Helper:doLayout(csb)
+    --self:showInTheMiddle(csb)
 
     --self.m_Menu         = tolua.cast(self.owner["m_layerMenu"],"cc.Menu") 
     self.backBg1 = csb:getChildByName("Image_left")   --左侧动画播放区域 (400,350)
@@ -52,8 +54,9 @@ function AniToolLayer:init()
     self.Button_reset:addTouchEventListener(BtnPlayCallback)
 
     self.tableViewCell = {}
+    local tableViewSize = self.backBg2:getContentSize()
 
-    local tableView = cc.TableView:create(cc.size(515,600))
+    local tableView = cc.TableView:create(tableViewSize)  --cc.size(515,600))
     tableView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL)
     tableView:setIgnoreAnchorPointForPosition(true)
     tableView:setPosition(cc.p(3, 0))
@@ -122,7 +125,7 @@ function AniToolLayer:tableCellAtIndex(view, idx)
         aniToolCell = anicell:create()   --anicell:new()
         cell:addChild(aniToolCell, 10, 111)    
     else
-        aniToolCell = cell:getChilByTag(111)
+        aniToolCell = cell:getChildByTag(111)
     end
 
     if aniToolCell then
@@ -139,7 +142,7 @@ function AniToolLayer:touchEvent(sender, eventType)
     --G_Log_Info("AniToolLayer:touchEvent")
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_close then 
-            g_pGameLayer:RemoveChildByUid(g_GameLayerTag.LAYER_TAG_AniToolLayer) 
+            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_AniToolLayer) 
             cc.Director:getInstance():endToLua()
         elseif sender == self.Button_play then 
             self:playAllAni()
