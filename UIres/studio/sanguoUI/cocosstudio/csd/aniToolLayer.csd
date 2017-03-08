@@ -6,7 +6,7 @@
       <ObjectData Name="Layer" ctype="GameLayerObjectData">
         <Size X="1280.0000" Y="720.0000" />
         <Children>
-          <AbstractNodeData Name="Image_bg" ActionTag="-1151706657" Tag="2" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" Scale9Enable="True" LeftEage="266" RightEage="266" TopEage="174" BottomEage="174" Scale9OriginX="266" Scale9OriginY="174" Scale9Width="275" Scale9Height="180" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_bg" ActionTag="-1151706657" Tag="2" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" Scale9Enable="True" LeftEage="200" RightEage="200" TopEage="150" BottomEage="150" Scale9OriginX="200" Scale9OriginY="150" Scale9Width="407" Scale9Height="228" ctype="ImageViewObjectData">
             <Size X="1280.0000" Y="720.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="640.0000" Y="360.0000" />
@@ -16,13 +16,13 @@
             <PreSize X="1.0000" Y="1.0000" />
             <FileData Type="PlistSubImage" Path="aniTool_bg.png" Plist="plist/aniTool.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_left" ActionTag="1607175231" Tag="3" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="29.9520" RightMargin="580.0480" TopMargin="72.0000" BottomMargin="148.0000" Scale9Enable="True" LeftEage="17" RightEage="17" TopEage="83" BottomEage="83" Scale9OriginX="17" Scale9OriginY="83" Scale9Width="20" Scale9Height="86" ctype="ImageViewObjectData">
-            <Size X="670.0000" Y="500.0000" />
+          <AbstractNodeData Name="Image_left" ActionTag="1607175231" Tag="3" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="29.9520" RightMargin="580.0959" TopMargin="75.0240" BottomMargin="145.0080" Scale9Enable="True" LeftEage="17" RightEage="17" TopEage="83" BottomEage="83" Scale9OriginX="17" Scale9OriginY="83" Scale9Width="20" Scale9Height="86" ctype="ImageViewObjectData">
+            <Size X="669.9520" Y="499.9680" />
             <AnchorPoint ScaleY="1.0000" />
-            <Position X="29.9520" Y="648.0000" />
+            <Position X="29.9520" Y="644.9760" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.0234" Y="0.9000" />
+            <PrePosition X="0.0234" Y="0.8958" />
             <PreSize X="0.5234" Y="0.6944" />
             <FileData Type="PlistSubImage" Path="aniTool_bg2.png" Plist="plist/aniTool.plist" />
           </AbstractNodeData>
@@ -68,13 +68,13 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_right" ActionTag="-1348917496" Tag="7" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="720.0000" RightMargin="40.0000" TopMargin="72.0000" BottomMargin="48.0000" Scale9Enable="True" LeftEage="17" RightEage="17" TopEage="83" BottomEage="83" Scale9OriginX="17" Scale9OriginY="83" Scale9Width="20" Scale9Height="86" ctype="ImageViewObjectData">
-            <Size X="520.0000" Y="600.0000" />
+          <AbstractNodeData Name="Image_right" ActionTag="-1348917496" Tag="7" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="720.0000" RightMargin="39.9360" TopMargin="75.0240" BottomMargin="45.0000" Scale9Enable="True" LeftEage="17" RightEage="17" TopEage="83" BottomEage="83" Scale9OriginX="17" Scale9OriginY="83" Scale9Width="20" Scale9Height="86" ctype="ImageViewObjectData">
+            <Size X="520.0640" Y="599.9760" />
             <AnchorPoint ScaleY="1.0000" />
-            <Position X="720.0000" Y="648.0000" />
+            <Position X="720.0000" Y="644.9760" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.5625" Y="0.9000" />
+            <PrePosition X="0.5625" Y="0.8958" />
             <PreSize X="0.4063" Y="0.8333" />
             <FileData Type="PlistSubImage" Path="aniTool_bg2.png" Plist="plist/aniTool.plist" />
           </AbstractNodeData>
