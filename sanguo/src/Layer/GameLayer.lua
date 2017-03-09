@@ -23,13 +23,6 @@ function GameLayer:init()
 
     --登录界面
     self:AddChild(g_GameLayerTag.LAYER_TAG_LoginLayer, "Login.LoginLayer")
-
-    --主城层
-    -- self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
-    -- --主菜单层
-    -- self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
-    -- --地图层
-    -- self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
 end
 
 function GameLayer:AddChild(uid, className, funcName, userTable)   --className为Layer目录下的界面类路径，funcName为初始化方法，userTable初始数据
@@ -99,8 +92,8 @@ end
 --[[
 --滚动列表叠加显示提示界面
 tipsArr = {
-{text, color, height},
-{text, color, height}
+{text, color, fontSize},
+{text, color, fontSize}
 }
 ]]
 function GameLayer:ShowScrollTips(tips, color, fontSize)
@@ -108,6 +101,13 @@ function GameLayer:ShowScrollTips(tips, color, fontSize)
     if type(tips) == "string" then
         local cell = g_ScrollTips_text:new()
         cell.text = tips
+
+        if color then
+            cell.color = color
+        end
+        if fontSize then
+            cell.fontSize = fontSize
+        end
         table.insert(tipsArr, cell)
     elseif type(tips) == "table" then
         for i=1, #(tips)do
@@ -134,6 +134,20 @@ function GameLayer:ShowScrollTips(tips, color, fontSize)
     scrollTipsLayer:setTexts(tipsArr)   
 
     return scrollTipsLayer
+end
+
+
+--/////////////////////// 以下为各个功能界面开启  ////////////////////////////
+
+--开始游戏界面
+function GameLayer:StartGameLayer()
+    self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoginLayer)
+    --主城层
+    --self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
+    --主菜单层
+    self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
+    --地图层
+    self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
 end
 
 

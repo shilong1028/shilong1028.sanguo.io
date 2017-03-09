@@ -28,6 +28,7 @@ g_pGameLayer = nil  --g_pGameLayer是g_pGameScene的子层，用于承载游戏�
 g_pAutoPathMgr = nil  --寻路管理器单例
 g_pMapMgr = nil       --州郡地图管理单例
 g_pTBLMgr = nil       --本地tbl表格数据单例
+g_UserDefaultMgr = nil  --本地信息管理单例
 
 --默认的华康圆体路径
 g_sDefaultTTFpath = "font/DFYuanW7-GB2312.ttf"
@@ -40,6 +41,7 @@ g_bAStarPathSmooth = true --false --寻路拉直
 
 --默认文本大小
 g_defaultFontSize = 20
+g_defaultTipsFontSize = 24
 
 --定义一个Zorder用于显示一些最上层数据
 g_TopZOrder = 100

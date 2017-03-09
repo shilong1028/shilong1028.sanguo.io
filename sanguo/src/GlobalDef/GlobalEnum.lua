@@ -33,5 +33,5 @@ g_PlayerState = {
 --用户自定义颜色值
 g_ColorDef = {
 	["White"] = cc.c3b(255,255,255),
-
+	["Red"] = cc.c3b(255,0,0),
 }

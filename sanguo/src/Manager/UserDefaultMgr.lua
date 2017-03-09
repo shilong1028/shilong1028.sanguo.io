@@ -24,36 +24,47 @@ function UserDefaultMgr:GetInstance()
     return self.instance
 end
 
+--/////////////////////////////////////////
+
 local UserDefault = cc.UserDefault:getInstance()
 
 --获取用户名
 function UserDefaultMgr:GetUserName()
-    return UserDefault:getStringForKey("UserName") or ""
+    return UserDefault:getStringForKey("UserName")
 end
 
 function UserDefaultMgr:SetUserName(nameStr)
+    if not nameStr then
+        return
+    end
     UserDefault:setStringForKey("UserName",nameStr)
     UserDefault:flush()
 end
 
 --获取用户登录密码
 function UserDefaultMgr:GetUserPassword()
-    return UserDefault:getStringForKey("UserPassword") or ""
+    return UserDefault:getStringForKey("UserPassword")
 end
 
 function UserDefaultMgr:SetUserPassword(psdStr)
+    if not psdStr then
+        return
+    end
     UserDefault:setStringForKey("UserPassword",psdStr)   --getBoolForKey
     UserDefault:flush()
 end
 
---获取用户登录服务器
+--获取用户登录服务器名称及ID
 function UserDefaultMgr:GetUserServer()
-    local serName = UserDefault:getStringForKey("UserServerName") or ""
-    local serId = UserDefault:getIntegerForKey("UserServerId",serId) or 0
+    local serName = UserDefault:getStringForKey("UserServerName")
+    local serId = UserDefault:getIntegerForKey("UserServerId")
     return serName, serId 
 end
 
 function UserDefaultMgr:SetUserServer(serName, serId)
+    if not serName or not serId then
+        return
+    end
     UserDefault:setStringForKey("UserServerName",serName)
     UserDefault:setIntegerForKey("UserServerId",serId)
     UserDefault:flush()

@@ -10,6 +10,7 @@ require "cocos.init"
 --cocos.init文件根据配置信息初始化Cocos2d-lua框架（require加载lua模块时必须使用”.”来代替路径中的”/”符号）
 require "GlobalDef.init"  --用户全局自定义
 require "Manager.init"  --用户全局管理器
+require "str.init"  --全局文本字符串
 
 local function main()
     collectgarbage("collect")
