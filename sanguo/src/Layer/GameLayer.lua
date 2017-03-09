@@ -139,6 +139,12 @@ end
 
 --/////////////////////// 以下为各个功能界面开启  ////////////////////////////
 
+--结束游戏
+function GameLayer:ExitGame()
+    g_NetworkMgr:delInstance()
+    cc.Director:getInstance():endToLua()
+end
+
 --开始游戏界面
 function GameLayer:StartGameLayer()
     self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoginLayer)

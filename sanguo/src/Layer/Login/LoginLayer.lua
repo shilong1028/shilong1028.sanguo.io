@@ -10,12 +10,14 @@ end
 
 function LoginLayer:onExit()
     --G_Log_Info("LoginLayer:onExit()")
-
+    if nil ~= self.serList_listener then   --服务器列表监听
+        g_EventDispatcher:removeEventListener(self.serList_listener)
+    end
 end
 
 --初始化UI界面
 function LoginLayer:init()  
-    G_Log_Info("LoginLayer:init()")
+    --G_Log_Info("LoginLayer:init()")
     local csb = cc.CSLoader:createNode("csd/LoginLayer.csb")
     self:addChild(csb)
     csb:setContentSize(g_WinSize)
@@ -140,6 +142,25 @@ function LoginLayer:init()
     self.serverListView:removeAllChildren()
 
     self:LoadUserDataAndShowUI()
+
+    self:LoadEventListenerCustom()   --自定义异步事件监听
+end
+
+--自定义异步事件监听
+function LoginLayer:LoadEventListenerCustom()   
+    --服务器列表监听
+    local function serList_listenerCallBack(event)
+        --[[发送处有此定义
+            local event = cc.EventCustom:new(g_EventListenerCustomName.Login_serverListEvent)
+            event._usedata = string.format("%d",count2)
+            g_EventDispatcher:dispatchEvent(event)
+        ]]
+        --接收时解析
+        --local str = "Custom event 2 received, "..event._usedata.." times"
+    end
+
+    self.serList_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.Login_serverListEvent, serList_listenerCallBack)
+    g_EventDispatcher:addEventListenerWithFixedPriority(self.serList_listener, 1)
 end
 
 function LoginLayer:LoadServerListCells(serListData)

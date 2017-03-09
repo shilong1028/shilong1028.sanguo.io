@@ -44,8 +44,8 @@ function MapLayer:ShowMapImg(mapId)
     local imgCount = self.mapConfigData.img_count
     local imgName = self.mapConfigData.path
 
-    local imgWidth = self.mapConfigData.width / self.mapConfigData.column
-    local imgHeight = self.mapConfigData.height / self.mapConfigData.row
+    local imgWidth = 512  --self.mapConfigData.width / self.mapConfigData.column
+    local imgHeight = 512   --self.mapConfigData.height / self.mapConfigData.row
 
     local posX = 0
 	local posY = self.mapConfigData.height
@@ -60,7 +60,7 @@ function MapLayer:ShowMapImg(mapId)
 		Spr:setPosition(cc.p(posX, posY))
 		self.rootNode:addChild(Spr, 1)
 
-		if i>=self.mapConfigData.column and i%self.mapConfigData.column == 0 then
+		if i%self.mapConfigData.column == 0 then
 			posX = 0
 			posY = posY - imgHeight
 		else

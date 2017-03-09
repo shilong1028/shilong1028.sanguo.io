@@ -17,6 +17,8 @@ g_WinSize = g_Director:getWinSize()
 
 --定时器单例
 g_Scheduler = cc.Director:getInstance():getScheduler()
+--事件分发器单例
+g_EventDispatcher = cc.Director:getInstance():getEventDispatcher()
 
 --自定义的LayerEx, 作为游戏各功能Layer的父类
 CCLayerEx = nil  
@@ -25,10 +27,13 @@ CCLayerEx = nil
 g_pGameScene = nil  --g_pGameScene包含g_pGameLayer以及一些游戏初始化及网络连接的内容
 g_pGameLayer = nil  --g_pGameLayer是g_pGameScene的子层，用于承载游戏各种功能界面
 
+g_UserDefaultMgr = nil  --本地信息管理单例
+g_NetworkMgr = nil  --用于服务器和客户端之间的socket通信连接
+g_NetMsgDealMgr = nil  --用于客户端和服务器之间的通信管理
+
 g_pAutoPathMgr = nil  --寻路管理器单例
 g_pMapMgr = nil       --州郡地图管理单例
 g_pTBLMgr = nil       --本地tbl表格数据单例
-g_UserDefaultMgr = nil  --本地信息管理单例
 
 --默认的华康圆体路径
 g_sDefaultTTFpath = "font/DFYuanW7-GB2312.ttf"

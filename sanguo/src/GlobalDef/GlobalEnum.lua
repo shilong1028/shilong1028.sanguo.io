@@ -2,6 +2,19 @@
 
 --GlobalEnum.lua用于用户自定义全局枚举定义， 自定义全局枚举名前以 g_ 为标志
 
+--网络Socket连接状态State和Error定义
+g_networkState ={
+	CONNECTING = 0,
+	SUCCESS = 1,
+	BREAK = 2,
+	START = 3,
+}
+
+g_networkError ={
+	FALSE = 0,
+	TRUE  = 1
+}
+
 --全局游戏界面层Tag定义
 g_GameLayerTag = {
 	LAYER_TAG_MAINMENU = 20,    --主界面菜单层，主菜单以后的层可以被删除，即各显示界面层
@@ -32,6 +45,20 @@ g_PlayerState = {
 
 --用户自定义颜色值
 g_ColorDef = {
-	["White"] = cc.c3b(255,255,255),
-	["Red"] = cc.c3b(255,0,0),
+	White = cc.c3b(255,255,255),
+	Red = cc.c3b(255,0,0),
+}
+
+
+--自定义异步事件监听的事件名称定义
+g_EventListenerCustomName = {
+	Login_serverListEvent = "Login_serverListEvent",   --登录界面的服务器列表监听事件
+}
+
+
+--网络通信协议号
+g_SocketCMD = {
+	NET_LOGIN = 1,    --登录游戏服务器
+	MSG_HEART_JUMP = 102, --心跳包
+	NET_ACC_LINEUP = 600, --排队服务器 
 }

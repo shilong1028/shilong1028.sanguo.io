@@ -22,7 +22,55 @@ function  g_ScrollTips_text:ctor()
 	self.fontSize = g_defaultFontSize
 end
 
+--玩家登陆用户信息
+g_Login_Account = class("g_Login_Account",__BaseStruct)
+function g_Login_Account:ctor()
+	self.serverList = {}  --g_Login_ServerInfo
+	self.accountData = g_Login_AccountData:new()
+	self.userAccount = g_Login_UserAccount:new()
+	self.selServer = 0
+	self.sid = 0
+	self.uid = 0
+end
 
+--服务器区服信息
+g_Login_ServerInfo = class("g_Login_ServerInfo",__BaseStruct)
+function g_Login_ServerInfo:ctor()
+	self.id  = -1  
+	self.page  = -1   --服务器大区
+	self.serId  = -1  --服务器ID
+	self.serName  = "" 
+	self.serIp  = ""
+	self.serPort  = -1  
+	self.errMsg  = "" 
+	self.serType  = -1    -- 0正常 1推荐 2新服
+	self.onlineState  = -1   --0绿 1黄 2红
+	self.serState  = -1   --0正常 1维护中
+	self.serPic  = -1    -- 服务器名称图片ID
+	self.needLineUp  = false   --是否需要排队
+	self.lineUpIp  = ""   --排队服ip
+	self.lineUpPort  = 0   --排队服端口
+end
+
+--服务器区服的用户信息
+g_Login_AccountData = class("g_Login_AccountData",__BaseStruct)
+function g_Login_AccountData:ctor()
+	self.userid  = 0 
+	self.roleid  = 0 
+	self.name  = 0 
+	self.head  = 0 
+	self.professional  = 0 
+	self.level  = 0 
+	self.sex  = 0 
+	self.type  = 0 
+end
+
+--服务器区服的用户登录信息
+g_Login_UserAccount = class("g_Login_UserAccount",__BaseStruct)
+function g_Login_UserAccount:ctor()
+	self.Account  = 0 
+	self.Password  = 0 
+end
 
 
 
