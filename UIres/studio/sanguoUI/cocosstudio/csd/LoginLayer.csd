@@ -16,16 +16,58 @@
             <PreSize X="1.0000" Y="1.0000" />
             <FileData Type="Normal" Path="img/studio_loginBg.png" Plist="" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_title" ActionTag="-656111089" Tag="13" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="494.0000" RightMargin="494.0000" TopMargin="105.0001" BottomMargin="536.9999" FontSize="72" LabelText="汉末英雄" OutlineSize="5" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_title" ActionTag="-656111089" Tag="13" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="493.0000" RightMargin="493.0000" TopMargin="103.0000" BottomMargin="535.0000" FontSize="72" LabelText="汉末英雄" OutlineSize="5" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="294.0000" Y="82.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="640.0000" Y="575.9999" />
+            <Position X="640.0000" Y="576.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition X="0.5000" Y="0.8000" />
-            <PreSize X="0.2281" Y="0.1083" />
+            <PreSize X="0.2297" Y="0.1139" />
             <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
             <OutlineColor A="255" R="0" G="0" B="0" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="serverBtn" ActionTag="996901002" Tag="26" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="465.0000" RightMargin="465.0000" TopMargin="510.0000" BottomMargin="150.0000" TouchEnable="True" FontSize="40" ButtonText="服务器名称" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="179" Scale9Height="10" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+            <Size X="350.0000" Y="60.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="640.0000" Y="180.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.5000" Y="0.2500" />
+            <PreSize X="0.2734" Y="0.0833" />
+            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <TextColor A="255" R="255" G="165" B="0" />
+            <NormalFileData Type="PlistSubImage" Path="public_inputBg.png" Plist="plist/PublicRes.plist" />
+            <OutlineColor A="255" R="255" G="0" B="0" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="startGameBtn" ActionTag="684274013" Tag="27" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="667.9999" RightMargin="412.0001" TopMargin="579.5000" BottomMargin="75.5000" TouchEnable="True" FontSize="30" ButtonText="开始游戏" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+            <Size X="200.0000" Y="65.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="767.9999" Y="108.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.6000" Y="0.1500" />
+            <PreSize X="0.1563" Y="0.0903" />
+            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <TextColor A="255" R="255" G="165" B="0" />
+            <NormalFileData Type="PlistSubImage" Path="public_btn_green1.png" Plist="plist/PublicRes.plist" />
+            <OutlineColor A="255" R="255" G="0" B="0" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="backLoginBtn" ActionTag="1916042360" Tag="34" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="412.0000" RightMargin="668.0000" TopMargin="579.5000" BottomMargin="75.5000" TouchEnable="True" FontSize="30" ButtonText="重新登录" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+            <Size X="200.0000" Y="65.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="512.0000" Y="108.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.4000" Y="0.1500" />
+            <PreSize X="0.1563" Y="0.0903" />
+            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <TextColor A="255" R="255" G="165" B="0" />
+            <NormalFileData Type="PlistSubImage" Path="public_btn_green1.png" Plist="plist/PublicRes.plist" />
+            <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
           <AbstractNodeData Name="nameBg" Visible="False" ActionTag="870069861" Tag="16" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="390.0000" RightMargin="390.0000" TopMargin="432.4000" BottomMargin="57.6000" Scale9Enable="True" LeftEage="72" RightEage="200" TopEage="40" BottomEage="40" Scale9OriginX="72" Scale9OriginY="40" Scale9Width="59" Scale9Height="20" ctype="ImageViewObjectData">
@@ -41,14 +83,15 @@
                 <PreSize X="0.6000" Y="0.2174" />
                 <FileData Type="PlistSubImage" Path="public_inputBg.png" Plist="plist/PublicRes.plist" />
               </AbstractNodeData>
-              <AbstractNodeData Name="TextField" ActionTag="-1967125145" Tag="21" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="32.5000" BottomMargin="162.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="输入用户名(6-10位)" MaxLengthText="10" ctype="TextFieldObjectData">
+              <AbstractNodeData Name="TextField" ActionTag="-1967125145" Tag="21" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="32.5000" BottomMargin="162.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="输入用户名(6-10位)" MaxLengthEnable="True" MaxLengthText="10" ctype="TextFieldObjectData">
                 <Size X="290.0000" Y="35.0000" />
                 <AnchorPoint ScaleY="0.5000" />
                 <Position X="170.0000" Y="180.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                <CColor A="255" R="77" G="77" B="77" />
+                <CColor A="255" R="165" G="42" B="42" />
                 <PrePosition X="0.3400" Y="0.7826" />
                 <PreSize X="0.5800" Y="0.1522" />
+                <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
               </AbstractNodeData>
               <AbstractNodeData Name="Text_name" ActionTag="-884279106" Tag="17" IconVisible="False" LeftMargin="32.0000" RightMargin="345.0000" TopMargin="32.0000" BottomMargin="162.0000" FontSize="36" LabelText="用户名：" OutlineSize="2" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
                 <Size X="123.0000" Y="36.0000" />
@@ -84,14 +127,15 @@
                 <OutlineColor A="255" R="101" G="9" B="9" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="TextField_psw" ActionTag="-1148880803" Tag="13" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="92.5000" BottomMargin="102.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="输入密码(6-10位)" MaxLengthText="10" ctype="TextFieldObjectData">
+              <AbstractNodeData Name="TextField_psw" ActionTag="-1148880803" Tag="13" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="92.5000" BottomMargin="102.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="输入密码(6-10位)" MaxLengthEnable="True" MaxLengthText="10" PasswordEnable="True" ctype="TextFieldObjectData">
                 <Size X="290.0000" Y="35.0000" />
                 <AnchorPoint ScaleY="0.5000" />
                 <Position X="170.0000" Y="120.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                <CColor A="255" R="77" G="77" B="77" />
+                <CColor A="255" R="165" G="42" B="42" />
                 <PrePosition X="0.3400" Y="0.5217" />
                 <PreSize X="0.5800" Y="0.1522" />
+                <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
               </AbstractNodeData>
               <AbstractNodeData Name="loginBtn" ActionTag="1990183117" Tag="20" IconVisible="False" LeftMargin="272.5000" RightMargin="72.5000" TopMargin="147.5000" BottomMargin="17.5000" TouchEnable="True" FontSize="30" ButtonText="登录" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
                 <Size X="155.0000" Y="65.0000" />
@@ -143,14 +187,15 @@
                 <PreSize X="0.6000" Y="0.1724" />
                 <FileData Type="PlistSubImage" Path="public_inputBg.png" Plist="plist/PublicRes.plist" />
               </AbstractNodeData>
-              <AbstractNodeData Name="TextField" ActionTag="590445907" Tag="16" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="32.5000" BottomMargin="222.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="输入用户名(6-10位)" MaxLengthText="10" ctype="TextFieldObjectData">
+              <AbstractNodeData Name="TextField" ActionTag="590445907" Tag="16" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="32.5000" BottomMargin="222.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="输入用户名(6-10位)" MaxLengthEnable="True" MaxLengthText="10" ctype="TextFieldObjectData">
                 <Size X="290.0000" Y="35.0000" />
                 <AnchorPoint ScaleY="0.5000" />
                 <Position X="170.0000" Y="240.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                <CColor A="255" R="77" G="77" B="77" />
+                <CColor A="255" R="165" G="42" B="42" />
                 <PrePosition X="0.3400" Y="0.8276" />
                 <PreSize X="0.5800" Y="0.1207" />
+                <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
               </AbstractNodeData>
               <AbstractNodeData Name="Text_name" ActionTag="-216137564" Tag="17" IconVisible="False" LeftMargin="32.0000" RightMargin="345.0000" TopMargin="32.0000" BottomMargin="222.0000" FontSize="36" LabelText="用户名：" OutlineSize="2" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
                 <Size X="123.0000" Y="36.0000" />
@@ -186,14 +231,15 @@
                 <OutlineColor A="255" R="101" G="9" B="9" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="TextField_psw" ActionTag="1758775655" Tag="20" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="92.5000" BottomMargin="162.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="输入密码(6-10位)" MaxLengthText="10" ctype="TextFieldObjectData">
+              <AbstractNodeData Name="TextField_psw" ActionTag="1758775655" Tag="20" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="92.5000" BottomMargin="162.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="输入密码(6-10位)" MaxLengthEnable="True" MaxLengthText="10" PasswordEnable="True" ctype="TextFieldObjectData">
                 <Size X="290.0000" Y="35.0000" />
                 <AnchorPoint ScaleY="0.5000" />
                 <Position X="170.0000" Y="180.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                <CColor A="255" R="77" G="77" B="77" />
+                <CColor A="255" R="165" G="42" B="42" />
                 <PrePosition X="0.3400" Y="0.6207" />
                 <PreSize X="0.5800" Y="0.1207" />
+                <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
               </AbstractNodeData>
               <AbstractNodeData Name="backBtn" ActionTag="-276789807" Tag="21" IconVisible="False" LeftMargin="272.5000" RightMargin="72.5000" TopMargin="207.5000" BottomMargin="17.5000" TouchEnable="True" FontSize="30" ButtonText="返回" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
                 <Size X="155.0000" Y="65.0000" />
@@ -245,14 +291,15 @@
                 <OutlineColor A="255" R="101" G="9" B="9" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="TextField_psw2" ActionTag="1802185358" Tag="25" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="152.5000" BottomMargin="102.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="重复输入密码" MaxLengthText="10" ctype="TextFieldObjectData">
+              <AbstractNodeData Name="TextField_psw2" ActionTag="1802185358" Tag="25" IconVisible="False" LeftMargin="170.0000" RightMargin="40.0000" TopMargin="152.5000" BottomMargin="102.5000" TouchEnable="True" FontSize="32" IsCustomSize="True" LabelText="" PlaceHolderText="重复输入密码" MaxLengthEnable="True" MaxLengthText="10" PasswordEnable="True" ctype="TextFieldObjectData">
                 <Size X="290.0000" Y="35.0000" />
                 <AnchorPoint ScaleY="0.5000" />
                 <Position X="170.0000" Y="120.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                <CColor A="255" R="77" G="77" B="77" />
+                <CColor A="255" R="165" G="42" B="42" />
                 <PrePosition X="0.3400" Y="0.4138" />
                 <PreSize X="0.5800" Y="0.1207" />
+                <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
               </AbstractNodeData>
             </Children>
             <AnchorPoint ScaleX="0.5000" />
@@ -278,7 +325,7 @@
                 <OutlineColor A="255" R="101" G="9" B="9" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="serverListView" ActionTag="2144051435" Tag="40" IconVisible="False" LeftMargin="50.0000" RightMargin="50.0000" TopMargin="115.0000" BottomMargin="85.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="110" ColorAngle="90.0000" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="5" DirectionType="Vertical" HorizontalType="Align_HorizontalCenter" ctype="ListViewObjectData">
+              <AbstractNodeData Name="serverListView" ActionTag="2144051435" Tag="40" IconVisible="False" LeftMargin="50.0000" RightMargin="50.0000" TopMargin="115.0000" BottomMargin="85.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="110" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="5" DirectionType="Vertical" HorizontalType="Align_HorizontalCenter" ctype="ListViewObjectData">
                 <Size X="400.0000" Y="200.0000" />
                 <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
                 <Position X="250.0000" Y="185.0000" />
@@ -311,6 +358,7 @@
                 <CColor A="255" R="255" G="255" B="255" />
                 <PrePosition X="0.6200" Y="0.9000" />
                 <PreSize X="0.6000" Y="0.1250" />
+                <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
                 <TextColor A="255" R="255" G="165" B="0" />
                 <NormalFileData Type="PlistSubImage" Path="public_inputBg.png" Plist="plist/PublicRes.plist" />
                 <OutlineColor A="255" R="255" G="0" B="0" />
@@ -352,34 +400,6 @@
             <PrePosition X="0.5000" Y="0.0800" />
             <PreSize X="0.3906" Y="0.5556" />
             <FileData Type="Normal" Path="img/studio_listBg.png" Plist="" />
-          </AbstractNodeData>
-          <AbstractNodeData Name="serverBtn" ActionTag="996901002" Tag="26" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="465.0000" RightMargin="465.0000" TopMargin="510.0000" BottomMargin="150.0000" TouchEnable="True" FontSize="40" ButtonText="服务器名称" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="179" Scale9Height="10" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
-            <Size X="350.0000" Y="60.0000" />
-            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="640.0000" Y="180.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.5000" Y="0.2500" />
-            <PreSize X="0.2734" Y="0.0833" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
-            <TextColor A="255" R="255" G="165" B="0" />
-            <NormalFileData Type="PlistSubImage" Path="public_inputBg.png" Plist="plist/PublicRes.plist" />
-            <OutlineColor A="255" R="255" G="0" B="0" />
-            <ShadowColor A="255" R="110" G="110" B="110" />
-          </AbstractNodeData>
-          <AbstractNodeData Name="startGameBtn" ActionTag="684274013" Tag="27" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="562.5000" RightMargin="562.5000" TopMargin="579.5000" BottomMargin="75.5000" TouchEnable="True" FontSize="30" ButtonText="开始游戏" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
-            <Size X="155.0000" Y="65.0000" />
-            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="640.0000" Y="108.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.5000" Y="0.1500" />
-            <PreSize X="0.1211" Y="0.0903" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
-            <TextColor A="255" R="255" G="165" B="0" />
-            <NormalFileData Type="PlistSubImage" Path="public_btn_green1.png" Plist="plist/PublicRes.plist" />
-            <OutlineColor A="255" R="255" G="0" B="0" />
-            <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
         </Children>
       </ObjectData>
