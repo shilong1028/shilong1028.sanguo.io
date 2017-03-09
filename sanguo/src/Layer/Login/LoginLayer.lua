@@ -107,19 +107,17 @@ function LoginLayer:init()
     self.m_selServerName = ""
     self.m_selServerId = 0  --在服务器选择界面选中的服务器名称和ID
 
-    local function listViewEvent(sender, eventType)
-        if eventType == ccui.ListViewEventType.ONSELECTEDITEM_START then
-            print("select child index = ",sender:getCurSelectedIndex())
-        end
-    end
+    -- local function listViewEvent(sender, eventType)
+    --     if eventType == ccui.ListViewEventType.ONSELECTEDITEM_START then
+    --         --print("select child index = ",sender:getCurSelectedIndex())
+    --     end
+    -- end
 
-    local function scrollViewEvent(sender, evenType)
-        if evenType == ccui.ScrollviewEventType.scrollToBottom then
-            print("SCROLL_TO_BOTTOM")
-        elseif evenType ==  ccui.ScrollviewEventType.scrollToTop then
-            print("SCROLL_TO_TOP")
-        end
-    end
+    -- local function scrollViewEvent(sender, evenType)
+    --     if evenType == ccui.ScrollviewEventType.scrollToBottom then
+    --     elseif evenType ==  ccui.ScrollviewEventType.scrollToTop then
+    --     end
+    -- end
 
     --服务器列表
     self.serverListView  = self.serverNode:getChildByName("serverListView") 
@@ -130,26 +128,8 @@ function LoginLayer:init()
     -- listView:setBackGroundImageScale9Enabled(true)
     -- listView:setContentSize(cc.size(240, 130))
     -- listView:setPosition(cc.p((x, y))
-    self.serverListView:addEventListener(listViewEvent)
-    self.serverListView:addScrollViewEventListener(scrollViewEvent)
-
-    self.serverListView:removeAllChildren()
-
-    --add custom item
-    -- for i = 1,math.floor(count / 4) do
-    --     local custom_button = ccui.Button:create("cocosui/button.png", "cocosui/buttonHighlighted.png")
-    --     custom_button:setName("Title Button")
-    --     custom_button:setScale9Enabled(true)
-    --     custom_button:setContentSize(default_button:getContentSize())
-
-    --     local custom_item = ccui.Layout:create()
-    --     custom_item:setContentSize(custom_button:getContentSize())
-    --     custom_button:setPosition(cc.p(custom_item:getContentSize().width / 2.0, custom_item:getContentSize().height / 2.0))
-    --     custom_item:addChild(custom_button)
-
-    --     listView:addChild(custom_item)
-    -- end
-
+    -- self.serverListView:addEventListener(listViewEvent)
+    -- self.serverListView:addScrollViewEventListener(scrollViewEvent)
     -- remove item by index
     -- items_count = table.getn(listView:getItems())
     -- listView:removeItem(items_count - 1)
@@ -157,8 +137,43 @@ function LoginLayer:init()
     -- listView:setGravity(ccui.ListViewGravity.centerVertical)
     -- --set items margin
     -- listView:setItemsMargin(2.0)
+    self.serverListView:removeAllChildren()
 
     self:LoadUserDataAndShowUI()
+end
+
+function LoginLayer:LoadServerListCells(serListData)
+    self.serverListView:removeAllChildren()
+
+    local function listBtnCallBack(sender,eventType)
+        if eventType == ccui.TouchEventType.began then
+        elseif eventType == ccui.TouchEventType.moved then
+        elseif eventType == ccui.TouchEventType.ended then
+            local serId = sender:getTag() - 500
+        elseif eventType == ccui.TouchEventType.canceled then
+        end
+    end
+
+    --add custom item
+    for i = 1, #serListData do
+        local custom_button = ccui.Button:create("public_inputBg.png", "", "", ccui.TextureResType.plistType)
+        custom_button:setTag(500 + serListData[i].serId)
+        custom_button:setTouchEnabled(true)
+        custom_button:addTouchEventListener(listBtnCallBack)
+        custom_button:setTitleText(serListData[i].serName)
+        custom_button:setTitleColor(cc.c3b(255, 165, 0))
+        custom_button:setTitleFontSize(30)
+        custom_button:setTitleFontName(g_sDefaultTTFpath)
+        custom_button:setScale9Enabled(true)
+        custom_button:setContentSize(cc.size(300, 50))
+
+        local custom_item = ccui.Layout:create()
+        custom_item:setContentSize(cc.size(300, 50))
+        custom_button:setPosition(cc.p(custom_item:getContentSize().width / 2.0, custom_item:getContentSize().height / 2.0))
+        custom_item:addChild(custom_button)
+
+        self.serverListView:addChild(custom_item)
+    end
 end
 
 function LoginLayer:LoadUserDataAndShowUI()
@@ -270,6 +285,8 @@ function LoginLayer:touchEvent(sender, eventType)
                 self.lastSerBtn:setTitleText("")
                 self.lastSerBtn:setVisible(false)
             end
+
+            --self:LoadServerListCells()
 
         elseif sender == self.startGameBtn then   --开始游戏
             g_UserDefaultMgr:SetUserName(self.m_userName)    --保存用户名
