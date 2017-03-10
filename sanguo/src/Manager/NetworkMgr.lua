@@ -44,7 +44,8 @@ function NetworkMgr:init()
 end
 
 function NetworkMgr:initData()
-	self.m_networkDelayTime = 0.0  --网络系统系统延迟（心跳包，断线等判定）
+	self.m_networkDelayTime = 0.0  --网络系统系统延迟频率（心跳包，断线等判定）
+	self.lastTick = 0  --win平台的心跳包频率
     self.m_networkState = g_networkState.START
 	self.m_networkError = g_networkError.FALSE
 	--启动检测重连Timer
@@ -52,6 +53,8 @@ function NetworkMgr:initData()
 	self.m_ReLoginIp = ""
 	self.m_ReLoginPort = 0
 
+	--玩家登陆用户信息
+	self.m_LoginAccount = g_Login_Account:new()
 end
 
 function NetworkMgr:delInstance()
@@ -65,6 +68,10 @@ function NetworkMgr:delInstance()
 	if self.OnReLoginUpdateEntry then
 		g_Scheduler:unscheduleScriptEntry(self.OnReLoginUpdateEntry)
 	end
+	if self.NetworkHeartJumpEntry then
+		g_Scheduler:unscheduleScriptEntry(self.NetworkHeartJumpEntry)
+	end
+
 	self.instance = nil
 end
 
@@ -74,6 +81,14 @@ function NetworkMgr:GetInstance()
         self.instance = NetworkMgr:new()
     end
     return self.instance
+end
+
+--保存用户登录信息
+function NetworkMgr:SaveUserLoginData()
+	if self.m_LoginAccount.userAccount.UserName ~= "" and self.m_LoginAccount.userAccount.Password ~= "" then
+		g_UserDefaultMgr:SetUserName(self.m_LoginAccount.userAccount.UserName)    --保存用户名
+		g_UserDefaultMgr:SetUserPassword(self.m_LoginAccount.userAccount.Password)  --保存用户登录密码
+	end
 end
 
 function NetworkMgr:GetNetWorkSocket()
@@ -115,18 +130,32 @@ function NetworkMgr:ShowDisconnectDialog(titleStr)
 	self:ReStartGameLogin()
 end
 
-function NetworkMgr:ReStartGameLogin()
+function NetworkMgr:ReStartGameLogin(serverInfo)
 	G_Log_Info("NetworkMgr:ReStartGameLogin()")
 	local lineUp = g_UserDefaultMgr:IsNeedLineUp() or false
+	if serverInfo ~= nil then
+		--选中某个服务器后点击登录触发，信号触发成功后会进入创建界面,老号直接登录游戏
+		lineUp = serverInfo.needLineUp
 
-	local lineUpIp = g_UserDefaultMgr:GetLineUpServerIp()
-	local lineUpPort = g_UserDefaultMgr:GetLineUpServerPort()
-	local serIp = g_UserDefaultMgr:GetLastSelServerIp()
-	local serPort = g_UserDefaultMgr:GetLastSelServerPort()
+		--保存上次登录的服务器信息
+		g_UserDefaultMgr:SetLastSelServerName(serverInfo.serName)
+		g_UserDefaultMgr:SetLastSelServerIp(serverInfo.serIp)
+		g_UserDefaultMgr:SetLastSelServerPort(serverInfo.serPort)
+		g_UserDefaultMgr:SetLastSelServerId(serverInfo.serId)
+		g_UserDefaultMgr:SetIsNeedLineUp(serverInfo.needLineUp)
+		g_UserDefaultMgr:SetLineUpServerIp(serverInfo.lineUpIp)
+		g_UserDefaultMgr:SetLineUpServerPort(serverInfo.lineUpPort)
+		g_UserDefaultMgr:Flush()
+	end
+
+	local lineUpIp = (serverInfo ~= nil) and serverInfo.lineUpIp or g_UserDefaultMgr:GetLineUpServerIp()
+	local lineUpPort = (serverInfo ~= nil) and serverInfo.lineUpPort or g_UserDefaultMgr:GetLineUpServerPort()
+	local serIp = (serverInfo ~= nil) and serverInfo.serIp or g_UserDefaultMgr:GetLastSelServerIp()
+	local serPort = (serverInfo ~= nil) and serverInfo.serPort or g_UserDefaultMgr:GetLastSelServerPort()
 
 	local ip = lineUp and lineUpIp or serIp
 	local port = lineUp and lineUpPort or serPort
-	local serId = g_UserDefaultMgr:GetLastSelServerId()
+	local serId = (serverInfo ~= nil) and serverInfo.serId or g_UserDefaultMgr:GetLastSelServerId()
 
 	self:ReconnectServer(ip, port)
 	self.m_networkState = g_networkState.CONNECTING
@@ -134,10 +163,10 @@ function NetworkMgr:ReStartGameLogin()
 	--默認直接連接遊戲服
 	if(false == lineUp)then
 		--设置服务器状态为游戏服GAME_SCENE:setServerType(SERVER_GAME);
-		-- local uid = DATA_MGR.Account.uid
-		-- local sid = DATA_MGR.Account.sid
-		-- local checkStr = ark_Download:GetClientVerion()
-		--self.m_LoginMsgBuf = g_NetMsgDealMgr:QueryGameLogin(uid, sid, checkStr, serId)   --登录游戏服务器
+		local uid = self.m_LoginAccount.uid
+		local sid = self.m_LoginAccount.sid
+		local version = "40001"
+		self.m_LoginMsgBuf = g_NetMsgDealMgr:QueryGameLogin(uid, sid, version, serId)   --登录游戏服务器
 	else
 		--设置服务器状态为排队服GAME_SCENE:setServerType(SERVER_LINEUP);
 		self.m_LoginMsgBuf = g_NetMsgDealMgr:QueryLineUpServer(serId)   --查询服务器
@@ -145,17 +174,7 @@ function NetworkMgr:ReStartGameLogin()
 	--"账号获取成功,正在连接服务器…"
 
 	--启动检测重连Timer
-	self.m_ReLoginTimes = 0   --自动重新连接登录服务器次数，5次后断线用户重连
-	self.m_ReLoginIp = ip
-	self.m_ReLoginPort = port
-
-	local function ReLoginUpdate(dt)
-		self:OnReLoginUpdate(dt)
-    end
-	if self.OnReLoginUpdateEntry then
-		g_Scheduler:unscheduleScriptEntry(self.OnReLoginUpdateEntry)
-	end
-	self.OnReLoginUpdateEntry = g_Scheduler:scheduleScriptFunc(ReLoginUpdate, 60, false)
+	self:OpenReLoginUpdateListener(ip, port)
 end
 
 function NetworkMgr:StopCurConnect()
@@ -175,7 +194,7 @@ function NetworkMgr:StopCurConnect()
 end
 
 function NetworkMgr:ReconnectServer(ip, port)
-    G_Log_Info("NetworkMgr:ReconnectServer()")
+    G_Log_Info("NetworkMgr:ReconnectServer(), ip = %s, port = %s", ip, port)
     --清空发送缓存
     NetMsgMgr:getInstance():ClearAllMsg()   --C++   NetMsgMgr网络消息管理类
     self:StopCurConnect()
@@ -229,6 +248,47 @@ function NetworkMgr:OnConnectFail(msg)
     -- end
 
     --self.ErrorMsg = msg
+	--启动检测重连Timer
+    self:OpenReLoginUpdateListener()
+end
+
+function NetworkMgr:ConnectACLoginIfNeeded(forceReconnect)
+	G_Log_Info("NetworkMgr:ConnectACLoginIfNeeded()")
+    if forceReconnect and type(forceReconnect) == "boolean" then
+        self:ReconnectServer(g_SERVER_IP, g_SERVER_PORT)
+    elseif(GAME_SCENE:GetGameSocket():IsConnected() == false) then
+        self:ReconnectServer(g_SERVER_IP, g_SERVER_PORT)
+	end
+end
+
+--发送登录协议，官方渠道是点击按钮发送，sdk是接收到渠道的uid token后发送
+--sdk渠道的话因为sdk没有注册按钮，所以有可能会返回注册成功的协议（首次登录），然后进入服务器列表界面。
+function NetworkMgr:StartACLogin( name,  password,  version,  adCode)
+	G_Log_Info("NetworkMgr:StartACLogin(), name = %s, psw = %s, version = %s, adCode = %d", name, password, version, adCode)
+    self:ConnectACLoginIfNeeded()
+
+	--登陆之前清除角色信息
+
+	LoginMainLayer._LoginMsgBuf = g_NetMsgDealMgr:QueryACLogin(name,password,version,adCode)
+ 
+    --启动检测重连Timer
+    self:OpenReLoginUpdateListener(g_SERVER_IP, g_SERVER_PORT)
+end
+
+function NetworkMgr:CloseReLoginUpdateListener()
+	if self.OnReLoginUpdateEntry then
+		g_Scheduler:unscheduleScriptEntry(self.OnReLoginUpdateEntry)
+	end
+end
+
+function NetworkMgr:OpenReLoginUpdateListener(ip, port)
+	--启动检测重连Timer
+	if ip and port then
+		self.m_ReLoginTimes = 0   --自动重新连接登录服务器次数，5次后断线用户重连
+		self.m_ReLoginIp = ip
+		self.m_ReLoginPort = port
+	end
+
 	local function ReLoginUpdate(dt)
 		self:OnReLoginUpdate(dt)
     end
@@ -238,9 +298,35 @@ function NetworkMgr:OnConnectFail(msg)
 	self.OnReLoginUpdateEntry = g_Scheduler:scheduleScriptFunc(ReLoginUpdate, 30, false)
 end
 
-
+--网络心跳包计时器
+function NetworkMgr:EnableNetworkHeartJumpListener(bOpen)
+	if self.NetworkHeartJumpEntry then
+		g_Scheduler:unscheduleScriptEntry(self.NetworkHeartJumpEntry)
+	end
+	if bOpen == true then
+		local function NetworkHeartJumpUpdate(dt)
+			self:NetworkHeartJumpUpdate(dt)
+	    end
+		self.NetworkHeartJumpEntry = g_Scheduler:scheduleScriptFunc(NetworkHeartJumpUpdate, 10, false)
+	end
+end
 
 --///////////////////////  网络通信计时器 //////////////////////////////
+
+function NetworkMgr:NetworkHeartJumpUpdate(dt)
+	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
+		self.lastTick = self.lastTick or 0
+		local nowTick = os.time()
+		if(nowTick - self.lastTick > 10) then  --1000
+			self.lastTick = nowTick
+			g_NetMsgDealMgr:QueryHeartJump()
+		end
+	else
+		self.m_networkDelayTime = self.m_networkDelayTime + dt
+		g_NetMsgDealMgr:QueryHeartJump()
+	end
+
+end
 
 function NetworkMgr:OnReLoginUpdate(dt)
     if(self.m_ReLoginTimes >= 5) then  --自动重新连接登录服务器次数，5次后断线用户重连
@@ -287,6 +373,7 @@ function NetworkMgr:OnReLoginUpdate(dt)
 end
 
 function NetworkMgr:OnNetworkUpdate(dt)
+	--G_Log_Debug("NetworkMgr:OnNetworkUpdate()")
     self:CheckNetworkFail(dt)
 
     local netMgr = NetMsgMgr:getInstance()   --C++   NetMsgMgr网络消息管理类
@@ -316,11 +403,21 @@ function NetworkMgr:DispatchNetMsg(stream)
     --local curTimeTick = SystemHelper:GetCurTick()
     --判断是否已进入游戏，收到服务器选择角色进入游戏命令之前，只处理特定任务
 
-    --G_Log_Info("NetworkMgr:DispatchNetMsg(), 收到协议：= %d", CMD)
-    if (CMD == g_SocketCMD.MSG_HEART_JUMP) then  --102 心跳包
-    	self.m_networkDelayTime = 0.0  --网络系统系统延迟（心跳包，断线等判定）
-    elseif (CMD == g_SocketCMD.NET_LOGIN) then   --1 登录游戏服务器
-    elseif (CMD == g_SocketCMD.NET_ACC_LINEUP) then	  --600 排队服务器
+    G_Log_Info("NetworkMgr:DispatchNetMsg(), 收到协议：= %d", CMD)
+    if CMD == g_SocketCMD.NET_LOGIN then   --1 登录游戏服务器
+    	g_NetMsgDealMgr:DealGameLogin(stream)
+    elseif CMD == g_SocketCMD.NET_CHOOSE_HERO then   --4 选择角色后进入游戏
+    	self.m_networkDelayTime = 0.0  --打开心跳包
+    	g_NetMsgDealMgr:DealStartGame(stream)
+    elseif CMD == g_SocketCMD.NET_HEART_JUMP then  --102 心跳包 --网络系统系统延迟（心跳包，断线等判定）
+    	self.m_networkDelayTime = 0.0  
+    	--其实客户端不会接收到服务器发送的心跳包返回信息，因为此时客户端已经断线，服务器会保存相应用户信息并作下线处理
+    elseif CMD == g_SocketCMD.NET_ACC_LOGIN then  --501 帐号服务器-登录
+    	g_NetMsgDealMgr:DealACLogin(stream)
+    elseif CMD == g_SocketCMD.NET_ACC_REG then  --502 账号注册
+    	g_NetMsgDealMgr:DealAcLoginReg(stream)
+    elseif CMD == g_SocketCMD.NET_ACC_LINEUP then	  --600 排队服务器--排队
+    	g_NetMsgDealMgr:DealLineUpServer(stream)
     end
 
 end

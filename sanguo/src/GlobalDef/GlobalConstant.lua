@@ -50,3 +50,12 @@ g_defaultTipsFontSize = 24
 
 --定义一个Zorder用于显示一些最上层数据
 g_TopZOrder = 100
+
+
+--内网服务器IP和Port
+g_SERVER_IP = "192.168.0.183"
+g_SERVER_PORT = "6102" 
+
+--外网服务器IP和Port
+-- g_SERVER_IP = "115.159.99.24"
+-- g_SERVER_PORT = "6102" 

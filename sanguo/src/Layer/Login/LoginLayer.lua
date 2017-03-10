@@ -108,6 +108,7 @@ function LoginLayer:init()
 
     self.m_selServerName = ""
     self.m_selServerId = 0  --在服务器选择界面选中的服务器名称和ID
+    self.serListData = nil  --服务器列表数据
 
     -- local function listViewEvent(sender, eventType)
     --     if eventType == ccui.ListViewEventType.ONSELECTEDITEM_START then
@@ -145,6 +146,9 @@ function LoginLayer:init()
     self:LoadUserDataAndShowUI()
 
     self:LoadEventListenerCustom()   --自定义异步事件监听
+
+    --请求服务器列表
+
 end
 
 --自定义异步事件监听
@@ -164,8 +168,12 @@ function LoginLayer:LoadEventListenerCustom()
     g_EventDispatcher:addEventListenerWithFixedPriority(self.serList_listener, 1)
 end
 
-function LoginLayer:LoadServerListCells(serListData)
+function LoginLayer:UpdateLoginServerList()
     self.serverListView:removeAllChildren()
+    self.serListData = g_NetworkMgr.m_LoginAccount.serverList
+    if #self.serListData < 1 then
+        return
+    end
 
     local function listBtnCallBack(sender,eventType)
         if eventType == ccui.TouchEventType.began then
@@ -177,12 +185,12 @@ function LoginLayer:LoadServerListCells(serListData)
     end
 
     --add custom item
-    for i = 1, #serListData do
+    for i = 1, #self.serListData do
         local custom_button = ccui.Button:create("public_inputBg.png", "", "", ccui.TextureResType.plistType)
-        custom_button:setTag(500 + serListData[i].serId)
+        custom_button:setTag(500 + self.serListData[i].serId)
         custom_button:setTouchEnabled(true)
         custom_button:addTouchEventListener(listBtnCallBack)
-        custom_button:setTitleText(serListData[i].serName)
+        custom_button:setTitleText(self.serListData[i].serName)
         custom_button:setTitleColor(cc.c3b(255, 165, 0))
         custom_button:setTitleFontSize(30)
         custom_button:setTitleFontName(g_sDefaultTTFpath)
@@ -308,7 +316,7 @@ function LoginLayer:touchEvent(sender, eventType)
                 self.lastSerBtn:setVisible(false)
             end
 
-            --self:LoadServerListCells()
+            self:UpdateLoginServerList()
 
         elseif sender == self.startGameBtn then   --开始游戏
             g_UserDefaultMgr:SetUserName(self.m_userName)    --保存用户名

@@ -26,7 +26,7 @@ end
 g_Login_Account = class("g_Login_Account",__BaseStruct)
 function g_Login_Account:ctor()
 	self.serverList = {}  --g_Login_ServerInfo
-	self.accountData = g_Login_AccountData:new()
+	self.accountData = g_Login_AccountData:new()   --m_AccountData
 	self.userAccount = g_Login_UserAccount:new()
 	self.selServer = 0
 	self.sid = 0
@@ -68,8 +68,8 @@ end
 --服务器区服的用户登录信息
 g_Login_UserAccount = class("g_Login_UserAccount",__BaseStruct)
 function g_Login_UserAccount:ctor()
-	self.Account  = 0 
-	self.Password  = 0 
+	self.UserName  = ""    --Account
+	self.Password  = ""
 end
 
 

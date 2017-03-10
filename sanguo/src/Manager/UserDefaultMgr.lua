@@ -28,6 +28,10 @@ end
 
 local UserDefault = cc.UserDefault:getInstance()
 
+function UserDefaultMgr:Flush()
+    UserDefault:flush()
+end
+
 --获取用户名
 function UserDefaultMgr:GetUserName()
     return UserDefault:getStringForKey("UserName")
@@ -74,6 +78,15 @@ function UserDefaultMgr:SetUserServer(serName, serId, bFlush)
     if bFlush then
         UserDefault:flush()
     end
+end
+
+--是否首次登陆
+function UserDefaultMgr:GetIsFirstLogin()
+    local lastServerId = self:GetLastSelServerId()
+    if slastServerId and lastServerId > 0 then
+        return false
+    end
+    return true
 end
 
 --是否需要排队连接服务器
@@ -145,6 +158,20 @@ function UserDefaultMgr:SetLastSelServerId(id, bflush)
         UserDefault:flush()
     end
 end
+
+--登录服务器名称
+function UserDefaultMgr:GetLastSelServerName()
+    return UserDefault:getStringForKey("LastServerName")
+end
+
+function UserDefaultMgr:SetLastSelServerName(serName, bflush)
+    UserDefault:setStringForKey("LastServerName", serName)
+    if bFlush then
+        UserDefault:flush()
+    end
+end
+
+
 
 
 return UserDefaultMgr

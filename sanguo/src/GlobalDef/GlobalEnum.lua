@@ -59,6 +59,11 @@ g_EventListenerCustomName = {
 --网络通信协议号
 g_SocketCMD = {
 	NET_LOGIN = 1,    --登录游戏服务器
-	MSG_HEART_JUMP = 102, --心跳包
-	NET_ACC_LINEUP = 600, --排队服务器 
+	NET_CHOOSE_HERO = 4, --选择角色进入游戏
+	NET_HEART_JUMP = 102, --心跳包
+	NET_ACC_LOGIN = 501,  --帐号服务器-登录
+	NET_ACC_REG = 502,  --账号注册
+
+	NET_ACC_LINEUP = 600, --排队服务器--排队
+
 }

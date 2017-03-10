@@ -57,11 +57,30 @@ function GameScene:onCleanup()
     --G_Log_Info("GameScene:onCleanup()")
 end
 
+--结束游戏
+function GameScene:ExitGame()
+    g_NetworkMgr:delInstance()
+    cc.Director:getInstance():endToLua()
+end
+
 function GameScene:init()  
     --G_Log_Info("GameScene:init()")   
     local gameLayer = require("Layer.GameLayer")
     g_pGameLayer = gameLayer:create()  --gameLayer:new()
     self:addChild(g_pGameLayer)
+
+
+     --监听手机返回键
+    if g_AppPlatform == cc.PLATFORM_OS_ANDROID then
+        local function onRelease( keyCode, event )
+            if keyCode == cc.KeyCode.KEY_BACK then
+                self:ExitGame()
+            end   
+        end
+        local listener = cc.EventListenerKeyboard:create()
+        listener:registerScriptHandler(onRelease, cc.Handler.EVENT_KEYBOARD_RELEASED)
+        g_EventDispatcher:addEventListenerWithSceneGraphPriority(listener,self) 
+    end
 end
 
 
