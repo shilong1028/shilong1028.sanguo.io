@@ -2,6 +2,7 @@
 #include "ark_socket.h"
 #include "MsgDealMgr.h"
 #include "NetMsgMgr.h"
+#include "ark_socketEvent.h"
 #include "scripting/lua-bindings/manual/tolua_fix.h"
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
 
@@ -1629,6 +1630,565 @@ int lua_register_Network_MsgDealMgr(lua_State* tolua_S)
     g_typeCast["MsgDealMgr"] = "MsgDealMgr";
     return 1;
 }
+
+int lua_Network_ark_socketEvent_getOnRecPack(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_getOnRecPack'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_getOnRecPack'", nullptr);
+            return 0;
+        }
+        int ret = cobj->getOnRecPack();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:getOnRecPack",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_getOnRecPack'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_OnRunExData(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_OnRunExData'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ClientSocket* arg0;
+
+        ok &= luaval_to_object<ClientSocket>(tolua_S, 2, "ClientSocket",&arg0, "ark_socketEvent:OnRunExData");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_OnRunExData'", nullptr);
+            return 0;
+        }
+        cobj->OnRunExData(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:OnRunExData",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_OnRunExData'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_OnConnect(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_OnConnect'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ClientSocket* arg0;
+
+        ok &= luaval_to_object<ClientSocket>(tolua_S, 2, "ClientSocket",&arg0, "ark_socketEvent:OnConnect");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_OnConnect'", nullptr);
+            return 0;
+        }
+        cobj->OnConnect(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:OnConnect",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_OnConnect'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_OnSocketError(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_OnSocketError'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ClientSocket* arg0;
+
+        ok &= luaval_to_object<ClientSocket>(tolua_S, 2, "ClientSocket",&arg0, "ark_socketEvent:OnSocketError");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_OnSocketError'", nullptr);
+            return 0;
+        }
+        cobj->OnSocketError(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:OnSocketError",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_OnSocketError'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_OnClose(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_OnClose'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ClientSocket* arg0;
+
+        ok &= luaval_to_object<ClientSocket>(tolua_S, 2, "ClientSocket",&arg0, "ark_socketEvent:OnClose");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_OnClose'", nullptr);
+            return 0;
+        }
+        cobj->OnClose(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:OnClose",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_OnClose'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_releaseStream(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_releaseStream'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_releaseStream'", nullptr);
+            return 0;
+        }
+        cobj->releaseStream();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:releaseStream",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_releaseStream'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_OnData(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_OnData'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 3) 
+    {
+        ClientSocket* arg0;
+        const char* arg1;
+        int arg2;
+
+        ok &= luaval_to_object<ClientSocket>(tolua_S, 2, "ClientSocket",&arg0, "ark_socketEvent:OnData");
+
+        std::string arg1_tmp; ok &= luaval_to_std_string(tolua_S, 3, &arg1_tmp, "ark_socketEvent:OnData"); arg1 = arg1_tmp.c_str();
+
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "ark_socketEvent:OnData");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_OnData'", nullptr);
+            return 0;
+        }
+        cobj->OnData(arg0, arg1, arg2);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:OnData",argc, 3);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_OnData'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_OnConnectFail(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_OnConnectFail'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ClientSocket* arg0;
+
+        ok &= luaval_to_object<ClientSocket>(tolua_S, 2, "ClientSocket",&arg0, "ark_socketEvent:OnConnectFail");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_OnConnectFail'", nullptr);
+            return 0;
+        }
+        cobj->OnConnectFail(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:OnConnectFail",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_OnConnectFail'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_getNode(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_getNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_getNode'", nullptr);
+            return 0;
+        }
+        cocos2d::Node* ret = cobj->getNode();
+        object_to_luaval<cocos2d::Node>(tolua_S, "cc.Node",(cocos2d::Node*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:getNode",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_getNode'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_getStream(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ark_socketEvent",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ark_socketEvent*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_Network_ark_socketEvent_getStream'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_getStream'", nullptr);
+            return 0;
+        }
+        ark_Stream* ret = cobj->getStream();
+        object_to_luaval<ark_Stream>(tolua_S, "ark_Stream",(ark_Stream*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:getStream",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_getStream'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_Network_ark_socketEvent_constructor(lua_State* tolua_S)
+{
+    int argc = 0;
+    ark_socketEvent* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_Network_ark_socketEvent_constructor'", nullptr);
+            return 0;
+        }
+        cobj = new ark_socketEvent();
+        tolua_pushusertype(tolua_S,(void*)cobj,"ark_socketEvent");
+        tolua_register_gc(tolua_S,lua_gettop(tolua_S));
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ark_socketEvent:ark_socketEvent",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_error(tolua_S,"#ferror in function 'lua_Network_ark_socketEvent_constructor'.",&tolua_err);
+#endif
+
+    return 0;
+}
+
+static int lua_Network_ark_socketEvent_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (ark_socketEvent)");
+    return 0;
+}
+
+int lua_register_Network_ark_socketEvent(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"ark_socketEvent");
+    tolua_cclass(tolua_S,"ark_socketEvent","ark_socketEvent","ClientSocketEvent",nullptr);
+
+    tolua_beginmodule(tolua_S,"ark_socketEvent");
+        tolua_function(tolua_S,"new",lua_Network_ark_socketEvent_constructor);
+        tolua_function(tolua_S,"getOnRecPack",lua_Network_ark_socketEvent_getOnRecPack);
+        tolua_function(tolua_S,"OnRunExData",lua_Network_ark_socketEvent_OnRunExData);
+        tolua_function(tolua_S,"OnConnect",lua_Network_ark_socketEvent_OnConnect);
+        tolua_function(tolua_S,"OnSocketError",lua_Network_ark_socketEvent_OnSocketError);
+        tolua_function(tolua_S,"OnClose",lua_Network_ark_socketEvent_OnClose);
+        tolua_function(tolua_S,"releaseStream",lua_Network_ark_socketEvent_releaseStream);
+        tolua_function(tolua_S,"OnData",lua_Network_ark_socketEvent_OnData);
+        tolua_function(tolua_S,"OnConnectFail",lua_Network_ark_socketEvent_OnConnectFail);
+        tolua_function(tolua_S,"getNode",lua_Network_ark_socketEvent_getNode);
+        tolua_function(tolua_S,"getStream",lua_Network_ark_socketEvent_getStream);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(ark_socketEvent).name();
+    g_luaType[typeName] = "ark_socketEvent";
+    g_typeCast["ark_socketEvent"] = "ark_socketEvent";
+    return 1;
+}
 TOLUA_API int register_all_Network(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
@@ -1636,6 +2196,7 @@ TOLUA_API int register_all_Network(lua_State* tolua_S)
 	tolua_module(tolua_S,nullptr,0);
 	tolua_beginmodule(tolua_S,nullptr);
 
+	lua_register_Network_ark_socketEvent(tolua_S);
 	lua_register_Network_MsgDealMgr(tolua_S);
 	lua_register_Network_ClientSocket(tolua_S);
 	lua_register_Network_NetMsgMgr(tolua_S);

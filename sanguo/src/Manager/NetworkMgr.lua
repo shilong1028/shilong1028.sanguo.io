@@ -46,6 +46,7 @@ end
 function NetworkMgr:initData()
 	self.m_networkDelayTime = 0.0  --网络系统系统延迟频率（心跳包，断线等判定）
 	self.lastTick = 0  --win平台的心跳包频率
+	self.m_LoginMsgBuf = nil
     self.m_networkState = g_networkState.START
 	self.m_networkError = g_networkError.FALSE
 	--启动检测重连Timer
@@ -218,7 +219,7 @@ function NetworkMgr:ReconnectServer(ip, port)
     	clientSocket:SetServerIP(ip, port)
 
     	self.socketEvent = ark_socketEvent:new() --代理
-	    ScriptHandlerMgr:getInstance():registerScriptHandler(self.socketEvent:getNode(),socketCallback,cc.Handler.EVENT_CUSTOM_COMMON)
+	    ScriptHandlerMgr:getInstance():registerScriptHandler(self.socketEvent:getNode(), socketCallback, cc.Handler.EVENT_CUSTOM_COMMON)
 
 	    clientSocket:SetEvent(self.socketEvent)
 	    clientSocket:Start()
@@ -256,7 +257,7 @@ function NetworkMgr:ConnectACLoginIfNeeded(forceReconnect)
 	G_Log_Info("NetworkMgr:ConnectACLoginIfNeeded()")
     if forceReconnect and type(forceReconnect) == "boolean" then
         self:ReconnectServer(g_SERVER_IP, g_SERVER_PORT)
-    elseif(GAME_SCENE:GetGameSocket():IsConnected() == false) then
+    elseif(self:GetNetWorkSocket():IsConnected() == false) then
         self:ReconnectServer(g_SERVER_IP, g_SERVER_PORT)
 	end
 end
@@ -264,12 +265,15 @@ end
 --发送登录协议，官方渠道是点击按钮发送，sdk是接收到渠道的uid token后发送
 --sdk渠道的话因为sdk没有注册按钮，所以有可能会返回注册成功的协议（首次登录），然后进入服务器列表界面。
 function NetworkMgr:StartACLogin( name,  password,  version,  adCode)
-	G_Log_Info("NetworkMgr:StartACLogin(), name = %s, psw = %s, version = %s, adCode = %d", name, password, version, adCode)
+	G_Log_Info("NetworkMgr:StartACLogin(), name = %s, psw = %s", name, password)
+	version = "40001"
+	adCode = 1   --官方
+
     self:ConnectACLoginIfNeeded()
 
 	--登陆之前清除角色信息
 
-	LoginMainLayer._LoginMsgBuf = g_NetMsgDealMgr:QueryACLogin(name,password,version,adCode)
+	self.m_LoginMsgBuf = g_NetMsgDealMgr:QueryACLogin(name,password,version,adCode)
  
     --启动检测重连Timer
     self:OpenReLoginUpdateListener(g_SERVER_IP, g_SERVER_PORT)

@@ -211,13 +211,14 @@ end
 
 --501  帐号服务器-登录
 function NetMsgDealMgr:QueryACLogin(name, password, version, adCode)
+	G_Log_Info("NetMsgDealMgr:QueryACLogin(), name = %s, psw = %s", name, password)
 	local stream = ark_Stream:new()
 	MsgDealMgr:QueryInitWithCMD(2048, stream, g_SocketCMD.NET_ACC_LOGIN)  
 	stream:WriteString(name)
 	stream:WriteString(password)
 	stream:WriteString(version)
 	stream:WriteWord(adCode)
-	local bfirstLogin = USER_CFG:GetIsFirstLogin()   --是否第一次登陆
+	local bfirstLogin = g_UserDefaultMgr:GetIsFirstLogin()   --是否第一次登陆
     stream:WriteByte(bfirstLogin == false and 0 or 1)
 	local mobile = ""
 	local panelRatio = ""
@@ -246,8 +247,8 @@ end
 
 --501  帐号服务器-登录
 function NetMsgDealMgr:DealACLogin(stream)
+	G_Log_Info("NetMsgDealMgr:DealACLogin(stream)")
 	local succ = stream:ReadByte()
-	G_Log_Info("NetMsgDealMgr:DealACLogin(stream), succ = %d", succ)
 	if(succ == 1) then  --登陆成功
 		self:DealMsgAcLoginInfo(stream)
         --登陆成功发送idfa码

@@ -168,7 +168,9 @@ function LoginLayer:LoadEventListenerCustom()
     g_EventDispatcher:addEventListenerWithFixedPriority(self.serList_listener, 1)
 end
 
+--登录或注册成功时会返回服务器列表信息
 function LoginLayer:UpdateLoginServerList()
+    G_Log_Info("LoginLayer:UpdateLoginServerList()")
     self.serverListView:removeAllChildren()
     self.serListData = g_NetworkMgr.m_LoginAccount.serverList
     if #self.serListData < 1 then
@@ -204,6 +206,8 @@ function LoginLayer:UpdateLoginServerList()
 
         self.serverListView:addChild(custom_item)
     end
+
+    self:BeginStartGame()  --开始游戏页面
 end
 
 function LoginLayer:LoadUserDataAndShowUI()
@@ -259,45 +263,49 @@ function LoginLayer:TextFieldEvent(sender, eventType)
     end
 end
 
+--登录页面
+function LoginLayer:BeginLogin()
+    G_Log_Info("LoginLayer:BeginLogin()")
+    self.serverBtn:setVisible(false)
+    self.startGameBtn:setVisible(false)
+    self.backLoginBtn:setVisible(false)
+    self.loginNode:setVisible(true)
+    self.registerNode:setVisible(false)
+    self.serverNode:setVisible(false)
+
+    if self.m_userName and self.m_userName ~= "" then
+        self.TextField_userName:setString(self.m_userName)
+    end
+
+    if self.m_passWord and self.m_passWord ~= "" then
+        self.TextField_passWord:setString(self.m_passWord)
+    end
+end
+
+--开始进入游戏页面
+function LoginLayer:BeginStartGame()
+    G_Log_Info("LoginLayer:BeginStartGame()")
+    if not self.m_userName or string.len(self.userNameStr) < 6 or string.len(self.userNameStr) > 10 or 
+        not self.m_passWord or string.len(self.passWordStr) < 6 or string.len(self.passWordStr) > 10 then
+        self:BeginLogin()   --用户名或密码非法，进入登录界面，否则进入开始游戏界面
+    end
+
+    self.serverBtn:setVisible(true)
+    self.startGameBtn:setVisible(true)
+    self.backLoginBtn:setVisible(true)
+    self.loginNode:setVisible(false)
+    self.registerNode:setVisible(false)
+    self.serverNode:setVisible(false)
+
+    if self.m_serverName and self.m_serverName ~= "" and self.m_serverId and self.m_serverId > 0 then
+        self.serverBtn:setTitleText(self.m_serverName)
+    else
+        self.serverBtn:setTitleText("")
+    end
+end
+
 function LoginLayer:touchEvent(sender, eventType)
-    --G_Log_Info("LoginLayer:touchEvent")
-    local function BeginLogin()
-        self.serverBtn:setVisible(false)
-        self.startGameBtn:setVisible(false)
-        self.backLoginBtn:setVisible(false)
-        self.loginNode:setVisible(true)
-        self.registerNode:setVisible(false)
-        self.serverNode:setVisible(false)
-
-        if self.m_userName and self.m_userName ~= "" then
-            self.TextField_userName:setString(self.m_userName)
-        end
-
-        if self.m_passWord and self.m_passWord ~= "" then
-            self.TextField_passWord:setString(self.m_passWord)
-        end
-    end
-
-    local function BeginStartGame()
-        if not self.m_userName or string.len(self.userNameStr) < 6 or string.len(self.userNameStr) > 10 or 
-            not self.m_passWord or string.len(self.passWordStr) < 6 or string.len(self.passWordStr) > 10 then
-            BeginLogin()   --用户名或密码非法，进入登录界面，否则进入开始游戏界面
-        end
-
-        self.serverBtn:setVisible(true)
-        self.startGameBtn:setVisible(true)
-        self.backLoginBtn:setVisible(true)
-        self.loginNode:setVisible(false)
-        self.registerNode:setVisible(false)
-        self.serverNode:setVisible(false)
-
-        if self.m_serverName and self.m_serverName ~= "" and self.m_serverId and self.m_serverId > 0 then
-            self.serverBtn:setTitleText(self.m_serverName)
-        else
-            self.serverBtn:setTitleText("")
-        end
-    end
-
+    --G_Log_Info("LoginLayer:touchEvent()")
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.serverBtn then     --选择服务器页面
 
@@ -325,7 +333,7 @@ function LoginLayer:touchEvent(sender, eventType)
 
             g_pGameLayer:StartGameLayer()
         elseif sender == self.backLoginBtn then   --重新登陆
-            BeginLogin()
+            self:BeginLogin()
         elseif sender == self.loginBtn then   --登录
             if string.len(self.userNameStr) < 6 or string.len(self.userNameStr) > 10 then
                 g_pGameLayer:ShowScrollTips(lua_str_WarnTips1, g_ColorDef.Red, g_defaultTipsFontSize)
@@ -338,7 +346,8 @@ function LoginLayer:touchEvent(sender, eventType)
 
             self.m_userName = self.userNameStr  --新的用户名
             self.m_passWord = self.passWordStr  --新的用户登录密码
-            BeginStartGame()
+            --self:BeginStartGame()
+            g_NetworkMgr:StartACLogin(self.m_userName, self.m_passWord)
         elseif sender == self.registerBtn then   --注册界面
             self.serverBtn:setVisible(false)
             self.startGameBtn:setVisible(false)
@@ -347,17 +356,17 @@ function LoginLayer:touchEvent(sender, eventType)
             self.registerNode:setVisible(true)
             self.serverNode:setVisible(false)
         elseif sender == self.register_backBtn then   --注册返回     
-            BeginLogin()
+            self:BeginLogin()
         elseif sender == self.register_registerBtn then   --注册用户
 
         elseif sender == self.lastSerBtn then   --上一次登录服务器
-            BeginStartGame()
+            self:BeginStartGame()
         elseif sender == self.selectBtn then   --选好了服务器
             self.m_serverName = self.m_selServerName
             self.m_serverId = self.m_selServerId
-            BeginStartGame()
+            self:BeginStartGame()
         elseif sender == self.server_backBtn then   --服务器返回
-            BeginStartGame()
+            self:BeginStartGame()
         end
     end
 end

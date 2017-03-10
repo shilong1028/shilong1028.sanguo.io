@@ -2,7 +2,7 @@
 #define _ARK_SOCKETEVENT_H_
 
 #include "ark_socket.h"
-#include "ark_Stream.h"
+#include "../ark_Stream.h"
 #include <iostream>
 #include "NetMsgMgr.h"
 #include "ark_NetMessage.h"
