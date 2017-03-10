@@ -123,6 +123,7 @@ function LoginLayer:init()
 
     --服务器列表
     self.serverListView  = self.serverNode:getChildByName("serverListView") 
+    --self.serverListView:setScrollBarEnabled(false)
     -- local listView = ccui.ListView:create()
     -- listView:setDirection(ccui.ScrollViewDir.vertical)
     -- listView:setBounceEnabled(true)

@@ -45,8 +45,8 @@ end
 
 function GameScene:onEnterTransitionFinish()
     --G_Log_Info("GameScene:onEnterTransitionFinish()")
-    -- local NetworkMgr = require "Manager.NetworkMgr"
-    -- g_NetworkMgr = g_NetworkMgr or NetworkMgr:GetInstance()  --用于服务器和客户端之间的socket通信连接
+    local NetworkMgr = require "Manager.NetworkMgr"
+    g_NetworkMgr = g_NetworkMgr or NetworkMgr:GetInstance()  --用于服务器和客户端之间的socket通信连接
 end
 
 function GameScene:onExitTransitionStart()

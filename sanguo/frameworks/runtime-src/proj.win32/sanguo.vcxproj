@@ -205,6 +205,7 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClInclude Include="..\Classes\Network\ark_NetMessage.h" />
     <ClInclude Include="..\Classes\Network\ark_socket.h" />
     <ClInclude Include="..\Classes\Network\ark_socketEvent.h" />
+    <ClInclude Include="..\Classes\Network\lua_Network_auto.hpp" />
     <ClInclude Include="..\Classes\Network\MsgDealMgr.h" />
     <ClInclude Include="..\Classes\Network\mypthread.h" />
     <ClInclude Include="..\Classes\Network\NetMsgMgr.h" />
@@ -228,6 +229,7 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClCompile Include="..\Classes\Network\ark_NetMessage.cpp" />
     <ClCompile Include="..\Classes\Network\ark_socket.cpp" />
     <ClCompile Include="..\Classes\Network\ark_socketEvent.cpp" />
+    <ClCompile Include="..\Classes\Network\lua_Network_auto.cpp" />
     <ClCompile Include="..\Classes\Network\MsgDealMgr.cpp" />
     <ClCompile Include="..\Classes\Network\mypthread.cpp" />
     <ClCompile Include="..\Classes\Network\NetMsgMgr.cpp" />

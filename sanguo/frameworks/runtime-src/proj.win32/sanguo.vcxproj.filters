@@ -83,6 +83,9 @@
     <ClInclude Include="..\Classes\Network\NetMsgMgr.h">
       <Filter>Classes\Network</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Network\lua_Network_auto.hpp">
+      <Filter>Classes\Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -138,6 +141,9 @@
       <Filter>Classes\Network</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Network\NetMsgMgr.cpp">
+      <Filter>Classes\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Network\lua_Network_auto.cpp">
       <Filter>Classes\Network</Filter>
     </ClCompile>
   </ItemGroup>
