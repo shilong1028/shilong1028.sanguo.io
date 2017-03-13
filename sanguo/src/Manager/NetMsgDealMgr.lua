@@ -259,22 +259,34 @@ function NetMsgDealMgr:DealACLogin(stream)
 end
 
 --502 账号注册
-function NetMsgDealMgr:QueryACReg(name, pwd, ver, adCode, mobileInfo, panelRatio, mac, newUser)
+function NetMsgDealMgr:QueryACReg(name, password, ver, adCode, mobileInfo, panelRatio, mac, newUser)
+	G_Log_Info("NetMsgDealMgr:QueryACReg(), name = %s, psw = %s", name, password)
 	local stream = ark_Stream:new()
 	MsgDealMgr:QueryInitWithCMD(1024, stream, g_SocketCMD.NET_ACC_REG)  
+	stream:WriteByte(2)
 	stream:WriteString(name)
-	stream:WriteString(pwd)
+	stream:WriteString(password)
 	stream:WriteString(ver)
 	stream:WriteWord(adCode)
 	stream:WriteString(mobileInfo)
 	stream:WriteString(panelRatio)
 	stream:WriteByte(newUser)
-	stream:WriteString(mac)
+	stream:WriteString(mac)	
 	MsgDealMgr:QueryPackAndSend(stream)
+end
+
+--502 账号注册（检查用户名是否占用）
+function NetMsgDealMgr:QueryACCheckNickName(name)
+	local stream = ark_Stream:new()
+	MsgDealMgr:QueryInitWithCMD(1024, stream, g_SocketCMD.NET_ACC_REG) 
+	stream:WriteByte(1)
+	stream:WriteString(name)
+    MsgDealMgr:QueryPackAndSend(stream)
 end
 
 --502 账号注册
 function NetMsgDealMgr:DealAcLoginReg( stream)
+	G_Log_Info("NetMsgDealMgr:DealAcLoginReg(stream)")
 	local op = stream:ReadByte()
     if(op == 1) then  --校验用户名
         local userName = stream:ReadString()

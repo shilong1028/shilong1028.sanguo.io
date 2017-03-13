@@ -264,7 +264,7 @@ end
 
 --发送登录协议，官方渠道是点击按钮发送，sdk是接收到渠道的uid token后发送
 --sdk渠道的话因为sdk没有注册按钮，所以有可能会返回注册成功的协议（首次登录），然后进入服务器列表界面。
-function NetworkMgr:StartACLogin( name,  password,  version,  adCode)
+function NetworkMgr:StartACLogin(name, password, version,  adCode)
 	G_Log_Info("NetworkMgr:StartACLogin(), name = %s, psw = %s", name, password)
 	version = "40001"
 	adCode = 1   --官方
@@ -272,11 +272,32 @@ function NetworkMgr:StartACLogin( name,  password,  version,  adCode)
     self:ConnectACLoginIfNeeded()
 
 	--登陆之前清除角色信息
-
+	self.m_LoginAccount.userAccount.UserName = name
+	self.m_LoginAccount.userAccount.Password = password
 	self.m_LoginMsgBuf = g_NetMsgDealMgr:QueryACLogin(name,password,version,adCode)
  
     --启动检测重连Timer
     self:OpenReLoginUpdateListener(g_SERVER_IP, g_SERVER_PORT)
+end
+
+--注册用户
+function NetworkMgr:StartACRegister(name, password, version, adCode, mobileInfo, panelRatio, mac)
+	G_Log_Info("NetworkMgr:StartACRegister(), name = %s, psw = %s", name, password)
+	version = "40001"
+	adCode = 1
+	mobileInfo = ""
+	panelRatio = ""
+	mac = ""
+
+    self:ConnectACLoginIfNeeded()
+
+    self.m_LoginAccount.userAccount.UserName = name
+	self.m_LoginAccount.userAccount.Password = password
+
+    local lastUserName = g_UserDefaultMgr:GetUserName() or ""
+    local isNewUser = lastUserName ~= "" and 0 or 1
+
+	g_NetMsgDealMgr:QueryACReg(name, password, version, adCode, mobileInfo, panelRatio, mac, isNewUser)
 end
 
 function NetworkMgr:CloseReLoginUpdateListener()

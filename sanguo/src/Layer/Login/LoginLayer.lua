@@ -250,15 +250,6 @@ function LoginLayer:TextFieldEvent(sender, eventType)
             self.register_passWordStr = self.TextField_register_passWord:getString()
         elseif sender == self.TextField_register_passWord2 then  --注册密码2
             self.register_passWordStr2 = self.TextField_register_passWord2:getString()
-
-        elseif sender == self.TextField_userName then    --登录用户名
-            self.userNameStr = self.TextField_userName:getString()
-        elseif sender == self.TextField_passWord then   --登录密码
-            self.passWordStr = self.TextField_passWord:getString()
-        elseif sender == self.TextField_register_userName then  --注册用户名
-            self.register_userNameStr = self.TextField_register_userName:getString()
-        elseif sender == self.TextField_register_passWord then
-            self.register_passWordStr = self.TextField_register_passWord:getString()
         end
     end
 end
@@ -358,7 +349,24 @@ function LoginLayer:touchEvent(sender, eventType)
         elseif sender == self.register_backBtn then   --注册返回     
             self:BeginLogin()
         elseif sender == self.register_registerBtn then   --注册用户
+            if string.len(self.register_userNameStr) < 6 or string.len(self.register_userNameStr) > 10 then
+                g_pGameLayer:ShowScrollTips(lua_str_WarnTips1, g_ColorDef.Red, g_defaultTipsFontSize)
+                return
+            end
+            if string.len(self.register_passWordStr) < 6 or string.len(self.register_passWordStr) > 10 then
+                g_pGameLayer:ShowScrollTips(lua_str_WarnTips2, g_ColorDef.Red, g_defaultTipsFontSize)
+                return
+            end
+            if self.register_passWordSt2 and self.register_passWordSt2 ~= self.register_passWordSt then
+                g_pGameLayer:ShowScrollTips(lua_str_WarnTips5, g_ColorDef.Red, g_defaultTipsFontSize)   --"注册密码不一致！"
+                return
+            end
 
+            --保存注册的信息
+            self.m_userName = self.register_userNameStr  --新的用户名
+            self.m_passWord = self.register_passWordStr  --新的用户登录密码
+
+            g_NetworkMgr:StartACRegister(self.m_userName, self.m_passWord)
         elseif sender == self.lastSerBtn then   --上一次登录服务器
             self:BeginStartGame()
         elseif sender == self.selectBtn then   --选好了服务器
