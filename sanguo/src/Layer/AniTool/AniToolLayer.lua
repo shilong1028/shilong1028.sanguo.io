@@ -392,6 +392,13 @@ function AniToolLayer:playAllAni(mask)
         BeginShiFaFunc(2)
     end
 
+    -- local function AniEndLocal(imod,typ)
+    --     if(typ == "end")then 
+    --     elseif(typ == "frame")then 
+    --     end
+    -- end
+    -- ScriptHandlerMgr:getInstance():registerScriptHandler(imod,AniEndLocal,cc.Handler.EVENT_CUSTOM_COMMON)
+
     self.bPause = false
 end
 
