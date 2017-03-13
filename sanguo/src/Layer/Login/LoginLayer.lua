@@ -108,7 +108,9 @@ function LoginLayer:init()
 
     self.m_selServerName = ""
     self.m_selServerId = 0  --在服务器选择界面选中的服务器名称和ID
+    self.m_lastSelServerBtn = nil --上次选中的服务器列表元素
     self.serListData = nil  --服务器列表数据
+    self.m_selServerData = nil  --选中的服务器数据
 
     -- local function listViewEvent(sender, eventType)
     --     if eventType == ccui.ListViewEventType.ONSELECTEDITEM_START then
@@ -146,9 +148,6 @@ function LoginLayer:init()
     self:LoadUserDataAndShowUI()
 
     self:LoadEventListenerCustom()   --自定义异步事件监听
-
-    --请求服务器列表
-
 end
 
 --自定义异步事件监听
@@ -166,48 +165,6 @@ function LoginLayer:LoadEventListenerCustom()
 
     self.serList_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.Login_serverListEvent, serList_listenerCallBack)
     g_EventDispatcher:addEventListenerWithFixedPriority(self.serList_listener, 1)
-end
-
---登录或注册成功时会返回服务器列表信息
-function LoginLayer:UpdateLoginServerList()
-    G_Log_Info("LoginLayer:UpdateLoginServerList()")
-    self.serverListView:removeAllChildren()
-    self.serListData = g_NetworkMgr.m_LoginAccount.serverList
-    if #self.serListData < 1 then
-        return
-    end
-
-    local function listBtnCallBack(sender,eventType)
-        if eventType == ccui.TouchEventType.began then
-        elseif eventType == ccui.TouchEventType.moved then
-        elseif eventType == ccui.TouchEventType.ended then
-            local serId = sender:getTag() - 500
-        elseif eventType == ccui.TouchEventType.canceled then
-        end
-    end
-
-    --add custom item
-    for i = 1, #self.serListData do
-        local custom_button = ccui.Button:create("public_inputBg.png", "", "", ccui.TextureResType.plistType)
-        custom_button:setTag(500 + self.serListData[i].serId)
-        custom_button:setTouchEnabled(true)
-        custom_button:addTouchEventListener(listBtnCallBack)
-        custom_button:setTitleText(self.serListData[i].serName)
-        custom_button:setTitleColor(cc.c3b(255, 165, 0))
-        custom_button:setTitleFontSize(30)
-        custom_button:setTitleFontName(g_sDefaultTTFpath)
-        custom_button:setScale9Enabled(true)
-        custom_button:setContentSize(cc.size(300, 50))
-
-        local custom_item = ccui.Layout:create()
-        custom_item:setContentSize(cc.size(300, 50))
-        custom_button:setPosition(cc.p(custom_item:getContentSize().width / 2.0, custom_item:getContentSize().height / 2.0))
-        custom_item:addChild(custom_button)
-
-        self.serverListView:addChild(custom_item)
-    end
-
-    self:BeginStartGame()  --开始游戏页面
 end
 
 function LoginLayer:LoadUserDataAndShowUI()
@@ -256,7 +213,7 @@ end
 
 --登录页面
 function LoginLayer:BeginLogin()
-    G_Log_Info("LoginLayer:BeginLogin()")
+    --G_Log_Info("LoginLayer:BeginLogin()")
     self.serverBtn:setVisible(false)
     self.startGameBtn:setVisible(false)
     self.backLoginBtn:setVisible(false)
@@ -275,7 +232,9 @@ end
 
 --开始进入游戏页面
 function LoginLayer:BeginStartGame()
-    G_Log_Info("LoginLayer:BeginStartGame()")
+    --G_Log_Info("LoginLayer:BeginStartGame()")
+    self.m_lastSelServerBtn = nil --上次选中的服务器列表元素
+
     if not self.m_userName or string.len(self.userNameStr) < 6 or string.len(self.userNameStr) > 10 or 
         not self.m_passWord or string.len(self.passWordStr) < 6 or string.len(self.passWordStr) > 10 then
         self:BeginLogin()   --用户名或密码非法，进入登录界面，否则进入开始游戏界面
@@ -295,34 +254,108 @@ function LoginLayer:BeginStartGame()
     end
 end
 
+--开始服务器列表界面
+function LoginLayer:BeginStartSerList(bForceOpen)
+    --G_Log_Info("LoginLayer:BeginStartSerList()")
+    self.serListData = g_NetworkMgr.m_LoginAccount.serverList
+    --G_Log_Dump(self.serListData, "self.serListData = ")
+
+    if (not bForceOpen or bForceOpen == false) and self.serListData then
+        if self.m_serverId and self.m_serverId > 0 then
+            for i = 1, #self.serListData do
+                if self.serListData[i].serId == self.m_serverId then
+                    self.m_selServerData = self.serListData[i]  --选中的服务器数据
+                    self:BeginStartGame()
+                    return;
+                end
+            end
+        end
+    end
+
+    self.serverBtn:setVisible(false)
+    self.startGameBtn:setVisible(false)
+    self.backLoginBtn:setVisible(false)
+    self.loginNode:setVisible(false)
+    self.registerNode:setVisible(false)
+    self.serverNode:setVisible(true)
+
+    if self.m_serverName and self.m_serverName ~= "" and self.m_serverId and self.m_serverId > 0 then
+        self.lastSerBtn:setTitleText(self.m_serverName)
+        self.lastSerBtn:setVisible(true)
+    else
+        self.lastSerBtn:setTitleText("")
+        self.lastSerBtn:setVisible(false)
+    end
+
+    self:UpdateLoginServerList()
+end
+
+--登录或注册成功时会返回服务器列表信息
+function LoginLayer:UpdateLoginServerList()
+    --G_Log_Info("LoginLayer:UpdateLoginServerList()")
+    self.serverListView:removeAllChildren()
+    if #self.serListData < 1 then
+        return
+    end
+
+    local function listBtnCallBack(sender,eventType)
+        if eventType == ccui.TouchEventType.began then
+        elseif eventType == ccui.TouchEventType.moved then
+        elseif eventType == ccui.TouchEventType.ended then
+            local idx = sender:getTag() - 500
+            local serData = self.serListData[idx]
+            self.m_selServerData = serData  --选中的服务器数据
+
+            self.m_selServerName = serData.serName
+            self.m_selServerId = serData.serId
+
+            sender:setBright(false)
+            if self.m_lastSelServerBtn and sender ~= self.m_lastSelServerBtn then --上次选中的服务器列表元素
+                self.m_lastSelServerBtn:setBright(true)
+            end
+            self.m_lastSelServerBtn = sender
+        elseif eventType == ccui.TouchEventType.canceled then
+        end
+    end
+
+    --add custom item
+    for i = 1, #self.serListData do
+        local custom_button = ccui.Button:create("public_bar2.png", "public_bar4.png", "public_bar4.png", ccui.TextureResType.plistType)
+        custom_button:setTag(500 + i)  --self.serListData[i].serId)
+        custom_button:setTouchEnabled(true)
+        custom_button:addTouchEventListener(listBtnCallBack)
+        custom_button:setTitleText(self.serListData[i].serName)
+        custom_button:setTitleColor(cc.c3b(255, 165, 0))
+        custom_button:setTitleFontSize(30)
+        custom_button:setTitleFontName(g_sDefaultTTFpath)
+        custom_button:setScale9Enabled(true)
+        custom_button:setContentSize(cc.size(300, 50))
+
+        local custom_item = ccui.Layout:create()
+        custom_item:setContentSize(cc.size(300, 50))
+        custom_button:setPosition(cc.p(custom_item:getContentSize().width / 2.0, custom_item:getContentSize().height / 2.0))
+        custom_item:addChild(custom_button)
+
+        self.serverListView:addChild(custom_item)
+    end
+end
+
 function LoginLayer:touchEvent(sender, eventType)
     --G_Log_Info("LoginLayer:touchEvent()")
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.serverBtn then     --选择服务器页面
-
-            self.serverBtn:setVisible(false)
-            self.startGameBtn:setVisible(false)
-            self.backLoginBtn:setVisible(false)
-            self.loginNode:setVisible(false)
-            self.registerNode:setVisible(false)
-            self.serverNode:setVisible(true)
-
-            if self.m_serverName and self.m_serverName ~= "" and self.m_serverId and self.m_serverId > 0 then
-                self.lastSerBtn:setTitleText(self.m_serverName)
-                self.lastSerBtn:setVisible(true)
-            else
-                self.lastSerBtn:setTitleText("")
-                self.lastSerBtn:setVisible(false)
-            end
-
-            self:UpdateLoginServerList()
-
+            self:BeginStartSerList(true)
         elseif sender == self.startGameBtn then   --开始游戏
             g_UserDefaultMgr:SetUserName(self.m_userName)    --保存用户名
             g_UserDefaultMgr:SetUserPassword(self.m_passWord)  --保存用户登录密码
             g_UserDefaultMgr:SetUserServer(self.m_serverName, self.m_serverId)  --保存用户登录服务器名称及ID
 
+            --选中某个服务器后点击登录触发，信号触发成功后会进入创建界面,老号直接登录游戏
+            --g_NetworkMgr:StartGameLogin(self.m_selServerData)  --选中的服务器数据
+
+            --demo直接进入游戏,不请求网络
             g_pGameLayer:StartGameLayer()
+            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoginLayer)
         elseif sender == self.backLoginBtn then   --重新登陆
             self:BeginLogin()
         elseif sender == self.loginBtn then   --登录

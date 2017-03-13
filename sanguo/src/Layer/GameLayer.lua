@@ -17,12 +17,7 @@ end
 function GameLayer:init()  
     --G_Log_Info("GameLayer:init()")
     self.requireLuaVec = {}   --每个功能的Lua文件仅require一次即可
-    
-    --动画修改工具
-    --self:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")  
-
-    --登录界面
-    self:AddChild(g_GameLayerTag.LAYER_TAG_LoginLayer, "Login.LoginLayer")
+  
 end
 
 function GameLayer:AddChild(uid, className, funcName, userTable)   --className为Layer目录下的界面类路径，funcName为初始化方法，userTable初始数据
@@ -136,12 +131,38 @@ function GameLayer:ShowScrollTips(tips, color, fontSize)
     return scrollTipsLayer
 end
 
+--通信等待动画显示和隐藏
+function GameLayer:EnableSocketAni(bShowAni)
+    local pColorLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_SocketAni)
+    local aniSprite = nil
+    if not pColorLayer then
+        pColorLayer = cc.LayerColor:create(cc.c4b(0, 0, 0, 255 * 0.75), g_WinSize.width, g_WinSize.height)
+        --pColorLayer:setPosition(cc.p(g_WinSize.width / 2, g_WinSize.height / 2))
+        pColorLayer:setTouchEnabled(true)
+
+        aniSprite = cc.Sprite:createWithSpriteFrameName("public_loading_icon2.png") 
+        aniSprite:setPosition(cc.p(g_WinSize.width / 2, g_WinSize.height / 2))
+        aniSprite:runAction(cc.RepeatForever:create(cc.RotateBy:create(1.0, -360)))
+        pColorLayer:addChild(aniSprite, 10, 111)
+
+        self:addChild(pColorLayer, 200, g_GameLayerTag.LAYER_TAG_SocketAni)
+    end
+
+    if bShowAni == true then --动画等待动画
+        pColorLayer:setVisible(true)
+        g_Director:getActionManager():resumeTarget(aniSprite)
+    else
+        pColorLayer:setVisible(false)
+        g_Director:getActionManager():pauseTarget(aniSprite)
+    end
+end
+
 
 --/////////////////////// 以下为各个功能界面开启  ////////////////////////////
 
 --开始游戏界面
 function GameLayer:StartGameLayer()
-    self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoginLayer)
+    G_Log_Info("GameLayer:StartGameLayer()")
     --主城层
     --self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
     --主菜单层

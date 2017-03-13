@@ -21,8 +21,9 @@ g_GameLayerTag = {
 	LAYER_TAG_MAINCITY = 21,    --主城界面 
 	LAYER_TAG_CHINAMAP = 22,    --全国地图界面,
 
-	--主菜单层，主城层，全国地图层，不删除仅仅隐藏， 
 
+	--主菜单层，主城层，全国地图层，不删除仅仅隐藏， 
+	LAYER_TAG_SocketAni = 99,    --网络通信动画层,
 	--tag < 100 为特殊层，100之后为一般功能界面层tag
 	LAYER_TAG_LoginLayer = 100, --登录界面
 	LAYER_TAG_AniToolLayer = 101,    --动画工具界面,

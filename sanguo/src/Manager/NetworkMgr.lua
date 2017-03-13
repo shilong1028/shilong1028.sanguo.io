@@ -54,6 +54,8 @@ function NetworkMgr:initData()
 	self.m_ReLoginIp = ""
 	self.m_ReLoginPort = 0
 
+	self.m_loginServerData = nil  --已经或准备登录的服务器数据
+
 	--玩家登陆用户信息
 	self.m_LoginAccount = g_Login_Account:new()
 end
@@ -128,11 +130,12 @@ function NetworkMgr:CheckNetworkFail(dt)
 end
 
 function NetworkMgr:ShowDisconnectDialog(titleStr)
-	self:ReStartGameLogin()
+	self:StartGameLogin(self.m_loginServerData)
 end
 
-function NetworkMgr:ReStartGameLogin(serverInfo)
-	G_Log_Info("NetworkMgr:ReStartGameLogin()")
+--选中某个服务器后点击登录触发，信号触发成功后会进入创建界面,老号直接登录游戏
+function NetworkMgr:StartGameLogin(serverInfo)
+	--G_Log_Info("NetworkMgr:ReStartGameLogin()")
 	local lineUp = g_UserDefaultMgr:IsNeedLineUp() or false
 	if serverInfo ~= nil then
 		--选中某个服务器后点击登录触发，信号触发成功后会进入创建界面,老号直接登录游戏
@@ -148,6 +151,7 @@ function NetworkMgr:ReStartGameLogin(serverInfo)
 		g_UserDefaultMgr:SetLineUpServerPort(serverInfo.lineUpPort)
 		g_UserDefaultMgr:Flush()
 	end
+	self.m_loginServerData = serverInfo  --已经或准备登录的服务器数据
 
 	local lineUpIp = (serverInfo ~= nil) and serverInfo.lineUpIp or g_UserDefaultMgr:GetLineUpServerIp()
 	local lineUpPort = (serverInfo ~= nil) and serverInfo.lineUpPort or g_UserDefaultMgr:GetLineUpServerPort()
@@ -179,7 +183,7 @@ function NetworkMgr:ReStartGameLogin(serverInfo)
 end
 
 function NetworkMgr:StopCurConnect()
-	G_Log_Info("NetworkMgr:StopCurConnect()")
+	--G_Log_Info("NetworkMgr:StopCurConnect()")
     if self.socketEvent then
         ScriptHandlerMgr:getInstance():unregisterScriptHandler(self.socketEvent:getNode(),cc.Handler.EVENT_CUSTOM_COMMON)
         self.socketEvent = nil
@@ -195,7 +199,7 @@ function NetworkMgr:StopCurConnect()
 end
 
 function NetworkMgr:ReconnectServer(ip, port)
-    G_Log_Info("NetworkMgr:ReconnectServer(), ip = %s, port = %s", ip, port)
+    --G_Log_Info("NetworkMgr:ReconnectServer(), ip = %s, port = %s", ip, port)
     --清空发送缓存
     NetMsgMgr:getInstance():ClearAllMsg()   --C++   NetMsgMgr网络消息管理类
     self:StopCurConnect()
@@ -254,7 +258,7 @@ function NetworkMgr:OnConnectFail(msg)
 end
 
 function NetworkMgr:ConnectACLoginIfNeeded(forceReconnect)
-	G_Log_Info("NetworkMgr:ConnectACLoginIfNeeded()")
+	--G_Log_Info("NetworkMgr:ConnectACLoginIfNeeded()")
     if forceReconnect and type(forceReconnect) == "boolean" then
         self:ReconnectServer(g_SERVER_IP, g_SERVER_PORT)
     elseif(self:GetNetWorkSocket():IsConnected() == false) then
@@ -265,7 +269,7 @@ end
 --发送登录协议，官方渠道是点击按钮发送，sdk是接收到渠道的uid token后发送
 --sdk渠道的话因为sdk没有注册按钮，所以有可能会返回注册成功的协议（首次登录），然后进入服务器列表界面。
 function NetworkMgr:StartACLogin(name, password, version,  adCode)
-	G_Log_Info("NetworkMgr:StartACLogin(), name = %s, psw = %s", name, password)
+	--G_Log_Info("NetworkMgr:StartACLogin(), name = %s, psw = %s", name, password)
 	version = "40001"
 	adCode = 1   --官方
 
@@ -282,7 +286,7 @@ end
 
 --注册用户
 function NetworkMgr:StartACRegister(name, password, version, adCode, mobileInfo, panelRatio, mac)
-	G_Log_Info("NetworkMgr:StartACRegister(), name = %s, psw = %s", name, password)
+	--G_Log_Info("NetworkMgr:StartACRegister(), name = %s, psw = %s", name, password)
 	version = "40001"
 	adCode = 1
 	mobileInfo = ""
@@ -428,7 +432,11 @@ function NetworkMgr:DispatchNetMsg(stream)
     --local curTimeTick = SystemHelper:GetCurTick()
     --判断是否已进入游戏，收到服务器选择角色进入游戏命令之前，只处理特定任务
 
-    G_Log_Info("NetworkMgr:DispatchNetMsg(), 收到协议：= %d", CMD)
+    --G_Log_Info("NetworkMgr:DispatchNetMsg(), 收到协议：= %d", CMD)
+    if CMD ~= g_SocketCMD.NET_HEART_JUMP then
+		g_pGameLayer:EnableSocketAni(false)
+	end
+
     if CMD == g_SocketCMD.NET_LOGIN then   --1 登录游戏服务器
     	g_NetMsgDealMgr:DealGameLogin(stream)
     elseif CMD == g_SocketCMD.NET_CHOOSE_HERO then   --4 选择角色后进入游戏

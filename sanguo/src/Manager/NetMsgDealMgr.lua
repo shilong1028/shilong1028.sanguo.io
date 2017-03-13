@@ -27,6 +27,17 @@ function NetMsgDealMgr:QueryMsgBuffer(buf, msgLen)
 	MsgDealMgr:QueryMsgBuffer(buf, msgLen)    --C++ MsgDealMgr消息处理管理器
 end
 
+--发送协议并显示等待动画
+function NetMsgDealMgr:QueryPackAndSend(stream, bShowAni)
+	MsgDealMgr:QueryPackAndSend(stream)
+
+	if not bShowAni or bShowAni == true then
+		g_pGameLayer:EnableSocketAni(true)
+	else
+		g_pGameLayer:EnableSocketAni(false)
+	end
+end
+
 --1 登录游戏服务器
 function NetMsgDealMgr:QueryGameLogin(uid, sid, checkStr, serverId)
     local stream = ark_Stream:new()
@@ -35,7 +46,7 @@ function NetMsgDealMgr:QueryGameLogin(uid, sid, checkStr, serverId)
 	stream:WriteString(sid)
     stream:WriteString(checkStr)
 	stream:WriteUInt(serverId)
-	MsgDealMgr:QueryPackAndSend(stream)
+	self:QueryPackAndSend(stream)
 
     return SystemHelper:GetHexString(tostring(stream:GetBuffer()), stream:GetSeekPos())
 end
@@ -43,9 +54,9 @@ end
 --1 登录游戏服务器
 function NetMsgDealMgr:DealGameLogin(stream)  
     --清除重新登录定时器
-    g_NetMsgDealMgr:CloseReLoginUpdateListener()
-
+    g_NetworkMgr:CloseReLoginUpdateListener()
     local succ = stream:ReadByte()
+    --G_Log_Info("NetMsgDealMgr:DealGameLogin()， succ = %d", succ)
     if(succ == 1) then  --成功
           --保存用户信息
         local acData = g_NetworkMgr.m_LoginAccount.accountData 
@@ -61,7 +72,12 @@ function NetMsgDealMgr:DealGameLogin(stream)
 		acData.level = stream:ReadByte()
 		acData.sex = stream:ReadByte()
 
-		self:QueryStartGame(acData.roleid)   --4 选择角色进入游戏
+		if g_NetworkMgr.m_loginServerData then   --已经登录游戏并选服进入，接着选角或开始游戏
+			g_pGameLayer:StartGameLayer()
+			g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoginLayer)
+		else  --还没有登录成功
+
+		end
     else  --失败
         local errMsg = stream:ReadString()
         g_pGameLayer:ShowScrollTips(errMsg, g_ColorDef.Red, g_defaultTipsFontSize)
@@ -73,7 +89,7 @@ function NetMsgDealMgr:QueryStartGame(roleId)
 	local stream = ark_Stream:new()
 	MsgDealMgr:QueryInitWithCMD(1024, stream , g_SocketCMD.NET_CHOOSE_HERO)   
 	stream:WriteUInt(roleId)
-	MsgDealMgr:QueryPackAndSend(stream)
+	self:QueryPackAndSend(stream)
 end
 
 --4 选择角色后进入游戏
@@ -205,13 +221,13 @@ end
 function NetMsgDealMgr:QueryHeartJump()
 	local stream = ark_Stream:new()
 	MsgDealMgr:QueryInitWithCMD(32, stream, g_SocketCMD.NET_HEART_JUMP)  
-	MsgDealMgr:QueryPackAndSend(stream)
+	self:QueryPackAndSend(stream)
 end
 
 
 --501  帐号服务器-登录
 function NetMsgDealMgr:QueryACLogin(name, password, version, adCode)
-	G_Log_Info("NetMsgDealMgr:QueryACLogin(), name = %s, psw = %s", name, password)
+	--G_Log_Info("NetMsgDealMgr:QueryACLogin(), name = %s, psw = %s", name, password)
 	local stream = ark_Stream:new()
 	MsgDealMgr:QueryInitWithCMD(2048, stream, g_SocketCMD.NET_ACC_LOGIN)  
 	stream:WriteString(name)
@@ -240,14 +256,14 @@ function NetMsgDealMgr:QueryACLogin(name, password, version, adCode)
 	stream:WriteString(panelRatio)
 	stream:WriteString(mac)
 	stream:WriteString(idfa)
-	MsgDealMgr:QueryPackAndSend(stream)
+	self:QueryPackAndSend(stream)
     --返回当前发送包二进制数据
     return SystemHelper:GetHexString(tostring(stream:GetBuffer()),stream:GetSeekPos())
 end
 
 --501  帐号服务器-登录
 function NetMsgDealMgr:DealACLogin(stream)
-	G_Log_Info("NetMsgDealMgr:DealACLogin(stream)")
+	--G_Log_Info("NetMsgDealMgr:DealACLogin(stream)")
 	local succ = stream:ReadByte()
 	if(succ == 1) then  --登陆成功
 		self:DealMsgAcLoginInfo(stream)
@@ -260,7 +276,7 @@ end
 
 --502 账号注册
 function NetMsgDealMgr:QueryACReg(name, password, ver, adCode, mobileInfo, panelRatio, mac, newUser)
-	G_Log_Info("NetMsgDealMgr:QueryACReg(), name = %s, psw = %s", name, password)
+	--G_Log_Info("NetMsgDealMgr:QueryACReg(), name = %s, psw = %s", name, password)
 	local stream = ark_Stream:new()
 	MsgDealMgr:QueryInitWithCMD(1024, stream, g_SocketCMD.NET_ACC_REG)  
 	stream:WriteByte(2)
@@ -272,7 +288,7 @@ function NetMsgDealMgr:QueryACReg(name, password, ver, adCode, mobileInfo, panel
 	stream:WriteString(panelRatio)
 	stream:WriteByte(newUser)
 	stream:WriteString(mac)	
-	MsgDealMgr:QueryPackAndSend(stream)
+	self:QueryPackAndSend(stream)
 end
 
 --502 账号注册（检查用户名是否占用）
@@ -281,12 +297,12 @@ function NetMsgDealMgr:QueryACCheckNickName(name)
 	MsgDealMgr:QueryInitWithCMD(1024, stream, g_SocketCMD.NET_ACC_REG) 
 	stream:WriteByte(1)
 	stream:WriteString(name)
-    MsgDealMgr:QueryPackAndSend(stream)
+    self:QueryPackAndSend(stream)
 end
 
 --502 账号注册
 function NetMsgDealMgr:DealAcLoginReg( stream)
-	G_Log_Info("NetMsgDealMgr:DealAcLoginReg(stream)")
+	--G_Log_Info("NetMsgDealMgr:DealAcLoginReg(stream)")
 	local op = stream:ReadByte()
     if(op == 1) then  --校验用户名
         local userName = stream:ReadString()
@@ -309,7 +325,7 @@ end
 
 --帐号服务器-登录
 function NetMsgDealMgr:DealMsgAcLoginInfo(stream, fromReg)   --fromReg是否从注册协议过来的，默认从登录协议501过来
-	G_Log_Info("NetMsgDealMgr:DealMsgAcLoginInfo(stream)")
+	--G_Log_Info("NetMsgDealMgr:DealMsgAcLoginInfo(stream)")
 	local uid = stream:ReadUInt()
 	local sid = stream:ReadString()
 
@@ -355,7 +371,8 @@ function NetMsgDealMgr:DealMsgAcLoginInfo(stream, fromReg)   --fromReg是否从�
 
 	local loginLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_LoginLayer)
 	if loginLayer then
-		loginLayer:UpdateLoginServerList()
+		--loginLayer:UpdateLoginServerList()
+		loginLayer:BeginStartSerList()
 	end
 end
 
@@ -364,7 +381,7 @@ function NetMsgDealMgr:QueryLineUpServer(serId)
 	local stream = ark_Stream:new()
 	MsgDealMgr:QueryInitWithCMD(128, stream , g_SocketCMD.NET_ACC_LINEUP)   --600 排队服务器--排队
 	stream:WriteUInt(serId)
-	MsgDealMgr:QueryPackAndSend(stream)
+	self:QueryPackAndSend(stream)
 
 	return SystemHelper:GetHexString(tostring(stream:GetBuffer()), stream:GetSeekPos())
 end
