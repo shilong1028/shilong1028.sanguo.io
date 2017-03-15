@@ -162,13 +162,19 @@ end
 
 --开始游戏界面
 function GameLayer:StartGameLayer()
-    G_Log_Info("GameLayer:StartGameLayer()")
+    --G_Log_Info("GameLayer:StartGameLayer()")
     --主城层
     --self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
     --主菜单层
     self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
     --地图层
     self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
+
+
+    self.vedioPlayer = g_VideoPlayerMgr:createVideoPlayer(cc.size(480, 320))
+    g_VideoPlayerMgr:playByPath(self.vedioPlayer, "MP4/story_1.mp4")
+    self.vedioPlayer:setPosition(g_WinSize.width/2, g_WinSize.height/2)
+    self:addChild(self.vedioPlayer, 100)
 end
 
 

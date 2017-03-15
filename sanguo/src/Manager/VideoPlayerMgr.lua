@@ -31,10 +31,10 @@ function VideoPlayerMgr:createVideoPlayer(widgetSize, VideoEventCallback)
 	else
 	    videoPlayer = ccexp.VideoPlayer:create()
 	    videoPlayer:setContentSize(widgetSize)
+	    videoPlayer:setTouchEnabled(false)   --视频播放，屏蔽触摸事件（暂停，全屏等）
+	    self:addEventListener(videoPlayer, VideoEventCallback)
 	end
-	if videoPlayer then
-    	--self:addEventListener(videoPlayer, VideoEventCallback)
-	end
+
 	return videoPlayer
 end
 
@@ -42,7 +42,7 @@ function VideoPlayerMgr:addEventListener(videoPlayer, VideoEventCallback)
 	G_Log_Info("VideoPlayerMgr:addEventListener()")
     if nil  ~= videoPlayer and onVideoEventCallback then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		videoPlayer:registerScriptHandler(onVideoEventCallback)
+    		--videoPlayer:registerScriptHandler(onVideoEventCallback)
 		else
 			local function onVideoEventCallback(sener, eventType)
 		        if eventType == ccexp.VideoPlayerEvent.PLAYING then
@@ -97,9 +97,10 @@ function VideoPlayerMgr:playByPath(videoPlayer, videoPath)
 	G_Log_Info("VideoPlayerMgr:playByPath()")
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		videoPlayer:playByPath(videoPath)
+    		videoPlayer:playByPath("res/"..videoPath)
 		else  
 			local videoFullPath = cc.FileUtils:getInstance():fullPathForFilename(videoPath)  --"cocosvideo.mp4"
+			G_Log_Info("VideoPlayerMgr:playByPath(), videoFullPath = %s", videoFullPath)
             videoPlayer:setFileName(videoFullPath)   
             videoPlayer:play()
 	    end

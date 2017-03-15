@@ -64,13 +64,15 @@ function NetMsgDealMgr:DealGameLogin(stream)
 		acData.userid = stream:ReadUInt()
 		acData.roleid = stream:ReadUInt()
 		if(acData.roleid == 0) then
-			return
+			--正式版本时，如果没有角色信息，则return
+		else
+			acData.name = stream:ReadString()
+			acData.head  = stream:ReadByte()
+			acData.professional = stream:ReadByte()
+			acData.level = stream:ReadByte()
+			acData.sex = stream:ReadByte()
 		end
-		acData.name = stream:ReadString()
-		acData.head  = stream:ReadByte()
-		acData.professional = stream:ReadByte()
-		acData.level = stream:ReadByte()
-		acData.sex = stream:ReadByte()
+
 
 		if g_NetworkMgr.m_loginServerData then   --已经登录游戏并选服进入，接着选角或开始游戏
 			g_pGameLayer:StartGameLayer()
