@@ -351,11 +351,7 @@ function LoginLayer:touchEvent(sender, eventType)
             g_UserDefaultMgr:SetUserServer(self.m_serverName, self.m_serverId)  --保存用户登录服务器名称及ID
 
             --选中某个服务器后点击登录触发，信号触发成功后会进入创建界面,老号直接登录游戏
-            --g_NetworkMgr:StartGameLogin(self.m_selServerData)  --选中的服务器数据
-
-            --demo直接进入游戏,不请求网络
-            g_pGameLayer:StartGameLayer()
-            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoginLayer)
+            g_NetworkMgr:StartGameLogin(self.m_selServerData)  --选中的服务器数据
         elseif sender == self.backLoginBtn then   --重新登陆
             self:BeginLogin()
         elseif sender == self.loginBtn then   --登录
@@ -370,8 +366,16 @@ function LoginLayer:touchEvent(sender, eventType)
 
             self.m_userName = self.userNameStr  --新的用户名
             self.m_passWord = self.passWordStr  --新的用户登录密码
-            --self:BeginStartGame()
-            g_NetworkMgr:StartACLogin(self.m_userName, self.m_passWord)
+            --g_NetworkMgr:StartACLogin(self.m_userName, self.m_passWord)
+
+            --demo直接进入游戏,不请求网络
+            -- g_pGameLayer:StartGameLayer()
+            -- g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoginLayer)
+
+            self.vedioPlayer = g_VideoPlayerMgr:createVideoPlayer(cc.size(960, 640))
+            g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/story_1.mp4")
+            self.vedioPlayer:setPosition(g_WinSize.width/2, g_WinSize.height/2)
+            self:addChild(self.vedioPlayer, 100)
         elseif sender == self.registerBtn then   --注册界面
             self.serverBtn:setVisible(false)
             self.startGameBtn:setVisible(false)

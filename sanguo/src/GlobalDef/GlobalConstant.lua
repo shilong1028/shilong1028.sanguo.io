@@ -28,6 +28,8 @@ g_pGameScene = nil  --g_pGameScene包含g_pGameLayer以及一些游戏初始化�
 g_pGameLayer = nil  --g_pGameLayer是g_pGameScene的子层，用于承载游戏各种功能界面
 
 g_UserDefaultMgr = nil  --本地信息管理单例
+g_VideoPlayerMgr = nil  --VideoPlayerMgr用于跨平台播放mp4视频
+
 g_NetworkMgr = nil  --用于服务器和客户端之间的socket通信连接
 g_NetMsgDealMgr = nil  --用于客户端和服务器之间的通信管理
 
