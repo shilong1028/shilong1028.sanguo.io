@@ -87,7 +87,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories);$(_COCOS_LIB_PATH_WIN32_BEGIN);$(_COCOS_LIB_PATH_WIN32_END)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libcurl_imp.lib;websockets.lib;%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl_imp.lib;websockets.lib;%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END);libvlc.lib;libvlccore.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
       <ProgramDatabaseFile>$(ProjectDir)../../../simulator/win32/$(TargetName).pdb</ProgramDatabaseFile>
       <OutputFile>$(ProjectDir)../../../simulator/win32/$(TargetName)$(TargetExt)</OutputFile>
@@ -202,6 +202,7 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClInclude Include="..\Classes\lua_astar_auto.hpp" />
     <ClInclude Include="..\Classes\lua_ImodAnim_auto.hpp" />
     <ClInclude Include="..\Classes\lua_module_register.h" />
+    <ClInclude Include="..\Classes\lua_WinMoviePlayer_auto.hpp" />
     <ClInclude Include="..\Classes\Network\ark_NetMessage.h" />
     <ClInclude Include="..\Classes\Network\ark_socket.h" />
     <ClInclude Include="..\Classes\Network\ark_socketEvent.h" />
@@ -209,6 +210,20 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClInclude Include="..\Classes\Network\MsgDealMgr.h" />
     <ClInclude Include="..\Classes\Network\mypthread.h" />
     <ClInclude Include="..\Classes\Network\NetMsgMgr.h" />
+    <ClInclude Include="..\Classes\vlc\deprecated.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_events.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_media.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_media_discoverer.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_media_library.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_media_list.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_media_list_player.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_media_player.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_structures.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_version.h" />
+    <ClInclude Include="..\Classes\vlc\libvlc_vlm.h" />
+    <ClInclude Include="..\Classes\vlc\vlc.h" />
+    <ClInclude Include="..\Classes\WinMoviePlayer.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SimulatorWin.h" />
@@ -226,6 +241,7 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClCompile Include="..\Classes\lua_ark_Utility_auto.cpp" />
     <ClCompile Include="..\Classes\lua_astar_auto.cpp" />
     <ClCompile Include="..\Classes\lua_ImodAnim_auto.cpp" />
+    <ClCompile Include="..\Classes\lua_WinMoviePlayer_auto.cpp" />
     <ClCompile Include="..\Classes\Network\ark_NetMessage.cpp" />
     <ClCompile Include="..\Classes\Network\ark_socket.cpp" />
     <ClCompile Include="..\Classes\Network\ark_socketEvent.cpp" />
@@ -233,6 +249,7 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClCompile Include="..\Classes\Network\MsgDealMgr.cpp" />
     <ClCompile Include="..\Classes\Network\mypthread.cpp" />
     <ClCompile Include="..\Classes\Network\NetMsgMgr.cpp" />
+    <ClCompile Include="..\Classes\WinMoviePlayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SimulatorWin.cpp" />
     <ClCompile Include="stdafx.cpp" />

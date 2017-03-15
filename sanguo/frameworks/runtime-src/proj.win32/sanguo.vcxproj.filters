@@ -13,6 +13,9 @@
     <Filter Include="Classes\Network">
       <UniqueIdentifier>{9688bf15-c17c-4bfc-b476-8f91a1a8cf08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\vlc">
+      <UniqueIdentifier>{08196143-d2a2-4b75-8792-4adacc80e76b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
@@ -86,6 +89,51 @@
     <ClInclude Include="..\Classes\Network\lua_Network_auto.hpp">
       <Filter>Classes\Network</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\WinMoviePlayer.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\lua_WinMoviePlayer_auto.hpp">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\deprecated.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_events.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_media.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_media_discoverer.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_media_library.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_media_list.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_media_list_player.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_media_player.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_structures.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_version.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\libvlc_vlm.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\vlc\vlc.h">
+      <Filter>Classes\vlc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -145,6 +193,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Network\lua_Network_auto.cpp">
       <Filter>Classes\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WinMoviePlayer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\lua_WinMoviePlayer_auto.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

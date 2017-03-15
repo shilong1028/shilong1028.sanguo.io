@@ -18,6 +18,15 @@ LOCAL_SRC_FILES := \
 ../../Classes/lua_ark_Utility_auto.cpp \
 ../../Classes/lua_astar_auto.cpp \
 ../../Classes/lua_ImodAnim_auto.cpp \
+../../Classes/WinMoviePlayer.cpp \
+../../Classes/lua_WinMoviePlayer_auto.cpp \
+../../Classes/Network/ark_NetMessage.cpp \
+../../Classes/Network/ark_socket.cpp \
+../../Classes/Network/ark_socketEvent.cpp \
+../../Classes/Network/lua_Network_auto.cpp \
+../../Classes/Network/MsgDealMgr.cpp \
+../../Classes/Network/mypthread.cpp \
+../../Classes/Network/NetMsgMgr.cpp \
 hellolua/main.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
