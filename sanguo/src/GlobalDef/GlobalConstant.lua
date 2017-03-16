@@ -40,9 +40,6 @@ g_pTBLMgr = nil       --本地tbl表格数据单例
 --默认的华康圆体路径
 g_sDefaultTTFpath = "font/DFYuanW7-GB2312.ttf"
 
---是否支持视频mp4（苹果或安卓）
-g_bSupportVideoPlayer = false
-
 --AStar寻路
 g_bAStarPathSmooth = true --false --寻路拉直
 

@@ -1,23 +1,23 @@
 <GameFile>
-  <PropertyGroup Name="GameStoreLayer" Type="Layer" ID="ff4d01a1-dc1d-4a50-a42a-2d1dadbb7061" Version="3.10.0.0" />
+  <PropertyGroup Name="StoreLayer" Type="Layer" ID="ff4d01a1-dc1d-4a50-a42a-2d1dadbb7061" Version="3.10.0.0" />
   <Content ctype="GameProjectContent">
     <Content>
       <Animation Duration="0" Speed="1.0000" />
       <ObjectData Name="Layer" Tag="686" ctype="GameLayerObjectData">
-        <Size X="960.0000" Y="640.0000" />
+        <Size X="1280.0000" Y="720.0000" />
         <Children>
-          <AbstractNodeData Name="Image_bg" ActionTag="78540124" Tag="13" IconVisible="False" LeftEage="316" RightEage="316" TopEage="211" BottomEage="211" Scale9OriginX="316" Scale9OriginY="211" Scale9Width="328" Scale9Height="218" ctype="ImageViewObjectData">
-            <Size X="960.0000" Y="640.0000" />
+          <AbstractNodeData Name="Image_bg" ActionTag="78540124" Tag="13" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftEage="316" RightEage="316" TopEage="211" BottomEage="211" Scale9OriginX="316" Scale9OriginY="211" Scale9Width="648" Scale9Height="298" ctype="ImageViewObjectData">
+            <Size X="1280.0000" Y="720.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="480.0000" Y="320.0000" />
+            <Position X="640.0000" Y="360.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.5000" Y="0.5000" />
             <PreSize X="1.0000" Y="1.0000" />
-            <FileData Type="Normal" Path="SanGuoUIRes/huangjinzhiluanBg.jpg" Plist="" />
+            <FileData Type="Normal" Path="img/studio_loginBg.png" Plist="" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Panel_MP4" ActionTag="-1086184831" Tag="687" IconVisible="False" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
-            <Size X="960.0000" Y="640.0000" />
+          <AbstractNodeData Name="Panel_MP4" ActionTag="-1086184831" Tag="687" IconVisible="False" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
+            <Size X="1280.0000" Y="720.0000" />
             <AnchorPoint />
             <Position />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
@@ -29,29 +29,30 @@
             <EndColor A="255" R="255" G="255" B="255" />
             <ColorVector ScaleY="1.0000" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_skip" ActionTag="-1843774457" Tag="688" IconVisible="False" LeftMargin="785.6603" RightMargin="60.3397" TopMargin="43.0063" BottomMargin="536.9937" TouchEnable="True" FontSize="30" ButtonText="跳过" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="84" Scale9Height="38" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_skip" ActionTag="-1843774457" Tag="688" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="1095.0000" RightMargin="71.0000" TopMargin="42.0000" BottomMargin="618.0000" TouchEnable="True" FontSize="30" ButtonText="跳过" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="84" Scale9Height="38" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="114.0000" Y="60.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="842.6603" Y="566.9937" />
+            <Position X="1152.0000" Y="648.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.8778" Y="0.8859" />
-            <PreSize X="0.1187" Y="0.0938" />
+            <PrePosition X="0.9000" Y="0.9000" />
+            <PreSize X="0.0891" Y="0.0833" />
+            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
             <TextColor A="255" R="204" G="5" B="20" />
-            <NormalFileData Type="PlistSubImage" Path="public_btn_orange2.png" Plist="SanGuoUIRes/PublicRes.plist" />
+            <NormalFileData Type="PlistSubImage" Path="public_btn_orange2.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_story" ActionTag="-205918134" Tag="69" IconVisible="False" LeftMargin="130.0000" RightMargin="130.0000" TopMargin="120.0000" BottomMargin="120.0000" IsCustomSize="True" FontSize="36" LabelText="东汉末年...." OutlineSize="2" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="700.0000" Y="400.0000" />
+          <AbstractNodeData Name="Text_story" ActionTag="-205918134" Tag="69" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="128.0000" RightMargin="128.0000" TopMargin="108.0000" BottomMargin="108.0000" IsCustomSize="True" FontSize="36" LabelText="东汉末年...." OutlineSize="2" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="1023.9999" Y="504.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="480.0000" Y="320.0000" />
+            <Position X="640.0000" Y="360.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="249" G="154" B="5" />
+            <CColor A="255" R="0" G="128" B="0" />
             <PrePosition X="0.5000" Y="0.5000" />
-            <PreSize X="0.7292" Y="0.6250" />
-            <FontResource Type="Normal" Path="SanGuoUIRes/font/DFYuanW7-GB2312.ttf" Plist="" />
-            <OutlineColor A="255" R="101" G="9" B="9" />
+            <PreSize X="0.8000" Y="0.7000" />
+            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <OutlineColor A="255" R="0" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
         </Children>

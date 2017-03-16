@@ -29,13 +29,6 @@ local function main()
 		g_Director:setDisplayStats(false)
     end
 
-    --是否支持视频mp4（苹果或安卓）
-    if (cc.PLATFORM_OS_IPHONE == g_AppPlatform or cc.PLATFORM_OS_IPAD == g_AppPlatform or cc.PLATFORM_OS_ANDROID == g_AppPlatform) then
-        g_bSupportVideoPlayer = true
-    else
-        g_bSupportVideoPlayer = false
-    end
-
     --自定义的LayerEx, 作为游戏各功能Layer的父类
     CCLayerEx = require("Layer.CCLayerEx")
 

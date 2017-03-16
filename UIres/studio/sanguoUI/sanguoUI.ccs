@@ -6,6 +6,8 @@
         <Folder Name="csd">
           <Project Name="aniToolCell.csd" Type="Layer" />
           <Project Name="aniToolLayer.csd" Type="Layer" />
+          <Project Name="CreateRoleLayer.csd" Type="Layer" />
+          <Project Name="DialogOkCancelLayer.csd" Type="Layer" />
           <Project Name="LoginLayer.csd" Type="Layer" />
           <Project Name="MainBottomNode.csd" Type="Node" />
           <Project Name="MainChatNode.csd" Type="Node" />
@@ -13,12 +15,19 @@
           <Project Name="MainMenuLayer.csd" Type="Layer" />
           <Project Name="MainTimeNode.csd" Type="Node" />
           <Project Name="MainTopNode.csd" Type="Node" />
+          <Project Name="StoreLayer.csd" Type="Layer" />
+          <Project Name="StoreTalkLayer.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
           <TTF Name="DFYuanW7-GB2312.ttf" />
         </Folder>
         <Folder Name="img">
+          <Image Name="studio_chinaMap.jpg" />
+          <Image Name="studio_dialogBg.png" />
+          <Image Name="studio_layerBg.png" />
+          <Image Name="studio_layerBg2.png" />
           <Image Name="studio_listBg.png" />
+          <Image Name="studio_loadBg.png" />
           <Image Name="studio_loginBg.png" />
         </Folder>
         <Folder Name="plist">

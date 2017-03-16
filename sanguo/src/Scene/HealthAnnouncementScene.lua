@@ -67,12 +67,19 @@ function HealthAnnouncementScene:init()
     layer:addChild(bkSprite)
     
     bkSprite:runAction(cc.Sequence:create(cc.DelayTime:create(0.5), cc.CallFunc:create(function() 
-        local scene = require("Scene.GameScene")
-        g_pGameScene = scene:create()  --scene:new()
-        if cc.Director:getInstance():getRunningScene() then
-            cc.Director:getInstance():replaceScene(cc.TransitionFade:create(1.0, g_pGameScene, cc.c3b(0,0,0)))
+        local scene = nil
+        local bfirstLogin = g_UserDefaultMgr:GetIsFirstLogin()   --是否第一次登陆
+        if bfirstLogin == true then
+            scene = require("Scene.StoreLayer")
         else
-            cc.Director:getInstance():runWithScene(g_pGameScene)
+            scene = require("Scene.GameScene")   --进入登录界面
+            g_pGameScene = scene:create()  --scene:new()
+        end
+        local nextScene = scene:create()  --scene:new()
+        if cc.Director:getInstance():getRunningScene() then
+            cc.Director:getInstance():replaceScene(cc.TransitionFade:create(1.0, nextScene, cc.c3b(0,0,0)))
+        else
+            cc.Director:getInstance():runWithScene(nextScene)
         end
     end)))
 end
