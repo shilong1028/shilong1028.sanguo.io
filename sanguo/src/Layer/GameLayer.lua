@@ -171,10 +171,15 @@ function GameLayer:StartGameLayer()
     self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
 
 
-    self.vedioPlayer = g_VideoPlayerMgr:createVideoPlayer(cc.size(480, 320))
-    g_VideoPlayerMgr:playByPath(self.vedioPlayer, "MP4/story_1.mp4")
-    self.vedioPlayer:setPosition(g_WinSize.width/2, g_WinSize.height/2)
-    self:addChild(self.vedioPlayer, 100)
+    local vedioPlayer1 = g_VideoPlayerMgr:createVideoPlayer(cc.size(480, 320))
+    g_VideoPlayerMgr:playByPath(vedioPlayer1, "res/MP4/story_1.mp4")
+    vedioPlayer1:setPosition(g_WinSize.width/3, g_WinSize.height/3)
+    self:addChild(vedioPlayer1, 100)
+
+    local vedioPlayer2 = g_VideoPlayerMgr:createVideoPlayer(cc.size(480, 320))
+    g_VideoPlayerMgr:playByPath(vedioPlayer2, "res/MP4/fight_1.mp4")
+    vedioPlayer2:setPosition(g_WinSize.width*2/3, g_WinSize.height*2/3)
+    self:addChild(vedioPlayer2, 100)
 end
 
 

@@ -97,11 +97,10 @@ function VideoPlayerMgr:playByPath(videoPlayer, videoPath)
 	G_Log_Info("VideoPlayerMgr:playByPath()")
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		videoPlayer:playByPath("res/"..videoPath)
+    		videoPlayer:playByPath(videoPath)   --"res/MP4/story_1.mp4"
 		else  
-			local videoFullPath = cc.FileUtils:getInstance():fullPathForFilename(videoPath)  --"cocosvideo.mp4"
-			G_Log_Info("VideoPlayerMgr:playByPath(), videoFullPath = %s", videoFullPath)
-            videoPlayer:setFileName(videoFullPath)   
+			--local videoFullPath = cc.FileUtils:getInstance():fullPathForFilename(videoPath)  --"cocosvideo.mp4"
+            videoPlayer:setFileName(videoPath)     --绝对路径，或res/路径都可以。但是不能带有res去获取绝对路径
             videoPlayer:play()
 	    end
     end

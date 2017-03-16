@@ -8,11 +8,11 @@
 #include "lua_ImodAnim_auto.hpp"
 #include "lua_ark_Utility_auto.hpp"
 #include "lua_astar_auto.hpp"
-#include "lua_WinMoviePlayer_auto.hpp"
 #include "Network/lua_Network_auto.hpp"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include "LoggerHelper.h"
+#include "lua_WinMoviePlayer_auto.hpp"
 #endif
 
 using namespace CocosDenshion;
@@ -66,6 +66,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	luaRegister_loggerHelper(L);
+	register_all_WinMoviePlayer(L);
 #endif
 
 	register_all_ImodAnim(L);
@@ -73,8 +74,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	register_all_ark_Utility(L);
 	register_all_astar(L);
 	register_all_Network(L);
-	register_all_WinMoviePlayer(L);
-
+	
     register_all_packages();
 
     LuaStack* stack = engine->getLuaStack();
