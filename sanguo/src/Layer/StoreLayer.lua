@@ -40,10 +40,7 @@ function StoreLayer:init()
         self:onVideoEventCallback(sender, eventType)
     end
 
-    self.vedioPlayer = g_VideoPlayerMgr:createVideoPlayer(g_WinSize, onVideoEventCallback)
-    g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/story_1.mp4")
-    self.vedioPlayer:setPosition(g_WinSize.width/2, g_WinSize.height/2)
-    self.Panel_MP4:addChild(self.vedioPlayer)
+    self:createVideoPlayer("res/MP4/story_1.mp4")
   
     --self:scheduleUpdateWithPriorityLua(handler(self, self.update), 0)
     if self.showUpdateHandler then
@@ -51,6 +48,20 @@ function StoreLayer:init()
         self.showUpdateHandler = nil
     end
     self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showStoryText), 0.02, false)
+end
+
+function StoreLayer:createVideoPlayer(vedioName)
+    G_Log_Info("StoreLayer:createVideoPlayer(), vedioName = %s", vedioName)
+    local function onVideoEventCallback(sender, eventType)
+        self:onVideoEventCallback(sender, eventType)
+    end
+    if self.vedioPlayer then
+        self.vedioPlayer:removeFromParent()
+    end
+    self.vedioPlayer = g_VideoPlayerMgr:createVideoPlayer(g_WinSize, onVideoEventCallback)
+    g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/story_1.mp4")
+    self.vedioPlayer:setPosition(g_WinSize.width/2, g_WinSize.height/2)
+    self.Panel_MP4:addChild(self.vedioPlayer)
 end
 
 function StoreLayer:touchEvent(sender, eventType)
@@ -96,7 +107,7 @@ function StoreLayer:changeStoryString()
     self.Image_bg:loadTexture("StoryBg/StoryBg_gongcheng.jpg", ccui.TextureResType.localType)
 
     if self.vedioPlayer then
-        g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/fight_1.mp4", false)
+        g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/fight_1.mp4")
     end
 
     self.bNextBreakHandler = true   --下次显示完文本后，结束定时器 
@@ -105,9 +116,7 @@ end
 function StoreLayer:onVideoEventCallback(sener, eventType)
     G_Log_Info("StoreLayer:onVideoEventCallback()")
     if self.bNextBreakHandler == true and eventType == "COMPLETED" then
-        -- if self.vedioPlayer then
-        --     g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/login_after.mp4", true)
-        -- end
+        --g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/login_after.mp4", true)
         self:changeScene() 
     end
 end

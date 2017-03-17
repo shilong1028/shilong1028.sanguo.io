@@ -27,12 +27,10 @@ void endReached(const struct libvlc_event_t *event, void *data)
 	{
 		WinMoviePlayer *self = (WinMoviePlayer *)data;
 		self->m_isEndReached = true;
-		self->executeEndScriptHandler();
 	}
 }
 
 WinMoviePlayer::WinMoviePlayer() :
-vlc(0), 
 vlc_player(0),
 width(960),
 height(640),
@@ -44,7 +42,7 @@ m_readyToShow(false),
 m_bFilePath(true),
 m_nEndScriptHandler(0)
 {
-
+	vlc = libvlc_new(0, NULL);
 }
 
 WinMoviePlayer::~WinMoviePlayer()
@@ -69,7 +67,7 @@ WinMoviePlayer* WinMoviePlayer::create(Size size)
 
 bool WinMoviePlayer::init(Size &size)
 {
-	vlc = libvlc_new(0, NULL);
+	//vlc = libvlc_new(0, NULL);
 	if (vlc == NULL)
 		return false;
 
@@ -193,6 +191,8 @@ void WinMoviePlayer::update(float dt)
 			playByPath(m_curMedia);
 		else
 			playByURL(m_curMedia);
+
+		executeEndScriptHandler();
 	}
 }
 
