@@ -216,6 +216,7 @@ public:
         EVENT_SPINE_ANIMATION_EVENT,
         
         EVENT_CUSTOM_BEGAN = 10000,
+		EVENT_CUSTOM_COMMON = 10001,  //客户端通用脚本
         EVENT_CUSTOM_ENDED = 11000,
     };
     

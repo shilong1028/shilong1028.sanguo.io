@@ -8,7 +8,6 @@ USING_NS_CC;
 
 class WinMoviePlayer : public cocos2d::Sprite
 {
-
 public:
 	~WinMoviePlayer();
 
@@ -31,9 +30,14 @@ public:
 	friend void unlock(void *data, void *id, void *const *p_pixels);
 	friend void display(void *data, void *id);
 
+
+	//脚本回调
+	void registerEndScriptHandler(int nHandler);
+	void unregisterEndScriptHandler(void);
 protected:
 	WinMoviePlayer();
 
+	void executeEndScriptHandler();
 private:
 	libvlc_instance_t     *vlc;    //代表一个libVLC的实例
 	libvlc_media_player_t *vlc_player;    //代表一个VLC媒体播放器（一个视频播放器播放一个视频）。注意VLC并不仅仅用于媒体播放。
@@ -47,7 +51,9 @@ private:
 	bool                  m_readyToShow;
 	bool                  m_bFilePath;
 	/** Quad command. */
-	QuadCommand _quadCommand;
+	QuadCommand           _quadCommand;
+
+	int					 m_nEndScriptHandler;	//回调（lua）
 };
 
 #endif

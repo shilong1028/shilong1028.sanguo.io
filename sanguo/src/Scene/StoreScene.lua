@@ -26,7 +26,7 @@ function StoreScene:ctor()  --new()会自动调用ctor()
 end
 
 function StoreScene:init()  
-    G_Log_Info("StoreScene:init()")
+    --G_Log_Info("StoreScene:init()")
     local StoreLayer = require("Layer.StoreLayer")
     local layer = StoreLayer:new()
     self:addChild(layer)

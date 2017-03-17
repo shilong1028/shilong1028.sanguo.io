@@ -16,7 +16,7 @@ function StoreLayer:onExit()
 end
 
 function StoreLayer:init()  
-    G_Log_Info("StoreLayer:init()")
+    --G_Log_Info("StoreLayer:init()")
     local csb = cc.CSLoader:createNode("csd/StoreLayer.csb")
     self:addChild(csb)
     csb:setContentSize(g_WinSize)
@@ -35,12 +35,16 @@ function StoreLayer:init()
     self.storyString = lua_Story_String1
     self.totalStrLen = string.len(lua_Story_String1)
     self.Image_bg:loadTexture("StoryBg/StoryBg_huangjin.jpg", ccui.TextureResType.localType)
-  
-    self.vedioPlayer = g_VideoPlayerMgr:createVideoPlayer(g_WinSize)
+
+    local function onVideoEventCallback(sender, eventType)
+        self:onVideoEventCallback(sender, eventType)
+    end
+
+    self.vedioPlayer = g_VideoPlayerMgr:createVideoPlayer(g_WinSize, onVideoEventCallback)
     g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/story_1.mp4")
     self.vedioPlayer:setPosition(g_WinSize.width/2, g_WinSize.height/2)
     self.Panel_MP4:addChild(self.vedioPlayer)
-
+  
     --self:scheduleUpdateWithPriorityLua(handler(self, self.update), 0)
     if self.showUpdateHandler then
         g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
@@ -53,9 +57,6 @@ function StoreLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_skip then   --跳过
             if self.bNextBreakHandler == true then
-                if self.videoPlayer then     --视频播放
-                    self.videoPlayer:stop()
-                end
                 self:changeScene()  
             else
                 self:changeStoryString()  --切换下一段剧情文本
@@ -80,7 +81,7 @@ end
 
 --切换下一段剧情文本
 function StoreLayer:changeStoryString()
-    G_Log_Info("StoreLayer:changeStoryString()")
+    --G_Log_Info("StoreLayer:changeStoryString()")
     if self.bNextBreakHandler == true and self.showUpdateHandler then
         g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
         self.showUpdateHandler = nil
@@ -101,10 +102,23 @@ function StoreLayer:changeStoryString()
     self.bNextBreakHandler = true   --下次显示完文本后，结束定时器 
 end
 
+function StoreLayer:onVideoEventCallback(sener, eventType)
+    G_Log_Info("StoreLayer:onVideoEventCallback()")
+    if self.bNextBreakHandler == true and eventType == "COMPLETED" then
+        -- if self.vedioPlayer then
+        --     g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/login_after.mp4", true)
+        -- end
+        self:changeScene() 
+    end
+end
+
 function StoreLayer:changeScene() 
-    if self.vedioPlayer then
+    G_Log_Info("StoreLayer:changeScene()")
+    if self.vedioPlayer and g_VideoPlayerMgr:isPlaying() == true then
         g_VideoPlayerMgr:stop(self.vedioPlayer)
     end
+    self.vedioPlayer:removeFromParent(true)
+    self.vedioPlayer = nil
 
     local scene = require("Scene.GameScene")   --进入登录界面
     g_pGameScene = scene:create()  --scene:new()

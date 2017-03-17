@@ -241,6 +241,8 @@ private:
     int handleEventTouch(ScriptHandlerMgr::HandlerType type, void* data);
     int handleEventTouches(ScriptHandlerMgr::HandlerType type, void* data);
     int handleEventMouse(ScriptHandlerMgr::HandlerType type, void* data);
+
+	int handlerCustomLuaEvent(void* data);
     
 private:
     static LuaEngine* _defaultEngine;

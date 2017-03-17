@@ -3,7 +3,7 @@
 local GameLayer = class("GameLayer", CCLayerEx) --填入类名
 
 function GameLayer:create()   --自定义的create()创建方法
-    --G_Log_Info("GameLayer:create()")
+    G_Log_Info("GameLayer:create()")
     local layer = GameLayer.new()
     return layer
 end
@@ -15,7 +15,7 @@ function GameLayer:onExit()
 end
 
 function GameLayer:init()  
-    --G_Log_Info("GameLayer:init()")
+    G_Log_Info("GameLayer:init()")
     self.requireLuaVec = {}   --每个功能的Lua文件仅require一次即可
   
 end

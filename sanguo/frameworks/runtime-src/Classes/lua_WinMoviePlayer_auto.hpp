@@ -22,4 +22,6 @@ int register_all_WinMoviePlayer(lua_State* tolua_S);
 
 
 
+
+
 #endif // __WinMoviePlayer_h__

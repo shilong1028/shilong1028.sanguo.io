@@ -164,6 +164,53 @@ int lua_WinMoviePlayer_WinMoviePlayer_playByURL(lua_State* tolua_S)
 
     return 0;
 }
+int lua_WinMoviePlayer_WinMoviePlayer_unregisterEndScriptHandler(lua_State* tolua_S)
+{
+    int argc = 0;
+    WinMoviePlayer* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"WinMoviePlayer",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (WinMoviePlayer*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_WinMoviePlayer_WinMoviePlayer_unregisterEndScriptHandler'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_WinMoviePlayer_WinMoviePlayer_unregisterEndScriptHandler'", nullptr);
+            return 0;
+        }
+        cobj->unregisterEndScriptHandler();
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "WinMoviePlayer:unregisterEndScriptHandler",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_WinMoviePlayer_WinMoviePlayer_unregisterEndScriptHandler'.",&tolua_err);
+#endif
+
+    return 0;
+}
 int lua_WinMoviePlayer_WinMoviePlayer_StopVedio(lua_State* tolua_S)
 {
     int argc = 0;
@@ -207,6 +254,56 @@ int lua_WinMoviePlayer_WinMoviePlayer_StopVedio(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_WinMoviePlayer_WinMoviePlayer_StopVedio'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_WinMoviePlayer_WinMoviePlayer_registerEndScriptHandler(lua_State* tolua_S)
+{
+    int argc = 0;
+    WinMoviePlayer* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"WinMoviePlayer",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (WinMoviePlayer*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_WinMoviePlayer_WinMoviePlayer_registerEndScriptHandler'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        int arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "WinMoviePlayer:registerEndScriptHandler");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_WinMoviePlayer_WinMoviePlayer_registerEndScriptHandler'", nullptr);
+            return 0;
+        }
+        cobj->registerEndScriptHandler(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "WinMoviePlayer:registerEndScriptHandler",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_WinMoviePlayer_WinMoviePlayer_registerEndScriptHandler'.",&tolua_err);
 #endif
 
     return 0;
@@ -473,7 +570,9 @@ int lua_register_WinMoviePlayer_WinMoviePlayer(lua_State* tolua_S)
         tolua_function(tolua_S,"ResumeVedio",lua_WinMoviePlayer_WinMoviePlayer_ResumeVedio);
         tolua_function(tolua_S,"isEndReached",lua_WinMoviePlayer_WinMoviePlayer_isEndReached);
         tolua_function(tolua_S,"playByURL",lua_WinMoviePlayer_WinMoviePlayer_playByURL);
+        tolua_function(tolua_S,"unregisterEndScriptHandler",lua_WinMoviePlayer_WinMoviePlayer_unregisterEndScriptHandler);
         tolua_function(tolua_S,"StopVedio",lua_WinMoviePlayer_WinMoviePlayer_StopVedio);
+        tolua_function(tolua_S,"registerEndScriptHandler",lua_WinMoviePlayer_WinMoviePlayer_registerEndScriptHandler);
         tolua_function(tolua_S,"init",lua_WinMoviePlayer_WinMoviePlayer_init);
         tolua_function(tolua_S,"PauseVedio",lua_WinMoviePlayer_WinMoviePlayer_PauseVedio);
         tolua_function(tolua_S,"isPlaying",lua_WinMoviePlayer_WinMoviePlayer_isPlaying);

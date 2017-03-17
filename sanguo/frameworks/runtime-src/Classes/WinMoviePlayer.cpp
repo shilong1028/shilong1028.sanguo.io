@@ -1,5 +1,6 @@
 
 #include "WinMoviePlayer.h"
+#include "scripting/lua-bindings/manual/CCLuaEngine.h"
 
 void *lock(void *data, void **p_pixels)
 {
@@ -26,6 +27,7 @@ void endReached(const struct libvlc_event_t *event, void *data)
 	{
 		WinMoviePlayer *self = (WinMoviePlayer *)data;
 		self->m_isEndReached = true;
+		self->executeEndScriptHandler();
 	}
 }
 
@@ -39,7 +41,8 @@ m_curMedia(""),
 m_repeat(true),
 m_pause(false),
 m_readyToShow(false),
-m_bFilePath(true)
+m_bFilePath(true),
+m_nEndScriptHandler(0)
 {
 
 }
@@ -191,6 +194,44 @@ void WinMoviePlayer::update(float dt)
 		else
 			playByURL(m_curMedia);
 	}
+}
+
+void WinMoviePlayer::registerEndScriptHandler(int nHandler)
+{
+	unregisterEndScriptHandler();
+	m_nEndScriptHandler = nHandler;
+	LUALOG("[LUA] Add WinMoviePlayer script handler: %d", m_nScriptEndCBHandler);
+}
+
+void WinMoviePlayer::unregisterEndScriptHandler(void)
+{
+	if (m_nEndScriptHandler)
+	{
+		ScriptEngineManager::getInstance()->getScriptEngine()->removeScriptHandler(m_nEndScriptHandler);
+		LUALOG("[LUA] Remove WinMoviePlayer script handler: %d", m_nScriptEndCBHandler);
+		m_nEndScriptHandler = 0;
+	}
+}
+
+void WinMoviePlayer::executeEndScriptHandler()
+{
+	LuaScriptData data(this, "WinMoviePlayer");
+	data.push("string", (void*)"COMPLETED");
+	ScriptEvent scriptEvent(kCustomLuaEvent, &data);
+	ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&scriptEvent);
+
+
+	if (0 == m_nEndScriptHandler) 
+		//return;
+	LUALOG("[LUA] execute WinMoviePlayer script handler: %d", m_nScriptEndCBHandler);
+	/*
+	auto engine = LuaEngine::getInstance();
+	LuaStack* stack = engine->getLuaStack();
+	int ret = stack->executeFunctionByHandler(m_nEndScriptHandler, 0);
+	stack->clean();
+	*/
+
+
 }
 
 

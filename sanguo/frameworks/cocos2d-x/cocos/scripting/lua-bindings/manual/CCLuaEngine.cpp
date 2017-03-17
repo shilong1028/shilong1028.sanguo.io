@@ -261,11 +261,62 @@ int LuaEngine::sendEvent(ScriptEvent* evt)
                 return handlerControlEvent(evt->data);
             }
             break;
+		case kCustomLuaEvent:
+			{
+				return handlerCustomLuaEvent(evt->data);
+			}
+			break;
         default:
             break;
     }
     
     return 0;
+}
+
+//通用函数
+int LuaEngine::handlerCustomLuaEvent(void* data)
+{
+	if (nullptr == data)
+		return 0;
+
+	LuaScriptData* basicScriptData = static_cast<LuaScriptData*>(data);
+	if (nullptr == basicScriptData->nativeObject)
+		return 0;
+
+	int handler = ScriptHandlerMgr::getInstance()->getObjectHandler(basicScriptData->nativeObject, ScriptHandlerMgr::HandlerType::EVENT_CUSTOM_COMMON);
+	if (0 == handler)
+		return 0;
+
+	int ret = 0;
+	int pnum = 1;
+	_stack->pushObject((Ref*)basicScriptData->nativeObject, basicScriptData->objectTypeName.c_str()); //object
+	for (int i = 0; i < basicScriptData->keys.size(); i++)
+	{
+		std::string key = basicScriptData->keys[i];
+		void* value = basicScriptData->values[i];
+		if (key.compare("int") == 0)
+		{
+			_stack->pushInt((long)value);
+		}
+		else if (key.compare("boolean") == 0)
+		{
+			_stack->pushBoolean((bool)value);
+		}
+		else if (key.compare("string") == 0)
+		{
+			_stack->pushString(std::string((char*)value).c_str());
+		}
+		else
+		{
+			//其他类型均认为是object
+			_stack->pushObject((Ref*)value, key.c_str());
+		}
+		pnum++;
+	}
+	ret = _stack->executeFunctionByHandler(handler, pnum);
+	_stack->clean();
+
+	return ret;
 }
 
 int LuaEngine::handleNodeEvent(void* data)

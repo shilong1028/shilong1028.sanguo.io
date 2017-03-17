@@ -24,7 +24,7 @@ end
 --///////////////////////////////////////////
 
 function VideoPlayerMgr:createVideoPlayer(widgetSize, VideoEventCallback)
-	G_Log_Info("VideoPlayerMgr:createVideoPlayer()")
+	--G_Log_Info("VideoPlayerMgr:createVideoPlayer()")
 	local videoPlayer = nil
 	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
 		videoPlayer = WinMoviePlayer:create(widgetSize)
@@ -32,27 +32,35 @@ function VideoPlayerMgr:createVideoPlayer(widgetSize, VideoEventCallback)
 	    videoPlayer = ccexp.VideoPlayer:create()
 	    videoPlayer:setContentSize(widgetSize)
 	    videoPlayer:setTouchEnabled(false)   --视频播放，屏蔽触摸事件（暂停，全屏等）
-	    self:addEventListener(videoPlayer, VideoEventCallback)
 	end
+	self:addEventListener(videoPlayer, VideoEventCallback)
 
 	return videoPlayer
 end
 
 function VideoPlayerMgr:addEventListener(videoPlayer, VideoEventCallback)
 	G_Log_Info("VideoPlayerMgr:addEventListener()")
-    if nil  ~= videoPlayer and onVideoEventCallback then
+    if nil  ~= videoPlayer and VideoEventCallback then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		--videoPlayer:registerScriptHandler(onVideoEventCallback)
+    		local function onVideoEventCallback(sender, eventType)
+    			ScriptHandlerMgr:getInstance():unregisterScriptHandler(sender,cc.Handler.EVENT_CUSTOM_COMMON)
+    			if eventType == "COMPLETED" then
+    				VideoEventCallback(sender, "COMPLETED")
+    			end
+    		end
+    		G_Log_Info("VideoPlayerMgr:registerEndScriptHandler()")
+    		--videoPlayer:registerEndScriptHandler(onVideoEventCallback)
+    		ScriptHandlerMgr:getInstance():registerScriptHandler(videoPlayer, onVideoEventCallback, cc.Handler.EVENT_CUSTOM_COMMON)
 		else
-			local function onVideoEventCallback(sener, eventType)
+			local function onVideoEventCallback(sender, eventType)
 		        if eventType == ccexp.VideoPlayerEvent.PLAYING then
-		        	VideoEventCallback(sener, "PLAYING")
+		        	--VideoEventCallback(sender, "PLAYING")
 		        elseif eventType == ccexp.VideoPlayerEvent.PAUSED then
-		        	VideoEventCallback(sener, "PAUSED")
+		        	--VideoEventCallback(sender, "PAUSED")
 		        elseif eventType == ccexp.VideoPlayerEvent.STOPPED then
-		        	VideoEventCallback(sener, "STOPPED")
+		        	--VideoEventCallback(sender, "STOPPED")
 		        elseif eventType == ccexp.VideoPlayerEvent.COMPLETED then
-		        	VideoEventCallback(sener, "COMPLETED")
+		        	VideoEventCallback(sender, "COMPLETED")
 		        end
 		    end
 	        videoPlayer:addEventListener(onVideoEventCallback)
@@ -61,10 +69,10 @@ function VideoPlayerMgr:addEventListener(videoPlayer, VideoEventCallback)
 end
 
 function VideoPlayerMgr:pause(videoPlayer)
-	G_Log_Info("VideoPlayerMgr:pause()")
+	--G_Log_Info("VideoPlayerMgr:pause()")
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		videoPlayer:pause()
+    		videoPlayer:PauseVedio()
 		else
 	        videoPlayer:pause()
 	    end
@@ -72,10 +80,10 @@ function VideoPlayerMgr:pause(videoPlayer)
 end
 
 function VideoPlayerMgr:resume(videoPlayer)
-	G_Log_Info("VideoPlayerMgr:resume()")
+	--G_Log_Info("VideoPlayerMgr:resume()")
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		videoPlayer:resume()
+    		videoPlayer:ResumeVedio()
 		else
 	        videoPlayer:resume()
 	    end
@@ -83,34 +91,36 @@ function VideoPlayerMgr:resume(videoPlayer)
 end
 
 function VideoPlayerMgr:stop(videoPlayer)
-	G_Log_Info("VideoPlayerMgr:stop()")
+	--G_Log_Info("VideoPlayerMgr:stop()")
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		videoPlayer:stop()
+    		videoPlayer:StopVedio()
 		else
 	        videoPlayer:stop()
 	    end
     end
 end
 
-function VideoPlayerMgr:playByPath(videoPlayer, videoPath)
-	G_Log_Info("VideoPlayerMgr:playByPath()")
+function VideoPlayerMgr:playByPath(videoPlayer, videoPath, replay)
+	--G_Log_Info("VideoPlayerMgr:playByPath()")
+	if not replay then replay = true end 
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		videoPlayer:playByPath(videoPath)   --"res/MP4/story_1.mp4"
+    		videoPlayer:playByPath(videoPath, replay) --"res/MP4/story_1.mp4"
 		else  
 			--local videoFullPath = cc.FileUtils:getInstance():fullPathForFilename(videoPath)  --"cocosvideo.mp4"
-            videoPlayer:setFileName(videoPath)     --绝对路径，或res/路径都可以。但是不能带有res去获取绝对路径
+            videoPlayer:setFileName(videoPath)    --绝对路径，或res/路径都可以。但是不能带有res去获取绝对路径
             videoPlayer:play()
 	    end
     end
 end
 
-function VideoPlayerMgr:playByURL(videoPlayer, videoURL)
-	G_Log_Info("VideoPlayerMgr:playByURL()")
+function VideoPlayerMgr:playByURL(videoPlayer, videoURL, replay)
+	--G_Log_Info("VideoPlayerMgr:playByURL()")
+	if not replay then replay = true end 
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		videoPlayer:playByURL(videoURL)
+    		videoPlayer:playByURL(videoURL, replay)
 		else
 			videoPlayer:setURL(videoURL)  --"http://benchmark.cocos2d-x.org/cocosvideo.mp4"
 	        videoPlayer:play()
@@ -118,27 +128,16 @@ function VideoPlayerMgr:playByURL(videoPlayer, videoURL)
     end
 end
 
-function VideoPlayerMgr:setFullScreenEnabled(videoPlayer)
-    if nil  ~= videoPlayer then
+function VideoPlayerMgr:isPlaying(videoPlayer)
+	G_Log_Info("VideoPlayerMgr:isPlaying()")
+	if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-
+    		videoPlayer:isPlaying()
 		else
-	        videoPlayer:setFullScreenEnabled(not videoPlayer:isFullScreenEnabled())
+	        videoPlayer:isPlaying()
 	    end
     end
 end
-
-function VideoPlayerMgr:setKeepAspectRatioEnabled(videoPlayer)
-    if nil  ~= videoPlayer then
-    	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-
-		else
-	        videoPlayer:setKeepAspectRatioEnabled(not videoPlayer:isKeepAspectRatioEnabled())
-	    end
-    end
-end
-
-
 
 
 return VideoPlayerMgr
