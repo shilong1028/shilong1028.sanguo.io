@@ -1,4 +1,6 @@
 #include "scripting/lua-bindings/auto/lua_WinMoviePlayer_auto.hpp"
+#include "scripting/lua-bindings/manual/CCLuaValue.h"
+#include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
 #include "WinMoviePlayer.h"
 #include "scripting/lua-bindings/manual/tolua_fix.h"
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
@@ -287,14 +289,25 @@ int lua_WinMoviePlayer_WinMoviePlayer_registerEndScriptHandler(lua_State* tolua_
     if (argc == 1) 
     {
         int arg0;
-
+		/*
         ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "WinMoviePlayer:registerEndScriptHandler");
         if(!ok)
         {
             tolua_error(tolua_S,"invalid arguments in function 'lua_WinMoviePlayer_WinMoviePlayer_registerEndScriptHandler'", nullptr);
             return 0;
         }
-        cobj->registerEndScriptHandler(arg0);
+		*/
+		
+		if (!toluafix_isfunction(tolua_S, 2, "LUA_FUNCTION", 0, &tolua_err)) {
+			goto tolua_lerror;
+		}
+
+		LUA_FUNCTION handler = (toluafix_ref_function(tolua_S, 2, 0));
+		ScriptHandlerMgr::HandlerType handlerType = (ScriptHandlerMgr::HandlerType)(int)ScriptHandlerMgr::HandlerType::EVENT_CUSTIOM;
+		ScriptHandlerMgr::getInstance()->addObjectHandler((void*)cobj, handler, handlerType);
+
+		//arg0 = toluafix_ref_function(tolua_S, 2, 0);
+        //cobj->registerEndScriptHandler(arg0);
         lua_settop(tolua_S, 1);
         return 1;
     }

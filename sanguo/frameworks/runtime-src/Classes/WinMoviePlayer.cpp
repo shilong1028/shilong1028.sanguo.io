@@ -215,23 +215,27 @@ void WinMoviePlayer::unregisterEndScriptHandler(void)
 
 void WinMoviePlayer::executeEndScriptHandler()
 {
+	/*
 	LuaScriptData data(this, "WinMoviePlayer");
 	data.push("string", (void*)"COMPLETED");
 	ScriptEvent scriptEvent(kCustomLuaEvent, &data);
 	ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&scriptEvent);
+	*/
 
-
-	if (0 == m_nEndScriptHandler) 
-		//return;
-	LUALOG("[LUA] execute WinMoviePlayer script handler: %d", m_nScriptEndCBHandler);
 	/*
+	LUALOG("[LUA] execute WinMoviePlayer script handler: %d", m_nScriptEndCBHandler);
+	if (0 == m_nEndScriptHandler) 
+		return;
 	auto engine = LuaEngine::getInstance();
 	LuaStack* stack = engine->getLuaStack();
 	int ret = stack->executeFunctionByHandler(m_nEndScriptHandler, 0);
 	stack->clean();
 	*/
-
-
+	
+	auto engine = LuaEngine::getInstance();
+	EventCustom event("WinMoviePlayer");
+	BasicScriptData data(this, (void*)& event);
+	engine->handleEvent(ScriptHandlerMgr::HandlerType::EVENT_CUSTIOM, (void*)&data);
 }
 
 

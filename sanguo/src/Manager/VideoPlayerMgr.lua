@@ -43,14 +43,14 @@ function VideoPlayerMgr:addEventListener(videoPlayer, VideoEventCallback)
     if nil  ~= videoPlayer and VideoEventCallback then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
     		local function onVideoEventCallback(sender, eventType)
-    			ScriptHandlerMgr:getInstance():unregisterScriptHandler(sender,cc.Handler.EVENT_CUSTOM_COMMON)
-    			if eventType == "COMPLETED" then
-    				VideoEventCallback(sender, "COMPLETED")
-    			end
+    			--if eventType == "COMPLETED" then
+	    			--ScriptHandlerMgr:getInstance():unregisterScriptHandler(sender,cc.Handler.EVENT_CUSTOM_COMMON)
+	    			VideoEventCallback(sender, "COMPLETED")
+	    		--end
     		end
     		G_Log_Info("VideoPlayerMgr:registerEndScriptHandler()")
-    		--videoPlayer:registerEndScriptHandler(onVideoEventCallback)
-    		ScriptHandlerMgr:getInstance():registerScriptHandler(videoPlayer, onVideoEventCallback, cc.Handler.EVENT_CUSTOM_COMMON)
+    		videoPlayer:registerEndScriptHandler(onVideoEventCallback)
+    		--ScriptHandlerMgr:getInstance():registerScriptHandler(videoPlayer, onVideoEventCallback, cc.Handler.EVENT_CUSTOM_COMMON)
 		else
 			local function onVideoEventCallback(sender, eventType)
 		        if eventType == ccexp.VideoPlayerEvent.PLAYING then
@@ -103,7 +103,7 @@ end
 
 function VideoPlayerMgr:playByPath(videoPlayer, videoPath, replay)
 	--G_Log_Info("VideoPlayerMgr:playByPath()")
-	if not replay then replay = true end 
+	if replay == nil then replay = true end 
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
     		videoPlayer:playByPath(videoPath, replay) --"res/MP4/story_1.mp4"
@@ -117,7 +117,7 @@ end
 
 function VideoPlayerMgr:playByURL(videoPlayer, videoURL, replay)
 	--G_Log_Info("VideoPlayerMgr:playByURL()")
-	if not replay then replay = true end 
+	if replay == nil  then replay = true end 
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
     		videoPlayer:playByURL(videoURL, replay)
@@ -129,7 +129,7 @@ function VideoPlayerMgr:playByURL(videoPlayer, videoURL, replay)
 end
 
 function VideoPlayerMgr:isPlaying(videoPlayer)
-	G_Log_Info("VideoPlayerMgr:isPlaying()")
+	--G_Log_Info("VideoPlayerMgr:isPlaying()")
 	if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
     		videoPlayer:isPlaying()

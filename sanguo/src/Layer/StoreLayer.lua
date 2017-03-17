@@ -96,7 +96,7 @@ function StoreLayer:changeStoryString()
     self.Image_bg:loadTexture("StoryBg/StoryBg_gongcheng.jpg", ccui.TextureResType.localType)
 
     if self.vedioPlayer then
-        g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/fight_1.mp4")
+        g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/fight_1.mp4", false)
     end
 
     self.bNextBreakHandler = true   --下次显示完文本后，结束定时器 
