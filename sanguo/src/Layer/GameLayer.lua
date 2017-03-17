@@ -169,17 +169,6 @@ function GameLayer:StartGameLayer()
     self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
     --地图层
     self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
-
-
-    local vedioPlayer1 = g_VideoPlayerMgr:createVideoPlayer(cc.size(480, 320))
-    g_VideoPlayerMgr:playByPath(vedioPlayer1, "res/MP4/story_1.mp4")
-    vedioPlayer1:setPosition(g_WinSize.width/3, g_WinSize.height/3)
-    self:addChild(vedioPlayer1, 100)
-
-    local vedioPlayer2 = g_VideoPlayerMgr:createVideoPlayer(cc.size(480, 320))
-    g_VideoPlayerMgr:playByPath(vedioPlayer2, "res/MP4/fight_1.mp4")
-    vedioPlayer2:setPosition(g_WinSize.width*2/3, g_WinSize.height*2/3)
-    self:addChild(vedioPlayer2, 100)
 end
 
 

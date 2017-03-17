@@ -9,12 +9,15 @@ end
 
 function StoreLayer:onExit() 
     --G_Log_Info("StoreLayer:onExit()")
-    self.scheduler:unscheduleScriptEntry(self.showUpdateHandler)
+    if self.showUpdateHandler then
+        g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
+        self.showUpdateHandler = nil
+    end
 end
 
 function StoreLayer:init()  
     G_Log_Info("StoreLayer:init()")
-    local csb = cc.CSLoader:createNode("StoreLayer.csb")
+    local csb = cc.CSLoader:createNode("csd/StoreLayer.csb")
     self:addChild(csb)
     csb:setContentSize(g_WinSize)
     ccui.Helper:doLayout(csb)
@@ -31,21 +34,19 @@ function StoreLayer:init()
     self.storyStrLen = 1
     self.storyString = lua_Story_String1
     self.totalStrLen = string.len(lua_Story_String1)
+    self.Image_bg:loadTexture("StoryBg/StoryBg_huangjin.jpg", ccui.TextureResType.localType)
   
-    local function onVideoEventCallback(sener, eventType)
-        if eventType == ccexp.VideoPlayerEvent.PLAYING then
-
-        elseif eventType == ccexp.VideoPlayerEvent.PAUSED then
-
-        elseif eventType == ccexp.VideoPlayerEvent.STOPPED then
-
-        elseif eventType == ccexp.VideoPlayerEvent.COMPLETED then
-            self:changeScene()
-        end
-    end
+    self.vedioPlayer = g_VideoPlayerMgr:createVideoPlayer(g_WinSize)
+    g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/story_1.mp4")
+    self.vedioPlayer:setPosition(g_WinSize.width/2, g_WinSize.height/2)
+    self.Panel_MP4:addChild(self.vedioPlayer)
 
     --self:scheduleUpdateWithPriorityLua(handler(self, self.update), 0)
-    self.showUpdateHandler = self.scheduler:scheduleScriptFunc(handler(self, self.showStoryText), 0.01, false)
+    if self.showUpdateHandler then
+        g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
+        self.showUpdateHandler = nil
+    end
+    self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showStoryText), 0.02, false)
 end
 
 function StoreLayer:touchEvent(sender, eventType)
@@ -79,22 +80,32 @@ end
 
 --切换下一段剧情文本
 function StoreLayer:changeStoryString()
-    if self.bNextBreakHandler == true then
-        self.scheduler:unscheduleScriptEntry(self.showUpdateHandler)
+    G_Log_Info("StoreLayer:changeStoryString()")
+    if self.bNextBreakHandler == true and self.showUpdateHandler then
+        g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
+        self.showUpdateHandler = nil
         return
     end
 
     self.Button_skip:setVisible(false) 
     self.storyStrLen = 1
     self.Text_story:setString("")
-    self.storyString = GameStoryString2
-    self.totalStrLen = string.len(GameStoryString2)
-    --self.Image_bg:loadTexture("Image/storyChangeBg.png")
+    self.storyString = lua_Story_String2
+    self.totalStrLen = string.len(lua_Story_String2)
+    self.Image_bg:loadTexture("StoryBg/StoryBg_gongcheng.jpg", ccui.TextureResType.localType)
+
+    if self.vedioPlayer then
+        g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/fight_1.mp4")
+    end
 
     self.bNextBreakHandler = true   --下次显示完文本后，结束定时器 
 end
 
-function StoreLayer:changeScene()
+function StoreLayer:changeScene() 
+    if self.vedioPlayer then
+        g_VideoPlayerMgr:stop(self.vedioPlayer)
+    end
+
     local scene = require("Scene.GameScene")   --进入登录界面
     g_pGameScene = scene:create()  --scene:new()
 
