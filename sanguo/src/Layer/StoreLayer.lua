@@ -133,7 +133,7 @@ function StoreLayer:changeScene()
     g_pGameScene = scene:create()  --scene:new()
 
     if cc.Director:getInstance():getRunningScene() then
-        cc.Director:getInstance():replaceScene(cc.TransitionFade:create(1.0, g_pGameScene, cc.c3b(0,0,0)))
+        cc.Director:getInstance():replaceScene(g_pGameScene)  --cc.TransitionFade:create(1.0, g_pGameScene, cc.c3b(0,0,0)))
     else
         cc.Director:getInstance():runWithScene(g_pGameScene)
     end

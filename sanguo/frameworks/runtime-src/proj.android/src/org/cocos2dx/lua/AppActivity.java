@@ -25,11 +25,20 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.lua;
 
+import java.util.ArrayList;
+
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.os.Handler;
+
 
 public class AppActivity extends Cocos2dxActivity{  
+	
     public Cocos2dxGLSurfaceView onCreateView() {
         Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this);
         // Tests should create stencil buffer
@@ -37,4 +46,57 @@ public class AppActivity extends Cocos2dxActivity{
         
         return glSurfaceView;
     }
+    
+	protected void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if(SplashScreen.instance != null){
+					SplashScreen.instance.finish();
+				}					
+			}
+		}, 2000); 
+	}
+
+    protected void onPause() {
+        super.onPause();
+    }
+    
+	protected void onStop() 
+	{ 	
+		super.onStop();
+	}
+	
+	protected void onResume() 
+	{ 		
+		super.onResume();
+	}
+	
+	protected void onDestroy() 
+	{ 	
+		super.onDestroy();
+	}
+    
+	//判断网络是否连接的接口，供lua调用
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);  
+        if (cm != null) {  
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();  
+        ArrayList networkTypes = new ArrayList();
+        networkTypes.add(ConnectivityManager.TYPE_WIFI);
+        try {
+            networkTypes.add(ConnectivityManager.class.getDeclaredField("TYPE_ETHERNET").getInt(null));
+        } catch (NoSuchFieldException nsfe) {
+        }
+        catch (IllegalAccessException iae) {
+            throw new RuntimeException(iae);
+        }
+        if (networkInfo != null && networkTypes.contains(networkInfo.getType())) {
+                return true;  
+            }  
+        }  
+        return false;  
+    } 
 }

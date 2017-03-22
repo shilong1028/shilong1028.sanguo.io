@@ -36,7 +36,7 @@ local function main()
     local scene = require("Scene.HealthAnnouncementScene")
     scene = scene:new()
     if cc.Director:getInstance():getRunningScene() then
-        cc.Director:getInstance():replaceScene(cc.TransitionFade:create(1.0, scene, cc.c3b(0,0,0)))
+        cc.Director:getInstance():replaceScene(scene)  --cc.TransitionFade:create(1.0, scene, cc.c3b(0,0,0)))
     else
         cc.Director:getInstance():runWithScene(scene)
     end

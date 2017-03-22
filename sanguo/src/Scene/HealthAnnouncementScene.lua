@@ -66,7 +66,7 @@ function HealthAnnouncementScene:init()
     bkSprite:setPosition(cc.p(g_WinSize.width/2, g_WinSize.height/2))
     layer:addChild(bkSprite)
     
-    bkSprite:runAction(cc.Sequence:create(cc.DelayTime:create(0.5), cc.CallFunc:create(function() 
+    bkSprite:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(function() 
         local scene = nil
         local nextScene = nil
         local bfirstLogin = true --g_UserDefaultMgr:GetIsFirstLogin()   --是否第一次登陆
@@ -80,7 +80,7 @@ function HealthAnnouncementScene:init()
         end
 
         if cc.Director:getInstance():getRunningScene() then
-            cc.Director:getInstance():replaceScene(cc.TransitionFade:create(1.0, nextScene, cc.c3b(0,0,0)))
+            cc.Director:getInstance():replaceScene(nextScene)  --cc.TransitionFade:create(1.0, nextScene, cc.c3b(0,0,0)))
         else
             cc.Director:getInstance():runWithScene(nextScene)
         end
