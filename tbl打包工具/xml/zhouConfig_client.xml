@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!-- 打包配置文件 -->
+<config>
+	<table name="zhouConfig" ExcelFile="zhouConfig.xlsx" sheet="Sheet1" OutputFile="zhouConfig_client.tbl">			
+		<field name="id" type="short" size="2"/>
+		<field name="name" type="string" size="64"/>
+		<field name="map_id" type="int" size="4"/>
+		<field name="capital" type="int" size="4"/>
+		<field name="desc" type="string" size="256"/>
+	</table>
+</config>
