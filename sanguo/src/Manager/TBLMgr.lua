@@ -14,6 +14,8 @@ function TBLMgr:init()
 	self.instance = nil
 
 	self.mapConfigVec = nil
+	self.cityConfigVec = nil
+	self.mapJumpPtConfigVec = nil
 
 end
 
@@ -27,7 +29,7 @@ function TBLMgr:GetInstance()
 end
 
 function TBLMgr:LoadAllTBL()
-	self:LoadMapConfigTBL()
+
 end
 
 --地图表结构类
@@ -52,25 +54,17 @@ function TBLMgr:LoadMapConfigTBL()
 		mapConfig.path = stream:ReadString()     --string 地图图片在res/Map文件夹中路径
 		mapConfig.width = stream:ReadUInt()     --int 地图宽  像素点
 		mapConfig.height = stream:ReadUInt()    --int 地图高
-		local default_pt = stream:ReadString()  --string 跳转到此地图的默认点  每点以32*32为单位块
-		local ptVec = string.split(default_pt,"-")
-		mapConfig.default_pt = cc.p(tonumber(ptVec[1])*32 - 16, mapConfig.height - tonumber(ptVec[2])*32 + 16)   --转换为像素点
-		mapConfig.jump_pt = {}
-		local jump_pt = stream:ReadString()     --string 跳转到其他地图的传送点  每点以32*32为单位块
-		local jumpVec = string.split(default_pt,";")
-		for j=1, #jumpVec do
-			ptVec = string.split(jumpVec[j],"-")
-			table.insert(mapConfig.jump_pt, cc.p(tonumber(ptVec[1])*32 - 16, mapConfig.height - tonumber(ptVec[2])*32 + 16))   --转换为像素点
-		end
-		mapConfig.npc_id = {}
-		local npc_id = stream:ReadString()      --string 本地图的NPC
-		local idVec = string.split(npc_id,"-")
-		for j=1, #idVec do
-			table.insert(mapConfig.npc_id, tonumber(idVec[j]))
-		end
 		mapConfig.img_count = stream:ReadUInt()    --切成的小图数量
 		mapConfig.row = stream:ReadUInt()    --切成的小图的行列数
 		mapConfig.column = stream:ReadUInt()
+
+		mapConfig.cityIdStrVec = {}
+		local citys = stream:ReadString()  --string 地图上所属郡城分布点
+		mapConfig.cityIdStrVec = string.split(citys,";")
+
+		mapConfig.jumpptIdStrVec = {}
+		local jump_pt = stream:ReadString()     --string 跳转到其他地图的传送点  
+		mapConfig.jumpptIdStrVec = string.split(jump_pt,";")
 
 		--游戏附加数据
 		mapConfig.wTitleCount = math.floor(mapConfig.width / 32)   --32*32为单位块的横向数量
@@ -82,6 +76,10 @@ end
 
 function TBLMgr:getMapConfigTBLDataById(mapId)
 	--G_Log_Info("TBLMgr:getMapConfigTBLDataById(), mapId = %d", mapId)
+	if self.mapConfigVec == nil then
+		self:LoadMapConfigTBL()
+	end
+
 	if self.mapConfigVec then
 		for i=1, #self.mapConfigVec do
 			if self.mapConfigVec[i].id == mapId then
@@ -90,6 +88,98 @@ function TBLMgr:getMapConfigTBLDataById(mapId)
 		end
 	end
 	return nil
+end
+
+--城池表结构类
+function TBLMgr:LoadCityConfigTBL()
+	--G_Log_Info("TBLMgr:LoadCityConfigTBL()")
+	if self.cityConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/cityConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.cityConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local cityConfig = g_tbl_cityConfig:new()
+		cityConfig.id_str = stream:ReadString()   --城池ID字符串
+		cityConfig.name = stream:ReadString()     --城池名称
+		cityConfig.type = stream:ReadUInt()     --城池类型1大城市，2郡城，3关隘渡口
+		cityConfig.zhou_id = stream:ReadUInt()     --所属州
+		cityConfig.map_row = stream:ReadUInt()    --城池在地图的行  32*32为单位块的横向数量
+		cityConfig.map_col = stream:ReadUInt()    --城池在地图的列
+		cityConfig.population = stream:ReadUInt()    --初始人口数量
+		
+		cityConfig.near_citys = {}
+		local citys = stream:ReadString()   --周边相邻连接的城池
+		cityConfig.near_citys = string.split(citys,";")
+
+		cityConfig.desc = stream:ReadString()
+
+		--游戏附加数据
+		cityConfig.map_pt = cc.p(cityConfig.map_col*32 - 16, cityConfig.map_row*32 - 16)    --转换为像素点,以左上角为00原点
+
+		self.cityConfigVec[""..cityConfig.id_str] = cityConfig
+		--table.insert(self.cityConfigVec, cityConfig)
+	end
+end
+
+function TBLMgr:getCityConfigTBLDataById(cityIdStr)
+	--G_Log_Info("TBLMgr:getCityConfigTBLDataById(), cityIdStr = %s", cityIdStr)
+	if self.cityConfigVec == nil then
+		self:LoadCityConfigTBL()
+	end
+
+	return self.cityConfigVec[""..cityIdStr]
+end
+
+--地图跳转点表结构类
+function TBLMgr:LoadMapJumpPtConfigTBL()
+	--G_Log_Info("TBLMgr:LoadMapJumpPtConfigTBL()")
+	if self.mapJumpPtConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/mapJumpConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.mapJumpPtConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local mapJumpPtConfig = g_tbl_mapJumpPtConfig:new()
+		mapJumpPtConfig.id_str = stream:ReadString()   --跳转点ID字符串
+		mapJumpPtConfig.map_id1 = stream:ReadUInt()     --地图1ID 
+		mapJumpPtConfig.map_row1 = stream:ReadUInt()     --跳转点在地图1的行  32*32为单位块的横向数量
+		mapJumpPtConfig.map_col1 = stream:ReadUInt()    --跳转点在地图1的列
+		mapJumpPtConfig.map_id2 = stream:ReadUInt()    
+		mapJumpPtConfig.map_row2 = stream:ReadUInt()   
+		mapJumpPtConfig.map_col2 = stream:ReadUInt()  
+		mapJumpPtConfig.desc = stream:ReadString()
+
+		--游戏附加数据
+		self.map_pt1 = cc.p(cityConfig.map_col1*32 - 16, cityConfig.map_row1*32 - 16)    --转换为像素点,以左上角为00原点
+		self.map_pt2 = cc.p(cityConfig.map_col2*32 - 16, cityConfig.map_row2*32 - 16)
+
+		self.mapJumpPtConfigVec[""..mapJumpPtConfig.id_str] = mapJumpPtConfig
+		--table.insert(self.mapJumpPtConfigVec, mapJumpPtConfig)
+	end
+end
+
+function TBLMgr:getMapJumpPtConfigTBLDataById(IdStr)
+	--G_Log_Info("TBLMgr:getMapJumpPtConfigTBLDataById(), IdStr = %s", IdStr)
+	if self.mapJumpPtConfigVec == nil then
+		self:LoadMapJumpPtConfigTBL()
+	end
+
+	return self.mapJumpPtConfigVec[""..IdStr]
 end
 
 

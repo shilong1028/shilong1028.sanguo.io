@@ -306,5 +306,25 @@ function PlayerNode:UpdateFace(face)
 	end	
 end
 
+--更新透明度
+function PlayerNode:UpdateOpacity(heroPos)
+	local isOpacity = g_pMapMgr:IsOpacity(heroPos)
+	local opacityVal = 255
+	
+	if isOpacity then
+		opacityVal = 155
+	else
+		opacityVal = 255
+	end
+
+	--更新人物和坐骑透明度
+	if self.ImodAni_zd then
+		self.ImodAni_zd:setOpacity(opacityVal)	
+	end
+	if self.ImodAni_pb then
+		self.ImodAni_pb:setOpacity(opacityVal)	
+	end
+end
+
 
 return PlayerNode

@@ -47,11 +47,12 @@ function StoreLayer:init()
         g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
         self.showUpdateHandler = nil
     end
-    self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showStoryText), 0.02, false)
+    --self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showStoryText), 0.02, false)
+    self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showSkipBtn), 1.0, false)
 end
 
 function StoreLayer:createVideoPlayer(vedioName)
-    G_Log_Info("StoreLayer:createVideoPlayer(), vedioName = %s", vedioName)
+    --G_Log_Info("StoreLayer:createVideoPlayer(), vedioName = %s", vedioName)
     local function onVideoEventCallback(sender, eventType)
         self:onVideoEventCallback(sender, eventType)
     end
@@ -70,10 +71,29 @@ function StoreLayer:touchEvent(sender, eventType)
             if self.bNextBreakHandler == true then
                 self:changeScene()  
             else
-                self:changeStoryString()  --切换下一段剧情文本
+                self:nextMp4Vedio()
+                --self:changeStoryString()  --切换下一段剧情文本
             end
         end
     end
+end
+
+function StoreLayer:showSkipBtn()
+    self.Button_skip:setVisible(true)
+    if self.showUpdateHandler then
+        g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
+        self.showUpdateHandler = nil
+    end
+end
+
+function StoreLayer:nextMp4Vedio()
+    self.bNextBreakHandler = true   
+    if self.vedioPlayer then
+        g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/fight_1.mp4")
+    end
+
+    self.Button_skip:setVisible(false) 
+    self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showSkipBtn), 1.0, false)  
 end
 
 function StoreLayer:showStoryText()
@@ -115,9 +135,13 @@ end
 
 function StoreLayer:onVideoEventCallback(sener, eventType)
     G_Log_Info("StoreLayer:onVideoEventCallback()")
-    if self.bNextBreakHandler == true and eventType == "COMPLETED" then
-        --g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/login_after.mp4", true)
-        self:changeScene() 
+    if eventType == "COMPLETED" then
+        if self.bNextBreakHandler == true then
+            --g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/login_after.mp4", true)
+            self:changeScene() 
+        else
+            self:nextMp4Vedio()
+        end
     end
 end
 

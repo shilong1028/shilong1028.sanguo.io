@@ -35,6 +35,7 @@ function MapLayer:ShowMapImg(mapId)
     	G_Log_Error("MapLayer--mapConfigData = nil")
     	return
     end
+    --G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
 
     self.rootNode = cc.Node:create()
     self.rootNode:setContentSize(cc.size(self.mapConfigData.width, self.mapConfigData.height))
@@ -51,7 +52,7 @@ function MapLayer:ShowMapImg(mapId)
 	local posY = self.mapConfigData.height
 
 	for i=1, imgCount do
-		local str = string.format("Map/%s/%s%d.jpg", imgName, imgName, i)
+		local str = string.format("Map/%s/images/%s_%d.jpg", imgName, imgName, i)
 		local Spr = cc.Sprite:create(str)
 		if Spr == nil then
 			G_Log_Error("MapLayer--mapImg = nil, mapName = %s, idx = %d", imgName, i)
@@ -70,8 +71,16 @@ function MapLayer:ShowMapImg(mapId)
 
     self.playerNode = PlayerNode:create()
     self.playerNode:initPlayerData()
-    self:setRoleMapPosition(self.mapConfigData.default_pt)
     self.rootNode:addChild(self.playerNode, 10)
+
+    local defaultCityId = self.mapConfigData.cityIdStrVec[1]
+    local cityData = g_pTBLMgr:getCityConfigTBLDataById(defaultCityId)
+
+    if cityData then
+    	local cityPt = cityData.map_pt   --转换为像素点,以左上角为00原点
+    	local default_pt = cc.p(cityPt.x, self.mapConfigData.height - cityPt.y)
+    	self:setRoleMapPosition(default_pt)
+    end
 end
 
 --主角在屏幕上的坐标

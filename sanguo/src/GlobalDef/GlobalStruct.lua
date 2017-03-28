@@ -97,17 +97,50 @@ function  g_tbl_mapConfig:ctor()
 	self.path = ""     --string 地图图片在res/Map文件夹中路径
 	self.width = 0     --int 地图宽  像素点
 	self.height = 0    --int 地图高
-	self.default_pt = cc.p(0,0)  --string 跳转到此地图的默认点  每点以32*32为单位块，转换为像素点
-	self.jump_pt = {}     --string 跳转到其他地图的传送点  每点以32*32为单位块，转换为像素点
-	self.npc_id = {}      --string 本地图的NPC
 	self.img_count = 1    --切成的小图数量
 	self.row = 1    --切成的小图的行列数
 	self.column = 1
+	self.cityIdStrVec = {}     --string 地图上所属郡城分布点
+	self.jumpptIdStrVec = {}      --string 跳转到其他地图的传送点 
 
 	--游戏附加数据
 	self.wTitleCount = 0   --32*32为单位块的横向数量
 	self.hTitleCount = 0   --32*32为单位块的纵向数量
 end
+
+--城池表结构类
+g_tbl_cityConfig = class("g_tbl_cityConfig",__BaseStruct)
+function  g_tbl_cityConfig:ctor()
+	self.id_str = ""   --string 城池ID字符串
+	self.name = ""     --string 城池名称
+	self.type = 0     --城池类型1大城市，2郡城，3关隘渡口
+	self.zhou_id = 0    --所属州
+	self.map_row = 0    --城池在地图的行  32*32为单位块的横向数量
+	self.map_col = 0    --城池在地图的列
+	self.population = 0   --初始人口数量
+	self.near_citys = {}     --周边相邻连接的城池
+	self.desc = ""      --string 
+
+	--游戏附加数据
+	self.map_pt = cc.p(0,0)  --转换为像素点,以左上角为00原点
+end
+
+--地图跳转点表结构类
+g_tbl_mapJumpPtConfig = class("g_tbl_mapJumpPtConfig",__BaseStruct)
+function  g_tbl_mapJumpPtConfig:ctor()
+	self.id_str = ""        --跳转点ID字符串
+	self.map_id1 = 0     --地图1ID 
+	self.map_row1 = 0     --跳转点在地图1的行  32*32为单位块的横向数量
+	self.map_col1 = 0     --跳转点在地图1的列
+	self.map_id2 = 0   
+	self.map_row2 = 0    
+	self.map_col2 = 0   
+	self.desc = ""     
+
+	--游戏附加数据
+	self.map_pt1 = cc.p(0,0)   --转换为像素点,以左上角为00原点
+	self.map_pt2 = cc.p(0,0)   --转换为像素点,以左上角为00原点
+end 
 
 
 

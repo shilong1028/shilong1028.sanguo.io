@@ -39,7 +39,7 @@ function MapMgr:LoadMapStreamData(mapId)
 
     --读取寻路点配置信息
 	local l_stream = ark_Stream:new()
-	local mapPath = string.format("Map/%s.map", self.mapConfigData.path)
+	local mapPath = string.format("Map/%s/%s.map", self.mapConfigData.path, self.mapConfigData.path)
     if(l_stream:CreateReadStreamFromSelf(mapPath) == nil) then
     	G_Log_Error("MapMgr--CreateReadStreamFromSelf() failed, mapPath = %s", mapPath)
 		return nil
@@ -92,6 +92,19 @@ function MapMgr:AddOpacity(pt)
 		end
 	end
 	self._VecOpacity[math.floor(pt.y)*self._MaxTileWidth + math.floor(pt.x) + 1] = 1
+end
+
+function MapMgr:IsOpacity(pos)
+	if (not self._VecOpacity or #self._VecOpacity == 0) then
+		return false
+	end
+	if(pos.y < 0 or pos.y > self._MaxTileHeight) then
+		return false
+	end
+	if(pos.x < 0 or pos.x > self._MaxTileWidth) then
+		return false
+	end
+	return self._VecOpacity[math.floor(pos.y)*self._MaxTileWidth + math.floor(pos.x) + 1] == 1
 end
 
 function MapMgr:getMapConfigData()
