@@ -44,14 +44,14 @@ end
 function PlayerNode:showPlayerImodAni(bStandUp)  
 	if bStandUp == true and self.ImodAni_zd == nil then --站立动画
 		self.ImodAni_zd = ImodAnim:create()
-		self.ImodAni_zd:initAnimWithName("Monster/btm5_zd.png", "Monster/btm5_zd.ani", true)   
+		self.ImodAni_zd:initAnimWithName("Ani/caocao_zd.png", "Ani/caocao_zd.ani", true)   
 	    --调用initAnimWithName方法，会连报三个[LUA ERROR] function refid '1' does not reference a Lua function
 	    self.ImodAni_zd:PlayActionRepeat(0, 0.1)
 	    self.ImodAni_zd:setPosition(cc.p(0,0))
 	    self:addChild(self.ImodAni_zd, 1)
 	elseif bStandUp ~= true and self.ImodAni_pb == nil then --跑步的动画
 		self.ImodAni_pb = ImodAnim:create()
-		self.ImodAni_pb:initAnimWithName("Monster/btm5_pb.png", "Monster/btm5_pb.ani", true)   
+		self.ImodAni_pb:initAnimWithName("Ani/caocao_pb.png", "Ani/caocao_pb.ani", true)   
 	    --调用initAnimWithName方法，会连报三个[LUA ERROR] function refid '1' does not reference a Lua function
 	    self.ImodAni_pb:PlayActionRepeat(0, 0.1)
 	    self.ImodAni_pb:setPosition(cc.p(0,0))
