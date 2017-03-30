@@ -27,7 +27,7 @@ function MapLayer:init()
     self.mapConfigData = nil  --地图表配置数据 
     self.mapJumpPosData = {}  --游戏跳转点
 
-    self:ShowMapImg(5)  --全国地图
+    self:ShowMapImg(1)  --全国地图
     self:ShowPlayerNode()
 end
 
