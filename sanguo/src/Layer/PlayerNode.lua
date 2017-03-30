@@ -24,6 +24,7 @@ function PlayerNode:init()
     self.bPauseAutoMoving = false  --暂停自动寻路，比如触发战斗，打开界面等
     self.AutoPathEntry = nil  --自动寻路定时器实体
     self.AutoPathOneByOneData = nil  --自动寻路一步步走的步伐数据
+    self.curPos = nil  --人物当前位置
 
     --self.MoveDirectionPt = cc.p(0,0)   --移动方向，8个向量方向
     self.MoveSpeed = 160   --人物移动速度，默认180,从人物3属性中读取
@@ -125,6 +126,11 @@ function PlayerNode:AutoPathUpdate()
 		self:DelAutoPathUpdateEntry()
 	    self.bAutoMoving = false
 		self:ChangeMoveAnimate(self.curMoveState, g_PlayerState.HMS_NOR)   --切换站立或跑步动画
+
+		local jumpData = g_pMapMgr:checkJumpMap(self.curPos)
+        if jumpData and self.mapLayer then
+        	self.mapLayer:JumpMap(jumpData)
+        end
 	end
 
 	if self.bAutoMoving == false or not self.AutoPathVec or #self.AutoPathVec <= 0 then
@@ -134,7 +140,6 @@ function PlayerNode:AutoPathUpdate()
 
 	if #self.AutoPathVec <= 0 then  --最后一个自动寻路的点索引
         --[[移动结束回调]]
-        G_Log_Info("PlayerNode:AutoPathUpdate()--移动结束回调")
 	else   --继续寻路
 		local dirPos = cc.p(self.AutoPathVec[1].x, self.AutoPathVec[1].y)   --self.AutoPathVec为像素坐标		
 		local nowPos = cc.p(self:getPosition())
@@ -222,10 +227,12 @@ end
 function PlayerNode:AutoPathUpdateOneByOne(dt)
 	if self.mapLayer and self.AutoPathOneByOneData then
 		if self.AutoPathOneByOneData.stepIdx >= self.AutoPathOneByOneData.step then
+			self.curPos = self.AutoPathOneByOneData.dirPos  --人物当前位置
 			self.mapLayer:setRoleMapPosition(self.AutoPathOneByOneData.dirPos)
 			self:DelAutoPathUpdateEntry()
 			self:AutoPathUpdate()
 		else
+			self.curPos = self.AutoPathOneByOneData.nextPos  --人物当前位置
 			self.mapLayer:setRoleMapPosition(self.AutoPathOneByOneData.nextPos)
 			self.AutoPathOneByOneData.stepIdx = self.AutoPathOneByOneData.stepIdx + 1
 			local nowPos = self.AutoPathOneByOneData.nextPos

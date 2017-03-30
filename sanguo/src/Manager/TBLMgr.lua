@@ -15,6 +15,7 @@ function TBLMgr:init()
 
 	self.mapConfigVec = nil
 	self.cityConfigVec = nil
+	self.zhouConfigVec = nil
 	self.mapJumpPtConfigVec = nil
 
 end
@@ -180,6 +181,49 @@ function TBLMgr:getMapJumpPtConfigTBLDataById(IdStr)
 	end
 
 	return self.mapJumpPtConfigVec[""..IdStr]
+end
+
+--州数据表
+function TBLMgr:LoadZhouConfigTBL()
+	--G_Log_Info("TBLMgr:LoadZhouConfigTBL()")
+	if self.zhouConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/zhouConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.zhouConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local zhouConfig = g_tbl_zhouConfig:new()
+		zhouConfig.id = stream:ReadWord()         --short 州ID
+		zhouConfig.name = stream:ReadString()     --string 地图名称
+		zhouConfig.map_id = stream:ReadUInt()     --int 地图ID
+		zhouConfig.capital = stream:ReadString()    --string 首府ID字符串
+		zhouConfig.desc = stream:ReadString()    --string
+
+		table.insert(self.zhouConfigVec, zhouConfig)
+	end
+end
+
+function TBLMgr:getZhouConfigTBLDataById(zhouId)
+	--G_Log_Info("TBLMgr:getZhouConfigTBLDataById(), zhouId = %d", zhouId)
+	if self.zhouConfigVec == nil then
+		self:LoadZhouConfigTBL()
+	end
+
+	if self.zhouConfigVec then
+		for i=1, #self.zhouConfigVec do
+			if self.zhouConfigVec[i].id == zhouId then
+				return self.zhouConfigVec[i]
+			end
+		end
+	end
+	return nil
 end
 
 

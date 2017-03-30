@@ -13,6 +13,7 @@ function MapMgr:init()
 	self.instance = nil
 
 	self.mapConfigData = nil  --地图表配置数据
+	self.mapJumpPosData = {}  --游戏跳转点
 	self._VecOpacity = nil   --地图中快透明数据
 
 end
@@ -36,6 +37,21 @@ function MapMgr:LoadMapStreamData(mapId)
 		return nil
 	end
 	--G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
+
+	--添加游戏跳转点
+	self.mapJumpPosData = {}
+	for k, jumpId in pairs(self.mapConfigData.jumpptIdStrVec) do
+		local jumpData = g_pTBLMgr:getMapJumpPtConfigTBLDataById(jumpId)
+		if jumpData then
+			if jumpData.map_id1 == mapId then
+				jumpData.pos = cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y)    --转换为像素点,以左上角为00原点
+			elseif jumpData.map_id2 == mapId then
+				jumpData.pos = cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y)
+			end
+
+			table.insert(self.mapJumpPosData, jumpData)
+		end
+	end
 
     --读取寻路点配置信息
 	local l_stream = ark_Stream:new()
@@ -83,6 +99,22 @@ function MapMgr:LoadMapStreamData(mapId)
 	return self.mapConfigData
 end
 
+function MapMgr:getMapJumpPosData()
+	return self.mapJumpPosData
+end
+
+function MapMgr:checkJumpMap(curPos)
+	for k, jumpData in pairs(self.mapJumpPosData) do
+		if jumpData.pos then
+			local stepLen = g_pMapMgr:CalcDistance(jumpData.pos, curPos)
+			if stepLen < 50 then
+				return jumpData
+			end
+		end
+	end
+	return nil
+end
+
 function MapMgr:AddOpacity(pt)
 	if self._VecOpacity == nil then
 		self._VecOpacity = {}
@@ -91,7 +123,7 @@ function MapMgr:AddOpacity(pt)
 			self._VecOpacity[i] = 0
 		end
 	end
-	self._VecOpacity[math.floor(pt.y)*self._MaxTileWidth + math.floor(pt.x) + 1] = 1
+	self._VecOpacity[math.floor(pt.y)*self.mapConfigData.wTitleCount + math.floor(pt.x) + 1] = 1
 end
 
 function MapMgr:IsOpacity(pos)
@@ -104,7 +136,7 @@ function MapMgr:IsOpacity(pos)
 	if(pos.x < 0 or pos.x > self._MaxTileWidth) then
 		return false
 	end
-	return self._VecOpacity[math.floor(pos.y)*self._MaxTileWidth + math.floor(pos.x) + 1] == 1
+	return self._VecOpacity[math.floor(pos.y)*self.mapConfigData.wTitleCount + math.floor(pos.x) + 1] == 1
 end
 
 function MapMgr:getMapConfigData()

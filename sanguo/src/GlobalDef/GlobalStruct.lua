@@ -142,6 +142,16 @@ function  g_tbl_mapJumpPtConfig:ctor()
 	self.map_pt2 = cc.p(0,0)   --转换为像素点,以左上角为00原点
 end 
 
+--州表结构类
+g_tbl_zhouConfig = class("g_tbl_zhouConfig",__BaseStruct)
+function  g_tbl_zhouConfig:ctor()
+	self.id = 0        --short 州ID
+	self.name = ""     --string 地图名称
+	self.map_id = 0     --int 地图ID
+	self.capital = ""    --string 首府ID字符串
+	self.desc = ""    --string
+end
+
 
 
 

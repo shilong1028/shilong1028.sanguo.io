@@ -34,7 +34,7 @@ function NpcNode:initChengData(data)
 	local imgSize = self.chengImage:getContentSize()
 	self:setContentSize(imgSize)
 
-	local textSize = cc.size(imgSize.width, g_defaultChengFontSize + 6)
+	local textSize = cc.size(imgSize.width*2, g_defaultChengFontSize + 6)
     self.chengName = cc.Label:createWithTTF(data.name, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
     self:addChild(self.chengName, 5)  
 end
@@ -51,7 +51,7 @@ function NpcNode:initMapJumpPtData(data)
 	local modSize = self.Imod:getContentSize()
 	self:setContentSize(modSize)
 
-	local textSize = cc.size(modSize.width, g_defaultChengFontSize + 6)
+	local textSize = cc.size(modSize.width*2, g_defaultChengFontSize + 6)
     self.jumpPtName = cc.Label:createWithTTF(data.desc, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
     self:addChild(self.jumpPtName, 5)  
 end

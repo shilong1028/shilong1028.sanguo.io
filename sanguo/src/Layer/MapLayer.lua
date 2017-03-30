@@ -23,33 +23,62 @@ function MapLayer:init()
 	self.m_touchImg = nil  --点击动画
     self.m_arrowImgVec = {}  --路径箭头
 
+    self.curMapId = 0   --当前地图ID
     self.mapConfigData = nil  --地图表配置数据 
-    self.mapJumpPos = {}  --游戏跳转点
+    self.mapJumpPosData = {}  --游戏跳转点
 
-    self.rootNode = nil
+    self:ShowMapImg(5)  --全国地图
+    self:ShowPlayerNode()
+end
 
-    self.playerNode = nil
+function MapLayer:JumpMap(jumpData)
+	G_Log_Info("MapLayer:JumpMap()")
+	if jumpData then
+		if jumpData.map_id1 == self.curMapId then
+			self:ShowMapImg(jumpData.map_id2)  
+			self:ShowPlayerNode(cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y))    --转换为像素点,以左上角为00原点
+		elseif jumpData.map_id2 == self.curMapId then
+			self:ShowMapImg(jumpData.map_id1) 
+			self:ShowPlayerNode(cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y))    --转换为像素点,以左上角为00原点
+		end
+	end
+end
 
-    self:ShowMapImg(1)  --全国地图
-
+function MapLayer:ClearMapObj()
+	self.rootNode:removeAllChildren()
+    self.rootNode:setPosition(cc.p(0,0))
+    self.playerNode = nil  --主角节点
+	self.m_touchImg = nil  --点击动画
+    self.m_arrowImgVec = {}  --路径箭头
+    self.mapJumpPosData = {}  --游戏跳转点
 end
 
 function MapLayer:ShowMapImg(mapId)  
-    --G_Log_Info("MapLayer:ShowMapImg()")
+    --G_Log_Info("MapLayer:ShowMapImg() mapId = %d", mapId)
+    collectgarbage("collect")
+    -- avoid memory leak
+    collectgarbage("setpause", 100)
+    collectgarbage("setstepmul", 5000)
+    math.randomseed(os.time())
+
+    self.mapConfigData = nil
     self.mapConfigData = g_pMapMgr:LoadMapStreamData(mapId)  --地图表配置数据 
     if self.mapConfigData == nil then
     	G_Log_Error("MapLayer--mapConfigData = nil")
     	return
     end
+    self.curMapId = mapId   --当前地图ID
     --G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
     if not self.rootNode then
     	self.rootNode = cc.Node:create()
     	self:addChild(self.rootNode)
     end
-    self.rootNode:removeAllChildren()
+
+    self:ClearMapObj()
+
     self.rootNode:setContentSize(cc.size(self.mapConfigData.width, self.mapConfigData.height))
     --self.rootNode:setPosition(cc.p((g_WinSize.width - self.mapConfigData.width)/2, (g_WinSize.height - self.mapConfigData.height)/2))
-    
+
     local imgCount = self.mapConfigData.img_count
     local imgName = self.mapConfigData.path
 
@@ -68,6 +97,7 @@ function MapLayer:ShowMapImg(mapId)
 		Spr:setAnchorPoint(cc.p(0, 1))
 		Spr:setPosition(cc.p(posX, posY))
 		self.rootNode:addChild(Spr, 1)
+		--G_Log_Info("idx = %d, posX = %d, posY = %d", i, posX, posY)
 
 		if i%self.mapConfigData.column == 0 then
 			posX = 0
@@ -78,24 +108,13 @@ function MapLayer:ShowMapImg(mapId)
 	end
 
 	--添加游戏跳转点
-	self.mapJumpPos = {}
-	for k, jumpId in pairs(self.mapConfigData.jumpptIdStrVec) do
-		local jumpData = g_pTBLMgr:getMapJumpPtConfigTBLDataById(jumpId)
-		if jumpData then
-			local pos = nil
-			if jumpData.map_id1 == mapId then
-				pos = cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y)    --转换为像素点,以左上角为00原点
-			elseif jumpData.map_id2 == mapId then
-				pos = cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y)
-			end
-
-			if pos then
-				table.insert(self.mapJumpPos, pos)
-			    local jumpPt = NpcNode:create()
-			    jumpPt:initMapJumpPtData(jumpData)
-			    self.rootNode:addChild(jumpPt, 10)
-			    jumpPt:setPosition(pos)
-			end
+	self.mapJumpPosData = g_pMapMgr:getMapJumpPosData()
+	for k, jumpData in pairs(self.mapJumpPosData) do
+		if jumpData and jumpData.pos then
+		    local jumpPt = NpcNode:create()
+		    jumpPt:initMapJumpPtData(jumpData)
+		    self.rootNode:addChild(jumpPt, 10)
+		    jumpPt:setPosition(jumpData.pos)
 		end
 	end
 
@@ -111,7 +130,10 @@ function MapLayer:ShowMapImg(mapId)
 		    chengchi:setPosition(pos)
 		end
 	end
+end
 
+--显示人物
+function MapLayer:ShowPlayerNode(rolePos)
 	--添加人物
 	if not self.playerNode then
 		self.playerNode = PlayerNode:create()
@@ -119,14 +141,17 @@ function MapLayer:ShowMapImg(mapId)
 	    self.rootNode:addChild(self.playerNode, 20)
 	end
 
-    local defaultCityId = self.mapConfigData.cityIdStrVec[1]
-    local cityData = g_pTBLMgr:getCityConfigTBLDataById(defaultCityId)
+	if not rolePos then
+	    local defaultCityId = self.mapConfigData.cityIdStrVec[1]
+	    local cityData = g_pTBLMgr:getCityConfigTBLDataById(defaultCityId)
+	    if cityData then
+	    	rolePos = cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y)  --转换为像素点,以左上角为00原点
+	    else
+	    	rolePos = cc.p(0,0)
+	    end
+	end
 
-    if cityData then
-    	local cityPt = cityData.map_pt   --转换为像素点,以左上角为00原点
-    	local default_pt = cc.p(cityPt.x, self.mapConfigData.height - cityPt.y)
-    	self:setRoleMapPosition(default_pt)  
-    end
+    self:setRoleMapPosition(rolePos)  
 end
 
 --主角在屏幕上的坐标
