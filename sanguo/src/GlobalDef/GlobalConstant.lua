@@ -19,6 +19,8 @@ g_WinSize = g_Director:getWinSize()
 g_Scheduler = cc.Director:getInstance():getScheduler()
 --事件分发器单例
 g_EventDispatcher = cc.Director:getInstance():getEventDispatcher()
+--精灵缓存
+g_SpriteFrameCache = cc.SpriteFrameCache:getInstance()
 
 --自定义的LayerEx, 作为游戏各功能Layer的父类
 CCLayerEx = nil  
@@ -45,7 +47,8 @@ g_bAStarPathSmooth = true --false --寻路拉直
 
 --默认文本大小
 g_defaultFontSize = 20
-g_defaultTipsFontSize = 24
+g_defaultTipsFontSize = 24    --滚动提示文本大小
+g_defaultChengFontSize = 24   --城池名字大小
 
 --定义一个Zorder用于显示一些最上层数据
 g_TopZOrder = 100

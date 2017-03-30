@@ -889,3 +889,11 @@ parseEXCEL: ./excel/zhouConfig.xlsx
 max row: 13	max column: 5
 row 	id:1	name:2	map_id:3	capital:4	desc:5
 total_size : 4344
+config
+config
+./xml/mapJumpConfig_client.xml
+table	mapJumpConfig	mapJumpConfig.xlsx	Sheet1	mapJumpConfig_client.tbl
+parseEXCEL: ./excel/mapJumpConfig.xlsx
+max row: 35	max column: 8
+row 	id_str:1	map_id1:2	map_row1:3	map_col1:4	map_id2:5	map_row2:6	map_col2:7	desc:8
+total_size : 12182

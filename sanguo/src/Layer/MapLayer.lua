@@ -3,6 +3,7 @@
 local MapLayer = class("MapLayer", CCLayerEx) --填入类名
 
 local PlayerNode = require "Layer.PlayerNode"
+local NpcNode = require "Layer.NpcNode"
 
 function MapLayer:create()   --自定义的create()创建方法
     --G_Log_Info("MapLayer:create()")
@@ -23,6 +24,11 @@ function MapLayer:init()
     self.m_arrowImgVec = {}  --路径箭头
 
     self.mapConfigData = nil  --地图表配置数据 
+    self.mapJumpPos = {}  --游戏跳转点
+
+    self.rootNode = nil
+
+    self.playerNode = nil
 
     self:ShowMapImg(1)  --全国地图
 
@@ -36,12 +42,14 @@ function MapLayer:ShowMapImg(mapId)
     	return
     end
     --G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
-
-    self.rootNode = cc.Node:create()
+    if not self.rootNode then
+    	self.rootNode = cc.Node:create()
+    	self:addChild(self.rootNode)
+    end
+    self.rootNode:removeAllChildren()
     self.rootNode:setContentSize(cc.size(self.mapConfigData.width, self.mapConfigData.height))
     --self.rootNode:setPosition(cc.p((g_WinSize.width - self.mapConfigData.width)/2, (g_WinSize.height - self.mapConfigData.height)/2))
-    self:addChild(self.rootNode)
-
+    
     local imgCount = self.mapConfigData.img_count
     local imgName = self.mapConfigData.path
 
@@ -69,9 +77,47 @@ function MapLayer:ShowMapImg(mapId)
 		end
 	end
 
-    self.playerNode = PlayerNode:create()
-    self.playerNode:initPlayerData()
-    self.rootNode:addChild(self.playerNode, 10)
+	--添加游戏跳转点
+	self.mapJumpPos = {}
+	for k, jumpId in pairs(self.mapConfigData.jumpptIdStrVec) do
+		local jumpData = g_pTBLMgr:getMapJumpPtConfigTBLDataById(jumpId)
+		if jumpData then
+			local pos = nil
+			if jumpData.map_id1 == mapId then
+				pos = cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y)    --转换为像素点,以左上角为00原点
+			elseif jumpData.map_id2 == mapId then
+				pos = cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y)
+			end
+
+			if pos then
+				table.insert(self.mapJumpPos, pos)
+			    local jumpPt = NpcNode:create()
+			    jumpPt:initMapJumpPtData(jumpData)
+			    self.rootNode:addChild(jumpPt, 10)
+			    jumpPt:setPosition(pos)
+			end
+		end
+	end
+
+	--添加城池
+	for k, chengId in pairs(self.mapConfigData.cityIdStrVec) do
+		local chengData = g_pTBLMgr:getCityConfigTBLDataById(chengId)
+		if chengData then
+		    local chengchi = NpcNode:create()
+		    chengchi:initChengData(chengData)
+		    self.rootNode:addChild(chengchi, 10)
+
+		    local pos = cc.p(chengData.map_pt.x, self.mapConfigData.height - chengData.map_pt.y)    --转换为像素点,以左上角为00原点
+		    chengchi:setPosition(pos)
+		end
+	end
+
+	--添加人物
+	if not self.playerNode then
+		self.playerNode = PlayerNode:create()
+	    self.playerNode:initPlayerData()
+	    self.rootNode:addChild(self.playerNode, 20)
+	end
 
     local defaultCityId = self.mapConfigData.cityIdStrVec[1]
     local cityData = g_pTBLMgr:getCityConfigTBLDataById(defaultCityId)
@@ -79,7 +125,7 @@ function MapLayer:ShowMapImg(mapId)
     if cityData then
     	local cityPt = cityData.map_pt   --转换为像素点,以左上角为00原点
     	local default_pt = cc.p(cityPt.x, self.mapConfigData.height - cityPt.y)
-    	self:setRoleMapPosition(default_pt)
+    	self:setRoleMapPosition(default_pt)  
     end
 end
 

@@ -69,12 +69,16 @@ function GameScene:init()
     g_pGameLayer = gameLayer:create()  --gameLayer:new()
     self:addChild(g_pGameLayer)
 
+    g_SpriteFrameCache:addSpriteFrames("plist/PublicRes2.plist", "plist/PublicRes2.png")
+
     --动画修改工具
     --g_pGameLayer:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")  
 
     --登录界面
-    g_pGameLayer:AddChild(g_GameLayerTag.LAYER_TAG_LoginLayer, "Login.LoginLayer")
+    --g_pGameLayer:AddChild(g_GameLayerTag.LAYER_TAG_LoginLayer, "Login.LoginLayer")
 
+    --demo直接进入游戏,不请求网络
+    g_pGameLayer:StartGameLayer()
 
      --监听手机返回键
     if g_AppPlatform == cc.PLATFORM_OS_ANDROID then

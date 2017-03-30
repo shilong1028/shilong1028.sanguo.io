@@ -165,8 +165,8 @@ function TBLMgr:LoadMapJumpPtConfigTBL()
 		mapJumpPtConfig.desc = stream:ReadString()
 
 		--游戏附加数据
-		self.map_pt1 = cc.p(cityConfig.map_col1*32 - 16, cityConfig.map_row1*32 - 16)    --转换为像素点,以左上角为00原点
-		self.map_pt2 = cc.p(cityConfig.map_col2*32 - 16, cityConfig.map_row2*32 - 16)
+		mapJumpPtConfig.map_pt1 = cc.p(mapJumpPtConfig.map_col1*32 - 16, mapJumpPtConfig.map_row1*32 - 16)    --转换为像素点,以左上角为00原点
+		mapJumpPtConfig.map_pt2 = cc.p(mapJumpPtConfig.map_col2*32 - 16, mapJumpPtConfig.map_row2*32 - 16)
 
 		self.mapJumpPtConfigVec[""..mapJumpPtConfig.id_str] = mapJumpPtConfig
 		--table.insert(self.mapJumpPtConfigVec, mapJumpPtConfig)

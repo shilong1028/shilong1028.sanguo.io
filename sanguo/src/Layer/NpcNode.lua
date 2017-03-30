@@ -1,5 +1,5 @@
 
---NpcNode用于构造静态展示模型，比如NPC，展示模型等
+--NpcNode用于构造静态展示模型，比如城池展示模型等
 local NpcNode = class("NpcNode", CCLayerEx) --填入类名
 
 function NpcNode:create()   --自定义的create()创建方法
@@ -15,6 +15,45 @@ end
 
 function NpcNode:init()  
     --G_Log_Info("NpcNode:init()")
+end
+
+--城池NPC
+function NpcNode:initChengData(data)  
+    --G_Log_Info("NpcNode:initChengData()")
+    local imgStr = "chengchi.png"
+    if data.type == 1 then
+    	imgStr = "dushi.png"
+    elseif data.type == 2 then
+    	imgStr = "chengchi.png"
+    elseif data.type == 3 then
+    	imgStr = "guanai.png"
+    end
+	self.chengImage = cc.Sprite:createWithSpriteFrameName(imgStr) 
+	self.chengImage:setScale(0.8)
+	self:addChild(self.chengImage)  
+	local imgSize = self.chengImage:getContentSize()
+	self:setContentSize(imgSize)
+
+	local textSize = cc.size(imgSize.width, g_defaultChengFontSize + 6)
+    self.chengName = cc.Label:createWithTTF(data.name, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+    self:addChild(self.chengName, 5)  
+end
+
+--跳转点NPC
+function NpcNode:initMapJumpPtData(data)  
+	--G_Log_Info("NpcNode:initMapJumpPtData()")
+	self.Imod = ImodAnim:create()
+	self.Imod:initAnimWithName("Ani/chuansong.png", "Ani/chuansong.ani")
+	self.Imod:setScale(0.8)
+	self.Imod:PlayActionRepeat(0)
+	self:addChild(self.Imod)
+
+	local modSize = self.Imod:getContentSize()
+	self:setContentSize(modSize)
+
+	local textSize = cc.size(modSize.width, g_defaultChengFontSize + 6)
+    self.jumpPtName = cc.Label:createWithTTF(data.desc, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+    self:addChild(self.jumpPtName, 5)  
 end
 
 
