@@ -44,6 +44,8 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --className�
             layer:setLocalZOrder(-10)
         elseif uid == g_GameLayerTag.LAYER_TAG_CHINAMAP then  --地图层
             layer:setLocalZOrder(-20)
+        elseif uid == g_GameLayerTag.LAYER_TAG_LoadingLayer then   --加载过渡层
+            layer:setLocalZOrder(199)
         end
 
     else
@@ -154,6 +156,20 @@ function GameLayer:EnableSocketAni(bShowAni)
     else
         pColorLayer:setVisible(false)
         g_Director:getActionManager():pauseTarget(aniSprite)
+    end
+end
+
+--显示加载过渡页面
+function GameLayer:showLoadingLayer(bShow) 
+    if self.LoadingLayer then
+        if bShow == true then
+            self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoadingLayer)
+        else
+            self.LoadingLayer:setBreakFalse()
+        end
+    end
+    if bShow == true then
+        self.LoadingLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_LoadingLayer, "LoadingLayer")
     end
 end
 

@@ -34,7 +34,7 @@ function StoreLayer:init()
     self.storyStrLen = 1
     self.storyString = lua_Story_String1
     self.totalStrLen = string.len(lua_Story_String1)
-    self.Image_bg:loadTexture("StoryBg/StoryBg_huangjin.jpg", ccui.TextureResType.localType)
+    self.Image_bg:loadTexture("StoryBg/StoryBg_1.jpg", ccui.TextureResType.localType)
 
     local function onVideoEventCallback(sender, eventType)
         self:onVideoEventCallback(sender, eventType)
@@ -124,7 +124,7 @@ function StoreLayer:changeStoryString()
     self.Text_story:setString("")
     self.storyString = lua_Story_String2
     self.totalStrLen = string.len(lua_Story_String2)
-    self.Image_bg:loadTexture("StoryBg/StoryBg_gongcheng.jpg", ccui.TextureResType.localType)
+    self.Image_bg:loadTexture("StoryBg/StoryBg_2.jpg", ccui.TextureResType.localType)
 
     if self.vedioPlayer then
         g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/fight_1.mp4")

@@ -1147,3 +1147,29 @@ parseEXCEL: ./excel/zhouConfig.xlsx
 max row: 13	max column: 5
 row 	id:1	name:2	map_id:3	capital:4	desc:5
 total_size : 5150
+config
+config
+./xml/cityConfig_client.xml
+table	cityConfig	cityConfig.xlsx	Sheet1	cityConfig_client.tbl
+parseEXCEL: ./excel/cityConfig.xlsx
+max row: 112	max column: 9
+row 	id_str:1	name:2	type:3	zhou_id:4	map_row:5	map_col:6	population:7	near_citys:8	desc:9
+total_size : 74818
+./xml/mapConfig_client.xml
+table	mapConfig	mapConfig.xlsx	Sheet1	mapConfig_client.tbl
+parseEXCEL: ./excel/mapConfig.xlsx
+max row: 9	max column: 10
+row 	id:1	name:2	path:3	width:4	height:5	img_count:6	row:7	column:8	citys:9	jump_pt:10
+total_size : 6032
+./xml/mapJumpConfig_client.xml
+table	mapJumpConfig	mapJumpConfig.xlsx	Sheet1	mapJumpConfig_client.tbl
+parseEXCEL: ./excel/mapJumpConfig.xlsx
+max row: 35	max column: 8
+row 	id_str:1	map_id1:2	map_row1:3	map_col1:4	map_id2:5	map_row2:6	map_col2:7	desc:8
+total_size : 12182
+./xml/zhouConfig_client.xml
+table	zhouConfig	zhouConfig.xlsx	Sheet1	zhouConfig_client.tbl
+parseEXCEL: ./excel/zhouConfig.xlsx
+max row: 13	max column: 5
+row 	id:1	name:2	map_id:3	capital:4	desc:5
+total_size : 5150

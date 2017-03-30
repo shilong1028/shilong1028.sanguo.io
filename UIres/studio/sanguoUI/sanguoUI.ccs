@@ -8,6 +8,7 @@
           <Project Name="aniToolLayer.csd" Type="Layer" />
           <Project Name="CreateRoleLayer.csd" Type="Layer" />
           <Project Name="DialogOkCancelLayer.csd" Type="Layer" />
+          <Project Name="LoadingLayer.csd" Type="Layer" />
           <Project Name="LoginLayer.csd" Type="Layer" />
           <Project Name="MainBottomNode.csd" Type="Node" />
           <Project Name="MainChatNode.csd" Type="Node" />
@@ -27,7 +28,6 @@
           <Image Name="studio_layerBg.png" />
           <Image Name="studio_layerBg2.png" />
           <Image Name="studio_listBg.png" />
-          <Image Name="studio_loadBg.png" />
           <Image Name="studio_loginBg.png" />
         </Folder>
         <Folder Name="plist">

@@ -61,6 +61,8 @@ function MapLayer:ShowMapImg(mapId)
     collectgarbage("setstepmul", 5000)
     math.randomseed(os.time())
 
+    g_pGameLayer:showLoadingLayer(true) 
+
     self.mapConfigData = nil
     self.mapConfigData = g_pMapMgr:LoadMapStreamData(mapId)  --地图表配置数据 
     if self.mapConfigData == nil then
@@ -130,6 +132,8 @@ function MapLayer:ShowMapImg(mapId)
 		    chengchi:setPosition(pos)
 		end
 	end
+
+	g_pGameLayer:showLoadingLayer(false) 
 end
 
 --显示人物
