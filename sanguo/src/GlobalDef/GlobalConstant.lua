@@ -21,6 +21,8 @@ g_Scheduler = cc.Director:getInstance():getScheduler()
 g_EventDispatcher = cc.Director:getInstance():getEventDispatcher()
 --精灵缓存
 g_SpriteFrameCache = cc.SpriteFrameCache:getInstance()
+--文件写入路径
+g_SelfWritePath = cc.FileUtils:getInstance():getWritablePath()
 
 --自定义的LayerEx, 作为游戏各功能Layer的父类
 CCLayerEx = nil  

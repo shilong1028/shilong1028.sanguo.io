@@ -202,6 +202,7 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClInclude Include="..\Classes\lua_astar_auto.hpp" />
     <ClInclude Include="..\Classes\lua_ImodAnim_auto.hpp" />
     <ClInclude Include="..\Classes\lua_module_register.h" />
+    <ClInclude Include="..\Classes\lua_MyXMLManager_auto.hpp" />
     <ClInclude Include="..\Classes\lua_WinMoviePlayer_auto.hpp" />
     <ClInclude Include="..\Classes\Network\ark_NetMessage.h" />
     <ClInclude Include="..\Classes\Network\ark_socket.h" />
@@ -224,6 +225,8 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClInclude Include="..\Classes\vlc\libvlc_vlm.h" />
     <ClInclude Include="..\Classes\vlc\vlc.h" />
     <ClInclude Include="..\Classes\WinMoviePlayer.h" />
+    <ClInclude Include="..\Classes\WWXMLManager.h" />
+    <ClInclude Include="..\Classes\MyXMLManager.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SimulatorWin.h" />
@@ -241,6 +244,7 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClCompile Include="..\Classes\lua_ark_Utility_auto.cpp" />
     <ClCompile Include="..\Classes\lua_astar_auto.cpp" />
     <ClCompile Include="..\Classes\lua_ImodAnim_auto.cpp" />
+    <ClCompile Include="..\Classes\lua_MyXMLManager_auto.cpp" />
     <ClCompile Include="..\Classes\lua_WinMoviePlayer_auto.cpp" />
     <ClCompile Include="..\Classes\Network\ark_NetMessage.cpp" />
     <ClCompile Include="..\Classes\Network\ark_socket.cpp" />
@@ -250,6 +254,8 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClCompile Include="..\Classes\Network\mypthread.cpp" />
     <ClCompile Include="..\Classes\Network\NetMsgMgr.cpp" />
     <ClCompile Include="..\Classes\WinMoviePlayer.cpp" />
+    <ClCompile Include="..\Classes\WWXMLManager.cpp" />
+    <ClCompile Include="..\Classes\MyXMLManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SimulatorWin.cpp" />
     <ClCompile Include="stdafx.cpp" />

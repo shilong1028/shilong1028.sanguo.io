@@ -29,7 +29,7 @@ end
 local UserDefault = cc.UserDefault:getInstance()
 
 function UserDefaultMgr:Flush()
-    UserDefault:flush()
+    UserDefault:flush()    --将内容保存到xml文件
 end
 
 --获取用户名

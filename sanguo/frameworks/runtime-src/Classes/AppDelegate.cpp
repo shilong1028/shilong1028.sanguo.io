@@ -8,6 +8,7 @@
 #include "lua_ImodAnim_auto.hpp"
 #include "lua_ark_Utility_auto.hpp"
 #include "lua_astar_auto.hpp"
+#include "lua_MyXMLManager_auto.hpp"
 #include "Network/lua_Network_auto.hpp"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
@@ -74,6 +75,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	register_all_ark_Utility(L);
 	register_all_astar(L);
 	register_all_Network(L);
+	register_all_MyXMLManager(L);
 	
     register_all_packages();
 
