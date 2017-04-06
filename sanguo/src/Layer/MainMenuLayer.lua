@@ -108,11 +108,13 @@ function MainMenuLayer:touchEvent(sender, eventType)
             self.myXML:setNodeAttrValue("firstNode-secondNode", "test", "tValue")
             self.myXML:setNodeAttrValue("firstNode-secondNode", "test2", "2tValue")
             self.myXML:saveXMLFile()
+            g_pGameLayer:ShowScrollTips("充值")
         elseif sender == self.Button_qiandao then  --连续签到
             local ret = self.myXML:getNodeAttrValue("firstNode-secondNode", "test2")
-            g_pGameLayer:ShowScrollTips("ret = "..ret)
+            g_pGameLayer:ShowScrollTips("连续签到 ret = "..ret)
         elseif sender == self.Button_libao then    --在线礼包
         elseif sender == self.Button_huodong then   --精彩活动
+            g_pGameLayer:ShowScrollTips("精彩活动")
         elseif sender == self.BtnVipAdd then    --添加VIP等级
         elseif sender == self.Button_glod then   --元宝添加
         elseif sender == self.Button_liang then   --粮草添加

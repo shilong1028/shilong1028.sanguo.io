@@ -50,14 +50,14 @@ public class AppActivity extends Cocos2dxActivity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if(SplashScreen.instance != null){
-					SplashScreen.instance.finish();
-				}					
-			}
-		}, 2000); 
+//		new Handler().postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//				if(SplashScreen.instance != null){
+//					SplashScreen.instance.finish();
+//				}					
+//			}
+//		}, 2000); 
 	}
 
     protected void onPause() {

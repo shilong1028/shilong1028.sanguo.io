@@ -15,7 +15,7 @@
         <meta-data android:name="android.app.lib_name"
                   android:value="cocos2dlua" />
 				  
-		<activity android:name="org.cocos2dx.lua.SplashScreen"            
+		<!--activity android:name="org.cocos2dx.lua.SplashScreen"            
             android:label="@string/app_name"
                   android:screenOrientation="landscape"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
@@ -24,7 +24,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-->
 					  
         <activity android:name="org.cocos2dx.lua.AppActivity"
                   android:label="@string/app_name"
@@ -32,10 +32,10 @@
 				  android:launchMode="singleInstance"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
                   android:configChanges="orientation|keyboardHidden|screenSize">
-            <!--intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter-->
+            </intent-filter>
         </activity>
 		
     </application>

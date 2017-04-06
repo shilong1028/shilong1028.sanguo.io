@@ -41,14 +41,6 @@ function StoreLayer:init()
     end
 
     self:createVideoPlayer("res/MP4/story_1.mp4")
-  
-    --self:scheduleUpdateWithPriorityLua(handler(self, self.update), 0)
-    if self.showUpdateHandler then
-        g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
-        self.showUpdateHandler = nil
-    end
-    --self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showStoryText), 0.02, false)
-    self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showSkipBtn), 1.0, false)
 end
 
 function StoreLayer:createVideoPlayer(vedioName)
@@ -60,9 +52,18 @@ function StoreLayer:createVideoPlayer(vedioName)
         self.vedioPlayer:removeFromParent()
     end
     self.vedioPlayer = g_VideoPlayerMgr:createVideoPlayer(g_WinSize, onVideoEventCallback)
-    g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/story_1.mp4")
+    g_VideoPlayerMgr:playByPath(self.vedioPlayer, vedioName)
     self.vedioPlayer:setPosition(g_WinSize.width/2, g_WinSize.height/2)
     self.Panel_MP4:addChild(self.vedioPlayer)
+
+    --self:scheduleUpdateWithPriorityLua(handler(self, self.update), 0)
+    if self.showUpdateHandler then
+        g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
+        self.showUpdateHandler = nil
+    end
+    self.Button_skip:setVisible(false) 
+    --self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showStoryText), 0.02, false)
+    self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showSkipBtn), 1.0, false)
 end
 
 function StoreLayer:touchEvent(sender, eventType)
@@ -87,13 +88,9 @@ function StoreLayer:showSkipBtn()
 end
 
 function StoreLayer:nextMp4Vedio()
-    self.bNextBreakHandler = true   
-    if self.vedioPlayer then
-        g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/fight_1.mp4")
-    end
-
-    self.Button_skip:setVisible(false) 
-    self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showSkipBtn), 1.0, false)  
+    --self.bNextBreakHandler = true   
+    --self:createVideoPlayer("res/MP4/fight_1.mp4")
+    self:changeScene() 
 end
 
 function StoreLayer:showStoryText()
@@ -134,19 +131,19 @@ function StoreLayer:changeStoryString()
 end
 
 function StoreLayer:onVideoEventCallback(sener, eventType)
-    G_Log_Info("StoreLayer:onVideoEventCallback()")
+    --G_Log_Info("StoreLayer:onVideoEventCallback()")
     if eventType == "COMPLETED" then
-        if self.bNextBreakHandler == true then
-            --g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/login_after.mp4", true)
-            self:changeScene() 
-        else
-            self:nextMp4Vedio()
-        end
+        self:changeScene() 
+        -- if self.bNextBreakHandler == true then
+        --     self:changeScene() 
+        -- else
+        --     self:nextMp4Vedio()
+        -- end
     end
 end
 
 function StoreLayer:changeScene() 
-    G_Log_Info("StoreLayer:changeScene()")
+    --G_Log_Info("StoreLayer:changeScene()")
     if self.vedioPlayer and g_VideoPlayerMgr:isPlaying() == true then
         g_VideoPlayerMgr:stop(self.vedioPlayer)
     end

@@ -26,7 +26,7 @@ MyXMLManager::~MyXMLManager(void)
 
 bool MyXMLManager::loadXMLFile(const char* strXmlPath1)
 {
-	string path = FileUtils::getInstance()->getWritablePath();
+	string path = ""; // FileUtils::getInstance()->getWritablePath();
 	const char* strXmlPath = (path + strXmlPath1).c_str();
 
 	//加载同一文件时，直接返回
@@ -68,7 +68,7 @@ bool MyXMLManager::createXMLFile(const char* strFileName1, const char* rootNode 
 		return false;
 	}
 
-	string path = FileUtils::getInstance()->getWritablePath();
+	string path = ""; //FileUtils::getInstance()->getWritablePath();
 	string strFileName = path + strFileName1;
 
 	return m_pXMLDocument->createXMLFile(strFileName.c_str(), rootNode);

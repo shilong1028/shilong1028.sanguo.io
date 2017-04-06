@@ -39,7 +39,7 @@ function VideoPlayerMgr:createVideoPlayer(widgetSize, VideoEventCallback)
 end
 
 function VideoPlayerMgr:addEventListener(videoPlayer, VideoEventCallback)
-	G_Log_Info("VideoPlayerMgr:addEventListener()")
+	--G_Log_Info("VideoPlayerMgr:addEventListener()")
     if nil  ~= videoPlayer and VideoEventCallback then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
     		local function onVideoEventCallback(sender, eventType)
@@ -48,7 +48,6 @@ function VideoPlayerMgr:addEventListener(videoPlayer, VideoEventCallback)
 	    			VideoEventCallback(sender, "COMPLETED")
 	    		--end
     		end
-    		G_Log_Info("VideoPlayerMgr:registerEndScriptHandler()")
     		videoPlayer:registerEndScriptHandler(onVideoEventCallback)
     		--ScriptHandlerMgr:getInstance():registerScriptHandler(videoPlayer, onVideoEventCallback, cc.Handler.EVENT_CUSTOM_COMMON)
 		else
