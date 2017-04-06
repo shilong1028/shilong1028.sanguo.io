@@ -134,9 +134,6 @@
     <ClInclude Include="..\Classes\vlc\vlc.h">
       <Filter>Classes\vlc</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\WWXMLManager.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\MyXMLManager.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -207,9 +204,6 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\lua_WinMoviePlayer_auto.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\WWXMLManager.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\MyXMLManager.cpp">

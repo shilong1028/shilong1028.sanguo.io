@@ -14,13 +14,10 @@ LOCAL_SRC_FILES := \
 ../../Classes/ark_Utility.cpp \
 ../../Classes/astar.cpp \
 ../../Classes/ImodAnim.cpp \
-../../Classes/WWXMLManager.cpp \
-../../Classes/MyXMLManager.cpp \
 ../../Classes/lua_ark_Stream_auto.cpp \
 ../../Classes/lua_ark_Utility_auto.cpp \
 ../../Classes/lua_astar_auto.cpp \
 ../../Classes/lua_ImodAnim_auto.cpp \
-../../Classes/lua_MyXMLManager_auto.cpp \
 ../../Classes/Network/ark_NetMessage.cpp \
 ../../Classes/Network/ark_socket.cpp \
 ../../Classes/Network/ark_socketEvent.cpp \
@@ -28,6 +25,8 @@ LOCAL_SRC_FILES := \
 ../../Classes/Network/MsgDealMgr.cpp \
 ../../Classes/Network/mypthread.cpp \
 ../../Classes/Network/NetMsgMgr.cpp \
+../../Classes/MyXMLManager.cpp \
+../../Classes/lua_MyXMLManager_auto.cpp \
 hellolua/main.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes

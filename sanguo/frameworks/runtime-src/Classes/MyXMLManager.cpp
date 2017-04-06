@@ -1,6 +1,309 @@
 
 #include "MyXMLManager.h"
 
+WWXMLAttribute::WWXMLAttribute(const tinyxml2::XMLAttribute *pXMLAttribute) :
+m_pXMLAttribute(pXMLAttribute)
+{
+
+}
+
+WWXMLAttribute::~WWXMLAttribute()
+{
+
+}
+
+WWXMLAttribute WWXMLAttribute::next()
+{
+	if (m_pXMLAttribute)
+	{
+		return m_pXMLAttribute->Next();
+	}
+	return NULL;
+}
+
+const char* WWXMLAttribute::getName()
+{
+	if (m_pXMLAttribute)
+	{
+		const char* pName = m_pXMLAttribute->Name();
+		if (pName)
+		{
+			return pName;
+		}
+	}
+	return "";
+}
+
+const char* WWXMLAttribute::value()
+{
+	if (m_pXMLAttribute)
+	{
+		const char* pValue = m_pXMLAttribute->Value();
+		if (pValue)
+		{
+			return pValue;
+		}
+	}
+	return "";
+}
+
+int WWXMLAttribute::intValue()
+{
+	if (m_pXMLAttribute)
+	{
+		return m_pXMLAttribute->IntValue();
+	}
+	return -1;
+}
+
+bool WWXMLAttribute::boolValue()
+{
+	if (m_pXMLAttribute)
+	{
+		return m_pXMLAttribute->BoolValue();
+	}
+	return false;
+}
+
+float WWXMLAttribute::floatValue()
+{
+	if (m_pXMLAttribute)
+	{
+		return m_pXMLAttribute->FloatValue();
+	}
+	return -1;
+}
+
+double WWXMLAttribute::doubleValue()
+{
+	if (m_pXMLAttribute)
+	{
+		return m_pXMLAttribute->DoubleValue();
+	}
+	return -1;
+}
+
+bool WWXMLAttribute::isNULL()
+{
+	return NULL == m_pXMLAttribute;
+}
+
+//////////////////////////////////////////////////////////////
+
+WWXMLNode::WWXMLNode(tinyxml2::XMLElement *pElem) :
+m_pXMLElem(pElem),
+m_pXMLDocument(NULL)
+{
+
+}
+
+WWXMLNode::WWXMLNode(tinyxml2::XMLElement *pElem, tinyxml2::XMLDocument *pDocument) :
+m_pXMLElem(pElem),
+m_pXMLDocument(pDocument)
+{
+
+}
+
+WWXMLNode::~WWXMLNode()
+{
+
+}
+
+WWXMLNode WWXMLNode::addChildNode(const char* name)
+{
+	if (m_pXMLElem && m_pXMLDocument)
+	{
+		tinyxml2::XMLElement *pElem = m_pXMLDocument->NewElement(name);
+		if (pElem)
+		{
+			m_pXMLElem->LinkEndChild(pElem);
+			WWXMLNode node(pElem, m_pXMLDocument);
+			return node;
+		}
+	}
+	return NULL;
+}
+
+WWXMLNode WWXMLNode::findChildNode(const char* name /* = NULL */)
+{
+	if (m_pXMLElem && m_pXMLDocument)
+	{
+		if (NULL == name)
+		{
+			WWXMLNode node(m_pXMLElem->FirstChildElement(), m_pXMLDocument);
+			return node;
+		}
+		else
+		{
+			WWXMLNode node(m_pXMLElem->FirstChildElement(name), m_pXMLDocument);
+			return node;
+		}
+	}
+	return NULL;
+}
+
+WWXMLNode WWXMLNode::findSlibingNode(const char* name /* =NULL */)
+{
+	if (m_pXMLElem && m_pXMLDocument)
+	{
+		if (NULL == name)
+		{
+			WWXMLNode node(m_pXMLElem->NextSiblingElement(), m_pXMLDocument);
+			return node;
+		}
+		else
+		{
+			WWXMLNode node(m_pXMLElem->NextSiblingElement(name), m_pXMLDocument);
+			return node;
+		}
+	}
+	return NULL;
+}
+
+WWXMLNode WWXMLNode::preSlibingNode(const char* name /* =NULL */)
+{
+	if (m_pXMLElem && m_pXMLDocument)
+	{
+		if (NULL == name)
+		{
+			WWXMLNode node(m_pXMLElem->PreviousSiblingElement(), m_pXMLDocument);
+			return node;
+		}
+		else
+		{
+			WWXMLNode node(m_pXMLElem->PreviousSiblingElement(name), m_pXMLDocument);
+			return node;
+		}
+	}
+	return NULL;
+}
+
+void WWXMLNode::setAttributeValue(const char* name, const char* value)
+{
+	if (m_pXMLElem && NULL != name)
+	{
+		m_pXMLElem->SetAttribute(name, value);
+	}
+}
+
+const char* WWXMLNode::getAttributeValue(const char* name)
+{
+	if (m_pXMLElem && NULL != name)
+	{
+		const char* pName = m_pXMLElem->Attribute(name);
+		if (NULL == pName)
+		{
+			return "";
+		}
+		return pName;
+	}
+	return "";
+}
+
+void WWXMLNode::deleteAttribute(const char* name)
+{
+	if (m_pXMLElem)
+	{
+		m_pXMLElem->DeleteAttribute(name);
+	}
+}
+
+void WWXMLNode::setNodeName(const char* name)
+{
+	if (m_pXMLElem && NULL != name)
+	{
+		m_pXMLElem->SetName(name);
+	}
+}
+
+const char* WWXMLNode::getNodeName()
+{
+	if (m_pXMLElem)
+	{
+		const char* pName = m_pXMLElem->Name();
+		if (NULL == pName)
+		{
+			return "";
+		}
+		return pName;
+	}
+	return "";
+}
+
+void WWXMLNode::setNodeValue(const char* value)
+{
+	if (m_pXMLElem && m_pXMLDocument)
+	{
+		tinyxml2::XMLText *pText = m_pXMLDocument->NewText(value);
+		m_pXMLElem->LinkEndChild(pText);
+	}
+}
+
+const char* WWXMLNode::getNodeValue()
+{
+	if (m_pXMLElem)
+	{
+		const char* pValue = m_pXMLElem->GetText();
+		if (NULL == pValue)
+		{
+			return "";
+		}
+		return pValue;
+	}
+	return "";
+}
+
+WWXMLAttribute WWXMLNode::firstAttribute(const char* name /*= NULL*/)
+{
+	if (m_pXMLElem)
+	{
+		if (NULL == name)
+		{
+			return m_pXMLElem->FirstAttribute();
+		}
+		else
+		{
+			WWXMLAttribute attribute = m_pXMLElem->FirstAttribute();
+			while (!attribute.isNULL())
+			{
+				if (strcmp(name, attribute.getName()) == 0)
+				{
+					return attribute;
+				}
+				attribute = attribute.next();
+			}
+		}
+
+	}
+	return NULL;
+}
+
+void WWXMLNode::removeSelf()
+{
+	if (m_pXMLElem)
+	{
+		if (m_pXMLElem->Parent())
+		{
+			m_pXMLElem->Parent()->DeleteChild((tinyxml2::XMLNode*)m_pXMLElem);
+		}
+	}
+}
+
+void WWXMLNode::removeAllChildNode()
+{
+	if (m_pXMLElem)
+	{
+		m_pXMLElem->DeleteChildren();
+	}
+}
+
+bool WWXMLNode::isNULL()
+{
+	return m_pXMLElem == NULL;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 MyXMLManager::MyXMLManager() :
 m_pXMLDocument(NULL),
 m_strXMLFilePath("")
@@ -24,11 +327,8 @@ MyXMLManager::~MyXMLManager(void)
 }
 
 
-bool MyXMLManager::loadXMLFile(const char* strXmlPath1)
+bool MyXMLManager::loadXMLFile(const char* strXmlPath)
 {
-	string path = ""; // FileUtils::getInstance()->getWritablePath();
-	const char* strXmlPath = (path + strXmlPath1).c_str();
-
 	//加载同一文件时，直接返回
 	if (strcmp(m_strXMLFilePath.c_str(), strXmlPath) == 0)
 	{
@@ -43,17 +343,32 @@ bool MyXMLManager::loadXMLFile(const char* strXmlPath1)
 		m_pXMLDocument = NULL;
 	}
 
-	m_pXMLDocument = new WWXMLManager();
+	m_pXMLDocument = new tinyxml2::XMLDocument();
 	if (NULL == m_pXMLDocument)
 	{
 		return false;
 	}
 
-	return m_pXMLDocument->loadXMLFile(strXmlPath);
+	//使用文件内容加载，直接加载可能会有兼容性问题，字符流内存需要手动释放
+	std::string strXmlBuffer = CCFileUtils::getInstance()->getStringFromFile(strXmlPath);
+	if (strXmlBuffer.empty())
+	{
+		CCLOG("WWXMLManager::%s file data is empty!", strXmlPath);
+		return false;
+	}
+
+	//解析XML字符流
+	if (tinyxml2::XML_SUCCESS != m_pXMLDocument->Parse(strXmlBuffer.c_str(), strXmlBuffer.length()))
+	{
+		CCLOG("WWXMLManager::%s Parse data error!", strXmlPath);
+		return false;
+	}
+
+	return true;
 }
 
 //创建xml文件,默认为utf-8编码
-bool MyXMLManager::createXMLFile(const char* strFileName1, const char* rootNode /*= "root"*/)
+bool MyXMLManager::createXMLFile(const char* strFileName, const char* rootNode /*= "root"*/)
 {
 	//首先置空，防止重复加载
 	if (m_pXMLDocument)
@@ -62,27 +377,61 @@ bool MyXMLManager::createXMLFile(const char* strFileName1, const char* rootNode 
 		m_pXMLDocument = NULL;
 	}
 
-	m_pXMLDocument = new WWXMLManager();
-	if (NULL == m_pXMLDocument)
+	//利用tinyxml2方法创建xml文件
+	tinyxml2::XMLDocument *pDoc = new tinyxml2::XMLDocument();
+	if (NULL == pDoc)
 	{
 		return false;
 	}
 
-	string path = ""; //FileUtils::getInstance()->getWritablePath();
-	string strFileName = path + strFileName1;
+	bool bRet = false;
+	do
+	{
+		tinyxml2::XMLDeclaration *pDeclaration = pDoc->NewDeclaration(NULL);
+		if (NULL == pDeclaration)
+		{
+			bRet = false;
+			break;
+		}
+		pDoc->LinkEndChild(pDeclaration);
+		tinyxml2::XMLElement *pRootEle = pDoc->NewElement(rootNode);
+		if (NULL == pRootEle)
+		{
+			bRet = false;
+			break;
+		}
+		pDoc->LinkEndChild(pRootEle);
 
-	return m_pXMLDocument->createXMLFile(strFileName.c_str(), rootNode);
+		if (tinyxml2::XML_SUCCESS != pDoc->SaveFile(strFileName))
+		{
+			bRet = false;
+			break;
+		}
+		bRet = true;
+	} while (0);
+
+	if (pDoc)
+	{
+		delete pDoc;
+	}
+
+	//创建成功后加载
+	loadXMLFile(strFileName);
+
+	return bRet;
 }
 
 //保存文件，修改后需要调用此方法
 bool MyXMLManager::saveXMLFile()
 {
-	if (NULL == m_pXMLDocument)
+	if (m_pXMLDocument)
 	{
-		return false;
+		if (tinyxml2::XML_SUCCESS != m_pXMLDocument->SaveFile(m_strXMLFilePath.c_str()))
+		{
+			return false;
+		}
 	}
-
-	return m_pXMLDocument->saveXMLFile();
+	return true;
 }
 
 WWXMLNode MyXMLManager::getTarChildNode(const char* node)
@@ -92,7 +441,7 @@ WWXMLNode MyXMLManager::getTarChildNode(const char* node)
 		return NULL;
 	}
 
-	WWXMLNode itemNode = m_pXMLDocument->getXMLRootNode();
+	WWXMLNode itemNode(m_pXMLDocument->RootElement(), m_pXMLDocument);
 
 	string nodeStr = node;
 	int beginPos = 0;
@@ -121,7 +470,7 @@ void MyXMLManager::addChildNode(const char* node /*= "item"*/)
 		return;
 	}
 
-	WWXMLNode parNode = m_pXMLDocument->getXMLRootNode();
+	WWXMLNode parNode(m_pXMLDocument->RootElement(), m_pXMLDocument);
 
 	string nodeStr = node;
 	int beginPos = 0;
