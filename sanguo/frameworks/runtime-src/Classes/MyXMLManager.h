@@ -8,50 +8,6 @@
 USING_NS_CC;
 using namespace std;
 
-
-/*
-*   属性类，这里属性是只读的，修改请使用WWXMLNode类
-*   <express name="test" value="nothing">This is a test!</express>
-*   name 和 value 就是结点的属性
-*/
-class WWXMLAttribute
-{
-public:
-
-	WWXMLAttribute(const tinyxml2::XMLAttribute *pXMLAttribute);
-
-	~WWXMLAttribute();
-
-	//下一个属性值
-	WWXMLAttribute next();
-
-	//获取属性名称
-	const char* getName();
-
-	//获取string类型属性值
-	const char* value();
-
-	//获取int类型属性值
-	int intValue();
-
-	//获取bool类型属性值
-	bool boolValue();
-
-	//获取float类型属性值
-	float floatValue();
-
-	//获取double类型属性值
-	double doubleValue();
-
-	//返回是否是空
-	bool isNULL();
-
-private:
-	//文档属性对象
-	const tinyxml2::XMLAttribute *m_pXMLAttribute;
-};
-
-
 /*
 *  节点类，封装对节点的各种操作.
 *  如下类型节点
@@ -77,12 +33,6 @@ public:
 	//查找子节点，默认返回第一个子节点
 	WWXMLNode findChildNode(const char* name = NULL);
 
-	//查找下一个兄弟节点，默认返回下面第一个兄弟节点
-	WWXMLNode findSlibingNode(const char* name = NULL);
-
-	//查找上一个兄弟节点,默认返回上面第一个兄弟节点
-	WWXMLNode preSlibingNode(const char* name = NULL);
-
 	//设置节点属性值
 	void setAttributeValue(const char* name, const char* value);
 
@@ -103,9 +53,6 @@ public:
 
 	//获取节点值
 	const char* getNodeValue();
-
-	//获取属性，默认返回第一个属性
-	WWXMLAttribute firstAttribute(const char* name = NULL);
 
 	//删除本节点
 	void removeSelf();

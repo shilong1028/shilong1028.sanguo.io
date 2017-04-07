@@ -1,95 +1,6 @@
 
 #include "MyXMLManager.h"
 
-WWXMLAttribute::WWXMLAttribute(const tinyxml2::XMLAttribute *pXMLAttribute) :
-m_pXMLAttribute(pXMLAttribute)
-{
-
-}
-
-WWXMLAttribute::~WWXMLAttribute()
-{
-
-}
-
-WWXMLAttribute WWXMLAttribute::next()
-{
-	if (m_pXMLAttribute)
-	{
-		return m_pXMLAttribute->Next();
-	}
-	return NULL;
-}
-
-const char* WWXMLAttribute::getName()
-{
-	if (m_pXMLAttribute)
-	{
-		const char* pName = m_pXMLAttribute->Name();
-		if (pName)
-		{
-			return pName;
-		}
-	}
-	return "";
-}
-
-const char* WWXMLAttribute::value()
-{
-	if (m_pXMLAttribute)
-	{
-		const char* pValue = m_pXMLAttribute->Value();
-		if (pValue)
-		{
-			return pValue;
-		}
-	}
-	return "";
-}
-
-int WWXMLAttribute::intValue()
-{
-	if (m_pXMLAttribute)
-	{
-		return m_pXMLAttribute->IntValue();
-	}
-	return -1;
-}
-
-bool WWXMLAttribute::boolValue()
-{
-	if (m_pXMLAttribute)
-	{
-		return m_pXMLAttribute->BoolValue();
-	}
-	return false;
-}
-
-float WWXMLAttribute::floatValue()
-{
-	if (m_pXMLAttribute)
-	{
-		return m_pXMLAttribute->FloatValue();
-	}
-	return -1;
-}
-
-double WWXMLAttribute::doubleValue()
-{
-	if (m_pXMLAttribute)
-	{
-		return m_pXMLAttribute->DoubleValue();
-	}
-	return -1;
-}
-
-bool WWXMLAttribute::isNULL()
-{
-	return NULL == m_pXMLAttribute;
-}
-
-//////////////////////////////////////////////////////////////
-
 WWXMLNode::WWXMLNode(tinyxml2::XMLElement *pElem) :
 m_pXMLElem(pElem),
 m_pXMLDocument(NULL)
@@ -136,42 +47,6 @@ WWXMLNode WWXMLNode::findChildNode(const char* name /* = NULL */)
 		else
 		{
 			WWXMLNode node(m_pXMLElem->FirstChildElement(name), m_pXMLDocument);
-			return node;
-		}
-	}
-	return NULL;
-}
-
-WWXMLNode WWXMLNode::findSlibingNode(const char* name /* =NULL */)
-{
-	if (m_pXMLElem && m_pXMLDocument)
-	{
-		if (NULL == name)
-		{
-			WWXMLNode node(m_pXMLElem->NextSiblingElement(), m_pXMLDocument);
-			return node;
-		}
-		else
-		{
-			WWXMLNode node(m_pXMLElem->NextSiblingElement(name), m_pXMLDocument);
-			return node;
-		}
-	}
-	return NULL;
-}
-
-WWXMLNode WWXMLNode::preSlibingNode(const char* name /* =NULL */)
-{
-	if (m_pXMLElem && m_pXMLDocument)
-	{
-		if (NULL == name)
-		{
-			WWXMLNode node(m_pXMLElem->PreviousSiblingElement(), m_pXMLDocument);
-			return node;
-		}
-		else
-		{
-			WWXMLNode node(m_pXMLElem->PreviousSiblingElement(name), m_pXMLDocument);
 			return node;
 		}
 	}
@@ -251,31 +126,6 @@ const char* WWXMLNode::getNodeValue()
 		return pValue;
 	}
 	return "";
-}
-
-WWXMLAttribute WWXMLNode::firstAttribute(const char* name /*= NULL*/)
-{
-	if (m_pXMLElem)
-	{
-		if (NULL == name)
-		{
-			return m_pXMLElem->FirstAttribute();
-		}
-		else
-		{
-			WWXMLAttribute attribute = m_pXMLElem->FirstAttribute();
-			while (!attribute.isNULL())
-			{
-				if (strcmp(name, attribute.getName()) == 0)
-				{
-					return attribute;
-				}
-				attribute = attribute.next();
-			}
-		}
-
-	}
-	return NULL;
 }
 
 void WWXMLNode::removeSelf()

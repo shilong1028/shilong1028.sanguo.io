@@ -29,7 +29,8 @@ LOCAL_SRC_FILES := \
 ../../Classes/lua_MyXMLManager_auto.cpp \
 hellolua/main.cpp
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
+$(LOCAL_PATH)/../../Classes/Network
 
 # _COCOS_HEADER_ANDROID_BEGIN
 # _COCOS_HEADER_ANDROID_END
