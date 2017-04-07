@@ -171,6 +171,18 @@ function UserDefaultMgr:SetLastSelServerName(serName, bflush)
     end
 end
 
+--角色阵营1汉献帝，2袁绍，3曹操，4孙坚，5刘备
+function UserDefaultMgr:GetRoleCampId()
+    return UserDefault:getIntegerForKey("RoleCamp")
+end
+
+function UserDefaultMgr:SetRoleCampId(campId, bflush)
+    UserDefault:setIntegerForKey("RoleCamp", campId)
+    if bFlush then
+        UserDefault:flush()
+    end
+end
+
 
 
 ----------------------  MyXMLManager  -------------

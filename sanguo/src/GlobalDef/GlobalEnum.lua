@@ -29,6 +29,7 @@ g_GameLayerTag = {
 	LAYER_TAG_AniToolLayer = 101,    --动画工具界面,
 	LAYER_TAG_ScrollTipsLayer = 102,    --滚动提示文本界面,
 	LAYER_TAG_LoadingLayer = 103,    --加载过渡层
+	LAYER_TAG_SelCampLayer = 104,    --选角界面
 }
 
 --人物移动的方向状态标识

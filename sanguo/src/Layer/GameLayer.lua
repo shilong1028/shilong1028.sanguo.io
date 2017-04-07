@@ -179,6 +179,18 @@ end
 --开始游戏界面
 function GameLayer:StartGameLayer()
     --G_Log_Info("GameLayer:StartGameLayer()")
+    local campId = g_UserDefaultMgr:GetRoleCampId()
+    if campId and campId > 0 then
+        --进入游戏
+        self:GameMainLayer()  
+    else
+        --选角界面
+        self:AddChild(g_GameLayerTag.LAYER_TAG_SelCampLayer, "Role.CreateRoleLayer")
+    end
+end
+
+--进入游戏
+function GameLayer:GameMainLayer()
     --主城层
     --self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
     --主菜单层
@@ -186,6 +198,7 @@ function GameLayer:StartGameLayer()
     --地图层
     self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
 end
+
 
 
 

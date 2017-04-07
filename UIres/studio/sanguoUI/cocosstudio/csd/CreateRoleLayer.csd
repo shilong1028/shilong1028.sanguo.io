@@ -6,10 +6,10 @@
       <ObjectData Name="Layer" Tag="447" ctype="GameLayerObjectData">
         <Size X="1280.0000" Y="720.0000" />
         <Children>
-          <AbstractNodeData Name="Image_Bg" ActionTag="-2060581228" Tag="448" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" TopMargin="0.0001" BottomMargin="-0.0001" LeftEage="316" RightEage="316" TopEage="211" BottomEage="211" Scale9OriginX="316" Scale9OriginY="211" Scale9Width="648" Scale9Height="298" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_Bg" ActionTag="-2060581228" Tag="448" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftEage="316" RightEage="316" TopEage="211" BottomEage="211" Scale9OriginX="316" Scale9OriginY="211" Scale9Width="648" Scale9Height="298" ctype="ImageViewObjectData">
             <Size X="1280.0000" Y="720.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="640.0000" Y="359.9999" />
+            <Position X="640.0000" Y="360.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.5000" Y="0.5000" />
@@ -56,7 +56,7 @@
             <PreSize X="0.0500" Y="0.0889" />
             <FileData Type="PlistSubImage" Path="public_shu.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_Han" ActionTag="1768367203" Tag="471" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="475.0080" RightMargin="740.9920" TopMargin="242.3200" BottomMargin="413.6800" LeftEage="15" RightEage="15" TopEage="15" BottomEage="15" Scale9OriginX="15" Scale9OriginY="15" Scale9Width="34" Scale9Height="34" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_Han" ActionTag="1768367203" Tag="471" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="475.0080" RightMargin="740.9919" TopMargin="242.3200" BottomMargin="413.6800" LeftEage="15" RightEage="15" TopEage="15" BottomEage="15" Scale9OriginX="15" Scale9OriginY="15" Scale9Width="34" Scale9Height="34" ctype="ImageViewObjectData">
             <Size X="64.0000" Y="64.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="507.0080" Y="445.6800" />
@@ -66,7 +66,7 @@
             <PreSize X="0.0500" Y="0.0889" />
             <FileData Type="PlistSubImage" Path="public_han.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_Han" ActionTag="-345134919" Tag="21" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="343.6800" RightMargin="808.3200" TopMargin="142.9280" BottomMargin="449.0720" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="98" Scale9Height="106" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_Han" ActionTag="-345134919" Tag="21" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="343.6800" RightMargin="808.3199" TopMargin="142.9280" BottomMargin="449.0720" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="98" Scale9Height="106" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="128.0000" Y="128.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="407.6800" Y="513.0720" />
@@ -105,7 +105,7 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_Wu" ActionTag="1844339976" Tag="24" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="790.8598" RightMargin="363.1403" TopMargin="385.0688" BottomMargin="206.9312" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="96" Scale9Height="106" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_Wu" ActionTag="1844339976" Tag="24" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="790.8599" RightMargin="363.1401" TopMargin="385.0688" BottomMargin="206.9312" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="96" Scale9Height="106" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="126.0000" Y="128.0000" />
             <AnchorPoint ScaleX="0.4027" ScaleY="0.5051" />
             <Position X="841.6000" Y="271.5840" />
@@ -128,6 +128,32 @@
             <PreSize X="0.1000" Y="0.1778" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_caocao.png" Plist="plist/PublicRes.plist" />
+            <OutlineColor A="255" R="255" G="0" B="0" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="descText" ActionTag="-488549900" Tag="18" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="590.0000" RightMargin="590.0000" TopMargin="566.0000" BottomMargin="128.0000" FontSize="24" LabelText="阵营描述" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="100.0000" Y="26.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="1.0000" />
+            <Position X="640.0000" Y="154.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="165" G="42" B="42" />
+            <PrePosition X="0.5000" Y="0.2139" />
+            <PreSize X="0.0781" Y="0.0361" />
+            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <OutlineColor A="255" R="139" G="105" B="20" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Button_Sel" ActionTag="1926789210" Tag="19" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="1074.5000" RightMargin="50.5000" TopMargin="615.5000" BottomMargin="39.5000" TouchEnable="True" FontSize="30" ButtonText="加入阵营" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+            <Size X="155.0000" Y="65.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="1152.0000" Y="72.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.9000" Y="0.1000" />
+            <PreSize X="0.1211" Y="0.0903" />
+            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <TextColor A="255" R="255" G="165" B="0" />
+            <NormalFileData Type="PlistSubImage" Path="public_btn_green1.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
