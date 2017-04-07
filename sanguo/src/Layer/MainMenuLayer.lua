@@ -99,8 +99,7 @@ end
 function MainMenuLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_chongzhi then   --充值
-            local myXML = MyXMLManager:new()
-            myXML:createXMLFile("myXML.xml", "root")
+            local myXML = g_UserDefaultMgr:createXMLFile("myXML.xml", "root")
             myXML:addChildNode("firstNode")
             myXML:setNodeAttrValue("firstNode", "flag", "testValue")
             myXML:setNodeAttrValue("firstNode", "flag2", "2testValue")
@@ -110,14 +109,13 @@ function MainMenuLayer:touchEvent(sender, eventType)
             myXML:saveXMLFile()
             g_pGameLayer:ShowScrollTips("充值")
         elseif sender == self.Button_qiandao then  --连续签到
-            local myXML = MyXMLManager:new()
-            myXML:loadXMLFile("myXML.xml")
+            local myXML = g_UserDefaultMgr:loadXMLFile("myXML.xml")
             local ret = myXML:getNodeAttrValue("firstNode-secondNode", "test2")
             g_pGameLayer:ShowScrollTips("连续签到 ret = "..ret)
         elseif sender == self.Button_libao then    --在线礼包
         elseif sender == self.Button_huodong then   --精彩活动
-            local strXmlBuffer = cc.FileUtils:getInstance():getStringFromFile("myXML.xml")
-            g_pGameLayer:ShowScrollTips("精彩活动 = "..strXmlBuffer, nil, nil, cc.size(200, 100))
+            local strXmlBuffer = cc.FileUtils:getInstance():getStringFromFile(g_SelfWritePath.."myXML.xml")
+            g_pGameLayer:ShowScrollTips("精彩活动 = "..strXmlBuffer)
         elseif sender == self.BtnVipAdd then    --添加VIP等级
         elseif sender == self.Button_glod then   --元宝添加
         elseif sender == self.Button_liang then   --粮草添加

@@ -84,14 +84,15 @@ function ScrollTipsLayer:setTexts(tipsArr)
         itemLabel:setOpacity(0)  
         self:addChild(itemLabel,1)
 
-        local itemBk = cc.Scale9Sprite:create("Image/Image_tipsBg.png", cc.rect(10, 10, 10, 10))  
-        itemBk:setContentSize(cc.size(400, itemLabel:getContentSize().height))
+        local itemBk = ccui.ImageView:create("Image/Image_tipsBg.png")  --cc.Scale9Sprite:create("Image/Image_tipsBg.png", cc.rect(10, 10, 10, 10))  
+        itemBk:setScale9Enabled(true)
+        itemBk:setContentSize(cc.size(400, itemLabel:getContentSize().height + 5))
         itemBk:setPosition(cc.p(itemLabel:getPosition()))        
         itemBk:setOpacity(128)    
         self:addChild(itemBk)   
         
         local fadeSqu = cc.Sequence:create(cc.FadeIn:create(0.4), cc.DelayTime:create(0.4), cc.FadeOut:create(0.4))
-        local moveBy = cc.MoveBy:create(2.0, cc.p(0, cellSize.height * 5))   --最多同屏显示五个tips
+        local moveBy = cc.MoveBy:create(2.0, cc.p(0, 30 * 5))   --最多同屏显示五个tips
         local createDelay = cc.Sequence:create(cc.DelayTime:create(0.4), cc.CallFunc:create(function()   --每个tips创建的间隔时间
             self.m_nextInsertIdx = self.m_nextInsertIdx + 1           
             if #(self.m_itemArray) >= self.m_nextInsertIdx then
