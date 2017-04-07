@@ -75,19 +75,20 @@ function ScrollTipsLayer:setTexts(tipsArr)
         if item.fontSize then
             fontSize = item.fontSize
         end
-        
-        local itemBk = cc.Sprite:create("Image/Image_tipsBg.png")  --cc.Sprite:createWithSpriteFrameName("public_inputBg.png") 
-        local cellSize = itemBk:getContentSize()
-        itemBk:setPosition(cc.p(g_WinSize.width/2, g_WinSize.height - 200))        
-        itemBk:setOpacity(128)    
-        self:addChild(itemBk)   
-
+      
+        local cellSize = cc.size(400, 0)
         local itemLabel = cc.Label:createWithTTF(cellText, g_sDefaultTTFpath, fontSize, cellSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
                             --文本，字体库或字体文件，字体大小，label的尺寸大小（默认不设置尺寸），水平对齐方式（默认左对齐），垂直对齐方式（默认顶部）
         itemLabel:setColor(cellColor)
-        itemLabel:setPosition(cc.p(itemBk:getPosition())) 
+        itemLabel:setPosition(cc.p(g_WinSize.width/2, g_WinSize.height - 200)) 
         itemLabel:setOpacity(0)  
         self:addChild(itemLabel,1)
+
+        local itemBk = cc.Scale9Sprite:create("Image/Image_tipsBg.png", cc.rect(10, 10, 10, 10))  
+        itemBk:setContentSize(cc.size(400, itemLabel:getContentSize().height))
+        itemBk:setPosition(cc.p(itemLabel:getPosition()))        
+        itemBk:setOpacity(128)    
+        self:addChild(itemBk)   
         
         local fadeSqu = cc.Sequence:create(cc.FadeIn:create(0.4), cc.DelayTime:create(0.4), cc.FadeOut:create(0.4))
         local moveBy = cc.MoveBy:create(2.0, cc.p(0, cellSize.height * 5))   --最多同屏显示五个tips

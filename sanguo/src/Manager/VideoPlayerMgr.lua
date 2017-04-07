@@ -55,7 +55,7 @@ function VideoPlayerMgr:addEventListener(videoPlayer, VideoEventCallback)
 		        if eventType == ccexp.VideoPlayerEvent.PLAYING then
 		        	--VideoEventCallback(sender, "PLAYING")
 		        elseif eventType == ccexp.VideoPlayerEvent.PAUSED then
-		        	--VideoEventCallback(sender, "PAUSED")
+		        	VideoEventCallback(sender, "PAUSED")
 		        elseif eventType == ccexp.VideoPlayerEvent.STOPPED then
 		        	--VideoEventCallback(sender, "STOPPED")
 		        elseif eventType == ccexp.VideoPlayerEvent.COMPLETED then

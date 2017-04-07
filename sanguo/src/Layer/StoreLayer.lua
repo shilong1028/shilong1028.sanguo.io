@@ -132,7 +132,7 @@ end
 
 function StoreLayer:onVideoEventCallback(sener, eventType)
     --G_Log_Info("StoreLayer:onVideoEventCallback()")
-    if eventType == "COMPLETED" then
+    if eventType == "COMPLETED" or eventType == "PAUSED" then
         self:changeScene() 
         -- if self.bNextBreakHandler == true then
         --     self:changeScene() 

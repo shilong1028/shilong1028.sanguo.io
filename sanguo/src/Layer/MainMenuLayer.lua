@@ -99,22 +99,25 @@ end
 function MainMenuLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_chongzhi then   --充值
-            self.myXML = MyXMLManager:new()
-            self.myXML:createXMLFile("myXML.xml", "root")
-            self.myXML:addChildNode("firstNode")
-            self.myXML:setNodeAttrValue("firstNode", "flag", "testValue")
-            self.myXML:setNodeAttrValue("firstNode", "flag2", "2testValue")
-            self.myXML:addChildNode("firstNode-secondNode")
-            self.myXML:setNodeAttrValue("firstNode-secondNode", "test", "tValue")
-            self.myXML:setNodeAttrValue("firstNode-secondNode", "test2", "2tValue")
-            self.myXML:saveXMLFile()
+            local myXML = MyXMLManager:new()
+            myXML:createXMLFile("myXML.xml", "root")
+            myXML:addChildNode("firstNode")
+            myXML:setNodeAttrValue("firstNode", "flag", "testValue")
+            myXML:setNodeAttrValue("firstNode", "flag2", "2testValue")
+            myXML:addChildNode("firstNode-secondNode")
+            myXML:setNodeAttrValue("firstNode-secondNode", "test", "tValue")
+            myXML:setNodeAttrValue("firstNode-secondNode", "test2", "2tValue")
+            myXML:saveXMLFile()
             g_pGameLayer:ShowScrollTips("充值")
         elseif sender == self.Button_qiandao then  --连续签到
-            local ret = self.myXML:getNodeAttrValue("firstNode-secondNode", "test2")
+            local myXML = MyXMLManager:new()
+            myXML:loadXMLFile("myXML.xml")
+            local ret = myXML:getNodeAttrValue("firstNode-secondNode", "test2")
             g_pGameLayer:ShowScrollTips("连续签到 ret = "..ret)
         elseif sender == self.Button_libao then    --在线礼包
         elseif sender == self.Button_huodong then   --精彩活动
-            g_pGameLayer:ShowScrollTips("精彩活动")
+            local strXmlBuffer = cc.FileUtils:getInstance():getStringFromFile("myXML.xml")
+            g_pGameLayer:ShowScrollTips("精彩活动 = "..strXmlBuffer, nil, nil, cc.size(200, 100))
         elseif sender == self.BtnVipAdd then    --添加VIP等级
         elseif sender == self.Button_glod then   --元宝添加
         elseif sender == self.Button_liang then   --粮草添加
