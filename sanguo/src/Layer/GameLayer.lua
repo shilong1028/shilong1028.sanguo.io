@@ -179,7 +179,11 @@ end
 --开始游戏界面
 function GameLayer:StartGameLayer()
     --G_Log_Info("GameLayer:StartGameLayer()")
-    local campId = g_UserDefaultMgr:GetRoleCampId()
+    local HeroDataMgr = require "Manager.HeroDataMgr"
+    --玩家游戏数据管理
+    g_HeroDataMgr = g_HeroDataMgr or HeroDataMgr:GetInstance()
+
+    local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
     if campId and campId > 0 then
         --进入游戏
         self:GameMainLayer()  

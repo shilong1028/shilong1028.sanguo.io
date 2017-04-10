@@ -56,6 +56,9 @@ end
 function CreateRoleLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_Sel then
+            local campData = g_pTBLMgr:getCampConfigTBLDataById(self.curSelCampId)
+            g_HeroDataMgr:SetHeroCampData(campData)
+
             g_pGameLayer:GameMainLayer()   --进入游戏
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_SelCampLayer)
         else

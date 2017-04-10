@@ -41,6 +41,9 @@ g_pAutoPathMgr = nil  --寻路管理器单例
 g_pMapMgr = nil       --州郡地图管理单例
 g_pTBLMgr = nil       --本地tbl表格数据单例
 
+--玩家游戏数据管理
+g_HeroDataMgr = nil
+
 --默认的华康圆体路径
 g_sDefaultTTFpath = "font/DFYuanW7-GB2312.ttf"
 
