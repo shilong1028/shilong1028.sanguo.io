@@ -131,14 +131,14 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="descText" ActionTag="-488549900" Tag="18" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="590.0000" RightMargin="590.0000" TopMargin="566.0000" BottomMargin="128.0000" FontSize="24" LabelText="阵营描述" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="100.0000" Y="26.0000" />
+          <AbstractNodeData Name="descText" ActionTag="-488549900" Tag="18" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="256.0000" RightMargin="256.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="24" LabelText="阵营描述" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="767.9999" Y="144.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="1.0000" />
-            <Position X="640.0000" Y="154.0000" />
+            <Position X="640.0000" Y="180.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="165" G="42" B="42" />
-            <PrePosition X="0.5000" Y="0.2139" />
-            <PreSize X="0.0781" Y="0.0361" />
+            <PrePosition X="0.5000" Y="0.2500" />
+            <PreSize X="0.6000" Y="0.2000" />
             <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
             <OutlineColor A="255" R="139" G="105" B="20" />
             <ShadowColor A="255" R="110" G="110" B="110" />

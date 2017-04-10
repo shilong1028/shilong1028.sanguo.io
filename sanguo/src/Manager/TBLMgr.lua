@@ -13,10 +13,11 @@ function TBLMgr:init()
 
 	self.instance = nil
 
-	self.mapConfigVec = nil
-	self.cityConfigVec = nil
-	self.zhouConfigVec = nil
-	self.mapJumpPtConfigVec = nil
+	self.mapConfigVec = nil   --地图表结构类
+	self.cityConfigVec = nil   --城池表结构类
+	self.mapJumpPtConfigVec = nil   --地图跳转点表结构类
+	self.zhouConfigVec = nil   --州数据表
+	self.campConfigVec = nil   --阵营表结构类
 
 end
 
@@ -84,7 +85,7 @@ function TBLMgr:getMapConfigTBLDataById(mapId)
 	if self.mapConfigVec then
 		for i=1, #self.mapConfigVec do
 			if self.mapConfigVec[i].id == mapId then
-				return self.mapConfigVec[i]
+				return clone(self.mapConfigVec[i])
 			end
 		end
 	end
@@ -136,7 +137,7 @@ function TBLMgr:getCityConfigTBLDataById(cityIdStr)
 		self:LoadCityConfigTBL()
 	end
 
-	return self.cityConfigVec[""..cityIdStr]
+	return clone(self.cityConfigVec[""..cityIdStr])
 end
 
 --地图跳转点表结构类
@@ -180,7 +181,7 @@ function TBLMgr:getMapJumpPtConfigTBLDataById(IdStr)
 		self:LoadMapJumpPtConfigTBL()
 	end
 
-	return self.mapJumpPtConfigVec[""..IdStr]
+	return clone(self.mapJumpPtConfigVec[""..IdStr])
 end
 
 --州数据表
@@ -219,7 +220,55 @@ function TBLMgr:getZhouConfigTBLDataById(zhouId)
 	if self.zhouConfigVec then
 		for i=1, #self.zhouConfigVec do
 			if self.zhouConfigVec[i].id == zhouId then
-				return self.zhouConfigVec[i]
+				return clone(self.zhouConfigVec[i])
+			end
+		end
+	end
+	return nil
+end
+
+--阵营表结构类
+function TBLMgr:LoadCampConfigTBL()
+	--G_Log_Info("TBLMgr:LoadCampConfigTBL()")
+	if self.campConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/campConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.campConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local campConfig = g_tbl_campConfig:new()
+		campConfig.campId = stream:ReadWord()         --short 阵营ID
+		campConfig.name = stream:ReadString()     --string 阵营名称
+		campConfig.captain = stream:ReadString()     --int 首领ID字符串
+		campConfig.capital = stream:ReadString()    --string 首都城池ID字符串
+		campConfig.population = stream:ReadUInt()    --初始百姓人口（单位万）
+		campConfig.troops = stream:ReadUInt()         --初始兵力（人）
+		campConfig.money = stream:ReadUInt()     --初始财力（单位锭，1锭=1000贯）
+		campConfig.food = stream:ReadUInt()     --初始粮草（单位石，1石=1000斤）
+		campConfig.general = stream:ReadString()    --初始将领ID字符串，以;分割
+		campConfig.desc = stream:ReadString()    --阵营描述
+
+		table.insert(self.campConfigVec, campConfig)
+	end
+end
+
+function TBLMgr:getCampConfigTBLDataById(campId)
+	--G_Log_Info("TBLMgr:getCampConfigTBLDataById(), campId = %d", campId)
+	if self.campConfigVec == nil then
+		self:LoadCampConfigTBL()
+	end
+
+	if self.campConfigVec then
+		for i=1, #self.campConfigVec do
+			if self.campConfigVec[i].campId == campId then
+				return clone(self.campConfigVec[i])
 			end
 		end
 	end
