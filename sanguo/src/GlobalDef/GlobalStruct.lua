@@ -145,11 +145,26 @@ end
 --州表结构类
 g_tbl_zhouConfig = class("g_tbl_zhouConfig",__BaseStruct)
 function  g_tbl_zhouConfig:ctor()
-	self.id = 0        --short 州ID
-	self.name = ""     --string 地图名称
-	self.map_id = 0     --int 地图ID
-	self.capital = ""    --string 首府ID字符串
-	self.desc = ""    --string
+	self.id = 0        --州ID
+	self.name = ""     --地图名称
+	self.map_id = 0     --地图ID
+	self.capital = ""    --首府ID字符串
+	self.desc = ""   
+end
+
+--阵营表结构类
+g_tbl_campConfig = class("g_tbl_campConfig",__BaseStruct)
+function  g_tbl_campConfig:ctor()
+	self.campId = 0        --阵营ID
+	self.name = ""     --阵营名称
+	self.captain = ""     --首领ID字符串
+	self.capital = ""    --首都城池ID字符串
+	self.population = 0    --初始百姓人口（单位万）
+	self.troops = 0        --初始兵力（人）
+	self.money = 0     --初始财力（单位锭，1锭=1000贯）
+	self.food = 0     --初始粮草（单位石，1石=1000斤）
+	self.general = ""    --初始将领ID字符串，以;分割
+	self.desc = ""    --阵营描述
 end
 
 
