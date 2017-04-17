@@ -8,5 +8,13 @@
 		<package xml="mapJumpConfig_client.xml"/>
 		<package xml="zhouConfig_client.xml"/>
 		<package xml="campConfig_client.xml"/>
+		<package xml="generalConfig_client.xml"/>
+		<package xml="itemConfig_client.xml"/>
+		<package xml="talkConfig_client.xml"/>
+		<package xml="storyConfig1_client.xml"/>
+		<package xml="storyConfig2_client.xml"/>
+		<package xml="storyConfig3_client.xml"/>
+		<package xml="storyConfig4_client.xml"/>
+		<package xml="storyConfig5_client.xml"/>
 	</solution>
 </config>

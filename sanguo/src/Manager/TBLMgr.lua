@@ -18,6 +18,10 @@ function TBLMgr:init()
 	self.mapJumpPtConfigVec = nil   --地图跳转点表结构类
 	self.zhouConfigVec = nil   --州数据表
 	self.campConfigVec = nil   --阵营表结构类
+	self.generalConfigVec = nil  --武将表
+	self.itemConfigVec = nil  --物品装备表
+	self.talkConfigVec = nil  --对话文本表
+	self.storyConfigVec = nil  --剧情表
 
 end
 
@@ -273,6 +277,166 @@ function TBLMgr:getCampConfigTBLDataById(campId)
 		end
 	end
 	return nil
+end
+
+--武将表结构类
+function TBLMgr:LoadGeneralConfigTBL()
+	--G_Log_Info("TBLMgr:LoadGeneralConfigTBL()")
+	if self.generalConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/generalConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.generalConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local generalConfig = g_tbl_generalConfig:new()
+		generalConfig.id_str =stream:ReadString()        --武将ID字符串
+		generalConfig.name = stream:ReadString()     --武将名称
+		generalConfig.level = stream:ReadUInt()      --武将初始登录等级
+		generalConfig.type = stream:ReadWord()   --将领类型，1英雄，2武将，3军师
+		generalConfig.hp = stream:ReadUInt()    --初始血量值
+		generalConfig.mp = stream:ReadUInt()        --初始智力值
+		generalConfig.atk = stream:ReadUInt()     --初始攻击力
+		generalConfig.def = stream:ReadUInt()     --初始防御力
+		generalConfig.skills = stream:ReadString()    --初始技能，技能ID字符串以;分割
+		generalConfig.equips = stream:ReadString()    --初始装备，装备ID字符串以;分割
+		generalConfig.desc = stream:ReadString()    --描述
+
+		self.generalConfigVec[""..generalConfig.id_str] = generalConfig
+		--table.insert(self.generalConfigVec, generalConfig)
+	end
+end
+
+function TBLMgr:getGeneralConfigTBLDataById(generalId)
+	--G_Log_Info("TBLMgr:getGeneralConfigTBLDataById(), generalId = %d", generalId)
+	if self.generalConfigVec == nil then
+		self:LoadGeneralConfigTBL()
+	end
+
+	return clone(self.generalConfigVec[""..generalId])
+end
+
+--物品装备表结构类
+function TBLMgr:LoadItemConfigTBL()
+	--G_Log_Info("TBLMgr:LoadItemConfigTBL()")
+	if self.itemConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/itemConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.itemConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local itemConfig = g_tbl_itemConfig:new()
+		itemConfig.id_str = stream:ReadString()        --物品ID字符串
+		itemConfig.name = stream:ReadString()     --物品名称
+		itemConfig.type = stream:ReadWord()     --物品类型，1金币，2粮草，3技能丹，4装备，…
+		itemConfig.money = stream:ReadUInt()     --物品增加的金币数量
+		itemConfig.food = stream:ReadUInt()         --物品增加的粮草数量
+		itemConfig.level = stream:ReadUInt()      --技能或装备等物品的等级
+		itemConfig.skill = stream:ReadString()     --物品关联的技能ID字符串
+		itemConfig.hp = stream:ReadUInt()     --装备增加的血量值
+		itemConfig.mp = stream:ReadUInt()         --装备增加的智力值
+		itemConfig.atk = stream:ReadUInt()      --装备增加的攻击力
+		itemConfig.def = stream:ReadUInt()      --装备增加的防御力
+		itemConfig.desc = stream:ReadString()    --描述
+
+		self.itemConfigVec[""..itemConfig.id_str] = itemConfig
+	end
+end
+
+function TBLMgr:getItemConfigTBLDataById(itemId)
+	--G_Log_Info("TBLMgr:getItemConfigTBLDataById(), itemId = %d", itemId)
+	if self.itemConfigVec == nil then
+		self:LoadItemConfigTBL()
+	end
+
+	return clone(self.itemConfigVec[""..itemId])
+end
+
+--对话文本表结构类
+function TBLMgr:LoadTalkConfigTBL()
+	--G_Log_Info("TBLMgr:LoadTalkConfigTBL()")
+	if self.talkConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/talkConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.talkConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local talkConfig = g_tbl_talkConfig:new()
+		talkConfig.id_str = stream:ReadString()        --ID字符串
+		talkConfig.desc = stream:ReadString()    --描述
+
+		self.talkConfigVec[""..talkConfig.id_str] = talkConfig
+	end
+end
+
+function TBLMgr:getTalkConfigTBLDataById(talkId)
+	--G_Log_Info("TBLMgr:getTalkConfigTBLDataById(), talkId = %d", talkId)
+	if self.talkConfigVec == nil then
+		self:LoadTalkConfigTBL()
+	end
+
+	return clone(self.talkConfigVec[""..talkId])
+end
+
+--剧情结构类
+function TBLMgr:LoadStoryConfigTBL()
+	--G_Log_Info("TBLMgr:LoadStoryConfigTBL()")
+	if self.storyConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = nil
+	local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
+    if campId and campId > 0 then
+    	p = stream:CreateReadStreamFromSelf("tbl/talkConfig"..campId.."_client.tbl")
+    end
+	if(p == nil) then
+		return
+	end
+
+	self.storyConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local storyConfig = g_tbl_storyConfig:new()
+		storyConfig.storyId = stream:ReadWord()        --剧情ID
+		storyConfig.targetCity = stream:ReadString()    --目标城池ID字符串
+		storyConfig.name = stream:ReadString()    --战役名称
+		storyConfig.enemy = stream:ReadString()    --敌方出战将领ID字符串，以;分割
+		storyConfig.reward = stream:ReadString()    --奖励物品，以;分割。物品ID字符串和数量用-分割
+		storyConfig.talk = stream:ReadString()    --对话内容，以;分割。人物ID字符串和文本用-分割
+
+		self.storyConfigVec[""..storyConfig.id_str] = storyConfig
+	end
+end
+
+function TBLMgr:getStoryConfigTBLDataById(storyId)
+	--G_Log_Info("TBLMgr:getStoryConfigTBLDataById(), storyId = %d", storyId)
+	if self.storyConfigVec == nil then
+		self:LoadStoryConfigTBL()
+	end
+
+	return clone(self.storyConfigVec[""..storyId])
 end
 
 

@@ -167,6 +167,57 @@ function  g_tbl_campConfig:ctor()
 	self.desc = ""    --阵营描述
 end
 
+--武将表结构类
+g_tbl_generalConfig = class("g_tbl_generalConfig",__BaseStruct)
+function  g_tbl_generalConfig:ctor()
+	self.id_str = ""        --武将ID字符串
+	self.name = ""     --武将名称
+	self.level = 0     --武将初始登录等级
+	self.type = 0    --将领类型，1英雄，2武将，3军师
+	self.hp = 0    --初始血量值
+	self.mp = 0        --初始智力值
+	self.atk = 0     --初始攻击力
+	self.def = 0     --初始防御力
+	self.skills = ""    --初始技能，技能ID字符串以;分割
+	self.equips = ""    --初始装备，装备ID字符串以;分割
+	self.desc = ""    --描述
+end
+
+--物品装备表结构类
+g_tbl_itemConfig = class("g_tbl_itemConfig",__BaseStruct)
+function  g_tbl_itemConfig:ctor()
+	self.id_str = ""        --物品ID字符串
+	self.name = ""     --物品名称
+	self.type = 0    --物品类型，1金币，2粮草，3技能丹，4装备，…
+	self.money = 0    --物品增加的金币数量
+	self.food = 0        --物品增加的粮草数量
+	self.level = 0     --技能或装备等物品的等级
+	self.skill = ""     --物品关联的技能ID字符串
+	self.hp = 0    --装备增加的血量值
+	self.mp = 0        --装备增加的智力值
+	self.atk = 0     --装备增加的攻击力
+	self.def = 0     --装备增加的防御力
+	self.desc = ""    --描述
+end
+
+--对话文本表结构类
+g_tbl_talkConfig = class("g_tbl_talkConfig",__BaseStruct)
+function  g_tbl_talkConfig:ctor()
+	self.id_str = ""        --ID字符串
+	self.desc = ""    --描述
+end
+
+--剧情表结构类
+g_tbl_storyConfig = class("g_tbl_storyConfig",__BaseStruct)
+function  g_tbl_storyConfig:ctor()
+	self.storyId = 0        --剧情ID
+	self.targetCity = ""    --目标城池ID字符串
+	self.name = ""    --战役名称
+	self.enemy = ""    --敌方出战将领ID字符串，以;分割
+	self.reward = ""    --奖励物品，以;分割。物品ID字符串和数量用-分割
+	self.talk = ""    --对话内容，以;分割。人物ID字符串和文本用-分割
+end
+
 
 
 
