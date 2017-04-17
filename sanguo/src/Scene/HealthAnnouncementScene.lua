@@ -71,7 +71,7 @@ function HealthAnnouncementScene:init()
         local nextScene = nil
         local bfirstLogin = true --g_UserDefaultMgr:GetIsFirstLogin()   --是否第一次登陆
         if bfirstLogin == true then
-            scene = require("Scene.StoreScene")
+            scene = require("Scene.StoryScene")
             nextScene = scene:create()  --scene:new()
         else
             scene = require("Scene.GameScene")   --进入登录界面

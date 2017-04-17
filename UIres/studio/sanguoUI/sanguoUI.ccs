@@ -16,8 +16,8 @@
           <Project Name="MainMenuLayer.csd" Type="Layer" />
           <Project Name="MainTimeNode.csd" Type="Node" />
           <Project Name="MainTopNode.csd" Type="Node" />
-          <Project Name="StoreLayer.csd" Type="Layer" />
           <Project Name="StoreTalkLayer.csd" Type="Layer" />
+          <Project Name="StoryLayer.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
           <TTF Name="DFYuanW7-GB2312.ttf" />

@@ -1,23 +1,23 @@
 --初次进入游戏时的剧情动画
-local StoreLayer = class("StoreLayer", CCLayerEx) --填入类名
+local StoryLayer = class("StoryLayer", CCLayerEx) --填入类名
 
-function StoreLayer:create()         --自定义的create()创建方法
-    --G_Log_Info("StoreLayer:create()")
-    local layer = StoreLayer.new()
+function StoryLayer:create()         --自定义的create()创建方法
+    --G_Log_Info("StoryLayer:create()")
+    local layer = StoryLayer.new()
     return layer
 end
 
-function StoreLayer:onExit() 
-    --G_Log_Info("StoreLayer:onExit()")
+function StoryLayer:onExit() 
+    --G_Log_Info("StoryLayer:onExit()")
     if self.showUpdateHandler then
         g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
         self.showUpdateHandler = nil
     end
 end
 
-function StoreLayer:init()  
-    --G_Log_Info("StoreLayer:init()")
-    local csb = cc.CSLoader:createNode("csd/StoreLayer.csb")
+function StoryLayer:init()  
+    G_Log_Info("StoryLayer:init()")
+    local csb = cc.CSLoader:createNode("csd/StoryLayer.csb")
     self:addChild(csb)
     csb:setContentSize(g_WinSize)
     ccui.Helper:doLayout(csb)
@@ -43,8 +43,8 @@ function StoreLayer:init()
     self:createVideoPlayer("res/MP4/story_1.mp4")
 end
 
-function StoreLayer:createVideoPlayer(vedioName)
-    --G_Log_Info("StoreLayer:createVideoPlayer(), vedioName = %s", vedioName)
+function StoryLayer:createVideoPlayer(vedioName)
+    --G_Log_Info("StoryLayer:createVideoPlayer(), vedioName = %s", vedioName)
     local function onVideoEventCallback(sender, eventType)
         self:onVideoEventCallback(sender, eventType)
     end
@@ -66,7 +66,7 @@ function StoreLayer:createVideoPlayer(vedioName)
     self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showSkipBtn), 1.0, false)
 end
 
-function StoreLayer:touchEvent(sender, eventType)
+function StoryLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_skip then   --跳过
             if self.bNextBreakHandler == true then
@@ -79,7 +79,7 @@ function StoreLayer:touchEvent(sender, eventType)
     end
 end
 
-function StoreLayer:showSkipBtn()
+function StoryLayer:showSkipBtn()
     self.Button_skip:setVisible(true)
     if self.showUpdateHandler then
         g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
@@ -87,13 +87,13 @@ function StoreLayer:showSkipBtn()
     end
 end
 
-function StoreLayer:nextMp4Vedio()
+function StoryLayer:nextMp4Vedio()
     --self.bNextBreakHandler = true   
     --self:createVideoPlayer("res/MP4/fight_1.mp4")
     self:changeScene() 
 end
 
-function StoreLayer:showStoryText()
+function StoryLayer:showStoryText()
     if self.storyStrLen > 50 then
         self.Button_skip:setVisible(true)
     end
@@ -108,8 +108,8 @@ function StoreLayer:showStoryText()
 end
 
 --切换下一段剧情文本
-function StoreLayer:changeStoryString()
-    --G_Log_Info("StoreLayer:changeStoryString()")
+function StoryLayer:changeStoryString()
+    --G_Log_Info("StoryLayer:changeStoryString()")
     if self.bNextBreakHandler == true and self.showUpdateHandler then
         g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
         self.showUpdateHandler = nil
@@ -130,8 +130,8 @@ function StoreLayer:changeStoryString()
     self.bNextBreakHandler = true   --下次显示完文本后，结束定时器 
 end
 
-function StoreLayer:onVideoEventCallback(sener, eventType)
-    --G_Log_Info("StoreLayer:onVideoEventCallback()")
+function StoryLayer:onVideoEventCallback(sener, eventType)
+    --G_Log_Info("StoryLayer:onVideoEventCallback()")
     if eventType == "COMPLETED" or eventType == "PAUSED" then
         self:changeScene() 
         -- if self.bNextBreakHandler == true then
@@ -142,8 +142,8 @@ function StoreLayer:onVideoEventCallback(sener, eventType)
     end
 end
 
-function StoreLayer:changeScene() 
-    --G_Log_Info("StoreLayer:changeScene()")
+function StoryLayer:changeScene() 
+    --G_Log_Info("StoryLayer:changeScene()")
     if self.vedioPlayer and g_VideoPlayerMgr:isPlaying() == true then
         g_VideoPlayerMgr:stop(self.vedioPlayer)
     end
@@ -160,4 +160,4 @@ function StoreLayer:changeScene()
     end
 end
 
-return StoreLayer
+return StoryLayer
