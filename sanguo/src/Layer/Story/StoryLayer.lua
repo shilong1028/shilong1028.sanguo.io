@@ -16,7 +16,7 @@ function StoryLayer:onExit()
 end
 
 function StoryLayer:init()  
-    G_Log_Info("StoryLayer:init()")
+    --G_Log_Info("StoryLayer:init()")
     local csb = cc.CSLoader:createNode("csd/StoryLayer.csb")
     self:addChild(csb)
     csb:setContentSize(g_WinSize)

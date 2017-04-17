@@ -64,7 +64,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.4280" Y="0.8500" />
             <PreSize X="0.1556" Y="0.1750" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="aniTool_btn.png" Plist="plist/aniTool.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -78,7 +78,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.6420" Y="0.8500" />
             <PreSize X="0.1556" Y="0.1750" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="aniTool_btn.png" Plist="plist/aniTool.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -92,81 +92,81 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.8560" Y="0.8500" />
             <PreSize X="0.1556" Y="0.1750" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="aniTool_btn.png" Plist="plist/aniTool.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_name" ActionTag="1043896322" Tag="16" IconVisible="False" LeftMargin="20.0000" RightMargin="395.0000" TopMargin="18.0000" BottomMargin="158.0000" FontSize="24" LabelText="动画名称" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="99.0000" Y="24.0000" />
+          <AbstractNodeData Name="Text_name" ActionTag="1043896322" Tag="16" IconVisible="False" LeftMargin="20.0000" RightMargin="396.0000" TopMargin="16.5000" BottomMargin="156.5000" FontSize="24" LabelText="动画名称" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="98.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="20.0000" Y="170.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.0389" Y="0.8500" />
-            <PreSize X="0.1926" Y="0.1200" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <PreSize X="0.1907" Y="0.1350" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_folder" ActionTag="1984111960" Tag="20" IconVisible="False" LeftMargin="20.0000" RightMargin="419.0000" TopMargin="58.0000" BottomMargin="118.0000" FontSize="24" LabelText="文件夹" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="75.0000" Y="24.0000" />
+          <AbstractNodeData Name="Text_folder" ActionTag="1984111960" Tag="20" IconVisible="False" LeftMargin="20.0000" RightMargin="419.0000" TopMargin="56.5000" BottomMargin="116.5000" FontSize="24" LabelText="文件夹" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="75.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="20.0000" Y="130.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.0389" Y="0.6500" />
-            <PreSize X="0.1459" Y="0.1200" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <PreSize X="0.1459" Y="0.1350" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_file" ActionTag="-1769170680" Tag="21" IconVisible="False" LeftMargin="265.0000" RightMargin="176.0000" TopMargin="58.0000" BottomMargin="118.0000" FontSize="24" LabelText="文件名" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="73.0000" Y="24.0000" />
+          <AbstractNodeData Name="Text_file" ActionTag="-1769170680" Tag="21" IconVisible="False" LeftMargin="265.0000" RightMargin="176.0000" TopMargin="56.5000" BottomMargin="116.5000" FontSize="24" LabelText="文件名" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="73.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="265.0000" Y="130.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.5156" Y="0.6500" />
-            <PreSize X="0.1420" Y="0.1200" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <PreSize X="0.1420" Y="0.1350" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_sudu" ActionTag="827028976" Tag="22" IconVisible="False" LeftMargin="20.0000" RightMargin="396.0000" TopMargin="158.0000" BottomMargin="18.0000" FontSize="24" LabelText="播放速度" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="98.0000" Y="24.0000" />
+          <AbstractNodeData Name="Text_sudu" ActionTag="827028976" Tag="22" IconVisible="False" LeftMargin="20.0000" RightMargin="395.0000" TopMargin="156.5000" BottomMargin="16.5000" FontSize="24" LabelText="播放速度" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="99.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="20.0000" Y="30.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.0389" Y="0.1500" />
-            <PreSize X="0.1907" Y="0.1200" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <PreSize X="0.1926" Y="0.1350" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_zhen" ActionTag="-663000087" Tag="23" IconVisible="False" LeftMargin="225.0000" RightMargin="215.0000" TopMargin="158.0000" BottomMargin="18.0000" FontSize="24" LabelText="起始帧" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="74.0000" Y="24.0000" />
+          <AbstractNodeData Name="Text_zhen" ActionTag="-663000087" Tag="23" IconVisible="False" LeftMargin="225.0000" RightMargin="216.0000" TopMargin="156.5000" BottomMargin="16.5000" FontSize="24" LabelText="起始帧" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="73.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="225.0000" Y="30.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.4377" Y="0.1500" />
-            <PreSize X="0.1440" Y="0.1200" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <PreSize X="0.1420" Y="0.1350" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_zhenCount" ActionTag="1869594156" Tag="24" IconVisible="False" LeftMargin="400.0000" RightMargin="28.0000" TopMargin="158.0000" BottomMargin="18.0000" FontSize="24" LabelText="原共n帧" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="86.0000" Y="24.0000" />
+          <AbstractNodeData Name="Text_zhenCount" ActionTag="1869594156" Tag="24" IconVisible="False" LeftMargin="400.0000" RightMargin="29.0000" TopMargin="156.5000" BottomMargin="16.5000" FontSize="24" LabelText="原共n帧" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="85.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="400.0000" Y="30.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.7782" Y="0.1500" />
-            <PreSize X="0.1673" Y="0.1200" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <PreSize X="0.1654" Y="0.1350" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
@@ -188,7 +188,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.3502" Y="0.6500" />
             <PreSize X="0.2724" Y="0.1300" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
           </AbstractNodeData>
           <AbstractNodeData Name="TextField_1" ActionTag="610749675" Tag="53" IconVisible="False" LeftMargin="350.0000" RightMargin="24.0000" TopMargin="57.0000" BottomMargin="117.0000" TouchEnable="True" FontSize="22" IsCustomSize="True" LabelText="" PlaceHolderText="文件名" MaxLengthText="10" ctype="TextFieldObjectData">
             <Size X="140.0000" Y="26.0000" />
@@ -198,7 +198,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.8171" Y="0.6500" />
             <PreSize X="0.2724" Y="0.1300" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
           </AbstractNodeData>
           <AbstractNodeData Name="TextField_2" ActionTag="11333288" Tag="54" IconVisible="False" LeftMargin="130.0000" RightMargin="304.0000" TopMargin="157.0000" BottomMargin="17.0000" TouchEnable="True" FontSize="22" IsCustomSize="True" LabelText="" PlaceHolderText="毫秒" MaxLengthText="10" ctype="TextFieldObjectData">
             <Size X="80.0000" Y="26.0000" />
@@ -208,7 +208,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.3307" Y="0.1500" />
             <PreSize X="0.1556" Y="0.1300" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
           </AbstractNodeData>
           <AbstractNodeData Name="TextField_3" ActionTag="-1017831881" Tag="55" IconVisible="False" LeftMargin="310.0000" RightMargin="124.0000" TopMargin="157.0000" BottomMargin="17.0000" TouchEnable="True" FontSize="22" IsCustomSize="True" LabelText="" PlaceHolderText="0" MaxLengthText="10" ctype="TextFieldObjectData">
             <Size X="80.0000" Y="26.0000" />
@@ -218,7 +218,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.6809" Y="0.1500" />
             <PreSize X="0.1556" Y="0.1300" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
           </AbstractNodeData>
         </Children>
       </ObjectData>

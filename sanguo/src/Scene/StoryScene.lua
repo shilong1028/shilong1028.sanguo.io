@@ -26,7 +26,7 @@ function StoryScene:ctor()  --new()会自动调用ctor()
 end
 
 function StoryScene:init()  
-    G_Log_Info("StoryScene:init()")
+    --G_Log_Info("StoryScene:init()")
     local StoryLayer = require("Layer.Story.StoryLayer")
     local layer = StoryLayer:new()
     self:addChild(layer)

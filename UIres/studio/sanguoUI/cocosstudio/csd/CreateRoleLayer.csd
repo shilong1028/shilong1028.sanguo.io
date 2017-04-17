@@ -74,6 +74,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.3185" Y="0.7126" />
             <PreSize X="0.1000" Y="0.1778" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -87,6 +88,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.5145" Y="0.8355" />
             <PreSize X="0.1000" Y="0.1778" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_yuanshao.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -100,6 +102,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.2623" Y="0.4148" />
             <PreSize X="0.1000" Y="0.1778" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_liubei.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -113,6 +116,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.6575" Y="0.3772" />
             <PreSize X="0.0984" Y="0.1778" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_sunjian.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -126,21 +130,22 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.6822" Y="0.6722" />
             <PreSize X="0.1000" Y="0.1778" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_caocao.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
           <AbstractNodeData Name="descText" ActionTag="-488549900" Tag="18" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="256.0000" RightMargin="256.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="24" LabelText="阵营描述" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="767.9999" Y="144.0000" />
+            <Size X="768.0000" Y="144.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="1.0000" />
             <Position X="640.0000" Y="180.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="165" G="42" B="42" />
+            <CColor A="255" R="255" G="165" B="0" />
             <PrePosition X="0.5000" Y="0.2500" />
             <PreSize X="0.6000" Y="0.2000" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
-            <OutlineColor A="255" R="139" G="105" B="20" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
+            <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
           <AbstractNodeData Name="Button_Sel" ActionTag="1926789210" Tag="19" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="1074.5000" RightMargin="50.5000" TopMargin="615.5000" BottomMargin="39.5000" TouchEnable="True" FontSize="30" ButtonText="加入阵营" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
@@ -151,7 +156,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.9000" Y="0.1000" />
             <PreSize X="0.1211" Y="0.0903" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="255" G="165" B="0" />
             <NormalFileData Type="PlistSubImage" Path="public_btn_green1.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />

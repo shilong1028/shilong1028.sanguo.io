@@ -20,7 +20,7 @@
           <Project Name="StoryLayer.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
-          <TTF Name="DFYuanW7-GB2312.ttf" />
+          <TTF Name="simkai.ttf" />
         </Folder>
         <Folder Name="img">
           <Image Name="studio_chinaMap.jpg" />

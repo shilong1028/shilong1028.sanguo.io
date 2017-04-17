@@ -45,10 +45,13 @@ g_pTBLMgr = nil       --本地tbl表格数据单例
 g_HeroDataMgr = nil
 
 --默认的华康圆体路径
-g_sDefaultTTFpath = "font/DFYuanW7-GB2312.ttf"
+g_sDefaultTTFpath = "font/simkai.ttf"   
 
 --AStar寻路
 g_bAStarPathSmooth = true --false --寻路拉直
+
+--玩家阵营ID
+g_campId = 0
 
 --默认文本大小
 g_defaultFontSize = 20

@@ -25,6 +25,7 @@ function MainMenuLayer:init()
     --左上角，玩家头像等节点
     local FileNode_head = csb:getChildByName("FileNode_head")
     self.head_icon = FileNode_head:getChildByName("head_icon")   --玩家头像
+    self.Text_nick = FileNode_head:getChildByName("Text_nick")    --玩家昵称
     self.Button_chongzhi = FileNode_head:getChildByName("Button_chongzhi")   --充值按钮
     self.Button_chongzhi:addTouchEventListener(handler(self,self.touchEvent))
     self.Button_qiandao = FileNode_head:getChildByName("Button_qiandao")
@@ -33,7 +34,6 @@ function MainMenuLayer:init()
     self.Button_libao:addTouchEventListener(handler(self,self.touchEvent))
     self.Button_huodong = FileNode_head:getChildByName("Button_huodong")   --精彩活动
     self.Button_huodong:addTouchEventListener(handler(self,self.touchEvent))
-    self.Text_nick = FileNode_head:getChildByName("Text_nick")    --玩家昵称
     self.Text_vip = FileNode_head:getChildByName("Text_vip")    --VIP等级
     self.BtnVipAdd = FileNode_head:getChildByName("BtnVipAdd")   --提高VIP等级按钮
     self.BtnVipAdd:addTouchEventListener(handler(self,self.touchEvent))
@@ -94,18 +94,25 @@ function MainMenuLayer:init()
     self.Button_gonggao = FileNode_bottom:getChildByName("Button_gonggao")   --公告按钮
     self.Button_gonggao:addTouchEventListener(handler(self,self.touchEvent))
 
+    g_campId = 0 
+    local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
+    if campId and campId > 0 then
+        g_campId = campId
+        self.head_icon:loadTexture(string.format("Head/%d001.png", campId), ccui.TextureResType.localType)
+    end
+
+    local userName = g_UserDefaultMgr:GetUserName()    --获取用户名
+    self.Text_nick:setString(userName)    --玩家昵称
+
 end
 
 function MainMenuLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_chongzhi then   --充值
-            g_HeroDataMgr:SetHeroCampPopulation(500)
             g_pGameLayer:ShowScrollTips("充值")
         elseif sender == self.Button_qiandao then  --连续签到
         elseif sender == self.Button_libao then    --在线礼包
         elseif sender == self.Button_huodong then   --精彩活动
-            g_HeroDataMgr:SetHeroCampGeneral("精彩活动")
-            g_pGameLayer:ShowScrollTips("精彩活动")
         elseif sender == self.BtnVipAdd then    --添加VIP等级
         elseif sender == self.Button_glod then   --元宝添加
         elseif sender == self.Button_liang then   --粮草添加

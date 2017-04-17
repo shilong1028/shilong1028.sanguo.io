@@ -16,30 +16,30 @@
             <PreSize X="1.0000" Y="1.0000" />
             <FileData Type="Normal" Path="img/studio_dialogBg.png" Plist="" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_title" ActionTag="-1055724178" Tag="559" IconVisible="False" LeftMargin="180.5000" RightMargin="180.5000" TopMargin="24.0000" BottomMargin="289.0000" FontSize="30" LabelText="显示标题" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="123.0000" Y="32.0000" />
+          <AbstractNodeData Name="Text_title" ActionTag="-1055724178" Tag="559" IconVisible="False" LeftMargin="181.0000" RightMargin="181.0000" TopMargin="23.0000" BottomMargin="288.0000" FontSize="30" LabelText="显示标题" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="122.0000" Y="34.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="242.0000" Y="305.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="0" G="128" B="0" />
             <PrePosition X="0.5000" Y="0.8841" />
-            <PreSize X="0.2541" Y="0.0928" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <PreSize X="0.2521" Y="0.0986" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="0" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
           <AbstractNodeData Name="ListView" ActionTag="1739325286" Tag="561" IconVisible="False" LeftMargin="42.0000" RightMargin="42.0000" TopMargin="90.0000" BottomMargin="85.0000" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ScrollDirectionType="0" DirectionType="Vertical" ctype="ListViewObjectData">
             <Size X="400.0000" Y="170.0000" />
             <Children>
-              <AbstractNodeData Name="Text_content" ActionTag="422579289" Tag="562" IconVisible="False" RightMargin="282.0000" BottomMargin="146.0000" FontSize="24" LabelText="Text Label" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-                <Size X="118.0000" Y="24.0000" />
+              <AbstractNodeData Name="Text_content" ActionTag="422579289" Tag="562" IconVisible="False" RightMargin="282.0000" BottomMargin="143.0000" FontSize="24" LabelText="Text Label" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+                <Size X="118.0000" Y="27.0000" />
                 <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-                <Position X="59.0000" Y="158.0000" />
+                <Position X="59.0000" Y="156.5000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="0" G="0" B="0" />
-                <PrePosition X="0.1475" Y="0.9294" />
-                <PreSize X="0.2950" Y="0.1412" />
-                <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+                <PrePosition X="0.1475" Y="0.9206" />
+                <PreSize X="0.2950" Y="0.1588" />
+                <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <OutlineColor A="255" R="255" G="0" B="0" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
@@ -63,7 +63,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.2996" Y="0.1449" />
             <PreSize X="0.1901" Y="0.1565" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="255" G="165" B="0" />
             <NormalFileData Type="PlistSubImage" Path="public_btn_red2.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -77,7 +77,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.6612" Y="0.1449" />
             <PreSize X="0.1901" Y="0.1565" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="255" G="165" B="0" />
             <NormalFileData Type="PlistSubImage" Path="public_btn_green2.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -91,6 +91,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.9098" Y="0.8830" />
             <PreSize X="0.0723" Y="0.1014" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="242" G="176" B="3" />
             <NormalFileData Type="PlistSubImage" Path="public_close.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />

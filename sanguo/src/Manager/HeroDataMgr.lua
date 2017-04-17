@@ -51,6 +51,8 @@ function HeroDataMgr:SetHeroCampData(campData)
 	if not campData then
 		G_Log_Error("HeroDataMgr:SetHeroCampData(), error: campData = nil")
 	end
+	self.heroData.campData = campData
+	
     local heroXML = g_UserDefaultMgr:createXMLFile("heroXML.xml", "root")
     heroXML:addChildNode("campData")
     heroXML:setNodeAttrValue("campData", "campId", tostring(campData.campId))
@@ -61,7 +63,15 @@ function HeroDataMgr:SetHeroCampData(campData)
     heroXML:setNodeAttrValue("campData", "troops", tostring(campData.troops))
     heroXML:setNodeAttrValue("campData", "money", tostring(campData.money))
     heroXML:setNodeAttrValue("campData", "food", tostring(campData.food))
-    heroXML:setNodeAttrValue("campData", "general", tostring(campData.general))
+    local generalIdVec = campData.generalIdVec
+    local generalStr = ""
+    for k, generalId in pairs(generalIdVec) do
+    	generalStr = generalStr..generalId
+    	if k ~= #generalIdVec then
+        	generalStr = generalStr..";"
+        end
+    end
+    heroXML:setNodeAttrValue("campData", "general", tostring(generalStr))
     heroXML:saveXMLFile()
 end
 

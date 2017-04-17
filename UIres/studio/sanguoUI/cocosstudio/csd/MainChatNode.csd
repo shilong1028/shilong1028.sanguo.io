@@ -30,6 +30,7 @@
                 <CColor A="255" R="255" G="255" B="255" />
                 <PrePosition X="0.1333" Y="1.0333" />
                 <PreSize X="0.1800" Y="0.4267" />
+                <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <TextColor A="255" R="65" G="65" B="70" />
                 <NormalFileData Type="PlistSubImage" Path="public_kefu.png" Plist="plist/PublicRes.plist" />
                 <OutlineColor A="255" R="255" G="0" B="0" />
@@ -43,6 +44,7 @@
                 <CColor A="255" R="255" G="255" B="255" />
                 <PrePosition X="0.8667" Y="0.9000" />
                 <PreSize X="0.2000" Y="0.1333" />
+                <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <TextColor A="255" R="65" G="65" B="70" />
                 <NormalFileData Type="PlistSubImage" Path="public_hm_down.png" Plist="plist/PublicRes.plist" />
                 <OutlineColor A="255" R="255" G="0" B="0" />

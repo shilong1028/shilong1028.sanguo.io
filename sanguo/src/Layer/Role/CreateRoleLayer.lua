@@ -102,7 +102,23 @@ function CreateRoleLayer:ScaleSelBtn()
     local campData = g_pTBLMgr:getCampConfigTBLDataById(self.curSelCampId)
     --G_Log_Dump(campData, "campData = ")
     if campData then
-        local descStr = campData.desc.."\n"..string.format(lua_SelCamp_String1, campData.money, campData.food, campData.troops, campData.general)
+        local generalIdVec = campData.generalIdVec
+        local generalStr = ""
+        for k, generalId in pairs(generalIdVec) do
+            local heroData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId)
+            if heroData then
+                generalStr = generalStr..heroData.name
+            else
+                generalStr = generalStr..generalId
+            end
+
+            if k ~= #generalIdVec then
+                generalStr = generalStr..";"
+            end
+        end
+
+        local descStr = campData.desc.."\n"..string.format(lua_SelCamp_String1, campData.money, campData.food, campData.troops, generalStr)
+        self.descText:setFontName(g_sDefaultTTFpath)
         self.descText:setString(descStr)
     end
 end

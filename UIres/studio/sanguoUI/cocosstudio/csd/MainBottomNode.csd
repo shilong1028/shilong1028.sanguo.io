@@ -26,6 +26,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_head_mask.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -39,6 +40,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_jingji.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -52,6 +54,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_peiyang.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -65,6 +68,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_beibao.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -78,6 +82,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_budui.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -91,6 +96,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_lianmeng.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -104,6 +110,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_shejiao.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -117,6 +124,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_shezhi.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -130,6 +138,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_shangcheng.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -143,6 +152,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_junqing.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -156,6 +166,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_gonggao.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />

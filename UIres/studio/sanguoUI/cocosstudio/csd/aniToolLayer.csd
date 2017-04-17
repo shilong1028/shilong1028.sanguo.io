@@ -34,7 +34,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.1172" Y="0.1000" />
             <PreSize X="0.0781" Y="0.0694" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="aniTool_btn.png" Plist="plist/aniTool.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -48,7 +48,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.2734" Y="0.1000" />
             <PreSize X="0.0781" Y="0.0694" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="aniTool_btn.png" Plist="plist/aniTool.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -62,7 +62,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.4297" Y="0.1000" />
             <PreSize X="0.0781" Y="0.0694" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="aniTool_btn.png" Plist="plist/aniTool.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -86,6 +86,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="1.0000" Y="1.0000" />
             <PreSize X="0.0672" Y="0.1264" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="aniTool_close.png" Plist="plist/aniTool.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />

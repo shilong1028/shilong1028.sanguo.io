@@ -16,15 +16,15 @@
             <PreSize X="0.0000" Y="0.0000" />
             <FileData Type="PlistSubImage" Path="public_inputBg.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_time" ActionTag="369451687" Tag="118" IconVisible="False" LeftMargin="-219.0000" RightMargin="25.0000" TopMargin="27.0000" BottomMargin="-53.0000" FontSize="24" LabelText="建安十三年春二月" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="194.0000" Y="26.0000" />
-            <AnchorPoint ScaleX="1.0000" ScaleY="0.5000" />
-            <Position X="-25.0000" Y="-40.0000" />
+          <AbstractNodeData Name="Text_time" ActionTag="369451687" Tag="118" IconVisible="False" LeftMargin="-215.0000" RightMargin="25.0000" TopMargin="25.5000" BottomMargin="-54.5000" FontSize="24" LabelText="建安十三年春二月" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="190.0000" Y="29.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="-120.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="249" G="154" B="5" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
@@ -36,6 +36,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_renwu.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
@@ -65,6 +66,7 @@
                 <CColor A="255" R="255" G="255" B="255" />
                 <PrePosition X="0.0400" Y="0.5000" />
                 <PreSize X="0.2400" Y="0.2000" />
+                <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <TextColor A="255" R="65" G="65" B="70" />
                 <NormalFileData Type="PlistSubImage" Path="public_hm_up.png" Plist="plist/PublicRes.plist" />
                 <OutlineColor A="255" R="255" G="0" B="0" />

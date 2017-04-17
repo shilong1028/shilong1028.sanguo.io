@@ -36,15 +36,15 @@
             <PreSize X="0.4234" Y="0.0375" />
             <ImageFileData Type="PlistSubImage" Path="public_scene_loading.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_desc" ActionTag="1836086121" Tag="10" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="561.5000" RightMargin="561.5000" TopMargin="670.0000" BottomMargin="22.0000" FontSize="24" LabelText="资源加载中..." OutlineSize="2" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="157.0000" Y="28.0000" />
+          <AbstractNodeData Name="Text_desc" ActionTag="1836086121" Tag="10" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="564.0000" RightMargin="564.0000" TopMargin="670.5000" BottomMargin="22.5000" FontSize="24" LabelText="资源加载中..." OutlineSize="2" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="152.0000" Y="27.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="640.0000" Y="36.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="249" G="154" B="5" />
             <PrePosition X="0.5000" Y="0.0500" />
-            <PreSize X="0.1227" Y="0.0389" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <PreSize X="0.1187" Y="0.0375" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>

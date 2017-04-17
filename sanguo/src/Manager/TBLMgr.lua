@@ -256,7 +256,8 @@ function TBLMgr:LoadCampConfigTBL()
 		campConfig.troops = stream:ReadUInt()         --初始兵力（人）
 		campConfig.money = stream:ReadUInt()     --初始财力（单位锭，1锭=1000贯）
 		campConfig.food = stream:ReadUInt()     --初始粮草（单位石，1石=1000斤）
-		campConfig.general = stream:ReadString()    --初始将领ID字符串，以;分割
+		local generalStr = stream:ReadString()    --初始将领ID字符串，以;分割
+		campConfig.generalIdVec = string.split(generalStr,";")
 		campConfig.desc = stream:ReadString()    --阵营描述
 
 		table.insert(self.campConfigVec, campConfig)
@@ -304,8 +305,10 @@ function TBLMgr:LoadGeneralConfigTBL()
 		generalConfig.mp = stream:ReadUInt()        --初始智力值
 		generalConfig.atk = stream:ReadUInt()     --初始攻击力
 		generalConfig.def = stream:ReadUInt()     --初始防御力
-		generalConfig.skills = stream:ReadString()    --初始技能，技能ID字符串以;分割
-		generalConfig.equips = stream:ReadString()    --初始装备，装备ID字符串以;分割
+		local skillsStr = stream:ReadString()    --初始技能，技能ID字符串以;分割
+		generalConfig.skillIdVec = string.split(skillsStr,";")
+		local equipsStr = stream:ReadString()    --初始装备，装备ID字符串以;分割
+		generalConfig.equipIdVec = string.split(equipsStr,";")
 		generalConfig.desc = stream:ReadString()    --描述
 
 		self.generalConfigVec[""..generalConfig.id_str] = generalConfig
@@ -422,9 +425,22 @@ function TBLMgr:LoadStoryConfigTBL()
 		storyConfig.storyId = stream:ReadWord()        --剧情ID
 		storyConfig.targetCity = stream:ReadString()    --目标城池ID字符串
 		storyConfig.name = stream:ReadString()    --战役名称
-		storyConfig.enemy = stream:ReadString()    --敌方出战将领ID字符串，以;分割
-		storyConfig.reward = stream:ReadString()    --奖励物品，以;分割。物品ID字符串和数量用-分割
-		storyConfig.talk = stream:ReadString()    --对话内容，以;分割。人物ID字符串和文本用-分割
+		local enemyStr = stream:ReadString()    --敌方出战将领ID字符串，以;分割
+		storyConfig.enemyIdVec = string.split(enemyStr,";")
+		storyConfig.rewardIdVec = {}
+		local rewardStr = stream:ReadString()    --奖励物品，以;分割。物品ID字符串和数量用-分割
+		local rewardIdVec = string.split(rewardStr,";")
+		for k, d in pairs(rewardIdVec) do
+			local strVec = string.split(d,"-")
+			table.insert(storyConfig.rewardIdVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+		end
+		storyConfig.talkVec = {}
+		local talkStr = stream:ReadString()    --对话内容，以;分割。人物ID字符串和文本用-分割
+		local talkVec = string.split(talkStr,";")
+		for k, d in pairs(talkVec) do
+			local strVec = string.split(d,"-")
+			table.insert(storyConfig.talkVec, {["heroId"] = strVec[1], ["text"] = strVec[2]})
+		end
 
 		self.storyConfigVec[""..storyConfig.id_str] = storyConfig
 	end

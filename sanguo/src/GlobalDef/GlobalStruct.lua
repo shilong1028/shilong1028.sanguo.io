@@ -163,7 +163,7 @@ function  g_tbl_campConfig:ctor()
 	self.troops = 0        --初始兵力（人）
 	self.money = 0     --初始财力（单位锭，1锭=1000贯）
 	self.food = 0     --初始粮草（单位石，1石=1000斤）
-	self.general = ""    --初始将领ID字符串，以;分割
+	self.generalIdVec = ""    --初始将领ID字符串，以;分割
 	self.desc = ""    --阵营描述
 end
 
@@ -178,8 +178,8 @@ function  g_tbl_generalConfig:ctor()
 	self.mp = 0        --初始智力值
 	self.atk = 0     --初始攻击力
 	self.def = 0     --初始防御力
-	self.skills = ""    --初始技能，技能ID字符串以;分割
-	self.equips = ""    --初始装备，装备ID字符串以;分割
+	self.skillIdVec = ""    --初始技能，技能ID字符串以;分割
+	self.equipIdVec = ""    --初始装备，装备ID字符串以;分割
 	self.desc = ""    --描述
 end
 
@@ -213,9 +213,9 @@ function  g_tbl_storyConfig:ctor()
 	self.storyId = 0        --剧情ID
 	self.targetCity = ""    --目标城池ID字符串
 	self.name = ""    --战役名称
-	self.enemy = ""    --敌方出战将领ID字符串，以;分割
-	self.reward = ""    --奖励物品，以;分割。物品ID字符串和数量用-分割
-	self.talk = ""    --对话内容，以;分割。人物ID字符串和文本用-分割
+	self.enemyIdVec = ""    --敌方出战将领ID字符串，以;分割
+	self.rewardIdVec = ""    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
+	self.talkVec = ""    --对话内容，以;分割。人物ID字符串和文本用-分割   {["heroId"], ["text"]}
 end
 
 

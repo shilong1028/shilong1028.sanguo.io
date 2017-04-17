@@ -36,20 +36,21 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_glod_icon.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_glod" ActionTag="1039221517" Tag="53" IconVisible="False" LeftMargin="-150.0000" RightMargin="107.0000" TopMargin="29.0000" BottomMargin="-51.0000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="43.0000" Y="22.0000" />
+          <AbstractNodeData Name="Text_glod" ActionTag="1039221517" Tag="53" IconVisible="False" LeftMargin="-150.0000" RightMargin="107.0000" TopMargin="28.5000" BottomMargin="-51.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="43.0000" Y="23.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="-150.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="249" G="154" B="5" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
@@ -63,15 +64,15 @@
             <PreSize X="0.0000" Y="0.0000" />
             <FileData Type="PlistSubImage" Path="public_bi_icon.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_bi" ActionTag="808050403" Tag="54" IconVisible="False" LeftMargin="-40.0000" RightMargin="-3.0000" TopMargin="29.0000" BottomMargin="-51.0000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="43.0000" Y="22.0000" />
+          <AbstractNodeData Name="Text_bi" ActionTag="808050403" Tag="54" IconVisible="False" LeftMargin="-40.0000" RightMargin="-3.0000" TopMargin="28.5000" BottomMargin="-51.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="43.0000" Y="23.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="-40.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="249" G="154" B="5" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
@@ -95,20 +96,21 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_liang_icon.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_liang" ActionTag="-877137156" Tag="55" IconVisible="False" LeftMargin="70.0000" RightMargin="-113.0000" TopMargin="29.0000" BottomMargin="-51.0000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="43.0000" Y="22.0000" />
+          <AbstractNodeData Name="Text_liang" ActionTag="-877137156" Tag="55" IconVisible="False" LeftMargin="70.0000" RightMargin="-113.0000" TopMargin="28.5000" BottomMargin="-51.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="43.0000" Y="23.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="70.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="249" G="154" B="5" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
@@ -122,15 +124,15 @@
             <PreSize X="0.0000" Y="0.0000" />
             <FileData Type="PlistSubImage" Path="public_mi_icon.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_mi" ActionTag="-1119242538" Tag="56" IconVisible="False" LeftMargin="190.0000" RightMargin="-233.0000" TopMargin="29.0000" BottomMargin="-51.0000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="43.0000" Y="22.0000" />
+          <AbstractNodeData Name="Text_mi" ActionTag="-1119242538" Tag="56" IconVisible="False" LeftMargin="190.0000" RightMargin="-233.0000" TopMargin="28.5000" BottomMargin="-51.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="43.0000" Y="23.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="190.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="249" G="154" B="5" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
-            <FontResource Type="Normal" Path="font/DFYuanW7-GB2312.ttf" Plist="" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
