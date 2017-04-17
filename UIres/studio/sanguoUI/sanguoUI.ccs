@@ -18,6 +18,7 @@
           <Project Name="MainTopNode.csd" Type="Node" />
           <Project Name="StoreTalkLayer.csd" Type="Layer" />
           <Project Name="StoryLayer.csd" Type="Layer" />
+          <Project Name="storyTalkCell.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
           <TTF Name="simkai.ttf" />

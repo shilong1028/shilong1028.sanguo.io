@@ -173,16 +173,27 @@ end
 
 --角色阵营1汉献帝，2袁绍，3曹操，4孙坚，5刘备
 function UserDefaultMgr:GetRoleCampId()
-    return UserDefault:getIntegerForKey("RoleCamp")
+    return UserDefault:getIntegerForKey("RoleCampId")
 end
 
 function UserDefaultMgr:SetRoleCampId(campId, bflush)
-    UserDefault:setIntegerForKey("RoleCamp", campId)
+    UserDefault:setIntegerForKey("RoleCampId", campId)
     if bFlush then
         UserDefault:flush()
     end
 end
 
+--已经完成的剧情进展ID
+function UserDefaultMgr:GetStoryTalkId()
+    return UserDefault:getIntegerForKey("StoryTalkId")
+end
+
+function UserDefaultMgr:SetStoryTalkId(storyId, bflush)
+    UserDefault:setIntegerForKey("StoryTalkId", storyId)
+    if bFlush then
+        UserDefault:flush()
+    end
+end
 
 
 ----------------------  MyXMLManager  -------------

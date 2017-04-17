@@ -42,30 +42,30 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Panel_renwu" ActionTag="727323125" Tag="119" IconVisible="False" LeftMargin="-250.0000" TopMargin="160.0000" BottomMargin="-260.0000" ClipAble="False" BackColorAlpha="178" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
-            <Size X="250.0000" Y="100.0000" />
+          <AbstractNodeData Name="Panel_renwu" ActionTag="727323125" Tag="119" IconVisible="False" LeftMargin="-250.0000" TopMargin="160.0000" BottomMargin="-360.0000" ClipAble="False" BackColorAlpha="178" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
+            <Size X="250.0000" Y="200.0000" />
             <Children>
-              <AbstractNodeData Name="ListView" ActionTag="-668043637" Tag="143" IconVisible="False" LeftMargin="20.0000" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ScrollDirectionType="0" DirectionType="Vertical" ctype="ListViewObjectData">
-                <Size X="230.0000" Y="100.0000" />
+              <AbstractNodeData Name="ListView" ActionTag="-668043637" CallBackType="Click" Tag="143" IconVisible="False" LeftMargin="20.0000" RightMargin="10.0000" TopMargin="10.0000" BottomMargin="10.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="102" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" DirectionType="Vertical" HorizontalType="Align_HorizontalCenter" ctype="ListViewObjectData">
+                <Size X="220.0000" Y="180.0000" />
                 <AnchorPoint ScaleX="1.0000" />
-                <Position X="250.0000" />
+                <Position X="240.0000" Y="10.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="255" B="255" />
-                <PrePosition X="1.0000" />
-                <PreSize X="0.9200" Y="1.0000" />
+                <PrePosition X="0.9600" Y="0.0500" />
+                <PreSize X="0.8800" Y="0.9000" />
                 <SingleColor A="255" R="150" G="150" B="255" />
                 <FirstColor A="255" R="150" G="150" B="255" />
                 <EndColor A="255" R="255" G="255" B="255" />
                 <ColorVector ScaleY="1.0000" />
               </AbstractNodeData>
-              <AbstractNodeData Name="Button_push" ActionTag="-430569119" Tag="161" RotationSkewX="90.0000" RotationSkewY="90.0000" IconVisible="False" LeftMargin="-20.0000" RightMargin="210.0000" TopMargin="40.0000" BottomMargin="40.0000" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="1" RightEage="1" TopEage="1" BottomEage="1" Scale9OriginX="1" Scale9OriginY="1" Scale9Width="18" Scale9Height="10" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+              <AbstractNodeData Name="Button_push" ActionTag="-430569119" Tag="161" RotationSkewX="90.0000" RotationSkewY="90.0000" IconVisible="False" LeftMargin="-20.0000" RightMargin="210.0000" TopMargin="40.0000" BottomMargin="140.0000" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="1" RightEage="1" TopEage="1" BottomEage="1" Scale9OriginX="1" Scale9OriginY="1" Scale9Width="18" Scale9Height="10" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
                 <Size X="60.0000" Y="20.0000" />
                 <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-                <Position X="10.0000" Y="50.0000" />
+                <Position X="10.0000" Y="150.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="255" B="255" />
-                <PrePosition X="0.0400" Y="0.5000" />
-                <PreSize X="0.2400" Y="0.2000" />
+                <PrePosition X="0.0400" Y="0.7500" />
+                <PreSize X="0.2400" Y="0.1000" />
                 <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <TextColor A="255" R="65" G="65" B="70" />
                 <NormalFileData Type="PlistSubImage" Path="public_hm_up.png" Plist="plist/PublicRes.plist" />

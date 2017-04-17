@@ -412,7 +412,7 @@ function TBLMgr:LoadStoryConfigTBL()
 	local p = nil
 	local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
     if campId and campId > 0 then
-    	p = stream:CreateReadStreamFromSelf("tbl/talkConfig"..campId.."_client.tbl")
+    	p = stream:CreateReadStreamFromSelf("tbl/storyConfig"..campId.."_client.tbl")
     end
 	if(p == nil) then
 		return
@@ -442,7 +442,7 @@ function TBLMgr:LoadStoryConfigTBL()
 			table.insert(storyConfig.talkVec, {["heroId"] = strVec[1], ["text"] = strVec[2]})
 		end
 
-		self.storyConfigVec[""..storyConfig.id_str] = storyConfig
+		table.insert(self.storyConfigVec, storyConfig)
 	end
 end
 
@@ -452,7 +452,14 @@ function TBLMgr:getStoryConfigTBLDataById(storyId)
 		self:LoadStoryConfigTBL()
 	end
 
-	return clone(self.storyConfigVec[""..storyId])
+	if self.storyConfigVec then
+		for i=1, #self.storyConfigVec do
+			if self.storyConfigVec[i].storyId == storyId then
+				return clone(self.storyConfigVec[i])
+			end
+		end
+	end
+	return nil
 end
 
 

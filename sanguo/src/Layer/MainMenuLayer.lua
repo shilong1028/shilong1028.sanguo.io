@@ -1,6 +1,7 @@
 
 --主菜单层
 local MainMenuLayer = class("MainMenuLayer", CCLayerEx)  --填入类名
+local StoryTalkCell = require("Layer.Story.StoryTalkCell")
 
 function MainMenuLayer:create()    --自定义的create()创建方法
     --G_Log_Info("MainMenuLayer:create()")
@@ -56,13 +57,46 @@ function MainMenuLayer:init()
     self.Button_renwu:addTouchEventListener(handler(self,self.touchEvent))
     self.Panel_renwu = FileNode_time:getChildByName("Panel_renwu")    --任务内容面板
     self.renWuListView = self.Panel_renwu:getChildByName("ListView")   --任务列表
+    self.renWuListWidth = self.renWuListView:getContentSize().width
+    self.bRenWuListHide = false
+    self.bRenWuActioning = false
     self.renWuButton_push = self.Panel_renwu:getChildByName("Button_push")  --任务列表收放按钮
     self.renWuButton_push:addTouchEventListener(handler(self,self.touchEvent))
 
+    local function listViewEvent(sender, eventType)
+        if eventType == ccui.ListViewEventType.ONSELECTEDITEM_START then
+            --print("select child index = ",sender:getCurSelectedIndex())
+        end
+    end
+
+    local function scrollViewEvent(sender, evenType)
+        if evenType == ccui.ScrollviewEventType.scrollToBottom then
+            --print("SCROLL_TO_BOTTOM")
+        elseif evenType ==  ccui.ScrollviewEventType.scrollToTop then
+            --print("SCROLL_TO_TOP")
+        end
+    end
+
+    --local listView = ccui.ListView:create()
+    -- set list view ex direction
+    -- self.renWuListView:setDirection(ccui.ScrollViewDir.vertical)
+    -- self.renWuListView:setBounceEnabled(true)
+    -- self.renWuListView:setContentSize(cc.size(230, 200))
+    -- self.renWuListView:setPosition(cc.p(250,200))
+    self.renWuListView:setScrollBarEnabled(false)   --屏蔽列表滚动条
+    self.renWuListView:setItemsMargin(2.0)
+    --self.renWuListView:addEventListener(listViewEvent)
+    --self.renWuListView:addScrollViewEventListener(scrollViewEvent)
+    -- local items = self.renWuListView:getItems()
+    -- local items_count = table.getn(items)
+    
     --左下角，聊天节点
     local FileNode_chat = csb:getChildByName("FileNode_chat")
     self.Panel_chat = FileNode_chat:getChildByName("Panel_chat")    --聊天面板
     self.chatListView = self.Panel_chat:getChildByName("ListView")   --聊天列表
+    self.chatListHeight = self.chatListView:getContentSize().height
+    self.bChatListHide = false
+    self.bChatListActioning = false
     self.Button_chat = self.Panel_chat:getChildByName("Button_chat")  --聊天按钮
     self.Button_chat:addTouchEventListener(handler(self,self.touchEvent))
     self.chatButton_push = self.Panel_chat:getChildByName("Button_push")   --聊天列表收放按钮
@@ -94,16 +128,44 @@ function MainMenuLayer:init()
     self.Button_gonggao = FileNode_bottom:getChildByName("Button_gonggao")   --公告按钮
     self.Button_gonggao:addTouchEventListener(handler(self,self.touchEvent))
 
+    self:initData()
+end
+
+function MainMenuLayer:initData()
     g_campId = 0 
     local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
     if campId and campId > 0 then
         g_campId = campId
         self.head_icon:loadTexture(string.format("Head/%d001.png", campId), ccui.TextureResType.localType)
     end
-
     local userName = g_UserDefaultMgr:GetUserName()    --获取用户名
     self.Text_nick:setString(userName)    --玩家昵称
 
+    self.renWuListView:removeAllChildren()
+
+    local storyId = g_UserDefaultMgr:GetStoryTalkId()
+    if storyId and storyId > 0 then
+    else
+        storyId = 1
+    end
+    self:initStroyData(storyId)
+end
+
+function MainMenuLayer:initStroyData(storyId)
+    self.storyId = storyId
+    self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId)
+    if self.storyData then
+        local storyCell = StoryTalkCell:new()
+        local cur_item = ccui.Layout:create()
+        cur_item:setContentSize(cc.size(220, 80))
+        cur_item:addChild(storyCell)
+        self.renWuListView:addChild(cur_item)
+        storyCell:initData(self.storyData)
+    end
+    --G_Log_Dump(self.renWuListView:getInnerContainerSize())
+    self.Panel_renwu:setContentSize(cc.size(self.Panel_renwu:getContentSize().width, 100))
+    self.renWuListView:setContentSize(cc.size(self.renWuListView:getContentSize().width, 80))
+    self.renWuButton_push:setPosition(cc.p(self.renWuButton_push:getPositionX(), self.renWuButton_push:getPositionY() - 100))
 end
 
 function MainMenuLayer:touchEvent(sender, eventType)
@@ -118,17 +180,51 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_liang then   --粮草添加
         elseif sender == self.Button_renwu then   --任务
         elseif sender == self.renWuButton_push then  --任务列表收放
+            if self.bRenWuActioning == true then
+                return
+            end
+            self.bRenWuActioning = true
+            local angle = -90
+            local offsetX = self.renWuListWidth
+            if self.bRenWuListHide == true then  
+                offsetX = -self.renWuListWidth 
+                angle = 90
+            end
+            local moveBy = cc.MoveBy:create(0.5, cc.p(offsetX, 0))  
+            local seqAction = cc.Sequence:create(moveBy, cc.CallFunc:create(function()  
+                    self.bRenWuActioning = false
+                    self.bRenWuListHide = not self.bRenWuListHide
+                    self.renWuButton_push:setRotation(angle)  --原图为箭头向下，按钮初始为箭头向右（旋转90度）
+                end))
+            self.Panel_renwu:runAction(seqAction)
         elseif sender == self.Button_chat then   --聊天
         elseif sender == self.chatButton_push then  --聊天列表收放
-        elseif sender == self.Button_zhucheng then  --主城/地图切换
-            local mainCityLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_MAINCITY)
-            if mainCityLayer then
-                if mainCityLayer:isVisible() == true then
-                    mainCityLayer:setVisible(false)
-                else
-                    mainCityLayer:setVisible(true)
-                end
+            if self.bChatListActioning == true then
+                return
             end
+            self.bChatListActioning = true
+            local angle = 180
+            local offsetY = -self.chatListHeight
+            if self.bChatListHide == true then  
+                offsetY = self.chatListHeight 
+                angle = 0
+            end
+            local moveBy = cc.MoveBy:create(0.5, cc.p(0, offsetY))  
+            local seqAction = cc.Sequence:create(moveBy, cc.CallFunc:create(function()  
+                    self.bChatListActioning = false
+                    self.bChatListHide = not self.bChatListHide
+                    self.chatButton_push:setRotation(angle)   --原图为箭头向下，按钮初始为箭头向下（旋转0度）
+                end))
+            self.Panel_chat:runAction(seqAction)
+        elseif sender == self.Button_zhucheng then  --主城/地图切换
+            -- local mainCityLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_MAINCITY)
+            -- if mainCityLayer then
+            --     if mainCityLayer:isVisible() == true then
+            --         mainCityLayer:setVisible(false)
+            --     else
+            --         mainCityLayer:setVisible(true)
+            --     end
+            -- end
         elseif sender == self.Button_jingji then   --竞技场
         elseif sender == self.Button_peiyang then  --士兵培养
         elseif sender == self.Button_beibao then   --背包武库
