@@ -115,6 +115,7 @@ function  g_tbl_cityConfig:ctor()
 	self.name = ""     --string 城池名称
 	self.type = 0     --城池类型1大城市，2郡城，3关隘渡口
 	self.zhou_id = 0    --所属州
+	self.mapId = 0    --所在地图ID
 	self.map_row = 0    --城池在地图的行  32*32为单位块的横向数量
 	self.map_col = 0    --城池在地图的列
 	self.population = 0   --初始人口数量

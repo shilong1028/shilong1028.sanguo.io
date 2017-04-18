@@ -26,13 +26,18 @@ function MapLayer:init()
     self.curMapId = 0   --当前地图ID
     self.mapConfigData = nil  --地图表配置数据 
     self.mapJumpPosData = {}  --游戏跳转点
-
-    self:ShowMapImg(1)  --全国地图
-    self:ShowPlayerNode()
 end
 
-function MapLayer:JumpMap(jumpData)
-	G_Log_Info("MapLayer:JumpMap()")
+function MapLayer:changeMapByCity(cityId)
+	local cityData = g_pTBLMgr:getCityConfigTBLDataById(cityId)
+    if cityData then
+	    self:ShowMapImg(cityData.mapId)  --全国地图
+	    self:ShowPlayerNode(cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y))  --转换为像素点,以左上角为00原点
+	end
+end
+
+function MapLayer:changeMapByJumpPoint(jumpData)
+	--G_Log_Info("MapLayer:changeMapByJumpPoint()")
 	if jumpData then
 		if jumpData.map_id1 == self.curMapId then
 			self:ShowMapImg(jumpData.map_id2)  

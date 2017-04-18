@@ -129,7 +129,7 @@ function PlayerNode:AutoPathUpdate()
 
 		local jumpData = g_pMapMgr:checkJumpMap(self.curPos)
         if jumpData and self.mapLayer then
-        	self.mapLayer:JumpMap(jumpData)
+        	self.mapLayer:changeMapByJumpPoint(jumpData)
         end
 	end
 

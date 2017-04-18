@@ -210,6 +210,14 @@ function GameLayer:GameMainLayer()
     self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
     --地图层
     self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
+
+    local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
+    if campId and campId > 0 then
+        local campData = g_pTBLMgr:getCampConfigTBLDataById(campId)
+        if campData then
+            self.MapLayer:changeMapByCity(campData.capital)
+        end
+    end
 end
 
 

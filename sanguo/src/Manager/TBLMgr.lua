@@ -117,6 +117,7 @@ function TBLMgr:LoadCityConfigTBL()
 		cityConfig.name = stream:ReadString()     --城池名称
 		cityConfig.type = stream:ReadUInt()     --城池类型1大城市，2郡城，3关隘渡口
 		cityConfig.zhou_id = stream:ReadUInt()     --所属州
+		cityConfig.mapId = stream:ReadUInt()    --所在地图ID
 		cityConfig.map_row = stream:ReadUInt()    --城池在地图的行  32*32为单位块的横向数量
 		cityConfig.map_col = stream:ReadUInt()    --城池在地图的列
 		cityConfig.population = stream:ReadUInt()    --初始人口数量
