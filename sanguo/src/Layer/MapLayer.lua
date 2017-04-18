@@ -17,36 +17,18 @@ end
 
 function MapLayer:init()  
     --G_Log_Info("MapLayer:init()")
+    --ClearMapObj不清除的数据
     self.rootNode = nil    --根节点
-    self.playerNode = nil  --主角节点
+    self.mapConfigData = nil  --地图表配置数据 
+	self.movePathMapByMap = nil  --跨地图跳转数据
 
+    -------ClearMapObj清除的数据----------
+    self.playerNode = nil  --主角节点
 	self.m_touchImg = nil  --点击动画
     self.m_arrowImgVec = {}  --路径箭头
-
     self.curMapId = 0   --当前地图ID
-    self.mapConfigData = nil  --地图表配置数据 
-    self.mapJumpPosData = {}  --游戏跳转点
-end
-
-function MapLayer:changeMapByCity(cityId)
-	local cityData = g_pTBLMgr:getCityConfigTBLDataById(cityId)
-    if cityData then
-	    self:ShowMapImg(cityData.mapId)  --全国地图
-	    self:ShowPlayerNode(cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y))  --转换为像素点,以左上角为00原点
-	end
-end
-
-function MapLayer:changeMapByJumpPoint(jumpData)
-	--G_Log_Info("MapLayer:changeMapByJumpPoint()")
-	if jumpData then
-		if jumpData.map_id1 == self.curMapId then
-			self:ShowMapImg(jumpData.map_id2)  
-			self:ShowPlayerNode(cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y))    --转换为像素点,以左上角为00原点
-		elseif jumpData.map_id2 == self.curMapId then
-			self:ShowMapImg(jumpData.map_id1) 
-			self:ShowPlayerNode(cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y))    --转换为像素点,以左上角为00原点
-		end
-	end
+    self.curRolePos = 0   --当前人物所在位置（像素点）
+    self.mapJumpPosData = {}  --游戏跳转点   
 end
 
 function MapLayer:ClearMapObj()
@@ -55,6 +37,9 @@ function MapLayer:ClearMapObj()
     self.playerNode = nil  --主角节点
 	self.m_touchImg = nil  --点击动画
     self.m_arrowImgVec = {}  --路径箭头
+    self.curMapId = 0   --当前地图ID
+    self.curRolePos = 0   --当前人物所在位置（像素点）
+    g_pMapMgr.curRolePos = 0
     self.mapJumpPosData = {}  --游戏跳转点
 end
 
@@ -198,6 +183,8 @@ function MapLayer:setRoleMapPosition(rolePos)
 		end
 
 		self.playerNode:setPosition(rolePos)
+		self.curRolePos = rolePos   --当前人物所在位置（像素点）
+		g_pMapMgr.curRolePos = rolePos 
 		self:resetRootNodePos(rolePos)
 	end
 end
@@ -266,10 +253,9 @@ end
 
 --开始astar寻路
 function MapLayer:starAutoPath(endPos)
-	--G_Log_Info("MapLayer:starAutoPath()")
-    --如果越界了
+	G_Log_Info("MapLayer:starAutoPath()")
     if endPos.x < 0 or endPos.y < 0 or endPos.x > self.mapConfigData.width or endPos.y > self.mapConfigData.height then
-    	G_Log_Error("endPos is not in Map, endPos.x = %f, endPos.y = %f", endPos.x, endPos.y)
+    	G_Log_Error("endPos is not in Map, endPos.x = %f, endPos.y = %f", endPos.x, endPos.y)  --如果越界了
 		return;
 	end
 
@@ -285,6 +271,59 @@ function MapLayer:starAutoPath(endPos)
 	end
 end
 
+--直接跳转到指定城市所在地图的城池
+function MapLayer:changeMapByCity(cityId)
+	local cityData = g_pTBLMgr:getCityConfigTBLDataById(cityId)
+    if cityData then
+	    self:ShowMapImg(cityData.mapId)  --全国地图
+	    self:ShowPlayerNode(cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y))  --转换为像素点,以左上角为00原点
+	end
+end
+
+--直接通过跳转点跳转到另一个地图相应跳转点附近
+function MapLayer:changeMapByJumpPoint(jumpData)
+	G_Log_Info("MapLayer:changeMapByJumpPoint()")
+	if jumpData then
+		if jumpData.map_id1 == self.curMapId then
+			self:ShowMapImg(jumpData.map_id2)  
+			self:ShowPlayerNode(cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y))    --转换为像素点,以左上角为00原点
+		elseif jumpData.map_id2 == self.curMapId then
+			self:ShowMapImg(jumpData.map_id1) 
+			self:ShowPlayerNode(cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y))    --转换为像素点,以左上角为00原点
+		end
+		--跨地图移动
+		if self.movePathMapByMap and #self.movePathMapByMap > 0 then
+			self:autoPathByMapsPath()
+		end
+	end
+end
+
+--跨地图移动
+function MapLayer:autoPathByMapsPath()
+	G_Log_Info("autoPathByMapsPath")
+	if not self.movePathMapByMap then
+		return
+	end
+	G_Log_Dump(self.movePathMapByMap, "self.movePathMapByMap = ")
+
+	local moveData = self.movePathMapByMap[1]
+	table.remove(self.movePathMapByMap, 1)
+	self:setRoleWinPosition(moveData.movePos, true)
+end
+
+--自动寻路跳转到城池所在地图的目标城池
+function MapLayer:autoPathMapByCity(tarCityId, srcCityId)
+	G_Log_Info("MapLayer:autoPathMapByCity(), tarCityId = %s", tarCityId)
+	local movePath = g_pMapMgr:getMovePathCityByCity()
+	self.movePathMapByMap = movePath
+
+	self:autoPathByMapsPath()
+	-- local cityData = g_pTBLMgr:getCityConfigTBLDataById(cityId)
+ --    if cityData then
+	--     self:ShowMapImg(cityData.mapId)  --全国地图
+	--     self:ShowPlayerNode(cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y))  --转换为像素点,以左上角为00原点
+	-- end
+end
 
 --设置任务标志路径
 function MapLayer:drawAutoPathArrow(autoPath, bDrawPath)

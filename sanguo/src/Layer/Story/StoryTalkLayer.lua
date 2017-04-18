@@ -13,6 +13,10 @@ function StoryTalkLayer:onExit()
         g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
         self.showUpdateHandler = nil
     end
+    if self.delayUpdateHandler then
+        g_Scheduler:unscheduleScriptEntry(self.delayUpdateHandler)
+        self.delayUpdateHandler = nil
+    end       
 end
 
 function StoryTalkLayer:init()  
@@ -64,13 +68,26 @@ function StoryTalkLayer:showStoryText()
         local str = string.sub(self.storyString, 1, self.storyStrLen)
         self.Text_story:setString(str)  
     else
-        self:changeStoryString()    --切换
+        if self.showUpdateHandler then
+            g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
+        end
+        self.showUpdateHandler = nil
+
+        local function delayCallBack(dt)
+            self:changeStoryString()    --切换
+        end
+        self.delayUpdateHandler = g_Scheduler:scheduleScriptFunc(delayCallBack, 1.0, false)
     end
 end
 
 --切换下一段剧情文本
 function StoryTalkLayer:changeStoryString()
     --G_Log_Info("StoryTalkLayer:changeStoryString()")
+    if self.delayUpdateHandler then
+        g_Scheduler:unscheduleScriptEntry(self.delayUpdateHandler)
+        self.delayUpdateHandler = nil
+    end  
+
     self.talkIdx = self.talkIdx + 1
     if self.talkIdx > #self.talkVec then
         if self.showUpdateHandler then
@@ -100,14 +117,11 @@ function StoryTalkLayer:changeStoryString()
         self.Image_left:loadTexture(string.format("Head/%d.png", self.talkVec[self.talkIdx].heroId), ccui.TextureResType.localType)
     end
 
-    local function showText()
-        self:showStoryText()
-    end
     if self.showUpdateHandler then
         g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
     end
     self.showUpdateHandler = nil
-    self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(showText, 0.02, false)   --handler(self, self.showStoryText)
+    self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showStoryText), 0.02, false)
 end
 
 return StoryTalkLayer

@@ -12,6 +12,8 @@ function MapMgr:init()
 	--G_Log_Info("MapMgr:init()")
 	self.instance = nil
 
+	self.curMapId = 0  --当前地图ID
+	self.curRolePos = 0   --当前人物所在位置（像素点）
 	self.mapConfigData = nil  --地图表配置数据
 	self.mapJumpPosData = {}  --游戏跳转点
 	self._VecOpacity = nil   --地图中快透明数据
@@ -37,6 +39,7 @@ function MapMgr:LoadMapStreamData(mapId)
 		return nil
 	end
 	--G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
+	self.curMapId = mapId  --当前地图ID
 
 	--添加游戏跳转点
 	self.mapJumpPosData = {}
@@ -190,6 +193,129 @@ function MapMgr:CalcDistance(nowPos, dirPos)
 	return math.sqrt((nowPos.x-dirPos.x)*(nowPos.x-dirPos.x) + (nowPos.y-dirPos.y)*(nowPos.y-dirPos.y))
 end
 
+--两个城池之间路径规划（包括跨地图转移）,srcCityId缺失为当前点位置
+function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
+	G_Log_Info("MapMgr:getMovePathCityByCity()")
+	local srcMapData = self.mapConfigData
+	local curCityVec = srcMapData.cityIdStrVec
+	local srcMapId = self.curMapId  --当前地图ID
 
+	if srcCityId then
+		local bSrcCurMap = false   --开始城池是否在当前地图
+		for k, cityId in pairs(curCityVec) then
+			if cityId == srcCityId then
+				bSrcCurMap = true
+				break;
+			end
+		end
+		if bSrcCurMap == false then   --开始城池不在当前地图
+			return
+		end
+	end
+
+	local movePathVec = {}   --{["mapId"], ["movePos"]}
+
+	local btarCurMap = false   --目标城池是否在当前地图
+	for k, cityId in pairs(curCityVec) then
+		if cityId == tarCityId then
+			btarCurMap = true
+			break;
+		end
+	end
+
+	local tarCityData = g_pTBLMgr:getCityConfigTBLDataById(tarCityId)
+	if tarCityData then
+		if btarCurMap == false then   --目标城池不在当前地图
+			print("目标城池不在当前地图")
+			local tarMapId = tarCityData.mapId
+			--从配置表中读取多地图跳转的地图关系
+			local nearMapVec = nil
+			for k, vec in pairs(curCityVec.nearMapVec) then
+				local lastIdx = #vec
+				if vec[lastIdx] == tarCityId then
+					nearMapVec = vec
+					break;
+				end
+			end
+			dump(nearMapVec, "nearMapVec = ")
+			local srcPos = self.curRolePos  --当前人物所在位置（像素点）
+			local lastjumpPos = nil
+			for k, mapId in pairs(nearMapVec) do
+				if k == #nearMapVec then
+					local tarMapData = g_pTBLMgr:getMapConfigTBLDataById(mapId)
+					if tarMapData then
+						--相邻地图地图到目的点
+						table.insert(movePathVec, {["mapId"] = mapId, 
+							["movePos"] = cc.p(tarCityData.map_pt.x, tarMapData.height - tarCityData.map_pt.y)})
+					end
+				else
+					if lastjumpPos and mapId ~= self.curMapId then
+						srcPos = lastjumpPos
+					end
+					local nextMapId = nearMapVec[k+1]
+					local jumpPos = self:getNearMapJumpPos(nextMapId, mapId, srcPos)
+					if jumpPos then
+						lastjumpPos = jumpPos
+						table.insert(movePathVec, {["mapId"] = mapId, ["movePos"] = jumpPos})
+					end
+				end
+
+			end
+		else    --目标城池在当前地图
+			table.insert(movePathVec, {["mapId"] = srcMapId, ["movePos"] = cc.p(curCityVec.map_pt.x, curCityVec.height - curCityVec.map_pt.y)})
+		end
+	end
+
+	return movePathVec
+end
+
+--获得到达相邻地图的最近跳转点,srcMapId缺失为当前地图
+function MapMgr:getNearMapJumpPos(nearMapId, srcMapId, srcPos)
+	G_Log_Info("MapMgr:getNearMapJumpPos(), nearMapId = %d, srcMapId = %d", nearMapId, srcMapId)
+	local srcMapData = self.mapConfigData
+	if srcMapId ~= self.curMapId then  --非当前地图
+		srcMapData = g_pTBLMgr:getMapConfigTBLDataById(srcMapId)
+	end
+	if not srcMapData then
+		return 
+	end
+	if not srcPos then
+		local firstCityId = srcMapData.near_citys[1]
+		local cityData = g_pTBLMgr:getCityConfigTBLDataById(firstCityId)
+	    if cityData then
+		    srcPos = cc.p(cityData.map_pt.x, srcMapData.height - cityData.map_pt.y)  --转换为像素点,以左上角为00原点
+		end
+	end
+	if not srcPos then
+		return
+	end
+
+	if srcMapData then
+		local jumpVec = srcMapData.jumpptIdStrVec
+		local minLen = 0
+		local minJumpPos = nil
+		for k, jumpIdStr in pairs(jumpVec) then
+			local jumpData = g_pTBLMgr:getMapJumpPtConfigTBLDataById(jumpIdStr)
+			if jumpData then
+				local dirPos = nil
+				if (jumpData.map_id1 == srcMapId and jumpData.map_id2 == nearMapId) then
+					dirPos = cc.p(jumpData.map_pt1.x, srcMapData.height - jumpData.map_pt1.y)  --转换为像素点,以左上角为00原点
+				elseif(jumpData.map_id1 == nearMapId and jumpData.map_id2 == srcMapId) then
+					dirPos = cc.p(jumpData.map_pt2.x, srcMapData.height - jumpData.map_pt2.y)  --转换为像素点,以左上角为00原点
+				end
+
+				if dirPosthen
+					local len = g_pMapMgr:CalcDistance(srcPos, dirPos) 
+					if not minJumpPos or minLen > len then
+						minLen = len
+						minJumpPos = dirPos
+					end
+				end
+			end
+		end
+		return minJumpPos
+	end
+	return nil
+end
 
 return MapMgr

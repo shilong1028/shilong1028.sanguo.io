@@ -10,6 +10,7 @@
 		<field name="img_count" type="int" size="4"/>
 		<field name="row" type="int" size="4"/>
 		<field name="column" type="int" size="4"/>
+		<field name="near_map" type="string" size="256"/>
 		<field name="citys" type="string" size="256"/>
 		<field name="jump_pt" type="string" size="256"/>
 	</table>

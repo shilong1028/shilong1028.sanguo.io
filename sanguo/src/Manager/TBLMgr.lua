@@ -64,6 +64,18 @@ function TBLMgr:LoadMapConfigTBL()
 		mapConfig.row = stream:ReadUInt()    --切成的小图的行列数
 		mapConfig.column = stream:ReadUInt()
 
+		mapConfig.nearMapVec = {}    --相邻地图ID集合
+		local nearMaps = stream:ReadString()
+		local nearMapVec = string.split(nearMaps,";")
+		for k, vecStr in pairs(nearMapVec) do
+			local nearStrVec = string.split(vecStr,"-")
+			local nearVec = {}
+			for i, idx in pairs(nearStrVec) do
+				table.insert(nearVec, tonumber(idx))
+			end
+			table.insert(mapConfig.nearMapVec, nearVec)
+		end
+
 		mapConfig.cityIdStrVec = {}
 		local citys = stream:ReadString()  --string 地图上所属郡城分布点
 		mapConfig.cityIdStrVec = string.split(citys,";")

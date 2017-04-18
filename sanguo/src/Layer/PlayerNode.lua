@@ -77,7 +77,7 @@ function PlayerNode:DelAutoPathUpdateEntry()
 end
 
 function PlayerNode:StartAutoPath(autoPath)
-	--G_Log_Info("PlayerNode:StartAutoPath()")
+	G_Log_Info("PlayerNode:StartAutoPath()")
 	if autoPath and #autoPath >0 then
     	if self.bAutoMoving == true then  --正在自动寻路
     		self.bAutoMoving = false
@@ -122,7 +122,7 @@ function PlayerNode:AutoPathUpdate()
 	end
 
 	local function EndAutoPathUpdate()
-		--G_Log_Info("************** PlayerNode:EndAutoPathUpdate()")
+		G_Log_Info("************** PlayerNode:EndAutoPathUpdate()")
 		self:DelAutoPathUpdateEntry()
 	    self.bAutoMoving = false
 		self:ChangeMoveAnimate(self.curMoveState, g_PlayerState.HMS_NOR)   --切换站立或跑步动画

@@ -100,6 +100,7 @@ function  g_tbl_mapConfig:ctor()
 	self.img_count = 1    --切成的小图数量
 	self.row = 1    --切成的小图的行列数
 	self.column = 1
+	self.nearMapVec = {}    --相邻地图ID集合
 	self.cityIdStrVec = {}     --string 地图上所属郡城分布点
 	self.jumpptIdStrVec = {}      --string 跳转到其他地图的传送点 
 
