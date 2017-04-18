@@ -39,7 +39,7 @@ end
 function StoryTalkCell:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Image_bg then   
-            --G_Log_Dump(self.storyData, "storyData = ")
+            g_pGameLayer:showStoryTalkLayer(self.storyData)
         end
     end
 end

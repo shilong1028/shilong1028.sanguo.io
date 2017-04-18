@@ -122,7 +122,7 @@ function GameLayer:ShowScrollTips(tips, color, fontSize)
         return
     end
 
-    local scrollTipsLayer = self:getChildByTag(g_GameLayerTag.LAYER_TAG_ScrollTipsLayer)
+    local scrollTipsLayer = g_pGameLayer:getChildByTag(g_GameLayerTag.LAYER_TAG_ScrollTipsLayer)
     if(scrollTipsLayer == nil) then
         scrollTipsLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_ScrollTipsLayer, "TipsOrDialog.ScrollTipsLayer")
         scrollTipsLayer:setLocalZOrder(g_TopZOrder)
@@ -135,7 +135,7 @@ end
 
 --通信等待动画显示和隐藏
 function GameLayer:EnableSocketAni(bShowAni)
-    local pColorLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_SocketAni)
+    local pColorLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_SocketAni)
     local aniSprite = nil
     if not pColorLayer then
         pColorLayer = cc.LayerColor:create(cc.c4b(0, 0, 0, 255 * 0.75), g_WinSize.width, g_WinSize.height)
@@ -163,7 +163,7 @@ end
 function GameLayer:showLoadingLayer(bShow) 
     if self.LoadingLayer then
         if bShow == true then
-            self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoadingLayer)
+            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoadingLayer)
         else
             self.LoadingLayer:setBreakFalse()
         end
@@ -171,6 +171,15 @@ function GameLayer:showLoadingLayer(bShow)
     if bShow == true then
         self.LoadingLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_LoadingLayer, "LoadingLayer")
     end
+end
+
+--显示剧情动画
+function GameLayer:showStoryTalkLayer(storyData) 
+    local storytalkLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)
+    if not storytalkLayer then
+        storytalkLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_StoryTalkLayer, "Story.StoryTalkLayer")
+    end
+    storytalkLayer:initStoryData(storyData)
 end
 
 

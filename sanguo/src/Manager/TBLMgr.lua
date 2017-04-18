@@ -439,7 +439,14 @@ function TBLMgr:LoadStoryConfigTBL()
 		local talkVec = string.split(talkStr,";")
 		for k, d in pairs(talkVec) do
 			local strVec = string.split(d,"-")
-			table.insert(storyConfig.talkVec, {["heroId"] = strVec[1], ["text"] = strVec[2]})
+			local heroIdStr = strVec[1]
+			local textIdStr = strVec[2]
+			local textData = g_pTBLMgr:getTalkConfigTBLDataById(textIdStr)
+			local textStr = textIdStr
+			if textData then
+				textStr = textData.desc
+			end
+			table.insert(storyConfig.talkVec, {["heroId"] = heroIdStr, ["text"] = textStr})
 		end
 
 		table.insert(self.storyConfigVec, storyConfig)

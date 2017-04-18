@@ -1,12 +1,12 @@
 <GameFile>
-  <PropertyGroup Name="StoreTalkLayer" Type="Layer" ID="f254dcc7-0200-4f4b-87a6-7e27c5b735d8" Version="3.10.0.0" />
+  <PropertyGroup Name="StoryTalkLayer" Type="Layer" ID="f254dcc7-0200-4f4b-87a6-7e27c5b735d8" Version="3.10.0.0" />
   <Content ctype="GameProjectContent">
     <Content>
       <Animation Duration="0" Speed="1.0000" />
       <ObjectData Name="Layer" Tag="686" ctype="GameLayerObjectData">
         <Size X="1280.0000" Y="720.0000" />
         <Children>
-          <AbstractNodeData Name="Panel_Bg" ActionTag="-1086184831" Alpha="72" Tag="687" IconVisible="False" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
+          <AbstractNodeData Name="Panel_Bg" ActionTag="-1086184831" Alpha="126" Tag="687" IconVisible="False" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" TouchEnable="True" ClipAble="False" BackColorAlpha="128" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
             <Size X="1280.0000" Y="720.0000" />
             <AnchorPoint />
             <Position />
@@ -14,7 +14,7 @@
             <CColor A="255" R="0" G="0" B="0" />
             <PrePosition />
             <PreSize X="1.0000" Y="1.0000" />
-            <SingleColor A="255" R="150" G="200" B="255" />
+            <SingleColor A="255" R="0" G="0" B="0" />
             <FirstColor A="255" R="150" G="200" B="255" />
             <EndColor A="255" R="255" G="255" B="255" />
             <ColorVector ScaleY="1.0000" />
@@ -79,7 +79,7 @@
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_right" ActionTag="-999531872" Tag="696" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="704.0000" RightMargin="64.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="20" LabelText="Text Label" HorizontalAlignmentType="HT_Right" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_right" ActionTag="-999531872" Tag="696" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="704.0000" RightMargin="64.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="20" LabelText="Text Label" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="512.0000" Y="144.0000" />
             <AnchorPoint ScaleX="1.0000" ScaleY="1.0000" />
             <Position X="1216.0000" Y="180.0000" />
