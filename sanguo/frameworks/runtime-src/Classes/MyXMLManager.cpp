@@ -403,7 +403,13 @@ void MyXMLManager::removeAllChildNode(const char* node)
 		return;
 	}
 
-	WWXMLNode itemNode = getTarChildNode(node);
+	WWXMLNode itemNode(m_pXMLDocument->RootElement(), m_pXMLDocument);
+	//WWXMLNode itemNode = getTarChildNode(node);
+	const char* root = "root";
+	if (*node != *root){
+		itemNode = getTarChildNode(node);
+	}
+
 	if (false == itemNode.isNULL())
 		itemNode.removeAllChildNode();
 }
