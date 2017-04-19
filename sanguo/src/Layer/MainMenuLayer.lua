@@ -169,6 +169,7 @@ function MainMenuLayer:initData()
         self.head_icon:loadTexture(string.format("Head/%d001.png", campId), ccui.TextureResType.localType)
     end
     local userName = g_UserDefaultMgr:GetUserName()    --获取用户名
+
     self.Text_nick:setString(userName)    --玩家昵称
 
     self.renWuListView:removeAllChildren()
@@ -294,8 +295,6 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_lianmeng then   --联盟
         elseif sender == self.Button_shejiao then   --社交好友
         elseif sender == self.Button_shezhi then   --设置
-            g_UserDefaultMgr:ClearUseXml("heroXML.xml")   --保存下一个主线剧情任务ID
-            g_pGameLayer:ShowScrollTips("清空heroXml，重启后生效！")
             --重新启动游戏
             g_pGameScene:reloadGame()
         elseif sender == self.Button_shangcheng then  --商城

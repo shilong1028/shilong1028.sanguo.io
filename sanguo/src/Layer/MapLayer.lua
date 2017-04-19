@@ -280,6 +280,7 @@ function MapLayer:starAutoPath(endPos)
 		if autoPath and #autoPath > 0 then
 			self:drawAutoPathArrow(autoPath, true)
 		else
+			g_pGameLayer:ShowScrollTips(lua_str_WarnTips6, g_ColorDef.Red, g_defaultTipsFontSize)   --"点击坐标为地图不可达部分！"
 			G_Log_Error("autoPath is nil, bucause endPt not reachable! endPt.x = %d, endPt.y = %d", endPt.x, endPt.y)
 		end
 	end

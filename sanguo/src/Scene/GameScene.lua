@@ -63,8 +63,36 @@ function GameScene:ExitGame()
     cc.Director:getInstance():endToLua()
 end
 
+function GameScene:initGameManager()
+    --玩家游戏数据管理
+    local HeroDataMgr = require "Manager.HeroDataMgr"
+    g_HeroDataMgr = g_HeroDataMgr or HeroDataMgr:GetInstance()
+
+    --理游戏中的全局数据处理
+    local GameDataMgr = require "Manager.GameDataMgr"
+    g_GameDataMgr = g_GameDataMgr or GameDataMgr:GetInstance()
+
+    --州郡地图管理单例
+    local MapMgr = require "Manager.MapMgr"
+    g_pMapMgr = g_pMapMgr or MapMgr:GetInstance()       --州郡地图管理单例
+end
+
+function GameScene:clearGameManager()
+    package.loaded["Manager.HeroDataMgr"] = nil 
+    g_HeroDataMgr = nil   --玩家游戏数据管理
+
+    package.loaded["Manager.GameDataMgr"] = nil 
+    g_GameDataMgr = nil   --理游戏中的全局数据处理
+
+    package.loaded["Manager.nil"] = nil 
+    g_pMapMgr = nil     --州郡地图管理单例
+end
+
+
 function GameScene:init()  
     --G_Log_Info("GameScene:init()")   
+    self:initGameManager()
+
     local gameLayer = require("Layer.GameLayer")
     g_pGameLayer = gameLayer:create()  --gameLayer:new()
     self:addChild(g_pGameLayer)
@@ -93,8 +121,28 @@ end
 --重新登录
 function GameScene:reloadGame()
     G_Log_Warning("GameScene:reloadGame()")
+    g_pGameLayer:showLoadingLayer(true) 
+
+    self:clearGameManager()
     g_NetworkMgr:StopCurConnect()
 
+    g_UserDefaultMgr:ClearUseXml("heroXML.xml")   --保存下一个主线剧情任务ID
+    g_pGameLayer:ShowScrollTips("清空heroXml，重启后生效！")
+
+    -- self:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(function() 
+    --     local scene = require("Scene.HealthAnnouncementScene")
+    --     local nextScene = scene:create()  --scene:new()
+
+    --     if cc.Director:getInstance():getRunningScene() then
+    --         cc.Director:getInstance():replaceScene(nextScene)  --cc.TransitionFade:create(1.0, nextScene, cc.c3b(0,0,0)))
+    --     else
+    --         cc.Director:getInstance():runWithScene(nextScene)
+    --     end
+    -- end)))
+
+    SystemHelper:reloadGame()
+
+    --[[
     local function table_clear(t)
         --这个要注意，#只针对连续数字下标的table
         while(t and #t > 0)do
@@ -131,10 +179,12 @@ function GameScene:reloadGame()
             package.loaded[k] = nil 
             --print("clear package.loaded",k,v) 
         end
+        package.loaded[k] = nil 
     end
 
     _G["reloadGameInfo"] = {} --标记为重新登录，与第一次登录区别开
     SystemHelper:reloadGame()
+    --]]
 end
 
 
