@@ -12,6 +12,38 @@
 #pragma comment(lib,"libiconv.lib")
 
 //////////////////////////////  SystemHelper   ////////////////////////////////////////////
+void SystemHelper::reloadGame()
+{
+	class TScene :public Scene
+	{
+	public:
+		CREATE_FUNC(TScene);
+		virtual void onEnterTransitionDidFinish()
+		{
+
+		}
+
+		virtual void onEnter()
+		{
+			//Director::getInstance()->getScheduler()->unscheduleAll(); //清空定时器
+			//ScriptHandlerMgr::getInstance()->removeAllHandlers(this); //清空回调函数
+			log("TScene onEnter");
+			Scene::onEnter();
+			LuaEngine::getInstance()->executeScriptFile("main.lua");
+		}
+	};
+
+	auto gsceme = TScene::create();
+	if (Director::getInstance()->getRunningScene())
+	{
+		Director::getInstance()->replaceScene(gsceme);
+	}
+	else
+	{
+		Director::getInstance()->runWithScene(gsceme);
+	}
+}
+
 //返回毫秒
 double SystemHelper::GetCurTick()
 {	

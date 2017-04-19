@@ -33,12 +33,9 @@ g_pGameLayer = nil  --g_pGameLayer是g_pGameScene的子层，用于承载游戏�
 
 g_UserDefaultMgr = nil  --本地信息管理单例
 g_VideoPlayerMgr = nil  --VideoPlayerMgr用于跨平台播放mp4视频
-
 g_NetworkMgr = nil  --用于服务器和客户端之间的socket通信连接
 g_NetMsgDealMgr = nil  --用于客户端和服务器之间的通信管理
-
 g_pAutoPathMgr = nil  --寻路管理器单例
-g_pMapMgr = nil       --州郡地图管理单例
 g_pTBLMgr = nil       --本地tbl表格数据单例
 
 --玩家游戏数据管理
@@ -46,6 +43,9 @@ g_HeroDataMgr = nil
 
 --理游戏中的全局数据处理
 g_GameDataMgr = nil 
+
+--州郡地图管理单例
+g_pMapMgr = nil       
 
 --默认的华康圆体路径
 g_sDefaultTTFpath = "font/simkai.ttf"   

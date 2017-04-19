@@ -33,6 +33,8 @@ public:
 	static int bit_or(int a, int b);
 	static int bit_xor(int a, int b);
 
+	static void reloadGame();
+
 	//获取当前时间戳
 	static double GetCurTick();
     //获取最大值最小值

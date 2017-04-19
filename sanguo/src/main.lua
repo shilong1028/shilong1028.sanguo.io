@@ -8,9 +8,13 @@ cc.FileUtils:getInstance():addSearchPath("res/")
 require "config"
 require "cocos.init"
 --cocos.init文件根据配置信息初始化Cocos2d-lua框架（require加载lua模块时必须使用”.”来代替路径中的”/”符号）
-require "GlobalDef.init"  --用户全局自定义
-require "Manager.init"  --用户全局管理器
-require "str.init"  --全局文本字符串
+
+--保存_G底下的原始table,重登陆时候用
+_G["loadedOriginKey"] = {}
+for k,v in pairs(package.loaded) do
+    table.insert(_G["loadedOriginKey"],tostring(k))
+    --print("package.loaded",k,v)
+end
 
 local function main()
     collectgarbage("collect")
@@ -18,6 +22,10 @@ local function main()
     collectgarbage("setpause", 100)
     collectgarbage("setstepmul", 5000)
     math.randomseed(os.time())
+
+    require "GlobalDef.init"  --用户全局自定义
+    require "Manager.init"  --用户全局管理器
+    require "str.init"  --全局文本字符串
 
 	--set FPS. the default value is 1.0/60 if you don't call this
 	g_Director:setAnimationInterval(1.0 / 60)

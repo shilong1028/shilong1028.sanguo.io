@@ -296,6 +296,8 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_shezhi then   --设置
             g_UserDefaultMgr:ClearUseXml("heroXML.xml")   --保存下一个主线剧情任务ID
             g_pGameLayer:ShowScrollTips("清空heroXml，重启后生效！")
+            --重新启动游戏
+            g_pGameScene:reloadGame()
         elseif sender == self.Button_shangcheng then  --商城
         elseif sender == self.Button_junqing then   --军情
         elseif sender == self.Button_gonggao then   --公告

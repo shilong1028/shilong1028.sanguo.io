@@ -80,13 +80,9 @@
 
 --------------------------------
 -- 
--- @function [parent=#SystemHelper] GetHexStringByStream 
+-- @function [parent=#SystemHelper] reloadGame 
 -- @param self
--- @param #ark_Stream stream
--- @param #int pos
--- @param #int len
--- @param #bool blank
--- @return string#string ret (return value: string)
+-- @return SystemHelper#SystemHelper self (return value: SystemHelper)
         
 --------------------------------
 -- 
@@ -152,6 +148,16 @@
 -- @param #int a
 -- @param #int b
 -- @return int#int ret (return value: int)
+        
+--------------------------------
+-- 
+-- @function [parent=#SystemHelper] GetHexStringByStream 
+-- @param self
+-- @param #ark_Stream stream
+-- @param #int pos
+-- @param #int len
+-- @param #bool blank
+-- @return string#string ret (return value: string)
         
 --------------------------------
 -- 

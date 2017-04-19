@@ -194,6 +194,10 @@ function GameLayer:initGameManager()
     --理游戏中的全局数据处理
     local GameDataMgr = require "Manager.GameDataMgr"
     g_GameDataMgr = g_GameDataMgr or GameDataMgr:GetInstance()
+
+    --州郡地图管理单例
+    local MapMgr = require "Manager.MapMgr"
+    g_pMapMgr = g_pMapMgr or MapMgr:GetInstance()       --州郡地图管理单例
 end
 
 --开始游戏界面

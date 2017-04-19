@@ -422,7 +422,7 @@ int lua_ark_Utility_SystemHelper_Max(lua_State* tolua_S)
 #endif
     return 0;
 }
-int lua_ark_Utility_SystemHelper_GetHexStringByStream(lua_State* tolua_S)
+int lua_ark_Utility_SystemHelper_reloadGame(lua_State* tolua_S)
 {
     int argc = 0;
     bool ok  = true;
@@ -437,47 +437,22 @@ int lua_ark_Utility_SystemHelper_GetHexStringByStream(lua_State* tolua_S)
 
     argc = lua_gettop(tolua_S) - 1;
 
-    if (argc == 3)
+    if (argc == 0)
     {
-        ark_Stream* arg0;
-        int arg1;
-        int arg2;
-        ok &= luaval_to_object<ark_Stream>(tolua_S, 2, "ark_Stream",&arg0, "SystemHelper:GetHexStringByStream");
-        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "SystemHelper:GetHexStringByStream");
-        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "SystemHelper:GetHexStringByStream");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_ark_Utility_SystemHelper_GetHexStringByStream'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ark_Utility_SystemHelper_reloadGame'", nullptr);
             return 0;
         }
-        std::string ret = SystemHelper::GetHexStringByStream(arg0, arg1, arg2);
-        tolua_pushcppstring(tolua_S,ret);
+        SystemHelper::reloadGame();
+        lua_settop(tolua_S, 1);
         return 1;
     }
-    if (argc == 4)
-    {
-        ark_Stream* arg0;
-        int arg1;
-        int arg2;
-        bool arg3;
-        ok &= luaval_to_object<ark_Stream>(tolua_S, 2, "ark_Stream",&arg0, "SystemHelper:GetHexStringByStream");
-        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "SystemHelper:GetHexStringByStream");
-        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "SystemHelper:GetHexStringByStream");
-        ok &= luaval_to_boolean(tolua_S, 5,&arg3, "SystemHelper:GetHexStringByStream");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_ark_Utility_SystemHelper_GetHexStringByStream'", nullptr);
-            return 0;
-        }
-        std::string ret = SystemHelper::GetHexStringByStream(arg0, arg1, arg2, arg3);
-        tolua_pushcppstring(tolua_S,ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "SystemHelper:GetHexStringByStream",argc, 3);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "SystemHelper:reloadGame",argc, 0);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_ark_Utility_SystemHelper_GetHexStringByStream'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_ark_Utility_SystemHelper_reloadGame'.",&tolua_err);
 #endif
     return 0;
 }
@@ -869,6 +844,65 @@ int lua_ark_Utility_SystemHelper_bit_r(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_ark_Utility_SystemHelper_bit_r'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_ark_Utility_SystemHelper_GetHexStringByStream(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"SystemHelper",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 3)
+    {
+        ark_Stream* arg0;
+        int arg1;
+        int arg2;
+        ok &= luaval_to_object<ark_Stream>(tolua_S, 2, "ark_Stream",&arg0, "SystemHelper:GetHexStringByStream");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "SystemHelper:GetHexStringByStream");
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "SystemHelper:GetHexStringByStream");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ark_Utility_SystemHelper_GetHexStringByStream'", nullptr);
+            return 0;
+        }
+        std::string ret = SystemHelper::GetHexStringByStream(arg0, arg1, arg2);
+        tolua_pushcppstring(tolua_S,ret);
+        return 1;
+    }
+    if (argc == 4)
+    {
+        ark_Stream* arg0;
+        int arg1;
+        int arg2;
+        bool arg3;
+        ok &= luaval_to_object<ark_Stream>(tolua_S, 2, "ark_Stream",&arg0, "SystemHelper:GetHexStringByStream");
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "SystemHelper:GetHexStringByStream");
+        ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "SystemHelper:GetHexStringByStream");
+        ok &= luaval_to_boolean(tolua_S, 5,&arg3, "SystemHelper:GetHexStringByStream");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ark_Utility_SystemHelper_GetHexStringByStream'", nullptr);
+            return 0;
+        }
+        std::string ret = SystemHelper::GetHexStringByStream(arg0, arg1, arg2, arg3);
+        tolua_pushcppstring(tolua_S,ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "SystemHelper:GetHexStringByStream",argc, 3);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_ark_Utility_SystemHelper_GetHexStringByStream'.",&tolua_err);
 #endif
     return 0;
 }
@@ -1356,7 +1390,7 @@ int lua_register_ark_Utility_SystemHelper(lua_State* tolua_S)
         tolua_function(tolua_S,"IsInTriangle", lua_ark_Utility_SystemHelper_IsInTriangle);
         tolua_function(tolua_S,"FloatApproxEquals", lua_ark_Utility_SystemHelper_FloatApproxEquals);
         tolua_function(tolua_S,"Max", lua_ark_Utility_SystemHelper_Max);
-        tolua_function(tolua_S,"GetHexStringByStream", lua_ark_Utility_SystemHelper_GetHexStringByStream);
+        tolua_function(tolua_S,"reloadGame", lua_ark_Utility_SystemHelper_reloadGame);
         tolua_function(tolua_S,"CalcRectCenterPoint", lua_ark_Utility_SystemHelper_CalcRectCenterPoint);
         tolua_function(tolua_S,"bit_and", lua_ark_Utility_SystemHelper_bit_and);
         tolua_function(tolua_S,"calcDistance", lua_ark_Utility_SystemHelper_calcDistance);
@@ -1364,6 +1398,7 @@ int lua_register_ark_Utility_SystemHelper(lua_State* tolua_S)
         tolua_function(tolua_S,"IsEqualAny", lua_ark_Utility_SystemHelper_IsEqualAny);
         tolua_function(tolua_S,"isNearRedColor", lua_ark_Utility_SystemHelper_isNearRedColor);
         tolua_function(tolua_S,"bit_r", lua_ark_Utility_SystemHelper_bit_r);
+        tolua_function(tolua_S,"GetHexStringByStream", lua_ark_Utility_SystemHelper_GetHexStringByStream);
         tolua_function(tolua_S,"bit_or", lua_ark_Utility_SystemHelper_bit_or);
         tolua_function(tolua_S,"isNearYellowColor", lua_ark_Utility_SystemHelper_isNearYellowColor);
         tolua_function(tolua_S,"isNearBlueColor", lua_ark_Utility_SystemHelper_isNearBlueColor);

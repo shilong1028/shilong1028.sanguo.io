@@ -90,5 +90,52 @@ function GameScene:init()
     end
 end
 
+--重新登录
+function GameScene:reloadGame()
+    G_Log_Warning("GameScene:reloadGame()")
+    g_NetworkMgr:StopCurConnect()
+
+    local function table_clear(t)
+        --这个要注意，#只针对连续数字下标的table
+        while(t and #t > 0)do
+            table.remove(t,1)
+        end
+        --非连续数字下标的key
+        for k,v in pairs(t) do
+            t[k] = nil
+        end
+    end
+
+    local function table_contains(t,v)
+        if not t then return false end;
+        for k,value in pairs(t) do
+            if value == v then
+                return true
+            end
+        end
+        return false
+    end
+
+    --理论上不是来自cocos2dx的cc.Node,都可以不重新加载
+    local ignoreKeys = {"Manager.UserDefaultMgr", "Manager.VideoPlayerMgr", "Manager.TBLMgr", "Manager.AutoPathMgr", "Manager.NetMsgDealMgr"} --重登无需重新加载的模块,
+    if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then --Windows调试时候全部重载，调试代码方便
+        --table_clear(ignoreKeys)
+    end
+
+    for k,v in pairs(package.loaded) do
+        if table_contains(_G["loadedOriginKey"],tostring(k)) then --_G底下的原始table,重登无需重复加载
+            --print("not clear package.loaded",k,v)       
+        elseif table_contains(ignoreKeys,tostring(k)) then --手动标记的部分table,重登无需重复加载
+            --print("ignore package.loaded",k,v)  
+        else
+            package.loaded[k] = nil 
+            --print("clear package.loaded",k,v) 
+        end
+    end
+
+    _G["reloadGameInfo"] = {} --标记为重新登录，与第一次登录区别开
+    SystemHelper:reloadGame()
+end
+
 
 return GameScene
