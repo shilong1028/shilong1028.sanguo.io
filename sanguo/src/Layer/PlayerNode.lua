@@ -43,16 +43,29 @@ end
 
 --展示人物形象(是否站立)
 function PlayerNode:showPlayerImodAni(bStandUp)  
+	local roleStr = "caocao"
+	if g_campId == 1 then
+		roleStr = "handi"
+	elseif g_campId == 2 then
+		roleStr = "yuanshao"
+	elseif g_campId == 3 then
+		roleStr = "caocao"
+	elseif g_campId == 4 then
+		roleStr = "sunjian"
+	elseif g_campId == 5 then
+		roleStr = "liubei"
+	end
+
 	if bStandUp == true and self.ImodAni_zd == nil then --站立动画
 		self.ImodAni_zd = ImodAnim:create()
-		self.ImodAni_zd:initAnimWithName("Ani/caocao_zd.png", "Ani/caocao_zd.ani", true)   
+		self.ImodAni_zd:initAnimWithName("Ani/"..roleStr.."_zd.png", "Ani/"..roleStr.."_zd.ani", true)   
 	    --调用initAnimWithName方法，会连报三个[LUA ERROR] function refid '1' does not reference a Lua function
 	    self.ImodAni_zd:PlayActionRepeat(0, 0.1)
 	    self.ImodAni_zd:setPosition(cc.p(0,0))
 	    self:addChild(self.ImodAni_zd, 1)
 	elseif bStandUp ~= true and self.ImodAni_pb == nil then --跑步的动画
 		self.ImodAni_pb = ImodAnim:create()
-		self.ImodAni_pb:initAnimWithName("Ani/caocao_pb.png", "Ani/caocao_pb.ani", true)   
+		self.ImodAni_pb:initAnimWithName("Ani/"..roleStr.."_pb.png", "Ani/"..roleStr.."_pb.ani", true)   
 	    --调用initAnimWithName方法，会连报三个[LUA ERROR] function refid '1' does not reference a Lua function
 	    self.ImodAni_pb:PlayActionRepeat(0, 0.1)
 	    self.ImodAni_pb:setPosition(cc.p(0,0))

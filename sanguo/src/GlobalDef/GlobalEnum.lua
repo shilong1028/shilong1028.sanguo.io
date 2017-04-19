@@ -51,7 +51,9 @@ g_PlayerState = {
 g_ColorDef = {
 	White = cc.c3b(255,255,255),
 	Red = cc.c3b(255,0,0),
+	DarkRed = cc.c3b(101,9,9),
 	Yellow = cc.c3b(249,154,5),
+	Green = cc.c3b(0,128,0),
 }
 
 

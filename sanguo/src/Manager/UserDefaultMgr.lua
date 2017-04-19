@@ -183,19 +183,6 @@ function UserDefaultMgr:SetRoleCampId(campId, bflush)
     end
 end
 
---已经完成的剧情进展ID
-function UserDefaultMgr:GetStoryTalkId()
-    return UserDefault:getIntegerForKey("StoryTalkId")
-end
-
-function UserDefaultMgr:SetStoryTalkId(storyId, bflush)
-    UserDefault:setIntegerForKey("StoryTalkId", storyId)
-    if bFlush then
-        UserDefault:flush()
-    end
-end
-
-
 ----------------------  MyXMLManager  -------------
 --加载xml文件，utf-8格式文件
 function UserDefaultMgr:loadXMLFile(strXmlPath)

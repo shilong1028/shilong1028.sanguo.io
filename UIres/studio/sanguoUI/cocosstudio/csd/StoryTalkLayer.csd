@@ -33,10 +33,10 @@
             <EndColor A="255" R="255" G="255" B="255" />
             <ColorVector ScaleY="1.0000" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_skip" ActionTag="-1843774457" Tag="688" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="546.8204" RightMargin="578.1796" TopMargin="632.2089" BottomMargin="22.7911" TouchEnable="True" FontSize="30" ButtonText="跳过" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_skip" ActionTag="-1843774457" Tag="688" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="546.8840" RightMargin="578.1160" TopMargin="632.2040" BottomMargin="22.7960" TouchEnable="True" FontSize="30" ButtonText="跳过" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="155.0000" Y="65.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="624.3204" Y="55.2911" />
+            <Position X="624.3840" Y="55.2960" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.4878" Y="0.0768" />
@@ -67,7 +67,7 @@
             <PreSize X="0.1000" Y="0.1778" />
             <FileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_left" ActionTag="-97074317" Tag="695" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="64.0000" RightMargin="704.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="20" LabelText="Text Label" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_left" ActionTag="-97074317" Tag="695" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="64.0000" RightMargin="704.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="24" LabelText="Text Label" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="512.0000" Y="144.0000" />
             <AnchorPoint ScaleY="1.0000" />
             <Position X="64.0000" Y="180.0000" />
@@ -79,7 +79,7 @@
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_right" ActionTag="-999531872" Tag="696" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="704.0000" RightMargin="64.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="20" LabelText="Text Label" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_right" ActionTag="-999531872" Tag="696" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="704.0000" RightMargin="64.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="24" LabelText="Text Label" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="512.0000" Y="144.0000" />
             <AnchorPoint ScaleX="1.0000" ScaleY="1.0000" />
             <Position X="1216.0000" Y="180.0000" />

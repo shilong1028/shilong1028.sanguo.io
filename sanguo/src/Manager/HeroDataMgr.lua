@@ -11,11 +11,15 @@ end
 function HeroDataMgr:init()
 	--G_Log_Info("HeroDataMgr:init()")
 	self.heroData = {}
+    self.heroData.storyData = {}  --剧情任务数据
     self.heroData.mapPosData = {}  --玩家地图位置信息
 	self.heroData.campData = g_tbl_campConfig:new()  --玩家阵营信息
 
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
 	if heroXML then
+        --剧情任务数据(主线ID) 
+        self.heroData.storyData.mainStoryId = tonumber(heroXML:getNodeAttrValue("storyData", "mainStoryId")) 
+
         --玩家地图位置信息
         self.heroData.mapPosData.mapId = tonumber(heroXML:getNodeAttrValue("mapPosData", "mapId")) 
         if self.heroData.mapPosData.mapId then
@@ -51,6 +55,28 @@ function HeroDataMgr:GetInstance()
     return self.instance
 end
 
+------------------------------------------------------
+
+--剧情任务数据  --begin
+function HeroDataMgr:GetStoryTalkId()
+    return self.heroData.storyData.mainStoryId
+end
+
+function HeroDataMgr:SetStoryTalkId(storyId)
+    self.heroData.storyData.mainStoryId = storyId   --剧情任务数据(主线ID) 
+
+    local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
+    if not heroXML then
+        heroXML = g_UserDefaultMgr:createXMLFile("heroXML.xml", "root")
+    end
+    heroXML:removeNode("storyData")
+    heroXML:addChildNode("storyData")
+    heroXML:setNodeAttrValue("storyData", "mainStoryId", tostring(storyId))
+    heroXML:saveXMLFile()
+end
+
+--剧情任务数据处理  --end  ------------------------------------------------------
+
 --玩家地图位置信息处理   --beign
 function HeroDataMgr:SetHeroMapPosData(mapId, rolePos)  --保存主角当前地图及位置坐标
     self.heroData.mapPosData = {} --玩家地图位置信息
@@ -73,7 +99,7 @@ function HeroDataMgr:GetHeroMapPosData()
     return clone(self.heroData.mapPosData)
 end
 
---玩家地图位置信息处理 ---end
+--玩家地图位置信息处理 ---end  ------------------------------------------------------
 
 -----阵营信息处理  --begin
 function HeroDataMgr:GetHeroCampData()
@@ -148,7 +174,7 @@ function HeroDataMgr:SetHeroCampGeneral(general)
     heroXML:saveXMLFile()
 end
 
------阵营信息处理  --end
+-----阵营信息处理  --end  ------------------------------------------------------
 
 
 return HeroDataMgr

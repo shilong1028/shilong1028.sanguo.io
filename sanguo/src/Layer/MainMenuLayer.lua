@@ -173,7 +173,7 @@ function MainMenuLayer:initData()
 
     self.renWuListView:removeAllChildren()
 
-    local storyId = g_UserDefaultMgr:GetStoryTalkId()
+    local storyId = g_HeroDataMgr:GetStoryTalkId()
     if storyId and storyId > 0 then
     else
         storyId = 1
@@ -195,11 +195,54 @@ function MainMenuLayer:initStroyData(storyId)
             cur_item:addChild(storyCell)
             self.renWuListView:addChild(cur_item)
             self.mainStoryCell = storyCell
+
+            local EffectImod = ImodAnim:create() 
+            EffectImod:setPosition(cc.p(110, 40)) 
+            EffectImod:initAnimWithName("Ani/task_roundEffect.png","Ani/task_roundEffect.ani") 
+            EffectImod:PlayActionRepeat(0, 0.12) 
+            EffectImod:setScaleX(0.95)
+            self.mainStoryCell:addChild(EffectImod,2) 
         end
+        self.mainStoryCell:setVisible(false)
+        self.mainStoryCell:runAction(cc.Sequence:create(cc.DelayTime:create(0.2), cc.CallFunc:create(function () 
+                    self.mainStoryCell:setVisible(true) 
+                    end)))
         self.mainStoryCell:initData(self.storyData)
+        self:renWuButton_pushAction(true)
     else  --没有剧情任务
-        self.mainStoryCell:getParent():removeFromParent(true)
+        if self.mainStoryCell then
+            self.mainStoryCell:getParent():removeFromParent(true)
+        end
         self.mainStoryCell = nil
+    end
+end
+
+--隐藏或显示剧情任务面板
+function MainMenuLayer:renWuButton_pushAction(bNewStory)
+    if self.bRenWuActioning == true then
+        return
+    end
+    self.bRenWuActioning = true
+
+    local angle = -90
+    local offsetX = self.renWuListWidth
+    if self.bRenWuListHide == true then  
+        offsetX = -self.renWuListWidth 
+        angle = 90
+    elseif bNewStory == true then   --新剧情，且面板没有隐藏
+        offsetX = 0
+        angle = 90
+    end
+    if offsetX == 0 then
+        self.bRenWuActioning = false
+    else
+        local moveBy = cc.MoveBy:create(0.5, cc.p(offsetX, 0))  
+        local seqAction = cc.Sequence:create(moveBy, cc.CallFunc:create(function()  
+                self.bRenWuActioning = false
+                self.bRenWuListHide = not self.bRenWuListHide
+                self.renWuButton_push:setRotation(angle)  --原图为箭头向下，按钮初始为箭头向右（旋转90度）
+            end))
+        self.Panel_renwu:runAction(seqAction)
     end
 end
 
@@ -215,23 +258,7 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_liang then   --粮草添加
         elseif sender == self.Button_renwu then   --任务
         elseif sender == self.renWuButton_push then  --任务列表收放
-            if self.bRenWuActioning == true then
-                return
-            end
-            self.bRenWuActioning = true
-            local angle = -90
-            local offsetX = self.renWuListWidth
-            if self.bRenWuListHide == true then  
-                offsetX = -self.renWuListWidth 
-                angle = 90
-            end
-            local moveBy = cc.MoveBy:create(0.5, cc.p(offsetX, 0))  
-            local seqAction = cc.Sequence:create(moveBy, cc.CallFunc:create(function()  
-                    self.bRenWuActioning = false
-                    self.bRenWuListHide = not self.bRenWuListHide
-                    self.renWuButton_push:setRotation(angle)  --原图为箭头向下，按钮初始为箭头向右（旋转90度）
-                end))
-            self.Panel_renwu:runAction(seqAction)
+            self:renWuButton_pushAction()
         elseif sender == self.Button_chat then   --聊天
         elseif sender == self.chatButton_push then  --聊天列表收放
             if self.bChatListActioning == true then

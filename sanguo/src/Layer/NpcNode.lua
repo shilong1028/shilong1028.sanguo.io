@@ -36,7 +36,10 @@ function NpcNode:initChengData(data)
 
 	local textSize = cc.size(imgSize.width*2, g_defaultChengFontSize + 6)
     self.chengName = cc.Label:createWithTTF(data.name, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
-    self.chengName:setColor(g_ColorDef.Red)
+    self.chengName:setColor(g_ColorDef.Yellow)
+    self.chengName:enableBold()
+    self.chengName:enableShadow()
+    self.chengName:enableOutline(g_ColorDef.DarkRed, 1)
     self:addChild(self.chengName, 5)  
 end
 
@@ -52,8 +55,8 @@ function NpcNode:initMapJumpPtData(data)
 	local modSize = self.Imod:getContentSize()
 	self:setContentSize(modSize)
 
-	local textSize = cc.size(modSize.width*2, g_defaultChengFontSize + 6)
-    self.jumpPtName = cc.Label:createWithTTF(data.desc, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+	local textSize = cc.size(modSize.width*2, g_defaultJumpPtFontSize + 6)
+    self.jumpPtName = cc.Label:createWithTTF(data.desc, g_sDefaultTTFpath, g_defaultJumpPtFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
     self.jumpPtName:setColor(g_ColorDef.Yellow)
     self:addChild(self.jumpPtName, 5)  
 end
