@@ -183,6 +183,8 @@ function MapLayer:setRoleMapPosition(rolePos)
 		self.playerNode:setPosition(rolePos)
 		self.curRolePos = rolePos   --当前人物所在位置（像素点）
 		g_pMapMgr.curRolePos = rolePos 
+		g_HeroDataMgr:SetHeroMapPosData(self.mapConfigData.id, rolePos)
+
 		self:resetRootNodePos(rolePos)
 	end
 end
@@ -277,11 +279,29 @@ function MapLayer:starAutoPath(endPos, posIsPt)
 	end
 end
 
+--由地图ID，及位置显示
+function MapLayer:changeMapBymapId(mapId, rolePos)
+	if not mapId then
+		return
+	end
+	self:ShowMapImg(mapId)  --地图
+
+	if not rolePos then
+		rolePos = cc.p(0,0)
+		local firstCityId = self.mapConfigData.cityIdStrVec[1]
+		local cityData = g_pTBLMgr:getCityConfigTBLDataById(firstCityId)
+	    if cityData then
+	    	rolePos = cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y)  --转换为像素点,以左上角为00原点
+	    end
+	end
+	self:ShowPlayerNode(rolePos)
+end
+
 --直接跳转到指定城市所在地图的城池
 function MapLayer:changeMapByCity(cityId)
 	local cityData = g_pTBLMgr:getCityConfigTBLDataById(cityId)
     if cityData then
-	    self:ShowMapImg(cityData.mapId)  --全国地图
+	    self:ShowMapImg(cityData.mapId)  --地图
 	    self:ShowPlayerNode(cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y))  --转换为像素点,以左上角为00原点
 	end
 end

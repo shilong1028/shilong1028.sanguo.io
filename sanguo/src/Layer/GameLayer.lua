@@ -211,13 +211,22 @@ function GameLayer:GameMainLayer()
     --地图层
     self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
 
-    local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
-    if campId and campId > 0 then
-        local campData = g_pTBLMgr:getCampConfigTBLDataById(campId)
-        if campData then
-            self.MapLayer:changeMapByCity(campData.capital)
+    local roleMapPosData = g_HeroDataMgr:GetHeroMapPosData()
+    local mapId = roleMapPosData.mapId
+    local rolePos = roleMapPosData.rolePos
+    if not mapId then  --没有地图信息，默认显示玩家阵营首府位置及地图
+        local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
+        if campId and campId > 0 then
+            local campData = g_pTBLMgr:getCampConfigTBLDataById(campId)
+            if campData then
+                self.MapLayer:changeMapByCity(campData.capital)
+            end
         end
+    else
+        self.MapLayer:changeMapBymapId(mapId, rolePos)
     end
+
+
 end
 
 

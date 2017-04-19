@@ -11,10 +11,19 @@ end
 function HeroDataMgr:init()
 	--G_Log_Info("HeroDataMgr:init()")
 	self.heroData = {}
-	self.heroData.campData = g_tbl_campConfig:new()
+    self.heroData.mapPosData = {}  --玩家地图位置信息
+	self.heroData.campData = g_tbl_campConfig:new()  --玩家阵营信息
 
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
 	if heroXML then
+        --玩家地图位置信息
+        self.heroData.mapPosData.mapId = tonumber(heroXML:getNodeAttrValue("mapPosData", "mapId")) 
+        if self.heroData.mapPosData.mapId then
+            local posX = tonumber(heroXML:getNodeAttrValue("mapPosData", "posX")) 
+            local posY = tonumber(heroXML:getNodeAttrValue("mapPosData", "posY")) 
+            self.heroData.mapPosData.rolePos = cc.p(posX, posY)
+        end
+
 		--阵营信息
 		self.heroData.campData.campId = tonumber(heroXML:getNodeAttrValue("campData", "campId"))     --阵营ID
 		if not self.heroData.campData.campId then
@@ -42,7 +51,31 @@ function HeroDataMgr:GetInstance()
     return self.instance
 end
 
---阵营信息处理
+--玩家地图位置信息处理   --beign
+function HeroDataMgr:SetHeroMapPosData(mapId, rolePos)
+    self.heroData.mapPosData = {} --玩家地图位置信息
+    self.heroData.mapPosData.mapId = mapId
+    self.heroData.mapPosData.rolePos = rolePos
+
+    local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
+    if not heroXML then
+        heroXML = g_UserDefaultMgr:createXMLFile("heroXML.xml", "root")
+    end
+    heroXML:removeNode("mapPosData")
+    heroXML:addChildNode("mapPosData")
+    heroXML:setNodeAttrValue("mapPosData", "mapId", tostring(mapId))
+    heroXML:setNodeAttrValue("mapPosData", "posX", tostring(rolePos.x))
+    heroXML:setNodeAttrValue("mapPosData", "posY", tostring(rolePos.y))
+    heroXML:saveXMLFile()
+end
+
+function HeroDataMgr:GetHeroMapPosData()
+    return clone(self.heroData.mapPosData)
+end
+
+--玩家地图位置信息处理 ---end
+
+-----阵营信息处理  --begin
 function HeroDataMgr:GetHeroCampData()
 	return clone(self.heroData.campData)
 end
@@ -53,7 +86,11 @@ function HeroDataMgr:SetHeroCampData(campData)
 	end
 	self.heroData.campData = campData
 	
-    local heroXML = g_UserDefaultMgr:createXMLFile("heroXML.xml", "root")
+    local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
+    if not heroXML then
+        heroXML = g_UserDefaultMgr:createXMLFile("heroXML.xml", "root")
+    end
+    heroXML:removeNode("campData")
     heroXML:addChildNode("campData")
     heroXML:setNodeAttrValue("campData", "campId", tostring(campData.campId))
     heroXML:setNodeAttrValue("campData", "name", tostring(campData.name))
@@ -111,7 +148,7 @@ function HeroDataMgr:SetHeroCampGeneral(general)
     heroXML:saveXMLFile()
 end
 
-
+-----阵营信息处理  --end
 
 
 return HeroDataMgr

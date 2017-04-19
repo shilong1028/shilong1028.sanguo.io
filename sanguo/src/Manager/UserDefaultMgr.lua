@@ -199,13 +199,19 @@ end
 ----------------------  MyXMLManager  -------------
 --加载xml文件，utf-8格式文件
 function UserDefaultMgr:loadXMLFile(strXmlPath)
+    --G_Log_Info("UserDefaultMgr:loadXMLFile")
     local myXML = MyXMLManager:new()
-    myXML:loadXMLFile(g_SelfWritePath..strXmlPath)  --android必须添加g_SelfWritePath，否则无法读写
-    return myXML
+    local hasData = myXML:loadXMLFile(g_SelfWritePath..strXmlPath)  --android必须添加g_SelfWritePath，否则无法读写
+    if hasData == true then
+        return myXML
+    else
+        return nil
+    end
 end
 
 --创建xml文件,默认为utf-8编码
 function UserDefaultMgr:createXMLFile(strXmlPath, strRoot)
+    --G_Log_Info("UserDefaultMgr:createXMLFile")
     local myXML = MyXMLManager:new()
     myXML:createXMLFile(g_SelfWritePath..strXmlPath, strRoot)  --android必须添加g_SelfWritePath，否则无法读写
     return myXML
