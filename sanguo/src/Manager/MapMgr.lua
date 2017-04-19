@@ -193,7 +193,7 @@ end
 
 --两个城池之间路径规划（包括跨地图转移）,srcCityId缺失为当前点位置
 function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
-	G_Log_Info("MapMgr:getMovePathCityByCity(), tarCityId = %s",tarCityId)
+	--G_Log_Info("MapMgr:getMovePathCityByCity(), tarCityId = %s",tarCityId)
 	local srcMapData = self.mapConfigData
 	local curCityVec = srcMapData.cityIdStrVec
 	local srcMapId = self.mapConfigData.id --当前地图ID
@@ -224,7 +224,7 @@ function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
 	local tarCityData = g_pTBLMgr:getCityConfigTBLDataById(tarCityId)
 	if tarCityData then
 		if btarCurMap == false then   --目标城池不在当前地图
-			G_Log_Info("目标城池不在当前地图")
+			--G_Log_Info("目标城池不在当前地图")
 			local tarMapId = tarCityData.mapId
 			--从配置表中读取多地图跳转的地图关系
 			local nearMapVec = nil
@@ -235,7 +235,6 @@ function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
 					break;
 				end
 			end
-			G_Log_Dump(nearMapVec, "nearMapVec = ")
 
 			local srcPos = self.curRolePos  --当前人物所在位置（像素点）
 			local lastjumpPos = nil
@@ -244,25 +243,23 @@ function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
 					local tarMapData = g_pTBLMgr:getMapConfigTBLDataById(mapId)
 					if tarMapData then
 						--相邻地图地图到目的点
-						table.insert(movePathVec, {["mapId"] = mapId, ["movePt"] = cc.p(tarCityData.map_col, tarCityData.map_row),
-							["movePos"] = cc.p(tarCityData.map_pt.x, tarMapData.height - tarCityData.map_pt.y)})
+						table.insert(movePathVec, {["mapId"] = mapId, ["movePos"] = cc.p(tarCityData.map_pt.x, tarMapData.height - tarCityData.map_pt.y)})
 					end
 				else
 					if lastjumpPos then
 						srcPos = lastjumpPos
 					end
 					local nextMapId = nearMapVec[k+1]
-					local minJumpData = self:getNearMapJumpPos(nextMapId, mapId, srcPos)
-					if minJumpData then
-						lastjumpPos = minJumpData.jumpPos
-						table.insert(movePathVec, {["mapId"] = mapId, ["movePt"] = minJumpData.jumpPt, ["movePos"] = minJumpData.jumpPos})
+					local minJumpPos = self:getNearMapJumpPos(nextMapId, mapId, srcPos)
+					if minJumpPos then
+						lastjumpPos = minJumpPos
+						table.insert(movePathVec, {["mapId"] = mapId, ["movePos"] = minJumpPos})
 					end
 				end
 
 			end
 		else    --目标城池在当前地图
-			table.insert(movePathVec, {["mapId"] = srcMapId, ["movePt"] = cc.p(curCityVec.map_col, curCityVec.map_row),
-				["movePos"] = cc.p(curCityVec.map_pt.x, curCityVec.height - curCityVec.map_pt.y)})
+			table.insert(movePathVec, {["mapId"] = srcMapId, ["movePos"] = cc.p(curCityVec.map_pt.x, curCityVec.height - curCityVec.map_pt.y)})
 		end
 	end
 
@@ -271,7 +268,7 @@ end
 
 --获得到达相邻地图的最近跳转点,srcMapId缺失为当前地图
 function MapMgr:getNearMapJumpPos(nearMapId, srcMapId, srcPos)
-	G_Log_Info("MapMgr:getNearMapJumpPos(), nearMapId = %d, srcMapId = %d", nearMapId, srcMapId)
+	--G_Log_Info("MapMgr:getNearMapJumpPos(), nearMapId = %d, srcMapId = %d", nearMapId, srcMapId)
 	local srcMapData = self.mapConfigData
 	if srcMapId ~= self.mapConfigData.id then  --非当前地图
 		srcMapData = g_pTBLMgr:getMapConfigTBLDataById(srcMapId)
@@ -294,32 +291,26 @@ function MapMgr:getNearMapJumpPos(nearMapId, srcMapId, srcPos)
 		local jumpVec = srcMapData.jumpptIdStrVec
 		local minLen = 0
 		local minJumpPos = nil
-		local minJumpData = {}
 		for k, jumpIdStr in pairs(jumpVec) do
 			local jumpData = g_pTBLMgr:getMapJumpPtConfigTBLDataById(jumpIdStr)
 			if jumpData then
 				local dirPos = nil
-				local dirPt = nil
 				if (jumpData.map_id1 == srcMapId and jumpData.map_id2 == nearMapId) then
 					dirPos = cc.p(jumpData.map_pt1.x, srcMapData.height - jumpData.map_pt1.y)  --转换为像素点,以左上角为00原点
-					dirPt = cc.p(jumpData.map_row1, jumpData.map_col1)
 				elseif(jumpData.map_id1 == nearMapId and jumpData.map_id2 == srcMapId) then
 					dirPos = cc.p(jumpData.map_pt2.x, srcMapData.height - jumpData.map_pt2.y)  --转换为像素点,以左上角为00原点
-					dirPt = cc.p(jumpData.map_row2, jumpData.map_col2)
 				end
 
 				if dirPos then
 					local len = g_pMapMgr:CalcDistance(srcPos, dirPos) 
 					if not minJumpPos or minLen > len then
 						minLen = len
-						minJumpData.jumpPt = dirPt
-						minJumpData.jumpPos = dirPos
 						minJumpPos = dirPos
 					end
 				end
 			end
 		end
-		return minJumpData
+		return minJumpPos
 	end
 	return nil
 end
