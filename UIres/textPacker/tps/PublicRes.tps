@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.3.2</string>
         <key>fileName</key>
-        <string>D:/GitSanGuo/MySanGuo/UIres/textPacker/tps/PublicRes.tps</string>
+        <string>D:/MySanGuo/UIres/textPacker/tps/PublicRes.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
