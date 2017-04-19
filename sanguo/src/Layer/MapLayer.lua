@@ -26,7 +26,6 @@ function MapLayer:init()
     self.playerNode = nil  --主角节点
 	self.m_touchImg = nil  --点击动画
     self.m_arrowImgVec = {}  --路径箭头
-    self.curMapId = 0   --当前地图ID
     self.curRolePos = 0   --当前人物所在位置（像素点）
     self.mapJumpPosData = {}  --游戏跳转点   
 end
@@ -37,14 +36,13 @@ function MapLayer:ClearMapObj()
     self.playerNode = nil  --主角节点
 	self.m_touchImg = nil  --点击动画
     self.m_arrowImgVec = {}  --路径箭头
-    self.curMapId = 0   --当前地图ID
     self.curRolePos = 0   --当前人物所在位置（像素点）
     g_pMapMgr.curRolePos = 0
     self.mapJumpPosData = {}  --游戏跳转点
 end
 
 function MapLayer:ShowMapImg(mapId)  
-    --G_Log_Info("MapLayer:ShowMapImg() mapId = %d", mapId)
+    G_Log_Info("MapLayer:ShowMapImg() mapId = %d", mapId)
     collectgarbage("collect")
     -- avoid memory leak
     collectgarbage("setpause", 100)
@@ -59,7 +57,6 @@ function MapLayer:ShowMapImg(mapId)
     	G_Log_Error("MapLayer--mapConfigData = nil")
     	return
     end
-    self.curMapId = mapId   --当前地图ID
     --G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
     if not self.rootNode then
     	self.rootNode = cc.Node:create()
@@ -160,6 +157,7 @@ function MapLayer:setRoleWinPosition(winPos, bAutoPath)
 	end
 
 	self:showTouchImg(rolePos)
+	self.movePathMapByMap = nil  --跨地图跳转数据
 
 	if bAutoPath == true then
 		self:starAutoPath(rolePos)
@@ -251,9 +249,9 @@ function MapLayer:onTouchBegan(touch, event)
     return true   --只有当onTouchBegan的返回值是true时才执行后面的onTouchMoved和onTouchEnded触摸事件
 end
 
---开始astar寻路
-function MapLayer:starAutoPath(endPos)
-	G_Log_Info("MapLayer:starAutoPath()")
+--开始astar寻路,endPos为目标位置的像素点，movePt为目标位置的32*32地图块坐标
+function MapLayer:starAutoPath(endPos, movePt)
+	G_Log_Info("MapLayer:starAutoPath(), endPos.x = %f, endPos.y = %f", endPos.x, endPos.y)
     if endPos.x < 0 or endPos.y < 0 or endPos.x > self.mapConfigData.width or endPos.y > self.mapConfigData.height then
     	G_Log_Error("endPos is not in Map, endPos.x = %f, endPos.y = %f", endPos.x, endPos.y)  --如果越界了
 		return;
@@ -263,11 +261,19 @@ function MapLayer:starAutoPath(endPos)
 		self.playerNode:StopLastAutoPath()   --停止上一个自动寻路
 		local startPos = cc.p(self.playerNode:getPosition())
 		local startPt = cc.p(math.floor(startPos.x / 32), math.floor((self.mapConfigData.height - startPos.y) / 32))    --地图块为32*32大小，且从0开始计数
-		local endPt = cc.p(math.floor(endPos.x / 32), math.floor((self.mapConfigData.height - endPos.y) / 32))
+		local endPt = movePt
+		if not movePt then
+			endPt = cc.p(math.floor(endPos.x / 32), math.floor((self.mapConfigData.height - endPos.y) / 32))
+		end
 
+		G_Log_Info("startPt.x = %d, startPt.y = %d, endPt.x = %d, endPt.y = %d", startPt.x, startPt.y, endPt.x, endPt.y)
 		g_pAutoPathMgr:AStarFindPath(startPt.x, startPt.y, endPt.x, endPt.y)
 		local autoPath = g_pAutoPathMgr:AStarGetPath(g_bAStarPathSmooth)
-		self:drawAutoPathArrow(autoPath, true)
+		if autoPath then
+			self:drawAutoPathArrow(autoPath, true)
+		else
+			G_Log_Error("autoPath is nil!")
+		end
 	end
 end
 
@@ -282,12 +288,12 @@ end
 
 --直接通过跳转点跳转到另一个地图相应跳转点附近
 function MapLayer:changeMapByJumpPoint(jumpData)
-	G_Log_Info("MapLayer:changeMapByJumpPoint()")
+	G_Log_Info("MapLayer:changeMapByJumpPoint(), curMapId = %d", self.mapConfigData.id)
 	if jumpData then
-		if jumpData.map_id1 == self.curMapId then
+		if jumpData.map_id1 == self.mapConfigData.id then
 			self:ShowMapImg(jumpData.map_id2)  
 			self:ShowPlayerNode(cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y))    --转换为像素点,以左上角为00原点
-		elseif jumpData.map_id2 == self.curMapId then
+		elseif jumpData.map_id2 == self.mapConfigData.id then
 			self:ShowMapImg(jumpData.map_id1) 
 			self:ShowPlayerNode(cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y))    --转换为像素点,以左上角为00原点
 		end
@@ -308,14 +314,15 @@ function MapLayer:autoPathByMapsPath()
 
 	local moveData = self.movePathMapByMap[1]
 	table.remove(self.movePathMapByMap, 1)
-	self:setRoleWinPosition(moveData.movePos, true)
+	
+	self:starAutoPath(moveData.movePos, moveData.movePt)
 end
 
 --自动寻路跳转到城池所在地图的目标城池
 function MapLayer:autoPathMapByCity(tarCityId, srcCityId)
 	G_Log_Info("MapLayer:autoPathMapByCity(), tarCityId = %s", tarCityId)
-	local movePath = g_pMapMgr:getMovePathCityByCity()
-	self.movePathMapByMap = movePath
+	local movePath = g_pMapMgr:getMovePathCityByCity(tarCityId, srcCityId)
+	self.movePathMapByMap = movePath   --{["mapId"], ["movePt"] , ["movePos"]}
 
 	self:autoPathByMapsPath()
 	-- local cityData = g_pTBLMgr:getCityConfigTBLDataById(cityId)
@@ -327,6 +334,7 @@ end
 
 --设置任务标志路径
 function MapLayer:drawAutoPathArrow(autoPath, bDrawPath)
+	G_Log_Info("MapLayer:drawAutoPathArrow()")
 	if autoPath and #autoPath >0 then
 		local AutoPathVec = {}   --自动寻路路径
 		local pt0 = cc.p(autoPath[1]:getX(), self.mapConfigData.height - autoPath[1]:getY())

@@ -33,13 +33,13 @@
             <EndColor A="255" R="255" G="255" B="255" />
             <ColorVector ScaleY="1.0000" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_skip" ActionTag="-1843774457" Tag="688" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="1074.5000" RightMargin="50.5000" TopMargin="39.5000" BottomMargin="615.5000" TouchEnable="True" FontSize="30" ButtonText="跳过" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_skip" ActionTag="-1843774457" Tag="688" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="546.8204" RightMargin="578.1796" TopMargin="632.2089" BottomMargin="22.7911" TouchEnable="True" FontSize="30" ButtonText="跳过" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="125" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="155.0000" Y="65.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="1152.0000" Y="648.0000" />
+            <Position X="624.3204" Y="55.2911" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.9000" Y="0.9000" />
+            <PrePosition X="0.4878" Y="0.0768" />
             <PreSize X="0.1211" Y="0.0903" />
             <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="255" G="165" B="0" />

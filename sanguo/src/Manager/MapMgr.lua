@@ -12,7 +12,6 @@ function MapMgr:init()
 	--G_Log_Info("MapMgr:init()")
 	self.instance = nil
 
-	self.curMapId = 0  --当前地图ID
 	self.curRolePos = 0   --当前人物所在位置（像素点）
 	self.mapConfigData = nil  --地图表配置数据
 	self.mapJumpPosData = {}  --游戏跳转点
@@ -39,7 +38,6 @@ function MapMgr:LoadMapStreamData(mapId)
 		return nil
 	end
 	--G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
-	self.curMapId = mapId  --当前地图ID
 
 	--添加游戏跳转点
 	self.mapJumpPosData = {}
@@ -195,14 +193,14 @@ end
 
 --两个城池之间路径规划（包括跨地图转移）,srcCityId缺失为当前点位置
 function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
-	G_Log_Info("MapMgr:getMovePathCityByCity()")
+	G_Log_Info("MapMgr:getMovePathCityByCity(), tarCityId = %s",tarCityId)
 	local srcMapData = self.mapConfigData
 	local curCityVec = srcMapData.cityIdStrVec
-	local srcMapId = self.curMapId  --当前地图ID
+	local srcMapId = self.mapConfigData.id --当前地图ID
 
 	if srcCityId then
 		local bSrcCurMap = false   --开始城池是否在当前地图
-		for k, cityId in pairs(curCityVec) then
+		for k, cityId in pairs(curCityVec) do
 			if cityId == srcCityId then
 				bSrcCurMap = true
 				break;
@@ -216,7 +214,7 @@ function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
 	local movePathVec = {}   --{["mapId"], ["movePos"]}
 
 	local btarCurMap = false   --目标城池是否在当前地图
-	for k, cityId in pairs(curCityVec) then
+	for k, cityId in pairs(curCityVec) do
 		if cityId == tarCityId then
 			btarCurMap = true
 			break;
@@ -226,18 +224,19 @@ function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
 	local tarCityData = g_pTBLMgr:getCityConfigTBLDataById(tarCityId)
 	if tarCityData then
 		if btarCurMap == false then   --目标城池不在当前地图
-			print("目标城池不在当前地图")
+			G_Log_Info("目标城池不在当前地图")
 			local tarMapId = tarCityData.mapId
 			--从配置表中读取多地图跳转的地图关系
 			local nearMapVec = nil
-			for k, vec in pairs(curCityVec.nearMapVec) then
+			for k, vec in pairs(srcMapData.nearMapVec) do
 				local lastIdx = #vec
-				if vec[lastIdx] == tarCityId then
+				if vec[lastIdx] == tarMapId then
 					nearMapVec = vec
 					break;
 				end
 			end
-			dump(nearMapVec, "nearMapVec = ")
+			G_Log_Dump(nearMapVec, "nearMapVec = ")
+
 			local srcPos = self.curRolePos  --当前人物所在位置（像素点）
 			local lastjumpPos = nil
 			for k, mapId in pairs(nearMapVec) do
@@ -245,24 +244,25 @@ function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
 					local tarMapData = g_pTBLMgr:getMapConfigTBLDataById(mapId)
 					if tarMapData then
 						--相邻地图地图到目的点
-						table.insert(movePathVec, {["mapId"] = mapId, 
+						table.insert(movePathVec, {["mapId"] = mapId, ["movePt"] = cc.p(tarCityData.map_col, tarCityData.map_row),
 							["movePos"] = cc.p(tarCityData.map_pt.x, tarMapData.height - tarCityData.map_pt.y)})
 					end
 				else
-					if lastjumpPos and mapId ~= self.curMapId then
+					if lastjumpPos then
 						srcPos = lastjumpPos
 					end
 					local nextMapId = nearMapVec[k+1]
-					local jumpPos = self:getNearMapJumpPos(nextMapId, mapId, srcPos)
-					if jumpPos then
-						lastjumpPos = jumpPos
-						table.insert(movePathVec, {["mapId"] = mapId, ["movePos"] = jumpPos})
+					local minJumpData = self:getNearMapJumpPos(nextMapId, mapId, srcPos)
+					if minJumpData then
+						lastjumpPos = minJumpData.jumpPos
+						table.insert(movePathVec, {["mapId"] = mapId, ["movePt"] = minJumpData.jumpPt, ["movePos"] = minJumpData.jumpPos})
 					end
 				end
 
 			end
 		else    --目标城池在当前地图
-			table.insert(movePathVec, {["mapId"] = srcMapId, ["movePos"] = cc.p(curCityVec.map_pt.x, curCityVec.height - curCityVec.map_pt.y)})
+			table.insert(movePathVec, {["mapId"] = srcMapId, ["movePt"] = cc.p(curCityVec.map_col, curCityVec.map_row),
+				["movePos"] = cc.p(curCityVec.map_pt.x, curCityVec.height - curCityVec.map_pt.y)})
 		end
 	end
 
@@ -273,7 +273,7 @@ end
 function MapMgr:getNearMapJumpPos(nearMapId, srcMapId, srcPos)
 	G_Log_Info("MapMgr:getNearMapJumpPos(), nearMapId = %d, srcMapId = %d", nearMapId, srcMapId)
 	local srcMapData = self.mapConfigData
-	if srcMapId ~= self.curMapId then  --非当前地图
+	if srcMapId ~= self.mapConfigData.id then  --非当前地图
 		srcMapData = g_pTBLMgr:getMapConfigTBLDataById(srcMapId)
 	end
 	if not srcMapData then
@@ -294,26 +294,32 @@ function MapMgr:getNearMapJumpPos(nearMapId, srcMapId, srcPos)
 		local jumpVec = srcMapData.jumpptIdStrVec
 		local minLen = 0
 		local minJumpPos = nil
-		for k, jumpIdStr in pairs(jumpVec) then
+		local minJumpData = {}
+		for k, jumpIdStr in pairs(jumpVec) do
 			local jumpData = g_pTBLMgr:getMapJumpPtConfigTBLDataById(jumpIdStr)
 			if jumpData then
 				local dirPos = nil
+				local dirPt = nil
 				if (jumpData.map_id1 == srcMapId and jumpData.map_id2 == nearMapId) then
 					dirPos = cc.p(jumpData.map_pt1.x, srcMapData.height - jumpData.map_pt1.y)  --转换为像素点,以左上角为00原点
+					dirPt = cc.p(jumpData.map_row1, jumpData.map_col1)
 				elseif(jumpData.map_id1 == nearMapId and jumpData.map_id2 == srcMapId) then
 					dirPos = cc.p(jumpData.map_pt2.x, srcMapData.height - jumpData.map_pt2.y)  --转换为像素点,以左上角为00原点
+					dirPt = cc.p(jumpData.map_row2, jumpData.map_col2)
 				end
 
-				if dirPosthen
+				if dirPos then
 					local len = g_pMapMgr:CalcDistance(srcPos, dirPos) 
 					if not minJumpPos or minLen > len then
 						minLen = len
+						minJumpData.jumpPt = dirPt
+						minJumpData.jumpPos = dirPos
 						minJumpPos = dirPos
 					end
 				end
 			end
 		end
-		return minJumpPos
+		return minJumpData
 	end
 	return nil
 end

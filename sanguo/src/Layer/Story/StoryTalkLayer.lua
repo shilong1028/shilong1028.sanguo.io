@@ -94,6 +94,12 @@ function StoryTalkLayer:changeStoryString()
             g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
             self.showUpdateHandler = nil
         end
+
+        local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+        if mapLayer then
+            mapLayer:autoPathMapByCity(self.storyData.targetCity)
+        end
+
         g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)
         return
     end
