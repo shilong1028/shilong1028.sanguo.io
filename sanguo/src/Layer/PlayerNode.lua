@@ -122,14 +122,14 @@ function PlayerNode:AutoPathUpdate()
 	end
 
 	local function EndAutoPathUpdate()
-		G_Log_Info("************** PlayerNode:EndAutoPathUpdate()")
+		--G_Log_Info("************** PlayerNode:EndAutoPathUpdate()")
 		self:DelAutoPathUpdateEntry()
 	    self.bAutoMoving = false
 		self:ChangeMoveAnimate(self.curMoveState, g_PlayerState.HMS_NOR)   --切换站立或跑步动画
 
-		local jumpData = g_pMapMgr:checkJumpMap(self.curPos)
+		local jumpData = g_pMapMgr:checkJumpMap(self.curPos)  --像素点
         if jumpData and self.mapLayer then
-        	self.mapLayer:changeMapByJumpPoint(jumpData)
+        	self.mapLayer:changeMapByJumpPoint(jumpData)       	
         end
 	end
 

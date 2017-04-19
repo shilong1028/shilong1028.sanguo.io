@@ -141,7 +141,7 @@ function TBLMgr:LoadCityConfigTBL()
 		cityConfig.desc = stream:ReadString()
 
 		--游戏附加数据
-		cityConfig.map_pt = cc.p(cityConfig.map_col*32 - 16, cityConfig.map_row*32 - 16)    --转换为像素点,以左上角为00原点
+		cityConfig.map_pt = cc.p(cityConfig.map_col*32 - 16, cityConfig.map_row*32 - 16)    --以左上角为00原点的地图坐标
 
 		self.cityConfigVec[""..cityConfig.id_str] = cityConfig
 		--table.insert(self.cityConfigVec, cityConfig)
@@ -184,7 +184,7 @@ function TBLMgr:LoadMapJumpPtConfigTBL()
 		mapJumpPtConfig.desc = stream:ReadString()
 
 		--游戏附加数据
-		mapJumpPtConfig.map_pt1 = cc.p(mapJumpPtConfig.map_col1*32 - 16, mapJumpPtConfig.map_row1*32 - 16)    --转换为像素点,以左上角为00原点
+		mapJumpPtConfig.map_pt1 = cc.p(mapJumpPtConfig.map_col1*32 - 16, mapJumpPtConfig.map_row1*32 - 16)    --以左上角为00原点的地图坐标
 		mapJumpPtConfig.map_pt2 = cc.p(mapJumpPtConfig.map_col2*32 - 16, mapJumpPtConfig.map_row2*32 - 16)
 
 		self.mapJumpPtConfigVec[""..mapJumpPtConfig.id_str] = mapJumpPtConfig

@@ -124,7 +124,7 @@ function  g_tbl_cityConfig:ctor()
 	self.desc = ""      --string 
 
 	--游戏附加数据
-	self.map_pt = cc.p(0,0)  --转换为像素点,以左上角为00原点
+	self.map_pt = cc.p(0,0)  --以左上角为00原点的地图坐标
 end
 
 --地图跳转点表结构类
@@ -140,8 +140,8 @@ function  g_tbl_mapJumpPtConfig:ctor()
 	self.desc = ""     
 
 	--游戏附加数据
-	self.map_pt1 = cc.p(0,0)   --转换为像素点,以左上角为00原点
-	self.map_pt2 = cc.p(0,0)   --转换为像素点,以左上角为00原点
+	self.map_pt1 = cc.p(0,0)   --以左上角为00原点的地图坐标
+	self.map_pt2 = cc.p(0,0)   --以左上角为00原点的地图坐标
 end 
 
 --州表结构类

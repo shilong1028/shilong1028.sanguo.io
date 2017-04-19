@@ -115,7 +115,7 @@ function MapLayer:ShowMapImg(mapId)
 		    chengchi:initChengData(chengData)
 		    self.rootNode:addChild(chengchi, 10)
 
-		    local pos = cc.p(chengData.map_pt.x, self.mapConfigData.height - chengData.map_pt.y)    --转换为像素点,以左上角为00原点
+		    local pos = cc.p(chengData.map_pt.x, self.mapConfigData.height - chengData.map_pt.y)    --以左上角为00原点转为左下角为原点的像素点
 		    chengchi:setPosition(pos)
 		end
 	end
@@ -136,7 +136,7 @@ function MapLayer:ShowPlayerNode(rolePos)
 	    local defaultCityId = self.mapConfigData.cityIdStrVec[1]
 	    local cityData = g_pTBLMgr:getCityConfigTBLDataById(defaultCityId)
 	    if cityData then
-	    	rolePos = cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y)  --转换为像素点,以左上角为00原点
+	    	rolePos = cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y)  --以左上角为00原点转为左下角为原点的像素点
 	    else
 	    	rolePos = cc.p(0,0)
 	    end
@@ -182,8 +182,10 @@ function MapLayer:setRoleMapPosition(rolePos)
 
 		self.playerNode:setPosition(rolePos)
 		self.curRolePos = rolePos   --当前人物所在位置（像素点）
+
 		g_pMapMgr.curRolePos = rolePos 
-		g_HeroDataMgr:SetHeroMapPosData(self.mapConfigData.id, rolePos)
+		g_HeroDataMgr:SetHeroMapPosData(self.mapConfigData.id, rolePos)   --保存主角当前地图及位置坐标
+		g_GameDataMgr:CheckImplementTask(rolePos)   --检查是否到达了任务目的地
 
 		self:resetRootNodePos(rolePos)
 	end
@@ -252,7 +254,7 @@ function MapLayer:onTouchBegan(touch, event)
 end
 
 --开始astar寻路,endPos为目标位置的像素点，posIsPt=true为目标位置的32*32地图块坐标
-function MapLayer:starAutoPath(endPos, posIsPt)
+function MapLayer:starAutoPath(endPos)
 	--G_Log_Info("MapLayer:starAutoPath()")
     if endPos.x < 0 or endPos.y < 0 or endPos.x > self.mapConfigData.width or endPos.y > self.mapConfigData.height then
     	G_Log_Error("endPos is not in Map, endPos.x = %f, endPos.y = %f", endPos.x, endPos.y)  --如果越界了
@@ -262,11 +264,15 @@ function MapLayer:starAutoPath(endPos, posIsPt)
 	if self.playerNode then
 		self.playerNode:StopLastAutoPath()   --停止上一个自动寻路
 		local startPos = cc.p(self.playerNode:getPosition())
-		local startPt = cc.p(math.floor(startPos.x / 32), math.floor((self.mapConfigData.height - startPos.y) / 32))    --地图块为32*32大小，且从0开始计数
-		local endPt = endPos
-		if posIsPt ~= true then
-			endPt = cc.p(math.floor(endPos.x / 32), math.floor((self.mapConfigData.height - endPos.y) / 32))
+
+		local stepLen = g_pMapMgr:CalcDistance(endPos, startPos)
+		if stepLen < 32 then   --移动目的地就在附近
+			self:setRoleMapPosition(endPos)
+			return 
 		end
+
+		local startPt = cc.p(math.floor(startPos.x / 32), math.floor((self.mapConfigData.height - startPos.y) / 32))    --地图块为32*32大小，且从0开始计数
+		local endPt = cc.p(math.floor(endPos.x / 32), math.floor((self.mapConfigData.height - endPos.y) / 32))
 
 		--G_Log_Info("startPt.x = %d, startPt.y = %d, endPt.x = %d, endPt.y = %d", startPt.x, startPt.y, endPt.x, endPt.y)
 		g_pAutoPathMgr:AStarFindPath(startPt.x, startPt.y, endPt.x, endPt.y)
@@ -291,7 +297,7 @@ function MapLayer:changeMapBymapId(mapId, rolePos)
 		local firstCityId = self.mapConfigData.cityIdStrVec[1]
 		local cityData = g_pTBLMgr:getCityConfigTBLDataById(firstCityId)
 	    if cityData then
-	    	rolePos = cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y)  --转换为像素点,以左上角为00原点
+	    	rolePos = cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y)  --以左上角为00原点转为左下角为原点的像素点
 	    end
 	end
 	self:ShowPlayerNode(rolePos)
@@ -302,7 +308,7 @@ function MapLayer:changeMapByCity(cityId)
 	local cityData = g_pTBLMgr:getCityConfigTBLDataById(cityId)
     if cityData then
 	    self:ShowMapImg(cityData.mapId)  --地图
-	    self:ShowPlayerNode(cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y))  --转换为像素点,以左上角为00原点
+	    self:ShowPlayerNode(cc.p(cityData.map_pt.x, self.mapConfigData.height - cityData.map_pt.y))  --以左上角为00原点转为左下角为原点的像素点
 	end
 end
 
@@ -312,10 +318,10 @@ function MapLayer:changeMapByJumpPoint(jumpData)
 	if jumpData then
 		if jumpData.map_id1 == self.mapConfigData.id then
 			self:ShowMapImg(jumpData.map_id2)  
-			self:ShowPlayerNode(cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y))    --转换为像素点,以左上角为00原点
+			self:ShowPlayerNode(cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y))    --以左上角为00原点转为左下角为原点的像素点
 		elseif jumpData.map_id2 == self.mapConfigData.id then
 			self:ShowMapImg(jumpData.map_id1) 
-			self:ShowPlayerNode(cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y))    --转换为像素点,以左上角为00原点
+			self:ShowPlayerNode(cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y))    --以左上角为00原点转为左下角为原点的像素点
 		end
 		--跨地图移动
 		if self.movePathMapByMap and #self.movePathMapByMap > 0 then

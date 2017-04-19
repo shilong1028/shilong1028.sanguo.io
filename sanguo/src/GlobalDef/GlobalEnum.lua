@@ -51,12 +51,14 @@ g_PlayerState = {
 g_ColorDef = {
 	White = cc.c3b(255,255,255),
 	Red = cc.c3b(255,0,0),
+	Yellow = cc.c3b(249,154,5),
 }
 
 
 --自定义异步事件监听的事件名称定义
 g_EventListenerCustomName = {
 	Login_serverListEvent = "Login_serverListEvent",   --登录界面的服务器列表监听事件
+	MainMenu_mainStoryEvent = "MainMenu_mainStoryEvent",   --主线剧情任务监听
 }
 
 

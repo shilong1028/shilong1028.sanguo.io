@@ -44,6 +44,9 @@ g_pTBLMgr = nil       --本地tbl表格数据单例
 --玩家游戏数据管理
 g_HeroDataMgr = nil
 
+--理游戏中的全局数据处理
+g_GameDataMgr = nil 
+
 --默认的华康圆体路径
 g_sDefaultTTFpath = "font/simkai.ttf"   
 

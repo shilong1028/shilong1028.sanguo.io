@@ -11,6 +11,29 @@ end
 
 function MainMenuLayer:onExit()
     --G_Log_Info("MainMenuLayer:onExit()")
+        if nil ~= self.mainStory_listener then   --主线剧情任务监听
+        g_EventDispatcher:removeEventListener(self.mainStory_listener)
+    end
+end
+
+--自定义异步事件监听
+function MainMenuLayer:LoadEventListenerCustom()   
+     --主线剧情任务监听
+    local function mainStory_listenerCallBack(event)
+        --[[发送处主线剧情任务监听事件
+            local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_mainStoryEvent)
+            event._usedata = string.format("%d",nextStoryId)   --下一个剧情任务ID
+            g_EventDispatcher:dispatchEvent(event)
+        ]]
+        --接收时解析
+        local nextStoryId = tonumber(event._usedata)
+        --G_Log_Info("mainStory_listenerCallBack(), nextStoryId = %d", nextStoryId)
+        g_GameDataMgr:SetImplementTaskData(nil)
+        self:initStroyData(nextStoryId)
+    end
+
+    self.mainStory_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.MainMenu_mainStoryEvent, mainStory_listenerCallBack)
+    g_EventDispatcher:addEventListenerWithFixedPriority(self.mainStory_listener, 1)
 end
 
 --初始化UI界面
@@ -128,7 +151,14 @@ function MainMenuLayer:init()
     self.Button_gonggao = FileNode_bottom:getChildByName("Button_gonggao")   --公告按钮
     self.Button_gonggao:addTouchEventListener(handler(self,self.touchEvent))
 
+    --剧情任务暂时调整大小
+    self.Panel_renwu:setContentSize(cc.size(self.Panel_renwu:getContentSize().width, 100))
+    self.renWuListView:setContentSize(cc.size(self.renWuListView:getContentSize().width, 80))
+    self.renWuButton_push:setPosition(cc.p(self.renWuButton_push:getPositionX(), self.renWuButton_push:getPositionY() - 100))
+
     self:initData()
+
+    self:LoadEventListenerCustom()   --自定义异步事件监听
 end
 
 function MainMenuLayer:initData()
@@ -148,24 +178,29 @@ function MainMenuLayer:initData()
     else
         storyId = 1
     end
+
+    self.mainStoryCell = nil   --主线剧情Cell
     self:initStroyData(storyId)
 end
 
 function MainMenuLayer:initStroyData(storyId)
+    --G_Log_Info("MainMenuLayer:initStroyData(), storyId = %d", storyId)
     self.storyId = storyId
-    self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId)
+    self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId) 
     if self.storyData then
-        local storyCell = StoryTalkCell:new()
-        local cur_item = ccui.Layout:create()
-        cur_item:setContentSize(cc.size(220, 80))
-        cur_item:addChild(storyCell)
-        self.renWuListView:addChild(cur_item)
-        storyCell:initData(self.storyData)
+        if not self.mainStoryCell then
+            local storyCell = StoryTalkCell:new()
+            local cur_item = ccui.Layout:create()
+            cur_item:setContentSize(cc.size(220, 80))
+            cur_item:addChild(storyCell)
+            self.renWuListView:addChild(cur_item)
+            self.mainStoryCell = storyCell
+        end
+        self.mainStoryCell:initData(self.storyData)
+    else  --没有剧情任务
+        self.mainStoryCell:getParent():removeFromParent(true)
+        self.mainStoryCell = nil
     end
-    --G_Log_Dump(self.renWuListView:getInnerContainerSize())
-    self.Panel_renwu:setContentSize(cc.size(self.Panel_renwu:getContentSize().width, 100))
-    self.renWuListView:setContentSize(cc.size(self.renWuListView:getContentSize().width, 80))
-    self.renWuButton_push:setPosition(cc.p(self.renWuButton_push:getPositionX(), self.renWuButton_push:getPositionY() - 100))
 end
 
 function MainMenuLayer:touchEvent(sender, eventType)

@@ -45,7 +45,7 @@ function MapMgr:LoadMapStreamData(mapId)
 		local jumpData = g_pTBLMgr:getMapJumpPtConfigTBLDataById(jumpId)
 		if jumpData then
 			if jumpData.map_id1 == mapId then
-				jumpData.pos = cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y)    --转换为像素点,以左上角为00原点
+				jumpData.pos = cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y)    --以左上角为00原点转为左下角为原点的像素点
 			elseif jumpData.map_id2 == mapId then
 				jumpData.pos = cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y)
 			end
@@ -108,7 +108,7 @@ function MapMgr:checkJumpMap(curPos)
 	for k, jumpData in pairs(self.mapJumpPosData) do
 		if jumpData.pos then
 			local stepLen = g_pMapMgr:CalcDistance(jumpData.pos, curPos)
-			if stepLen < 50 then
+			if stepLen < 32 then
 				return jumpData
 			end
 		end
@@ -259,7 +259,7 @@ function MapMgr:getMovePathCityByCity(tarCityId, srcCityId)
 
 			end
 		else    --目标城池在当前地图
-			table.insert(movePathVec, {["mapId"] = srcMapId, ["movePos"] = cc.p(curCityVec.map_pt.x, curCityVec.height - curCityVec.map_pt.y)})
+			table.insert(movePathVec, {["mapId"] = srcMapId, ["movePos"] = cc.p(tarCityData.map_pt.x, srcMapData.height - tarCityData.map_pt.y)})
 		end
 	end
 
@@ -280,7 +280,7 @@ function MapMgr:getNearMapJumpPos(nearMapId, srcMapId, srcPos)
 		local firstCityId = srcMapData.near_citys[1]
 		local cityData = g_pTBLMgr:getCityConfigTBLDataById(firstCityId)
 	    if cityData then
-		    srcPos = cc.p(cityData.map_pt.x, srcMapData.height - cityData.map_pt.y)  --转换为像素点,以左上角为00原点
+		    srcPos = cc.p(cityData.map_pt.x, srcMapData.height - cityData.map_pt.y)  --以左上角为00原点转为左下角为原点的像素点
 		end
 	end
 	if not srcPos then
@@ -296,9 +296,9 @@ function MapMgr:getNearMapJumpPos(nearMapId, srcMapId, srcPos)
 			if jumpData then
 				local dirPos = nil
 				if (jumpData.map_id1 == srcMapId and jumpData.map_id2 == nearMapId) then
-					dirPos = cc.p(jumpData.map_pt1.x, srcMapData.height - jumpData.map_pt1.y)  --转换为像素点,以左上角为00原点
+					dirPos = cc.p(jumpData.map_pt1.x, srcMapData.height - jumpData.map_pt1.y)  --以左上角为00原点转为左下角为原点的像素点
 				elseif(jumpData.map_id1 == nearMapId and jumpData.map_id2 == srcMapId) then
-					dirPos = cc.p(jumpData.map_pt2.x, srcMapData.height - jumpData.map_pt2.y)  --转换为像素点,以左上角为00原点
+					dirPos = cc.p(jumpData.map_pt2.x, srcMapData.height - jumpData.map_pt2.y)  --以左上角为00原点转为左下角为原点的像素点
 				end
 
 				if dirPos then

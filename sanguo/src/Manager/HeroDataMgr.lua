@@ -52,7 +52,7 @@ function HeroDataMgr:GetInstance()
 end
 
 --玩家地图位置信息处理   --beign
-function HeroDataMgr:SetHeroMapPosData(mapId, rolePos)
+function HeroDataMgr:SetHeroMapPosData(mapId, rolePos)  --保存主角当前地图及位置坐标
     self.heroData.mapPosData = {} --玩家地图位置信息
     self.heroData.mapPosData.mapId = mapId
     self.heroData.mapPosData.rolePos = rolePos
@@ -64,8 +64,8 @@ function HeroDataMgr:SetHeroMapPosData(mapId, rolePos)
     heroXML:removeNode("mapPosData")
     heroXML:addChildNode("mapPosData")
     heroXML:setNodeAttrValue("mapPosData", "mapId", tostring(mapId))
-    heroXML:setNodeAttrValue("mapPosData", "posX", tostring(rolePos.x))
-    heroXML:setNodeAttrValue("mapPosData", "posY", tostring(rolePos.y))
+    heroXML:setNodeAttrValue("mapPosData", "posX", string.format("%f", rolePos.x))
+    heroXML:setNodeAttrValue("mapPosData", "posY", string.format("%f", rolePos.y))
     heroXML:saveXMLFile()
 end
 
@@ -80,7 +80,7 @@ function HeroDataMgr:GetHeroCampData()
 	return clone(self.heroData.campData)
 end
 
-function HeroDataMgr:SetHeroCampData(campData)
+function HeroDataMgr:SetHeroCampData(campData)   --保存主角阵营数据
 	if not campData then
 		G_Log_Error("HeroDataMgr:SetHeroCampData(), error: campData = nil")
 	end

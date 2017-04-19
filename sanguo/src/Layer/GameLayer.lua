@@ -180,17 +180,26 @@ function GameLayer:showStoryTalkLayer(storyData)
         storytalkLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_StoryTalkLayer, "Story.StoryTalkLayer")
     end
     storytalkLayer:initStoryData(storyData)
+    g_GameDataMgr:SetImplementTaskData(storyData)
 end
 
 
 --/////////////////////// 以下为各个功能界面开启  ////////////////////////////
 
+function GameLayer:initGameManager()
+    --玩家游戏数据管理
+    local HeroDataMgr = require "Manager.HeroDataMgr"
+    g_HeroDataMgr = g_HeroDataMgr or HeroDataMgr:GetInstance()
+
+    --理游戏中的全局数据处理
+    local GameDataMgr = require "Manager.GameDataMgr"
+    g_GameDataMgr = g_GameDataMgr or GameDataMgr:GetInstance()
+end
+
 --开始游戏界面
 function GameLayer:StartGameLayer()
     --G_Log_Info("GameLayer:StartGameLayer()")
-    local HeroDataMgr = require "Manager.HeroDataMgr"
-    --玩家游戏数据管理
-    g_HeroDataMgr = g_HeroDataMgr or HeroDataMgr:GetInstance()
+    self:initGameManager()
 
     local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
     if campId and campId > 0 then
