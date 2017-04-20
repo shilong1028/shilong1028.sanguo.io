@@ -8,6 +8,7 @@
           <Project Name="aniToolLayer.csd" Type="Layer" />
           <Project Name="CreateRoleLayer.csd" Type="Layer" />
           <Project Name="DialogOkCancelLayer.csd" Type="Layer" />
+          <Project Name="HelpInfoLayer.csd" Type="Layer" />
           <Project Name="LoadingLayer.csd" Type="Layer" />
           <Project Name="LoginLayer.csd" Type="Layer" />
           <Project Name="MainBottomNode.csd" Type="Node" />

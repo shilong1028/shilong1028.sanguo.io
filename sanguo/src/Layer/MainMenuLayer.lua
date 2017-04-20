@@ -304,6 +304,8 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_shangcheng then  --商城
         elseif sender == self.Button_junqing then   --军情
         elseif sender == self.Button_gonggao then   --公告
+            local dialog = g_pGameLayer:showDialogHelpLayer()
+            dialog:bindingData(lua_Dialog_TitleStr2, lua_Help_OfficeStr1) 
         end
     end
 end

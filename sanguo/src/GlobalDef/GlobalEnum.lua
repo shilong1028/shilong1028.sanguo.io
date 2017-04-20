@@ -20,9 +20,7 @@ g_GameLayerTag = {
 	LAYER_TAG_MAINMENU = 20,    --主界面菜单层，主菜单以后的层可以被删除，即各显示界面层
 	LAYER_TAG_MAINCITY = 21,    --主城界面 
 	LAYER_TAG_CHINAMAP = 22,    --全国地图界面,
-	LAYER_TAG_DialogOkCancelLayer = 50,    --okcancel对话框，可以多个使用
-
-
+	
 	--主菜单层，主城层，全国地图层，不删除仅仅隐藏， 
 	LAYER_TAG_SocketAni = 99,    --网络通信动画层,
 	--tag < 100 为特殊层，100之后为一般功能界面层tag
@@ -32,6 +30,8 @@ g_GameLayerTag = {
 	LAYER_TAG_LoadingLayer = 103,    --加载过渡层
 	LAYER_TAG_SelCampLayer = 104,    --选角界面
 	LAYER_TAG_StoryTalkLayer = 105,    --剧情对话层
+	LAYER_TAG_DialogOkCancelLayer = 106,    --okcancel对话框
+	LAYER_TAG_DialogHelpLayer = 107,    --help对话框
 }
 
 --人物移动的方向状态标识

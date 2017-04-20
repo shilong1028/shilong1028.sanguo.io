@@ -24,7 +24,7 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --className�
     G_Log_Info("GameLayer:AddChild: uid = %d, className = %s", uid, className)
    
     local layer = self:getChildByTag(uid)
-    if layer ~= nil and uid ~= g_GameLayerTag.LAYER_TAG_DialogOkCancelLayer then
+    if layer ~= nil then
         self:removeChildByTag(uid)
     end
     
@@ -44,10 +44,12 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --className�
             layer:setLocalZOrder(-10)
         elseif uid == g_GameLayerTag.LAYER_TAG_CHINAMAP then  --地图层
             layer:setLocalZOrder(-20)
+        elseif uid == g_GameLayerTag.LAYER_TAG_DialogOkCancelLayer then   --okcancel对话框  
+            layer:setLocalZOrder(100)
+        elseif uid == g_GameLayerTag.LAYER_TAG_DialogHelpLayer then   --help对话框  
+            layer:setLocalZOrder(100)
         elseif uid == g_GameLayerTag.LAYER_TAG_LoadingLayer then   --加载过渡层
             layer:setLocalZOrder(199)
-        elseif uid == g_GameLayerTag.LAYER_TAG_DialogOkCancelLayer then   --okcancel对话框，可以多个使用
-            layer:setLocalZOrder(100)
         end
 
     else
@@ -185,9 +187,15 @@ function GameLayer:showStoryTalkLayer(storyData)
     g_GameDataMgr:SetImplementTaskData(storyData)
 end
 
---显示okCancel对话框，可以多个使用
+--显示okCancel对话框  
 function GameLayer:showDialogOkCancelLayer() 
     local dialogLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_DialogOkCancelLayer, "TipsOrDialog.DialogOkCancelLayer")
+    return dialogLayer
+end
+
+--显示help对话框  
+function GameLayer:showDialogHelpLayer() 
+    local dialogLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_DialogHelpLayer, "TipsOrDialog.HelpInfoLayer")
     return dialogLayer
 end
 
