@@ -74,7 +74,7 @@ function GameScene:initGameManager()
 
     --州郡地图管理单例
     local MapMgr = require "Manager.MapMgr"
-    g_pMapMgr = g_pMapMgr or MapMgr:GetInstance()       --州郡地图管理单例
+    g_pMapMgr = g_pMapMgr or MapMgr:GetInstance() 
 end
 
 function GameScene:clearGameManager()
@@ -123,24 +123,23 @@ function GameScene:reloadGame()
     G_Log_Warning("GameScene:reloadGame()")
     g_pGameLayer:showLoadingLayer(true) 
 
-    self:clearGameManager()
-    g_NetworkMgr:StopCurConnect()
-
     g_UserDefaultMgr:ClearUseXml("heroXML.xml")   --保存下一个主线剧情任务ID
     g_pGameLayer:ShowScrollTips("清空heroXml，重启后生效！")
 
-    -- self:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(function() 
-    --     local scene = require("Scene.HealthAnnouncementScene")
-    --     local nextScene = scene:create()  --scene:new()
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(function() 
+        g_pGameLayer:showLoadingLayer(false)
+        self:clearGameManager()
+        g_NetworkMgr:StopCurConnect()
 
-    --     if cc.Director:getInstance():getRunningScene() then
-    --         cc.Director:getInstance():replaceScene(nextScene)  --cc.TransitionFade:create(1.0, nextScene, cc.c3b(0,0,0)))
-    --     else
-    --         cc.Director:getInstance():runWithScene(nextScene)
-    --     end
-    -- end)))
+        local scene = require("Scene.HealthAnnouncementScene")
+        local nextScene = scene:create()  --scene:new()
 
-    SystemHelper:reloadGame()
+        if cc.Director:getInstance():getRunningScene() then
+            cc.Director:getInstance():replaceScene(nextScene)  --cc.TransitionFade:create(1.0, nextScene, cc.c3b(0,0,0)))
+        else
+            cc.Director:getInstance():runWithScene(nextScene)
+        end
+    end)))
 
     --[[
     local function table_clear(t)

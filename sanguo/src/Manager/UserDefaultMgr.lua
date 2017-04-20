@@ -208,9 +208,12 @@ function UserDefaultMgr:ClearUseXml(strXmlPath)
     --G_Log_Info("HeroDataMgr:ClearUseXml(), strXmlPath = %s", strXmlPath)
     local heroXML = g_UserDefaultMgr:loadXMLFile(strXmlPath)
     if heroXML then
+        --[[
+        --android不会清空XML，因此使用writeStringToFile()
         heroXML:removeAllChildNode("root")
         heroXML:saveXMLFile()
-        --cc.FileUtils:getInstance():writeStringToFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n</root>", g_SelfWritePath..strXmlPath) 
+        --]]
+        cc.FileUtils:getInstance():writeStringToFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n</root>", g_SelfWritePath..strXmlPath) 
     end
 end
 
