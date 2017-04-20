@@ -20,6 +20,7 @@ g_GameLayerTag = {
 	LAYER_TAG_MAINMENU = 20,    --主界面菜单层，主菜单以后的层可以被删除，即各显示界面层
 	LAYER_TAG_MAINCITY = 21,    --主城界面 
 	LAYER_TAG_CHINAMAP = 22,    --全国地图界面,
+	LAYER_TAG_DialogOkCancelLayer = 50,    --okcancel对话框，可以多个使用
 
 
 	--主菜单层，主城层，全国地图层，不删除仅仅隐藏， 

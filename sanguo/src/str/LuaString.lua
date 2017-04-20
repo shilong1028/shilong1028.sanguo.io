@@ -9,8 +9,11 @@ lua_str_WarnTips4 = "用户名已经被注册！"
 lua_str_WarnTips5 = "注册密码不一致！"
 lua_str_WarnTips6 = "点击坐标为地图不可达部分！"
 
+lua_Dialog_TitleStr1 = "提  示"
+
 lua_str_DialogTips1 = "与服务器断开连接，请检查您的网络环境，尝试重连？"
 lua_str_DialogTips2 = "无法登录服务器，请检查网络是否正常!"
+lua_str_DialogTips3 = "是否重新加载游戏，游戏数据将被清空!"
 
 lua_Loading_Str1 = "资源加载中"
 
@@ -19,3 +22,4 @@ lua_Story_String2 = "    汉灵帝以外戚何*进为大将军，统率左右羽
 lua_Story_String3 = "%s已经完成！"
 
 lua_SelCamp_String1 = "初始财政：资金%s锭  粮草%s石\n初始兵力：%d人\n初始将领：%s"
+

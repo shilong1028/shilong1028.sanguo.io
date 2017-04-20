@@ -129,8 +129,12 @@ function NetworkMgr:CheckNetworkFail(dt)
 	end
 end
 
-function NetworkMgr:ShowDisconnectDialog(titleStr)
-	self:StartGameLogin(self.m_loginServerData)
+function NetworkMgr:ShowDisconnectDialog(infoStr)
+    local function okCallBack()
+		self:StartGameLogin(self.m_loginServerData)
+    end
+    local dialog = g_pGameLayer:showDialogOkCancelLayer()
+    dialog:bindingData(lua_Dialog_TitleStr1, infoStr, okCallBack, cancelCallBack, 3)   --只显示ok
 end
 
 --选中某个服务器后点击登录触发，信号触发成功后会进入创建界面,老号直接登录游戏

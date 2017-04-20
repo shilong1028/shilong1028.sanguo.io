@@ -37,9 +37,9 @@ function NpcNode:initChengData(data)
 	local textSize = cc.size(imgSize.width*2, g_defaultChengFontSize + 6)
     self.chengName = cc.Label:createWithTTF(data.name, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
     self.chengName:setColor(g_ColorDef.Yellow)
-    self.chengName:enableBold()
-    self.chengName:enableShadow()
-    self.chengName:enableOutline(g_ColorDef.DarkRed, 1)
+    self.chengName:enableBold()   --加粗
+    --self.chengName:enableShadow()   --阴影
+    self.chengName:enableOutline(g_ColorDef.DarkRed, 1)   --描边
     self:addChild(self.chengName, 5)  
 end
 
