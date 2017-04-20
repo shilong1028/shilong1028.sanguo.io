@@ -131,10 +131,10 @@ function MapMgr:IsOpacity(pos)
 	if (not self._VecOpacity or #self._VecOpacity == 0) then
 		return false
 	end
-	if(pos.y < 0 or pos.y > self._MaxTileHeight) then
+	if(pos.y < 0 or pos.y > self.mapConfigData.hTitleCount )then
 		return false
 	end
-	if(pos.x < 0 or pos.x > self._MaxTileWidth) then
+	if(pos.x < 0 or pos.x > self.mapConfigData.wTitleCount) then
 		return false
 	end
 	return self._VecOpacity[math.floor(pos.y)*self.mapConfigData.wTitleCount + math.floor(pos.x) + 1] == 1
@@ -148,8 +148,12 @@ function MapMgr:getMapConfigHeight()
 	return self.mapConfigData.height
 end
 
---判断人物移动方向
 function MapMgr:CalcMoveDirection(srcPos, destPos)
+	return self:CalcMoveDirection4(srcPos, destPos)
+end
+
+--判断人物移动方向（8个方向）
+function MapMgr:CalcMoveDirection8(srcPos, destPos)
 	--G_Log_Info("MapMgr:CalcMoveDirection()")
 	local dirx = (destPos.x - srcPos.x) / 32
 	local diry = (destPos.y - srcPos.y) / 32
@@ -175,16 +179,59 @@ function MapMgr:CalcMoveDirection(srcPos, destPos)
         dir.y = destPos.y == srcPos.y and 0 or ((destPos.y - srcPos.y) < 0 and -1 or 1)
 	end
 
-	local dirIdx = -1   --表示站立
+	local dirIdx = 0   --表示站立
 	local ARY_HMS_DIR = {cc.p(1,-1),cc.p(0,-1),cc.p(-1,-1),cc.p(-1,0),cc.p(-1,1),cc.p(0,1),cc.p(1,1),cc.p(1,0)}
 	for i=1, 8 do
 		if(math.floor(dir.x) == math.floor(ARY_HMS_DIR[i].x) and math.floor(dir.y) == math.floor(ARY_HMS_DIR[i].y) ) then
-            dirIdx = i -1
+            dirIdx = i
             break
 		end
 	end
 
-    return dir, dirIdx
+    return dirIdx
+end
+
+--判断人物移动方向（4个方向）
+function MapMgr:CalcMoveDirection4(srcPos, destPos)
+	--G_Log_Info("MapMgr:CalcMoveDirection()")
+	local dirx = destPos.x - srcPos.x
+	local diry = destPos.y - srcPos.y
+
+	local dirIdx = 0   --表示站立
+	local ARY_HMS_DIR = {cc.p(1,-1),cc.p(0,-1),cc.p(-1,-1),cc.p(-1,0),cc.p(-1,1),cc.p(0,1),cc.p(1,1),cc.p(1,0)}
+
+	if dirx == 0 then
+		if diry > 0 then
+			dirIdx = 7
+		elseif diry < 0 then
+			dirIdx = 3
+		elseif diry == 0 then
+			dirIdx = 0   --表示站立
+		end
+	else
+		--local tanVal = diry/dirx
+		if dirx > 0 then
+			if diry > 0 then
+				dirIdx = 7
+			elseif diry < 0 then
+				dirIdx = 1
+			elseif diry == 0 then
+				dirIdx = 7
+			end
+		elseif dirx < 0 then
+			if diry > 0 then
+				dirIdx = 5
+			elseif diry < 0 then
+				dirIdx = 3
+			elseif diry == 0 then
+				dirIdx = 3
+			end
+		end
+	end
+
+	--使用三角函数确认方向，游戏中四个方向为1,3,5,7
+
+    return dirIdx
 end
 
 function MapMgr:CalcDistance(nowPos, dirPos)

@@ -181,6 +181,7 @@ function MapLayer:setRoleMapPosition(rolePos)
 		end
 
 		self.playerNode:setPosition(rolePos)
+		self.playerNode:UpdateOpacity(rolePos)
 		self.curRolePos = rolePos   --当前人物所在位置（像素点）
 
 		g_pMapMgr.curRolePos = rolePos 

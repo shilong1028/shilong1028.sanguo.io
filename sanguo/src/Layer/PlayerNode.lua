@@ -26,7 +26,6 @@ function PlayerNode:init()
     self.AutoPathOneByOneData = nil  --自动寻路一步步走的步伐数据
     self.curPos = nil  --人物当前位置
 
-    --self.MoveDirectionPt = cc.p(0,0)   --移动方向，8个向量方向
     self.MoveSpeed = 160   --人物移动速度，默认180,从人物3属性中读取
 
     self.FollowPathVec = {}  --跟随路径点
@@ -156,7 +155,7 @@ function PlayerNode:AutoPathUpdate()
 	else   --继续寻路
 		local dirPos = cc.p(self.AutoPathVec[1].x, self.AutoPathVec[1].y)   --self.AutoPathVec为像素坐标		
 		local nowPos = cc.p(self:getPosition())
-		local dirPt, dirIdx = g_pMapMgr:CalcMoveDirection(nowPos, dirPos)
+		local dirIdx = g_pMapMgr:CalcMoveDirection(nowPos, dirPos)
 		
 		-- --判断是否改变移动状态
   --       if(dirIdx == g_PlayerState.HMS_NOR) then   --表示站立
@@ -164,9 +163,8 @@ function PlayerNode:AutoPathUpdate()
   --           return
 		-- end
         --当不是当前正在执行的动作时（转向的时候，切换动作）
-		if(self.curMoveState ~= dirIdx - 1)then
-			self:ChangeMoveAnimate(self.curMoveState, dirIdx-1)   --切换站立或跑步动画
-			--self.MoveDirectionPt = dirPt
+		if(self.curMoveState ~= dirIdx)then
+			self:ChangeMoveAnimate(self.curMoveState, dirIdx)   --切换站立或跑步动画
 		end
 		
         --计算距离进行移动
@@ -295,7 +293,7 @@ function PlayerNode:ChangeMoveAnimate(nowState, nextState)
 	end
 
 	local faceDir = nextState  --人物脸朝向，等于非站立状态
-	if nextState ~= g_PlayerState.HMS_NOR then
+	if nextState ~= g_PlayerState.HMS_NOR then  --站立
 		self.FaceDirection = nextState
 	else
 		faceDir = self.FaceDirection
