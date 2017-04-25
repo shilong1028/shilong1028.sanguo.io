@@ -314,6 +314,8 @@ function TBLMgr:LoadGeneralConfigTBL()
 		generalConfig.name = stream:ReadString()     --武将名称
 		generalConfig.level = stream:ReadUInt()      --武将初始登录等级
 		generalConfig.type = stream:ReadWord()   --将领类型，1英雄，2武将，3军师
+		local bingzhong = stream:ReadString() 
+		generalConfig.bingzhong = string.split(bingzhong,";")
 		generalConfig.hp = stream:ReadUInt()    --初始血量值
 		generalConfig.mp = stream:ReadUInt()        --初始智力值
 		generalConfig.atk = stream:ReadUInt()     --初始攻击力
@@ -461,6 +463,7 @@ function TBLMgr:LoadStoryConfigTBL()
 			end
 			table.insert(storyConfig.talkVec, {["heroId"] = heroIdStr, ["text"] = textStr})
 		end
+		storyConfig.desc = stream:ReadString() 
 
 		table.insert(self.storyConfigVec, storyConfig)
 	end
