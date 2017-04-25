@@ -8,5 +8,6 @@
 		<field name="enemy" type="string" size="256"/>
 		<field name="reward" type="string" size="256"/>
 		<field name="talk" type="string" size="256"/>
+		<field name="desc" type="string" size="384"/>
 	</table>
 </config>
