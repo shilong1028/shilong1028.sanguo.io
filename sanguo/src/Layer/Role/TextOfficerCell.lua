@@ -1,16 +1,16 @@
---主菜单层剧情活动Cell
+--武将文本信息Cell
 
-local StoryTalkCell = class("StoryTalkCell", CCLayerEx)
+local TextOfficerCell = class("TextOfficerCell", CCLayerEx)
 
-function StoryTalkCell:create()   --自定义的create()创建方法
-    --G_Log_Info("StoryTalkCell:create()")
-    local layer = StoryTalkCell.new()
+function TextOfficerCell:create()   --自定义的create()创建方法
+    --G_Log_Info("TextOfficerCell:create()")
+    local layer = TextOfficerCell.new()
     return layer
 end
 
 --初始化UI界面
-function StoryTalkCell:init()  
-    --G_Log_Info("StoryTalkCell:init()")
+function TextOfficerCell:init()  
+    --G_Log_Info("TextOfficerCell:init()")
     local csb = cc.CSLoader:createNode("csd/storyTalkCell.csb")
     self:addChild(csb)
 
@@ -26,8 +26,8 @@ function StoryTalkCell:init()
     self:setContentSize(cc.size(220, 80))
 end
 
-function StoryTalkCell:initData(storyData)  
-    --G_Log_Info("StoryTalkCell:initData()")
+function TextOfficerCell:initData(storyData)  
+    --G_Log_Info("TextOfficerCell:initData()")
     self.storyData = storyData
     self.Text_name:setString(storyData.name)      --战役名称
     local cityData = g_pTBLMgr:getCityConfigTBLDataById(storyData.targetCity)
@@ -36,7 +36,7 @@ function StoryTalkCell:initData(storyData)
     end
 end
 
-function StoryTalkCell:touchEvent(sender, eventType)
+function TextOfficerCell:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Image_bg then   
             g_pGameLayer:showStoryTalkLayer(self.storyData)
@@ -44,4 +44,4 @@ function StoryTalkCell:touchEvent(sender, eventType)
     end
 end
 
-return StoryTalkCell
+return TextOfficerCell

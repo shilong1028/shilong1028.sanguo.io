@@ -8,7 +8,7 @@ function HelpInfoLayer:create()   --自定义的create()创建方法
     return layer
 end
 
-function HelpInfoLayer:HelpInfoLayer()
+function HelpInfoLayer:onExit()
     --G_Log_Info("HelpInfoLayer:onExit()")
 end
 
