@@ -32,6 +32,7 @@ g_GameLayerTag = {
 	LAYER_TAG_StoryTalkLayer = 105,    --剧情对话层
 	LAYER_TAG_DialogOkCancelLayer = 106,    --okcancel对话框
 	LAYER_TAG_DialogHelpLayer = 107,    --help对话框
+	LAYER_TAG_BattleInfoLayer = 108,    --战役信息
 }
 
 --人物移动的方向状态标识

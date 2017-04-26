@@ -103,3 +103,18 @@ function G_Resolution_BgImage(bg, layerSize, autoscale)   --根据适配方案�
 	end
 end
 
+--通过武将或士兵等级获取武将类型 游击1-3/轻装4-10/重装11-25/精锐26-50/禁卫51-99
+function G_GetGeneralColorIdxByLv(lv)
+	if lv >0 and lv <=3 then
+		return 1
+	elseif lv >=4 and lv <=10 then
+		return 2
+	elseif lv >=11 and lv <=25 then
+		return 3 
+	elseif lv >=26 and lv <=50 then
+		return 4
+	elseif lv >=51 and lv <=99 then
+		return 5
+	end
+	return 0
+end

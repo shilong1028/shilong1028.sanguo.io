@@ -2,6 +2,8 @@
 --战役信息
 local BattleInfoLayer = class("BattleInfoLayer", CCLayerEx)
 
+local SmallOfficerCell = require("Layer.Role.SmallOfficerCell")
+
 function BattleInfoLayer:create()   --自定义的create()创建方法
     --G_Log_Info("BattleInfoLayer:create()")
     local layer = BattleInfoLayer.new()
@@ -36,17 +38,35 @@ function BattleInfoLayer:init()
     self.ListView_reward = self.Image_bg:getChildByName("ListView_reward")
 end
 
-function BattleInfoLayer:bindingData(titleStr, infoStr)  
-    self.Text_title:setString(titleStr)
-    local bgWidth = 200
-    if self.Text_title:getContentSize().width > 180 then
-        bgWidth = self.Text_title:getContentSize().width + 20
+function BattleInfoLayer:initStoryInfo(storyId)  
+    self.storyId = storyId
+    self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId) 
+    if self.storyData then
+        self.Text_title:setString(self.storyData.name)
+
+        local bgWidth = 200
+        if self.Text_title:getContentSize().width > 180 then
+            bgWidth = self.Text_title:getContentSize().width + 20
+        end
+        self.titleBg:setContentSize(cc.size(bgWidth, self.Text_title:getContentSize().height + 10))
+
+        self.Text_info:setString("    "..self.storyData.desc)
+
+
+        for k, enemId in pairs(self.storyData.enemyIdVec) do
+            local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(enemId) 
+            if generalData then
+                local officerCell = SmallOfficerCell:new()
+                officerCell:initData(generalData) 
+                self.ListView_enemy:addChild(officerCell)
+            end
+        end
+
+        for k, rewardId in pairs(self.storyData.rewardIdVec) do
+
+        end
+        --self.ListView:addChild(self.Text_content)
     end
-    self.titleBg:setContentSize(cc.size(bgWidth, self.Text_title:getContentSize().height + 10))
-
-    self.Text_info:setString(infoStr)
-
-    --self.ListView:addChild(self.Text_content)
 end
 
 function BattleInfoLayer:touchEvent(sender, eventType)

@@ -63,13 +63,15 @@ function GameDataMgr:HandleImplementTask()
 	--G_Log_Info("GameDataMgr:HandleImplementTask(), storyId = %d", curStoryId)
 	g_pGameLayer:ShowScrollTips(string.format(lua_Story_String3, self.implementStoryData.name), g_ColorDef.Yellow, g_defaultTipsFontSize)
 
-	local nextStoryId = curStoryId + 1
-	g_HeroDataMgr:SetStoryTalkId(nextStoryId)   --保存下一个主线剧情任务ID
+	g_pGameLayer:showBattleInfoLayer(curStoryId)
 
-    --发送处主线剧情任务监听事件
-    local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_mainStoryEvent)
-    event._usedata = string.format("%d", nextStoryId)   --下一个剧情任务ID
-    g_EventDispatcher:dispatchEvent(event)  
+	-- local nextStoryId = curStoryId + 1
+	-- g_HeroDataMgr:SetStoryTalkId(nextStoryId)   --保存下一个主线剧情任务ID
+
+ --    --发送处主线剧情任务监听事件
+ --    local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_mainStoryEvent)
+ --    event._usedata = string.format("%d", nextStoryId)   --下一个剧情任务ID
+ --    g_EventDispatcher:dispatchEvent(event)  
 end
 
 --任务剧情相关  --end

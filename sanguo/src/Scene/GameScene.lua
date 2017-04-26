@@ -99,9 +99,6 @@ function GameScene:init()
 
     g_SpriteFrameCache:addSpriteFrames("plist/PublicRes2.plist", "plist/PublicRes2.png")
 
-    --动画修改工具
-    --g_pGameLayer:AddChild(g_GameLayerTag.LAYER_TAG_AniToolLayer, "AniTool.AniToolLayer")  
-
     --登录界面
     g_pGameLayer:AddChild(g_GameLayerTag.LAYER_TAG_LoginLayer, "Login.LoginLayer")
 

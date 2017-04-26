@@ -90,6 +90,47 @@ function GameLayer:GetLayerByUId(uid)
     return nil
 end
 
+--/////////////////////// 以下为各个功能界面开启  ////////////////////////////
+
+--开始游戏界面
+function GameLayer:StartGameLayer()
+    --G_Log_Info("GameLayer:StartGameLayer()")
+    local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
+    if campId and campId > 0 then
+        --进入游戏
+        self:GameMainLayer()  
+    else
+        --选角界面
+        self:AddChild(g_GameLayerTag.LAYER_TAG_SelCampLayer, "Role.CreateRoleLayer")
+    end
+end
+
+--进入游戏
+function GameLayer:GameMainLayer()
+    --主城层
+    --self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
+    --主菜单层
+    self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
+    --地图层
+    self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
+
+    local roleMapPosData = g_HeroDataMgr:GetHeroMapPosData()
+    local mapId = roleMapPosData.mapId
+    local rolePos = roleMapPosData.rolePos
+    if not mapId then  --没有地图信息，默认显示玩家阵营首府位置及地图
+        local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
+        if campId and campId > 0 then
+            local campData = g_pTBLMgr:getCampConfigTBLDataById(campId)
+            if campData then
+                self.MapLayer:changeMapByCity(campData.capital)
+            end
+        end
+    else
+        self.MapLayer:changeMapBymapId(mapId, rolePos)
+    end
+end
+
+
 --[[
 --滚动列表叠加显示提示界面
 tipsArr = {
@@ -187,6 +228,15 @@ function GameLayer:showStoryTalkLayer(storyData)
     g_GameDataMgr:SetImplementTaskData(storyData)
 end
 
+--显示战役介绍界面
+function GameLayer:showBattleInfoLayer(storyId) 
+    local battleInfoLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BattleInfoLayer)
+    if not battleInfoLayer then
+        battleInfoLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_BattleInfoLayer, "Battle.BattleInfoLayer")
+    end
+    battleInfoLayer:initStoryInfo(storyId)
+end
+
 --显示okCancel对话框  
 function GameLayer:showDialogOkCancelLayer() 
     local dialogLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_DialogOkCancelLayer, "TipsOrDialog.DialogOkCancelLayer")
@@ -200,47 +250,7 @@ function GameLayer:showDialogHelpLayer()
 end
 
 
---/////////////////////// 以下为各个功能界面开启  ////////////////////////////
 
---开始游戏界面
-function GameLayer:StartGameLayer()
-    --G_Log_Info("GameLayer:StartGameLayer()")
-    local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
-    if campId and campId > 0 then
-        --进入游戏
-        self:GameMainLayer()  
-    else
-        --选角界面
-        self:AddChild(g_GameLayerTag.LAYER_TAG_SelCampLayer, "Role.CreateRoleLayer")
-    end
-end
-
---进入游戏
-function GameLayer:GameMainLayer()
-    --主城层
-    --self.mainCityLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINCITY, "MainCityLayer")
-    --主菜单层
-    self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
-    --地图层
-    self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
-
-    local roleMapPosData = g_HeroDataMgr:GetHeroMapPosData()
-    local mapId = roleMapPosData.mapId
-    local rolePos = roleMapPosData.rolePos
-    if not mapId then  --没有地图信息，默认显示玩家阵营首府位置及地图
-        local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
-        if campId and campId > 0 then
-            local campData = g_pTBLMgr:getCampConfigTBLDataById(campId)
-            if campData then
-                self.MapLayer:changeMapByCity(campData.capital)
-            end
-        end
-    else
-        self.MapLayer:changeMapBymapId(mapId, rolePos)
-    end
-
-
-end
 
 
 
