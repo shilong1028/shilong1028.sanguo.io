@@ -26,6 +26,8 @@ lua_SelCamp_String1 = "初始财政：资金%s锭  粮草%s石\n初始兵力：%
 
 lua_Role_String1 = "兵%d"
 
+lua_Item_TypeStrs = {"币", "粮", "甲", "武", "马", "符", "令", "物"}
+lua_Item_String1 = "×%d"
 
 lua_Help_OfficeStr1 = "    游戏官职基于东汉制度及后代品级进行了精简，五品及以上被用于封官。游戏官职系统如下：\
     王族：皇帝、王公，仅玩家可充任；\

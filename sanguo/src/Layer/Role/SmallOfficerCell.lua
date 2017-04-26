@@ -19,7 +19,7 @@ function SmallOfficerCell:init()
     self.Image_bg:setTouchEnabled(true)
     self.Image_bg:addTouchEventListener(handler(self,self.touchEvent))
 
-    self.Image_color = csb:getChildByName("Image_color")   --品质，游击/轻装/重装/精锐/禁卫
+    self.Image_color = csb:getChildByName("Image_color")   --品质，游击1-3/轻装4-10/重装11-25/精锐26-50/禁卫51-99
     self.Image_type = csb:getChildByName("Image_type")    --兵种
 
     self.Text_name = csb:getChildByName("Text_name")      --名称&Lv

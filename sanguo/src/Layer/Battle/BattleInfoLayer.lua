@@ -3,6 +3,7 @@
 local BattleInfoLayer = class("BattleInfoLayer", CCLayerEx)
 
 local SmallOfficerCell = require("Layer.Role.SmallOfficerCell")
+local ItemCell = require("Layer.Item.ItemCell")
 
 function BattleInfoLayer:create()   --自定义的create()创建方法
     --G_Log_Info("BattleInfoLayer:create()")
@@ -62,17 +63,23 @@ function BattleInfoLayer:initStoryInfo(storyId)
             end
         end
 
-        for k, rewardId in pairs(self.storyData.rewardIdVec) do
-
+        for k, reward in pairs(self.storyData.rewardIdVec) do
+            local itemId = reward.itemId    --{["itemId"] = strVec[1], ["num"] = strVec[2]}
+            local itemData = g_pTBLMgr:getItemConfigTBLDataById(itemId) 
+            if itemData then
+                itemData.num = reward.num 
+                local itemCell = ItemCell:new()
+                itemCell:initData(itemData) 
+                self.ListView_reward:addChild(itemCell)
+            end
         end
-        --self.ListView:addChild(self.Text_content)
     end
 end
 
 function BattleInfoLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_close then  
-
+            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_BattleInfoLayer)
         elseif sender == self.Button_ok then   --调兵遣将
 
         end
