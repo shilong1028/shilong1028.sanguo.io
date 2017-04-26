@@ -29,6 +29,10 @@ lua_Role_String1 = "兵%d"
 lua_Item_TypeStrs = {"币", "粮", "甲", "武", "马", "符", "令", "物"}
 lua_Item_String1 = "×%d"
 
+lua_Battle_String1 = "伤亡%d兵"
+lua_Battle_String2 = "耗金%d贯"
+lua_Battle_String3 = "耗粮%d斤"
+
 lua_Help_OfficeStr1 = "    游戏官职基于东汉制度及后代品级进行了精简，五品及以上被用于封官。游戏官职系统如下：\
     王族：皇帝、王公，仅玩家可充任；\
     一品：武职有大将军、太师、大司马（太尉），文职有太傅、大司徒（丞相）、大司空（御史大夫）；\

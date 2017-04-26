@@ -5,6 +5,7 @@
       <RootFolder Name=".">
         <Folder Name="csd">
           <Project Name="BattleInfoLayer.csd" Type="Layer" />
+          <Project Name="BattleResultLayer.csd" Type="Layer" />
           <Project Name="CreateRoleLayer.csd" Type="Layer" />
           <Project Name="DialogOkCancelLayer.csd" Type="Layer" />
           <Project Name="HelpInfoLayer.csd" Type="Layer" />
@@ -29,6 +30,7 @@
         <Folder Name="img">
           <Image Name="studio_chinaMap.jpg" />
           <Image Name="studio_dialogBg.png" />
+          <Image Name="studio_effectImg.png" />
           <Image Name="studio_layerBg.png" />
           <Image Name="studio_layerBg2.png" />
           <Image Name="studio_listBg.png" />

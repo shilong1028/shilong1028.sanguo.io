@@ -218,6 +218,18 @@ function GameLayer:showLoadingLayer(bShow)
     end
 end
 
+--显示okCancel对话框  
+function GameLayer:showDialogOkCancelLayer() 
+    local dialogLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_DialogOkCancelLayer, "TipsOrDialog.DialogOkCancelLayer")
+    return dialogLayer
+end
+
+--显示help对话框  
+function GameLayer:showDialogHelpLayer() 
+    local dialogLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_DialogHelpLayer, "TipsOrDialog.HelpInfoLayer")
+    return dialogLayer
+end
+
 --显示剧情动画
 function GameLayer:showStoryTalkLayer(storyData) 
     local storytalkLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)
@@ -237,17 +249,16 @@ function GameLayer:showBattleInfoLayer(storyId)
     battleInfoLayer:initStoryInfo(storyId)
 end
 
---显示okCancel对话框  
-function GameLayer:showDialogOkCancelLayer() 
-    local dialogLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_DialogOkCancelLayer, "TipsOrDialog.DialogOkCancelLayer")
-    return dialogLayer
+--显示战役介绍界面
+function GameLayer:showBattleResultLayer(result) 
+    local battleResultLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BattleResultLayer)
+    if not battleResultLayer then
+        battleResultLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_BattleResultLayer, "Battle.BattleResultLayer")
+    end
+    battleResultLayer:initBattleResult(result)
 end
 
---显示help对话框  
-function GameLayer:showDialogHelpLayer() 
-    local dialogLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_DialogHelpLayer, "TipsOrDialog.HelpInfoLayer")
-    return dialogLayer
-end
+
 
 
 
