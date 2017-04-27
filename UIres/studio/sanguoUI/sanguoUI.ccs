@@ -6,6 +6,7 @@
         <Folder Name="csd">
           <Project Name="BattleInfoLayer.csd" Type="Layer" />
           <Project Name="BattleResultLayer.csd" Type="Layer" />
+          <Project Name="bigOfficalNode.csd" Type="Node" />
           <Project Name="CreateRoleLayer.csd" Type="Layer" />
           <Project Name="DialogOkCancelLayer.csd" Type="Layer" />
           <Project Name="HelpInfoLayer.csd" Type="Layer" />
@@ -23,23 +24,22 @@
           <Project Name="storyTalkCell.csd" Type="Layer" />
           <Project Name="StoryTalkLayer.csd" Type="Layer" />
           <Project Name="TextOfficerCell.csd" Type="Layer" />
+          <Project Name="ZhenXingLayer.csd" Type="Layer" />
+          <Project Name="ZhenXingNode.csd" Type="Node" />
         </Folder>
         <Folder Name="font">
           <TTF Name="simkai.ttf" />
         </Folder>
         <Folder Name="img">
+          <Image Name="studio_buzhenBg.png" />
           <Image Name="studio_chinaMap.jpg" />
           <Image Name="studio_dialogBg.png" />
-          <Image Name="studio_effectImg.png" />
           <Image Name="studio_layerBg.png" />
           <Image Name="studio_layerBg2.png" />
-          <Image Name="studio_listBg.png" />
           <Image Name="studio_loginBg.png" />
         </Folder>
         <Folder Name="plist">
           <PlistImageFolder Image="PublicRes.png" PListFile="PublicRes.plist" Name=".PublicRes_PList.Dir">
-            <PlistImageFile Name="public__fail.png" Key="public__fail.png" />
-            <PlistImageFile Name="public__win.png" Key="public__win.png" />
             <PlistImageFile Name="public_add.png" Key="public_add.png" />
             <PlistImageFile Name="public_arrow.png" Key="public_arrow.png" />
             <PlistImageFile Name="public_arrow2.png" Key="public_arrow2.png" />
@@ -123,6 +123,20 @@
             <PlistImageFile Name="public_yuanshao.png" Key="public_yuanshao.png" />
             <PlistImageFile Name="public_zhao.png" Key="public_zhao.png" />
             <PlistImageFile Name="public_zhucheng.png" Key="public_zhucheng.png" />
+            <PlistImageFile Name="public_arrow3.png" Key="public_arrow3.png" />
+            <PlistImageFile Name="public_effectImg.png" Key="public_effectImg.png" />
+            <PlistImageFile Name="public_fail.png" Key="public_fail.png" />
+            <PlistImageFile Name="public_jiahao.png" Key="public_jiahao.png" />
+            <PlistImageFile Name="public_jianhao.png" Key="public_jianhao.png" />
+            <PlistImageFile Name="public_listBg.png" Key="public_listBg.png" />
+            <PlistImageFile Name="public_radio1.png" Key="public_radio1.png" />
+            <PlistImageFile Name="public_radio2.png" Key="public_radio2.png" />
+            <PlistImageFile Name="public_search.png" Key="public_search.png" />
+            <PlistImageFile Name="public_star1.png" Key="public_star1.png" />
+            <PlistImageFile Name="public_star2.png" Key="public_star2.png" />
+            <PlistImageFile Name="public_tanhao.png" Key="public_tanhao.png" />
+            <PlistImageFile Name="public_wenhao.png" Key="public_wenhao.png" />
+            <PlistImageFile Name="public_win.png" Key="public_win.png" />
           </PlistImageFolder>
         </Folder>
         <Project Name="MainScene.csd" Type="Scene" />

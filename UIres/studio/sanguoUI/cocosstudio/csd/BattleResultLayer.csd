@@ -40,7 +40,7 @@
                 <CColor A="255" R="255" G="255" B="255" />
                 <PrePosition X="0.5000" Y="0.6000" />
                 <PreSize X="0.3037" Y="0.4615" />
-                <FileData Type="Normal" Path="img/studio_effectImg.png" Plist="" />
+                <FileData Type="PlistSubImage" Path="public_effectImg.png" Plist="plist/PublicRes.plist" />
               </AbstractNodeData>
               <AbstractNodeData Name="Text_title" ActionTag="-1055724178" Tag="559" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="383.5000" RightMargin="383.5000" TopMargin="46.3500" BottomMargin="502.6500" FontSize="30" LabelText="战役名称" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
                 <Size X="122.0000" Y="36.0000" />
@@ -115,7 +115,7 @@
                 <CColor A="255" R="255" G="255" B="255" />
                 <PrePosition X="0.5000" Y="0.7300" />
                 <PreSize X="0.0911" Y="0.1385" />
-                <FileData Type="PlistSubImage" Path="public__win.png" Plist="plist/PublicRes.plist" />
+                <FileData Type="PlistSubImage" Path="public_win.png" Plist="plist/PublicRes.plist" />
               </AbstractNodeData>
               <AbstractNodeData Name="Image_star1" ActionTag="1305143409" Tag="17" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="338.1000" RightMargin="515.9000" TopMargin="217.0000" BottomMargin="334.0000" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="13" Scale9Height="12" ctype="ImageViewObjectData">
                 <Size X="35.0000" Y="34.0000" />

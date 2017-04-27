@@ -94,9 +94,9 @@ function BattleResultLayer:initBattleResult(result)
 
         local winStar = result.winStar  --<=0失败,>0胜利，123表示星星
         if winStar <= 0 then
-            self.Image_result:loadTexture("public__fail.png", ccui.TextureResType.plistType)
+            self.Image_result:loadTexture("public_fail.png", ccui.TextureResType.plistType)
         else
-            self.Image_result:loadTexture("public__win.png", ccui.TextureResType.plistType)
+            self.Image_result:loadTexture("public_win.png", ccui.TextureResType.plistType)
             self.Image_effect:runAction(cc.RepeatForever:create(cc.RotateBy:create(10.0, 360)))
 
             --下一个剧情
