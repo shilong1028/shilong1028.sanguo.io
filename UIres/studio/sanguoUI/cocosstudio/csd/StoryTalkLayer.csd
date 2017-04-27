@@ -27,7 +27,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="1.0000" Y="0.3000" />
-            <FileData Type="Normal" Path="" Plist="" />
+            <FileData Type="PlistSubImage" Path="public_listBg.png" Plist="plist/PublicRes.plist" />
             <SingleColor A="255" R="29" G="38" B="49" />
             <FirstColor A="255" R="150" G="200" B="255" />
             <EndColor A="255" R="255" G="255" B="255" />

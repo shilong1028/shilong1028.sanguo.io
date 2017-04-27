@@ -45,7 +45,10 @@ g_HeroDataMgr = nil
 g_GameDataMgr = nil 
 
 --州郡地图管理单例
-g_pMapMgr = nil       
+g_pMapMgr = nil     
+
+--用于游戏战斗信息  
+g_BattleDataMgr = nil
 
 --默认的华康圆体路径
 g_sDefaultTTFpath = "font/simkai.ttf"   

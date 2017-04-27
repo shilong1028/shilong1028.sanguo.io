@@ -258,6 +258,14 @@ function GameLayer:showBattleResultLayer(result)
     battleResultLayer:initBattleResult(result)
 end
 
+--显示阵型|布阵界面
+function GameLayer:showZhenXingLayer(bBuZhen) 
+    local zhenxingLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
+    if not zhenxingLayer then
+        zhenxingLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_ZhenXingLayer, "Battle.ZhenXingLayer")
+    end
+end
+
 
 
 

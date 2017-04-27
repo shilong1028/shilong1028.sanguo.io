@@ -75,6 +75,10 @@ function GameScene:initGameManager()
     --州郡地图管理单例
     local MapMgr = require "Manager.MapMgr"
     g_pMapMgr = g_pMapMgr or MapMgr:GetInstance() 
+
+    --用于游戏战斗信息
+    local BattleDataMgr = require "Manager.BattleDataMgr"
+    g_BattleDataMgr = g_BattleDataMgr or BattleDataMgr:GetInstance() 
 end
 
 function GameScene:clearGameManager()
