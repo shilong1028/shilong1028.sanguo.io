@@ -220,6 +220,17 @@ function  g_tbl_storyConfig:ctor()
 	self.talkVec = ""    --对话内容，以;分割。人物ID字符串和文本用-分割   {["heroId"], ["text"]}
 end
 
-
+--vip表结构类
+g_tbl_vipConfig = class("g_tbl_vipConfig",__BaseStruct)
+function  g_tbl_vipConfig:ctor()
+	self.id = 0        --vip等级ID
+	self.name = ""    --vip名称
+	self.gold = 0    --充值总额（1银锭=1人民币）
+	self.rewardsVec = {}   --直接奖励物品，用;分割
+	self.money_per = 0    --每天金币产出增加率（%,取万分值）
+	self.food_per = 0    --每天粮草产出增加率（%,取万分值）
+	self.time_per = 0    --建筑升级时间缩减率（%,取万分值）
+	self.desc = ""    --
+end
 
 

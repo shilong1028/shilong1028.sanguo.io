@@ -14,12 +14,15 @@ function HeroDataMgr:init()
     self.heroData.storyData = {}  --剧情任务数据
     self.heroData.mapPosData = {}  --玩家地图位置信息
 	self.heroData.campData = g_tbl_campConfig:new()  --玩家阵营信息
+    self.heroData.vipData = {}   --vip信息
 
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
 	if heroXML then
         --剧情任务数据(主线ID) 
         self.heroData.storyData.mainStoryId = tonumber(heroXML:getNodeAttrValue("storyData", "mainStoryId")) 
-
+        --vip数据
+        self.heroData.vipData.vipId = tonumber(heroXML:getNodeAttrValue("vipData", "vipId")) or 0
+        self.heroData.vipData.vipgold = tonumber(heroXML:getNodeAttrValue("vipData", "vipgold")) or 0
         --玩家地图位置信息
         self.heroData.mapPosData.mapId = tonumber(heroXML:getNodeAttrValue("mapPosData", "mapId")) 
         if self.heroData.mapPosData.mapId then
@@ -57,9 +60,36 @@ end
 
 ------------------------------------------------------
 
+--Vip数据  --begin
+function HeroDataMgr:GetVipXmlData()
+    return clone(self.heroData.vipData)
+end
+
+function HeroDataMgr:SetVipXmlData(vipId, vipgold)
+    self.heroData.vipData.vipId = vipId   
+    self.heroData.vipData.vipgold = vipgold
+
+    local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
+    if not heroXML then
+        heroXML = g_UserDefaultMgr:createXMLFile("heroXML.xml", "root")
+    end
+    heroXML:removeNode("vipData")
+    heroXML:addChildNode("vipData")
+    heroXML:setNodeAttrValue("vipData", "vipId", tostring(vipId))
+    heroXML:setNodeAttrValue("vipData", "vipgold", tostring(self.heroData.vipData.vipgold))
+    heroXML:saveXMLFile()
+
+    --vip监听事件
+    local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_vipEvent)
+    event._usedata = string.format("%d", vipId)   
+    g_EventDispatcher:dispatchEvent(event) 
+end
+
+--Vip数据处理  --end  ------------------------------------------------------
+
 --剧情任务数据  --begin
 function HeroDataMgr:GetStoryTalkId()
-    return self.heroData.storyData.mainStoryId
+    return clone(self.heroData.storyData.mainStoryId)
 end
 
 function HeroDataMgr:SetStoryTalkId(storyId)

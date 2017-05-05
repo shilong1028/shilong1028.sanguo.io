@@ -266,6 +266,14 @@ function GameLayer:showZhenXingLayer(bBuZhen)
     end
 end
 
+--Vip界面
+function GameLayer:showVipLayer() 
+    local vipLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_VipLayer)
+    if not vipLayer then
+        vipLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_VipLayer, "Vip.VipLayer")
+    end
+end
+
 
 
 

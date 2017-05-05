@@ -35,6 +35,7 @@ g_GameLayerTag = {
 	LAYER_TAG_BattleInfoLayer = 108,    --战役信息
 	LAYER_TAG_BattleResultLayer = 109,    --战役结果
 	LAYER_TAG_ZhenXingLayer = 110,    --阵型|布阵界面
+	LAYER_TAG_VipLayer = 111,    --Vip界面
 }
 
 --人物移动的方向状态标识
@@ -65,6 +66,7 @@ g_ColorDef = {
 g_EventListenerCustomName = {
 	Login_serverListEvent = "Login_serverListEvent",   --登录界面的服务器列表监听事件
 	MainMenu_mainStoryEvent = "MainMenu_mainStoryEvent",   --主线剧情任务监听
+	MainMenu_vipEvent = "MainMenu_vipEvent",   --vip变化监听
 }
 
 

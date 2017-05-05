@@ -22,6 +22,7 @@ function TBLMgr:init()
 	self.itemConfigVec = nil  --物品装备表
 	self.talkConfigVec = nil  --对话文本表
 	self.storyConfigVec = nil  --剧情表
+	self.vipConfigVec = nil    --vip
 
 end
 
@@ -483,6 +484,90 @@ function TBLMgr:getStoryConfigTBLDataById(storyId)
 		end
 	end
 	return nil
+end
+
+--Vip结构类
+function TBLMgr:LoadVipConfigTBL()
+	--G_Log_Info("TBLMgr:LoadVipConfigTBL()")
+	if self.vipConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/vipConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.vipConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local vipConfig = g_tbl_vipConfig:new()
+		vipConfig.id = stream:ReadWord()        --vip等级ID
+		vipConfig.name = stream:ReadString()    --vip名称
+		vipConfig.gold = stream:ReadUInt()   --充值总额（1银锭=1人民币）
+		vipConfig.rewardsVec = {}   --直接奖励物品，用;分割
+		local rewardStr = stream:ReadString()
+		local rewardIdVec = string.split(rewardStr,";")
+		for k, d in pairs(rewardIdVec) do
+			local strVec = string.split(d,"-")
+			table.insert(vipConfig.rewardsVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+		end
+		vipConfig.money_per = stream:ReadUInt()/10000    --每天金币产出增加率（%,取万分值）
+		vipConfig.food_per = stream:ReadUInt()/10000    --每天粮草产出增加率（%,取万分值）
+		vipConfig.time_per = stream:ReadUInt()/10000    --建筑升级时间缩减率（%,取万分值）
+		vipConfig.desc = ""
+		local desc = stream:ReadString()    --
+		local descVec = string.split(desc,"-")
+		for k, str in pairs(descVec) do
+			if k < #descVec then
+				vipConfig.desc = vipConfig.desc..str.."\n"
+			else
+				vipConfig.desc = vipConfig.desc..str
+			end
+		end
+
+		table.insert(self.vipConfigVec, vipConfig)
+	end
+end
+
+function TBLMgr:getVipConfigMaxCount()
+	if self.vipConfigVec == nil then
+		self:LoadVipConfigTBL()
+	end
+	return #self.vipConfigVec -1
+end
+
+function TBLMgr:getVipConfigById(vipId)
+	--G_Log_Info("TBLMgr:getVipConfigById(), vipId = %d", vipId)
+	if self.vipConfigVec == nil then
+		self:LoadVipConfigTBL()
+	end
+
+	if self.vipConfigVec then
+		for i=1, #self.vipConfigVec do
+			if self.vipConfigVec[i].id == vipId then
+				return clone(self.vipConfigVec[i])
+			end
+		end
+	end
+	return nil
+end
+
+function TBLMgr:getVipIdByGlod(vipGlod)
+	if self.vipConfigVec == nil then
+		self:LoadVipConfigTBL()
+	end
+
+	for i=1, #self.vipConfigVec do
+		if i >= #self.vipConfigVec then
+			return clone(self.vipConfigVec[i].id)
+		end
+		if self.vipConfigVec[i+1].gold > vipGlod and self.vipConfigVec[i].gold <= vipGlod then
+			return clone(self.vipConfigVec[i].id)
+		end
+	end
+	return 0
 end
 
 

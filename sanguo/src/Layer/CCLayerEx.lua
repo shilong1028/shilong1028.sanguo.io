@@ -14,7 +14,7 @@ end
 function CCLayerEx:ctor()   --new()会自动调用ctor()，如果直接调用.new()或:new()方法则会直接调用ctor()而不再调用create()
     --G_Log_Info("CCLayerEx:ctor()")
     self.touchListener = nil
-    self:initTouchEvent()
+    --self:initTouchEvent()
     self:initNodeEvent()
 	self:init()
 end
@@ -65,7 +65,7 @@ function CCLayerEx:initTouchEvent()
     end
 
     local function onTouchMoved(touch, event)
-         self:onTouchEnded(touch, event);
+         self:onTouchMoved(touch, event);
     end
 
     local function onTouchEnded(touch, event)

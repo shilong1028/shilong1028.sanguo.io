@@ -11,8 +11,12 @@ end
 
 function MainMenuLayer:onExit()
     --G_Log_Info("MainMenuLayer:onExit()")
-        if nil ~= self.mainStory_listener then   --主线剧情任务监听
+    if nil ~= self.mainStory_listener then   --主线剧情任务监听
         g_EventDispatcher:removeEventListener(self.mainStory_listener)
+    end
+
+    if nil ~= self.vip_listener then   --vip监听
+        g_EventDispatcher:removeEventListener(self.vip_listener)
     end
 end
 
@@ -34,6 +38,14 @@ function MainMenuLayer:LoadEventListenerCustom()
 
     self.mainStory_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.MainMenu_mainStoryEvent, mainStory_listenerCallBack)
     g_EventDispatcher:addEventListenerWithFixedPriority(self.mainStory_listener, 1)
+
+    --vip变化监听
+    local function vip_listenerCallBack(event)
+        local vipId = tonumber(event._usedata)
+        self:initVipData(vipId)
+    end
+    self.vip_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.MainMenu_vipEvent, vip_listenerCallBack)
+    g_EventDispatcher:addEventListenerWithFixedPriority(self.vip_listener, 1)
 end
 
 --初始化UI界面
@@ -172,6 +184,10 @@ function MainMenuLayer:initData()
 
     self.Text_nick:setString(userName)    --玩家昵称
 
+    local vipXml = g_HeroDataMgr:GetVipXmlData()
+    local vipId = vipXml.vipId or 0
+    self:initVipData(vipId)
+
     self.renWuListView:removeAllChildren()
 
     local storyId = g_HeroDataMgr:GetStoryTalkId()
@@ -182,6 +198,14 @@ function MainMenuLayer:initData()
 
     self.mainStoryCell = nil   --主线剧情Cell
     self:initStroyData(storyId)
+end
+
+function MainMenuLayer:initVipData(vipId)
+    local vipData = g_pTBLMgr:getVipConfigById(vipId)
+    self.Text_vip:setString("")
+    if vipData then
+        self.Text_vip:setString(vipId..vipData.name)
+    end
 end
 
 function MainMenuLayer:initStroyData(storyId)
@@ -255,6 +279,7 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_libao then    --在线礼包
         elseif sender == self.Button_huodong then   --精彩活动
         elseif sender == self.BtnVipAdd then    --添加VIP等级
+            g_pGameLayer:showVipLayer()
         elseif sender == self.Button_glod then   --元宝添加
         elseif sender == self.Button_liang then   --粮草添加
         elseif sender == self.Button_renwu then   --任务

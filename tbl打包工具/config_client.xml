@@ -16,5 +16,6 @@
 		<package xml="storyConfig3_client.xml"/>
 		<package xml="storyConfig4_client.xml"/>
 		<package xml="storyConfig5_client.xml"/>
+		<package xml="vipConfig_client.xml"/>
 	</solution>
 </config>

@@ -95,8 +95,8 @@
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_vip" ActionTag="-514032767" Tag="34" IconVisible="False" LeftMargin="137.0000" RightMargin="-179.0000" TopMargin="33.0000" BottomMargin="-79.0000" IsCustomSize="True" FontSize="36" LabelText="99" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" OutlineSize="5" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="42.0000" Y="46.0000" />
+          <AbstractNodeData Name="Text_vip" ActionTag="-514032767" Tag="34" IconVisible="False" LeftMargin="123.0000" RightMargin="-193.0000" TopMargin="30.5000" BottomMargin="-81.5000" IsCustomSize="True" FontSize="22" LabelText="0平民" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" OutlineSize="5" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="70.0000" Y="51.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="158.0000" Y="-56.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />

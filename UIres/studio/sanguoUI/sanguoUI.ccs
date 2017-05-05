@@ -26,6 +26,8 @@
           <Project Name="TextOfficerCell.csd" Type="Layer" />
           <Project Name="ZhenXingLayer.csd" Type="Layer" />
           <Project Name="ZhenXingNode.csd" Type="Layer" />
+          <Project Name="vipLayer.csd" Type="Layer" />
+          <Project Name="vipInfoCell.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
           <TTF Name="simkai.ttf" />
