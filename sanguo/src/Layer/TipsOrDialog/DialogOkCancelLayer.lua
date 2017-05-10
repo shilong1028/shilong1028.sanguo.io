@@ -33,9 +33,9 @@ function DialogOkCancelLayer:init()
     self.Button_close:addTouchEventListener(handler(self,self.touchEvent))
 
     self.ListView = self.Image_bg:getChildByName("ListView")
-    --self.Text_content = ccui.Helper:seekWidgetByName(self.ListView, "Text_content")
-    -- self.Text_content = self.ListView:getChildByName("Text_content")
-    -- self.Text_content:setDimensions(self.ListView:getContentSize().width - 10, 0)
+    self.ListView:setBounceEnabled(true)
+    self.ListView:setScrollBarEnabled(false)   --屏蔽列表滚动条
+    self.ListView_Size = self.ListView:getContentSize()
 end
 
 function DialogOkCancelLayer:bindingData(titleStr, infoStr, okCallBack, cancelBack, style)  
@@ -53,9 +53,22 @@ function DialogOkCancelLayer:bindingData(titleStr, infoStr, okCallBack, cancelBa
     --self.Text_content:enableShadow()   --阴影
     self.Text_content:enableOutline(g_ColorDef.DarkRed, 1)   --描边
 
-    self.Text_content:setAnchorPoint(cc.p(0.5, 1))
-    self.Text_content:setPosition(cc.p(self.ListView:getContentSize().width/2, self.ListView:getContentSize().height - 5))
-    self.ListView:addChild(self.Text_content)
+    self.Text_content:setAnchorPoint(cc.p(0, 0))
+    --self.Text_content:setPosition(cc.p(self.ListView:getContentSize().width/2, self.ListView:getContentSize().height - 5))
+
+    local cur_item = ccui.Layout:create()
+    cur_item:setContentSize(self.Text_content:getContentSize())
+    cur_item:addChild(self.Text_content)
+    self.ListView:addChild(cur_item)
+
+    local InnerHeight = self.Text_content:getContentSize().height
+    if InnerHeight < self.ListView_Size.height then
+        --self.ListView:setContentSize(cc.size(self.ListView_Size.width, InnerHeight))
+        self.ListView:setBounceEnabled(false)
+    else
+        --self.ListView:setContentSize(self.ListView_Size)
+        self.ListView:setBounceEnabled(true)
+    end
 
     self.okCallBack = okCallBack
     self.cancelBack = cancelBack

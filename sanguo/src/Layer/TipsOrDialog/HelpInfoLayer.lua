@@ -29,6 +29,9 @@ function HelpInfoLayer:init()
     self.Button_close:addTouchEventListener(handler(self,self.touchEvent))
 
     self.ListView = self.Image_bg:getChildByName("ListView")
+    self.ListView:setBounceEnabled(true)
+    self.ListView:setScrollBarEnabled(false)   --屏蔽列表滚动条
+    self.ListView_Size = self.ListView:getContentSize()
 end
 
 function HelpInfoLayer:bindingData(titleStr, infoStr)  
@@ -47,9 +50,22 @@ function HelpInfoLayer:bindingData(titleStr, infoStr)
     --self.Text_content:enableShadow()   --阴影
     self.Text_content:enableOutline(g_ColorDef.DarkRed, 1)   --描边
 
-    self.Text_content:setAnchorPoint(cc.p(0.5, 1))
-    self.Text_content:setPosition(cc.p(self.ListView:getContentSize().width/2, self.ListView:getContentSize().height - 5))
-    self.ListView:addChild(self.Text_content)
+    self.Text_content:setAnchorPoint(cc.p(0, 0))
+    --self.Text_content:setPosition(cc.p(self.ListView:getContentSize().width/2, self.ListView:getContentSize().height - 5))
+
+    local cur_item = ccui.Layout:create()
+    cur_item:setContentSize(self.Text_content:getContentSize())
+    cur_item:addChild(self.Text_content)
+    self.ListView:addChild(cur_item)
+
+    local InnerHeight = self.Text_content:getContentSize().height
+    if InnerHeight < self.ListView_Size.height then
+        self.ListView:setContentSize(cc.size(self.ListView_Size.width, InnerHeight))
+        self.ListView:setBounceEnabled(false)
+    else
+        self.ListView:setContentSize(self.ListView_Size)
+        self.ListView:setBounceEnabled(true)
+    end
 end
 
 function HelpInfoLayer:touchEvent(sender, eventType)

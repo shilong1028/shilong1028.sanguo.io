@@ -44,7 +44,8 @@ function HeroDataMgr:init()
 		self.heroData.campData.troops = tonumber(heroXML:getNodeAttrValue("campData", "troops"))        --初始兵力（人）
 		self.heroData.campData.money = tonumber(heroXML:getNodeAttrValue("campData", "money"))     --初始财力（单位锭，1锭=1000贯）
 		self.heroData.campData.food = tonumber(heroXML:getNodeAttrValue("campData", "food"))     --初始粮草（单位石，1石=1000斤）
-		self.heroData.campData.general = heroXML:getNodeAttrValue("campData", "general")    --初始将领ID字符串，以;分割
+		local generalStr = heroXML:getNodeAttrValue("campData", "general")    --初始将领ID字符串，以;分割
+        self.heroData.campData.generalIdVec = string.split(generalStr,";")
 		--self.heroData.campData.desc = ""    --阵营描述不用存储
 	end
 	--G_Log_Dump(self.heroData.campData, "campData = ")

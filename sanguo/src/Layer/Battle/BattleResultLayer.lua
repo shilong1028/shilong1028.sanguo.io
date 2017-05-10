@@ -33,6 +33,10 @@ function BattleResultLayer:init()
     self.Button_ok:addTouchEventListener(handler(self,self.touchEvent))
 
     self.ListView_reward = self.Image_bg:getChildByName("ListView_reward")
+    self.ListView_reward:setBounceEnabled(true)
+    self.ListView_reward:setScrollBarEnabled(false)   --屏蔽列表滚动条
+    self.ListView_reward:setItemsMargin(5.0)
+    self.ListView_rewardSize = self.ListView_reward:getContentSize()
 
     --攻击方
     self.Image_attHead = self.Image_bg:getChildByName("Image_attHead")
@@ -75,8 +79,21 @@ function BattleResultLayer:initBattleResult(result)
                 itemData.num = reward.num 
                 local itemCell = ItemCell:new()
                 itemCell:initData(itemData) 
-                self.ListView_reward:addChild(itemCell)
+
+                local cur_item = ccui.Layout:create()
+                cur_item:setContentSize(itemCell:getContentSize())
+                cur_item:addChild(itemCell)
+                cur_item:setEnabled(false)
+                self.ListView_reward:addChild(cur_item)
             end
+        end
+        local rewardInnerWidth = #self.storyData.rewardIdVec*(90 + 5)
+        if rewardInnerWidth < self.ListView_rewardSize.width then
+            self.ListView_reward:setContentSize(cc.size(rewardInnerWidth, self.ListView_rewardSize.height))
+            self.ListView_reward:setBounceEnabled(false)
+        else
+            self.ListView_reward:setContentSize(self.ListView_rewardSize)
+            self.ListView_reward:setBounceEnabled(true)
         end
 
         --攻击方

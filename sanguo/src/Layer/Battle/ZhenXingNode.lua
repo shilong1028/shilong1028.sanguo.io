@@ -35,8 +35,10 @@ function ZhenXingNode:init()
 
     self.Button_sel = csb:getChildByName("Button_sel")
     self.Button_sel:addTouchEventListener(handler(self,self.touchEvent))
+    self.Button_sel:setVisible(false)
     self.Button_edit = csb:getChildByName("Button_edit")
     self.Button_edit:addTouchEventListener(handler(self,self.touchEvent))
+    self.Button_edit:setVisible(false)
 
     self.Text_bing = csb:getChildByName("Text_bing")   --总兵力
     self.Text_val = csb:getChildByName("Text_val")    --总战力
@@ -53,7 +55,9 @@ function ZhenXingNode:touchEvent(sender, eventType)
                 self.parentLayer:setRadioPanel(1)
             end
         elseif sender == self.Button_edit then     --编辑
-
+            if self.parentLayer then
+                self.parentLayer:setRadioPanel(1)
+            end
         else
             local idx = sender:getTag() - 5000
             if idx >=1 and idx <= 7 then
@@ -64,11 +68,24 @@ function ZhenXingNode:touchEvent(sender, eventType)
     end
 end
 
-function ZhenXingNode:setSelAndEditVisible(bShow)
-    self.Button_sel:setVisible(bShow)
-    self.Button_edit:setVisible(bShow)
+--设置选中或编辑按钮是否显示
+function ZhenXingNode:setSelAndEditVisible(nType)  --0都显示，1选中显示，2编辑显示，其他都不显示
+    if nType == 0 then
+        self.Button_sel:setVisible(true)
+        self.Button_edit:setVisible(true)
+    elseif nType == 1 then
+        self.Button_sel:setVisible(true)
+        self.Button_edit:setVisible(false)
+    elseif bType == 2 then
+        self.Button_sel:setVisible(false)
+        self.Button_edit:setVisible(true)
+    else
+        self.Button_sel:setVisible(false)
+        self.Button_edit:setVisible(false)
+    end
 end
 
+--设置头像上添加等图片是否显示
 function ZhenXingNode:setOptImgVisible(bShow)
     for i=1, 7 do
         self.headVec[i].optImg:setVisible(bShow)

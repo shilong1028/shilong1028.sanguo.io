@@ -91,37 +91,39 @@ function MainMenuLayer:init()
     self.Button_renwu = FileNode_time:getChildByName("Button_renwu")   --任务按钮
     self.Button_renwu:addTouchEventListener(handler(self,self.touchEvent))
     self.Panel_renwu = FileNode_time:getChildByName("Panel_renwu")    --任务内容面板
-    self.renWuListView = self.Panel_renwu:getChildByName("ListView")   --任务列表
-    self.renWuListWidth = self.renWuListView:getContentSize().width
-    self.bRenWuListHide = false
-    self.bRenWuActioning = false
     self.renWuButton_push = self.Panel_renwu:getChildByName("Button_push")  --任务列表收放按钮
     self.renWuButton_push:addTouchEventListener(handler(self,self.touchEvent))
+    self.renWuButton_pushPosY = self.renWuButton_push:getPositionY()
 
-    local function listViewEvent(sender, eventType)
-        if eventType == ccui.ListViewEventType.ONSELECTEDITEM_START then
-            --print("select child index = ",sender:getCurSelectedIndex())
+    local function touchListViewEvent(sender, event)
+        if event == ccui.TouchEventType.began then --0began
+            --local pos = cc.p(sender:getTouchBeganPosition())
+        elseif event == ccui.TouchEventType.moved then --1moved
+        elseif event == ccui.TouchEventType.ended then --2ended
+        else   --3cancelled
         end
     end
 
-    local function scrollViewEvent(sender, evenType)
-        if evenType == ccui.ScrollviewEventType.scrollToBottom then
-            --print("SCROLL_TO_BOTTOM")
-        elseif evenType ==  ccui.ScrollviewEventType.scrollToTop then
-            --print("SCROLL_TO_TOP")
-        end
-    end
-
-    --local listView = ccui.ListView:create()
-    -- set list view ex direction
+    self.bRenWuListHide = false
+    self.bRenWuActioning = false
+    self.renWuListView = self.Panel_renwu:getChildByName("ListView")   --任务列表
+    -- self.renWuListView:setVisible(false)
+    -- self.renWuListView = ccui.ListView:create()
     -- self.renWuListView:setDirection(ccui.ScrollViewDir.vertical)
-    -- self.renWuListView:setBounceEnabled(true)
-    -- self.renWuListView:setContentSize(cc.size(230, 200))
-    -- self.renWuListView:setPosition(cc.p(250,200))
+    self.renWuListView:setBounceEnabled(true)
     self.renWuListView:setScrollBarEnabled(false)   --屏蔽列表滚动条
+    self.renWuListView:setInertiaScrollEnabled(false)  --滑动的惯性
     self.renWuListView:setItemsMargin(2.0)
-    --self.renWuListView:addEventListener(listViewEvent)
-    --self.renWuListView:addScrollViewEventListener(scrollViewEvent)
+    -- self.renWuListView:setBackGroundImage("Image/Image_tipsBg.png")
+    -- self.renWuListView:setBackGroundImageScale9Enabled(true)
+    -- self.renWuListView:setPropagateTouchEvents(false) --是否取消取消传递对应控件的触摸事件
+    -- self.renWuListView:setSwallowTouches(true) 
+    -- self.renWuListView:setContentSize(renWuListView:getContentSize())
+    -- self.renWuListView:setAnchorPoint(cc.p(renWuListView:getAnchorPoint()))
+    -- self.renWuListView:setPosition(cc.p(renWuListView:getPosition()))
+    -- self.Panel_renwu:addChild(self.renWuListView)
+    self.renWuListWidth = self.renWuListView:getContentSize().width
+    -- self.renWuListView:addTouchEventListener(touchListViewEvent)
     -- local items = self.renWuListView:getItems()
     -- local items_count = table.getn(items)
     
@@ -162,11 +164,6 @@ function MainMenuLayer:init()
     self.Button_junqing:addTouchEventListener(handler(self,self.touchEvent))
     self.Button_gonggao = FileNode_bottom:getChildByName("Button_gonggao")   --公告按钮
     self.Button_gonggao:addTouchEventListener(handler(self,self.touchEvent))
-
-    --剧情任务暂时调整大小
-    self.Panel_renwu:setContentSize(cc.size(self.Panel_renwu:getContentSize().width, 100))
-    self.renWuListView:setContentSize(cc.size(self.renWuListView:getContentSize().width, 80))
-    self.renWuButton_push:setPosition(cc.p(self.renWuButton_push:getPositionX(), self.renWuButton_push:getPositionY() - 100))
 
     self:initData()
 
@@ -215,12 +212,13 @@ function MainMenuLayer:initStroyData(storyId)
     if self.storyData then
         if not self.mainStoryCell then
             local storyCell = StoryTalkCell:new()
-            local cur_item = ccui.Layout:create()
-            cur_item:setContentSize(cc.size(220, 80))
-            cur_item:addChild(storyCell)
-            self.renWuListView:addChild(cur_item)
             self.mainStoryCell = storyCell
 
+            local cur_item = ccui.Layout:create()
+            cur_item:setContentSize(storyCell:getContentSize())
+            cur_item:addChild(storyCell)
+            self.renWuListView:addChild(cur_item)
+            
             local EffectImod = ImodAnim:create() 
             EffectImod:setPosition(cc.p(110, 40)) 
             EffectImod:initAnimWithName("Ani/task_roundEffect.png","Ani/task_roundEffect.ani") 
@@ -240,6 +238,11 @@ function MainMenuLayer:initStroyData(storyId)
         end
         self.mainStoryCell = nil
     end
+
+    --剧情任务暂时调整大小
+    self.Panel_renwu:setContentSize(cc.size(self.Panel_renwu:getContentSize().width, 100))
+    self.renWuListView:setContentSize(cc.size(self.renWuListView:getContentSize().width, 80))
+    self.renWuButton_push:setPositionY(self.renWuButton_pushPosY - 100)
 end
 
 --隐藏或显示剧情任务面板
