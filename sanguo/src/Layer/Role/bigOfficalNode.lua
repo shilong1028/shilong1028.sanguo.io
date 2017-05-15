@@ -42,6 +42,39 @@ function bigOfficalNode:init()
     self.Text_def = csb:getChildByName("Text_def")   --防御
     self.Text_baoji = csb:getChildByName("Text_baoji")   --暴击
     self.Text_shanbi = csb:getChildByName("Text_shanbi")  --闪避
+end
+
+function bigOfficalNode:initData(generalData)  
+    G_Log_Dump(generalData, "generalData = ")
+
+    local name = ""
+    local lv = 0
+    local pro = ""
+    local offical = ""
+    local num = 0
+    local sType = ""
+    local hp = 0
+    local mp = 0
+    local att = 0
+    local def = 0
+    local baoji = 0
+    local shanbi = 0
+
+    if generalData then
+        -- name = generalData.name
+        -- lv = generalData.level
+        -- pro = generalData.name
+        -- local officalId = generalData.offical
+        -- offical = officalId
+        -- num = generalData.name
+        -- sType = generalData.name
+        -- hp = generalData.name
+        -- mp = generalData.name
+        -- att = generalData.name
+        -- def = generalData.name
+        -- baoji = generalData.name
+        -- shanbi = generalData.name
+    end
 
 end
 

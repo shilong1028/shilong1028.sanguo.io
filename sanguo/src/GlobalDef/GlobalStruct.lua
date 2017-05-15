@@ -172,7 +172,7 @@ end
 --武将表结构类
 g_tbl_generalConfig = class("g_tbl_generalConfig",__BaseStruct)
 function  g_tbl_generalConfig:ctor()
-	self.id_str = ""        --武将ID字符串
+	self.id_str = ""   --武将ID字符串
 	self.name = ""     --武将名称
 	self.level = 0     --武将初始登录等级
 	self.type = 0    --将领类型，1英雄，2武将，3军师
@@ -180,9 +180,17 @@ function  g_tbl_generalConfig:ctor()
 	self.mp = 0        --初始智力值
 	self.atk = 0     --初始攻击力
 	self.def = 0     --初始防御力
-	self.skillIdVec = ""    --初始技能，技能ID字符串以;分割
-	self.equipIdVec = ""    --初始装备，装备ID字符串以;分割
+	self.skillIdVec = {}    --初始技能，技能ID字符串以;分割
+	self.equipIdVec = {}    --初始装备，装备ID字符串以;分割
 	self.desc = ""    --描述
+
+	--附加属性
+	self.offical = ""    --官职ID字符串，官职可以提升武将血智攻防、额外带兵数（默认带1000兵）等属性
+	self.bingTypeVec = {}    --兵种类型ID（弓刀枪骑）及熟练度1-99分为ABCDS五档
+	self.curBingTypeIdx = 0  --当前部曲使用的兵种类型
+	self.curBingIdStr = ""   --当前部曲兵种（游击|轻装|重装|精锐|禁军的弓刀枪骑兵）
+	self.curBingCount = 0    --当前部曲兵力数量
+	self.curBingLv = 0       --当前部曲兵种等级
 end
 
 --物品装备表结构类

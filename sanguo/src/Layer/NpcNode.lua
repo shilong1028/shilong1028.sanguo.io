@@ -20,13 +20,13 @@ end
 --城池NPC
 function NpcNode:initChengData(data)  
     --G_Log_Info("NpcNode:initChengData()")
-    local imgStr = "chengchi.png"
+    local imgStr = "public2_chengchi.png"
     if data.type == 1 then
-    	imgStr = "dushi.png"
+    	imgStr = "public2_dushi.png"
     elseif data.type == 2 then
-    	imgStr = "chengchi.png"
+    	imgStr = "public2_chengchi.png"
     elseif data.type == 3 then
-    	imgStr = "guanai.png"
+    	imgStr = "public2_guanai.png"
     end
 	self.chengImage = cc.Sprite:createWithSpriteFrameName(imgStr) 
 	self.chengImage:setScale(0.8)

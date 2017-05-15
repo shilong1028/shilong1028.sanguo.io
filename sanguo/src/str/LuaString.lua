@@ -30,6 +30,8 @@ lua_Story_String3 = "%s已经完成！"
 lua_SelCamp_String1 = "初始财政：资金%s锭  粮草%s石\n初始兵力：%d人\n初始将领：%s"
 
 lua_Role_String1 = "兵%d"
+lua_Role_String2 = "等级%d"
+lua_Role_String3 = ""
 
 lua_Item_TypeStrs = {"币", "粮", "甲", "武", "马", "符", "令", "物"}
 lua_Item_String1 = "×%d"

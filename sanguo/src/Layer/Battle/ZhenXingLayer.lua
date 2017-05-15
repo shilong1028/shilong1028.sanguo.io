@@ -100,6 +100,7 @@ function ZhenXingLayer:init()
                 cur_item:setContentSize(officerCell:getContentSize())
                 cur_item:addChild(officerCell)
                 cur_item:setEnabled(false)
+
                 self.ListView_general:addChild(cur_item)
                 local pos = cc.p(cur_item:getPosition())
             end
@@ -125,6 +126,9 @@ function ZhenXingLayer:setRadioPanel(idx)
         return
     end
     self.selRadioIdx = idx
+
+    self:initBigCellData(-1)
+
     if idx == 1 then   --布阵
         self.Button_buzhenRadio:loadTextureNormal("public_radio2.png", ccui.TextureResType.plistType)
         self.Button_zhenxingRadio:loadTextureNormal("public_radio1.png", ccui.TextureResType.plistType)
@@ -132,8 +136,6 @@ function ZhenXingLayer:setRadioPanel(idx)
         self.Button_zhenxingRadio_Text:disableEffect()
         self.Panel_buzhen:setVisible(true)
         self.Panel_zhenxing:setVisible(false)
-
-        self:initBuZhenData()
     elseif idx == 2 then   --阵型
         self.Button_buzhenRadio:loadTextureNormal("public_radio1.png", ccui.TextureResType.plistType)
         self.Button_zhenxingRadio:loadTextureNormal("public_radio2.png", ccui.TextureResType.plistType)
@@ -186,7 +188,7 @@ function ZhenXingLayer:touchListViewEvent(sender, event)
                 local point = cell:convertToNodeSpace(pos)
                 local rect = cc.rect(0, 0, 90, 90)
                 if cc.rectContainsPoint(rect, point) then
-                    print("selected cell idx = ", k)
+                    self:initBigCellData(k)
                     return
                 end
             end
@@ -197,9 +199,25 @@ function ZhenXingLayer:touchListViewEvent(sender, event)
     end
 end
 
-function ZhenXingLayer:initBuZhenData()
+function ZhenXingLayer:initBigCellData(cellIdx)
+    G_Log_Info("ZhenXingLayer:initBigCellData(), cellIdx = %d", cellIdx)
+    if self.cellSelImg then
+        self.cellSelImg:removeFromParent(false)
+        self.cellSelImg = nil
+    end
 
+    local generalData = nil
+    if not cellIdx or cellIdx == -1 then   --清空bigCell
 
+    else
+        local cell = self.generalCellVec[cellIdx]
+        generalData = self.generalVec[cellIdx]
+        self.cellSelImg = cc.Sprite:createWithSpriteFrameName("public2_sel_orange.png") 
+        self.cellSelImg:setAnchorPoint(cc.p(0, 0))
+        cell:addChild(self.cellSelImg)
+    end 
+
+    self.bigOfficalNode:initData(generalData)     --武将信息节点
 end
 
 
