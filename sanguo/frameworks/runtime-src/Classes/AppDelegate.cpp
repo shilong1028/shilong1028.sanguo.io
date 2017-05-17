@@ -6,6 +6,7 @@
 
 #include "lua_ark_Stream_auto.hpp"
 #include "lua_ImodAnim_auto.hpp"
+#include "lua_CCAysLabel_auto.hpp"
 #include "lua_ark_Utility_auto.hpp"
 #include "lua_astar_auto.hpp"
 #include "lua_MyXMLManager_auto.hpp"
@@ -71,6 +72,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
 
 	register_all_ImodAnim(L);
+	register_all_CCAysLabel(L);
 	register_all_ark_Stream(L);
 	register_all_ark_Utility(L);
 	register_all_astar(L);

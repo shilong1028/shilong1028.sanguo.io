@@ -278,7 +278,20 @@ function MainMenuLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_chongzhi then   --充值
             g_pGameLayer:ShowScrollTips("充值")
+            -- local textRich1 = CCAysLabel:create("白色[c1]红色富文本测试！[/c1]白色", cc.size(50, 0))
+            -- textRich1:setPosition(g_WinSize.width/4, g_WinSize.height/2)
+            -- self:addChild(textRich1, 100)
+
+            -- local textRich2 = CCAysLabel:create("Green-simkai[c8]棕色富文本测试！[/c8]Green", cc.size(200, 0), g_ColorDef.Green, g_sDefaultTTFpath)
+            -- textRich2:setPosition(g_WinSize.width/2, g_WinSize.height/2)
+            -- self:addChild(textRich2, 100)
+
+            -- self.textRich3 = CCAysLabel:create("Green-simkai[c2]加粗阴影蓝色24号富文本测试！[/c2]Green", cc.size(200, 0), g_ColorDef.Green, g_sDefaultTTFpath, 24, true, true)
+            -- self.textRich3:setPosition(g_WinSize.width*3/4, g_WinSize.height/2)
+            -- self:addChild(self.textRich3, 100)
         elseif sender == self.Button_qiandao then  --连续签到
+            -- self.textRich3:reset("Green-simkai[c4]加粗阴影黄色24号富文本测试！[/c4]Green", cc.size(50, 0), g_ColorDef.Green, g_sDefaultTTFpath, 24, true, true)
+            -- local richSize = self.textRich3:getSize()
         elseif sender == self.Button_libao then    --在线礼包
         elseif sender == self.Button_huodong then   --精彩活动
         elseif sender == self.BtnVipAdd then    --添加VIP等级

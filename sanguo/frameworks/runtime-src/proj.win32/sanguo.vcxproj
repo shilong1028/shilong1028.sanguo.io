@@ -195,11 +195,13 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClInclude Include="..\Classes\ark_typedef.h" />
     <ClInclude Include="..\Classes\ark_Utility.h" />
     <ClInclude Include="..\Classes\astar.h" />
+    <ClInclude Include="..\Classes\CCAysLabel.h" />
     <ClInclude Include="..\Classes\ImodAnim.h" />
     <ClInclude Include="..\Classes\LoggerHelper.h" />
     <ClInclude Include="..\Classes\lua_ark_Stream_auto.hpp" />
     <ClInclude Include="..\Classes\lua_ark_Utility_auto.hpp" />
     <ClInclude Include="..\Classes\lua_astar_auto.hpp" />
+    <ClInclude Include="..\Classes\lua_CCAysLabel_auto.hpp" />
     <ClInclude Include="..\Classes\lua_ImodAnim_auto.hpp" />
     <ClInclude Include="..\Classes\lua_module_register.h" />
     <ClInclude Include="..\Classes\lua_MyXMLManager_auto.hpp" />
@@ -238,10 +240,12 @@ xcopy "$(ProjectDir)..\..\..\src" "$(LocalDebuggerWorkingDirectory)\src" /D /E /
     <ClCompile Include="..\Classes\ark_Stream.cpp" />
     <ClCompile Include="..\Classes\ark_Utility.cpp" />
     <ClCompile Include="..\Classes\astar.cpp" />
+    <ClCompile Include="..\Classes\CCAysLabel.cpp" />
     <ClCompile Include="..\Classes\ImodAnim.cpp" />
     <ClCompile Include="..\Classes\lua_ark_Stream_auto.cpp" />
     <ClCompile Include="..\Classes\lua_ark_Utility_auto.cpp" />
     <ClCompile Include="..\Classes\lua_astar_auto.cpp" />
+    <ClCompile Include="..\Classes\lua_CCAysLabel_auto.cpp" />
     <ClCompile Include="..\Classes\lua_ImodAnim_auto.cpp" />
     <ClCompile Include="..\Classes\lua_MyXMLManager_auto.cpp" />
     <ClCompile Include="..\Classes\lua_WinMoviePlayer_auto.cpp" />
