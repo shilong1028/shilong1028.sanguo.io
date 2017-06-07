@@ -3,19 +3,21 @@
 <!-- solution 一个方案 name 显示的方案的名字  xmlfilepath 就是这个方案下的根目录./同目录下，../上一个目录下 outputpath -->
 <config>
 	<solution name="客户端" xmlfilepath="./xml/" excelfilepath="./excel/" outputpath="./tbl/client/" >
-		<package xml="cityConfig_client.xml"/>
-		<package xml="mapConfig_client.xml"/>
-		<package xml="mapJumpConfig_client.xml"/>
-		<package xml="zhouConfig_client.xml"/>
 		<package xml="campConfig_client.xml"/>
+		<package xml="cityConfig_client.xml"/>
 		<package xml="generalConfig_client.xml"/>
 		<package xml="itemConfig_client.xml"/>
-		<package xml="talkConfig_client.xml"/>
+		<package xml="mapConfig_client.xml"/>
+		<package xml="mapJumpConfig_client.xml"/>
+		<package xml="officalConfig_client.xml"/>
+		<package xml="skillConfig_client.xml"/>
 		<package xml="storyConfig1_client.xml"/>
 		<package xml="storyConfig2_client.xml"/>
 		<package xml="storyConfig3_client.xml"/>
 		<package xml="storyConfig4_client.xml"/>
-		<package xml="storyConfig5_client.xml"/>
+		<package xml="storyConfig5_client.xml"/>	
+		<package xml="talkConfig_client.xml"/>
 		<package xml="vipConfig_client.xml"/>
+		<package xml="zhouConfig_client.xml"/>
 	</solution>
 </config>

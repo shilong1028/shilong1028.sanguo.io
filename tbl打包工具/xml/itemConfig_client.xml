@@ -13,6 +13,9 @@
 		<field name="mp" type="int" size="4"/>
 		<field name="atk" type="int" size="4"/>
 		<field name="def" type="int" size="4"/>
+		<field name="troops" type="int" size="4"/>
+		<field name="arm_type" type="int" size="4"/>
+		<field name="other" type="int" size="4"/>
 		<field name="desc" type="string" size="256"/>
 	</table>
 </config>

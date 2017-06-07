@@ -369,6 +369,9 @@ function TBLMgr:LoadItemConfigTBL()
 		itemConfig.mp = stream:ReadUInt()         --装备增加的智力值
 		itemConfig.atk = stream:ReadUInt()      --装备增加的攻击力
 		itemConfig.def = stream:ReadUInt()      --装备增加的防御力
+		itemConfig.troops = stream:ReadUInt()         --附加兵力数量
+		itemConfig.arm_type = stream:ReadUInt()      --开启兵种属性（刀枪弓骑）
+		itemConfig.other = stream:ReadUInt()      --备用字段，用于使用某物品开启某种特性（如官职，技能，兵种等）
 		itemConfig.desc = stream:ReadString()    --描述
 
 		self.itemConfigVec[""..itemConfig.id_str] = itemConfig
@@ -568,6 +571,90 @@ function TBLMgr:getVipIdByGlod(vipGlod)
 		end
 	end
 	return 0
+end
+
+--官职结构类
+function TBLMgr:LoadOfficalConfigTBL()
+	--G_Log_Info("TBLMgr:LoadOfficalConfigTBL()")
+	if self.officalConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/officalConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.officalConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local officalConfig = g_tbl_officalConfig:new()
+		officalConfig.id_str = stream:ReadString()    --官职ID字符串
+		officalConfig.name = stream:ReadString()     --名称
+		officalConfig.type = stream:ReadWord()    --官职类型，1通用，2武将，3军师
+		officalConfig.hp = stream:ReadUInt()    --附加血量值
+		officalConfig.mp = stream:ReadUInt()        --附加智力值
+		officalConfig.troops = stream:ReadUInt()    --附加带兵数
+		officalConfig.subs = {}     --下属官职，用;隔开
+		local subStr = stream:ReadString()
+		officalConfig.subs = string.split(subStr,";")
+		officalConfig.desc = stream:ReadString()    --官职介绍
+
+		self.officalConfigVec[""..officalConfig.id_str] = officalConfig
+	end
+end
+
+function TBLMgr:getOfficalConfigById(id_str)
+	--G_Log_Info("TBLMgr:getOfficalConfigById(), id_str = %d", id_str)
+	if self.officalConfigVec == nil then
+		self:LoadOfficalConfigTBL()
+	end
+	return clone(self.officalConfigVec[""..id_str])
+end
+
+--技能结构类
+function TBLMgr:LoadSkillConfigTBL()
+	--G_Log_Info("TBLMgr:LoadSkillConfigTBL()")
+	if self.skillConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/skillConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.skillConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local skillConfig = g_tbl_skillConfig:new()
+		skillConfig.id_str = stream:ReadString()    --技能ID字符串(9xxy，9为开始标志，xx为技能编号，y为升级编号）
+		skillConfig.name = stream:ReadString()    --名称
+		skillConfig.type = stream:ReadWord()   --1对己方，2对敌方。对己方加成，对敌方减少
+		skillConfig.cooldown = stream:ReadUInt()    --冷却时间(单位毫秒）
+		skillConfig.duration = stream:ReadUInt()    --持续时间
+		skillConfig.hp = stream:ReadUInt()     --附加血量值
+		skillConfig.mp = stream:ReadUInt()    --附加智力值
+		skillConfig.atk = stream:ReadUInt()     --附加攻击力
+		skillConfig.def = stream:ReadUInt()     --附加防御力
+		skillConfig.speed = stream:ReadUInt()    --提升攻击速度
+		skillConfig.baoji = stream:ReadUInt()     --提升暴击值（只有对己方有用）
+		skillConfig.shanbi = stream:ReadUInt()     --提升闪避值（只有对己方有用）
+		skillConfig.shiqi = stream:ReadUInt()     --对士气影响，对己方加成，对敌方减少
+		skillConfig.desc = stream:ReadString()    --技能介绍
+
+		self.skillConfigVec[""..skillConfig.id_str] = skillConfig
+	end
+end
+
+function TBLMgr:getSkillConfigById(id_str)
+	--G_Log_Info("TBLMgr:getSkillConfigById(), id_str = %d", id_str)
+	if self.skillConfigVec == nil then
+		self:LoadSkillConfigTBL()
+	end
+	return clone(self.skillConfigVec[""..id_str])
 end
 
 

@@ -207,6 +207,9 @@ function  g_tbl_itemConfig:ctor()
 	self.mp = 0        --装备增加的智力值
 	self.atk = 0     --装备增加的攻击力
 	self.def = 0     --装备增加的防御力
+	self.troops = stream:ReadUInt()         --附加兵力数量
+	self.arm_type = stream:ReadUInt()      --开启兵种属性（刀枪弓骑）
+	self.other = stream:ReadUInt()      --备用字段，用于使用某物品开启某种特性（如官职，技能，兵种等）
 	self.desc = ""    --描述
 end
 
@@ -239,6 +242,38 @@ function  g_tbl_vipConfig:ctor()
 	self.food_per = 0    --每天粮草产出增加率（%,取万分值）
 	self.time_per = 0    --建筑升级时间缩减率（%,取万分值）
 	self.desc = ""    --
+end
+
+--官职表结构类
+g_tbl_officalConfig = class("g_tbl_officalConfig",__BaseStruct)
+function  g_tbl_officalConfig:ctor()
+	self.id_str = ""    --官职ID字符串
+	self.name = ""     --名称
+	self.type = 0    --官职类型，1通用，2武将，3军师
+	self.hp = 0    --附加血量值
+	self.mp = 0        --附加智力值
+	self.troops = 0     --附加带兵数
+	self.subs = ""     --下属官职，用;隔开
+	self.desc = ""    --官职介绍
+end
+
+--技能表结构类
+g_tbl_skillConfig = class("g_tbl_skillConfig",__BaseStruct)
+function  g_tbl_skillConfig:ctor()
+	self.id_str = ""    --技能ID字符串(9xxy，9为开始标志，xx为技能编号，y为升级编号）
+	self.name = ""     --名称
+	self.type = 0    --1对己方，2对敌方。对己方加成，对敌方减少
+	self.cooldown = 0    --冷却时间(单位毫秒）
+	self.duration = 0    --持续时间
+	self.hp = 0     --附加血量值
+	self.mp = 0    --附加智力值
+	self.atk = 0     --附加攻击力
+	self.def = 0     --附加防御力
+	self.speed = 0    --提升攻击速度
+	self.baoji = 0     --提升暴击值（只有对己方有用）
+	self.shanbi = 0     --提升闪避值（只有对己方有用）
+	self.shiqi = 0     --对士气影响，对己方加成，对敌方减少
+	self.desc = ""    --技能介绍
 end
 
 
