@@ -52,7 +52,7 @@ function VipLayer:init()
 
     self.vipCellSize = cc.size(700, 400)
 
-    self:initTouchEvent()
+    self:initTouchEvent()   --注册点击事件
 
     self:initVipData()
 

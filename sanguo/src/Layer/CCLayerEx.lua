@@ -91,7 +91,7 @@ function CCLayerEx:setSwallowTouches(bSwallow)
 end
 
 function CCLayerEx:onTouchBegan(touch, event)
-    --G_Log_Info("CCLayerEx:onTouchBegan()")
+    G_Log_Info("CCLayerEx:onTouchBegan()")
     return true   --只有当onTouchBegan的返回值是true时才执行后面的onTouchMoved和onTouchEnded触摸事件
 end
 

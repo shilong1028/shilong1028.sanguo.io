@@ -207,9 +207,9 @@ function  g_tbl_itemConfig:ctor()
 	self.mp = 0        --装备增加的智力值
 	self.atk = 0     --装备增加的攻击力
 	self.def = 0     --装备增加的防御力
-	self.troops = stream:ReadUInt()         --附加兵力数量
-	self.arm_type = stream:ReadUInt()      --开启兵种属性（刀枪弓骑）
-	self.other = stream:ReadUInt()      --备用字段，用于使用某物品开启某种特性（如官职，技能，兵种等）
+	self.troops = 0         --附加兵力数量
+	self.arm_type = 0      --开启兵种属性（刀枪弓骑）
+	self.other = 0     --备用字段，用于使用某物品开启某种特性（如官职，技能，兵种等）
 	self.desc = ""    --描述
 end
 

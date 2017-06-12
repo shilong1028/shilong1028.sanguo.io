@@ -45,7 +45,7 @@ function bigOfficalNode:init()
 end
 
 function bigOfficalNode:initData(generalData)  
-    G_Log_Dump(generalData, "generalData = ")
+    --G_Log_Dump(generalData, "generalData = ")
 
     local name = ""
     local lv = 0

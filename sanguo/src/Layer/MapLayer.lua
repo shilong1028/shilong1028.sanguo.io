@@ -28,6 +28,8 @@ function MapLayer:init()
     self.m_arrowImgVec = {}  --路径箭头
     self.curRolePos = 0   --当前人物所在位置（像素点）
     self.mapJumpPosData = {}  --游戏跳转点   
+
+    self:initTouchEvent()   --注册点击事件
 end
 
 function MapLayer:ClearMapObj()
@@ -246,7 +248,7 @@ end
 
 
 function MapLayer:onTouchBegan(touch, event)
-    --G_Log_Info("MapLayer:onTouchBegan()")
+    G_Log_Info("MapLayer:onTouchBegan()")
     local beginPos = touch:getLocation()   --直接从touch中获取,在getLocation()源码里会将坐标转成OpenGL坐标系,原点在屏幕左下角，x轴向右，y轴向上
     --local point = touch:getLocationInView() --获得屏幕坐标系,原点在屏幕左上角，x轴向右，y轴向下
     --point = cc.Director:getInstance():convertToGL(point)  --先获得屏幕坐标，在调用convertToGL转成OpenGl坐标系
@@ -256,7 +258,7 @@ end
 
 --开始astar寻路,endPos为目标位置的像素点，posIsPt=true为目标位置的32*32地图块坐标
 function MapLayer:starAutoPath(endPos)
-	--G_Log_Info("MapLayer:starAutoPath()")
+	G_Log_Info("MapLayer:starAutoPath()")
     if endPos.x < 0 or endPos.y < 0 or endPos.x > self.mapConfigData.width or endPos.y > self.mapConfigData.height then
     	G_Log_Error("endPos is not in Map, endPos.x = %f, endPos.y = %f", endPos.x, endPos.y)  --如果越界了
 		return;
