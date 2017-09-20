@@ -361,10 +361,8 @@ function TBLMgr:LoadItemConfigTBL()
 		local itemConfig = g_tbl_itemConfig:new()
 		itemConfig.id_str = stream:ReadString()        --物品ID字符串
 		itemConfig.name = stream:ReadString()     --物品名称
-		itemConfig.type = stream:ReadWord()     --物品类型，1金币，2粮草，3技能丹，4装备，…
-		itemConfig.money = stream:ReadUInt()     --物品增加的金币数量
-		itemConfig.food = stream:ReadUInt()         --物品增加的粮草数量
-		itemConfig.level = stream:ReadUInt()      --技能或装备等物品的等级
+		itemConfig.type = stream:ReadWord()     --物品类型
+		itemConfig.quality = stream:ReadUInt()      --技能或装备等物品的品质
 		itemConfig.skill = stream:ReadString()     --物品关联的技能ID字符串
 		itemConfig.hp = stream:ReadUInt()     --装备增加的血量值
 		itemConfig.mp = stream:ReadUInt()         --装备增加的智力值
