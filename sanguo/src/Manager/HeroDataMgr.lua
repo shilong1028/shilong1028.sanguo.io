@@ -157,6 +157,7 @@ function HeroDataMgr:SetHeroCampData(campData)   --保存主角阵营数据
     heroXML:setNodeAttrValue("campData", "troops", tostring(campData.troops))
     heroXML:setNodeAttrValue("campData", "money", tostring(campData.money))
     heroXML:setNodeAttrValue("campData", "food", tostring(campData.food))
+    heroXML:setNodeAttrValue("campData", "drug", tostring(campData.drug))
     local generalIdVec = campData.generalIdVec
     local generalStr = ""
     for k, generalId in pairs(generalIdVec) do
@@ -196,6 +197,12 @@ end
 function HeroDataMgr:SetHeroCampFood(food)
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     heroXML:setNodeAttrValue("campData", "food", tostring(food))
+    heroXML:saveXMLFile()
+end
+
+function HeroDataMgr:SetHeroCampDrug(food)
+    local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
+    heroXML:setNodeAttrValue("campData", "drug", tostring(drug))
     heroXML:saveXMLFile()
 end
 

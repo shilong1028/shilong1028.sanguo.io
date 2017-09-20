@@ -26,7 +26,7 @@ end
 
 --/////////////////////////////////////////
 
-local UserDefault = cc.UserDefault:getInstance()
+local UserDefault = cc.UserDefault:getInstance()    --在工程根目录中的UserDefault.xml
 
 function UserDefaultMgr:Flush()
     UserDefault:flush()    --将内容保存到xml文件
@@ -188,7 +188,7 @@ end
 function UserDefaultMgr:loadXMLFile(strXmlPath)
     --G_Log_Info("UserDefaultMgr:loadXMLFile")
     local myXML = MyXMLManager:new()
-    local hasData = myXML:loadXMLFile(g_SelfWritePath..strXmlPath)  --android必须添加g_SelfWritePath，否则无法读写
+    local hasData = myXML:loadXMLFile(g_XmlWritePath..strXmlPath)  --android必须添加g_XmlWritePath，否则无法读写
     if hasData == true then
         return myXML
     else
@@ -200,7 +200,7 @@ end
 function UserDefaultMgr:createXMLFile(strXmlPath, strRoot)
     --G_Log_Info("UserDefaultMgr:createXMLFile")
     local myXML = MyXMLManager:new()
-    myXML:createXMLFile(g_SelfWritePath..strXmlPath, strRoot)  --android必须添加g_SelfWritePath，否则无法读写
+    myXML:createXMLFile(g_XmlWritePath..strXmlPath, strRoot)  --android必须添加g_XmlWritePath，否则无法读写
     return myXML
 end
 
@@ -213,7 +213,7 @@ function UserDefaultMgr:ClearUseXml(strXmlPath)
         heroXML:removeAllChildNode("root")
         heroXML:saveXMLFile()
         --]]
-        cc.FileUtils:getInstance():writeStringToFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n</root>", g_SelfWritePath..strXmlPath) 
+        cc.FileUtils:getInstance():writeStringToFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n</root>", g_XmlWritePath..strXmlPath) 
     end
 end
 

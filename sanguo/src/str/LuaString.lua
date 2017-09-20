@@ -27,7 +27,7 @@ lua_Story_String1 = "    东汉末年，汉王朝政权由于不断更迭和动�
 lua_Story_String2 = "    汉灵帝以外戚何*进为大将军，统率左右羽林军屯兵洛阳，拱卫京师；命左中郎将皇甫蒿、右中郎将朱儁率步骑四万重点进攻颍川黄巾军；北中郎将卢植率北军讨伐河北黄巾军。同时，汉朝廷召集天下英豪共同围攻黄巾军。"
 lua_Story_String3 = "%s已经完成！"
 
-lua_SelCamp_String1 = "初始财政：资金%s锭  粮草%s石\n初始兵力：%d人\n初始将领：%s"
+lua_SelCamp_String1 = "初始财政：资金%s锭  粮草%s石  药材%s副\n初始兵力：%d名骑兵\n初始将领：%s"
 
 lua_Role_String1 = "兵%d"
 lua_Role_String2 = "等级%d"

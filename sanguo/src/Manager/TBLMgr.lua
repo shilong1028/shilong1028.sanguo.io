@@ -268,8 +268,9 @@ function TBLMgr:LoadCampConfigTBL()
 		campConfig.capital = stream:ReadString()    --string 首都城池ID字符串
 		campConfig.population = stream:ReadUInt()    --初始百姓人口（单位万）
 		campConfig.troops = stream:ReadUInt()         --初始兵力（人）
-		campConfig.money = stream:ReadUInt()     --初始财力（单位锭，1锭=1000贯）
-		campConfig.food = stream:ReadUInt()     --初始粮草（单位石，1石=1000斤）
+		campConfig.money = stream:ReadUInt()     --初始财力（单位锭，1锭=100贯）
+		campConfig.food = stream:ReadUInt()     --初始粮草（单位石，1石=100斤）
+		campConfig.drug = stream:ReadUInt()     --初始药材（单位副，1副=100份）
 		local generalStr = stream:ReadString()    --初始将领ID字符串，以;分割
 		campConfig.generalIdVec = string.split(generalStr,";")
 		campConfig.desc = stream:ReadString()    --阵营描述

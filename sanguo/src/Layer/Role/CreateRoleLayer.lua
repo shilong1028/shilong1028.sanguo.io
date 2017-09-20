@@ -57,6 +57,14 @@ function CreateRoleLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_Sel then
             local campData = g_pTBLMgr:getCampConfigTBLDataById(self.curSelCampId)
+            if campData == nil then
+                G_Log_Warning("campData = nil！")
+                return
+            end
+            local generalIdVec = clone(campData.generalIdVec)    --初始游戏，仅提供主角一个武将（汉灵帝、袁绍、曹操、刘备、孙坚）
+            campData.generalIdVec = {}
+            table.insert(campData.generalIdVec, generalIdVec[1])
+
             g_HeroDataMgr:SetHeroCampData(campData)
 
             g_pGameLayer:GameMainLayer()   --进入游戏
@@ -117,7 +125,7 @@ function CreateRoleLayer:ScaleSelBtn()
             end
         end
 
-        local descStr = campData.desc.."\n"..string.format(lua_SelCamp_String1, campData.money, campData.food, campData.troops, generalStr)
+        local descStr = campData.desc.."\n"..string.format(lua_SelCamp_String1, campData.money, campData.food, campData.drug, campData.troops, generalStr)
         self.descText:setFontName(g_sDefaultTTFpath)
         self.descText:setString(descStr)
     end

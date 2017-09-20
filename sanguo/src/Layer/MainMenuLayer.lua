@@ -79,11 +79,14 @@ function MainMenuLayer:init()
     self.Button_glod = FileNode_top:getChildByName("Button_glod")   --元宝添加
     self.Button_glod:addTouchEventListener(handler(self,self.touchEvent))
     self.Text_glod = FileNode_top:getChildByName("Text_glod")   --元宝数量
-    self.Text_bi = FileNode_top:getChildByName("Text_bi")    --钱贯数量 1元宝 = 1000 贯
+
     self.Button_liang = FileNode_top:getChildByName("Button_liang")   --粮草添加
     self.Button_liang:addTouchEventListener(handler(self,self.touchEvent))
     self.Text_liang = FileNode_top:getChildByName("Text_liang")   --粮草数量 担
-    self.Text_mi = FileNode_top:getChildByName("Text_mi")   --粮草斤数 1担 = 1000 斤
+
+    self.Button_yao = FileNode_top:getChildByName("Button_yao")   --药材添加
+    self.Button_yao:addTouchEventListener(handler(self,self.touchEvent))
+    self.Text_yao = FileNode_top:getChildByName("Text_yao")    --药材数量 单位副，1副=100份
 
     --右上角 时间节点
     local FileNode_time = csb:getChildByName("FileNode_time")
@@ -172,13 +175,21 @@ end
 
 function MainMenuLayer:initData()
     g_campId = 0 
-    local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
+    local campData = g_HeroDataMgr:GetHeroCampData()
+    if campData == nil then
+        G_Log_Warning("campData = nil！")
+        return
+    end
+    local campId = campData.campId     --g_UserDefaultMgr:GetRoleCampId()
     if campId and campId > 0 then
         g_campId = campId
         self.head_icon:loadTexture(string.format("Head/%d001.png", campId), ccui.TextureResType.localType)
     end
-    local userName = g_UserDefaultMgr:GetUserName()    --获取用户名
+    self.Text_glod:setString(campData.money)  --元宝数量
+    self.Text_liang:setString(campData.food)  --粮草数量 担
+    self.Text_yao:setString(campData.drug)   --药材数量 单位副，1副=100份
 
+    local userName = g_UserDefaultMgr:GetUserName()    --获取用户名
     self.Text_nick:setString(userName)    --玩家昵称
 
     local vipXml = g_HeroDataMgr:GetVipXmlData()
@@ -298,6 +309,7 @@ function MainMenuLayer:touchEvent(sender, eventType)
             g_pGameLayer:showVipLayer()
         elseif sender == self.Button_glod then   --元宝添加
         elseif sender == self.Button_liang then   --粮草添加
+        elseif sender == self.Button_yao then     --药材添加
         elseif sender == self.Button_renwu then   --任务
         elseif sender == self.renWuButton_push then  --任务列表收放
             self:renWuButton_pushAction()
