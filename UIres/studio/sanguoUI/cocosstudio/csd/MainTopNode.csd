@@ -42,8 +42,8 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_glod" ActionTag="1039221517" Tag="53" IconVisible="False" LeftMargin="-150.0000" RightMargin="107.0000" TopMargin="28.5000" BottomMargin="-51.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="43.0000" Y="23.0000" />
+          <AbstractNodeData Name="Text_glod" ActionTag="1039221517" Tag="53" IconVisible="False" LeftMargin="-150.0000" RightMargin="106.0000" TopMargin="27.5000" BottomMargin="-52.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="44.0000" Y="25.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="-150.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
@@ -54,29 +54,7 @@
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="biIcon" ActionTag="218344196" Tag="50" IconVisible="False" LeftMargin="-110.0000" RightMargin="38.0000" TopMargin="17.0000" BottomMargin="-63.0000" LeftEage="15" RightEage="15" TopEage="15" BottomEage="15" Scale9OriginX="15" Scale9OriginY="15" Scale9Width="42" Scale9Height="16" ctype="ImageViewObjectData">
-            <Size X="72.0000" Y="46.0000" />
-            <AnchorPoint ScaleY="0.5000" />
-            <Position X="-110.0000" Y="-40.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition />
-            <PreSize X="0.0000" Y="0.0000" />
-            <FileData Type="PlistSubImage" Path="public_bi_icon.png" Plist="plist/PublicRes.plist" />
-          </AbstractNodeData>
-          <AbstractNodeData Name="Text_bi" ActionTag="808050403" Tag="54" IconVisible="False" LeftMargin="-40.0000" RightMargin="-3.0000" TopMargin="28.5000" BottomMargin="-51.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="43.0000" Y="23.0000" />
-            <AnchorPoint ScaleY="0.5000" />
-            <Position X="-40.0000" Y="-40.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="249" G="154" B="5" />
-            <PrePosition />
-            <PreSize X="0.0000" Y="0.0000" />
-            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
-            <OutlineColor A="255" R="101" G="9" B="9" />
-            <ShadowColor A="255" R="110" G="110" B="110" />
-          </AbstractNodeData>
-          <AbstractNodeData Name="Button_liang" ActionTag="285691924" Tag="58" IconVisible="False" LeftMargin="2.0000" RightMargin="-78.0000" TopMargin="11.0000" BottomMargin="-69.0000" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="46" Scale9Height="36" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_liang" ActionTag="285691924" Tag="58" IconVisible="False" LeftMargin="-78.0000" RightMargin="2.0000" TopMargin="11.0000" BottomMargin="-69.0000" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="46" Scale9Height="36" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="76.0000" Y="58.0000" />
             <Children>
               <AbstractNodeData Name="liangIcon" ActionTag="236038663" Tag="51" IconVisible="False" LeftMargin="30.5000" RightMargin="16.5000" TopMargin="29.5000" BottomMargin="-0.5000" LeftEage="9" RightEage="9" TopEage="9" BottomEage="9" Scale9OriginX="9" Scale9OriginY="9" Scale9Width="11" Scale9Height="11" ctype="ImageViewObjectData">
@@ -91,7 +69,7 @@
               </AbstractNodeData>
             </Children>
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="40.0000" Y="-40.0000" />
+            <Position X="-40.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
@@ -102,10 +80,10 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_liang" ActionTag="-877137156" Tag="55" IconVisible="False" LeftMargin="70.0000" RightMargin="-113.0000" TopMargin="28.5000" BottomMargin="-51.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="43.0000" Y="23.0000" />
+          <AbstractNodeData Name="Text_liang" ActionTag="-877137156" Tag="55" IconVisible="False" LeftMargin="10.0000" RightMargin="-54.0000" TopMargin="27.5000" BottomMargin="-52.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="44.0000" Y="25.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="70.0000" Y="-40.0000" />
+            <Position X="10.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="249" G="154" B="5" />
             <PrePosition />
@@ -114,20 +92,36 @@
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="miIcon" ActionTag="2068880509" Tag="52" IconVisible="False" LeftMargin="120.0000" RightMargin="-198.0000" TopMargin="7.0000" BottomMargin="-73.0000" LeftEage="15" RightEage="15" TopEage="15" BottomEage="15" Scale9OriginX="15" Scale9OriginY="15" Scale9Width="48" Scale9Height="36" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Button_yao" ActionTag="335953048" Tag="28" IconVisible="False" LeftMargin="71.0000" RightMargin="-149.0000" TopMargin="7.0000" BottomMargin="-73.0000" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="48" Scale9Height="44" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="78.0000" Y="66.0000" />
-            <AnchorPoint ScaleY="0.5000" />
-            <Position X="120.0000" Y="-40.0000" />
+            <Children>
+              <AbstractNodeData Name="yaoIcon" ActionTag="1782714004" Tag="29" IconVisible="False" LeftMargin="30.5000" RightMargin="18.5000" TopMargin="37.5000" BottomMargin="-0.5000" LeftEage="9" RightEage="9" TopEage="9" BottomEage="9" Scale9OriginX="9" Scale9OriginY="9" Scale9Width="11" Scale9Height="11" ctype="ImageViewObjectData">
+                <Size X="29.0000" Y="29.0000" />
+                <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+                <Position X="45.0000" Y="14.0000" />
+                <Scale ScaleX="1.0000" ScaleY="1.0000" />
+                <CColor A="255" R="255" G="255" B="255" />
+                <PrePosition X="0.5769" Y="0.2121" />
+                <PreSize X="0.3718" Y="0.4394" />
+                <FileData Type="PlistSubImage" Path="public_add.png" Plist="plist/PublicRes.plist" />
+              </AbstractNodeData>
+            </Children>
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="110.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
-            <FileData Type="PlistSubImage" Path="public_mi_icon.png" Plist="plist/PublicRes.plist" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
+            <TextColor A="255" R="65" G="65" B="70" />
+            <NormalFileData Type="PlistSubImage" Path="public_mi_icon.png" Plist="plist/PublicRes.plist" />
+            <OutlineColor A="255" R="255" G="0" B="0" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_mi" ActionTag="-1119242538" Tag="56" IconVisible="False" LeftMargin="190.0000" RightMargin="-233.0000" TopMargin="28.5000" BottomMargin="-51.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="43.0000" Y="23.0000" />
+          <AbstractNodeData Name="Text_yao" ActionTag="-1119242538" Tag="56" IconVisible="False" LeftMargin="160.0000" RightMargin="-204.0000" TopMargin="27.5000" BottomMargin="-52.5000" FontSize="20" LabelText="1000" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="44.0000" Y="25.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="190.0000" Y="-40.0000" />
+            <Position X="160.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="249" G="154" B="5" />
             <PrePosition />
