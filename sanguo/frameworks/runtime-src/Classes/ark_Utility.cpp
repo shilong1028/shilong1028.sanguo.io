@@ -329,6 +329,51 @@ std::tm* SystemHelper::gettm(long long timestamp)
 	return now;
 }
 
+void SystemHelper::AddGray(Sprite* sp)
+{
+	sp->setGLProgram(GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_GRAYSCALE));
+	GLProgram *program2 = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP);
+	//((Sprite*)sp)->setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP));
+}
+void SystemHelper::RemoveGray(Sprite* sp)
+{
+	sp->setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP));
+}
+
+void SystemHelper::allAddGray(Node *sp)
+{
+	if ((Sprite*)sp)
+	{
+		AddGray((Sprite*)sp);
+	}
+
+	Vector<Node*>& allSprite = sp->getChildren();
+	for (size_t i = 0; i < allSprite.size(); i++)
+	{
+		if ((Sprite*)allSprite.at(i))
+		{
+			allAddGray((Sprite*)allSprite.at(i));
+		}
+	}
+}
+
+void SystemHelper::allRemoveGray(Node *sp)
+{
+	if ((Sprite*)sp)
+	{
+		RemoveGray((Sprite*)sp);
+	}
+
+	Vector<Node*>& allSprite = sp->getChildren();
+	for (size_t i = 0; i < allSprite.size(); i++)
+	{
+		if ((Sprite*)allSprite.at(i))
+		{
+			allRemoveGray((Sprite*)allSprite.at(i));
+		}
+	}
+}
+
 static GLProgramState*	_GHSLglprogramstate = nullptr; //单例
 GLProgramState* SystemHelper::getHSLGlprogramState()
 {

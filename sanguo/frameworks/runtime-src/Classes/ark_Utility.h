@@ -87,6 +87,13 @@ public:
 	//时间戳转日期
 	static std::tm* gettm(long long timestamp);
 
+	//Sprite 灰态相关
+	static void AddGray(Sprite *sp);
+	static void RemoveGray(Sprite *sp);
+
+	static void allAddGray(Node *sp);
+	static void allRemoveGray(Node *sp);
+
 	//获得染色shader_state
 	static GLProgramState* getHSLGlprogramState();
 
