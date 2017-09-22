@@ -112,6 +112,27 @@
 
 --------------------------------
 -- 
+-- @function [parent=#SystemHelper] RemoveGray 
+-- @param self
+-- @param #cc.Sprite sp
+-- @return SystemHelper#SystemHelper self (return value: SystemHelper)
+        
+--------------------------------
+-- 
+-- @function [parent=#SystemHelper] allRemoveGray 
+-- @param self
+-- @param #cc.Node sp
+-- @return SystemHelper#SystemHelper self (return value: SystemHelper)
+        
+--------------------------------
+-- 
+-- @function [parent=#SystemHelper] AddGray 
+-- @param self
+-- @param #cc.Sprite sp
+-- @return SystemHelper#SystemHelper self (return value: SystemHelper)
+        
+--------------------------------
+-- 
 -- @function [parent=#SystemHelper] gettm 
 -- @param self
 -- @param #long long timestamp
@@ -227,6 +248,13 @@
 -- @param self
 -- @param #color3b_table a
 -- @return bool#bool ret (return value: bool)
+        
+--------------------------------
+-- 
+-- @function [parent=#SystemHelper] allAddGray 
+-- @param self
+-- @param #cc.Node sp
+-- @return SystemHelper#SystemHelper self (return value: SystemHelper)
         
 --------------------------------
 -- 

@@ -590,6 +590,114 @@ int lua_ark_Utility_SystemHelper_calcDistance(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_ark_Utility_SystemHelper_RemoveGray(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"SystemHelper",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        cocos2d::Sprite* arg0;
+        ok &= luaval_to_object<cocos2d::Sprite>(tolua_S, 2, "cc.Sprite",&arg0, "SystemHelper:RemoveGray");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ark_Utility_SystemHelper_RemoveGray'", nullptr);
+            return 0;
+        }
+        SystemHelper::RemoveGray(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "SystemHelper:RemoveGray",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_ark_Utility_SystemHelper_RemoveGray'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_ark_Utility_SystemHelper_allRemoveGray(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"SystemHelper",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        cocos2d::Node* arg0;
+        ok &= luaval_to_object<cocos2d::Node>(tolua_S, 2, "cc.Node",&arg0, "SystemHelper:allRemoveGray");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ark_Utility_SystemHelper_allRemoveGray'", nullptr);
+            return 0;
+        }
+        SystemHelper::allRemoveGray(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "SystemHelper:allRemoveGray",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_ark_Utility_SystemHelper_allRemoveGray'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_ark_Utility_SystemHelper_AddGray(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"SystemHelper",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        cocos2d::Sprite* arg0;
+        ok &= luaval_to_object<cocos2d::Sprite>(tolua_S, 2, "cc.Sprite",&arg0, "SystemHelper:AddGray");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ark_Utility_SystemHelper_AddGray'", nullptr);
+            return 0;
+        }
+        SystemHelper::AddGray(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "SystemHelper:AddGray",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_ark_Utility_SystemHelper_AddGray'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_ark_Utility_SystemHelper_gettm(lua_State* tolua_S)
 {
     int argc = 0;
@@ -1257,6 +1365,42 @@ int lua_ark_Utility_SystemHelper_isNearGreenColor(lua_State* tolua_S)
 #endif
     return 0;
 }
+int lua_ark_Utility_SystemHelper_allAddGray(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"SystemHelper",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        cocos2d::Node* arg0;
+        ok &= luaval_to_object<cocos2d::Node>(tolua_S, 2, "cc.Node",&arg0, "SystemHelper:allAddGray");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ark_Utility_SystemHelper_allAddGray'", nullptr);
+            return 0;
+        }
+        SystemHelper::allAddGray(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "SystemHelper:allAddGray",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_ark_Utility_SystemHelper_allAddGray'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_ark_Utility_SystemHelper_isSameColor(lua_State* tolua_S)
 {
     int argc = 0;
@@ -1394,6 +1538,9 @@ int lua_register_ark_Utility_SystemHelper(lua_State* tolua_S)
         tolua_function(tolua_S,"CalcRectCenterPoint", lua_ark_Utility_SystemHelper_CalcRectCenterPoint);
         tolua_function(tolua_S,"bit_and", lua_ark_Utility_SystemHelper_bit_and);
         tolua_function(tolua_S,"calcDistance", lua_ark_Utility_SystemHelper_calcDistance);
+        tolua_function(tolua_S,"RemoveGray", lua_ark_Utility_SystemHelper_RemoveGray);
+        tolua_function(tolua_S,"allRemoveGray", lua_ark_Utility_SystemHelper_allRemoveGray);
+        tolua_function(tolua_S,"AddGray", lua_ark_Utility_SystemHelper_AddGray);
         tolua_function(tolua_S,"gettm", lua_ark_Utility_SystemHelper_gettm);
         tolua_function(tolua_S,"IsEqualAny", lua_ark_Utility_SystemHelper_IsEqualAny);
         tolua_function(tolua_S,"isNearRedColor", lua_ark_Utility_SystemHelper_isNearRedColor);
@@ -1408,6 +1555,7 @@ int lua_register_ark_Utility_SystemHelper(lua_State* tolua_S)
         tolua_function(tolua_S,"InRange", lua_ark_Utility_SystemHelper_InRange);
         tolua_function(tolua_S,"bit_xor", lua_ark_Utility_SystemHelper_bit_xor);
         tolua_function(tolua_S,"isNearGreenColor", lua_ark_Utility_SystemHelper_isNearGreenColor);
+        tolua_function(tolua_S,"allAddGray", lua_ark_Utility_SystemHelper_allAddGray);
         tolua_function(tolua_S,"isSameColor", lua_ark_Utility_SystemHelper_isSameColor);
         tolua_function(tolua_S,"GetStreamFromHexString", lua_ark_Utility_SystemHelper_GetStreamFromHexString);
         tolua_function(tolua_S,"getHSLGlprogramState", lua_ark_Utility_SystemHelper_getHSLGlprogramState);
