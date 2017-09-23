@@ -403,8 +403,12 @@ function TBLMgr:LoadTalkConfigTBL()
 	local Count = stream:ReadWord()
 	for k=1, Count do
 		local talkConfig = g_tbl_talkConfig:new()
-		talkConfig.id_str = stream:ReadString()        --ID字符串
-		talkConfig.desc = stream:ReadString()    --描述
+		talkConfig.id_str = stream:ReadString()        --对白ID字符串
+		talkConfig.bg = stream:ReadString()    --对白背景图片
+		talkConfig.headVec = {}
+		local headStr = stream:ReadString()   --对白相关人物头像id_str，以;分割
+		talkConfig.headVec = string.split(headStr,";")
+		talkConfig.desc = stream:ReadString()    --对白内容
 
 		self.talkConfigVec[""..talkConfig.id_str] = talkConfig
 	end
@@ -452,21 +456,21 @@ function TBLMgr:LoadStoryConfigTBL()
 			local strVec = string.split(d,"-")
 			table.insert(storyConfig.rewardIdVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
 		end
+		storyConfig.offical = stream:ReadString()   --奖励官职id_str
+		storyConfig.generalVec = {}   --奖励武将Id_str, 以;分割
+		local generalStr = stream:ReadString()   
+		storyConfig.generalVec = string.split(generalStr,";")
+
 		storyConfig.talkVec = {}
-		local talkStr = stream:ReadString()    --对话内容，以;分割。人物ID字符串和文本用-分割
+		local talkStr = stream:ReadString()    --对话内容，以;分割。人物ID字符串和文本用-分割，两个人物用|分割
 		local talkVec = string.split(talkStr,";")
-		for k, d in pairs(talkVec) do
-			local strVec = string.split(d,"-")
-			local heroIdStr = strVec[1]
-			local textIdStr = strVec[2]
+		for k, talkId in pairs(talkVec) do
 			local textData = g_pTBLMgr:getTalkConfigTBLDataById(textIdStr)
-			local textStr = textIdStr
 			if textData then
-				textStr = textData.desc
+				table.insert(storyConfig.talkVec, textData)
 			end
-			table.insert(storyConfig.talkVec, {["heroId"] = heroIdStr, ["text"] = textStr})
 		end
-		storyConfig.desc = stream:ReadString() 
+		--local desc = stream:ReadString() 
 
 		table.insert(self.storyConfigVec, storyConfig)
 	end
@@ -591,13 +595,24 @@ function TBLMgr:LoadOfficalConfigTBL()
 		local officalConfig = g_tbl_officalConfig:new()
 		officalConfig.id_str = stream:ReadString()    --官职ID字符串
 		officalConfig.name = stream:ReadString()     --名称
-		officalConfig.type = stream:ReadWord()    --官职类型，1通用，2武将，3军师
+		officalConfig.type = stream:ReadWord()    --官职类型，0通用，1主角，2武将，3军师
+		officalConfig.quality = stream:ReadWord()    --品质,0五品以下，1五品，2四品，3三品，4二品，5一品，6王侯，7皇帝
 		officalConfig.hp = stream:ReadUInt()    --附加血量值
 		officalConfig.mp = stream:ReadUInt()        --附加智力值
 		officalConfig.troops = stream:ReadUInt()    --附加带兵数
-		officalConfig.subs = {}     --下属官职，用;隔开
+		
+		officalConfig.subs = {}     --下属官职id_str集合,-表示连续区间，;表示间隔区间
 		local subStr = stream:ReadString()
-		officalConfig.subs = string.split(subStr,";")
+		local subsVec = string.split(subStr,";")
+		for k, str in pairs(subsVec) do
+			local idVec = string.split(str,"-")
+			local beginId = tonumber(idVec[1])
+			local endId = tonumber(idVec[2])
+			for id = beginId, endId do
+				table.insert(officalConfig.subs, tostring(id))
+			end
+		end
+
 		officalConfig.desc = stream:ReadString()    --官职介绍
 
 		self.officalConfigVec[""..officalConfig.id_str] = officalConfig

@@ -163,8 +163,9 @@ function  g_tbl_campConfig:ctor()
 	self.capital = ""    --首都城池ID字符串
 	self.population = 0    --初始百姓人口（单位万）
 	self.troops = 0        --初始兵力（人）
-	self.money = 0     --初始财力（单位锭，1锭=1000贯）
-	self.food = 0     --初始粮草（单位石，1石=1000斤）
+	self.money = 0     --初始财力（单位锭，1锭=100贯）
+	self.food = 0     --初始粮草（单位石，1石=100斤）
+	self.drug = 0     --初始药材（单位副，1副=100份）
 	self.generalIdVec = ""    --初始将领ID字符串，以;分割
 	self.desc = ""    --阵营描述
 end
@@ -198,10 +199,8 @@ g_tbl_itemConfig = class("g_tbl_itemConfig",__BaseStruct)
 function  g_tbl_itemConfig:ctor()
 	self.id_str = ""        --物品ID字符串
 	self.name = ""     --物品名称
-	self.type = 0    --物品类型，1金币，2粮草，3技能丹，4装备，…
-	self.money = 0    --物品增加的金币数量
-	self.food = 0        --物品增加的粮草数量
-	self.level = 0     --技能或装备等物品的等级
+	self.type = 0    --物品类型，
+	self.quality = 0     --技能或装备等物品的品质
 	self.skill = ""     --物品关联的技能ID字符串
 	self.hp = 0    --装备增加的血量值
 	self.mp = 0        --装备增加的智力值
@@ -217,6 +216,8 @@ end
 g_tbl_talkConfig = class("g_tbl_talkConfig",__BaseStruct)
 function  g_tbl_talkConfig:ctor()
 	self.id_str = ""        --ID字符串
+	self.bg = ""   --对白背景图片
+	self.headVec = {}   --对白相关人物头像id_str，以;分割
 	self.desc = ""    --描述
 end
 
@@ -228,7 +229,9 @@ function  g_tbl_storyConfig:ctor()
 	self.name = ""    --战役名称
 	self.enemyIdVec = ""    --敌方出战将领ID字符串，以;分割
 	self.rewardIdVec = ""    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
-	self.talkVec = ""    --对话内容，以;分割。人物ID字符串和文本用-分割   {["heroId"], ["text"]}
+	self.offical = ""   --奖励官职id_str
+	self.generalVec = {}   --奖励武将Id_str, 以;分割
+	self.talkVec = {}    --对话内容，以;分割
 end
 
 --vip表结构类
@@ -249,11 +252,12 @@ g_tbl_officalConfig = class("g_tbl_officalConfig",__BaseStruct)
 function  g_tbl_officalConfig:ctor()
 	self.id_str = ""    --官职ID字符串
 	self.name = ""     --名称
-	self.type = 0    --官职类型，1通用，2武将，3军师
+	self.type = 0    --官职类型，0通用，1主角，2武将，3军师
+	self.quality = 0   --品质,0五品以下，1五品，2四品，3三品，4二品，5一品，6王侯，7皇帝
 	self.hp = 0    --附加血量值
 	self.mp = 0        --附加智力值
 	self.troops = 0     --附加带兵数
-	self.subs = ""     --下属官职，用;隔开
+	self.subs = {}     --下属官职id_str集合,-表示连续区间，;表示间隔区间
 	self.desc = ""    --官职介绍
 end
 

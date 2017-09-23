@@ -106,7 +106,8 @@ function StoryTalkLayer:changeStoryString()
 
     self.Button_skip:setVisible(false) 
     self.storyStrLen = 0
-    self.storyString = self.talkVec[self.talkIdx].text
+    local talkData = self.talkVec[self.talkIdx]
+    self.storyString = talkData.desc
     self.totalStrLen = string.len(self.storyString)
 
     self.Text_left:setString("")
@@ -115,12 +116,12 @@ function StoryTalkLayer:changeStoryString()
         self.Image_left:setVisible(false)
         self.Image_right:setVisible(true)
         self.Text_story = self.Text_right
-        self.Image_right:loadTexture(string.format("Head/%d.png", self.talkVec[self.talkIdx].heroId), ccui.TextureResType.localType)
+        self.Image_right:loadTexture(string.format("Head/%d.png", talkData.headVec[1]), ccui.TextureResType.localType)
     else
         self.Image_left:setVisible(true)
         self.Image_right:setVisible(false)
         self.Text_story = self.Text_left
-        self.Image_left:loadTexture(string.format("Head/%d.png", self.talkVec[self.talkIdx].heroId), ccui.TextureResType.localType)
+        self.Image_left:loadTexture(string.format("Head/%d.png", talkData.headVec[1]), ccui.TextureResType.localType)
     end
 
     if self.showUpdateHandler then
