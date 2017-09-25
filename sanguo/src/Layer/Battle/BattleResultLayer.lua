@@ -117,13 +117,7 @@ function BattleResultLayer:initBattleResult(result)
             self.Image_effect:runAction(cc.RepeatForever:create(cc.RotateBy:create(10.0, 360)))
 
             --下一个剧情
-            local nextStoryId = storyId + 1
-            g_HeroDataMgr:SetStoryTalkId(nextStoryId)   --保存下一个主线剧情任务ID
-
-            --发送处主线剧情任务监听事件
-            local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_mainStoryEvent)
-            event._usedata = string.format("%d", nextStoryId)   --下一个剧情任务ID
-            g_EventDispatcher:dispatchEvent(event)  
+            g_pGameLayer:StoryFinishCallBack(storyId) 
         end
         for i=1, 3 do
             if i <= winStar then

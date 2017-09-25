@@ -128,6 +128,9 @@ function StroyResultLayer:touchEvent(sender, eventType)
                 g_pGameLayer:ShowScrollTips(tipsArr)
             end
 
+            --下一个剧情
+            g_pGameLayer:StoryFinishCallBack(self.storyId) 
+
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
         end
     end

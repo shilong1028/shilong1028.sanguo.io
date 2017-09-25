@@ -90,6 +90,18 @@ function GameLayer:GetLayerByUId(uid)
     return nil
 end
 
+--剧情反馈（完成，下一个）
+function GameLayer:StoryFinishCallBack(storyId, bMainStory)
+    if not bMainStory then bMainStory = true end
+    local nextStoryId = storyId + 1
+    g_HeroDataMgr:SetStoryTalkId(nextStoryId)   --保存下一个主线剧情任务ID
+
+    --发送处主线剧情任务监听事件
+    local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_mainStoryEvent)
+    event._usedata = string.format("%d", nextStoryId)   --下一个剧情任务ID
+    g_EventDispatcher:dispatchEvent(event) 
+end
+
 --/////////////////////// 以下为各个功能界面开启  ////////////////////////////
 
 --开始游戏界面
