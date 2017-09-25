@@ -283,7 +283,14 @@ function GameLayer:showVipLayer()
     end
 end
 
-
+--背包界面
+function GameLayer:showBagLayer() 
+    local bagLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BagLayer)
+    if not bagLayer then
+        bagLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_BagLayer, "Bag.BagLayer")
+    end
+    bagLayer:initBagGrid()
+end
 
 
 

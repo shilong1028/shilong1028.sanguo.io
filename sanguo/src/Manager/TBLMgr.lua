@@ -271,6 +271,7 @@ function TBLMgr:LoadCampConfigTBL()
 		campConfig.money = stream:ReadUInt()     --初始财力（单位锭，1锭=100贯）
 		campConfig.food = stream:ReadUInt()     --初始粮草（单位石，1石=100斤）
 		campConfig.drug = stream:ReadUInt()     --初始药材（单位副，1副=100份）
+		campConfig.generalIdVec = {}
 		local generalStr = stream:ReadString()    --初始将领ID字符串，以;分割
 		campConfig.generalIdVec = string.split(generalStr,";")
 		campConfig.desc = stream:ReadString()    --阵营描述
@@ -316,16 +317,31 @@ function TBLMgr:LoadGeneralConfigTBL()
 		generalConfig.name = stream:ReadString()     --武将名称
 		generalConfig.level = stream:ReadUInt()      --武将初始登录等级
 		generalConfig.type = stream:ReadWord()   --将领类型，1英雄，2武将，3军师
+		generalConfig.bingTypeVec = {}  --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种
 		local bingzhong = stream:ReadString() 
-		generalConfig.bingzhong = string.split(bingzhong,";")
+		generalConfig.bingTypeVec = string.split(bingzhong,";")
 		generalConfig.hp = stream:ReadUInt()    --初始血量值
 		generalConfig.mp = stream:ReadUInt()        --初始智力值
 		generalConfig.atk = stream:ReadUInt()     --初始攻击力
 		generalConfig.def = stream:ReadUInt()     --初始防御力
+		generalConfig.skillVec = {}
 		local skillsStr = stream:ReadString()    --初始技能，技能ID字符串以;分割
-		generalConfig.skillIdVec = string.split(skillsStr,";")
+		local skillVec = string.split(skillsStr,";")
+		if skillVec[1] ~= "0" then
+			for i=1, #skillVec do
+				local vec = string.split(skillVec[i],"-")
+				table.insert(generalConfig.skillVec, {["skillId"]=vec[2], ["lv"]=vec[1]})
+			end
+		end
+		generalConfig.equipVec = {}
 		local equipsStr = stream:ReadString()    --初始装备，装备ID字符串以;分割
-		generalConfig.equipIdVec = string.split(equipsStr,";")
+		local equipVec = string.split(equipsStr,";")
+		if equipVec[1] ~= "0" then
+			for i=1, #equipVec do
+				local vec = string.split(equipVec[i],"-")
+				table.insert(generalConfig.equipVec, {["equipId"]=vec[2], ["lv"]=vec[1]})
+			end
+		end
 		generalConfig.desc = stream:ReadString()    --描述
 
 		self.generalConfigVec[""..generalConfig.id_str] = generalConfig
@@ -447,19 +463,28 @@ function TBLMgr:LoadStoryConfigTBL()
 		storyConfig.storyId = stream:ReadWord()        --剧情ID
 		storyConfig.targetCity = stream:ReadString()    --目标城池ID字符串
 		storyConfig.name = stream:ReadString()    --战役名称
+		storyConfig.enemyIdVec = {}
 		local enemyStr = stream:ReadString()    --敌方出战将领ID字符串，以;分割
 		storyConfig.enemyIdVec = string.split(enemyStr,";")
+		if storyConfig.enemyIdVec[1] == "0" then
+			storyConfig.enemyIdVec = {}
+		end
 		storyConfig.rewardIdVec = {}
 		local rewardStr = stream:ReadString()    --奖励物品，以;分割。物品ID字符串和数量用-分割
 		local rewardIdVec = string.split(rewardStr,";")
-		for k, d in pairs(rewardIdVec) do
-			local strVec = string.split(d,"-")
-			table.insert(storyConfig.rewardIdVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+		if rewardIdVec[1] ~= "0" then
+			for k, d in pairs(rewardIdVec) do
+				local strVec = string.split(d,"-")
+				table.insert(storyConfig.rewardIdVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+			end
 		end
 		storyConfig.offical = stream:ReadString()   --奖励官职id_str
 		storyConfig.generalVec = {}   --奖励武将Id_str, 以;分割
 		local generalStr = stream:ReadString()   
 		storyConfig.generalVec = string.split(generalStr,";")
+		if storyConfig.generalVec[1] == "0" then
+			storyConfig.generalVec = {}
+		end
 
 		storyConfig.talkVec = {}
 		local talkStr = stream:ReadString()    --对话内容，以;分割。人物ID字符串和文本用-分割，两个人物用|分割
@@ -515,9 +540,11 @@ function TBLMgr:LoadVipConfigTBL()
 		vipConfig.rewardsVec = {}   --直接奖励物品，用;分割
 		local rewardStr = stream:ReadString()
 		local rewardIdVec = string.split(rewardStr,";")
-		for k, d in pairs(rewardIdVec) do
-			local strVec = string.split(d,"-")
-			table.insert(vipConfig.rewardsVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+		if rewardIdVec[1] ~= "0" then
+			for k, d in pairs(rewardIdVec) do
+				local strVec = string.split(d,"-")
+				table.insert(vipConfig.rewardsVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+			end
 		end
 		vipConfig.money_per = stream:ReadUInt()/10000    --每天金币产出增加率（%,取万分值）
 		vipConfig.food_per = stream:ReadUInt()/10000    --每天粮草产出增加率（%,取万分值）
@@ -604,12 +631,14 @@ function TBLMgr:LoadOfficalConfigTBL()
 		officalConfig.subs = {}     --下属官职id_str集合,-表示连续区间，;表示间隔区间
 		local subStr = stream:ReadString()
 		local subsVec = string.split(subStr,";")
-		for k, str in pairs(subsVec) do
-			local idVec = string.split(str,"-")
-			local beginId = tonumber(idVec[1])
-			local endId = tonumber(idVec[2])
-			for id = beginId, endId do
-				table.insert(officalConfig.subs, tostring(id))
+		if subsVec[1] ~= "0" then
+			for k, str in pairs(subsVec) do
+				local idVec = string.split(str,"-")
+				local beginId = tonumber(idVec[1])
+				local endId = tonumber(idVec[2])
+				for id = beginId, endId do
+					table.insert(officalConfig.subs, tostring(id))
+				end
 			end
 		end
 

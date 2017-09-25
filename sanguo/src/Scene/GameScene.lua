@@ -124,8 +124,8 @@ function GameScene:reloadGameAndClearData()
     G_Log_Warning("GameScene:reloadGameAndClearData()")
     g_pGameLayer:showLoadingLayer(true) 
 
-    g_UserDefaultMgr:ClearUseXml("heroXML.xml")   --保存下一个主线剧情任务ID
-    g_pGameLayer:ShowScrollTips("清空heroXml，重启后生效！")
+    g_HeroDataMgr:ClearAllUserXML()
+    g_pGameLayer:ShowScrollTips("清空所有Xml，重启后生效！")
 
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(function() 
         g_pGameLayer:showLoadingLayer(false)

@@ -2,7 +2,7 @@
 --剧情奖励信息
 local StroyResultLayer = class("StroyResultLayer", CCLayerEx)
 
-local SmallOfficerCell = require("Layer.Role.SmallOfficerCell")
+--local SmallOfficerCell = require("Layer.Role.SmallOfficerCell")
 local ItemCell = require("Layer.Item.ItemCell")
 
 function StroyResultLayer:create()   --自定义的create()创建方法
@@ -62,19 +62,19 @@ function StroyResultLayer:initStoryInfo(storyId)
 
         self.Text_info:setString("    "..self.storyData.desc)
 
-        for k, enemId in pairs(self.storyData.enemyIdVec) do
-            local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(enemId) 
-            if generalData then
-                local officerCell = SmallOfficerCell:new()
-                officerCell:initData(generalData) 
+        -- for k, enemId in pairs(self.storyData.enemyIdVec) do
+        --     local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(enemId) 
+        --     if generalData then
+        --         local officerCell = SmallOfficerCell:new()
+        --         officerCell:initData(generalData) 
 
-                local cur_item = ccui.Layout:create()
-                cur_item:setContentSize(officerCell:getContentSize())
-                cur_item:addChild(officerCell)
-                cur_item:setEnabled(false)
-                self.ListView_army:addChild(cur_item)
-            end
-        end
+        --         local cur_item = ccui.Layout:create()
+        --         cur_item:setContentSize(officerCell:getContentSize())
+        --         cur_item:addChild(officerCell)
+        --         cur_item:setEnabled(false)
+        --         self.ListView_army:addChild(cur_item)
+        --     end
+        -- end
         -- local armyInnerWidth = #self.storyData.enemyIdVec*(90 + 5)
         -- if armyInnerWidth < self.ListView_armySize.width then
         --     self.ListView_army:setContentSize(cc.size(armyInnerWidth, self.ListView_armySize.height))

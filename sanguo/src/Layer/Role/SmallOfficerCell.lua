@@ -52,13 +52,13 @@ function SmallOfficerCell:initData(generalData)
     end
 
     local typeStr = "public_daobing.png"
-    if generalData.bingzhong[1] == "10001" then
+    if generalData.bingTypeVec[1] == "10001" then   --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种
         typeStr = "public_daobing.png"
-    elseif generalData.bingzhong[1] == "10002" then
+    elseif generalData.bingTypeVec[1] == "10002" then
         typeStr = "public_qiangbing.png"
-    elseif generalData.bingzhong[1] == "10003" then
+    elseif generalData.bingTypeVec[1] == "10003" then
         typeStr = "public_qibing.png"
-    elseif generalData.bingzhong[1] == "10004" then
+    elseif generalData.bingTypeVec[1] == "10004" then
         typeStr = "public_gongbing.png"
     end
 

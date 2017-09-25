@@ -166,32 +166,41 @@ function  g_tbl_campConfig:ctor()
 	self.money = 0     --初始财力（单位锭，1锭=100贯）
 	self.food = 0     --初始粮草（单位石，1石=100斤）
 	self.drug = 0     --初始药材（单位副，1副=100份）
-	self.generalIdVec = ""    --初始将领ID字符串，以;分割
+	self.generalIdVec = {}    --初始将领ID字符串，以;分割
 	self.desc = ""    --阵营描述
 end
 
 --武将表结构类
 g_tbl_generalConfig = class("g_tbl_generalConfig",__BaseStruct)
 function  g_tbl_generalConfig:ctor()
-	self.id_str = ""   --武将ID字符串
+	self.id_str = ""   --武将ID字符串(xml保存)
 	self.name = ""     --武将名称
-	self.level = 0     --武将初始登录等级
+	self.level = 0     --武将等级(xml保存)
 	self.type = 0    --将领类型，1英雄，2武将，3军师
 	self.hp = 0    --初始血量值
 	self.mp = 0        --初始智力值
 	self.atk = 0     --初始攻击力
 	self.def = 0     --初始防御力
-	self.skillIdVec = {}    --初始技能，技能ID字符串以;分割
-	self.equipIdVec = {}    --初始装备，装备ID字符串以;分割
+	self.skillVec = {}    --初始技能，技能lv-ID字符串以;分割(xml保存)
+	self.equipVec = {}    --初始装备，装备lv-ID字符串以;分割(xml保存)
 	self.desc = ""    --描述
 
-	--附加属性
+	--附加属性(xml保存)
+	self.exp = 0   --战斗经验
 	self.offical = ""    --官职ID字符串，官职可以提升武将血智攻防、额外带兵数（默认带1000兵）等属性
-	self.bingTypeVec = {}    --兵种类型ID（弓刀枪骑）及熟练度1-99分为ABCDS五档
-	self.curBingTypeIdx = 0  --当前部曲使用的兵种类型
-	self.curBingIdStr = ""   --当前部曲兵种（游击|轻装|重装|精锐|禁军的弓刀枪骑兵）
-	self.curBingCount = 0    --当前部曲兵力数量
-	self.curBingLv = 0       --当前部曲兵种等级
+	self.zhongcheng = 100   --武将忠诚度
+	self.bingTypeVec = {}    --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种
+	self.armyUnit = g_tbl_armyUnitConfig:new()   --武将部曲数据
+end
+
+--武将部曲结构类
+g_tbl_armyUnitConfig = class("g_tbl_armyUnitConfig",__BaseStruct)
+function  g_tbl_armyUnitConfig:ctor()
+	self.bingIdStr = ""   --部曲兵种（游击|轻装|重装|精锐|禁军的弓刀枪骑兵）
+	self.bingCount = 0    --部曲兵力数量
+	self.exp = 0      --部曲训练度
+	self.shiqi = 0    --部曲士气
+	self.zhenId = 0   --部曲阵法Id
 end
 
 --物品装备表结构类

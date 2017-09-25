@@ -65,7 +65,8 @@ function CreateRoleLayer:touchEvent(sender, eventType)
             campData.generalIdVec = {}
             table.insert(campData.generalIdVec, generalIdVec[1])
 
-            g_HeroDataMgr:SetHeroCampData(campData)
+            --创角之后，构建玩家数据heroXML、generalXML、BagXML等
+            g_HeroDataMgr:CreateAndInitHeroXMLData(campData)
 
             g_pGameLayer:GameMainLayer()   --进入游戏
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_SelCampLayer)
