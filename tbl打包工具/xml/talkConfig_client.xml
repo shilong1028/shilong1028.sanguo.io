@@ -4,6 +4,7 @@
 	<table name="talkConfig" ExcelFile="talkConfig.xlsx" sheet="Sheet1" OutputFile="talkConfig_client.tbl">			
 		<field name="id_str" type="string" size="64"/>
 		<field name="bg" type="string" size="64"/>
+		<field name="head" type="string" size="256"/>
 		<field name="desc" type="string" size="384"/>
 	</table>
 </config>

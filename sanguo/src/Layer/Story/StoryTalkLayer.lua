@@ -29,11 +29,15 @@ function StoryTalkLayer:init()
     self.Panel_Bg = csb:getChildByName("Panel_Bg")   
     self.Panel_bottom = csb:getChildByName("Panel_bottom")    --底部文字遮罩
 
-    self.Image_left = csb:getChildByName("Image_left") 
+    self.Image_left1 = csb:getChildByName("Image_left1") 
+    self.Image_left2 = csb:getChildByName("Image_left2") 
+    self.Image_left2:setVisible(false) 
     self.Text_left = csb:getChildByName("Text_left")   
     self.Text_left:setString("")
 
-    self.Image_right = csb:getChildByName("Image_right") 
+    self.Image_right1 = csb:getChildByName("Image_right1") 
+    self.Image_right2 = csb:getChildByName("Image_right2")
+    self.Image_right2:setVisible(false) 
     self.Text_right = csb:getChildByName("Text_right")   
     self.Text_right:setString("")
 
@@ -113,15 +117,29 @@ function StoryTalkLayer:changeStoryString()
     self.Text_left:setString("")
     self.Text_right:setString("")
     if self.talkIdx %2 == 0 then
-        self.Image_left:setVisible(false)
-        self.Image_right:setVisible(true)
+        self.Image_left1:setVisible(false)
+        self.Image_left2:setVisible(false)
+        self.Image_right1:setVisible(true)
         self.Text_story = self.Text_right
-        self.Image_right:loadTexture(string.format("Head/%d.png", talkData.headVec[1]), ccui.TextureResType.localType)
+        self.Image_right1:loadTexture(string.format("Head/%d.png", talkData.headVec[1]), ccui.TextureResType.localType)
+        if talkData.headVec[2] ~= nil then
+            self.Image_right2:setVisible(true)
+            self.Image_right2:loadTexture(string.format("Head/%d.png", talkData.headVec[2]), ccui.TextureResType.localType)
+        else
+            self.Image_right2:setVisible(false)
+        end
     else
-        self.Image_left:setVisible(true)
-        self.Image_right:setVisible(false)
+        self.Image_left1:setVisible(true)
+        self.Image_right1:setVisible(false)
+        self.Image_right2:setVisible(false)
         self.Text_story = self.Text_left
-        self.Image_left:loadTexture(string.format("Head/%d.png", talkData.headVec[1]), ccui.TextureResType.localType)
+        self.Image_left1:loadTexture(string.format("Head/%d.png", talkData.headVec[1]), ccui.TextureResType.localType)
+        if talkData.headVec[2] ~= nil then
+            self.Image_left2:setVisible(true)
+            self.Image_left2:loadTexture(string.format("Head/%d.png", talkData.headVec[2]), ccui.TextureResType.localType)
+        else
+            self.Image_left2:setVisible(false)
+        end
     end
 
     if self.showUpdateHandler then

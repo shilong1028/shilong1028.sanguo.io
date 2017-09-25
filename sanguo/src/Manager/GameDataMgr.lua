@@ -62,7 +62,11 @@ function GameDataMgr:HandleImplementTask()
 	local curStoryId = self.implementStoryData.storyId
 	--G_Log_Info("GameDataMgr:HandleImplementTask(), storyId = %d", curStoryId)
 	
-	g_pGameLayer:showBattleInfoLayer(curStoryId)
+	if self.implementStoryData.enemyIdVec[1] ~= "0" then
+		g_pGameLayer:showBattleInfoLayer(curStoryId)
+	else
+		g_pGameLayer:showStoryResultLayer(curStoryId)
+	end
 end
 
 --任务剧情相关  --end

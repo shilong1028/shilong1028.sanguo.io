@@ -119,9 +119,9 @@ function GameScene:init()
     end
 end
 
---重新登录
-function GameScene:reloadGame()
-    G_Log_Warning("GameScene:reloadGame()")
+--重新开始游戏，并清空所有数据
+function GameScene:reloadGameAndClearData()
+    G_Log_Warning("GameScene:reloadGameAndClearData()")
     g_pGameLayer:showLoadingLayer(true) 
 
     g_UserDefaultMgr:ClearUseXml("heroXML.xml")   --保存下一个主线剧情任务ID
@@ -182,8 +182,8 @@ function GameScene:reloadGame()
         package.loaded[k] = nil 
     end
 
-    _G["reloadGameInfo"] = {} --标记为重新登录，与第一次登录区别开
-    SystemHelper:reloadGame()
+    _G["reloadGameAndClearInfo"] = {} --标记为重新登录，与第一次登录区别开
+    SystemHelper:reloadGameAndClearData()
     --]]
 end
 

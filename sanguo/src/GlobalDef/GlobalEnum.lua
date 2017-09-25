@@ -36,6 +36,7 @@ g_GameLayerTag = {
 	LAYER_TAG_BattleResultLayer = 109,    --战役结果
 	LAYER_TAG_ZhenXingLayer = 110,    --阵型|布阵界面
 	LAYER_TAG_VipLayer = 111,    --Vip界面
+	LAYER_TAG_StoryResultLayer = 112,    --剧情奖励界面
 }
 
 --人物移动的方向状态标识

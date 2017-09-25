@@ -464,13 +464,13 @@ function TBLMgr:LoadStoryConfigTBL()
 		storyConfig.talkVec = {}
 		local talkStr = stream:ReadString()    --对话内容，以;分割。人物ID字符串和文本用-分割，两个人物用|分割
 		local talkVec = string.split(talkStr,";")
-		for k, talkId in pairs(talkVec) do
+		for k, textIdStr in pairs(talkVec) do
 			local textData = g_pTBLMgr:getTalkConfigTBLDataById(textIdStr)
 			if textData then
 				table.insert(storyConfig.talkVec, textData)
 			end
 		end
-		--local desc = stream:ReadString() 
+		storyConfig.desc = stream:ReadString() 
 
 		table.insert(self.storyConfigVec, storyConfig)
 	end

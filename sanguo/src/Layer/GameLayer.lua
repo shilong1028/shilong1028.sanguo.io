@@ -158,12 +158,12 @@ function GameLayer:ShowScrollTips(tips, color, fontSize)
             end
         end
     else
-        g_Log_Error("ShowScrollTips, type(tips) is error!")
+        G_Log_Error("ShowScrollTips, type(tips) is error!")
         return
     end
 
     if #tipsArr < 1 then
-        g_Log_Warning("ShowScrollTips, tipsArr is empty!")
+        G_Log_Warning("ShowScrollTips, tipsArr is empty!")
         return
     end
 
@@ -238,6 +238,15 @@ function GameLayer:showStoryTalkLayer(storyData)
     end
     storytalkLayer:initStoryData(storyData)
     g_GameDataMgr:SetImplementTaskData(storyData)
+end
+
+--显示剧情奖励界面
+function GameLayer:showStoryResultLayer(storyId) 
+    local storyResultLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
+    if not storyResultLayer then
+        storyResultLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_StoryResultLayer, "Story.StroyResultLayer")
+    end
+    storyResultLayer:initStoryInfo(storyId)
 end
 
 --显示战役介绍界面

@@ -35,6 +35,7 @@ lua_Role_String3 = ""
 
 lua_Item_TypeStrs = {"币", "粮", "甲", "武", "马", "符", "令", "物"}
 lua_Item_String1 = "×%d"
+lua_Item_String2 = "恭喜你，获得%d个%d级的%s！"
 
 lua_Battle_String1 = "伤亡%d兵"
 lua_Battle_String2 = "耗金%d贯"

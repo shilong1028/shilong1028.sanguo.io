@@ -349,8 +349,8 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_shejiao then   --社交好友
         elseif sender == self.Button_shezhi then   --设置
             local function okCallBack()
-                --重新启动游戏
-                g_pGameScene:reloadGame()
+                --重新开始游戏，并清空所有数据
+                g_pGameScene:reloadGameAndClearData()
             end
             local dialog = g_pGameLayer:showDialogOkCancelLayer()
             dialog:bindingData(lua_Dialog_TitleStr1, lua_str_DialogTips3, okCallBack) 

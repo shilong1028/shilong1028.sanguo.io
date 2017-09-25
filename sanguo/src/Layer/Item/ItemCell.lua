@@ -39,7 +39,7 @@ function ItemCell:initData(itemData)
     self.Text_num:setString(string.format(lua_Item_String1, itemData.num))  --数量
     self.Text_type:setString(lua_Item_TypeStrs[itemData.type])    --金币|粮草|护甲|武器|马匹|道具|令牌|物品
 
-    local colorIdx = G_GetGeneralColorIdxByLv(itemData.level)
+    local colorIdx = G_GetGeneralColorIdxByLv(itemData.quality)
     if colorIdx > 0 and colorIdx <=5 then
         self.Image_color:setVisible(true)
         self.Image_color:loadTexture(string.format("public_colorBg%d.png", colorIdx), ccui.TextureResType.plistType)

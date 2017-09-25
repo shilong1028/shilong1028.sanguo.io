@@ -62,11 +62,15 @@ g_campId = 0
 --默认文本大小
 g_defaultFontSize = 20
 g_defaultTipsFontSize = 24    --滚动提示文本大小
+g_rewardTipsFontSize = 28    --奖励提示文字大小
 g_defaultChengFontSize = 40   --城池名字大小
-g_defaultJumpPtFontSize = 30   --城池名字大小
+g_defaultJumpPtFontSize = 30   --跳转点名字大小
 
 --定义一个Zorder用于显示一些最上层数据
 g_TopZOrder = 100
+
+--故事背景图片数量，用于随机Loading背景
+g_StoryBgCount = 24
 
 
 --内网服务器IP和Port

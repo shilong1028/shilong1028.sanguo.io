@@ -29,7 +29,7 @@ function LoadingLayer:init()
 
     --随机背景图
     math.randomseed(os.time()) 
-    local idx = math.random(1,15)
+    local idx = math.random(1, g_StoryBgCount)
     self.BgImg:loadTexture(string.format("StoryBg/StoryBg_%d.jpg",idx), ccui.TextureResType.localType)
 
     local LoadingBarBg = csb:getChildByName("LoadingBarBg")

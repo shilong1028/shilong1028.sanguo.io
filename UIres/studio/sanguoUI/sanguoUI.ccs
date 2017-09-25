@@ -28,6 +28,7 @@
           <Project Name="vipLayer.csd" Type="Layer" />
           <Project Name="ZhenXingLayer.csd" Type="Layer" />
           <Project Name="ZhenXingNode.csd" Type="Layer" />
+          <Project Name="StroyResultLayer.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
           <TTF Name="simkai.ttf" />

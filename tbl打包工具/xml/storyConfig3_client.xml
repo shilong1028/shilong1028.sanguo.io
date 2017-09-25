@@ -10,6 +10,6 @@
 		<field name="offical" type="string" size="64"/>
 		<field name="general" type="string" size="256"/>
 		<field name="talk" type="string" size="256"/>
-		<!--field name="desc" type="string" size="384"/-->
+		<field name="desc" type="string" size="384"/>
 	</table>
 </config>

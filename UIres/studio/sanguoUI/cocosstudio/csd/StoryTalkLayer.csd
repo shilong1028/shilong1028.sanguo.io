@@ -47,7 +47,7 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_left" ActionTag="1578989913" Tag="693" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="64.0000" RightMargin="1088.0000" TopMargin="404.0000" BottomMargin="188.0000" LeftEage="42" RightEage="42" TopEage="42" BottomEage="42" Scale9OriginX="42" Scale9OriginY="42" Scale9Width="44" Scale9Height="44" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_left1" ActionTag="1578989913" Tag="693" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="64.0000" RightMargin="1088.0000" TopMargin="404.0000" BottomMargin="188.0000" LeftEage="42" RightEage="42" TopEage="42" BottomEage="42" Scale9OriginX="42" Scale9OriginY="42" Scale9Width="44" Scale9Height="44" ctype="ImageViewObjectData">
             <Size X="128.0000" Y="128.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="128.0000" Y="252.0000" />
@@ -57,7 +57,7 @@
             <PreSize X="0.1000" Y="0.1778" />
             <FileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_right" ActionTag="-459988477" Tag="694" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="1088.0000" RightMargin="64.0000" TopMargin="404.0000" BottomMargin="188.0000" LeftEage="42" RightEage="42" TopEage="42" BottomEage="42" Scale9OriginX="42" Scale9OriginY="42" Scale9Width="44" Scale9Height="44" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_right1" ActionTag="-459988477" Tag="694" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="1088.0000" RightMargin="64.0000" TopMargin="404.0000" BottomMargin="188.0000" LeftEage="42" RightEage="42" TopEage="42" BottomEage="42" Scale9OriginX="42" Scale9OriginY="42" Scale9Width="44" Scale9Height="44" ctype="ImageViewObjectData">
             <Size X="128.0000" Y="128.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="1152.0000" Y="252.0000" />
@@ -90,6 +90,26 @@
             <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="101" G="9" B="9" />
             <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Image_left2" ActionTag="363647313" Tag="31" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="256.0000" RightMargin="896.0000" TopMargin="404.0000" BottomMargin="188.0000" LeftEage="42" RightEage="42" TopEage="42" BottomEage="42" Scale9OriginX="42" Scale9OriginY="42" Scale9Width="44" Scale9Height="44" ctype="ImageViewObjectData">
+            <Size X="128.0000" Y="128.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="320.0000" Y="252.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.2500" Y="0.3500" />
+            <PreSize X="0.1000" Y="0.1778" />
+            <FileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Image_right2" ActionTag="-1623207452" Tag="32" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="896.0000" RightMargin="256.0000" TopMargin="404.0000" BottomMargin="188.0000" LeftEage="42" RightEage="42" TopEage="42" BottomEage="42" Scale9OriginX="42" Scale9OriginY="42" Scale9Width="44" Scale9Height="44" ctype="ImageViewObjectData">
+            <Size X="128.0000" Y="128.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="960.0000" Y="252.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.7500" Y="0.3500" />
+            <PreSize X="0.1000" Y="0.1778" />
+            <FileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
         </Children>
       </ObjectData>
