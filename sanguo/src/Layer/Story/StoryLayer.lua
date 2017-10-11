@@ -23,24 +23,31 @@ function StoryLayer:init()
     ccui.Helper:doLayout(csb)
 
     self.Image_bg = csb:getChildByName("Image_bg")   --背景图
+    self.Image_bg:setVisible(false)
+    --self.Image_bg:loadTexture("StoryBg/StoryBg_1.jpg", ccui.TextureResType.localType)
+
     self.Panel_MP4 = csb:getChildByName("Panel_MP4")    --MP4父节点（容器）
     self.Text_story = csb:getChildByName("Text_story")   --剧情文本
     self.Text_story:setString("")
-    self.Button_skip = csb:getChildByName("Button_skip")   --跳过按钮
 
+    self.Button_skip = csb:getChildByName("Button_skip")   --跳过按钮
     self.Button_skip:addTouchEventListener(handler(self,self.touchEvent))  
     self.Button_skip:setVisible(false)
 
-    self.storyStrLen = 1
-    self.storyString = lua_Story_String1
-    self.totalStrLen = string.len(lua_Story_String1)
-    self.Image_bg:loadTexture("StoryBg/StoryBg_1.jpg", ccui.TextureResType.localType)
+    self.bNextBreakHandler = true    --false则有多段动画，ture只有一段
+    self.bLoadingStory = false   --是否为初次进入游戏的故事背景介绍动画视频
+end
 
-    local function onVideoEventCallback(sender, eventType)
-        self:onVideoEventCallback(sender, eventType)
-    end
+--加载初次进入游戏的故事背景介绍动画视频
+function StoryLayer:InitLoadingStroy()
+    self.bLoadingStory = true
+    self:createVideoPlayer("res/MP4/loading_story.mp4")   
+end
 
-    self:createVideoPlayer("res/MP4/story_1.mp4")
+--播放指定MP4文件的视频
+function StoryLayer:PlayVedioFile(vedio)
+    self.bLoadingStory = false
+    self:createVideoPlayer(string.format("res/MP4/%s", vedio)) 
 end
 
 function StoryLayer:createVideoPlayer(vedioName)
@@ -66,19 +73,6 @@ function StoryLayer:createVideoPlayer(vedioName)
     self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showSkipBtn), 1.0, false)
 end
 
-function StoryLayer:touchEvent(sender, eventType)
-    if eventType == ccui.TouchEventType.ended then  
-        if sender == self.Button_skip then   --跳过
-            if self.bNextBreakHandler == true then
-                self:changeScene()  
-            else
-                self:nextMp4Vedio()
-                --self:changeStoryString()  --切换下一段剧情文本
-            end
-        end
-    end
-end
-
 function StoryLayer:showSkipBtn()
     self.Button_skip:setVisible(true)
     if self.showUpdateHandler then
@@ -87,58 +81,38 @@ function StoryLayer:showSkipBtn()
     end
 end
 
-function StoryLayer:nextMp4Vedio()
-    --self.bNextBreakHandler = true   
-    --self:createVideoPlayer("res/MP4/fight_1.mp4")
-    self:changeScene() 
-end
-
-function StoryLayer:showStoryText()
-    if self.storyStrLen > 50 then
-        self.Button_skip:setVisible(true)
+function StoryLayer:touchEvent(sender, eventType)
+    if eventType == ccui.TouchEventType.ended then  
+        if sender == self.Button_skip then   --跳过
+            self:handleEndEvent()
+        end
     end
-    if self.storyStrLen  <= self.totalStrLen then
-        --logger_warning(str)
-        local str = string.sub(self.storyString, 1, self.storyStrLen)
-        self.Text_story:setString(str)
-    else
-        self:changeStoryString()    --切换背景图
-    end
-    self.storyStrLen = self.storyStrLen + 1
-end
-
---切换下一段剧情文本
-function StoryLayer:changeStoryString()
-    --G_Log_Info("StoryLayer:changeStoryString()")
-    if self.bNextBreakHandler == true and self.showUpdateHandler then
-        g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
-        self.showUpdateHandler = nil
-        return
-    end
-
-    self.Button_skip:setVisible(false) 
-    self.storyStrLen = 1
-    self.Text_story:setString("")
-    self.storyString = lua_Story_String2
-    self.totalStrLen = string.len(lua_Story_String2)
-    self.Image_bg:loadTexture("StoryBg/StoryBg_2.jpg", ccui.TextureResType.localType)
-
-    if self.vedioPlayer then
-        g_VideoPlayerMgr:playByPath(self.vedioPlayer, "res/MP4/fight_1.mp4")
-    end
-
-    self.bNextBreakHandler = true   --下次显示完文本后，结束定时器 
 end
 
 function StoryLayer:onVideoEventCallback(sener, eventType)
     --G_Log_Info("StoryLayer:onVideoEventCallback()")
     if eventType == "COMPLETED" or eventType == "PAUSED" then
-        self:changeScene() 
-        -- if self.bNextBreakHandler == true then
-        --     self:changeScene() 
-        -- else
-        --     self:nextMp4Vedio()
-        -- end
+        self:handleEndEvent()
+    end
+end
+
+--处理视频结束或点击跳过
+function StoryLayer:handleEndEvent()
+    --G_Log_Info("StoryLayer:handleEndEvent()")
+    if self.bNextBreakHandler == true then
+        if self.bLoadingStory == true then   --初次进入游戏的故事背景介绍动画视频，结束后进入游戏场景
+            self:changeScene() 
+        else
+            if self.vedioPlayer and g_VideoPlayerMgr:isPlaying() == true then
+                g_VideoPlayerMgr:stop(self.vedioPlayer)
+            end
+            self.vedioPlayer:removeFromParent(true)
+            self.vedioPlayer = nil
+
+            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_VedioLayer)
+        end
+    else
+        self:nextMp4Vedio()
     end
 end
 
@@ -158,6 +132,11 @@ function StoryLayer:changeScene()
     else
         cc.Director:getInstance():runWithScene(g_pGameScene)
     end
+end
+
+function StoryLayer:nextMp4Vedio()
+    --self.bNextBreakHandler = true   
+    --self:createVideoPlayer("res/MP4/fight_1.mp4")
 end
 
 return StoryLayer

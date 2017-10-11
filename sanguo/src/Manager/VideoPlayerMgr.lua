@@ -105,7 +105,7 @@ function VideoPlayerMgr:playByPath(videoPlayer, videoPath, replay)
 	if replay == nil then replay = true end 
     if nil  ~= videoPlayer then
     	if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
-    		videoPlayer:playByPath(videoPath, replay) --"res/MP4/story_1.mp4"
+    		videoPlayer:playByPath(videoPath, replay) --"res/MP4/xxx.mp4"
 		else  
 			--local videoFullPath = cc.FileUtils:getInstance():fullPathForFilename(videoPath)  --"cocosvideo.mp4"
             videoPlayer:setFileName(videoPath)    --绝对路径，或res/路径都可以。但是不能带有res去获取绝对路径

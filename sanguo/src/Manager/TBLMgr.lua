@@ -463,6 +463,10 @@ function TBLMgr:LoadStoryConfigTBL()
 		storyConfig.storyId = stream:ReadWord()        --剧情ID
 		storyConfig.targetCity = stream:ReadString()    --目标城池ID字符串
 		storyConfig.name = stream:ReadString()    --战役名称
+		storyConfig.vedio = stream:ReadString()   --主线剧情视频文件，"0"标识无
+		if not storyConfig.vedio or storyConfig.vedio == "0" then
+			storyConfig.vedio = ""
+		end
 		storyConfig.enemyIdVec = {}
 		local enemyStr = stream:ReadString()    --敌方出战将领ID字符串，以;分割
 		storyConfig.enemyIdVec = string.split(enemyStr,";")

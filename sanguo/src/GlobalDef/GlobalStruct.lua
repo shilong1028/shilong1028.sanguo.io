@@ -236,6 +236,7 @@ function  g_tbl_storyConfig:ctor()
 	self.storyId = 0        --剧情ID
 	self.targetCity = ""    --目标城池ID字符串
 	self.name = ""    --战役名称
+	self.vedio = ""   --主线剧情视频文件，"0"标识无
 	self.enemyIdVec = ""    --敌方出战将领ID字符串，以;分割
 	self.rewardIdVec = ""    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
 	self.offical = ""   --奖励官职id_str

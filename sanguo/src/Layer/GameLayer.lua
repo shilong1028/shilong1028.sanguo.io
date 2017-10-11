@@ -129,7 +129,7 @@ function GameLayer:GameMainLayer()
     local roleMapPosData = g_HeroDataMgr:GetHeroMapPosData()
     local mapId = roleMapPosData.mapId
     local rolePos = roleMapPosData.rolePos
-    if not mapId then  --没有地图信息，默认显示玩家阵营首府位置及地图
+    if not mapId then  --没有地图信息，默认显示玩家阵营首府位置及地图（第一次登陆，选角之后会进入该分支）
         local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
         if campId and campId > 0 then
             local campData = g_pTBLMgr:getCampConfigTBLDataById(campId)
@@ -141,7 +141,6 @@ function GameLayer:GameMainLayer()
         self.MapLayer:changeMapBymapId(mapId, rolePos)
     end
 end
-
 
 --[[
 --滚动列表叠加显示提示界面
@@ -240,6 +239,15 @@ end
 function GameLayer:showDialogHelpLayer() 
     local dialogLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_DialogHelpLayer, "TipsOrDialog.HelpInfoLayer")
     return dialogLayer
+end
+
+--显示视频动画
+function GameLayer:showVedioLayer(vedio) 
+    local vedioLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_VedioLayer)
+    if not vedioLayer then
+        vedioLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_VedioLayer, "Story.StoryLayer")
+    end
+    vedioLayer:PlayVedioFile(vedio)
 end
 
 --显示剧情动画

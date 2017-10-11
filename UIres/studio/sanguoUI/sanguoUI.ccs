@@ -4,6 +4,7 @@
     <Group ctype="ResourceGroup">
       <RootFolder Name=".">
         <Folder Name="csd">
+          <Project Name="BagLayer.csd" Type="Layer" />
           <Project Name="BattleInfoLayer.csd" Type="Layer" />
           <Project Name="BattleResultLayer.csd" Type="Layer" />
           <Project Name="bigOfficalNode.csd" Type="Layer" />
@@ -29,7 +30,6 @@
           <Project Name="vipLayer.csd" Type="Layer" />
           <Project Name="ZhenXingLayer.csd" Type="Layer" />
           <Project Name="ZhenXingNode.csd" Type="Layer" />
-          <Project Name="BagLayer.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
           <TTF Name="simkai.ttf" />

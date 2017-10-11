@@ -33,7 +33,7 @@ function MainMenuLayer:LoadEventListenerCustom()
         local nextStoryId = tonumber(event._usedata)
         --G_Log_Info("mainStory_listenerCallBack(), nextStoryId = %d", nextStoryId)
         g_GameDataMgr:SetImplementTaskData(nil)
-        self:initStroyData(nextStoryId)
+        self:initStroyData(nextStoryId, true)
     end
 
     self.mainStory_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.MainMenu_mainStoryEvent, mainStory_listenerCallBack)
@@ -199,13 +199,15 @@ function MainMenuLayer:initData()
     self.renWuListView:removeAllChildren()
 
     local storyId = g_HeroDataMgr:GetStoryTalkId()
+    local bPlayerVedio = false
     if storyId and storyId > 0 then
     else
         storyId = 1
+        bPlayerVedio = true
     end
 
     self.mainStoryCell = nil   --主线剧情Cell
-    self:initStroyData(storyId)
+    self:initStroyData(storyId, bPlayerVedio)
 end
 
 function MainMenuLayer:initVipData(vipId)
@@ -216,7 +218,7 @@ function MainMenuLayer:initVipData(vipId)
     end
 end
 
-function MainMenuLayer:initStroyData(storyId)
+function MainMenuLayer:initStroyData(storyId, bPlayerVedio)
     --G_Log_Info("MainMenuLayer:initStroyData(), storyId = %d", storyId)
     self.storyId = storyId
     self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId) 
@@ -239,8 +241,11 @@ function MainMenuLayer:initStroyData(storyId)
         end
         self.mainStoryCell:setVisible(false)
         self.mainStoryCell:runAction(cc.Sequence:create(cc.DelayTime:create(0.2), cc.CallFunc:create(function () 
-                    self.mainStoryCell:setVisible(true) 
-                    end)))
+            self.mainStoryCell:setVisible(true) 
+                if bPlayerVedio == true and self.storyData.vedio ~= "" then   --新主线任务，且有视频剧情
+                    g_pGameLayer:showVedioLayer(self.storyData.vedio) 
+                end
+            end)))
         self.mainStoryCell:initData(self.storyData)
         self:renWuButton_pushAction(true)
     else  --没有剧情任务

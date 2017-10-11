@@ -30,6 +30,8 @@ function StoryScene:init()
     local StoryLayer = require("Layer.Story.StoryLayer")
     local layer = StoryLayer:new()
     self:addChild(layer)
+    --加载初次进入游戏的故事背景介绍动画视频
+    layer:InitLoadingStroy()
 end
 
 function StoryScene:onEnter()
