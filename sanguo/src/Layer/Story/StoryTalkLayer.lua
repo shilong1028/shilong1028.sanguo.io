@@ -26,8 +26,10 @@ function StoryTalkLayer:init()
     csb:setContentSize(g_WinSize)
     ccui.Helper:doLayout(csb)
 
-    self.Panel_Bg = csb:getChildByName("Panel_Bg")   
-    self.Panel_bottom = csb:getChildByName("Panel_bottom")    --底部文字遮罩
+    self.Panel_Bg = csb:getChildByName("Panel_Bg")
+    self.Image_bg = csb:getChildByName("Image_bg")     --故事背景图片
+    self.Image_bg:setVisible(false)
+    self.Image_bottom = csb:getChildByName("Image_bottom")    --底部文字遮罩
 
     self.Image_left1 = csb:getChildByName("Image_left1") 
     self.Image_left2 = csb:getChildByName("Image_left2") 
@@ -98,6 +100,7 @@ function StoryTalkLayer:changeStoryString()
             g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
             self.showUpdateHandler = nil
         end
+        self.Image_bg:setVisible(false)
 
         local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
         if mapLayer then
@@ -113,6 +116,12 @@ function StoryTalkLayer:changeStoryString()
     local talkData = self.talkVec[self.talkIdx]
     self.storyString = talkData.desc
     self.totalStrLen = string.len(self.storyString)
+
+    self.Image_bg:setVisible(false)
+    if talkData.bg and talkData.bg ~= "" then
+        self.Image_bg:loadTexture(string.format("StoryBg/%s.jpg", talkData.bg), ccui.TextureResType.localType)
+        self.Image_bg:setVisible(true)
+    end
 
     self.Text_left:setString("")
     self.Text_right:setString("")
