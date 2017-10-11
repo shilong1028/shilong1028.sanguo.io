@@ -62,28 +62,6 @@ function StroyResultLayer:initStoryInfo(storyId)
 
         self.Text_info:setString("    "..self.storyData.desc)
 
-        -- for k, enemId in pairs(self.storyData.enemyIdVec) do
-        --     local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(enemId) 
-        --     if generalData then
-        --         local officerCell = SmallOfficerCell:new()
-        --         officerCell:initData(generalData) 
-
-        --         local cur_item = ccui.Layout:create()
-        --         cur_item:setContentSize(officerCell:getContentSize())
-        --         cur_item:addChild(officerCell)
-        --         cur_item:setEnabled(false)
-        --         self.ListView_army:addChild(cur_item)
-        --     end
-        -- end
-        -- local armyInnerWidth = #self.storyData.enemyIdVec*(90 + 5)
-        -- if armyInnerWidth < self.ListView_armySize.width then
-        --     self.ListView_army:setContentSize(cc.size(armyInnerWidth, self.ListView_armySize.height))
-        --     self.ListView_army:setBounceEnabled(false)
-        -- else
-        --     self.ListView_army:setContentSize(self.ListView_armySize)
-        --     self.ListView_army:setBounceEnabled(true)
-        -- end
-
         self.rewardItemVec = {}
 
         for k, reward in pairs(self.storyData.rewardIdVec) do
@@ -126,6 +104,7 @@ function StroyResultLayer:touchEvent(sender, eventType)
             end
             if #tipsArr > 0 then
                 g_pGameLayer:ShowScrollTips(tipsArr)
+                g_HeroDataMgr:SetBagXMLData(self.storyData.rewardIdVec)   --保存玩家背包物品数据到bagXML
             end
 
             --下一个剧情

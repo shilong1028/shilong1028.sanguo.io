@@ -18,7 +18,8 @@ function HeroDataMgr:init()
     --generalXML数据，因为武将列表在camp中，因此该方法在initHeroXMLData()之后调用
     self:initGeneralXMLData()
 
-
+    --bagXML数据
+    self:initBagXMLData()
 end
 
 function HeroDataMgr:GetInstance()
@@ -49,6 +50,15 @@ end
 function HeroDataMgr:ClearAllUserXML()
     self:ClearUserXML("heroXML.xml")
     self:ClearUserXML("generalXML.xml")
+    self:ClearUserXML("bagXML.xml")
+
+    self.heroData.storyData = {}  --剧情任务数据
+    self.heroData.mapPosData = {}  --玩家地图位置信息
+    self.heroData.campData = g_tbl_campConfig:new()  --玩家阵营信息
+    self.heroData.vipData = {}   --vip信息
+    self.heroData.generalVecData = {}   --武将数据
+    self.heroData.bagVecData = {}   --武将数据
+
 end
 
 --heroXMl数据
@@ -88,7 +98,7 @@ function HeroDataMgr:initHeroXMLData()
         self.heroData.campData.food = tonumber(heroXML:getNodeAttrValue("campData", "food"))     --初始粮草（单位石，1石=1000斤）
         self.heroData.campData.generalIdVec = {}
         local generalStr = heroXML:getNodeAttrValue("campData", "general")    --初始将领ID字符串，以;分割
-        if generalStr ~= "" then
+        if generalStr and generalStr ~= "" then
             self.heroData.campData.generalIdVec = string.split(generalStr,";")
         end
         --self.heroData.campData.desc = ""    --阵营描述不用存储
@@ -129,23 +139,37 @@ function HeroDataMgr:initGeneralXMLData()
                 generalData.zhongcheng = tonumber(generalXML:getNodeAttrValue(generalIdStr, "zhongcheng"))  --武将忠诚度
                 generalData.bingTypeVec = {}    --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种
                 local bingTypeStr = generalXML:getNodeAttrValue(generalIdStr, "bingTypeVec")  
-                generalData.bingTypeVec = string.split(bingTypeStr,";")  
+                if bingTypeStr and bingTypeStr ~= "" then
+                    generalData.bingTypeVec = string.split(bingTypeStr,";")  
+                end
 
 
                 generalData.skillVec = {}    --技能，技能ID字符串以;分割  {["skillId"]=vec[2], ["lv"]=vec[1]}
                 local skillIdStr = generalXML:getNodeAttrValue(generalIdStr, "skillIdVec")  
-                local skillIdVec = string.split(skillIdStr,";")  
+                local skillIdVec = {}
+                if skillIdStr and skillIdStr ~= "" then
+                    skillIdVec = string.split(skillIdStr,";") 
+                end 
                 local skillLvStr = generalXML:getNodeAttrValue(generalIdStr, "skillLvVec")  
-                local skillLvVec = string.split(skillLvStr,";")  
+                local skillLvVec = {}
+                if skillLvStr and skillLvStr ~= "" then
+                    skillLvVec = string.split(skillLvStr,";")  
+                end
                 for i=1, #skillIdVec do
                     table.insert(generalData.skillVec, {["skillId"]=skillIdVec[i], ["lv"]=skillLvVec[i]})
                 end
 
                 generalData.equipVec = {}    --装备，装备ID字符串以;分割{["equipId"]=vec[2], ["lv"]=vec[1]}
                 local equipIdStr = generalXML:getNodeAttrValue(generalIdStr, "equipIdVec")  
-                local equipIdVec = string.split(equipIdStr,";")  
+                local equipIdVec = {}
+                if equipIdStr and equipIdStr ~= "" then
+                    equipIdVec = string.split(equipIdStr,";")  
+                end
                 local equipLvStr = generalXML:getNodeAttrValue(generalIdStr, "equipLvVec")  
-                local equipLvVec = string.split(equipLvStr,";")  
+                local equipLvVec = {}
+                if equipLvStr and equipLvStr ~= "" then
+                    equipLvVec = string.split(equipLvStr,";")  
+                end
                 for i=1, #equipIdVec do
                     table.insert(generalData.equipVec, {["skillId"]=equipIdVec[i], ["lv"]=equipLvVec[i]})
                 end
@@ -163,6 +187,31 @@ function HeroDataMgr:initGeneralXMLData()
         end
     end
     --G_Log_Dump(self.heroData.generalVecData, "generalVecData = ")
+end
+
+--bagXML保存玩家背包物品数据
+function HeroDataMgr:initBagXMLData()
+    --G_Log_Info("HeroDataMgr:initBagXMLData()")
+    self.heroData.bagVecData = {}   --武将数据
+
+    local bagXML = g_UserDefaultMgr:loadXMLFile("bagXML.xml")
+    if bagXML then
+        local vecStr = bagXML:getNodeAttrValue("itemIdVecNode", "itemIdVec")
+        print("vecStr = ", vecStr)  
+        if vecStr and vecStr ~= "" then
+            local itemIdVec = string.split(vecStr,";") 
+
+            for i=1, #itemIdVec do
+                local itemIdStr = tostring(itemIdVec[i])
+                local itemData = {
+                    ["itemId"] = bagXML:getNodeAttrValue(itemIdStr, "itemId") ,
+                    ["num"] = bagXML:getNodeAttrValue(itemIdStr, "num")
+                }
+                self.heroData.bagVecData[itemIdStr] = itemData
+            end
+        end
+    end
+    G_Log_Dump(self.heroData.bagVecData, "bagVecData = ")
 end
 
 ------------------------------------------------------
@@ -425,6 +474,62 @@ function HeroDataMgr:SetSingleGeneralExp(generalIdStr, exp)
 end
 
 ----------------------------武将信息处理 end  ------------------------
+
+---------------------bagXML保存玩家背包物品数据 begin   ----------------------------------
+function HeroDataMgr:GetBagXMLData()
+    return clone(self.heroData.bagVecData)
+end
+
+function HeroDataMgr:SetBagXMLData(itemVec)
+    --G_Log_Info("HeroDataMgr:SetBagXMLData()")
+    if not itemVec then
+        G_Log_Error("HeroDataMgr:SetBagXMLData(), error: itemVec = nil")
+    end
+
+    local bagXML = g_UserDefaultMgr:loadXMLFile("bagXML.xml")
+    if not bagXML then
+        bagXML = g_UserDefaultMgr:createXMLFile("bagXML.xml", "root")
+    end
+
+    local bItemIdChanged = false   --总物品是否有增加的新物品或删除的物品
+
+    for i=1, #itemVec do
+        local itemIdStr = tostring(itemVec[i].itemId)
+        local itemNum = tonumber(itemVec[i].num)
+        if self.heroData.bagVecData[itemIdStr] == nil then
+            bItemIdChanged = true    --增加新物品
+        elseif itemNum == 0 then
+            bItemIdChanged = true    --删除的物品
+        end
+        self.heroData.bagVecData[itemIdStr] = itemVec[i]
+        
+        bagXML:removeNode(itemIdStr)    --每个物品用itemIdStr字符串作为节点
+        if itemNum > 0 then
+            bagXML:addChildNode(itemIdStr)
+            bagXML:setNodeAttrValue(itemIdStr, "itemId", tostring(itemIdStr))
+            bagXML:setNodeAttrValue(itemIdStr, "num", tostring(itemNum))
+        end
+    end
+
+    if bItemIdChanged == true then  --总物品有增加的新物品或删除的物品
+        local totalIdStr = ""
+        for k, data in pairs(self.heroData.bagVecData) do
+            local itemId = data.itemId
+            totalIdStr = totalIdStr..tostring(itemId)
+            if k ~= #self.heroData.bagVecData then
+                totalIdStr = totalIdStr..";"
+            end
+        end
+        bagXML:removeNode("itemIdVecNode")
+        bagXML:addChildNode("itemIdVecNode")
+        bagXML:setNodeAttrValue("itemIdVecNode", "itemIdVec", tostring(totalIdStr))
+    end
+
+    bagXML:saveXMLFile()
+end
+
+
+---------------------bagXML保存玩家背包物品数据 end   ------------------------------------
 
 
 return HeroDataMgr
