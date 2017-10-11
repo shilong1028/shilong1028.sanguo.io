@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <campData campId="3" name="魏阵营" captain="3001" capital="1205" population="427" troops="1000" money="5000" food="5000" drug="5000" general="3001"/>
+    <storyData mainStoryId="1"/>
     <mapPosData mapId="9" posX="1552.000000" posY="1656.000000"/>
 </root>

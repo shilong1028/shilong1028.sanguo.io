@@ -94,7 +94,8 @@ end
 function GameLayer:StoryFinishCallBack(storyId, bMainStory)
     if not bMainStory then bMainStory = true end
     local nextStoryId = storyId + 1
-    g_HeroDataMgr:SetStoryTalkId(nextStoryId)   --保存下一个主线剧情任务ID
+
+    g_HeroDataMgr:SaveStoryTalkId(nextStoryId)   --保存新的任务ID到XML文件
 
     --发送处主线剧情任务监听事件
     local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_mainStoryEvent)
@@ -257,7 +258,6 @@ function GameLayer:showStoryTalkLayer(storyData)
         storytalkLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_StoryTalkLayer, "Story.StoryTalkLayer")
     end
     storytalkLayer:initStoryData(storyData)
-    g_GameDataMgr:SetImplementTaskData(storyData)
 end
 
 --显示剧情奖励界面

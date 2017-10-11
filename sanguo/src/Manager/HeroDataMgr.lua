@@ -1,5 +1,5 @@
 
---HeroDataMgr用于存储玩家游戏信息
+--HeroDataMgr用于存储玩家游戏信息（保存于XML文件）
 
 local HeroDataMgr = class("HeroDataMgr")
 
@@ -195,6 +195,11 @@ end
 --Vip数据处理  --end  ------------------------------------------------------
 
 --剧情任务数据  --begin
+function HeroDataMgr:SaveStoryTalkId(storyId)   --保存新的任务ID到XML文件
+    g_GameDataMgr:SetImplementTaskData(nil)     --保存正在执行的任务剧情，用于检查是否到达了任务目的地
+    g_HeroDataMgr:SetStoryTalkId(storyId)   --保存主线剧情任务ID
+end
+
 function HeroDataMgr:GetStoryTalkId()
     return clone(self.heroData.storyData.mainStoryId)
 end

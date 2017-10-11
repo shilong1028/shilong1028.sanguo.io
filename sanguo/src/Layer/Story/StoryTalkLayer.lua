@@ -50,6 +50,8 @@ end
 
 function StoryTalkLayer:initStoryData(storyData)
     --G_Log_Dump(storyData, "storyData = ")
+    g_GameDataMgr:SetImplementTaskData(storyData)  --保存正在执行的任务剧情，用于检查是否到达了任务目的地
+
     self.storyData = storyData
     self.talkVec = self.storyData.talkVec
     self.talkIdx = 0

@@ -32,7 +32,6 @@ function MainMenuLayer:LoadEventListenerCustom()
         --接收时解析
         local nextStoryId = tonumber(event._usedata)
         --G_Log_Info("mainStory_listenerCallBack(), nextStoryId = %d", nextStoryId)
-        g_GameDataMgr:SetImplementTaskData(nil)
         self:initStroyData(nextStoryId, true)
     end
 
@@ -204,6 +203,7 @@ function MainMenuLayer:initData()
     else
         storyId = 1
         bPlayerVedio = true
+        g_HeroDataMgr:SaveStoryTalkId(storyId)   --保存新的任务ID到XML文件
     end
 
     self.mainStoryCell = nil   --主线剧情Cell
@@ -349,6 +349,7 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_jingji then   --竞技场
         elseif sender == self.Button_peiyang then  --士兵培养
         elseif sender == self.Button_beibao then   --背包武库
+            g_pGameLayer:showBagLayer()
         elseif sender == self.Button_jiangling then  --将领部队
         elseif sender == self.Button_lianmeng then   --联盟
         elseif sender == self.Button_shejiao then   --社交好友
