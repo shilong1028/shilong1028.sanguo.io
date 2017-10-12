@@ -64,6 +64,34 @@ function StroyResultLayer:initStoryInfo(storyId)
 
         self.rewardItemVec = {}
 
+        for k, soldier in pairs(self.storyData.soldierVec) do
+            local soldierId = soldier.itemId 
+            local soldierData = g_pTBLMgr:getItemConfigTBLDataById(soldierId)  
+            if soldierData then
+                table.insert(self.rewardItemVec, soldierData)
+
+                soldierData.num = soldier.num 
+                local itemCell = ItemCell:new()
+                itemCell:initData(soldierData) 
+
+                local cur_item = ccui.Layout:create()
+                cur_item:setContentSize(itemCell:getContentSize())
+                cur_item:addChild(itemCell)
+                cur_item:setEnabled(false)
+                self.ListView_army:addChild(cur_item)
+            end
+        end
+        local len = #self.storyData.soldierVec
+        local armyInnerWidth = len*90 + 10*(len-1)
+        if armyInnerWidth < self.ListView_armySize.width then
+            self.ListView_army:setContentSize(cc.size(armyInnerWidth, self.ListView_armySize.height))
+            self.ListView_army:setBounceEnabled(false)
+        else
+            self.ListView_army:setContentSize(self.ListView_armySize)
+            self.ListView_army:setBounceEnabled(true)
+        end
+        self.ListView_army:refreshView()
+
         for k, reward in pairs(self.storyData.rewardIdVec) do
             local itemId = reward.itemId    --{["itemId"] = strVec[1], ["num"] = strVec[2]}
             local itemData = g_pTBLMgr:getItemConfigTBLDataById(itemId) 

@@ -1,5 +1,5 @@
 --物品装备Cell
-
+--不同品质的物品有不同的ID，和名称
 local ItemCell = class("ItemCell", CCLayerEx)
 
 function ItemCell:create()   --自定义的create()创建方法

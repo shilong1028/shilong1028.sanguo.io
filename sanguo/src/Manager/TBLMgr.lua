@@ -482,6 +482,15 @@ function TBLMgr:LoadStoryConfigTBL()
 				table.insert(storyConfig.rewardIdVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
 			end
 		end
+		storyConfig.soldierVec = {}
+		local soldierStr = stream:ReadString()   --奖励士兵，以;分割。物品ID字符串和数量用-分割  
+		local soldierVec = string.split(soldierStr,";")
+		if soldierStr[1] ~= "0" then
+			for k, d in pairs(soldierVec) do
+				local strVec = string.split(d,"-")
+				table.insert(storyConfig.soldierVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+			end
+		end
 		storyConfig.offical = stream:ReadString()   --奖励官职id_str
 		storyConfig.generalVec = {}   --奖励武将Id_str, 以;分割
 		local generalStr = stream:ReadString()   

@@ -1,5 +1,6 @@
 
 --背包信息
+--不同品质的物品有不同的ID，和名称
 local BagLayer = class("BagLayer", CCLayerEx)
 
 local ItemCell = require("Layer.Item.ItemCell")

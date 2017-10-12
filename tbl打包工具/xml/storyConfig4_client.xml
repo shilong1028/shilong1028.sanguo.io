@@ -8,6 +8,7 @@
 		<field name="vedio" type="string" size="64"/>
 		<field name="enemy" type="string" size="256"/>
 		<field name="reward" type="string" size="256"/>
+		<field name="soldier" type="string" size="256"/>
 		<field name="offical" type="string" size="64"/>
 		<field name="general" type="string" size="256"/>
 		<field name="talk" type="string" size="256"/>
