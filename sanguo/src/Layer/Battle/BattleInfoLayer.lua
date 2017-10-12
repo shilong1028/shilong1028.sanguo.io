@@ -38,13 +38,13 @@ function BattleInfoLayer:init()
     self.ListView_enemy = self.Image_bg:getChildByName("ListView_enemy")
     self.ListView_enemy:setBounceEnabled(true)
     self.ListView_enemy:setScrollBarEnabled(false)   --屏蔽列表滚动条
-    self.ListView_enemy:setItemsMargin(5.0)
+    self.ListView_enemy:setItemsMargin(10.0)
     self.ListView_enemySize = self.ListView_enemy:getContentSize()
     
     self.ListView_reward = self.Image_bg:getChildByName("ListView_reward")
     self.ListView_reward:setBounceEnabled(true)
     self.ListView_reward:setScrollBarEnabled(false)   --屏蔽列表滚动条
-    self.ListView_reward:setItemsMargin(5.0)
+    self.ListView_reward:setItemsMargin(10.0)
     self.ListView_rewardSize = self.ListView_reward:getContentSize()
 end
 
@@ -75,7 +75,8 @@ function BattleInfoLayer:initStoryInfo(storyId)
                 self.ListView_enemy:addChild(cur_item)
             end
         end
-        local enemyInnerWidth = #self.storyData.enemyIdVec*(90 + 5)
+        local len = #self.storyData.enemyIdVec
+        local enemyInnerWidth = len*90 + 10*(len-1)
         if enemyInnerWidth < self.ListView_enemySize.width then
             self.ListView_enemy:setContentSize(cc.size(enemyInnerWidth, self.ListView_enemySize.height))
             self.ListView_enemy:setBounceEnabled(false)
@@ -83,6 +84,7 @@ function BattleInfoLayer:initStoryInfo(storyId)
             self.ListView_enemy:setContentSize(self.ListView_enemySize)
             self.ListView_enemy:setBounceEnabled(true)
         end
+        self.ListView_enemy:refreshView()
 
         for k, reward in pairs(self.storyData.rewardIdVec) do
             local itemId = reward.itemId    --{["itemId"] = strVec[1], ["num"] = strVec[2]}
@@ -99,7 +101,8 @@ function BattleInfoLayer:initStoryInfo(storyId)
                 self.ListView_reward:addChild(cur_item)
             end
         end
-        local rewardInnerWidth = #self.storyData.rewardIdVec*(90 + 5)
+        local len = #self.storyData.rewardIdVec
+        local rewardInnerWidth = len*90 + 10*(len-1)
         if rewardInnerWidth < self.ListView_rewardSize.width then
             self.ListView_reward:setContentSize(cc.size(rewardInnerWidth, self.ListView_rewardSize.height))
             self.ListView_reward:setBounceEnabled(false)
@@ -107,6 +110,7 @@ function BattleInfoLayer:initStoryInfo(storyId)
             self.ListView_reward:setContentSize(self.ListView_rewardSize)
             self.ListView_reward:setBounceEnabled(true)
         end
+        self.ListView_reward:refreshView()
     end
 end
 

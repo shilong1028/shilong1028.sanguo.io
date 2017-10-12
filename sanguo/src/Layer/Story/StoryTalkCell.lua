@@ -38,8 +38,17 @@ end
 
 function StoryTalkCell:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
-        if sender == self.Image_bg then   
-            g_pGameLayer:showStoryTalkLayer(self.storyData)
+        if sender == self.Image_bg then  
+            if self.storyData.bPlayedTalk ==1 then   ---是否已经播放过对话，0未，1已播放（则不再播放） 
+                local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+                if mapLayer then
+                    mapLayer:autoPathMapByCity(self.storyData.targetCity)
+                end
+            else
+                self.storyData.bPlayedTalk = 1
+                g_HeroDataMgr:SetStoryTalkMask(self.storyData.storyId) 
+                g_pGameLayer:showStoryTalkLayer(self.storyData)
+            end
         end
     end
 end

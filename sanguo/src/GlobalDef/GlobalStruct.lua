@@ -242,6 +242,10 @@ function  g_tbl_storyConfig:ctor()
 	self.offical = ""   --奖励官职id_str
 	self.generalVec = {}   --奖励武将Id_str, 以;分割
 	self.talkVec = {}    --对话内容，以;分割
+	self.desc = ""    --剧情简要描述，用于奖励或战斗界面展示
+
+	--附加成员
+	self.bPlayedTalk = 0   ---是否已经播放过对话，0未，1已播放（则不再播放）
 end
 
 --vip表结构类

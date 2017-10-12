@@ -94,7 +94,7 @@
                 <OutlineColor A="255" R="165" G="42" B="42" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="ListView_reward" ActionTag="-148810682" Tag="13" IconVisible="False" LeftMargin="270.0331" RightMargin="268.9669" TopMargin="337.7534" BottomMargin="155.2466" TouchEnable="True" ClipAble="True" BackColorAlpha="37" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" VerticalType="Align_VerticalCenter" ctype="ListViewObjectData">
+              <AbstractNodeData Name="ListView_reward" ActionTag="-148810682" Tag="13" IconVisible="False" LeftMargin="270.0331" RightMargin="268.9669" TopMargin="337.7534" BottomMargin="155.2466" TouchEnable="True" ClipAble="True" BackColorAlpha="37" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="10" VerticalType="Align_VerticalCenter" ctype="ListViewObjectData">
                 <Size X="350.0000" Y="92.0000" />
                 <AnchorPoint ScaleY="0.5000" />
                 <Position X="270.0331" Y="201.2466" />

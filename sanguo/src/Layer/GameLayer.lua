@@ -95,7 +95,7 @@ function GameLayer:StoryFinishCallBack(storyId, bMainStory)
     if not bMainStory then bMainStory = true end
     local nextStoryId = storyId + 1
 
-    g_HeroDataMgr:SaveStoryTalkId(nextStoryId)   --保存新的任务ID到XML文件
+    g_HeroDataMgr:SaveNextStoryTalkId(nextStoryId)   --保存新的任务ID到XML文件
 
     --发送处主线剧情任务监听事件
     local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_mainStoryEvent)

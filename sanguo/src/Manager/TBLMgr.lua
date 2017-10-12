@@ -499,7 +499,9 @@ function TBLMgr:LoadStoryConfigTBL()
 				table.insert(storyConfig.talkVec, textData)
 			end
 		end
-		storyConfig.desc = stream:ReadString() 
+		storyConfig.desc = stream:ReadString()   --剧情简要描述，用于奖励或战斗界面展示
+
+		storyConfig.bPlayedTalk = 0   ---是否已经播放过对话，0未，1已播放（则不再播放）
 
 		table.insert(self.storyConfigVec, storyConfig)
 	end

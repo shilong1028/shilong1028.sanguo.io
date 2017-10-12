@@ -108,7 +108,7 @@
                 <OutlineColor A="255" R="165" G="42" B="42" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="ListView_enemy" ActionTag="1127375665" Tag="12" IconVisible="False" LeftMargin="240.0000" RightMargin="149.0000" TopMargin="249.0000" BottomMargin="244.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="37" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" VerticalType="Align_VerticalCenter" ctype="ListViewObjectData">
+              <AbstractNodeData Name="ListView_enemy" ActionTag="1127375665" Tag="12" IconVisible="False" LeftMargin="240.0000" RightMargin="149.0000" TopMargin="249.0000" BottomMargin="244.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="37" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="10" VerticalType="Align_VerticalCenter" ctype="ListViewObjectData">
                 <Size X="500.0000" Y="92.0000" />
                 <AnchorPoint ScaleY="0.5000" />
                 <Position X="240.0000" Y="290.0000" />
@@ -121,7 +121,7 @@
                 <EndColor A="255" R="255" G="255" B="255" />
                 <ColorVector ScaleY="1.0000" />
               </AbstractNodeData>
-              <AbstractNodeData Name="ListView_reward" ActionTag="-148810682" Tag="13" IconVisible="False" LeftMargin="241.3586" RightMargin="147.6414" TopMargin="359.0000" BottomMargin="134.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="37" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" VerticalType="Align_VerticalCenter" ctype="ListViewObjectData">
+              <AbstractNodeData Name="ListView_reward" ActionTag="-148810682" Tag="13" IconVisible="False" LeftMargin="241.3586" RightMargin="147.6414" TopMargin="359.0000" BottomMargin="134.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="37" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="10" VerticalType="Align_VerticalCenter" ctype="ListViewObjectData">
                 <Size X="500.0000" Y="92.0000" />
                 <AnchorPoint ScaleY="0.5000" />
                 <Position X="241.3586" Y="180.0000" />

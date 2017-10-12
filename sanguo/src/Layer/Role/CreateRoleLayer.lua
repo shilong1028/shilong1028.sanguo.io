@@ -66,7 +66,15 @@ function CreateRoleLayer:touchEvent(sender, eventType)
             table.insert(campData.generalIdVec, generalIdVec[1])
 
             --创角之后，构建玩家数据heroXML、generalXML、BagXML等
-            g_HeroDataMgr:CreateAndInitHeroXMLData(campData)
+            local bagItemVec = {
+                {["itemId"] = "404", ["num"] = campData.troops},  --骑兵
+                {["itemId"] = "6001", ["num"] = campData.money},  --金币
+                {["itemId"] = "6002", ["num"] = campData.food},  --粮草
+                {["itemId"] = "6003", ["num"] = campData.drug},  --药材
+            }
+
+            g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML
+            g_HeroDataMgr:CreateAndInitHeroXMLData(campData)   --保存阵营信息到heroXML
 
             g_pGameLayer:GameMainLayer()   --进入游戏
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_SelCampLayer)

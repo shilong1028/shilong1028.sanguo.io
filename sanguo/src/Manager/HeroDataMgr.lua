@@ -72,6 +72,8 @@ function HeroDataMgr:initHeroXMLData()
     if heroXML then
         --剧情任务数据(主线ID) 
         self.heroData.storyData.mainStoryId = tonumber(heroXML:getNodeAttrValue("storyData", "mainStoryId")) 
+        self.heroData.storyData.bPlayedTalk = tonumber(heroXML:getNodeAttrValue("storyData", "mainStoryMask"))   ---是否已经播放过对话，0未，1已播放（则不再播放）
+
         --vip数据
         self.heroData.vipData.vipId = tonumber(heroXML:getNodeAttrValue("vipData", "vipId")) or 0
         self.heroData.vipData.vipgold = tonumber(heroXML:getNodeAttrValue("vipData", "vipgold")) or 0
@@ -242,17 +244,18 @@ end
 --Vip数据处理  --end  ------------------------------------------------------
 
 --剧情任务数据  --begin
-function HeroDataMgr:SaveStoryTalkId(storyId)   --保存新的任务ID到XML文件
+function HeroDataMgr:SaveNextStoryTalkId(storyId)   --保存新的任务ID到XML文件
     g_GameDataMgr:SetImplementTaskData(nil)     --保存正在执行的任务剧情，用于检查是否到达了任务目的地
-    g_HeroDataMgr:SetStoryTalkId(storyId)   --保存主线剧情任务ID
+    g_HeroDataMgr:SetNextStoryTalkId(storyId)   --保存主线剧情任务ID
 end
 
 function HeroDataMgr:GetStoryTalkId()
     return clone(self.heroData.storyData.mainStoryId)
 end
 
-function HeroDataMgr:SetStoryTalkId(storyId)
+function HeroDataMgr:SetStoryTalkMask(storyId)
     self.heroData.storyData.mainStoryId = storyId   --剧情任务数据(主线ID) 
+    self.heroData.storyData.bPlayedTalk = 1   ---是否已经播放过对话，0未，1已播放（则不再播放）
 
     local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     if not heroXML then
@@ -261,6 +264,22 @@ function HeroDataMgr:SetStoryTalkId(storyId)
     heroXML:removeNode("storyData")
     heroXML:addChildNode("storyData")
     heroXML:setNodeAttrValue("storyData", "mainStoryId", tostring(storyId))
+    heroXML:setNodeAttrValue("storyData", "mainStoryMask", tostring(1))   ---是否已经播放过对话，0未，1已播放（则不再播放）
+    heroXML:saveXMLFile()
+end
+
+function HeroDataMgr:SetNextStoryTalkId(storyId)
+    self.heroData.storyData.mainStoryId = storyId   --剧情任务数据(主线ID) 
+    self.heroData.storyData.bPlayedTalk = 0   ---是否已经播放过对话，0未，1已播放（则不再播放）
+
+    local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
+    if not heroXML then
+        heroXML = g_UserDefaultMgr:createXMLFile("heroXML.xml", "root")
+    end
+    heroXML:removeNode("storyData")
+    heroXML:addChildNode("storyData")
+    heroXML:setNodeAttrValue("storyData", "mainStoryId", tostring(storyId))
+    heroXML:setNodeAttrValue("storyData", "mainStoryMask", tostring(0))   ---是否已经播放过对话，0未，1已播放（则不再播放）
     heroXML:saveXMLFile()
 end
 
@@ -340,25 +359,45 @@ function HeroDataMgr:SetHeroCampPopulation(population)
     heroXML:saveXMLFile()
 end
 
+function HeroDataMgr:GetHeroCampTroops()
+    return clone(self.heroData.campData.troops)
+end
+
 function HeroDataMgr:SetHeroCampTroops(troops)
+    self.heroData.campData.troops = troops
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     heroXML:setNodeAttrValue("campData", "troops", tostring(troops))
     heroXML:saveXMLFile()
 end
 
+function HeroDataMgr:GetHeroCampMoney()
+    return clone(self.heroData.campData.money)
+end
+
 function HeroDataMgr:SetHeroCampMoney(money)
+    self.heroData.campData.money = money
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     heroXML:setNodeAttrValue("campData", "money", tostring(money))
     heroXML:saveXMLFile()
 end
 
+function HeroDataMgr:GetHeroCampFood()
+    return clone(self.heroData.campData.food)
+end
+
 function HeroDataMgr:SetHeroCampFood(food)
+    self.heroData.campData.food = food
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     heroXML:setNodeAttrValue("campData", "food", tostring(food))
     heroXML:saveXMLFile()
 end
 
-function HeroDataMgr:SetHeroCampDrug(food)
+function HeroDataMgr:GetHeroCampDrug()
+    return clone(self.heroData.campData.drug)
+end
+
+function HeroDataMgr:SetHeroCampDrug(drug)
+    self.heroData.campData.drug = food
     local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     heroXML:setNodeAttrValue("campData", "drug", tostring(drug))
     heroXML:saveXMLFile()
@@ -479,6 +518,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
     if not itemVec then
         G_Log_Error("HeroDataMgr:SetBagXMLData(), error: itemVec = nil")
     end
+    --dump(itemVec, "itemVec = ")
 
     local bagXML = g_UserDefaultMgr:loadXMLFile("bagXML.xml")
     if not bagXML then
@@ -490,12 +530,60 @@ function HeroDataMgr:SetBagXMLData(itemVec)
     for i=1, #itemVec do
         local itemIdStr = tostring(itemVec[i].itemId)
         local itemNum = tonumber(itemVec[i].num)
+
+        --军队数量，金币粮草药材数量同步到camp数据中
+        if itemIdStr == "401" or itemIdStr == "402" or itemIdStr == "403" or itemIdStr == "404" then
+            local troops = g_HeroDataMgr:GetHeroCampTroops()
+            troops = troops + itemNum
+            g_HeroDataMgr:SetHeroCampTroops(troops)
+
+            --发送军队数量变化监听事件
+            local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_troopEvent)
+            event._usedata = string.format("%d", troops)  
+            g_EventDispatcher:dispatchEvent(event) 
+        elseif itemIdStr == "6001" then
+            local money = g_HeroDataMgr:GetHeroCampMoney()
+            money = money + itemNum
+            g_HeroDataMgr:SetHeroCampMoney(money)
+
+            --发送金币变化监听事件
+            local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_moneyEvent)
+            event._usedata = string.format("%d", money)  
+            g_EventDispatcher:dispatchEvent(event) 
+        elseif itemIdStr == "6002" then
+            local food = g_HeroDataMgr:GetHeroCampFood()
+            food = food + itemNum
+            g_HeroDataMgr:SetHeroCampFood(food)
+
+            --发送粮草变化监听事件
+            local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_foodEvent)
+            event._usedata = string.format("%d", food)  
+            g_EventDispatcher:dispatchEvent(event) 
+        elseif itemIdStr == "6003" then
+            local drug = g_HeroDataMgr:GetHeroCampDrug()
+            print("drug = ", drug, "; itemNum = ", itemNum)
+            drug = drug + itemNum
+            g_HeroDataMgr:SetHeroCampDrug(drug)
+
+            --发送药材变化监听事件
+            local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_drugEvent)
+            event._usedata = string.format("%d", drug)  
+            g_EventDispatcher:dispatchEvent(event) 
+        end
+
         if self.heroData.bagVecData[itemIdStr] == nil then
             bItemIdChanged = true    --增加新物品
-        elseif itemNum == 0 then
-            bItemIdChanged = true    --删除的物品
+            self.heroData.bagVecData[itemIdStr] = itemVec[i]
+        else
+            itemNum = itemNum + tonumber(self.heroData.bagVecData[itemIdStr].num)   --合并现有物品数量
+            if itemNum == 0 then
+                bItemIdChanged = true    --删除的物品
+                self.heroData.bagVecData[itemIdStr] = nil
+            else   
+                itemVec[i].num = itemNum
+                self.heroData.bagVecData[itemIdStr] = itemVec[i]
+            end
         end
-        self.heroData.bagVecData[itemIdStr] = itemVec[i]
         
         bagXML:removeNode(itemIdStr)    --每个物品用itemIdStr字符串作为节点
         if itemNum > 0 then

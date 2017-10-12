@@ -18,6 +18,22 @@ function MainMenuLayer:onExit()
     if nil ~= self.vip_listener then   --vip监听
         g_EventDispatcher:removeEventListener(self.vip_listener)
     end
+
+    if nil ~= self.troop_listener then   --军队数量变化监听
+        g_EventDispatcher:removeEventListener(self.vip_listener)
+    end
+
+    if nil ~= self.money_listener then   --金币变化监听
+        g_EventDispatcher:removeEventListener(self.vip_listener)
+    end
+
+    if nil ~= self.food_listener then   --粮草变化监听
+        g_EventDispatcher:removeEventListener(self.vip_listener)
+    end
+
+    if nil ~= self.drug_listener then   --药材变化监听
+        g_EventDispatcher:removeEventListener(self.vip_listener)
+    end
 end
 
 --自定义异步事件监听
@@ -45,6 +61,43 @@ function MainMenuLayer:LoadEventListenerCustom()
     end
     self.vip_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.MainMenu_vipEvent, vip_listenerCallBack)
     g_EventDispatcher:addEventListenerWithFixedPriority(self.vip_listener, 1)
+
+    --军队数量变化监听
+    local function troop_listenerCallBack(event)
+        local troop = tonumber(event._usedata)
+    end
+    self.troop_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.MainMenu_troopEvent, troop_listenerCallBack)
+    g_EventDispatcher:addEventListenerWithFixedPriority(self.troop_listener, 1)
+
+    --金币变化监听
+    local function money_listenerCallBack(event)
+        local money = tonumber(event._usedata)
+        if self.Text_glod then
+            self.Text_glod:setString(money)  --元宝数量
+        end
+    end
+    self.money_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.MainMenu_moneyEvent, money_listenerCallBack)
+    g_EventDispatcher:addEventListenerWithFixedPriority(self.money_listener, 1)
+
+    --粮草变化监听
+    local function food_listenerCallBack(event)
+        local food = tonumber(event._usedata)
+        if self.Text_liang then
+            self.Text_liang:setString(food)  --粮草数量 担
+        end
+    end
+    self.food_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.MainMenu_foodEvent, food_listenerCallBack)
+    g_EventDispatcher:addEventListenerWithFixedPriority(self.food_listener, 1)
+
+    --药材变化监听
+    local function drug_listenerCallBack(event)
+        local drug = tonumber(event._usedata)
+        if self.Text_yao then
+            self.Text_yao:setString(drug)   --药材数量 单位副，1副=100份
+        end
+    end
+    self.drug_listener = cc.EventListenerCustom:create(g_EventListenerCustomName.MainMenu_drugEvent, drug_listenerCallBack)
+    g_EventDispatcher:addEventListenerWithFixedPriority(self.drug_listener, 1)
 end
 
 --初始化UI界面
@@ -203,7 +256,7 @@ function MainMenuLayer:initData()
     else
         storyId = 1
         bPlayerVedio = true
-        g_HeroDataMgr:SaveStoryTalkId(storyId)   --保存新的任务ID到XML文件
+        g_HeroDataMgr:SaveNextStoryTalkId(storyId)   --保存新的任务ID到XML文件
     end
 
     self.mainStoryCell = nil   --主线剧情Cell

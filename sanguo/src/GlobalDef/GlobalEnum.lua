@@ -70,6 +70,10 @@ g_EventListenerCustomName = {
 	Login_serverListEvent = "Login_serverListEvent",   --登录界面的服务器列表监听事件
 	MainMenu_mainStoryEvent = "MainMenu_mainStoryEvent",   --主线剧情任务监听
 	MainMenu_vipEvent = "MainMenu_vipEvent",   --vip变化监听
+	MainMenu_troopEvent = "MainMenu_troopEvent",   --军队数量变化监听
+	MainMenu_moneyEvent = "MainMenu_moneyEvent",   --金币变化监听
+	MainMenu_foodEvent = "MainMenu_foodEvent",   --粮草变化监听
+	MainMenu_drugEvent = "MainMenu_drugEvent",   --药材变化监听
 }
 
 

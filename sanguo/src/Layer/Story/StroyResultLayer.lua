@@ -38,13 +38,13 @@ function StroyResultLayer:init()
     self.ListView_army = self.Image_bg:getChildByName("ListView_army")
     self.ListView_army:setBounceEnabled(true)
     self.ListView_army:setScrollBarEnabled(false)   --屏蔽列表滚动条
-    self.ListView_army:setItemsMargin(5.0)
+    self.ListView_army:setItemsMargin(10.0)
     self.ListView_armySize = self.ListView_army:getContentSize()
     
     self.ListView_reward = self.Image_bg:getChildByName("ListView_reward")
     self.ListView_reward:setBounceEnabled(true)
     self.ListView_reward:setScrollBarEnabled(false)   --屏蔽列表滚动条
-    self.ListView_reward:setItemsMargin(5.0)
+    self.ListView_reward:setItemsMargin(10.0)
     self.ListView_rewardSize = self.ListView_reward:getContentSize()
 end
 
@@ -81,7 +81,8 @@ function StroyResultLayer:initStoryInfo(storyId)
                 self.ListView_reward:addChild(cur_item)
             end
         end
-        local rewardInnerWidth = #self.storyData.rewardIdVec*(90 + 5)
+        local len = #self.storyData.rewardIdVec
+        local rewardInnerWidth = len*90 + 10*(len-1)
         if rewardInnerWidth < self.ListView_rewardSize.width then
             self.ListView_reward:setContentSize(cc.size(rewardInnerWidth, self.ListView_rewardSize.height))
             self.ListView_reward:setBounceEnabled(false)
@@ -89,6 +90,7 @@ function StroyResultLayer:initStoryInfo(storyId)
             self.ListView_reward:setContentSize(self.ListView_rewardSize)
             self.ListView_reward:setBounceEnabled(true)
         end
+        self.ListView_reward:refreshView()
     end
 end
 

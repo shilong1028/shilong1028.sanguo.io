@@ -35,7 +35,7 @@ function BattleResultLayer:init()
     self.ListView_reward = self.Image_bg:getChildByName("ListView_reward")
     self.ListView_reward:setBounceEnabled(true)
     self.ListView_reward:setScrollBarEnabled(false)   --屏蔽列表滚动条
-    self.ListView_reward:setItemsMargin(5.0)
+    self.ListView_reward:setItemsMargin(10.0)
     self.ListView_rewardSize = self.ListView_reward:getContentSize()
 
     --攻击方
@@ -87,7 +87,8 @@ function BattleResultLayer:initBattleResult(result)
                 self.ListView_reward:addChild(cur_item)
             end
         end
-        local rewardInnerWidth = #self.storyData.rewardIdVec*(90 + 5)
+        local len = #self.storyData.rewardIdVec
+        local rewardInnerWidth = len*90 + 10*(len-1)
         if rewardInnerWidth < self.ListView_rewardSize.width then
             self.ListView_reward:setContentSize(cc.size(rewardInnerWidth, self.ListView_rewardSize.height))
             self.ListView_reward:setBounceEnabled(false)
@@ -95,6 +96,7 @@ function BattleResultLayer:initBattleResult(result)
             self.ListView_reward:setContentSize(self.ListView_rewardSize)
             self.ListView_reward:setBounceEnabled(true)
         end
+        self.ListView_reward:refreshView()
 
         --攻击方
         local campId = g_HeroDataMgr:GetHeroCampData().campId
