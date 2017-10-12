@@ -2,5 +2,5 @@
 <root>
     <campData campId="3" name="魏阵营" captain="3001" capital="1205" population="427" troops="1000" money="5000" food="5000" drug="5000" general="3001"/>
     <storyData mainStoryId="2"/>
-    <mapPosData mapId="1" posX="2672.000000" posY="924.000000"/>
+    <mapPosData mapId="1" posX="2749.771203" posY="1055.442746"/>
 </root>

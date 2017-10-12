@@ -39,37 +39,16 @@ end
 
 function BagLayer:initBagGrid()  
     G_Log_Info("BagLayer:initBagGrid()")
-    -- self.itemListVec = {
-    --     {["itemId"]="401", ["num"]=1000},{["itemId"]="402", ["num"]=1000},{["itemId"]="403", ["num"]=1000},{["itemId"]="404", ["num"]=1000},
-    --     {["itemId"]="501", ["num"]=2000},{["itemId"]="502", ["num"]=2000},{["itemId"]="503", ["num"]=2000},{["itemId"]="504", ["num"]=2000},{["itemId"]="505", ["num"]=2000},
-    --     {["itemId"]="6001", ["num"]=3000},{["itemId"]="6002", ["num"]=3000},{["itemId"]="6003", ["num"]=3000},
-    --     {["itemId"]="401", ["num"]=4000},{["itemId"]="402", ["num"]=4000},{["itemId"]="403", ["num"]=4000},{["itemId"]="404", ["num"]=4000},
-    --     {["itemId"]="501", ["num"]=5000},{["itemId"]="502", ["num"]=5000},{["itemId"]="503", ["num"]=5000},{["itemId"]="504", ["num"]=5000},{["itemId"]="505", ["num"]=5000},
-    --     {["itemId"]="6001", ["num"]=6000},{["itemId"]="6002", ["num"]=6000},{["itemId"]="6003", ["num"]=6000},
-    --     {["itemId"]="401", ["num"]=8000},{["itemId"]="402", ["num"]=8000},{["itemId"]="403", ["num"]=8000},{["itemId"]="404", ["num"]=8000},
-    --     {["itemId"]="501", ["num"]=9000},{["itemId"]="502", ["num"]=9000},{["itemId"]="503", ["num"]=9000},{["itemId"]="504", ["num"]=9000},{["itemId"]="505", ["num"]=2000},
-    --     {["itemId"]="6001", ["num"]=100},{["itemId"]="6002", ["num"]=100},{["itemId"]="6003", ["num"]=100},
-    --     {["itemId"]="401", ["num"]=200},{["itemId"]="402", ["num"]=200},{["itemId"]="403", ["num"]=200},{["itemId"]="404", ["num"]=200},
-    --     {["itemId"]="501", ["num"]=300},{["itemId"]="502", ["num"]=300},{["itemId"]="503", ["num"]=300},{["itemId"]="504", ["num"]=300},{["itemId"]="505", ["num"]=2000},
-    --     {["itemId"]="6001", ["num"]=400},{["itemId"]="6002", ["num"]=400},{["itemId"]="6003", ["num"]=400},
-    --     {["itemId"]="401", ["num"]=500},{["itemId"]="402", ["num"]=500},{["itemId"]="403", ["num"]=500},{["itemId"]="404", ["num"]=500},
-    --     {["itemId"]="501", ["num"]=600},{["itemId"]="502", ["num"]=600},{["itemId"]="503", ["num"]=600},{["itemId"]="504", ["num"]=600},{["itemId"]="505", ["num"]=2000},
-    --     {["itemId"]="6001", ["num"]=700},{["itemId"]="6002", ["num"]=700},{["itemId"]="6003", ["num"]=700},
-    --     {["itemId"]="401", ["num"]=800},{["itemId"]="402", ["num"]=800},{["itemId"]="403", ["num"]=800},{["itemId"]="404", ["num"]=800},
-    --     {["itemId"]="501", ["num"]=900},{["itemId"]="502", ["num"]=900},{["itemId"]="503", ["num"]=900},{["itemId"]="504", ["num"]=900},{["itemId"]="505", ["num"]=2000},
-    --     {["itemId"]="6001", ["num"]=10},{["itemId"]="6002", ["num"]=10},{["itemId"]="6003", ["num"]=10},
-    --     {["itemId"]="401", ["num"]=20},{["itemId"]="402", ["num"]=20},{["itemId"]="403", ["num"]=20},{["itemId"]="404", ["num"]=20},
-    --     {["itemId"]="501", ["num"]=30},{["itemId"]="502", ["num"]=30},{["itemId"]="503", ["num"]=30},{["itemId"]="504", ["num"]=30},{["itemId"]="505", ["num"]=2000},
-    --     {["itemId"]="6001", ["num"]=40},{["itemId"]="6002", ["num"]=40},{["itemId"]="6003", ["num"]=40},
-    --     {["itemId"]="401", ["num"]=50},{["itemId"]="402", ["num"]=50},{["itemId"]="403", ["num"]=50},{["itemId"]="404", ["num"]=50},
-    --     {["itemId"]="501", ["num"]=60},{["itemId"]="502", ["num"]=60},{["itemId"]="503", ["num"]=60},{["itemId"]="504", ["num"]=60},{["itemId"]="505", ["num"]=2000},
-    --     {["itemId"]="6001", ["num"]=70},{["itemId"]="6002", ["num"]=70},{["itemId"]="6003", ["num"]=70}
-    -- }
+    self.itemListVec = {}
+    local bagItemVec = g_HeroDataMgr:GetBagXMLData()
+    for k, data in pairs(bagItemVec) do
+        if data and data.itemId and tonumber(data.num) > 0 then
+            table.insert(self.itemListVec, {["itemId"] = data.itemId, ["num"] = tonumber(data.num) })
+        end
+    end
 
-    self.itemListVec = g_HeroDataMgr:GetBagXMLData()
-    dump(self.itemListVec, "self.itemListVec = ")
-
-    self.gridLineNum = 5   --一行显示数量
+    self.gridLineNum = 5   --一行显示数量 Column列
+    self.gridRowNum = math.ceil(#self.itemListVec/self.gridLineNum)   --行数
 
     local tableView = cc.TableView:create(cc.size(730, 350))
     tableView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL)   --cc.SCROLLVIEW_DIRECTION_HORIZONTAL
@@ -77,6 +56,12 @@ function BagLayer:initBagGrid()
     tableView:setDelegate()
     tableView:setVerticalFillOrder(cc.TABLEVIEW_FILL_TOPDOWN)
     self.Panel_Grid:addChild(tableView)
+
+    if self.gridRowNum > 3 then
+        tableView:setBounceable(true)
+    else
+        tableView:setBounceable(false)
+    end
 
     tableView:registerScriptHandler(BagLayer.scrollViewDidScroll, cc.SCROLLVIEW_SCRIPT_SCROLL)
     tableView:registerScriptHandler(BagLayer.scrollViewDidZoom, cc.SCROLLVIEW_SCRIPT_ZOOM)
@@ -107,7 +92,7 @@ end
 ]]
 function BagLayer.numberOfCellsInTableView(table)   --tableViewCell数量
     local self = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BagLayer)
-    return math.ceil(#self.itemListVec/self.gridLineNum)
+    return self.gridRowNum
 end
 
 function BagLayer.tableCellTouched(table,cell)

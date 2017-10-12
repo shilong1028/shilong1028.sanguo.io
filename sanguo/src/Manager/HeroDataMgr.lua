@@ -143,7 +143,6 @@ function HeroDataMgr:initGeneralXMLData()
                     generalData.bingTypeVec = string.split(bingTypeStr,";")  
                 end
 
-
                 generalData.skillVec = {}    --技能，技能ID字符串以;分割  {["skillId"]=vec[2], ["lv"]=vec[1]}
                 local skillIdStr = generalXML:getNodeAttrValue(generalIdStr, "skillIdVec")  
                 local skillIdVec = {}
@@ -197,21 +196,20 @@ function HeroDataMgr:initBagXMLData()
     local bagXML = g_UserDefaultMgr:loadXMLFile("bagXML.xml")
     if bagXML then
         local vecStr = bagXML:getNodeAttrValue("itemIdVecNode", "itemIdVec")
-        print("vecStr = ", vecStr)  
         if vecStr and vecStr ~= "" then
             local itemIdVec = string.split(vecStr,";") 
-
             for i=1, #itemIdVec do
                 local itemIdStr = tostring(itemIdVec[i])
-                local itemData = {
-                    ["itemId"] = bagXML:getNodeAttrValue(itemIdStr, "itemId") ,
-                    ["num"] = bagXML:getNodeAttrValue(itemIdStr, "num")
-                }
-                self.heroData.bagVecData[itemIdStr] = itemData
+                local itemId = bagXML:getNodeAttrValue(itemIdStr, "itemId")
+                local itemNum = tonumber(bagXML:getNodeAttrValue(itemIdStr, "num"))
+                if itemNum > 0 then
+                    local itemData = {["itemId"] = itemId, ["num"] = itemNum }
+                    self.heroData.bagVecData[itemIdStr] = itemData
+                end
             end
         end
     end
-    G_Log_Dump(self.heroData.bagVecData, "bagVecData = ")
+    --G_Log_Dump(self.heroData.bagVecData, "bagVecData = ")
 end
 
 ------------------------------------------------------
@@ -322,11 +320,10 @@ function HeroDataMgr:SetHeroCampData(campData)
     local generalIdVec = campData.generalIdVec
     local generalStr = ""
     for k, generalId in pairs(generalIdVec) do
-    	generalStr = generalStr..generalId
-    	if k ~= #generalIdVec then
-        	generalStr = generalStr..";"
-        end
+    	generalStr = generalStr..generalId..";"
     end
+    generalStr = string.sub(generalStr , 1, -2)
+
     heroXML:setNodeAttrValue("campData", "general", tostring(generalStr))
     heroXML:saveXMLFile()
 end
@@ -417,24 +414,22 @@ function HeroDataMgr:SetSingleGeneralData(generalData)
     local bingTypeVec = generalData.bingTypeVec
     local bingTypeStr = ""
     for k, bingId in pairs(bingTypeVec) do
-        bingTypeStr = bingTypeStr..bingId
-        if k ~= #bingTypeVec then
-            bingTypeStr = bingTypeStr..";"
-        end
+        bingTypeStr = bingTypeStr..bingId..";"
     end
+    bingTypeStr = string.sub(bingTypeStr , 1, -2)
+
     generalXML:setNodeAttrValue(generalIdStr, "bingTypeVec", tostring(bingTypeStr))
 
     local skillVec = generalData.skillVec
     local skillIdStr = ""
     local skillLvStr = ""
     for k, vec in pairs(skillVec) do
-        skillIdStr = skillIdStr..vec["skillId"]
-        skillLvStr = skillLvStr..vec["lv"]
-        if k ~= #skillVec then
-            skillIdStr = skillIdStr..";"
-            skillLvStr = skillLvStr..";"
-        end
+        skillIdStr = skillIdStr..vec["skillId"]..";"
+        skillLvStr = skillLvStr..vec["lv"]..";"
     end
+    skillIdStr = string.sub(skillIdStr , 1, -2)
+    skillLvStr = string.sub(skillLvStr , 1, -2)
+
     generalXML:setNodeAttrValue(generalIdStr, "skillIdVec", tostring(skillIdStr))
     generalXML:setNodeAttrValue(generalIdStr, "skillLvVec", tostring(skillLvStr))
 
@@ -442,13 +437,12 @@ function HeroDataMgr:SetSingleGeneralData(generalData)
     local equipIdStr = ""
     local equipLvStr = ""
     for k, vec in pairs(equipVec) do
-        equipIdStr = equipIdStr..vec["equipId"]
-        equipLvStr = equipLvStr..vec["lv"]
-        if k ~= #equipVec then
-            equipIdStr = equipIdStr..";"
-            equipLvStr = equipLvStr..";"
-        end
+        equipIdStr = equipIdStr..vec["equipId"]..";"
+        equipLvStr = equipLvStr..vec["lv"]..";"
     end
+    equipIdStr = string.sub(equipIdStr , 1, -2)
+    equipLvStr = string.sub(equipLvStr , 1, -2)
+
     generalXML:setNodeAttrValue(generalIdStr, "equipIdVec", tostring(equipIdStr))
     generalXML:setNodeAttrValue(generalIdStr, "equipLvVec", tostring(equipLvStr))
 
@@ -513,13 +507,18 @@ function HeroDataMgr:SetBagXMLData(itemVec)
 
     if bItemIdChanged == true then  --总物品有增加的新物品或删除的物品
         local totalIdStr = ""
+        local bNeedSub = false   --是否需要移除最后一个;号
         for k, data in pairs(self.heroData.bagVecData) do
-            local itemId = data.itemId
-            totalIdStr = totalIdStr..tostring(itemId)
-            if k ~= #self.heroData.bagVecData then
-                totalIdStr = totalIdStr..";"
+            if data and data.itemId and tonumber(data.num) > 0 then
+                local itemId = data.itemId
+                totalIdStr = totalIdStr..tostring(itemId)..";"
+                bNeedSub = true
             end
         end
+        if bNeedSub == true then
+            totalIdStr = string.sub(totalIdStr , 1, -2)
+        end
+
         bagXML:removeNode("itemIdVecNode")
         bagXML:addChildNode("itemIdVecNode")
         bagXML:setNodeAttrValue("itemIdVecNode", "itemIdVec", tostring(totalIdStr))

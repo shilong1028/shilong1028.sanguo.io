@@ -2,5 +2,5 @@
 <root>
     <6001 itemId="6001" num="1000"/>
     <6002 itemId="6002" num="1000"/>
-    <itemIdVecNode itemIdVec="6002;6001;"/>
+    <itemIdVecNode itemIdVec="6002;6001"/>
 </root>
