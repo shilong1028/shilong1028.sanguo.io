@@ -258,7 +258,7 @@ end
 
 --开始astar寻路,endPos为目标位置的像素点，posIsPt=true为目标位置的32*32地图块坐标
 function MapLayer:starAutoPath(endPos)
-	G_Log_Info("MapLayer:starAutoPath()")
+	--G_Log_Info("MapLayer:starAutoPath()")
     if endPos.x < 0 or endPos.y < 0 or endPos.x > self.mapConfigData.width or endPos.y > self.mapConfigData.height then
     	G_Log_Error("endPos is not in Map, endPos.x = %f, endPos.y = %f", endPos.x, endPos.y)  --如果越界了
 		return;
@@ -270,6 +270,7 @@ function MapLayer:starAutoPath(endPos)
 
 		local stepLen = g_pMapMgr:CalcDistance(endPos, startPos)
 		if stepLen < 32 then   --移动目的地就在附近
+			--G_Log_Info("移动目的地就在附近")
 			self:setRoleMapPosition(endPos)
 			return 
 		end

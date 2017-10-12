@@ -13,7 +13,7 @@ function ItemCell:init()
     --G_Log_Info("ItemCell:init()")
     local csb = cc.CSLoader:createNode("csd/ItemCell.csb")
     self:addChild(csb)
-    self:setContentSize(cc.size(90, 90))
+    self:setContentSize(cc.size(90, 100))
 
     self.Image_bg = csb:getChildByName("Image_bg")  
     self.Image_bg:setTouchEnabled(true)

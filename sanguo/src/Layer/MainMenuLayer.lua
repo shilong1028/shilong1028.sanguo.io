@@ -276,6 +276,7 @@ function MainMenuLayer:initStroyData(storyId, bPlayerVedio)
     self.storyId = storyId
     self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId) 
     if self.storyData then
+        self.storyData.bPlayedTalk = g_HeroDataMgr:GetStoryTalkMask()
         if not self.mainStoryCell then
             local storyCell = StoryTalkCell:new()
             self.mainStoryCell = storyCell

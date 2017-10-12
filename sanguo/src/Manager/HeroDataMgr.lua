@@ -253,6 +253,10 @@ function HeroDataMgr:GetStoryTalkId()
     return clone(self.heroData.storyData.mainStoryId)
 end
 
+function HeroDataMgr:GetStoryTalkMask()
+    return clone(self.heroData.storyData.bPlayedTalk)
+end
+
 function HeroDataMgr:SetStoryTalkMask(storyId)
     self.heroData.storyData.mainStoryId = storyId   --剧情任务数据(主线ID) 
     self.heroData.storyData.bPlayedTalk = 1   ---是否已经播放过对话，0未，1已播放（则不再播放）
