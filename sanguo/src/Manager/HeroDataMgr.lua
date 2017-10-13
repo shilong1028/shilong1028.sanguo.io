@@ -352,15 +352,21 @@ function HeroDataMgr:SetHeroCampData(campData)
 end
 
 function HeroDataMgr:SetHeroCampCapital(capital)
+    self.heroData.campData.capital = capital
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
-    heroXML:setNodeAttrValue("campData", "capital", tostring(capital))
-    heroXML:saveXMLFile()
+    if heroXML then
+        heroXML:setNodeAttrValue("campData", "capital", tostring(capital))
+        heroXML:saveXMLFile()
+    end
 end
 
 function HeroDataMgr:SetHeroCampPopulation(population)
+    self.heroData.campData.population = population
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
-    heroXML:setNodeAttrValue("campData", "population", tostring(population))
-    heroXML:saveXMLFile()
+    if heroXML then
+        heroXML:setNodeAttrValue("campData", "population", tostring(population))
+        heroXML:saveXMLFile()
+    end
 end
 
 function HeroDataMgr:GetHeroCampTroops()
@@ -370,8 +376,10 @@ end
 function HeroDataMgr:SetHeroCampTroops(troops)
     self.heroData.campData.troops = troops
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
-    heroXML:setNodeAttrValue("campData", "troops", tostring(troops))
-    heroXML:saveXMLFile()
+    if heroXML then
+        heroXML:setNodeAttrValue("campData", "troops", tostring(troops))
+        heroXML:saveXMLFile()
+    end
 end
 
 function HeroDataMgr:GetHeroCampMoney()
@@ -381,8 +389,10 @@ end
 function HeroDataMgr:SetHeroCampMoney(money)
     self.heroData.campData.money = money
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
-    heroXML:setNodeAttrValue("campData", "money", tostring(money))
-    heroXML:saveXMLFile()
+    if heroXML then
+        heroXML:setNodeAttrValue("campData", "money", tostring(money))
+        heroXML:saveXMLFile()
+    end
 end
 
 function HeroDataMgr:GetHeroCampFood()
@@ -392,8 +402,10 @@ end
 function HeroDataMgr:SetHeroCampFood(food)
     self.heroData.campData.food = food
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
-    heroXML:setNodeAttrValue("campData", "food", tostring(food))
-    heroXML:saveXMLFile()
+    if heroXML then
+        heroXML:setNodeAttrValue("campData", "food", tostring(food))
+        heroXML:saveXMLFile()
+    end
 end
 
 function HeroDataMgr:GetHeroCampDrug()
@@ -403,14 +415,25 @@ end
 function HeroDataMgr:SetHeroCampDrug(drug)
     self.heroData.campData.drug = food
     local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
-    heroXML:setNodeAttrValue("campData", "drug", tostring(drug))
-    heroXML:saveXMLFile()
+    if heroXML then
+        heroXML:setNodeAttrValue("campData", "drug", tostring(drug))
+        heroXML:saveXMLFile()
+    end
 end
 
-function HeroDataMgr:SetHeroCampGeneral(general)
+function HeroDataMgr:SetHeroCampGeneral(generalIdVec)
+    self.heroData.campData.generalIdVec = generalIdVec
+    local generalStr = ""
+    for k, generalId in pairs(generalIdVec) do
+        generalStr = generalStr..generalId..";"
+    end
+    generalStr = string.sub(generalStr , 1, -2)
+
 	local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
-    heroXML:setNodeAttrValue("campData", "general", tostring(general))
-    heroXML:saveXMLFile()
+    if heroXML then
+        heroXML:setNodeAttrValue("campData", "general", tostring(generalStr))
+        heroXML:saveXMLFile()
+    end
 end
 
 -----阵营信息处理  --end  ------------------------------------------------------
@@ -565,7 +588,6 @@ function HeroDataMgr:SetBagXMLData(itemVec)
             g_EventDispatcher:dispatchEvent(event) 
         elseif itemIdStr == "6003" then
             local drug = g_HeroDataMgr:GetHeroCampDrug()
-            print("drug = ", drug, "; itemNum = ", itemNum)
             drug = drug + itemNum
             g_HeroDataMgr:SetHeroCampDrug(drug)
 
