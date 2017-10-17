@@ -1,21 +1,25 @@
 
 --武将信息大界面
-local bigOfficalNode = class("bigOfficalNode", CCLayerEx)
+local GeneralLayer = class("GeneralLayer", CCLayerEx)  --填入类名
 
-function bigOfficalNode:create()   --自定义的create()创建方法
-    --G_Log_Info("bigOfficalNode:create()")
-    local layer = bigOfficalNode.new()
+function GeneralLayer:create()   --自定义的create()创建方法
+    --G_Log_Info("GeneralLayer:create()")
+    local layer = GeneralLayer.new()
     return layer
 end
 
-function bigOfficalNode:onExit()
-    --G_Log_Info("ZhenXingLayer:onExit()")
+function GeneralLayer:onExit()
+    --G_Log_Info("GeneralLayer:onExit()")
 end
 
 --初始化UI界面
-function bigOfficalNode:init()  
-    --G_Log_Info("ZhenXingLayer:init()")
-    local csb = cc.CSLoader:createNode("csd/bigOfficalNode.csb")
+function GeneralLayer:init()  
+    --G_Log_Info("GeneralLayer:init()")
+    self:setSwallowTouches(true)
+
+    local csb = cc.CSLoader:createNode("csd/MainMenuLayer.csb")
+    csb:setContentSize(g_WinSize)
+    ccui.Helper:doLayout(csb)
     self:addChild(csb)
 
     self.Image_Bg = csb:getChildByName("Image_Bg")
@@ -42,9 +46,12 @@ function bigOfficalNode:init()
     self.Text_def = csb:getChildByName("Text_def")   --防御
     self.Text_baoji = csb:getChildByName("Text_baoji")   --暴击
     self.Text_shanbi = csb:getChildByName("Text_shanbi")  --闪避
+
+        local FileNode_head = csb:getChildByName("FileNode_head")
+    self.head_icon = FileNode_head:getChildByName("head_icon")   --玩家头像
 end
 
-function bigOfficalNode:initData(generalData)  
+function GeneralLayer:initData(generalData)  
     --G_Log_Dump(generalData, "generalData = ")
 
     local name = ""
@@ -78,11 +85,11 @@ function bigOfficalNode:initData(generalData)
 
 end
 
-function bigOfficalNode:touchEvent(sender, eventType)
+function GeneralLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
 
     end
 end
 
 
-return bigOfficalNode
+return GeneralLayer

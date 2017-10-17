@@ -7,7 +7,6 @@
           <Project Name="BagLayer.csd" Type="Layer" />
           <Project Name="BattleInfoLayer.csd" Type="Layer" />
           <Project Name="BattleResultLayer.csd" Type="Layer" />
-          <Project Name="bigOfficalNode.csd" Type="Layer" />
           <Project Name="CreateRoleLayer.csd" Type="Layer" />
           <Project Name="DialogOkCancelLayer.csd" Type="Layer" />
           <Project Name="HelpInfoLayer.csd" Type="Layer" />
@@ -30,6 +29,8 @@
           <Project Name="vipLayer.csd" Type="Layer" />
           <Project Name="ZhenXingLayer.csd" Type="Layer" />
           <Project Name="ZhenXingNode.csd" Type="Layer" />
+          <Project Name="GeneralInfoLayer.csd" Type="Layer" />
+          <Project Name="generalInfoNode.csd" Type="Node" />
         </Folder>
         <Folder Name="font">
           <TTF Name="simkai.ttf" />
