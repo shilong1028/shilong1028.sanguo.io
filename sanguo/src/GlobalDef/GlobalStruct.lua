@@ -189,8 +189,8 @@ function  g_tbl_generalConfig:ctor()
 	self.exp = 0   --战斗经验
 	self.offical = ""    --官职ID字符串，官职可以提升武将血智攻防、额外带兵数（默认带1000兵）等属性
 	self.zhongcheng = 100   --武将忠诚度
-	self.bingTypeVec = {}    --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种
-	self.armyUnit = g_tbl_armyUnitConfig:new()   --武将部曲数据
+	self.bingTypeVec = {}    --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种（每个兵种仅可组建一支部曲）
+	self.armyUnitVec = {}    --g_tbl_armyUnitConfig:new()   --武将部曲数据
 end
 
 --武将部曲结构类

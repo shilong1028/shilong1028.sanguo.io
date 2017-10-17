@@ -39,7 +39,7 @@ function SmallOfficerCell:initData(generalData)
 
     self.Text_name:setString(generalData.name.."Lv"..generalData.level)    --名称&Lv
 
-    self.Text_num:setString(string.format(lua_Role_String1, 1000))    -- 兵力
+    self.Text_num:setString(string.format(lua_Role_String1, 0))    -- 兵力
 
     self.Text_type:setString("A")    --熟练度S/A/B/C/D
 

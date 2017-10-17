@@ -4,6 +4,7 @@ local StroyResultLayer = class("StroyResultLayer", CCLayerEx)
 
 --local SmallOfficerCell = require("Layer.Role.SmallOfficerCell")
 local ItemCell = require("Layer.Item.ItemCell")
+local SmallOfficerCell = require("Layer.Role.SmallOfficerCell")
 
 function StroyResultLayer:create()   --自定义的create()创建方法
     --G_Log_Info("StroyResultLayer:create()")
@@ -62,6 +63,20 @@ function StroyResultLayer:initStoryInfo(storyId)
 
         self.Text_info:setString("    "..self.storyData.desc)
 
+        for k, generalId in pairs(self.storyData.generalVec) do
+            local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
+            if generalData then
+                local officerCell = SmallOfficerCell:new()
+                officerCell:initData(generalData) 
+
+                local cur_item = ccui.Layout:create()
+                cur_item:setContentSize(officerCell:getContentSize())
+                cur_item:addChild(officerCell)
+                cur_item:setEnabled(false)
+                self.ListView_army:addChild(cur_item)
+            end
+        end
+
         self.rewardItemVec = {}
 
         for k, soldier in pairs(self.storyData.soldierVec) do
@@ -81,7 +96,7 @@ function StroyResultLayer:initStoryInfo(storyId)
                 self.ListView_army:addChild(cur_item)
             end
         end
-        local len = #self.storyData.soldierVec
+        local len = #self.storyData.soldierVec + #self.storyData.generalVec
         local armyInnerWidth = len*90 + 10*(len-1)
         if armyInnerWidth < self.ListView_armySize.width then
             self.ListView_army:setContentSize(cc.size(armyInnerWidth, self.ListView_armySize.height))
@@ -135,6 +150,22 @@ function StroyResultLayer:touchEvent(sender, eventType)
             if #tipsArr > 0 then
                 g_pGameLayer:ShowScrollTips(tipsArr)
                 g_HeroDataMgr:SetBagXMLData(self.storyData.rewardIdVec)   --保存玩家背包物品数据到bagXML
+            end
+
+            local campData = g_HeroDataMgr:GetHeroCampData()
+            if campData and #self.storyData.generalVec > 0 then
+                local generalVec = campData.generalIdVec or {}
+                for k, generalId in pairs(self.storyData.generalVec) do
+                    table.insert(generalVec, generalId)
+
+                    local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
+                    if generalData then
+                        g_HeroDataMgr:SetSingleGeneralData(generalData)   --保存单个武将数据到generalXML
+                    else
+                        G_Log_Error("generalData = nil, generalId = ", generalId or -1)
+                    end
+                end
+                g_HeroDataMgr:SetHeroCampGeneral(generalVec)    --保存新武将到heroXML
             end
 
             --下一个剧情

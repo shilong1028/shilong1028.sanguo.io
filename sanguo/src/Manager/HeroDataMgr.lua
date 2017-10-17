@@ -175,13 +175,17 @@ function HeroDataMgr:initGeneralXMLData()
                     table.insert(generalData.equipVec, {["skillId"]=equipIdVec[i], ["lv"]=equipLvVec[i]})
                 end
 
-                generalData.armyUnit = g_tbl_armyUnitConfig:new()   --武将部曲数据
-                local armyUnitNode = generalIdStr.."-armyUnit"
-                generalData.armyUnit.bingIdStr = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "bingIdStr"))
-                generalData.armyUnit.bingCount = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "bingCount"))
-                generalData.armyUnit.exp = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "exp"))
-                generalData.armyUnit.shiqi = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "shiqi"))
-                generalData.armyUnit.zhenId = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "zhenId"))
+                generalData.armyUnitVec = {}    --g_tbl_armyUnitConfig:new()   --武将部曲数据
+                for i=1, #generalData.bingTypeVec do
+                    local armyUnit = g_tbl_armyUnitConfig:new()
+                    local armyUnitNode = generalIdStr.."-armyUnitRoot-armyUnit"..i
+                    armyUnit.bingIdStr = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "bingIdStr"))
+                    armyUnit.bingCount = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "bingCount"))
+                    armyUnit.exp = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "exp"))
+                    armyUnit.shiqi = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "shiqi"))
+                    armyUnit.zhenId = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "zhenId"))
+                    table.insert(generalData.armyUnitVec, armyUnit)
+                end
 
                 table.insert(self.heroData.generalVecData, generalData)
             end
@@ -512,11 +516,14 @@ function HeroDataMgr:SetSingleGeneralData(generalData)
     generalXML:setNodeAttrValue(generalIdStr, "equipIdVec", tostring(equipIdStr))
     generalXML:setNodeAttrValue(generalIdStr, "equipLvVec", tostring(equipLvStr))
 
-    local armyUnitNode = generalIdStr.."-armyUnit"
-    generalXML:removeNode(armyUnitNode)   
-    generalXML:addChildNode(armyUnitNode)
-    local armyUnit = generalData.armyUnit
-    if armyUnit then
+    local armyUnitRoot = generalIdStr.."-armyUnitRoot"
+    generalXML:removeNode(armyUnitRoot)   
+    generalXML:addChildNode(armyUnitRoot)
+    for k, armyUnit in pairs(generalData.armyUnitVec) do   --武将部曲数据
+        local armyUnitNode = armyUnitRoot.."-armyUnit"..k
+        generalXML:removeNode(armyUnitNode)   
+        generalXML:addChildNode(armyUnitNode)
+
         generalXML:setNodeAttrValue(armyUnitNode, "bingIdStr", tostring(armyUnit.bingIdStr))
         generalXML:setNodeAttrValue(armyUnitNode, "bingCount", tostring(armyUnit.bingCount))
         generalXML:setNodeAttrValue(armyUnitNode, "exp", tostring(armyUnit.exp))
@@ -529,8 +536,10 @@ end
 
 function HeroDataMgr:SetSingleGeneralExp(generalIdStr, exp)
     local generalXML = g_UserDefaultMgr:loadXMLFile("generalXML.xml")
-    generalXML:setNodeAttrValue(tostring(generalIdStr), "exp", tostring(exp))
-    generalXML:saveXMLFile()
+    if generalXML then
+        generalXML:setNodeAttrValue(tostring(generalIdStr), "exp", tostring(exp))
+        generalXML:saveXMLFile()
+    end
 end
 
 ----------------------------武将信息处理 end  ------------------------

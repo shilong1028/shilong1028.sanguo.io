@@ -319,7 +319,9 @@ function TBLMgr:LoadGeneralConfigTBL()
 		generalConfig.type = stream:ReadWord()   --将领类型，1英雄，2武将，3军师
 		generalConfig.bingTypeVec = {}  --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种
 		local bingzhong = stream:ReadString() 
-		generalConfig.bingTypeVec = string.split(bingzhong,";")
+		if bingzhong ~= "0" then
+			generalConfig.bingTypeVec = string.split(bingzhong,";")
+		end
 		generalConfig.hp = stream:ReadUInt()    --初始血量值
 		generalConfig.mp = stream:ReadUInt()        --初始智力值
 		generalConfig.atk = stream:ReadUInt()     --初始攻击力
@@ -343,6 +345,13 @@ function TBLMgr:LoadGeneralConfigTBL()
 			end
 		end
 		generalConfig.desc = stream:ReadString()    --描述
+
+		generalConfig.armyUnitVec = {}    --g_tbl_armyUnitConfig:new()   --武将部曲数据
+		for i=1, #generalConfig.bingTypeVec do
+			local armyUnit = g_tbl_armyUnitConfig:new()
+			armyUnit.bingIdStr = generalConfig.bingTypeVec[i]   --部曲兵种（游击|轻装|重装|精锐|禁军的弓刀枪骑兵）
+			table.insert(generalConfig.armyUnitVec, armyUnit)
+		end
 
 		self.generalConfigVec[""..generalConfig.id_str] = generalConfig
 		--table.insert(self.generalConfigVec, generalConfig)
