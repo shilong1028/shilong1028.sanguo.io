@@ -93,7 +93,7 @@ function ZhenXingLayer:init()
             if generalData then
                 table.insert(self.generalVec, generalData)
                 local officerCell = SmallOfficerCell:new()
-                officerCell:initData(generalData) 
+                officerCell:initData(generalData, k) 
                 table.insert(self.generalCellVec, officerCell)
 
                 local cur_item = ccui.Layout:create()
@@ -105,7 +105,9 @@ function ZhenXingLayer:init()
                 local pos = cc.p(cur_item:getPosition())
             end
         end
-        local InnerWidth = #generalIdVec*(90 + 5)
+
+        local len = #generalIdVec
+        local InnerWidth = len*90 + 10*(len-1)
         if InnerWidth < self.ListView_generalSize.width then
             self.ListView_general:setContentSize(cc.size(InnerWidth, self.ListView_generalSize.height))
             self.ListView_general:setBounceEnabled(false)

@@ -312,7 +312,13 @@ function GameLayer:showBagLayer()
     bagLayer:initBagGrid()
 end
 
-
+--将领界面
+function GameLayer:showGeneralLayer() 
+    local generalLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_GeneralLayer)
+    if not generalLayer then
+        generalLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_GeneralLayer, "Role.GeneralLayer")
+    end
+end
 
 
 

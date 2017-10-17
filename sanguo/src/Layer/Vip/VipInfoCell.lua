@@ -54,7 +54,7 @@ function VipInfoCell:setParentLayer(parent, vipId)
                 if itemData then
                     itemData.num = reward.num 
                     local itemCell = ItemCell:new()
-                    itemCell:initData(itemData) 
+                    itemCell:initData(itemData, k) 
                     self.itemImgVec[i]:addChild(itemCell)
                 else
                     self.itemImgVec[i]:setVisible(false)

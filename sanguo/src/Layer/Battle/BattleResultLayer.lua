@@ -78,7 +78,7 @@ function BattleResultLayer:initBattleResult(result)
             if itemData then
                 itemData.num = reward.num 
                 local itemCell = ItemCell:new()
-                itemCell:initData(itemData) 
+                itemCell:initData(itemData, k) 
 
                 local cur_item = ccui.Layout:create()
                 cur_item:setContentSize(itemCell:getContentSize())

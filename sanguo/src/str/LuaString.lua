@@ -30,8 +30,17 @@ lua_Story_String3 = "    中平六年(189年)4月,灵帝崩，皇子刘辩继位
 lua_SelCamp_String1 = "初始财政：资金%s锭  粮草%s石  药材%s副\n初始兵力：%d名骑兵\n初始将领：%s"
 
 lua_Role_String1 = "兵%d"
-lua_Role_String2 = "等级%d"
-lua_Role_String3 = ""
+lua_Role_String2 = "等级 %d"
+lua_Role_String3 = "血量 %d"
+lua_Role_String4 = "智力 %d"
+lua_Role_String5 = "攻击 %d"
+lua_Role_String6 = "防御 %d"
+lua_Role_String7 = "暴击 %d"
+lua_Role_String8 = "闪避 %d"
+
+
+
+lua_general_Str1 = "武  将"
 
 lua_Item_TypeStrs = {"币", "粮", "甲", "武", "马", "符", "令", "物"}
 lua_Item_String1 = "×%d"

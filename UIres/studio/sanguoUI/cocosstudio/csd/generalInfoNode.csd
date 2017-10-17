@@ -1,5 +1,5 @@
 <GameFile>
-  <PropertyGroup Name="bigOfficalNode" Type="Node" ID="f03d16d6-d3d0-4b51-a366-e33df0c574a3" Version="3.10.0.0" />
+  <PropertyGroup Name="generalInfoNode" Type="Node" ID="f03d16d6-d3d0-4b51-a366-e33df0c574a3" Version="3.10.0.0" />
   <Content ctype="GameProjectContent">
     <Content>
       <Animation Duration="0" Speed="1.0000" />
@@ -66,10 +66,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_shanbi" ActionTag="-2076733238" Tag="150" IconVisible="False" LeftMargin="200.0000" RightMargin="-346.0000" TopMargin="16.5000" BottomMargin="-43.5000" FontSize="24" LabelText="闪避1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_def" ActionTag="-862393460" Tag="152" IconVisible="False" LeftMargin="200.0000" RightMargin="-346.0000" TopMargin="-3.5000" BottomMargin="-23.5000" FontSize="24" LabelText="防御1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="146.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="200.0000" Y="-30.0000" />
+            <Position X="200.0000" Y="-10.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -78,10 +78,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_baoji" ActionTag="313158222" Tag="151" IconVisible="False" LeftMargin="20.0000" RightMargin="-166.0000" TopMargin="16.5000" BottomMargin="-43.5000" FontSize="24" LabelText="暴击1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_att" ActionTag="-1598270463" Tag="153" IconVisible="False" LeftMargin="20.0000" RightMargin="-166.0000" TopMargin="-3.5000" BottomMargin="-23.5000" FontSize="24" LabelText="攻击1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="146.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="20.0000" Y="-30.0000" />
+            <Position X="20.0000" Y="-10.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -90,10 +90,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_def" ActionTag="-862393460" Tag="152" IconVisible="False" LeftMargin="200.0000" RightMargin="-346.0000" TopMargin="-13.5000" BottomMargin="-13.5000" FontSize="24" LabelText="防御1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_mp" ActionTag="-386348413" Tag="154" IconVisible="False" LeftMargin="200.0000" RightMargin="-346.0000" TopMargin="-38.5000" BottomMargin="11.5000" FontSize="24" LabelText="智力1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="146.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="200.0000" />
+            <Position X="200.0000" Y="25.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -102,34 +102,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_att" ActionTag="-1598270463" Tag="153" IconVisible="False" LeftMargin="20.0000" RightMargin="-166.0000" TopMargin="-13.5000" BottomMargin="-13.5000" FontSize="24" LabelText="攻击1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_hp" ActionTag="-1216274064" Tag="155" IconVisible="False" LeftMargin="20.0000" RightMargin="-166.0000" TopMargin="-38.5000" BottomMargin="11.5000" FontSize="24" LabelText="血量1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="146.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="20.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="255" G="165" B="0" />
-            <PrePosition />
-            <PreSize X="0.0000" Y="0.0000" />
-            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
-            <OutlineColor A="255" R="165" G="42" B="42" />
-            <ShadowColor A="255" R="110" G="110" B="110" />
-          </AbstractNodeData>
-          <AbstractNodeData Name="Text_mp" ActionTag="-386348413" Tag="154" IconVisible="False" LeftMargin="200.0000" RightMargin="-346.0000" TopMargin="-43.5000" BottomMargin="16.5000" FontSize="24" LabelText="智力1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="146.0000" Y="27.0000" />
-            <AnchorPoint ScaleY="0.5000" />
-            <Position X="200.0000" Y="30.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="255" G="165" B="0" />
-            <PrePosition />
-            <PreSize X="0.0000" Y="0.0000" />
-            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
-            <OutlineColor A="255" R="165" G="42" B="42" />
-            <ShadowColor A="255" R="110" G="110" B="110" />
-          </AbstractNodeData>
-          <AbstractNodeData Name="Text_hp" ActionTag="-1216274064" Tag="155" IconVisible="False" LeftMargin="20.0000" RightMargin="-166.0000" TopMargin="-43.5000" BottomMargin="16.5000" FontSize="24" LabelText="血量1000+500" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="146.0000" Y="27.0000" />
-            <AnchorPoint ScaleY="0.5000" />
-            <Position X="20.0000" Y="30.0000" />
+            <Position X="20.0000" Y="25.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -268,10 +244,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_attr_0" ActionTag="-388593840" Tag="312" IconVisible="False" LeftMargin="20.0000" RightMargin="-350.0000" TopMargin="50.0000" BottomMargin="-130.0000" IsCustomSize="True" FontSize="24" LabelText="武将简介" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_generalDesc" ActionTag="-388593840" Tag="312" IconVisible="False" LeftMargin="20.0000" RightMargin="-350.0000" TopMargin="40.0000" BottomMargin="-120.0000" IsCustomSize="True" FontSize="24" LabelText="武将简介" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="330.0000" Y="80.0000" />
             <AnchorPoint ScaleY="1.0000" />
-            <Position X="20.0000" Y="-50.0000" />
+            <Position X="20.0000" Y="-40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="0" G="0" B="0" />
             <PrePosition />

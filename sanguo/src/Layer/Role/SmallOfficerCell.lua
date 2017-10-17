@@ -15,20 +15,39 @@ function SmallOfficerCell:init()
     self:addChild(csb)
     self:setContentSize(cc.size(90, 100))
 
+    --self:setTouchEnabled(true)
+
     self.Image_bg = csb:getChildByName("Image_bg")  
-    self.Image_bg:setTouchEnabled(true)
+    self.Image_sel = csb:getChildByName("Image_sel")
+    self.Image_sel:setVisible(false)
+    self.Image_color = csb:getChildByName("Image_color")   --品质，游击1-3/轻装4-10/重装11-25/精锐26-50/禁卫51-99
+
+    self.Image_bg:setTouchEnabled(true)    --要想可点击响应，必须设置listView:setTouchEnabled(true)
     self.Image_bg:addTouchEventListener(handler(self,self.touchEvent))
 
-    self.Image_color = csb:getChildByName("Image_color")   --品质，游击1-3/轻装4-10/重装11-25/精锐26-50/禁卫51-99
     self.Image_type = csb:getChildByName("Image_type")    --兵种
-
     self.Text_name = csb:getChildByName("Text_name")      --名称&Lv
     self.Text_num = csb:getChildByName("Text_num")   -- 兵力
     self.Text_type = csb:getChildByName("Text_type")   --熟练度S/A/B/C/D
 end
 
-function SmallOfficerCell:initData(generalData)  
+function SmallOfficerCell:onTouchEnded(touch, event)
+    G_Log_Info("SmallOfficerCell:onTouchEnded()")
+end
+
+function SmallOfficerCell:setSelCallBack(callFunc)
+    self.SelCallBackFunc = callFunc or nil   --点击选中回调
+end
+
+function SmallOfficerCell:showSelEffect(bSel)
+    self.Image_sel:setVisible(bSel)
+end
+
+function SmallOfficerCell:initData(generalData, tagIdx, callFunc)  
     --G_Log_Info("SmallOfficerCell:initData()")
+    self.tagIdx = tagIdx or -1
+    self.SelCallBackFunc = callFunc or nil   --点击选中回调
+
     local bgSize = self.Image_bg:getContentSize()
     if not self.headImg then
         self.headImg =  ccui.ImageView:create(string.format("Head/%s.png", generalData.id_str), ccui.TextureResType.localType)
@@ -68,7 +87,9 @@ end
 function SmallOfficerCell:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Image_bg then   
-
+            if self.SelCallBackFunc ~= nil then
+                self.SelCallBackFunc(self, self.tagIdx)
+            end
         end
     end
 end

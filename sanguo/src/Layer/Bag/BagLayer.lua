@@ -125,14 +125,16 @@ function BagLayer.tableCellAtIndex(table, idx)
         end
     end
 
+    local idx = 0
     for i=1, self.gridLineNum do
         local itemCell = cell:getChildByTag(1000+i)
         if i <= #vecData then
             local itemId = vecData[i].itemId
             local itemData = g_pTBLMgr:getItemConfigTBLDataById(itemId) 
             if itemData then
+                idx = idx + 1
                 itemData.num = vecData[i].num 
-                itemCell:initData(itemData)
+                itemCell:initData(itemData, idx)
                 itemCell:setVisible(true)
             end
         else

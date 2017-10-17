@@ -6,7 +6,7 @@
       <ObjectData Name="Layer" Tag="9" ctype="GameLayerObjectData">
         <Size X="90.0000" Y="100.0000" />
         <Children>
-          <AbstractNodeData Name="Image_bg" ActionTag="-1949803013" Tag="11" IconVisible="False" BottomMargin="10.0000" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_bg" ActionTag="-1949803013" Tag="11" IconVisible="False" BottomMargin="10.0000" TouchEnable="True" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
             <Size X="90.0000" Y="90.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="45.0000" Y="55.0000" />
@@ -25,6 +25,16 @@
             <PrePosition X="0.5000" Y="0.5500" />
             <PreSize X="1.0000" Y="0.9000" />
             <FileData Type="PlistSubImage" Path="public_colorBg2.png" Plist="plist/PublicRes.plist" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Image_sel" ActionTag="-1098748125" Tag="15" IconVisible="False" BottomMargin="10.0000" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
+            <Size X="90.0000" Y="90.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="45.0000" Y="55.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.5000" Y="0.5500" />
+            <PreSize X="1.0000" Y="0.9000" />
+            <FileData Type="PlistSubImage" Path="public2_sel_orange.png" Plist="plist/PublicRes2.plist" />
           </AbstractNodeData>
           <AbstractNodeData Name="Text_name" ActionTag="1043896322" Tag="16" IconVisible="False" LeftMargin="11.5000" RightMargin="11.5000" TopMargin="80.0000" FontSize="16" LabelText="物品名称" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="67.0000" Y="20.0000" />

@@ -16,17 +16,31 @@ function ItemCell:init()
     self:setContentSize(cc.size(90, 100))
 
     self.Image_bg = csb:getChildByName("Image_bg")  
-    self.Image_bg:setTouchEnabled(true)
+    self.Image_sel = csb:getChildByName("Image_sel")
+    self.Image_sel:setVisible(false)
+    self.Image_color = csb:getChildByName("Image_color")   --品质，银灰1-3/绿色4-10/蓝色11-25/紫色26-50/橙色51-99
+
+    self.Image_bg:setTouchEnabled(true)    --要想可点击响应，必须设置listView:setTouchEnabled(true)
     self.Image_bg:addTouchEventListener(handler(self,self.touchEvent))
 
-    self.Image_color = csb:getChildByName("Image_color")   --品质，银灰1-3/绿色4-10/蓝色11-25/紫色26-50/橙色51-99
     self.Text_name = csb:getChildByName("Text_name")      --名称
     self.Text_num = csb:getChildByName("Text_num")   -- 数量
     self.Text_type = csb:getChildByName("Text_type")   --金币|粮草|护甲|武器|马匹|道具|令牌|物品
 end
 
-function ItemCell:initData(itemData)  
+function ItemCell:setSelCallBack(callFunc)
+    self.SelCallBackFunc = callFunc or nil   --点击选中回调
+end
+
+function ItemCell:showSelEffect(bSel)
+    self.Image_sel:setVisible(bSel)
+end
+
+function ItemCell:initData(itemData, tagIdx, callFunc)  
     --G_Log_Info("ItemCell:initData()")
+    self.tagIdx = tagIdx or -1
+    self.SelCallBackFunc = callFunc or nil  --点击选中回调
+
     local bgSize = self.Image_bg:getContentSize()
     if not self.headImg then
         self.headImg =  ccui.ImageView:create(string.format("Item/%s.png", itemData.id_str), ccui.TextureResType.localType)
@@ -51,7 +65,9 @@ end
 function ItemCell:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Image_bg then   
-
+            if self.SelCallBackFunc ~= nil then
+                self.SelCallBackFunc(self, self.tagIdx)
+            end
         end
     end
 end

@@ -67,7 +67,7 @@ function StroyResultLayer:initStoryInfo(storyId)
             local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
             if generalData then
                 local officerCell = SmallOfficerCell:new()
-                officerCell:initData(generalData) 
+                officerCell:initData(generalData, k) 
 
                 local cur_item = ccui.Layout:create()
                 cur_item:setContentSize(officerCell:getContentSize())
@@ -87,7 +87,7 @@ function StroyResultLayer:initStoryInfo(storyId)
 
                 soldierData.num = soldier.num 
                 local itemCell = ItemCell:new()
-                itemCell:initData(soldierData) 
+                itemCell:initData(soldierData, k) 
 
                 local cur_item = ccui.Layout:create()
                 cur_item:setContentSize(itemCell:getContentSize())
@@ -115,7 +115,7 @@ function StroyResultLayer:initStoryInfo(storyId)
 
                 itemData.num = reward.num 
                 local itemCell = ItemCell:new()
-                itemCell:initData(itemData) 
+                itemCell:initData(itemData, k) 
 
                 local cur_item = ccui.Layout:create()
                 cur_item:setContentSize(itemCell:getContentSize())

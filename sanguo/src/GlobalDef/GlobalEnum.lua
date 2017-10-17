@@ -39,6 +39,9 @@ g_GameLayerTag = {
 	LAYER_TAG_StoryResultLayer = 112,    --剧情奖励界面
 	LAYER_TAG_BagLayer = 113,    --背包界面
 	LAYER_TAG_VedioLayer = 114,    --视频播放界面
+	LAYER_TAG_GeneralLayer = 115,    --将领界面
+
+
 }
 
 --人物移动的方向状态标识

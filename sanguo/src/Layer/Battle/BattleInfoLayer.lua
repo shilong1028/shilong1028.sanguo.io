@@ -66,7 +66,7 @@ function BattleInfoLayer:initStoryInfo(storyId)
             local enemyData = g_pTBLMgr:getGeneralConfigTBLDataById(enemyId) 
             if enemyData then
                 local officerCell = SmallOfficerCell:new()
-                officerCell:initData(enemyData) 
+                officerCell:initData(enemyData, k) 
 
                 local cur_item = ccui.Layout:create()
                 cur_item:setContentSize(officerCell:getContentSize())
@@ -92,7 +92,7 @@ function BattleInfoLayer:initStoryInfo(storyId)
             if itemData then
                 itemData.num = reward.num 
                 local itemCell = ItemCell:new()
-                itemCell:initData(itemData) 
+                itemCell:initData(itemData, k) 
 
                 local cur_item = ccui.Layout:create()
                 cur_item:setContentSize(itemCell:getContentSize())
