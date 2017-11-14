@@ -70,6 +70,7 @@ function GeneralLayer:init()
     self.info_Text_name = generalInfoNode:getChildByName("Text_name")    --名称
     self.info_Text_lv = generalInfoNode:getChildByName("Text_lv")    --等级
     self.info_Text_offical = generalInfoNode:getChildByName("Text_offical")   --官职
+    self.info_Text_zhongcheng = generalInfoNode:getChildByName("Text_zhongcheng")   --忠诚度
 
     self.info_Text_hp = generalInfoNode:getChildByName("Text_hp")    --血量
     self.info_Text_mp = generalInfoNode:getChildByName("Text_mp")    --智力
@@ -79,6 +80,10 @@ function GeneralLayer:init()
     self.info_Text_desc = generalInfoNode:getChildByName("Text_desc")   --武将类型，英雄，武将，文官
     self.info_Text_attr = generalInfoNode:getChildByName("Text_attr")   --属性描述（+装备加成）
     self.info_Text_generalDesc = generalInfoNode:getChildByName("Text_generalDesc")  --武将简介
+
+    --部曲层
+
+
 
     self:LoadGeneralList()
 
@@ -240,8 +245,16 @@ function GeneralLayer:initGeneralData(generalData)
     self.info_Text_att:setString(string.format(lua_Role_String5, generalData.atk))   --攻击
     self.info_Text_def:setString(string.format(lua_Role_String6, generalData.def))   --防御
 
-    --self.info_Text_offical = generalInfoNode:getChildByName("Text_offical")   --官职
-    --self.info_Text_desc = generalInfoNode:getChildByName("Text_desc")   --武将类型，英雄，武将，文官
+    local officalData = g_pTBLMgr:getOfficalConfigById(generalData.offical)
+    local officalName = lua_Role_String_No
+    if officalData then
+        officalName = officalData.name
+    end
+    self.info_Text_offical:setString(string.format(lua_Role_String9, officalName))   --官职
+
+    self.info_Text_desc:setString(lua_Role_TypeStrVec[generalData.type])   --武将类型，英雄，武将，文官
+
+    self.info_Text_zhongcheng:setString(string.format(lua_Role_String10, generalData.zhongcheng))  --忠诚度
 
     -- self.info_Image_toukui = generalInfoNode:getChildByName("Image_toukui")  --头盔
     -- self.info_Image_wuqi = generalInfoNode:getChildByName("Image_wuqi")      --武器
