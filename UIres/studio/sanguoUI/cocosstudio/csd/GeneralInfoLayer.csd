@@ -158,7 +158,7 @@
               <AbstractNodeData Name="Panel_Info" ActionTag="-286831572" Tag="282" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="80.0100" RightMargin="88.9000" TopMargin="111.1500" BottomMargin="163.8000" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
                 <Size X="720.0900" Y="310.0500" />
                 <Children>
-                  <AbstractNodeData Name="generalInfoNode" ActionTag="1970409877" Tag="338" IconVisible="True" LeftMargin="350.0000" RightMargin="370.0900" TopMargin="170.0500" BottomMargin="140.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
+                  <AbstractNodeData Name="generalInfoNode" ActionTag="1970409877" VisibleForFrame="False" Tag="338" IconVisible="True" LeftMargin="350.0000" RightMargin="370.0900" TopMargin="170.0500" BottomMargin="140.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
                     <Size X="0.0000" Y="0.0000" />
                     <AnchorPoint />
                     <Position X="350.0000" Y="140.0000" />
@@ -167,6 +167,16 @@
                     <PrePosition X="0.4861" Y="0.4515" />
                     <PreSize X="0.0000" Y="0.0000" />
                     <FileData Type="Normal" Path="csd/generalInfoNode.csd" Plist="" />
+                  </AbstractNodeData>
+                  <AbstractNodeData Name="generalUnitNode" ActionTag="-306873812" Tag="470" IconVisible="True" LeftMargin="350.0000" RightMargin="370.0900" TopMargin="170.0500" BottomMargin="140.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
+                    <Size X="0.0000" Y="0.0000" />
+                    <AnchorPoint />
+                    <Position X="350.0000" Y="140.0000" />
+                    <Scale ScaleX="1.0000" ScaleY="1.0000" />
+                    <CColor A="255" R="255" G="255" B="255" />
+                    <PrePosition X="0.4861" Y="0.4515" />
+                    <PreSize X="0.0000" Y="0.0000" />
+                    <FileData Type="Normal" Path="csd/generalUnitNode.csd" Plist="" />
                   </AbstractNodeData>
                 </Children>
                 <AnchorPoint />
