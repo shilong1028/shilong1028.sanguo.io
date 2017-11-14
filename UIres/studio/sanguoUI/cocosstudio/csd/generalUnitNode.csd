@@ -66,10 +66,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_bingCount" ActionTag="1633346117" Tag="159" IconVisible="False" LeftMargin="20.0000" RightMargin="-166.0000" TopMargin="-103.5000" BottomMargin="76.5000" FontSize="24" LabelText="预备兵力数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_bingCount" ActionTag="1633346117" Tag="159" IconVisible="False" LeftMargin="20.0000" RightMargin="-166.0000" TopMargin="-104.5000" BottomMargin="77.5000" FontSize="24" LabelText="预备兵力数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="146.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="20.0000" Y="90.0000" />
+            <Position X="20.0000" Y="91.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />

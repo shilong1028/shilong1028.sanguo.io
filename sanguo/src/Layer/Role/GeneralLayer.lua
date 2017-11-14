@@ -54,9 +54,10 @@ function GeneralLayer:init()
     self.Button_skillRadio:addTouchEventListener(handler(self,self.touchEvent))
     self.Button_skillRadio_Text = self.Button_skillRadio:getChildByName("Text_btn")
 
-    --武将信息层
     self.Panel_Info = self.Image_bg:getChildByName("Panel_Info")
+    --武将信息层
     local generalInfoNode = self.Panel_Info:getChildByName("generalInfoNode")
+    self.generalInfoNode = generalInfoNode
 
     self.info_Image_headBg = generalInfoNode:getChildByName("Image_headBg")    --头像背景
     self.info_Image_color = generalInfoNode:getChildByName("Image_color")   --品质颜色
@@ -82,7 +83,50 @@ function GeneralLayer:init()
     self.info_Text_generalDesc = generalInfoNode:getChildByName("Text_generalDesc")  --武将简介
 
     --部曲层
+    local generalUnitNode = self.Panel_Info:getChildByName("generalUnitNode")
+    self.generalUnitNode = generalUnitNode
 
+    self.unit_Image_headBg = generalUnitNode:getChildByName("Image_headBg")    --头像背景
+    self.unit_Image_color = generalUnitNode:getChildByName("Image_color")   --品质颜色
+
+    self.unit_Image_qibing = generalUnitNode:getChildByName("Image_qibing")  --骑兵
+    self.unit_Image_qiangbing = generalUnitNode:getChildByName("Image_qiangbing") --枪兵
+    self.unit_Image_daobing = generalUnitNode:getChildByName("Image_daobing")  --刀兵
+    self.unit_Image_gongbing = generalUnitNode:getChildByName("Image_gongbing") --弓兵
+
+    self.unit_Text_name = generalUnitNode:getChildByName("Text_name")    --武将名称
+    self.unit_Text_UnitName = generalUnitNode:getChildByName("Text_unit_name")    --部曲名称
+    self.unit_Text_UnitLv = generalUnitNode:getChildByName("Text_unit_lv")    --部曲等级
+
+    self.unit_Text_bingCount = generalUnitNode:getChildByName("Text_bingCount")   --预备兵数量
+    self.unit_Text_bingjia = generalUnitNode:getChildByName("Text_bingjia")   --兵甲数量
+    self.unit_Text_bingqi = generalUnitNode:getChildByName("Text_bingqi")   --兵器数量
+    self.unit_Text_mapi = generalUnitNode:getChildByName("Text_mapi")   --马匹数量
+
+    self.unit_Text_numCount = generalUnitNode:getChildByName("Text_numCount")   --选中部曲的数量
+    self.unit_Slider_num = generalUnitNode:getChildByName("Slider_num")   --滑动条
+    --[[
+    local slider = ccui.Slider:create()
+    slider:setTouchEnabled(true)
+    slider:loadBarTexture("cocosui/sliderTrack.png")
+    slider:loadProgressBarTexture("cocosui/sliderProgress.png")
+    slider:loadSlidBallTextures("cocosui/sliderThumb.png", "cocosui/sliderThumb.png", "")  
+    slider:setPosition(cc.p(size.width / 2.0, size.height * 0.15 + slider:getSize().height * 2.0))
+    slider:setPercent(52)
+    slider:addEventListenerSlider(sliderEvent)
+    layer:addChild(slider)
+    ]]
+    local function sliderEvent(sender, eventType)
+        if eventType == ccui.SliderEventType.percentChanged then
+            --print("SliderPercent = ", sender:getPercent() / 100.0)
+        end
+    end
+    self.unit_Slider_num:addEventListenerSlider(sliderEvent)
+
+    self.Button_save = generalUnitNode:getChildByName("Button_save")   --部曲保存
+    self.Button_save:addTouchEventListener(handler(self,self.touchEvent))
+    self.Button_update = generalUnitNode:getChildByName("Button_update")    --部曲升阶
+    self.Button_update:addTouchEventListener(handler(self,self.touchEvent))
 
 
     self:LoadGeneralList()
@@ -108,7 +152,8 @@ function GeneralLayer:setRadioPanel(idx)
         self.Button_armyRadio_Text:disableEffect()
         self.Button_skillRadio_Text:disableEffect()
 
-        self.Panel_Info:setVisible(true)
+        self.generalInfoNode:setVisible(true)
+        self.generalUnitNode:setVisible(false)
     elseif idx == 2 then   --武将部曲
         self.Button_InfoRadio:loadTextureNormal("public_radio1.png", ccui.TextureResType.plistType)
         self.Button_armyRadio:loadTextureNormal("public_radio2.png", ccui.TextureResType.plistType)
@@ -118,7 +163,8 @@ function GeneralLayer:setRadioPanel(idx)
         self.Button_InfoRadio_Text:disableEffect()
         self.Button_skillRadio_Text:disableEffect()
 
-        self.Panel_Info:setVisible(false)
+        self.generalInfoNode:setVisible(false)
+        self.generalUnitNode:setVisible(true)
     elseif idx == 3 then   --武将技能
         self.Button_InfoRadio:loadTextureNormal("public_radio1.png", ccui.TextureResType.plistType)
         self.Button_armyRadio:loadTextureNormal("public_radio1.png", ccui.TextureResType.plistType)
@@ -128,7 +174,8 @@ function GeneralLayer:setRadioPanel(idx)
         self.Button_InfoRadio_Text:disableEffect()
         self.Button_armyRadio_Text:disableEffect()
 
-        self.Panel_Info:setVisible(false)
+        self.generalInfoNode:setVisible(false)
+        self.generalUnitNode:setVisible(false)
     end
 end
 
@@ -273,6 +320,8 @@ function GeneralLayer:touchEvent(sender, eventType)
             self:setRadioPanel(2)
         elseif sender == self.Button_skillRadio then
             self:setRadioPanel(3)
+        elseif sender == self.Button_save then   --部曲保存
+        elseif sender == self.Button_update then   --部曲升阶
         end
     end
 end

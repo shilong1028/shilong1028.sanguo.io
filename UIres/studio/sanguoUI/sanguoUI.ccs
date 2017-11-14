@@ -11,6 +11,7 @@
           <Project Name="DialogOkCancelLayer.csd" Type="Layer" />
           <Project Name="GeneralInfoLayer.csd" Type="Layer" />
           <Project Name="generalInfoNode.csd" Type="Node" />
+          <Project Name="generalUnitNode.csd" Type="Node" />
           <Project Name="HelpInfoLayer.csd" Type="Layer" />
           <Project Name="ItemCell.csd" Type="Layer" />
           <Project Name="LoadingLayer.csd" Type="Layer" />
@@ -31,7 +32,6 @@
           <Project Name="vipLayer.csd" Type="Layer" />
           <Project Name="ZhenXingLayer.csd" Type="Layer" />
           <Project Name="ZhenXingNode.csd" Type="Layer" />
-          <Project Name="generalUnitNode.csd" Type="Node" />
         </Folder>
         <Folder Name="font">
           <TTF Name="simkai.ttf" />
