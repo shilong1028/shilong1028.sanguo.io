@@ -407,6 +407,7 @@ function MainMenuLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_jiangling then  --将领部队
             g_pGameLayer:showGeneralLayer()
         elseif sender == self.Button_lianmeng then   --联盟
+            cc.Application:getInstance():openURL("http://blog.csdn.net/dcliu2012/article/details/45313653")  
         elseif sender == self.Button_shejiao then   --社交好友
         elseif sender == self.Button_shezhi then   --设置
             local function okCallBack()

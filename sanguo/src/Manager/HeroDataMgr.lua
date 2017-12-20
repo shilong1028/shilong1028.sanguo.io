@@ -172,7 +172,7 @@ function HeroDataMgr:initGeneralXMLData()
                     equipLvVec = string.split(equipLvStr,";")  
                 end
                 for i=1, #equipIdVec do
-                    table.insert(generalData.equipVec, {["skillId"]=equipIdVec[i], ["lv"]=equipLvVec[i]})
+                    table.insert(generalData.equipVec, {["equipId"]=equipIdVec[i], ["lv"]=equipLvVec[i]})
                 end
 
                 generalData.armyUnitVec = {}    --g_tbl_armyUnitConfig:new()   --武将部曲数据
@@ -373,6 +373,11 @@ function HeroDataMgr:SetHeroCampPopulation(population)
     end
 end
 
+--获取可用劳力（预备役）人数
+function HeroDataMgr:GetHeroPrepTroops()
+    return math.floor(clone(self.heroData.campData.population)/100)
+end
+
 function HeroDataMgr:GetHeroCampTroops()
     return clone(self.heroData.campData.troops)
 end
@@ -549,6 +554,16 @@ function HeroDataMgr:GetBagXMLData()
     return clone(self.heroData.bagVecData)
 end
 
+function HeroDataMgr:GetBagItemDataById(itemId)
+    local itemIdStr = tostring(itemId)
+    for k, data in pairs(self.heroData.bagVecData) do
+        if itemIdStr == data.itemId then   --{["itemId"] = itemId, ["num"] = itemNum }
+            return clone(data)
+        end
+    end
+    return nil
+end
+
 function HeroDataMgr:SetBagXMLData(itemVec)
     --G_Log_Info("HeroDataMgr:SetBagXMLData()")
     if not itemVec then
@@ -577,7 +592,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
             local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_troopEvent)
             event._usedata = string.format("%d", troops)  
             g_EventDispatcher:dispatchEvent(event) 
-        elseif itemIdStr == "6001" then
+        elseif itemIdStr == "6001" then  --金币
             local money = g_HeroDataMgr:GetHeroCampMoney()
             money = money + itemNum
             g_HeroDataMgr:SetHeroCampMoney(money)
@@ -586,7 +601,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
             local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_moneyEvent)
             event._usedata = string.format("%d", money)  
             g_EventDispatcher:dispatchEvent(event) 
-        elseif itemIdStr == "6002" then
+        elseif itemIdStr == "6002" then   --粮草
             local food = g_HeroDataMgr:GetHeroCampFood()
             food = food + itemNum
             g_HeroDataMgr:SetHeroCampFood(food)
@@ -595,7 +610,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
             local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_foodEvent)
             event._usedata = string.format("%d", food)  
             g_EventDispatcher:dispatchEvent(event) 
-        elseif itemIdStr == "6003" then
+        elseif itemIdStr == "6003" then   --药材
             local drug = g_HeroDataMgr:GetHeroCampDrug()
             drug = drug + itemNum
             g_HeroDataMgr:SetHeroCampDrug(drug)

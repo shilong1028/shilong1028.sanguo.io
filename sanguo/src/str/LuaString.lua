@@ -43,6 +43,14 @@ lua_Role_String8 = "闪避 %d"
 lua_Role_String9 = "官职 %s"
 lua_Role_String10 = "忠诚度 %d"
 
+lua_Role_String11 = "预备兵力 %d"
+lua_Role_String12 = "兵甲数 %d"
+lua_Role_String13 = "枪戟数 %d"
+lua_Role_String14 = "刀枪数 %d"
+lua_Role_String15 = "马匹数 %d"
+lua_Role_String16 = "部曲名 %s"
+lua_Role_String17 = "部曲等级 Lv%d"
+
 
 
 lua_general_Str1 = "武  将"

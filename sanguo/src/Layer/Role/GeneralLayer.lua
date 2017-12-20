@@ -103,8 +103,12 @@ function GeneralLayer:init()
     self.unit_Text_bingqi = generalUnitNode:getChildByName("Text_bingqi")   --兵器数量
     self.unit_Text_mapi = generalUnitNode:getChildByName("Text_mapi")   --马匹数量
 
+    self.unit_Text_cost = generalUnitNode:getChildByName("Text_cost")    --花费金币
+    self.unit_Text_cost_gold = generalUnitNode:getChildByName("Text_cost_gold")   --花费金币数量
+
     self.unit_Text_numCount = generalUnitNode:getChildByName("Text_numCount")   --选中部曲的数量
     self.unit_Slider_num = generalUnitNode:getChildByName("Slider_num")   --滑动条
+
     --[[
     local slider = ccui.Slider:create()
     slider:setTouchEnabled(true)
@@ -127,6 +131,16 @@ function GeneralLayer:init()
     self.Button_save:addTouchEventListener(handler(self,self.touchEvent))
     self.Button_update = generalUnitNode:getChildByName("Button_update")    --部曲升阶
     self.Button_update:addTouchEventListener(handler(self,self.touchEvent))
+    self.Button_useItem = generalUnitNode:getChildByName("Button_useItem")   --使用背包士兵Item
+    self.Button_useItem:addTouchEventListener(handler(self,self.touchEvent))
+
+    --背包士兵Item列表
+    self.ListView_Item = generalUnitNode:getChildByName("ListView_Item")
+    self.ListView_Item:setTouchEnabled(true)
+    self.ListView_Item:setBounceEnabled(true)
+    self.ListView_Item:setScrollBarEnabled(false)   --屏蔽列表滚动条
+    self.ListView_Item:setItemsMargin(10.0)
+    self.ListView_ItemSize = self.ListView_Item:getContentSize()
 
 
     self:LoadGeneralList()
@@ -238,7 +252,7 @@ end
 
 function GeneralLayer:initGeneralData(generalData)  
     --G_Log_Dump(generalData, "generalData = ")
-    self.selGeneralData = generalData
+    self.GeneralData = generalData
     if generalData == nil then
         G_Log_Error("GeneralLayer:initGeneralData(), generalData = nil")
         return
@@ -263,52 +277,108 @@ function GeneralLayer:initGeneralData(generalData)
     self.armyUnitVec = {}    --g_tbl_armyUnitConfig:new()   --武将部曲数据
     ]]
 
-     --头像背景
+    --初始化信息界面UI
+    self:initInfoUI()
+
+    --部曲信息
+    self:initUnitUI()
+
+end
+
+--初始化信息界面UI
+function GeneralLayer:initInfoUI()
+    --头像背景
     local bgHeadSize = self.info_Image_headBg:getContentSize()
     if not self.info_headImg then
-        self.info_headImg =  ccui.ImageView:create(string.format("Head/%s.png", generalData.id_str), ccui.TextureResType.localType)
+        self.info_headImg =  ccui.ImageView:create(string.format("Head/%s.png", self.GeneralData.id_str), ccui.TextureResType.localType)
         self.info_headImg:setScale(bgHeadSize.width/self.info_headImg:getContentSize().width)
         self.info_headImg:setPosition(cc.p(bgHeadSize.width/2, bgHeadSize.height/2))
         self.info_Image_headBg:addChild(self.info_headImg)
     else
-        self.info_headImg:loadTexture(string.format("Head/%d.png", generalData.id_str), ccui.TextureResType.localType)
+        self.info_headImg:loadTexture(string.format("Head/%d.png", self.GeneralData.id_str), ccui.TextureResType.localType)
     end
     --品质颜色
-    local colorIdx = G_GetGeneralColorIdxByLv(generalData.level)
+    local colorIdx = G_GetGeneralColorIdxByLv(self.GeneralData.level)
     if colorIdx > 0 and colorIdx <=5 then
         self.info_Image_color:setVisible(true)
         self.info_Image_color:loadTexture(string.format("public_colorBg%d.png", colorIdx), ccui.TextureResType.plistType)
         --self.info_Image_color:setScale(bgHeadSize.width/self.info_headImg:getContentSize().width)
+
+        self.unit_Image_color:setVisible(true)
+        self.unit_Image_color:loadTexture(string.format("public_colorBg%d.png", colorIdx), ccui.TextureResType.plistType)
+        --self.unit_Image_color:setScale(bgHeadSize.width/self.info_headImg:getContentSize().width)
     else
         self.info_Image_color:setVisible(false)
+        self.unit_Image_color:setVisible(false)
     end
 
-    self.info_Text_name:setString(generalData.name)    --名称
-    self.info_Text_lv:setString(string.format(lua_Role_String2, generalData.level))     --等级
-    self.info_Text_generalDesc:setString(generalData.desc)  --武将简介
+    self.info_Text_name:setString(self.GeneralData.name)    --名称
+    self.info_Text_lv:setString(string.format(lua_Role_String2, self.GeneralData.level))     --等级
+    self.info_Text_generalDesc:setString(self.GeneralData.desc)  --武将简介
 
-    self.info_Text_hp:setString(string.format(lua_Role_String3, generalData.hp))    --血量
-    self.info_Text_mp:setString(string.format(lua_Role_String4, generalData.mp))    --智力
-    self.info_Text_att:setString(string.format(lua_Role_String5, generalData.atk))   --攻击
-    self.info_Text_def:setString(string.format(lua_Role_String6, generalData.def))   --防御
+    self.info_Text_hp:setString(string.format(lua_Role_String3, self.GeneralData.hp))    --血量
+    self.info_Text_mp:setString(string.format(lua_Role_String4, self.GeneralData.mp))    --智力
+    self.info_Text_att:setString(string.format(lua_Role_String5, self.GeneralData.atk))   --攻击
+    self.info_Text_def:setString(string.format(lua_Role_String6, self.GeneralData.def))   --防御
 
-    local officalData = g_pTBLMgr:getOfficalConfigById(generalData.offical)
+    local officalData = g_pTBLMgr:getOfficalConfigById(self.GeneralData.offical)
     local officalName = lua_Role_String_No
     if officalData then
         officalName = officalData.name
     end
     self.info_Text_offical:setString(string.format(lua_Role_String9, officalName))   --官职
 
-    self.info_Text_desc:setString(lua_Role_TypeStrVec[generalData.type])   --武将类型，英雄，武将，文官
+    self.info_Text_desc:setString(lua_Role_TypeStrVec[self.GeneralData.type])   --武将类型，英雄，武将，文官
 
-    self.info_Text_zhongcheng:setString(string.format(lua_Role_String10, generalData.zhongcheng))  --忠诚度
+    self.info_Text_zhongcheng:setString(string.format(lua_Role_String10, self.GeneralData.zhongcheng))  --忠诚度
 
-    -- self.info_Image_toukui = generalInfoNode:getChildByName("Image_toukui")  --头盔
-    -- self.info_Image_wuqi = generalInfoNode:getChildByName("Image_wuqi")      --武器
-    -- self.info_Image_hujia = generalInfoNode:getChildByName("Image_hujia")    --护甲
-    -- self.info_Image_zuoqi = generalInfoNode:getChildByName("Image_zuoqi")    --坐骑
-    -- self.info_Image_daoju = generalInfoNode:getChildByName("Image_daoju")    --道具
+    for k, equip in pairs(self.GeneralData.equipVec) do
+        local equipData = g_pTBLMgr:getItemConfigTBLDataById(equip.equipId) 
+        if equipData then
+            -- self.info_Image_toukui = generalInfoNode:getChildByName("Image_toukui")  --头盔
+            -- self.info_Image_wuqi = generalInfoNode:getChildByName("Image_wuqi")      --武器
+            -- self.info_Image_hujia = generalInfoNode:getChildByName("Image_hujia")    --护甲
+            -- self.info_Image_zuoqi = generalInfoNode:getChildByName("Image_zuoqi")    --坐骑
+            -- self.info_Image_daoju = generalInfoNode:getChildByName("Image_daoju")    --道具
+        end
+    end
 end
+
+--初始化部曲增兵界面显示
+function GeneralLayer:initUnitUI()
+    self.unit_Text_cost:setVisible(false)
+    self.unit_Text_cost_gold:setString("")
+    self.unit_Text_numCount:setString("0")
+    self.unit_Slider_num:setPercent(0)
+
+    if not self.unit_headImg then  --头像背景
+        self.unit_headImg =  ccui.ImageView:create(string.format("Head/%s.png", self.GeneralData.id_str), ccui.TextureResType.localType)
+        self.unit_headImg:setScale(bgHeadSize.width/self.unit_headImg:getContentSize().width)
+        self.unit_headImg:setPosition(cc.p(bgHeadSize.width/2, bgHeadSize.height/2))
+        self.unit_Image_headBg:addChild(self.unit_headImg)
+    else
+        self.unit_headImg:loadTexture(string.format("Head/%d.png", self.GeneralData.id_str), ccui.TextureResType.localType)
+    end
+    self.unit_Text_name:setString(self.GeneralData.name)    --武将名称
+
+    local PrepTroops = g_HeroDataMgr:GetHeroPrepTroops()  --获取可用劳力（预备役）人数
+    self.unit_Text_bingCount:setString(string.format(lua_Role_String11, PrepTroops) )  --预备兵数量
+
+    local bingjiaItem = g_HeroDataMgr:GetBagItemDataById("504")
+    self.unit_Text_bingjia:setString(string.format(lua_Role_String12, bingjiaItem and bingjiaItem.num or 0) )  --兵甲数量
+
+    self.unit_Text_bingqi:setString("")   --兵器数量
+    self.unit_Text_mapi:setString("")    --马匹数量
+    self.unit_Text_UnitName:setString(string.format(lua_Role_String16, lua_Role_String_No))   --部曲名称
+    self.unit_Text_UnitLv:setString(string.format(lua_Role_String17, 0))   --部曲等级
+
+    -- self.unit_Image_qibing = generalUnitNode:getChildByName("Image_qibing")  --骑兵
+    -- self.unit_Image_qiangbing = generalUnitNode:getChildByName("Image_qiangbing") --枪兵
+    -- self.unit_Image_daobing = generalUnitNode:getChildByName("Image_daobing")  --刀兵
+    -- self.unit_Image_gongbing = generalUnitNode:getChildByName("Image_gongbing") --弓兵
+end
+
+
 
 function GeneralLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  

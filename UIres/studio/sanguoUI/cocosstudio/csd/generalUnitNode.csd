@@ -54,10 +54,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_numCount" ActionTag="-862393460" Tag="152" IconVisible="False" LeftMargin="230.0000" RightMargin="-340.0000" TopMargin="-13.5000" BottomMargin="-13.5000" FontSize="24" LabelText="1000/2000" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_numCount" ActionTag="-862393460" Tag="152" IconVisible="False" LeftMargin="230.0000" RightMargin="-340.0000" TopMargin="-53.5000" BottomMargin="26.5000" FontSize="24" LabelText="1000/2000" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="110.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="230.0000" />
+            <Position X="230.0000" Y="40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -66,10 +66,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_bingCount" ActionTag="1633346117" Tag="159" IconVisible="False" LeftMargin="20.0000" RightMargin="-166.0000" TopMargin="-104.5000" BottomMargin="77.5000" FontSize="24" LabelText="预备兵力数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_bingCount" ActionTag="1633346117" Tag="159" IconVisible="False" LeftMargin="20.0000" RightMargin="-166.0000" TopMargin="-113.5000" BottomMargin="86.5000" FontSize="24" LabelText="预备兵力数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="146.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="20.0000" Y="91.0000" />
+            <Position X="20.0000" Y="100.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -152,10 +152,10 @@
             <PreSize X="0.0000" Y="0.0000" />
             <FileData Type="PlistSubImage" Path="public_itemBg.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_color" ActionTag="-12768925" Tag="168" IconVisible="False" LeftMargin="-232.9514" RightMargin="104.9514" TopMargin="-47.2117" BottomMargin="-80.7883" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_color" ActionTag="-12768925" Tag="168" IconVisible="False" LeftMargin="-232.9500" RightMargin="104.9500" TopMargin="-47.2100" BottomMargin="-80.7900" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
             <Size X="128.0000" Y="128.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="-168.9514" Y="-16.7883" />
+            <Position X="-168.9500" Y="-16.7900" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
@@ -174,10 +174,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Slider_num" ActionTag="-866486457" Tag="416" IconVisible="False" LeftMargin="20.0000" RightMargin="-220.0000" TopMargin="-7.5000" BottomMargin="-7.5000" TouchEnable="True" PercentInfo="48" ctype="SliderObjectData">
+          <AbstractNodeData Name="Slider_num" ActionTag="-866486457" Tag="416" IconVisible="False" LeftMargin="20.0000" RightMargin="-220.0000" TopMargin="-47.5000" BottomMargin="32.5000" TouchEnable="True" PercentInfo="48" ctype="SliderObjectData">
             <Size X="200.0000" Y="15.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="20.0000" />
+            <Position X="20.0000" Y="40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
@@ -188,10 +188,10 @@
             <BallPressedData Type="PlistSubImage" Path="public_red_dot2.png" Plist="plist/PublicRes.plist" />
             <BallDisabledData Type="PlistSubImage" Path="public_tanhao.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_bingjia" ActionTag="-1524134084" Tag="417" IconVisible="False" LeftMargin="20.0000" RightMargin="-118.0000" TopMargin="-63.5000" BottomMargin="36.5000" FontSize="24" LabelText="兵甲数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_bingjia" ActionTag="-1524134084" Tag="417" IconVisible="False" LeftMargin="20.0000" RightMargin="-118.0000" TopMargin="-83.5000" BottomMargin="56.5000" FontSize="24" LabelText="兵甲数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="98.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="20.0000" Y="50.0000" />
+            <Position X="20.0000" Y="70.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -200,10 +200,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_bingqi" ActionTag="-2096880089" Tag="418" IconVisible="False" LeftMargin="140.0000" RightMargin="-238.0000" TopMargin="-63.5000" BottomMargin="36.5000" FontSize="24" LabelText="兵器数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_bingqi" ActionTag="-2096880089" Tag="418" IconVisible="False" LeftMargin="140.0000" RightMargin="-238.0000" TopMargin="-83.5000" BottomMargin="56.5000" FontSize="24" LabelText="兵器数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="98.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="140.0000" Y="50.0000" />
+            <Position X="140.0000" Y="70.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -212,10 +212,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_mapi" ActionTag="-1244928979" Tag="419" IconVisible="False" LeftMargin="260.0000" RightMargin="-358.0000" TopMargin="-63.5000" BottomMargin="36.5000" FontSize="24" LabelText="马匹数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_mapi" ActionTag="-1244928979" Tag="419" IconVisible="False" LeftMargin="260.0000" RightMargin="-358.0000" TopMargin="-83.5000" BottomMargin="56.5000" FontSize="24" LabelText="马匹数量" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="98.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="260.0000" Y="50.0000" />
+            <Position X="260.0000" Y="70.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -224,10 +224,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_save" ActionTag="-1471619527" Tag="429" IconVisible="False" LeftMargin="22.5000" RightMargin="-177.5000" TopMargin="47.5000" BottomMargin="-112.5000" TouchEnable="True" FontSize="30" ButtonText="保存" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="139" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_save" ActionTag="-1471619527" Tag="429" IconVisible="False" LeftMargin="22.5000" RightMargin="-177.5000" TopMargin="67.5000" BottomMargin="-132.5000" TouchEnable="True" FontSize="30" ButtonText="保存" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="139" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="155.0000" Y="65.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="100.0000" Y="-80.0000" />
+            <Position X="100.0000" Y="-100.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
@@ -238,10 +238,10 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_update" ActionTag="1104284724" Tag="430" IconVisible="False" LeftMargin="202.5000" RightMargin="-357.5000" TopMargin="47.5000" BottomMargin="-112.5000" TouchEnable="True" FontSize="30" ButtonText="升阶" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="139" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_update" ActionTag="1104284724" Tag="430" IconVisible="False" LeftMargin="203.5000" RightMargin="-358.5000" TopMargin="67.5000" BottomMargin="-132.5000" TouchEnable="True" FontSize="30" ButtonText="升阶" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="139" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="155.0000" Y="65.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="280.0000" Y="-80.0000" />
+            <Position X="281.0000" Y="-100.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
@@ -250,6 +250,57 @@
             <TextColor A="255" R="255" G="165" B="0" />
             <NormalFileData Type="PlistSubImage" Path="public_btn_green1.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="ListView_Item" ActionTag="726093766" Tag="201" IconVisible="False" LeftMargin="20.0000" RightMargin="-250.0000" TopMargin="-15.0000" BottomMargin="-60.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="102" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="5" VerticalType="Align_VerticalCenter" ctype="ListViewObjectData">
+            <Size X="230.0000" Y="75.0000" />
+            <AnchorPoint />
+            <Position X="20.0000" Y="-60.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <SingleColor A="255" R="150" G="150" B="255" />
+            <FirstColor A="255" R="150" G="150" B="255" />
+            <EndColor A="255" R="255" G="255" B="255" />
+            <ColorVector ScaleY="1.0000" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Button_useItem" ActionTag="876663496" Tag="296" IconVisible="False" LeftMargin="253.0000" RightMargin="-367.0000" TopMargin="-10.0000" BottomMargin="-50.0000" TouchEnable="True" FontSize="30" ButtonText="使用" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="98" Scale9Height="38" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+            <Size X="114.0000" Y="60.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="310.0000" Y="-20.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
+            <TextColor A="255" R="0" G="0" B="0" />
+            <NormalFileData Type="PlistSubImage" Path="public_btn_orange2.png" Plist="plist/PublicRes.plist" />
+            <OutlineColor A="255" R="255" G="0" B="0" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Text_cost" ActionTag="323406032" Tag="89" IconVisible="False" LeftMargin="-216.5000" RightMargin="121.5000" TopMargin="-138.5000" BottomMargin="111.5000" FontSize="24" LabelText="花费金币" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="95.0000" Y="27.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="-169.0000" Y="125.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="165" B="0" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
+            <OutlineColor A="255" R="165" G="42" B="42" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Text_cost_gold" ActionTag="-189371976" Tag="90" IconVisible="False" LeftMargin="-193.0000" RightMargin="143.0000" TopMargin="-103.5000" BottomMargin="76.5000" FontSize="24" LabelText="1000" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="50.0000" Y="27.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="-168.0000" Y="90.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="165" B="0" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
+            <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
         </Children>
