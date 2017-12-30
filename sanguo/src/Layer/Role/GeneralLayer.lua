@@ -60,13 +60,22 @@ function GeneralLayer:init()
     self.generalInfoNode = generalInfoNode
 
     self.info_Image_headBg = generalInfoNode:getChildByName("Image_headBg")    --头像背景
+    self.info_Image_headBg:addTouchEventListener(handler(self,self.touchImageEvent))
     self.info_Image_color = generalInfoNode:getChildByName("Image_color")   --品质颜色
 
+    self.info_Image_sel = generalInfoNode:getChildByName("Image_sel")   --武将装备选中框
+    self.info_Image_sel:setVisible(false)
+
     self.info_Image_toukui = generalInfoNode:getChildByName("Image_toukui")  --头盔
+    self.info_Image_toukui:addTouchEventListener(handler(self,self.touchImageEvent))
     self.info_Image_wuqi = generalInfoNode:getChildByName("Image_wuqi")      --武器
+    self.info_Image_wuqi:addTouchEventListener(handler(self,self.touchImageEvent))
     self.info_Image_hujia = generalInfoNode:getChildByName("Image_hujia")    --护甲
+    self.info_Image_hujia:addTouchEventListener(handler(self,self.touchImageEvent))
     self.info_Image_zuoqi = generalInfoNode:getChildByName("Image_zuoqi")    --坐骑
+    self.info_Image_zuoqi:addTouchEventListener(handler(self,self.touchImageEvent))
     self.info_Image_daoju = generalInfoNode:getChildByName("Image_daoju")    --道具
+    self.info_Image_daoju:addTouchEventListener(handler(self,self.touchImageEvent))
 
     self.info_Text_name = generalInfoNode:getChildByName("Text_name")    --名称
     self.info_Text_lv = generalInfoNode:getChildByName("Text_lv")    --等级
@@ -89,10 +98,17 @@ function GeneralLayer:init()
     self.unit_Image_headBg = generalUnitNode:getChildByName("Image_headBg")    --头像背景
     self.unit_Image_color = generalUnitNode:getChildByName("Image_color")   --品质颜色
 
-    self.unit_Image_qibing = generalUnitNode:getChildByName("Image_qibing")  --骑兵
-    self.unit_Image_qiangbing = generalUnitNode:getChildByName("Image_qiangbing") --枪兵
-    self.unit_Image_daobing = generalUnitNode:getChildByName("Image_daobing")  --刀兵
-    self.unit_Image_gongbing = generalUnitNode:getChildByName("Image_gongbing") --弓兵
+    self.unit_Image_sel = generalUnitNode:getChildByName("Image_sel")   --部曲选中框
+    self.unit_Image_sel:setVisible(false)
+
+    self.unit_Image_qibing = generalUnitNode:getChildByName("Image_qibing")  --骑兵部曲
+    self.unit_Image_qibing:addTouchEventListener(handler(self,self.touchImageEvent))
+    self.unit_Image_qiangbing = generalUnitNode:getChildByName("Image_qiangbing") --枪兵部曲
+    self.unit_Image_qiangbing:addTouchEventListener(handler(self,self.touchImageEvent))
+    self.unit_Image_daobing = generalUnitNode:getChildByName("Image_daobing")  --刀兵部曲
+    self.unit_Image_daobing:addTouchEventListener(handler(self,self.touchImageEvent))
+    self.unit_Image_gongbing = generalUnitNode:getChildByName("Image_gongbing") --弓兵部曲
+    self.unit_Image_gongbing:addTouchEventListener(handler(self,self.touchImageEvent))
 
     self.unit_Text_name = generalUnitNode:getChildByName("Text_name")    --武将名称
     self.unit_Text_UnitName = generalUnitNode:getChildByName("Text_unit_name")    --部曲名称
@@ -312,34 +328,144 @@ function GeneralLayer:initInfoUI()
         self.unit_Image_color:setVisible(false)
     end
 
-    self.info_Text_name:setString(self.GeneralData.name)    --名称
-    self.info_Text_lv:setString(string.format(lua_Role_String2, self.GeneralData.level))     --等级
-    self.info_Text_generalDesc:setString(self.GeneralData.desc)  --武将简介
-
-    self.info_Text_hp:setString(string.format(lua_Role_String3, self.GeneralData.hp))    --血量
-    self.info_Text_mp:setString(string.format(lua_Role_String4, self.GeneralData.mp))    --智力
-    self.info_Text_att:setString(string.format(lua_Role_String5, self.GeneralData.atk))   --攻击
-    self.info_Text_def:setString(string.format(lua_Role_String6, self.GeneralData.def))   --防御
-
-    local officalData = g_pTBLMgr:getOfficalConfigById(self.GeneralData.offical)
-    local officalName = lua_Role_String_No
-    if officalData then
-        officalName = officalData.name
-    end
-    self.info_Text_offical:setString(string.format(lua_Role_String9, officalName))   --官职
-
     self.info_Text_desc:setString(lua_Role_TypeStrVec[self.GeneralData.type])   --武将类型，英雄，武将，文官
 
-    self.info_Text_zhongcheng:setString(string.format(lua_Role_String10, self.GeneralData.zhongcheng))  --忠诚度
+    self:initInfoRightUI(0)
+
+    self.info_Image_sel:setVisible(false)
+    self.info_Image_toukui:removeAllChildren()
+    self.info_Image_wuqi:removeAllChildren()
+    self.info_Image_hujia:removeAllChildren()
+    self.info_Image_zuoqi:removeAllChildren()
+    self.info_Image_daoju:removeAllChildren()
+
+    self.GeneralEquipVec = {-1, -1, -1, -1, -1}   --武将头盔、武器、护甲、坐骑、道具信息，-1表示未装备
 
     for k, equip in pairs(self.GeneralData.equipVec) do
         local equipData = g_pTBLMgr:getItemConfigTBLDataById(equip.equipId) 
         if equipData then
-            -- self.info_Image_toukui = generalInfoNode:getChildByName("Image_toukui")  --头盔
-            -- self.info_Image_wuqi = generalInfoNode:getChildByName("Image_wuqi")      --武器
-            -- self.info_Image_hujia = generalInfoNode:getChildByName("Image_hujia")    --护甲
-            -- self.info_Image_zuoqi = generalInfoNode:getChildByName("Image_zuoqi")    --坐骑
-            -- self.info_Image_daoju = generalInfoNode:getChildByName("Image_daoju")    --道具
+            local colorIdx = G_GetGeneralColorIdxByLv(equipData.quality)
+            if colorIdx <= 0 or colorIdx >5 then
+                colorIdx = 1
+            end
+            local colorImg = ccui.ImageView:create(string.format("public_colorBg%d.png", colorIdx), ccui.TextureResType.plistType)
+            local iconImg = ccui.ImageView:create(string.format("Item/%s.png", equipData.id_str), ccui.TextureResType.localType)
+            iconImg:setPosition(cc.p(colorImg:getContentSize().width/2, colorImg:getContentSize().height/2))
+            --iconImg:setAnchorPoint(cc.p(0, 0))
+            colorImg:addChild(iconImg)
+            colorImg:setPosition(cc.p(self.info_Image_toukui:getContentSize().width/2, self.info_Image_toukui:getContentSize().height/2))
+            --colorImg:setAnchorPoint(cc.p(0, 0))
+
+            if equipData.type == g_ItemType.Item_General_toukui then   --头盔
+                self.GeneralEquipVec[1] = equipData
+                self.info_Image_toukui:addChild(colorImg)
+            elseif equipData.type == g_ItemType.Item_General_wuqi then  --武器
+                self.GeneralEquipVec[2] = equipData
+                self.info_Image_wuqi:addChild(colorImg)
+            elseif equipData.type == g_ItemType.Item_General_hujia then   --护甲
+                self.GeneralEquipVec[3] = equipData
+                self.info_Image_hujia:addChild(colorImg)
+            elseif equipData.type == g_ItemType.Item_General_zuoqi then   --坐骑
+                self.GeneralEquipVec[4] = equipData
+                self.info_Image_zuoqi:addChild(colorImg)
+            elseif equipData.type == g_ItemType.Item_General_daoju then   --道具
+                self.GeneralEquipVec[5] = equipData
+                self.info_Image_daoju:addChild(colorImg)
+            end
+        end
+    end
+end
+
+--初始化信息界面右侧信息（任务信息0或装备信息1-5）
+function GeneralLayer:initInfoRightUI(nType)
+    if nType == 0 then
+        self.info_Text_name:setString(self.GeneralData.name)    --名称
+        self.info_Text_lv:setString(string.format(lua_Role_String2, self.GeneralData.level))     --等级
+        self.info_Text_generalDesc:setString(self.GeneralData.desc)  --武将简介
+
+        self.info_Text_hp:setString(string.format(lua_Role_String3, self.GeneralData.hp))    --血量
+        self.info_Text_mp:setString(string.format(lua_Role_String4, self.GeneralData.mp))    --智力
+        self.info_Text_att:setString(string.format(lua_Role_String5, self.GeneralData.atk))   --攻击
+        self.info_Text_def:setString(string.format(lua_Role_String6, self.GeneralData.def))   --防御
+
+        local officalData = g_pTBLMgr:getOfficalConfigById(self.GeneralData.offical)
+        local officalName = lua_Role_String_No
+        if officalData then
+            officalName = officalData.name
+        end
+        self.info_Text_offical:setString(string.format(lua_Role_String9, officalName))   --官职
+        self.info_Text_zhongcheng:setString(string.format(lua_Role_String10, self.GeneralData.zhongcheng))  --忠诚度
+    else
+        local equipData = self.GeneralEquipVec[nType]  --武将头盔、武器、护甲、坐骑、道具信息, -1表示未装备
+        if not equipData or equipData == -1 then
+            self.info_Text_name:setString(lua_general_Str2)    --名称   --"未装备"
+            self.info_Text_lv:setString("")     --等级
+            self.info_Text_generalDesc:setString(lua_general_Str2)  --简介
+
+            self.info_Text_hp:setString(string.format(lua_Role_String3, 0))    --血量
+            self.info_Text_mp:setString(string.format(lua_Role_String4, 0))    --智力
+            self.info_Text_att:setString(string.format(lua_Role_String5, 0))   --攻击
+            self.info_Text_def:setString(string.format(lua_Role_String6, 0))   --防御
+
+            self.info_Text_offical:setString("")   --官职
+            self.info_Text_zhongcheng:setString("")  --忠诚度
+        else
+            self.info_Text_name:setString(equipData.name)    --名称
+            self.info_Text_lv:setString(string.format(lua_Role_String2, equipData.level))     --等级
+            self.info_Text_generalDesc:setString(equipData.desc)  --简介
+
+            self.info_Text_hp:setString(string.format(lua_Role_String3, equipData.hp))    --血量
+            self.info_Text_mp:setString(string.format(lua_Role_String4, equipData.mp))    --智力
+            self.info_Text_att:setString(string.format(lua_Role_String5, equipData.atk))   --攻击
+            self.info_Text_def:setString(string.format(lua_Role_String6, equipData.def))   --防御
+
+            self.info_Text_offical:setString("")   --官职
+            self.info_Text_zhongcheng:setString("")  --忠诚度
+        end
+    end
+end
+
+function GeneralLayer:touchImageEvent(sender, eventType)
+    if eventType == ccui.TouchEventType.ended then  
+        if sender == self.info_Image_headBg then   --头像背景
+            self.info_Image_sel:setVisible(false)
+            self:initInfoRightUI(0)
+        elseif sender == self.info_Image_toukui then   --头盔
+            self.info_Image_sel:setPosition(cc.p(self.info_Image_toukui:getPosition()))
+            self.info_Image_sel:setVisible(true)
+            self:initInfoRightUI(1)
+        elseif sender == self.info_Image_wuqi then  --武器
+            self.info_Image_sel:setPosition(cc.p(self.info_Image_wuqi:getPosition()))
+            self.info_Image_sel:setVisible(true)
+            self:initInfoRightUI(2)
+        elseif sender == self.info_Image_hujia then   --护甲
+            self.info_Image_sel:setPosition(cc.p(self.info_Image_hujia:getPosition()))
+            self.info_Image_sel:setVisible(true)
+            self:initInfoRightUI(3)
+        elseif sender == self.info_Image_zuoqi then   --坐骑
+            self.info_Image_sel:setPosition(cc.p(self.info_Image_zuoqi:getPosition()))
+            self.info_Image_sel:setVisible(true)
+            self:initInfoRightUI(4)
+        elseif sender == self.info_Image_daoju then   --道具
+            self.info_Image_sel:setPosition(cc.p(self.info_Image_daoju:getPosition()))
+            self.info_Image_sel:setVisible(true)
+            self:initInfoRightUI(5)
+        elseif sender == self.unit_Image_qibing then    --骑兵部曲
+            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qibing:getPosition()))
+            self.unit_Image_sel:setVisible(true)
+            
+        elseif sender == self.unit_Image_qiangbing then  --枪兵部曲
+            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qiangbing:getPosition()))
+            self.unit_Image_sel:setVisible(true)
+            
+        elseif sender == self.unit_Image_daobing then   --刀兵部曲
+            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_daobing:getPosition()))
+            self.unit_Image_sel:setVisible(true)
+            
+        elseif sender == self.unit_Image_gongbing then   --弓兵部曲
+            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_gongbing:getPosition()))
+            self.unit_Image_sel:setVisible(true)
+
         end
     end
 end

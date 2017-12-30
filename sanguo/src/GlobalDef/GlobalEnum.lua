@@ -58,6 +58,20 @@ g_PlayerState = {
 	HMS_RIGHT = 8, --cc.p(1,0)
 }
 
+--物品类型定义值
+g_ItemType = {
+	Item_Glod = 1,  --金钱
+	Item_Food = 2,  --粮草
+	Item_Drug = 3,  --药材
+	Item_Army = 4, --预备役士兵
+	Item_SoldierEquip = 5, --士兵装备
+	Item_General_toukui = 81,  --武将头盔
+	Item_General_wuqi = 82,  --武将武器
+	Item_General_hujia = 83,  --武将护甲
+	Item_General_zuoqi = 84,  --武将坐骑
+	Item_General_daoju = 85,  --武将道具
+}
+
 --用户自定义颜色值
 g_ColorDef = {
 	White = cc.c3b(255,255,255),

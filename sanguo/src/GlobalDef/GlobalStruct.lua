@@ -219,6 +219,10 @@ function  g_tbl_itemConfig:ctor()
 	self.arm_type = 0      --开启兵种属性（刀枪弓骑）
 	self.other = 0     --备用字段，用于使用某物品开启某种特性（如官职，技能，兵种等）
 	self.desc = ""    --描述
+
+	--附加属性
+	self.level = 1
+	self.exp = 0
 end
 
 --对话文本表结构类

@@ -54,6 +54,8 @@ lua_Role_String17 = "部曲等级 Lv%d"
 
 
 lua_general_Str1 = "武  将"
+lua_general_Str2 = "未装备"
+lua_general_Str3 = "未组建"
 
 lua_Item_TypeStrs = {"币", "粮", "甲", "武", "马", "符", "令", "物"}
 lua_Item_String1 = "×%d"
