@@ -47,15 +47,15 @@ lua_Role_String11 = "预备兵力 %d"
 lua_Role_String12 = "兵甲数 %d"
 lua_Role_String13 = "枪戟数 %d"
 lua_Role_String14 = "刀枪数 %d"
-lua_Role_String15 = "马匹数 %d"
-lua_Role_String16 = "部曲名 %s"
+lua_Role_String15 = "弓弩数 %d"
+lua_Role_String16 = "马匹数 %d"
 lua_Role_String17 = "部曲等级 Lv%d"
-
-
 
 lua_general_Str1 = "武  将"
 lua_general_Str2 = "未装备"
 lua_general_Str3 = "未组建"
+
+lua_unitNameVec = {"枪兵组", "刀兵组", "弓兵组", "骑兵组"}
 
 lua_Item_TypeStrs = {"币", "粮", "甲", "武", "马", "符", "令", "物"}
 lua_Item_String1 = "×%d"

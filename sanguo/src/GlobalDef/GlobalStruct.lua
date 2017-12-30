@@ -198,6 +198,7 @@ g_tbl_armyUnitConfig = class("g_tbl_armyUnitConfig",__BaseStruct)
 function  g_tbl_armyUnitConfig:ctor()
 	self.bingIdStr = ""   --部曲兵种（游击|轻装|重装|精锐|禁军的弓刀枪骑兵）
 	self.bingCount = 0    --部曲兵力数量
+	self.level = 0    --部曲等级
 	self.exp = 0      --部曲训练度
 	self.shiqi = 0    --部曲士气
 	self.zhenId = 0   --部曲阵法Id

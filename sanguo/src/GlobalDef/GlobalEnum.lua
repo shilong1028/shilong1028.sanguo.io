@@ -64,12 +64,17 @@ g_ItemType = {
 	Item_Food = 2,  --粮草
 	Item_Drug = 3,  --药材
 	Item_Army = 4, --预备役士兵
+	Item_Id_qiangbing = 401,   --枪兵
+	Item_Id_daobing = 402,   --刀兵
+	Item_Id_gongbing = 403,   --弓兵
+	Item_Id_qibing = 404,   --骑兵
+
 	Item_SoldierEquip = 5, --士兵装备
 	Item_General_toukui = 81,  --武将头盔
 	Item_General_wuqi = 82,  --武将武器
 	Item_General_hujia = 83,  --武将护甲
 	Item_General_zuoqi = 84,  --武将坐骑
-	Item_General_daoju = 85,  --武将道具
+	Item_General_daoju = 85,  --武将道具 
 }
 
 --用户自定义颜色值

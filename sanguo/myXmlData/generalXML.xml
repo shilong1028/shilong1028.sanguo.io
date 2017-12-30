@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <3001 id_str="3001" exp="0" level="5" offical="" zhongcheng="100" bingTypeVec="401;404" skillIdVec="9031" skillLvVec="1" equipIdVec="" equipLvVec="">
+    <3001 id_str="3001" exp="0" level="5" offical="" zhongcheng="100" bingTypeVec="401;404" skillIdVec="9031" skillLvVec="1" equipIdVec="8101;8201" equipLvVec="1;1">
         <armyUnitRoot>
-            <armyUnit1 bingIdStr="401" bingCount="0" exp="0" shiqi="0" zhenId="0"/>
-            <armyUnit2 bingIdStr="404" bingCount="0" exp="0" shiqi="0" zhenId="0"/>
+            <armyUnit1 bingIdStr="401" bingCount="0" level="0" exp="0" shiqi="0" zhenId="0"/>
+            <armyUnit2 bingIdStr="404" bingCount="0" level="0" exp="0" shiqi="0" zhenId="0"/>
         </armyUnitRoot>
     </3001>
-    <3007 id_str="3007" exp="0" level="1" offical="" zhongcheng="100" bingTypeVec="403" skillIdVec="" skillLvVec="" equipIdVec="" equipLvVec="">
-        <armyUnitRoot>
-            <armyUnit1 bingIdStr="403" bingCount="0" exp="0" shiqi="0" zhenId="0"/>
-        </armyUnitRoot>
-    </3007>
 </root>
