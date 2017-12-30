@@ -351,6 +351,7 @@ function GeneralLayer:initUnitUI()
     self.unit_Text_numCount:setString("0")
     self.unit_Slider_num:setPercent(0)
 
+    local bgHeadSize = self.info_Image_headBg:getContentSize()
     if not self.unit_headImg then  --头像背景
         self.unit_headImg =  ccui.ImageView:create(string.format("Head/%s.png", self.GeneralData.id_str), ccui.TextureResType.localType)
         self.unit_headImg:setScale(bgHeadSize.width/self.unit_headImg:getContentSize().width)

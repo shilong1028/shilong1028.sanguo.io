@@ -102,7 +102,17 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_daobing" ActionTag="-367508275" Tag="163" IconVisible="False" LeftMargin="-103.9515" RightMargin="13.9515" TopMargin="41.7881" BottomMargin="-131.7881" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_sel" ActionTag="1555634307" Tag="157" IconVisible="False" LeftMargin="-326.4500" RightMargin="231.4500" TopMargin="-90.7100" BottomMargin="-4.2900" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
+            <Size X="95.0000" Y="95.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="-278.9500" Y="43.2100" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <FileData Type="PlistSubImage" Path="public2_sel_orange.png" Plist="plist/PublicRes2.plist" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Image_daobing" ActionTag="-367508275" Tag="163" IconVisible="False" LeftMargin="-103.9515" RightMargin="13.9515" TopMargin="41.7881" BottomMargin="-131.7881" TouchEnable="True" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
             <Size X="90.0000" Y="90.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="-58.9515" Y="-86.7881" />
@@ -112,7 +122,7 @@
             <PreSize X="0.0000" Y="0.0000" />
             <FileData Type="PlistSubImage" Path="public_itemBg.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_qiangbing" ActionTag="-1902794482" Tag="164" IconVisible="False" LeftMargin="-323.9509" RightMargin="233.9509" TopMargin="41.7881" BottomMargin="-131.7881" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_qiangbing" ActionTag="-1902794482" Tag="164" IconVisible="False" LeftMargin="-323.9509" RightMargin="233.9509" TopMargin="41.7881" BottomMargin="-131.7881" TouchEnable="True" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
             <Size X="90.0000" Y="90.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="-278.9509" Y="-86.7881" />
@@ -122,7 +132,7 @@
             <PreSize X="0.0000" Y="0.0000" />
             <FileData Type="PlistSubImage" Path="public_itemBg.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_gongbing" ActionTag="651309906" Tag="165" IconVisible="False" LeftMargin="-103.9515" RightMargin="13.9515" TopMargin="-88.2117" BottomMargin="-1.7883" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_gongbing" ActionTag="651309906" Tag="165" IconVisible="False" LeftMargin="-103.9515" RightMargin="13.9515" TopMargin="-88.2117" BottomMargin="-1.7883" TouchEnable="True" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
             <Size X="90.0000" Y="90.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="-58.9515" Y="43.2117" />
@@ -132,17 +142,17 @@
             <PreSize X="0.0000" Y="0.0000" />
             <FileData Type="PlistSubImage" Path="public_itemBg.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_qibing" ActionTag="1251801525" Tag="166" IconVisible="False" LeftMargin="-323.9509" RightMargin="233.9509" TopMargin="-88.2117" BottomMargin="-1.7883" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_qibing" ActionTag="1251801525" Tag="166" IconVisible="False" LeftMargin="-323.9500" RightMargin="233.9500" TopMargin="-88.2100" BottomMargin="-1.7900" TouchEnable="True" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
             <Size X="90.0000" Y="90.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="-278.9509" Y="43.2117" />
+            <Position X="-278.9500" Y="43.2100" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
             <FileData Type="PlistSubImage" Path="public_itemBg.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_headBg" ActionTag="-1197760780" Tag="169" IconVisible="False" LeftMargin="-232.9514" RightMargin="104.9514" TopMargin="-47.2117" BottomMargin="-80.7883" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_headBg" ActionTag="-1197760780" Tag="169" IconVisible="False" LeftMargin="-232.9514" RightMargin="104.9514" TopMargin="-47.2117" BottomMargin="-80.7883" TouchEnable="True" Scale9Enable="True" LeftEage="11" RightEage="11" TopEage="11" BottomEage="11" Scale9OriginX="11" Scale9OriginY="11" Scale9Width="68" Scale9Height="68" ctype="ImageViewObjectData">
             <Size X="128.0000" Y="128.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="-168.9514" Y="-16.7883" />
