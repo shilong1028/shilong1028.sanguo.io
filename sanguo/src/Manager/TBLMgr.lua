@@ -488,7 +488,7 @@ function TBLMgr:LoadStoryConfigTBL()
 		if rewardIdVec[1] ~= "0" then
 			for k, d in pairs(rewardIdVec) do
 				local strVec = string.split(d,"-")
-				table.insert(storyConfig.rewardIdVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+				table.insert(storyConfig.rewardIdVec, {["itemId"] = strVec[1], ["num"] = tonumber(strVec[2])})
 			end
 		end
 		storyConfig.soldierVec = {}
@@ -497,7 +497,7 @@ function TBLMgr:LoadStoryConfigTBL()
 		if soldierStr[1] ~= "0" then
 			for k, d in pairs(soldierVec) do
 				local strVec = string.split(d,"-")
-				table.insert(storyConfig.soldierVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+				table.insert(storyConfig.soldierVec, {["itemId"] = strVec[1], ["num"] = tonumber(strVec[2])})
 			end
 		end
 		storyConfig.offical = stream:ReadString()   --奖励官职id_str
@@ -567,7 +567,7 @@ function TBLMgr:LoadVipConfigTBL()
 		if rewardIdVec[1] ~= "0" then
 			for k, d in pairs(rewardIdVec) do
 				local strVec = string.split(d,"-")
-				table.insert(vipConfig.rewardsVec, {["itemId"] = strVec[1], ["num"] = strVec[2]})
+				table.insert(vipConfig.rewardsVec, {["itemId"] = strVec[1], ["num"] = tonumber(strVec[2])})
 			end
 		end
 		vipConfig.money_per = stream:ReadUInt()/10000    --每天金币产出增加率（%,取万分值）

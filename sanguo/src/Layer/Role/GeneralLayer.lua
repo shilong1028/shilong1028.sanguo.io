@@ -248,21 +248,25 @@ function GeneralLayer:LoadGeneralList()
             self.ListView_general:setContentSize(self.ListView_generalSize)
             self.ListView_general:setBounceEnabled(true)
         end
-        self.ListView_general:refreshView()
+        self.ListView_general:forceDoLayout()   --forceDoLayout   --refreshView
     end
 
     self.lastSelOfficalCell = self.generalCellVec[1]
-    self.lastSelOfficalCell:showSelEffect(true)
+    if self.lastSelOfficalCell then
+        self.lastSelOfficalCell:showSelEffect(true)
+    end
     self:initGeneralData(self.generalVec[1])
 end
 
 function GeneralLayer:ListCellCallBack(target, tagIdx)
-    G_Log_Info("GeneralLayer:ListCellCallBack(), tagIdx = %d", tagIdx)
+    --G_Log_Info("GeneralLayer:ListCellCallBack(), tagIdx = %d", tagIdx)
     if self.lastSelOfficalCell and target ~= self.lastSelOfficalCell then
         self.lastSelOfficalCell:showSelEffect(false)
     end
     self.lastSelOfficalCell = target
-    self.lastSelOfficalCell:showSelEffect(true)
+    if self.lastSelOfficalCell then
+        self.lastSelOfficalCell:showSelEffect(true)
+    end
 
     self:initGeneralData(self.generalVec[tagIdx]) 
 end
@@ -555,28 +559,101 @@ function GeneralLayer:initUnitRightUI(nType)
             self.unit_Text_bingqi:setString(string.format(lua_Role_String13, item and item.num or 0) )  --枪戟数
             self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qiangbing:getPosition()))
             self.unit_Image_sel:setVisible(true)
+            self:LoadSoliderItemList(g_ItemType.Item_Id_qiangbing)
         elseif nType == 2 then
             local item = g_HeroDataMgr:GetBagItemDataById("502")
             self.unit_Text_bingqi:setString(string.format(lua_Role_String14, item and item.num or 0) )  --刀枪数
             self.unit_Image_sel:setPosition(cc.p(self.unit_Image_daobing:getPosition()))
             self.unit_Image_sel:setVisible(true)
+            self:LoadSoliderItemList(g_ItemType.Item_Id_daobing)
         elseif nType == 3 then
             local item = g_HeroDataMgr:GetBagItemDataById("503")
             self.unit_Text_bingqi:setString(string.format(lua_Role_String15, item and item.num or 0) )  --弓弩数
             self.unit_Image_sel:setPosition(cc.p(self.unit_Image_gongbing:getPosition()))
             self.unit_Image_sel:setVisible(true)
+            self:LoadSoliderItemList(g_ItemType.Item_Id_gongbing)
         elseif nType == 4 then
             self.unit_Text_bingqi:setString("")   --兵器数量
             local item = g_HeroDataMgr:GetBagItemDataById("505")
             self.unit_Text_mapi:setString(string.format(lua_Role_String16, item and item.num or 0) )  --马匹数
             self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qibing:getPosition()))
             self.unit_Image_sel:setVisible(true)
+            self:LoadSoliderItemList(g_ItemType.Item_Id_qibing)
         end
         self.unit_Text_UnitName:setString(lua_unitNameVec[nType])   --部曲名称
         self.unit_Text_UnitLv:setString(string.format(lua_Role_String17, unitData.level))   --部曲等级
     end
+end
 
+--加载背包中的预备役士兵,401-404:枪兵\刀兵\弓兵\骑兵
+function GeneralLayer:LoadSoliderItemList(soliderId)
+    self.SoliderItemVec = {}  
+    self.SoliderItemCellVec = {}
 
+    self.ListView_Item:removeAllChildren()
+
+    local function callFunc(target, tagIdx)
+        self:SoliderItemListCallBack(target, tagIdx)
+    end
+
+    local soliderList = g_HeroDataMgr:GetSoliderItemListById(soliderId)
+    if soliderList and #soliderList >0 then
+        self.ListView_Item:setVisible(true)
+        self.Button_useItem:setVisible(true)
+
+        for k, item in pairs(soliderList) do  --{["itemId"] = itemId, ["num"] = itemNum }
+            local soliderData = g_pTBLMgr:getItemConfigTBLDataById(item.itemId) 
+            if soliderData then
+                soliderData.num = item.num
+                table.insert(self.SoliderItemVec, soliderData)
+
+                local itemCell = ItemCell:new()
+                itemCell:initData(soliderData, k) 
+                itemCell:setSelCallBack(callFunc)
+                table.insert(self.SoliderItemCellVec, itemCell)
+
+                local cur_item = ccui.Layout:create()
+                cur_item:setContentSize(itemCell:getContentSize())
+                cur_item:addChild(itemCell)
+                --cur_item:setEnabled(true)
+
+                self.ListView_Item:addChild(cur_item)
+                local pos = cc.p(cur_item:getPosition())
+            end
+        end
+        local len = #self.SoliderItemCellVec
+        local InnerWidth = len*90 + 10*(len-1)
+        if InnerWidth < self.ListView_ItemSize.width then
+            self.ListView_Item:setContentSize(cc.size(InnerWidth, self.ListView_ItemSize.height))
+            self.ListView_Item:setBounceEnabled(false)
+        else
+            self.ListView_Item:setContentSize(self.ListView_ItemSize)
+            self.ListView_Item:setBounceEnabled(true)
+        end
+        self.ListView_Item:forceDoLayout()   --forceDoLayout   --refreshView
+    else
+        self.ListView_Item:setVisible(false)
+        self.Button_useItem:setVisible(false)
+    end
+
+    self.lastSelSoliderIdx = 1
+    self.lastSelSoliderCell = self.SoliderItemCellVec[1]
+    if self.lastSelSoliderCell then
+        self.lastSelSoliderCell:showSelEffect(true)
+    end
+end
+
+function GeneralLayer:SoliderItemListCallBack(target, tagIdx)
+    --G_Log_Info("GeneralLayer:SoliderItemListCallBack(), tagIdx = %d", tagIdx)
+    if self.lastSelSoliderCell and target ~= self.lastSelSoliderCell then
+        self.lastSelSoliderCell:showSelEffect(false)
+    end
+    self.lastSelSoliderCell = target
+    if self.lastSelSoliderCell then
+        self.lastSelSoliderCell:showSelEffect(true)
+    end
+
+    self.lastSelSoliderIdx = tagIdx
 end
 
 
@@ -593,6 +670,7 @@ function GeneralLayer:touchEvent(sender, eventType)
             self:setRadioPanel(3)
         elseif sender == self.Button_save then   --部曲保存
         elseif sender == self.Button_update then   --部曲升阶
+        elseif sender == self.Button_useItem then   --使用背包士兵Item
         end
     end
 end

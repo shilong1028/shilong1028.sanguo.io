@@ -566,12 +566,22 @@ function HeroDataMgr:GetBagItemDataById(itemId)
     return nil
 end
 
+function HeroDataMgr:GetSoliderItemListById(itemId)
+    local itemIdStr = tostring(itemId)
+    local soliderList = {}
+    for k, data in pairs(self.heroData.bagVecData) do
+        if itemIdStr == data.itemId then   --{["itemId"] = itemId, ["num"] = itemNum }
+            table.insert(soliderList, clone(data))
+        end
+    end
+    return soliderList
+end
+
 function HeroDataMgr:SetBagXMLData(itemVec)
     --G_Log_Info("HeroDataMgr:SetBagXMLData()")
     if not itemVec then
         G_Log_Error("HeroDataMgr:SetBagXMLData(), error: itemVec = nil")
     end
-    --dump(itemVec, "itemVec = ")
 
     local bagXML = g_UserDefaultMgr:loadXMLFile("bagXML.xml")
     if not bagXML then

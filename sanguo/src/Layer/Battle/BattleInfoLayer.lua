@@ -84,7 +84,7 @@ function BattleInfoLayer:initStoryInfo(storyId)
             self.ListView_enemy:setContentSize(self.ListView_enemySize)
             self.ListView_enemy:setBounceEnabled(true)
         end
-        self.ListView_enemy:refreshView()
+        self.ListView_enemy:forceDoLayout()   --forceDoLayout   --refreshView
 
         for k, reward in pairs(self.storyData.rewardIdVec) do
             local itemId = reward.itemId    --{["itemId"] = strVec[1], ["num"] = strVec[2]}
@@ -110,7 +110,7 @@ function BattleInfoLayer:initStoryInfo(storyId)
             self.ListView_reward:setContentSize(self.ListView_rewardSize)
             self.ListView_reward:setBounceEnabled(true)
         end
-        self.ListView_reward:refreshView()
+        self.ListView_reward:forceDoLayout()   --forceDoLayout   --refreshView
     end
 end
 
