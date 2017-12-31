@@ -54,10 +54,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_numCount" ActionTag="-862393460" Tag="152" IconVisible="False" LeftMargin="230.0000" RightMargin="-340.0000" TopMargin="-53.5000" BottomMargin="26.5000" FontSize="24" LabelText="1000/2000" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="110.0000" Y="27.0000" />
+          <AbstractNodeData Name="Text_numCount" ActionTag="-862393460" Tag="152" IconVisible="False" LeftMargin="190.0000" RightMargin="-344.0000" TopMargin="-53.5000" BottomMargin="26.5000" FontSize="24" LabelText="+0(1000/2000)" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="154.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="230.0000" Y="40.0000" />
+            <Position X="190.0000" Y="40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -184,8 +184,8 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Slider_num" ActionTag="-866486457" Tag="416" IconVisible="False" LeftMargin="20.0000" RightMargin="-220.0000" TopMargin="-47.5000" BottomMargin="32.5000" TouchEnable="True" PercentInfo="48" ctype="SliderObjectData">
-            <Size X="200.0000" Y="15.0000" />
+          <AbstractNodeData Name="Slider_num" ActionTag="-866486457" Tag="416" IconVisible="False" LeftMargin="20.0000" RightMargin="-180.0000" TopMargin="-47.5000" BottomMargin="32.5000" TouchEnable="True" PercentInfo="48" ctype="SliderObjectData">
+            <Size X="160.0000" Y="15.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="20.0000" Y="40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />

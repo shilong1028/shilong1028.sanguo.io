@@ -112,7 +112,7 @@ end
 --城池表结构类
 g_tbl_cityConfig = class("g_tbl_cityConfig",__BaseStruct)
 function  g_tbl_cityConfig:ctor()
-	self.id_str = ""   --string 城池ID字符串
+	self.id_str = "0"   --string 城池ID字符串
 	self.name = ""     --string 城池名称
 	self.type = 0     --城池类型1大城市，2郡城，3关隘渡口
 	self.zhou_id = 0    --所属州
@@ -150,7 +150,7 @@ function  g_tbl_zhouConfig:ctor()
 	self.id = 0        --州ID
 	self.name = ""     --地图名称
 	self.map_id = 0     --地图ID
-	self.capital = ""    --首府ID字符串
+	self.capital = "0"    --首府ID字符串
 	self.desc = ""   
 end
 
@@ -159,8 +159,8 @@ g_tbl_campConfig = class("g_tbl_campConfig",__BaseStruct)
 function  g_tbl_campConfig:ctor()
 	self.campId = 0        --阵营ID
 	self.name = ""     --阵营名称
-	self.captain = ""     --首领ID字符串
-	self.capital = ""    --首都城池ID字符串
+	self.captain = "0"     --首领ID字符串
+	self.capital = "0"    --首都城池ID字符串
 	self.population = 0    --初始百姓人口（单位万）
 	self.troops = 0        --初始兵力（人）
 	self.money = 0     --初始财力（单位锭，1锭=100贯）
@@ -173,7 +173,7 @@ end
 --武将表结构类
 g_tbl_generalConfig = class("g_tbl_generalConfig",__BaseStruct)
 function  g_tbl_generalConfig:ctor()
-	self.id_str = ""   --武将ID字符串(xml保存)
+	self.id_str = "0"   --武将ID字符串(xml保存)
 	self.name = ""     --武将名称
 	self.level = 0     --武将等级(xml保存)
 	self.type = 0    --将领类型，1英雄，2武将，3军师
@@ -187,7 +187,7 @@ function  g_tbl_generalConfig:ctor()
 
 	--附加属性(xml保存)
 	self.exp = 0   --战斗经验
-	self.offical = ""    --官职ID字符串，官职可以提升武将血智攻防、额外带兵数（默认带1000兵）等属性
+	self.offical = "0"    --官职ID字符串，官职可以提升武将血智攻防、额外带兵数（默认带1000兵）等属性
 	self.zhongcheng = 100   --武将忠诚度
 	self.bingTypeVec = {}    --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种（每个兵种仅可组建一支部曲）
 	self.armyUnitVec = {}    --g_tbl_armyUnitConfig:new()   --武将部曲数据
@@ -196,7 +196,7 @@ end
 --武将部曲结构类
 g_tbl_armyUnitConfig = class("g_tbl_armyUnitConfig",__BaseStruct)
 function  g_tbl_armyUnitConfig:ctor()
-	self.bingIdStr = ""   --部曲兵种（游击|轻装|重装|精锐|禁军的弓刀枪骑兵）
+	self.bingIdStr = "0"   --部曲兵种（游击|轻装|重装|精锐|禁军的弓刀枪骑兵）
 	self.bingCount = 0    --部曲兵力数量
 	self.level = 0    --部曲等级
 	self.exp = 0      --部曲训练度
@@ -207,11 +207,11 @@ end
 --物品装备表结构类
 g_tbl_itemConfig = class("g_tbl_itemConfig",__BaseStruct)
 function  g_tbl_itemConfig:ctor()
-	self.id_str = ""        --物品ID字符串
+	self.id_str = "0"        --物品ID字符串
 	self.name = ""     --物品名称
 	self.type = 0    --物品类型，
 	self.quality = 0     --技能或装备等物品的品质
-	self.skill = ""     --物品关联的技能ID字符串
+	self.skill = "0"     --物品关联的技能ID字符串
 	self.hp = 0    --装备增加的血量值
 	self.mp = 0        --装备增加的智力值
 	self.atk = 0     --装备增加的攻击力
@@ -239,13 +239,13 @@ end
 g_tbl_storyConfig = class("g_tbl_storyConfig",__BaseStruct)
 function  g_tbl_storyConfig:ctor()
 	self.storyId = 0        --剧情ID
-	self.targetCity = ""    --目标城池ID字符串
+	self.targetCity = "0"    --目标城池ID字符串
 	self.name = ""    --战役名称
-	self.vedio = ""   --主线剧情视频文件，"0"标识无
+	self.vedio = "0"   --主线剧情视频文件，"0"标识无
 	self.enemyIdVec = {}    --敌方出战将领ID字符串，以;分割
 	self.rewardIdVec = {}    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
 	self.soldierVec = {}    --奖励士兵，以;分割。物品ID字符串和数量用-分割  {["itemId"], ["num"]}
-	self.offical = ""   --奖励官职id_str
+	self.offical = "0"   --奖励官职id_str
 	self.generalVec = {}   --奖励武将Id_str, 以;分割
 	self.talkVec = {}    --对话内容，以;分割
 	self.desc = ""    --剧情简要描述，用于奖励或战斗界面展示

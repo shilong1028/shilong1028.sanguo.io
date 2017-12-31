@@ -142,7 +142,7 @@ function GeneralLayer:init()
             self:hanldeSliderEvent(sender, eventType)
         end
     end
-    self.unit_Slider_num:addEventListenerSlider(sliderEvent)
+    self.unit_Slider_num:addEventListener(sliderEvent)   --addEventListener  --addEventListenerSlider
 
     self.Button_save = generalUnitNode:getChildByName("Button_save")   --部曲保存
     self.Button_save:addTouchEventListener(handler(self,self.touchEvent))
@@ -218,39 +218,45 @@ function GeneralLayer:LoadGeneralList()
         self:ListCellCallBack(target, tagIdx)
     end
 
-    self.HeroCampData = g_HeroDataMgr:GetHeroCampData()
-    if self.HeroCampData then
-        local generalIdVec = self.HeroCampData.generalIdVec
-        for k, generalId in pairs(generalIdVec) do
-            local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
-            if generalData then
-                table.insert(self.generalVec, generalData)
-                local officerCell = SmallOfficerCell:new()
-                officerCell:initData(generalData, k) 
-                officerCell:setSelCallBack(callFunc)
-                table.insert(self.generalCellVec, officerCell)
-
-                local cur_item = ccui.Layout:create()
-                cur_item:setContentSize(officerCell:getContentSize())
-                cur_item:addChild(officerCell)
-                --cur_item:setEnabled(true)
-
-                self.ListView_general:addChild(cur_item)
-                local pos = cc.p(cur_item:getPosition())
+    local generalVec = g_HeroDataMgr:GetAllGeneralData()
+    local idx = 0
+    for k, generalData in pairs(generalVec) do 
+        if generalData then
+            local officalData = g_pTBLMgr:getOfficalConfigById(generalData.offical)
+            generalData.officalData = officalData  --官职信息
+            generalData.maxBingCount = 1000
+            if officalData then
+                generalData.maxBingCount = generalData.maxBingCount + officalData.troops   --单个部曲最大带兵数
             end
-        end
-        local len = #self.generalCellVec
-        local InnerWidth = len*90 + 10*(len-1)
-        if InnerWidth < self.ListView_generalSize.width then
-            self.ListView_general:setContentSize(cc.size(InnerWidth, self.ListView_generalSize.height))
-            self.ListView_general:setBounceEnabled(false)
-        else
-            self.ListView_general:setContentSize(self.ListView_generalSize)
-            self.ListView_general:setBounceEnabled(true)
-        end
-        self.ListView_general:forceDoLayout()   --forceDoLayout   --refreshView
-    end
+            table.insert(self.generalVec, generalData)
 
+            idx = idx + 1
+            local officerCell = SmallOfficerCell:new()
+            officerCell:initData(generalData, idx) 
+            officerCell:setSelCallBack(callFunc)
+            table.insert(self.generalCellVec, officerCell)
+
+            local cur_item = ccui.Layout:create()
+            cur_item:setContentSize(officerCell:getContentSize())
+            cur_item:addChild(officerCell)
+            --cur_item:setEnabled(true)
+
+            self.ListView_general:addChild(cur_item)
+            local pos = cc.p(cur_item:getPosition())
+        end
+    end
+    local len = #self.generalCellVec
+    local InnerWidth = len*90 + 10*(len-1)
+    if InnerWidth < self.ListView_generalSize.width then
+        self.ListView_general:setContentSize(cc.size(InnerWidth, self.ListView_generalSize.height))
+        self.ListView_general:setBounceEnabled(false)
+    else
+        self.ListView_general:setContentSize(self.ListView_generalSize)
+        self.ListView_general:setBounceEnabled(true)
+    end
+    self.ListView_general:forceDoLayout()   --forceDoLayout   --refreshView
+
+    self.lastSelOfficalIdx = 1
     self.lastSelOfficalCell = self.generalCellVec[1]
     if self.lastSelOfficalCell then
         self.lastSelOfficalCell:showSelEffect(true)
@@ -264,11 +270,13 @@ function GeneralLayer:ListCellCallBack(target, tagIdx)
         self.lastSelOfficalCell:showSelEffect(false)
     end
     self.lastSelOfficalCell = target
+    self.lastSelOfficalIdx = tagIdx
     if self.lastSelOfficalCell then
         self.lastSelOfficalCell:showSelEffect(true)
     end
 
-    self:initGeneralData(self.generalVec[tagIdx]) 
+    local generalData = self.generalVec[self.lastSelOfficalIdx]
+    self:initGeneralData(generalData) 
 end
 
 function GeneralLayer:initGeneralData(generalData)  
@@ -393,10 +401,9 @@ function GeneralLayer:initInfoRightUI(nType)
         self.info_Text_att:setString(string.format(lua_Role_String5, self.GeneralData.atk))   --攻击
         self.info_Text_def:setString(string.format(lua_Role_String6, self.GeneralData.def))   --防御
 
-        local officalData = g_pTBLMgr:getOfficalConfigById(self.GeneralData.offical)
         local officalName = lua_Role_String_No
-        if officalData then
-            officalName = officalData.name
+        if self.GeneralData.officalData then
+            officalName = self.GeneralData.officalData.name
         end
         self.info_Text_offical:setString(string.format(lua_Role_String9, officalName))   --官职
         self.info_Text_zhongcheng:setString(string.format(lua_Role_String10, self.GeneralData.zhongcheng))  --忠诚度
@@ -471,7 +478,6 @@ end
 function GeneralLayer:initUnitUI()
     self.unit_Text_cost:setVisible(false)   --花费金币
     self.unit_Text_cost_gold:setString("")   --花费金币数量
-    self.unit_Text_numCount:setString("0")   --选中部曲的数量
     self.unit_Slider_num:setPercent(0)   ----滑动条
 
     local bgHeadSize = self.info_Image_headBg:getContentSize()
@@ -545,14 +551,17 @@ end
 
 --初始化部曲界面右侧信息（部曲信息1-4），默认选中武将默认兵种
 function GeneralLayer:initUnitRightUI(nType)
-    local unitData = self.GeneralUnitVec[nType]  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
+    self.SelUnitIdx = nType 
+    local unitData = self.GeneralUnitVec[self.SelUnitIdx]  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
 
     if not unitData or unitData == -1 then
+        self.unit_Text_numCount:setString("+0")
         self.unit_Text_bingqi:setString("")   --兵器数量
         self.unit_Text_mapi:setString("")    --马匹数量
         self.unit_Text_UnitName:setString(lua_general_Str3..lua_unitNameVec[nType])   --部曲名称  --"未组建"
         self.unit_Text_UnitLv:setString("")   --部曲等级
     else
+        self.unit_Text_numCount:setString(string.format("+%d(%d/%d)", 0, unitData.bingCount, self.GeneralData.maxBingCount))   --选中部曲的数量
         self.unit_Text_mapi:setString("")    --马匹数量
         if nType == 1 then
             local item = g_HeroDataMgr:GetBagItemDataById("501")
@@ -671,6 +680,57 @@ function GeneralLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_save then   --部曲保存
         elseif sender == self.Button_update then   --部曲升阶
         elseif sender == self.Button_useItem then   --使用背包士兵Item
+            local unitData = self.GeneralUnitVec[self.SelUnitIdx]  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
+            if not unitData or unitData == -1 then   --未组建
+                g_pGameLayer:ShowScrollTips(lua_str_WarnTips8, g_ColorDef.Red, g_defaultTipsFontSize)  -- "该兵种部曲未解锁，暂不能组建！"
+                return
+            end
+
+            if self.lastSelSoliderIdx and self.lastSelSoliderIdx > 0 then
+                local soliderData = self.SoliderItemVec[self.lastSelSoliderIdx]
+                if soliderData then
+                    if tonumber(unitData.bingIdStr) ~= tonumber(soliderData.id_str) then
+                        G_Log_Error("错误，兵种类型不一致！")
+                        return
+                    end
+
+                    local costNum = self.GeneralData.maxBingCount - unitData.bingCount
+                    if costNum == 0 then
+                        g_pGameLayer:ShowScrollTips(lua_str_WarnTips9, g_ColorDef.Red, g_defaultTipsFontSize)  -- "该兵种部曲士兵已满员！"
+                        return
+                    end
+
+                    local offsetCount = soliderData.num - costNum
+                    if offsetCount >= 0 then   --有剩余
+                        unitData.bingCount = self.GeneralData.maxBingCount
+                    else
+                        unitData.bingCount = unitData.bingCount + soliderData.num
+                        costNum = soliderData.num
+                    end
+
+                    if unitData.bingCount >0 and unitData.level == 0 then   --初次组建
+                        unitData.level = 1
+                    end
+
+                    g_HeroDataMgr:SetSingleGeneralUnit(self.GeneralData.id_str, unitData)   --保存玩家单个武将单个部曲数据到generalXML
+
+                    self.GeneralUnitVec[self.SelUnitIdx] = unitData
+                    for k, data in pairs(self.GeneralData.armyUnitVec) do
+                        if tonumber(data.bingIdStr) == tonumber(unitData.bingIdStr) then
+                            self.GeneralData.armyUnitVec[k] = clone(unitData)
+                        end
+                    end
+                    self.generalVec[self.lastSelOfficalIdx] = self.GeneralData
+
+                    --dump(self.generalVec, "self.generalVec = ", 5)
+                    local bagItemVec = {
+                        {["itemId"] = soliderData.id_str, ["num"] = -1*costNum}
+                    }
+                    g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML
+
+                    self:initUnitRightUI(self.SelUnitIdx)
+                end
+            end
         end
     end
 end

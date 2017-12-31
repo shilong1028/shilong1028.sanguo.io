@@ -9,6 +9,8 @@ lua_str_WarnTips4 = "用户名已经被注册！"
 lua_str_WarnTips5 = "注册密码不一致！"
 lua_str_WarnTips6 = "点击坐标为地图不可达部分！"
 lua_str_WarnTips7 = "最高级"
+lua_str_WarnTips8 = "该兵种部曲未解锁，暂不能组建！"
+lua_str_WarnTips9 = "该兵种部曲士兵已满员！"
 
 lua_Dialog_TitleStr1 = "提  示"
 lua_Dialog_TitleStr2 = "帮  助"
