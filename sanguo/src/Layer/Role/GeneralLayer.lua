@@ -124,6 +124,9 @@ function GeneralLayer:init()
 
     self.unit_Text_numCount = generalUnitNode:getChildByName("Text_numCount")   --选中部曲的数量
     self.unit_Slider_num = generalUnitNode:getChildByName("Slider_num")   --滑动条
+    self.unit_Slider_num:setMaxPercent(100)   --默认是100
+    self.unit_Slider_num:setPercent(0)
+    self.unit_Slider_num:setEnabled(true)
 
     --[[
     local slider = ccui.Slider:create()
@@ -463,12 +466,20 @@ function GeneralLayer:touchImageEvent(sender, eventType)
             self.info_Image_sel:setVisible(true)
             self:initInfoRightUI(5)
         elseif sender == self.unit_Image_qibing then    --骑兵部曲
+            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qibing:getPosition()))
+            self.unit_Image_sel:setVisible(true)
             self:initUnitRightUI(4)
         elseif sender == self.unit_Image_qiangbing then  --枪兵部曲
+            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qiangbing:getPosition()))
+            self.unit_Image_sel:setVisible(true)
             self:initUnitRightUI(1)
         elseif sender == self.unit_Image_daobing then   --刀兵部曲
+            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_daobing:getPosition()))
+            self.unit_Image_sel:setVisible(true)
             self:initUnitRightUI(2)
         elseif sender == self.unit_Image_gongbing then   --弓兵部曲
+            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_gongbing:getPosition()))
+            self.unit_Image_sel:setVisible(true)
             self:initUnitRightUI(3)
         end
     end
@@ -478,7 +489,9 @@ end
 function GeneralLayer:initUnitUI()
     self.unit_Text_cost:setVisible(false)   --花费金币
     self.unit_Text_cost_gold:setString("")   --花费金币数量
-    self.unit_Slider_num:setPercent(0)   ----滑动条
+    self.unit_Slider_num:setPercent(100)   ----滑动条
+    self.unit_Slider_num:setPercent(0)
+    self.unit_Slider_num:setEnabled(true)
 
     local bgHeadSize = self.info_Image_headBg:getContentSize()
     if not self.unit_headImg then  --头像背景
@@ -496,6 +509,9 @@ function GeneralLayer:initUnitUI()
     self.unit_Image_gongbing:removeAllChildren()
     self.unit_Image_qibing:removeAllChildren()
 
+    self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qibing:getPosition()))
+    self.unit_Image_sel:setVisible(true)
+
     self.GeneralUnitVec = {-1, -1, -1, -1}   --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
     local defaultIdx = -1  --默认选中的部曲框
     for k, unitData in pairs(self.GeneralData.armyUnitVec) do
@@ -507,18 +523,21 @@ function GeneralLayer:initUnitUI()
             self.GeneralUnitVec[1] = unitData
             self.unit_Image_qiangbing:addChild(iconImg)
             if defaultIdx < 0 then
+                self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qiangbing:getPosition()))
                 defaultIdx = 1 
             end
         elseif bingId == g_ItemType.Item_Id_daobing then   --刀兵
             self.GeneralUnitVec[2] = unitData
             self.unit_Image_daobing:addChild(iconImg)
             if defaultIdx < 0 then
+                self.unit_Image_sel:setPosition(cc.p(self.unit_Image_daobing:getPosition()))
                 defaultIdx = 2 
             end
         elseif bingId == g_ItemType.Item_Id_gongbing then   --弓兵
             self.GeneralUnitVec[3] = unitData
             self.unit_Image_gongbing:addChild(iconImg)
             if defaultIdx < 0 then
+                self.unit_Image_sel:setPosition(cc.p(self.unit_Image_gongbing:getPosition()))
                 defaultIdx = 3 
             end
         elseif bingId == g_ItemType.Item_Id_qibing then   --骑兵
@@ -544,8 +563,8 @@ end
 
 function GeneralLayer:hanldeSliderEvent(sender, eventType)
     if eventType == ccui.SliderEventType.percentChanged then
-        --print("SliderPercent = ", sender:getPercent() / 100.0)
-
+        local addSoliderNum = sender:getPercent()
+        --G_Log_Info("addSoliderNum = %d", addSoliderNum)
     end
 end
 
@@ -555,38 +574,43 @@ function GeneralLayer:initUnitRightUI(nType)
     local unitData = self.GeneralUnitVec[self.SelUnitIdx]  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
 
     if not unitData or unitData == -1 then
+        self.unit_Slider_num:setMaxPercent(100)   --默认是100
+        self.unit_Slider_num:setPercent(0)
+        self.unit_Slider_num:setEnabled(false)
         self.unit_Text_numCount:setString("+0")
         self.unit_Text_bingqi:setString("")   --兵器数量
         self.unit_Text_mapi:setString("")    --马匹数量
         self.unit_Text_UnitName:setString(lua_general_Str3..lua_unitNameVec[nType])   --部曲名称  --"未组建"
         self.unit_Text_UnitLv:setString("")   --部曲等级
     else
+        local offsetCount = self.GeneralData.maxBingCount - unitData.bingCount
+        if offsetCount <= 0 then
+            self.unit_Slider_num:setMaxPercent(100)   --默认是100
+            self.unit_Slider_num:setPercent(0)
+            self.unit_Slider_num:setEnabled(false)
+        else
+            self.unit_Slider_num:setMaxPercent(offsetCount)   --默认是100
+            self.unit_Slider_num:setPercent(0)
+            self.unit_Slider_num:setEnabled(true)
+        end
         self.unit_Text_numCount:setString(string.format("+%d(%d/%d)", 0, unitData.bingCount, self.GeneralData.maxBingCount))   --选中部曲的数量
         self.unit_Text_mapi:setString("")    --马匹数量
         if nType == 1 then
             local item = g_HeroDataMgr:GetBagItemDataById("501")
             self.unit_Text_bingqi:setString(string.format(lua_Role_String13, item and item.num or 0) )  --枪戟数
-            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qiangbing:getPosition()))
-            self.unit_Image_sel:setVisible(true)
             self:LoadSoliderItemList(g_ItemType.Item_Id_qiangbing)
         elseif nType == 2 then
             local item = g_HeroDataMgr:GetBagItemDataById("502")
             self.unit_Text_bingqi:setString(string.format(lua_Role_String14, item and item.num or 0) )  --刀枪数
-            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_daobing:getPosition()))
-            self.unit_Image_sel:setVisible(true)
             self:LoadSoliderItemList(g_ItemType.Item_Id_daobing)
         elseif nType == 3 then
             local item = g_HeroDataMgr:GetBagItemDataById("503")
             self.unit_Text_bingqi:setString(string.format(lua_Role_String15, item and item.num or 0) )  --弓弩数
-            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_gongbing:getPosition()))
-            self.unit_Image_sel:setVisible(true)
             self:LoadSoliderItemList(g_ItemType.Item_Id_gongbing)
         elseif nType == 4 then
             self.unit_Text_bingqi:setString("")   --兵器数量
             local item = g_HeroDataMgr:GetBagItemDataById("505")
             self.unit_Text_mapi:setString(string.format(lua_Role_String16, item and item.num or 0) )  --马匹数
-            self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qibing:getPosition()))
-            self.unit_Image_sel:setVisible(true)
             self:LoadSoliderItemList(g_ItemType.Item_Id_qibing)
         end
         self.unit_Text_UnitName:setString(lua_unitNameVec[nType])   --部曲名称
