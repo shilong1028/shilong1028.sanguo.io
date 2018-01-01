@@ -466,7 +466,7 @@ end
 function ZhenXingLayer:initZhenXingHeadUI(nType)
     --已有的阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
     local preUnitData = self.buZhenXingData_UnitVec[self.buzhen_SelPreUnitIdx]
-    if preUnitData then
+    if preUnitData and preUnitData ~= -1 then
         local generalData = preUnitData.generalData
         if generalData then
             local officerCell = SmallOfficerCell:new()
@@ -496,6 +496,22 @@ function ZhenXingLayer:initZhenXingHeadUI(nType)
                 self.bu_Node_zhen_zhongjun2:removeAllChildren()
                 self.bu_Node_zhen_zhongjun2:addChild(officerCell)
             end
+        end
+    else
+        if nType == 1 then
+            self.bu_Node_zhen_qianfeng:removeAllChildren()
+        elseif nType == 2 then
+            self.bu_Node_zhen_zuohu:removeAllChildren()
+        elseif nType == 3 then
+            self.bu_Node_zhen_youhu:removeAllChildren()
+        elseif nType == 4 then
+            self.bu_Node_zhen_houwei:removeAllChildren()
+        elseif nType == 5 then
+            self.bu_Node_zhen_zhushuai:removeAllChildren()
+        elseif nType == 6 then
+            self.bu_Node_zhen_zhongjun1:removeAllChildren()
+        elseif nType == 7 then
+            self.bu_Node_zhen_zhongjun2:removeAllChildren()
         end
     end
 end
@@ -548,7 +564,9 @@ function ZhenXingLayer:touchEvent(sender, eventType)
         elseif sender == self.bu_Node_zhen_save then     --保存阵型
 
         elseif sender == self.bu_Node_zhen_cancel then      --部曲下阵
-        
+            --已有的阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+            self.buZhenXingData_UnitVec[self.buzhen_SelPreUnitIdx] = -1
+            self:initZhenXingHeadUI(self.buzhen_SelPreUnitIdx)
         elseif sender == self.bu_Node_zhen_fight then      --部曲上阵  
             local unitData = clone(self.buzhenGeneralData_UnitVec[self.buzhen_SelUnitIdx])
             if unitData and unitData ~= -1 and unitData.bingData then
