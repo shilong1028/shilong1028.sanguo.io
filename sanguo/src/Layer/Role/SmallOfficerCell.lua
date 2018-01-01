@@ -31,6 +31,10 @@ function SmallOfficerCell:init()
     self.Text_type = csb:getChildByName("Text_type")   --熟练度S/A/B/C/D
 end
 
+function SmallOfficerCell:setBgImgTouchEnabled(bEnabled)
+    self.Image_bg:setTouchEnabled(bEnabled) 
+end
+
 function SmallOfficerCell:onTouchEnded(touch, event)
     G_Log_Info("SmallOfficerCell:onTouchEnded()")
 end
