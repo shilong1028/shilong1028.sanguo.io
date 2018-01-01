@@ -17,8 +17,7 @@ void* ThreadRun(void* data)
         static void InitSockAddr(sockaddr_in& sockAddr, const char* ip, int port)
         {
             memset(&sockAddr,0,sizeof(sockAddr));
-			//判断是否合法IP
-			if(INADDR_NONE != inet_addr(ip))
+			if(INADDR_NONE != inet_addr(ip))  //判断是否合法IP
 				sockAddr.sin_addr.s_addr = inet_addr(ip);
 			else
 			{
@@ -138,8 +137,7 @@ void* ThreadRun(void* data)
         static bool SetSendRecvTimeOut(int socket)
         {
             #ifdef WIN32
-                //设置接收和发送超时时间
-			    struct timeval tv;
+			    struct timeval tv;  //设置接收和发送超时时间
 			    tv.tv_sec = 6;
 			    tv.tv_usec = 0;
 			    if(setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(tv)) == -1)
@@ -335,8 +333,7 @@ int ClientSocket::Close()
 		CCLOG("ClientSocket::close socket error ret = %d,errno = %d", ret, errno);
 #endif
 
-    //通知关闭消息
-    DoOnClose();
+    DoOnClose();   //通知关闭消息
 
 	_Socket = -1;
 	CCLOG("ClientSocket::close");
@@ -345,8 +342,7 @@ int ClientSocket::Close()
 
 int ClientSocket::Send(const char* data, int dataLen)
 {
-    //发送失败，则抛出连接错误
-    const int sendBytes = send(_Socket, data, dataLen, 0);
+    const int sendBytes = send(_Socket, data, dataLen, 0);  //发送失败，则抛出连接错误
     if(sendBytes != dataLen)
 	{
 		SetMsg("sendBytes != dataLen");
