@@ -8,6 +8,18 @@
         <Children>
           <AbstractNodeData Name="buzhenNode_def" ActionTag="-621422844" Tag="181" IconVisible="False" LeftMargin="54.0000" RightMargin="-406.0000" TopMargin="-240.0000" BottomMargin="-140.0000" TouchEnable="True" LeftEage="15" RightEage="15" TopEage="15" BottomEage="15" Scale9OriginX="15" Scale9OriginY="15" Scale9Width="322" Scale9Height="350" ctype="ImageViewObjectData">
             <Size X="352.0000" Y="380.0000" />
+            <Children>
+              <AbstractNodeData Name="zhenUINode" ActionTag="-580684943" Tag="244" IconVisible="True" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="176.0000" RightMargin="176.0000" TopMargin="190.0000" BottomMargin="190.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
+                <Size X="0.0000" Y="0.0000" />
+                <AnchorPoint />
+                <Position X="176.0000" Y="190.0000" />
+                <Scale ScaleX="1.0000" ScaleY="1.0000" />
+                <CColor A="255" R="255" G="255" B="255" />
+                <PrePosition X="0.5000" Y="0.5000" />
+                <PreSize X="0.0000" Y="0.0000" />
+                <FileData Type="Normal" Path="csd/ZhenUINode.csd" Plist="" />
+              </AbstractNodeData>
+            </Children>
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="230.0000" Y="50.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
@@ -18,6 +30,18 @@
           </AbstractNodeData>
           <AbstractNodeData Name="buzhenNode_att" ActionTag="962727957" Tag="182" IconVisible="False" LeftMargin="-406.0000" RightMargin="54.0000" TopMargin="-240.0000" BottomMargin="-140.0000" TouchEnable="True" LeftEage="15" RightEage="15" TopEage="15" BottomEage="15" Scale9OriginX="15" Scale9OriginY="15" Scale9Width="322" Scale9Height="350" ctype="ImageViewObjectData">
             <Size X="352.0000" Y="380.0000" />
+            <Children>
+              <AbstractNodeData Name="zhenUINode" ActionTag="-358271472" Tag="268" IconVisible="True" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="176.0000" RightMargin="176.0000" TopMargin="190.0000" BottomMargin="190.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
+                <Size X="0.0000" Y="0.0000" />
+                <AnchorPoint />
+                <Position X="176.0000" Y="190.0000" />
+                <Scale ScaleX="1.0000" ScaleY="1.0000" />
+                <CColor A="255" R="255" G="255" B="255" />
+                <PrePosition X="0.5000" Y="0.5000" />
+                <PreSize X="0.0000" Y="0.0000" />
+                <FileData Type="Normal" Path="csd/ZhenUINode.csd" Plist="" />
+              </AbstractNodeData>
+            </Children>
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="-230.0000" Y="50.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
