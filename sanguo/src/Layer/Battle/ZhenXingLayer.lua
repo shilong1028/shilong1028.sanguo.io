@@ -243,12 +243,42 @@ function ZhenXingLayer:setRadioPanel(idx)
             self.bu_Node_zhen_fight:setVisible(false)      --部曲上阵
         end
 
+        self:LoadZhenXingData()  --加载玩家出战或防御阵型数据并初始化UI
+
         if not self.generalVec or not self.generalCellVec then
             self:LoadGeneralList()   --加载武将列表
         end
 
         self:GeneralListCellCallBack(self.generalCellVec[1], 1)   --默认选中第一个武将
     end
+end
+
+--加载玩家出战或防御阵型数据并初始化UI
+function ZhenXingLayer:LoadZhenXingData()
+    --已有的阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+    self.buZhenXingData_UnitVec = {-1, -1, -1, -1, -1, -1, -1}   
+    if self.bZhenEditType == 1 then  --布阵界面编辑的阵型类型，0默认，1攻击阵型，2防御阵型
+        self.buZhenXingData_UnitVec = g_HeroDataMgr:getAttackZheXMLData()   --玩家攻击阵型数据
+    elseif self.bZhenEditType == 2 then
+        self.buZhenXingData_UnitVec = g_HeroDataMgr:getDefendZheXMLData() 
+    end
+
+    for k, data in pairs(self.buZhenXingData_UnitVec) do
+        if data and data ~= -1 and data.unitData then
+            self.buZhenXingData_UnitVec[k].generalData = g_HeroDataMgr:GetSingleGeneralData(data.generalIdStr)
+        end
+        --self:initZhenXingHeadUI(i)   --显示布阵界面左侧阵型UI
+    end
+    for i = 1, 7 do
+        self:initZhenXingHeadUI(i)   --显示布阵界面左侧阵型UI
+    end
+
+    if not self.buzhen_SelPreUnitIdx then
+        self.buzhen_SelPreUnitIdx = 5 --默认打开布阵选择中军主帅
+        self.bu_Node_zhen_sel:setVisible(true)
+        self.bu_Node_zhen_sel:setPosition(cc.p(self.bu_Node_zhen_zhushuai:getPosition()))
+    end
+    self:initBuZhenRight_PreUnitUI(self.buzhen_SelPreUnitIdx)   --显示被替换部曲信息，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 end
 
 function ZhenXingLayer:LoadGeneralList()
@@ -300,16 +330,6 @@ function ZhenXingLayer:LoadGeneralList()
         self.ListView_general:setBounceEnabled(true)
     end
     self.ListView_general:forceDoLayout()   --forceDoLayout   --refreshView
-
-    --已有的阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
-    self.buZhenXingData_UnitVec = {-1, -1, -1, -1, -1, -1, -1}   
-
-    if not self.buzhen_SelPreUnitIdx then
-        self.buzhen_SelPreUnitIdx = 5 --默认打开布阵选择中军主帅
-        self.bu_Node_zhen_sel:setVisible(true)
-        self.bu_Node_zhen_sel:setPosition(cc.p(self.bu_Node_zhen_zhushuai:getPosition()))
-    end
-    self:initBuZhenRight_PreUnitUI(self.buzhen_SelPreUnitIdx)   --显示被替换部曲信息，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 end
 
 function ZhenXingLayer:GeneralListCellCallBack(target, tagIdx)
@@ -465,7 +485,7 @@ end
 --显示布阵界面左侧各阵型营寨UI
 function ZhenXingLayer:initZhenXingHeadUI(nType)
     --已有的阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
-    local preUnitData = self.buZhenXingData_UnitVec[self.buzhen_SelPreUnitIdx]
+    local preUnitData = self.buZhenXingData_UnitVec[nType]
     if preUnitData and preUnitData ~= -1 then
         local generalData = preUnitData.generalData
         if generalData then
@@ -529,7 +549,7 @@ function ZhenXingLayer:touchEvent(sender, eventType)
         elseif sender == self.xuan_Button_right then   --选阵界面的选中右侧防御阵型
 
         elseif sender == self.xuan_Button_AttEdit then   --选阵界面的编辑攻击阵型
-            self.bZhenEditType = 1   --布阵界面编辑的阵型类型，0默认，1出战阵型，2防御阵型
+            self.bZhenEditType = 1   --布阵界面编辑的阵型类型，0默认，1攻击阵型，2防御阵型
             self:setRadioPanel(2)
         elseif sender == self.xuan_Button_defEdit then   --选阵界面的编辑防御阵型
             self.bZhenEditType = 2
@@ -562,7 +582,11 @@ function ZhenXingLayer:touchEvent(sender, eventType)
             self.bu_Node_zhen_sel:setPosition(cc.p(self.bu_Node_zhen_zhongjun2:getPosition()))
             self:initBuZhenRight_PreUnitUI(7)
         elseif sender == self.bu_Node_zhen_save then     --保存阵型
-
+            if self.bZhenEditType == 1 then  --布阵界面编辑的阵型类型，0默认，1攻击阵型，2防御阵型
+                g_HeroDataMgr:setAttackZheXMLData(self.buZhenXingData_UnitVec)   --保存玩家attackZhenXML攻击阵型数据
+            elseif self.bZhenEditType == 2 then
+                g_HeroDataMgr:setDefendZheXMLData(self.buZhenXingData_UnitVec) 
+            end
         elseif sender == self.bu_Node_zhen_cancel then      --部曲下阵
             --已有的阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
             self.buZhenXingData_UnitVec[self.buzhen_SelPreUnitIdx] = -1
@@ -584,10 +608,13 @@ function ZhenXingLayer:touchEvent(sender, eventType)
                     --     g_pGameLayer:ShowScrollTips(lua_str_WarnTips12, g_ColorDef.Red, g_defaultTipsFontSize)  --"只有英雄类武将才能担任中军主将！"
                     --     return
                     -- end 
-                    unitData.generalIdStr = self.buzhenGeneralData.id_str
-                    unitData.generalData = clone(self.buzhenGeneralData)
+                    local zhenUnit = g_tbl_ZhenUnitStruct:new()
+                    zhenUnit.zhenPos = self.buzhen_SelPreUnitIdx  
+                    zhenUnit.generalIdStr = self.buzhenGeneralData.id_str
+                    zhenUnit.generalData = clone(self.buzhenGeneralData)
+                    zhenUnit.unitData = clone(unitData)
                     --已有的阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
-                    self.buZhenXingData_UnitVec[self.buzhen_SelPreUnitIdx] = unitData
+                    self.buZhenXingData_UnitVec[self.buzhen_SelPreUnitIdx] = zhenUnit
                     self:initZhenXingHeadUI(self.buzhen_SelPreUnitIdx)
                 else
                     g_pGameLayer:ShowScrollTips(lua_str_WarnTips11, g_ColorDef.Red, g_defaultTipsFontSize)  --"该兵种部曲兵力少于100人，不能上阵！"

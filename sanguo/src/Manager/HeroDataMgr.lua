@@ -20,6 +20,12 @@ function HeroDataMgr:init()
 
     --bagXML数据
     self:initBagXMLData()
+
+    --attackZhenXML攻击阵型数据
+    self:initAttackZheXMLData()
+
+    --defendZhenXML防御阵型数据
+    self:initDefendZheXMLData()
 end
 
 function HeroDataMgr:GetInstance()
@@ -51,6 +57,8 @@ function HeroDataMgr:ClearAllUserXML()
     self:ClearUserXML("heroXML.xml")
     self:ClearUserXML("generalXML.xml")
     self:ClearUserXML("bagXML.xml")
+    self:ClearUserXML("attackZhenXML.xml")
+    self:ClearUserXML("defendZhenXML.xml")
 
     self.heroData.storyData = {}  --剧情任务数据
     self.heroData.mapPosData = {}  --玩家地图位置信息
@@ -58,7 +66,8 @@ function HeroDataMgr:ClearAllUserXML()
     self.heroData.vipData = {}   --vip信息
     self.heroData.generalVecData = {}   --武将数据
     self.heroData.bagVecData = {}   --武将数据
-
+    self.heroData.attZhenData = {-1, -1, -1, -1, -1, -1, -1}   --攻击阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+    self.heroData.defZhenData = {-1, -1, -1, -1, -1, -1, -1}   --防御阵型数据 {g_tbl_ZhenUnitStruct}
 end
 
 --heroXMl数据
@@ -179,12 +188,12 @@ function HeroDataMgr:initGeneralXMLData()
                 for k, bingId in pairs(generalData.bingTypeVec) do
                     local armyUnit = g_tbl_armyUnitConfig:new()
                     local armyUnitNode = generalIdStr.."-armyUnitRoot-"..bingId
-                    armyUnit.bingIdStr = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "bingIdStr"))
+                    armyUnit.bingIdStr = generalXML:getNodeAttrValue(armyUnitNode, "bingIdStr")
                     armyUnit.bingCount = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "bingCount"))
                     armyUnit.level = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "level"))
                     armyUnit.exp = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "exp"))
                     armyUnit.shiqi = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "shiqi"))
-                    armyUnit.zhenId = tonumber(generalXML:getNodeAttrValue(armyUnitNode, "zhenId"))
+                    armyUnit.zhenId = generalXML:getNodeAttrValue(armyUnitNode, "zhenId")
                     table.insert(generalData.armyUnitVec, armyUnit)
                 end
 
@@ -218,6 +227,70 @@ function HeroDataMgr:initBagXMLData()
         end
     end
     --G_Log_Dump(self.heroData.bagVecData, "bagVecData = ")
+end
+
+--attackZhenXML攻击阵型数据
+function HeroDataMgr:initAttackZheXMLData()
+    self.heroData.attZhenData = {-1, -1, -1, -1, -1, -1, -1}   --攻击阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+
+    local attZhenXML = g_UserDefaultMgr:loadXMLFile("attackZhenXML.xml")
+    if attZhenXML then
+        local vecStr = attZhenXML:getNodeAttrValue("zhenPosVecNode", "zhenPosVec")   --有效的阵型营寨数据pos集合
+        if vecStr and vecStr ~= "" then
+            local zhenPosVec = string.split(vecStr,";") 
+            for i=1, #zhenPosVec do
+                local nodeStr = "zhenPos"..tostring(zhenPosVec[i])
+
+                local zhenUnit = g_tbl_ZhenUnitStruct:new()
+                zhenUnit.zhenPos = tonumber(attZhenXML:getNodeAttrValue(nodeStr, "zhenPos"))
+                zhenUnit.generalIdStr = attZhenXML:getNodeAttrValue(nodeStr, "generalIdStr")
+
+                local armyUnit = g_tbl_armyUnitConfig:new()
+                armyUnit.bingIdStr = attZhenXML:getNodeAttrValue(armyUnitNode, "bingIdStr")
+                armyUnit.bingCount = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "bingCount"))
+                armyUnit.level = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "level"))
+                armyUnit.exp = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "exp"))
+                armyUnit.shiqi = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "shiqi"))
+                armyUnit.zhenId = attZhenXML:getNodeAttrValue(armyUnitNode, "zhenId")
+
+                zhenUnit.unitData = armyUnit
+
+                self.heroData.attZhenData[zhenUnit.zhenPos] = zhenUnit
+            end
+        end
+    end
+end
+
+--defendZhenXML防御阵型数据
+function HeroDataMgr:initDefendZheXMLData()
+    self.heroData.defZhenData = {-1, -1, -1, -1, -1, -1, -1}   --攻击阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+
+    local attZhenXML = g_UserDefaultMgr:loadXMLFile("defendZhenXML.xml")
+    if attZhenXML then
+        local vecStr = attZhenXML:getNodeAttrValue("zhenPosVecNode", "zhenPosVec")   --有效的阵型营寨数据pos集合
+        if vecStr and vecStr ~= "" then
+            local zhenPosVec = string.split(vecStr,";") 
+            for i=1, #zhenPosVec do
+                local nodeStr = "zhenPos"..tostring(zhenPosVec[i])
+
+                local zhenUnit = g_tbl_ZhenUnitStruct:new()
+                zhenUnit.zhenPos = tonumber(attZhenXML:getNodeAttrValue(nodeStr, "zhenPos"))
+                zhenUnit.generalIdStr = attZhenXML:getNodeAttrValue(nodeStr, "generalIdStr")
+
+                local armyUnit = g_tbl_armyUnitConfig:new()
+                armyUnit.bingIdStr = attZhenXML:getNodeAttrValue(armyUnitNode, "bingIdStr")
+                armyUnit.bingCount = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "bingCount"))
+                armyUnit.level = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "level"))
+                armyUnit.exp = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "exp"))
+                armyUnit.shiqi = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "shiqi"))
+                armyUnit.zhenId = attZhenXML:getNodeAttrValue(armyUnitNode, "zhenId")
+
+                zhenUnit.unitData = armyUnit
+
+                self.heroData.defZhenData[zhenUnit.zhenPos] = zhenUnit
+            end
+        end
+    end
 end
 
 ------------------------------------------------------
@@ -717,8 +790,117 @@ function HeroDataMgr:SetBagXMLData(itemVec)
     bagXML:saveXMLFile()
 end
 
-
 ---------------------bagXML保存玩家背包物品数据 end   ------------------------------------
 
+---------------------attackZhenXML defendZhenXML阵型数据 beging   ---------------
+--保存玩家attackZhenXML攻击阵型数据
+function HeroDataMgr:setAttackZheXMLData(attZhenData)
+    self.heroData.attZhenData = attZhenData  --{-1, -1, -1, -1, -1, -1, -1}   --攻击阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+
+    if not attZhenData then
+        G_Log_Error("HeroDataMgr:setAttackZheXMLData(), error: attZhenData = nil")
+    end
+
+    local attZhenXML = g_UserDefaultMgr:loadXMLFile("attackZhenXML.xml")
+    if not attZhenXML then
+        attZhenXML = g_UserDefaultMgr:createXMLFile("attackZhenXML.xml", "root")
+    end
+
+    if attZhenXML then
+        local totalZhenPosStr = ""
+        local bNeedSub = false   --是否需要移除最后一个;号
+
+        for k=1, 7 do   --注意按照1-7顺序
+            local nodeStr = "zhenPos"..k
+            attZhenXML:removeNode(nodeStr)
+
+            local data = attZhenData[k]
+            if data and data ~= -1 and data.unitData then
+                totalZhenPosStr = totalZhenPosStr..tostring(data.zhenPos)..";"
+                bNeedSub = true
+
+                attZhenXML:addChildNode(nodeStr)
+                attZhenXML:setNodeAttrValue(nodeStr, "zhenPos", tostring(data.zhenPos))
+                attZhenXML:setNodeAttrValue(nodeStr, "generalIdStr", tostring(data.generalIdStr))
+                attZhenXML:setNodeAttrValue(nodeStr, "bingIdStr", tostring(data.unitData.bingIdStr))
+                attZhenXML:setNodeAttrValue(nodeStr, "bingCount", tostring(data.unitData.bingCount))
+                attZhenXML:setNodeAttrValue(nodeStr, "level", tostring(data.unitData.level))
+                attZhenXML:setNodeAttrValue(nodeStr, "exp", tostring(data.unitData.exp))
+                attZhenXML:setNodeAttrValue(nodeStr, "shiqi", tostring(data.unitData.shiqi))
+                attZhenXML:setNodeAttrValue(nodeStr, "zhenId", tostring(data.unitData.zhenId))
+            end
+        end
+
+        if bNeedSub == true then
+            totalZhenPosStr = string.sub(totalZhenPosStr , 1, -2)
+        end
+        --有效的阵型营寨数据pos集合
+        attZhenXML:removeNode("zhenPosVecNode")  
+        attZhenXML:addChildNode("zhenPosVecNode")
+        attZhenXML:setNodeAttrValue("zhenPosVecNode", "zhenPosVec", tostring(totalZhenPosStr))
+    end
+    attZhenXML:saveXMLFile()
+end
+
+--玩家attackZhenXML攻击阵型数据
+function HeroDataMgr:getAttackZheXMLData()
+    return clone(self.heroData.attZhenData)
+end
+
+--保存玩家defendZhenXML防御阵型数据
+function HeroDataMgr:setDefendZheXMLData(defZhenData)
+    self.heroData.defZhenData = defZhenData  --{-1, -1, -1, -1, -1, -1, -1}   --攻击阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+
+    if not defZhenData then
+        G_Log_Error("HeroDataMgr:setDefendZheXMLData(), error: defZhenData = nil")
+    end
+
+    local attZhenXML = g_UserDefaultMgr:loadXMLFile("defendZhenXML.xml")
+    if not attZhenXML then
+        attZhenXML = g_UserDefaultMgr:createXMLFile("defendZhenXML.xml", "root")
+    end
+
+    if attZhenXML then
+        local totalZhenPosStr = ""
+        local bNeedSub = false   --是否需要移除最后一个;号
+
+        for k=1, 7 do   --注意按照1-7顺序
+            local nodeStr = "zhenPos"..k
+            attZhenXML:removeNode(nodeStr)
+
+            local data = defZhenData[k]
+            if data and data ~= -1 and data.unitData then
+                totalZhenPosStr = totalZhenPosStr..tostring(data.zhenPos)..";"
+                bNeedSub = true
+
+                attZhenXML:addChildNode(nodeStr)
+                attZhenXML:setNodeAttrValue(nodeStr, "zhenPos", tostring(data.zhenPos))
+                attZhenXML:setNodeAttrValue(nodeStr, "generalIdStr", tostring(data.generalIdStr))
+                attZhenXML:setNodeAttrValue(nodeStr, "bingIdStr", tostring(data.unitData.bingIdStr))
+                attZhenXML:setNodeAttrValue(nodeStr, "bingCount", tostring(data.unitData.bingCount))
+                attZhenXML:setNodeAttrValue(nodeStr, "level", tostring(data.unitData.level))
+                attZhenXML:setNodeAttrValue(nodeStr, "exp", tostring(data.unitData.exp))
+                attZhenXML:setNodeAttrValue(nodeStr, "shiqi", tostring(data.unitData.shiqi))
+                attZhenXML:setNodeAttrValue(nodeStr, "zhenId", tostring(data.unitData.zhenId))
+            end
+        end
+
+        if bNeedSub == true then
+            totalZhenPosStr = string.sub(totalZhenPosStr , 1, -2)
+        end
+        --有效的阵型营寨数据pos集合
+        attZhenXML:removeNode("zhenPosVecNode")  
+        attZhenXML:addChildNode("zhenPosVecNode")
+        attZhenXML:setNodeAttrValue("zhenPosVecNode", "zhenPosVec", tostring(totalZhenPosStr))
+    end
+    attZhenXML:saveXMLFile()
+end
+
+--玩家defendZhenXML防御阵型数据
+function HeroDataMgr:getDefendZheXMLData()
+    return clone(self.heroData.defZhenData)
+end
+
+---------------------attackZhenXML defendZhenXML阵型数据 end  ---------------
 
 return HeroDataMgr

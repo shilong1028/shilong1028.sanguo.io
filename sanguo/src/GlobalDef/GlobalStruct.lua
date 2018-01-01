@@ -201,11 +201,22 @@ function  g_tbl_armyUnitConfig:ctor()
 	self.level = 0    --部曲等级
 	self.exp = 0      --部曲训练度
 	self.shiqi = 0    --部曲士气
-	self.zhenId = 0   --部曲阵法Id
+	self.zhenId = "0"   --部曲阵法Id
 
 	--附加信息
 	self.bingData = nil   --兵种数据
 	self.zhenData = nil   --阵型数据
+end
+
+--攻击阵型或防御阵型中各营寨数据
+g_tbl_ZhenUnitStruct = class("g_tbl_ZhenUnitStruct",__BaseStruct)
+function  g_tbl_ZhenUnitStruct:ctor()
+	self.zhenPos = 0   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+	self.generalIdStr = "0"    --营寨武将ID字符串
+	self.unitData = g_tbl_armyUnitConfig:new()    --营寨武将部曲数据
+
+	--附加信息
+	self.generalData = nil   --营寨武将数据
 end
 
 --物品装备表结构类
