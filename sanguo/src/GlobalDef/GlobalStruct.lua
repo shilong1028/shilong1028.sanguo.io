@@ -202,6 +202,10 @@ function  g_tbl_armyUnitConfig:ctor()
 	self.exp = 0      --部曲训练度
 	self.shiqi = 0    --部曲士气
 	self.zhenId = 0   --部曲阵法Id
+
+	--附加信息
+	self.bingData = nil   --兵种数据
+	self.zhenData = nil   --阵型数据
 end
 
 --物品装备表结构类

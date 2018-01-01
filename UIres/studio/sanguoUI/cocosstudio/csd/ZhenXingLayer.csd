@@ -58,10 +58,10 @@
                 <OutlineColor A="255" R="255" G="0" B="0" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="Button_zhenxingRadio" ActionTag="1452185386" Tag="210" IconVisible="False" LeftMargin="18.0000" RightMargin="928.0000" TopMargin="120.0000" BottomMargin="460.0000" TouchEnable="True" FontSize="30" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="24" Scale9Height="98" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+              <AbstractNodeData Name="Button_xuanzhenRadio" ActionTag="1452185386" Tag="210" IconVisible="False" LeftMargin="18.0000" RightMargin="928.0000" TopMargin="120.0000" BottomMargin="460.0000" TouchEnable="True" FontSize="30" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="24" Scale9Height="98" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
                 <Size X="54.0000" Y="120.0000" />
                 <Children>
-                  <AbstractNodeData Name="Text_btn" ActionTag="883220364" Tag="211" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="12.0000" RightMargin="12.0000" TopMargin="20.0000" BottomMargin="20.0000" IsCustomSize="True" FontSize="30" LabelText="阵型" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+                  <AbstractNodeData Name="Text_btn" ActionTag="883220364" Tag="211" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="12.0000" RightMargin="12.0000" TopMargin="20.0000" BottomMargin="20.0000" IsCustomSize="True" FontSize="30" LabelText="选阵" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
                     <Size X="30.0000" Y="80.0000" />
                     <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
                     <Position X="27.0000" Y="60.0000" />
@@ -117,16 +117,6 @@
               <AbstractNodeData Name="Panel_Info" ActionTag="-126201856" Tag="212" IconVisible="False" PositionPercentXEnabled="True" LeftMargin="90.0000" RightMargin="90.0000" TopMargin="120.0000" BottomMargin="60.0000" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
                 <Size X="820.0000" Y="520.0000" />
                 <Children>
-                  <AbstractNodeData Name="buZhenNode" ActionTag="-266934712" Tag="253" IconVisible="True" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="410.0000" RightMargin="410.0000" TopMargin="260.0000" BottomMargin="260.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
-                    <Size X="0.0000" Y="0.0000" />
-                    <AnchorPoint />
-                    <Position X="410.0000" Y="260.0000" />
-                    <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                    <CColor A="255" R="255" G="255" B="255" />
-                    <PrePosition X="0.5000" Y="0.5000" />
-                    <PreSize X="0.0000" Y="0.0000" />
-                    <FileData Type="Normal" Path="csd/Zhen_BuZhenNode.csd" Plist="" />
-                  </AbstractNodeData>
                   <AbstractNodeData Name="xuanZhenNode" Visible="False" ActionTag="-1435829063" Tag="1388" IconVisible="True" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="410.0000" RightMargin="410.0000" TopMargin="260.0000" BottomMargin="260.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
                     <Size X="0.0000" Y="0.0000" />
                     <AnchorPoint />
@@ -136,6 +126,16 @@
                     <PrePosition X="0.5000" Y="0.5000" />
                     <PreSize X="0.0000" Y="0.0000" />
                     <FileData Type="Normal" Path="csd/Zhen_XuanZhenNode.csd" Plist="" />
+                  </AbstractNodeData>
+                  <AbstractNodeData Name="buZhenNode" ActionTag="-266934712" Tag="253" IconVisible="True" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="410.0000" RightMargin="410.0000" TopMargin="260.0000" BottomMargin="260.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
+                    <Size X="0.0000" Y="0.0000" />
+                    <AnchorPoint />
+                    <Position X="410.0000" Y="260.0000" />
+                    <Scale ScaleX="1.0000" ScaleY="1.0000" />
+                    <CColor A="255" R="255" G="255" B="255" />
+                    <PrePosition X="0.5000" Y="0.5000" />
+                    <PreSize X="0.0000" Y="0.0000" />
+                    <FileData Type="Normal" Path="csd/Zhen_BuZhenNode.csd" Plist="" />
                   </AbstractNodeData>
                 </Children>
                 <AnchorPoint />

@@ -217,6 +217,10 @@ function GeneralLayer:LoadGeneralList()
     self.generalVec = {}
     self.generalCellVec = {}
 
+    if self.ListView_general then
+        self.ListView_general:removeAllChildren()
+    end
+
     local function callFunc(target, tagIdx)
         self:ListCellCallBack(target, tagIdx)
     end

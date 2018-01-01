@@ -57,6 +57,12 @@ lua_general_Str1 = "武  将"
 lua_general_Str2 = "未装备"
 lua_general_Str3 = "未组建"
 
+lua_Unit_String1 = "兵种 %s"
+lua_Unit_String2 = "兵力 %d"
+lua_Unit_String3 = "等级 %d"
+lua_Unit_String4 = "士气 %d"
+lua_Unit_String5 = "阵型 %s"
+
 lua_unitNameVec = {"枪兵组", "刀兵组", "弓兵组", "骑兵组"}
 
 lua_Item_TypeStrs = {"币", "粮", "甲", "武", "马", "符", "令", "物"}
