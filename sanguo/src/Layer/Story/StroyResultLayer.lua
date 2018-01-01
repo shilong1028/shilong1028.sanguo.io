@@ -83,9 +83,9 @@ function StroyResultLayer:initStoryInfo(storyId)
             local soldierId = soldier.itemId 
             local soldierData = g_pTBLMgr:getItemConfigTBLDataById(soldierId)  
             if soldierData then
+                soldierData.num = soldier.num 
                 table.insert(self.rewardItemVec, soldierData)
 
-                soldierData.num = soldier.num 
                 local itemCell = ItemCell:new()
                 itemCell:initData(soldierData, k) 
 
@@ -105,7 +105,7 @@ function StroyResultLayer:initStoryInfo(storyId)
             self.ListView_army:setContentSize(self.ListView_armySize)
             self.ListView_army:setBounceEnabled(true)
         end
-        self.ListView_army:refreshView()
+        self.ListView_army:forceDoLayout()   --forceDoLayout   --refreshView
 
         for k, reward in pairs(self.storyData.rewardIdVec) do
             local itemId = reward.itemId    --{["itemId"] = strVec[1], ["num"] = strVec[2]}
@@ -133,7 +133,7 @@ function StroyResultLayer:initStoryInfo(storyId)
             self.ListView_reward:setContentSize(self.ListView_rewardSize)
             self.ListView_reward:setBounceEnabled(true)
         end
-        self.ListView_reward:refreshView()
+        self.ListView_reward:forceDoLayout()   --forceDoLayout   --refreshView
     end
 end
 
@@ -143,13 +143,15 @@ function StroyResultLayer:touchEvent(sender, eventType)
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
         elseif sender == self.Button_ok then   --领取
             local tipsArr = {}
+            local bagVec = {}
             for k, itemData in pairs(self.rewardItemVec) do
                 local str = string.format(lua_Item_String2, itemData.num, itemData.quality, itemData.name)   --"恭喜你，获得%d个%d级的%s！"
                 table.insert(tipsArr, {["text"]=str, ["color"]=g_ColorDef.Green, ["fontSize"]=g_rewardTipsFontSize})
+                table.insert(bagVec, {["itemId"]=itemData.id_str, ["num"]=itemData.num})
             end
             if #tipsArr > 0 then
                 g_pGameLayer:ShowScrollTips(tipsArr)
-                g_HeroDataMgr:SetBagXMLData(self.storyData.rewardIdVec)   --保存玩家背包物品数据到bagXML
+                g_HeroDataMgr:SetBagXMLData(bagVec)   --保存玩家背包物品数据到bagXML
             end
 
             local campData = g_HeroDataMgr:GetHeroCampData()

@@ -62,7 +62,6 @@ function CreateRoleLayer:touchEvent(sender, eventType)
                 return
             end
             campData.population = 0   --初始人口为0
-            campData.troops = 0       --初始兵力为0
 
             local generalIdVec = clone(campData.generalIdVec)    --初始游戏，仅提供主角一个武将（汉灵帝、袁绍、曹操、刘备、孙坚）
             campData.generalIdVec = {}

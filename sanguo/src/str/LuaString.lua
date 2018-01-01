@@ -9,6 +9,12 @@ lua_str_WarnTips4 = "用户名已经被注册！"
 lua_str_WarnTips5 = "注册密码不一致！"
 lua_str_WarnTips6 = "点击坐标为地图不可达部分！"
 lua_str_WarnTips7 = "最高级"
+lua_str_WarnTips8 = "该兵种部曲未解锁，暂不能组建！"
+lua_str_WarnTips9 = "该兵种部曲士兵已满员！"
+lua_str_WarnTips10 = "该兵种部曲未组建，不能上阵！"
+lua_str_WarnTips11 = "该兵种部曲兵力少于100人，不能上阵！"
+lua_str_WarnTips12 = "只有英雄类武将才能担任中军主将！"
+lua_str_WarnTips13 = "该武将已经出战！"
 
 lua_Dialog_TitleStr1 = "提  示"
 lua_Dialog_TitleStr2 = "帮  助"
@@ -54,6 +60,12 @@ lua_Role_String17 = "部曲等级 Lv%d"
 lua_general_Str1 = "武  将"
 lua_general_Str2 = "未装备"
 lua_general_Str3 = "未组建"
+
+lua_Unit_String1 = "兵种 %s"
+lua_Unit_String2 = "兵力 %d"
+lua_Unit_String3 = "等级 %d"
+lua_Unit_String4 = "士气 %d"
+lua_Unit_String5 = "阵型 %s"
 
 lua_unitNameVec = {"枪兵组", "刀兵组", "弓兵组", "骑兵组"}
 

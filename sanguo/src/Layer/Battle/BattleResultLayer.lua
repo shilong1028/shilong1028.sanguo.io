@@ -96,7 +96,7 @@ function BattleResultLayer:initBattleResult(result)
             self.ListView_reward:setContentSize(self.ListView_rewardSize)
             self.ListView_reward:setBounceEnabled(true)
         end
-        self.ListView_reward:refreshView()
+        self.ListView_reward:forceDoLayout()   --forceDoLayout   --refreshView
 
         --攻击方
         local campId = g_HeroDataMgr:GetHeroCampData().campId

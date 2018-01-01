@@ -54,10 +54,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_numCount" ActionTag="-862393460" Tag="152" IconVisible="False" LeftMargin="230.0000" RightMargin="-340.0000" TopMargin="-53.5000" BottomMargin="26.5000" FontSize="24" LabelText="1000/2000" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="110.0000" Y="27.0000" />
+          <AbstractNodeData Name="Text_numCount" ActionTag="-862393460" Tag="152" IconVisible="False" LeftMargin="190.0000" RightMargin="-344.0000" TopMargin="-53.5000" BottomMargin="26.5000" FontSize="24" LabelText="+0(1000/2000)" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="154.0000" Y="27.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="230.0000" Y="40.0000" />
+            <Position X="190.0000" Y="40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
             <PrePosition />
@@ -184,8 +184,8 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Slider_num" ActionTag="-866486457" Tag="416" IconVisible="False" LeftMargin="20.0000" RightMargin="-220.0000" TopMargin="-47.5000" BottomMargin="32.5000" TouchEnable="True" PercentInfo="48" ctype="SliderObjectData">
-            <Size X="200.0000" Y="15.0000" />
+          <AbstractNodeData Name="Slider_num" ActionTag="-866486457" Tag="416" IconVisible="False" LeftMargin="20.0000" RightMargin="-180.0000" TopMargin="-47.5000" BottomMargin="32.5000" TouchEnable="True" PercentInfo="48" ctype="SliderObjectData">
+            <Size X="160.0000" Y="15.0000" />
             <AnchorPoint ScaleY="0.5000" />
             <Position X="20.0000" Y="40.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
@@ -234,10 +234,10 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_save" ActionTag="-1471619527" Tag="429" IconVisible="False" LeftMargin="22.5000" RightMargin="-177.5000" TopMargin="67.5000" BottomMargin="-132.5000" TouchEnable="True" FontSize="30" ButtonText="保存" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="139" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_save" ActionTag="-1471619527" Tag="429" IconVisible="False" LeftMargin="22.5000" RightMargin="-177.5000" TopMargin="-22.5000" BottomMargin="-42.5000" TouchEnable="True" FontSize="30" ButtonText="保存" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="139" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="155.0000" Y="65.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="100.0000" Y="-100.0000" />
+            <Position X="100.0000" Y="-10.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
@@ -248,10 +248,10 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_update" ActionTag="1104284724" Tag="430" IconVisible="False" LeftMargin="203.5000" RightMargin="-358.5000" TopMargin="67.5000" BottomMargin="-132.5000" TouchEnable="True" FontSize="30" ButtonText="升阶" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="139" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_update" ActionTag="1104284724" Tag="430" IconVisible="False" LeftMargin="203.5000" RightMargin="-358.5000" TopMargin="-22.5000" BottomMargin="-42.5000" TouchEnable="True" FontSize="30" ButtonText="升阶" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="139" Scale9Height="43" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="155.0000" Y="65.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="281.0000" Y="-100.0000" />
+            <Position X="281.0000" Y="-10.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
@@ -262,10 +262,10 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="ListView_Item" ActionTag="726093766" Tag="201" IconVisible="False" LeftMargin="20.0000" RightMargin="-250.0000" TopMargin="-15.0000" BottomMargin="-60.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="102" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="5" VerticalType="Align_VerticalCenter" ctype="ListViewObjectData">
-            <Size X="230.0000" Y="75.0000" />
+          <AbstractNodeData Name="ListView_Item" ActionTag="726093766" Tag="201" IconVisible="False" LeftMargin="20.0000" RightMargin="-250.0000" TopMargin="50.0000" BottomMargin="-150.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="102" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="5" VerticalType="Align_VerticalCenter" ctype="ListViewObjectData">
+            <Size X="230.0000" Y="100.0000" />
             <AnchorPoint />
-            <Position X="20.0000" Y="-60.0000" />
+            <Position X="20.0000" Y="-150.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
@@ -275,10 +275,10 @@
             <EndColor A="255" R="255" G="255" B="255" />
             <ColorVector ScaleY="1.0000" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Button_useItem" ActionTag="876663496" Tag="296" IconVisible="False" LeftMargin="253.0000" RightMargin="-367.0000" TopMargin="-10.0000" BottomMargin="-50.0000" TouchEnable="True" FontSize="30" ButtonText="使用" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="98" Scale9Height="38" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+          <AbstractNodeData Name="Button_useItem" ActionTag="876663496" Tag="296" IconVisible="False" LeftMargin="253.0000" RightMargin="-367.0000" TopMargin="70.0000" BottomMargin="-130.0000" TouchEnable="True" FontSize="30" ButtonText="使用" Scale9Enable="True" LeftEage="8" RightEage="8" TopEage="11" BottomEage="11" Scale9OriginX="8" Scale9OriginY="11" Scale9Width="98" Scale9Height="38" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
             <Size X="114.0000" Y="60.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="310.0000" Y="-20.0000" />
+            <Position X="310.0000" Y="-100.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />

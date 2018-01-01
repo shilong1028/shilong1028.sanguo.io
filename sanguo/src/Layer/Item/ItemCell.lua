@@ -56,11 +56,12 @@ function ItemCell:initData(itemData, tagIdx, callFunc)
         self.Text_num:setString("")
     end
 
-    if itemData.type < #lua_Item_TypeStrs then
-        self.Text_type:setString(lua_Item_TypeStrs[itemData.type])    --金币|粮草|护甲|武器|马匹|道具|令牌|物品
-    else
-        self.Text_type:setString("")
-    end
+    self.Text_type:setString("")
+    -- if itemData.type < #lua_Item_TypeStrs then
+    --     self.Text_type:setString(lua_Item_TypeStrs[itemData.type])    --金币|粮草|护甲|武器|马匹|道具|令牌|物品
+    -- else
+    --     self.Text_type:setString("")
+    -- end
 
     local colorIdx = G_GetGeneralColorIdxByLv(itemData.quality)
     if colorIdx > 0 and colorIdx <=5 then

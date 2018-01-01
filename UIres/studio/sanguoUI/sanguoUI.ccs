@@ -30,8 +30,10 @@
           <Project Name="TextOfficerCell.csd" Type="Layer" />
           <Project Name="vipInfoCell.csd" Type="Layer" />
           <Project Name="vipLayer.csd" Type="Layer" />
+          <Project Name="Zhen_BuZhenNode.csd" Type="Node" />
+          <Project Name="Zhen_XuanZhenNode.csd" Type="Node" />
+          <Project Name="ZhenUINode.csd" Type="Node" />
           <Project Name="ZhenXingLayer.csd" Type="Layer" />
-          <Project Name="ZhenXingNode.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
           <TTF Name="simkai.ttf" />
