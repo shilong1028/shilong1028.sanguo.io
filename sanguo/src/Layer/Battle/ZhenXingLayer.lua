@@ -225,6 +225,8 @@ function ZhenXingLayer:setRadioPanel(idx)
             self.xuan_Button_left:setVisible(false)   --选中左侧攻击阵型
             self.xuan_Button_right:setVisible(false)    --选中右侧防御阵型
         end
+
+        self:LoadAllZhenXingData()  --加载选阵界面的玩家出战和防御阵型数据并初始化UI
     elseif idx == 2 then   --布阵
         self.Button_buzhenRadio:loadTextureNormal("public_radio2.png", ccui.TextureResType.plistType)
         self.Button_xuanzhenRadio:loadTextureNormal("public_radio1.png", ccui.TextureResType.plistType)
@@ -243,13 +245,102 @@ function ZhenXingLayer:setRadioPanel(idx)
             self.bu_Node_zhen_fight:setVisible(false)      --部曲上阵
         end
 
-        self:LoadZhenXingData()  --加载玩家出战或防御阵型数据并初始化UI
+        self:LoadZhenXingData()  --加载布阵界面的玩家出战或防御阵型数据并初始化UI
 
         if not self.generalVec or not self.generalCellVec then
             self:LoadGeneralList()   --加载武将列表
         end
 
         self:GeneralListCellCallBack(self.generalCellVec[1], 1)   --默认选中第一个武将
+    end
+end
+
+--加载选阵界面的玩家出战和防御阵型数据并初始化UI
+function ZhenXingLayer:LoadAllZhenXingData()  
+    local attZhenXingData = g_HeroDataMgr:getAttackZheXMLData()   --玩家攻击阵型数据
+    local defZhenXingData = g_HeroDataMgr:getDefendZheXMLData()   --玩家攻击阵型数据
+    for k, data in pairs(attZhenXingData) do
+        if data and data ~= -1 and data.unitData then
+            attZhenXingData[k].generalData = g_HeroDataMgr:GetSingleGeneralData(data.generalIdStr)
+        end
+    end
+    for k, data in pairs(defZhenXingData) do
+        if data and data ~= -1 and data.unitData then
+            defZhenXingData[k].generalData = g_HeroDataMgr:GetSingleGeneralData(data.generalIdStr)
+        end
+    end
+
+    for nType = 1, 7 do
+        if nType == 1 then
+            self.xuan_Node_att_qianfeng:removeChildByTag(111)   --布阵UI节点中的前锋营
+            self.xuan_Node_def_qianfeng:removeChildByTag(111)
+        elseif nType == 2 then
+            self.xuan_Node_att_zuohu:removeChildByTag(111)    --布阵UI节点中的左护军
+            self.xuan_Node_def_zuohu:removeChildByTag(111)
+        elseif nType == 3 then
+            self.xuan_Node_att_youhu:removeChildByTag(111)   --布阵UI节点中的右护军
+            self.xuan_Node_def_youhu:removeChildByTag(111) 
+        elseif nType == 4 then
+            self.xuan_Node_att_houwei:removeChildByTag(111)   --布阵UI节点中的后卫营
+            self.xuan_Node_def_houwei:removeChildByTag(111) 
+        elseif nType == 5 then
+            self.xuan_Node_att_zhushuai:removeChildByTag(111)   --布阵UI节点中的中军主帅
+            self.xuan_Node_def_zhushuai:removeChildByTag(111) 
+        elseif nType == 6 then
+            self.xuan_Node_att_zhongjun1:removeChildByTag(111)   --布阵UI节点中的中军将1（上）
+            self.xuan_Node_def_zhongjun1:removeChildByTag(111)
+        elseif nType == 7 then
+            self.xuan_Node_att_zhongjun2:removeChildByTag(111)   --布阵UI节点中的中军将2（下）
+            self.xuan_Node_def_zhongjun2:removeChildByTag(111)
+        end
+
+        local attData = attZhenXingData[nType]
+        if attData and attData ~= -1 and attData.generalData then
+            local officerCell = SmallOfficerCell:new()
+            officerCell:initData(attData.generalData, nType)
+            officerCell:setBgImgTouchEnabled(false)
+            officerCell:setPosition(cc.p(0, -10))
+            officerCell:setTag(111)        
+            if nType == 1 then
+                self.xuan_Node_att_qianfeng:addChild(officerCell)
+            elseif nType == 2 then
+                self.xuan_Node_att_zuohu:addChild(officerCell)
+            elseif nType == 3 then
+                self.xuan_Node_att_youhu:addChild(officerCell)
+            elseif nType == 4 then
+                self.xuan_Node_att_houwei:addChild(officerCell)
+            elseif nType == 5 then
+                self.xuan_Node_att_zhushuai:addChild(officerCell)
+            elseif nType == 6 then
+                self.xuan_Node_att_zhongjun1:addChild(officerCell)
+            elseif nType == 7 then
+                self.xuan_Node_att_zhongjun2:addChild(officerCell)
+            end     
+        end
+
+        local defData = defZhenXingData[nType]
+        if defData and defData ~= -1 and defData.generalData then
+            local officerCell = SmallOfficerCell:new()
+            officerCell:initData(defData.generalData, nType)
+            officerCell:setBgImgTouchEnabled(false)
+            officerCell:setPosition(cc.p(0, -10))
+            officerCell:setTag(111)        
+            if nType == 1 then
+                self.xuan_Node_def_qianfeng:addChild(officerCell)
+            elseif nType == 2 then
+                self.xuan_Node_def_zuohu:addChild(officerCell)
+            elseif nType == 3 then
+                self.xuan_Node_def_youhu:addChild(officerCell)
+            elseif nType == 4 then
+                self.xuan_Node_def_houwei:addChild(officerCell)
+            elseif nType == 5 then
+                self.xuan_Node_def_zhushuai:addChild(officerCell)
+            elseif nType == 6 then
+                self.xuan_Node_def_zhongjun1:addChild(officerCell)
+            elseif nType == 7 then
+                self.xuan_Node_def_zhongjun2:addChild(officerCell)
+            end     
+        end
     end
 end
 
@@ -485,53 +576,44 @@ end
 --显示布阵界面左侧各阵型营寨UI
 function ZhenXingLayer:initZhenXingHeadUI(nType)
     --已有的阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+    if nType == 1 then
+        self.bu_Node_zhen_qianfeng:removeChildByTag(111)
+    elseif nType == 2 then
+        self.bu_Node_zhen_zuohu:removeChildByTag(111)
+    elseif nType == 3 then
+        self.bu_Node_zhen_youhu:removeChildByTag(111)
+    elseif nType == 4 then
+        self.bu_Node_zhen_houwei:removeChildByTag(111)
+    elseif nType == 5 then
+        self.bu_Node_zhen_zhushuai:removeChildByTag(111)
+    elseif nType == 6 then
+        self.bu_Node_zhen_zhongjun1:removeChildByTag(111)
+    elseif nType == 7 then
+        self.bu_Node_zhen_zhongjun2:removeChildByTag(111)
+    end
+
     local preUnitData = self.buZhenXingData_UnitVec[nType]
-    if preUnitData and preUnitData ~= -1 then
-        local generalData = preUnitData.generalData
-        if generalData then
-            local officerCell = SmallOfficerCell:new()
-            officerCell:initData(generalData, idx)
-            officerCell:setBgImgTouchEnabled(false)
-            officerCell:setPosition(cc.p(0, -10)) 
-            
-            if nType == 1 then
-                self.bu_Node_zhen_qianfeng:removeAllChildren()
-                self.bu_Node_zhen_qianfeng:addChild(officerCell)
-            elseif nType == 2 then
-                self.bu_Node_zhen_zuohu:removeAllChildren()
-                self.bu_Node_zhen_zuohu:addChild(officerCell)
-            elseif nType == 3 then
-                self.bu_Node_zhen_youhu:removeAllChildren()
-                self.bu_Node_zhen_youhu:addChild(officerCell)
-            elseif nType == 4 then
-                self.bu_Node_zhen_houwei:removeAllChildren()
-                self.bu_Node_zhen_houwei:addChild(officerCell)
-            elseif nType == 5 then
-                self.bu_Node_zhen_zhushuai:removeAllChildren()
-                self.bu_Node_zhen_zhushuai:addChild(officerCell)
-            elseif nType == 6 then
-                self.bu_Node_zhen_zhongjun1:removeAllChildren()
-                self.bu_Node_zhen_zhongjun1:addChild(officerCell)
-            elseif nType == 7 then
-                self.bu_Node_zhen_zhongjun2:removeAllChildren()
-                self.bu_Node_zhen_zhongjun2:addChild(officerCell)
-            end
-        end
-    else
+    if preUnitData and preUnitData ~= -1 and preUnitData.generalData then
+        local officerCell = SmallOfficerCell:new()
+        officerCell:initData(preUnitData.generalData, nType)
+        officerCell:setBgImgTouchEnabled(false)
+        officerCell:setPosition(cc.p(0, -10))
+        officerCell:setTag(111) 
+        
         if nType == 1 then
-            self.bu_Node_zhen_qianfeng:removeAllChildren()
+            self.bu_Node_zhen_qianfeng:addChild(officerCell)
         elseif nType == 2 then
-            self.bu_Node_zhen_zuohu:removeAllChildren()
+            self.bu_Node_zhen_zuohu:addChild(officerCell)
         elseif nType == 3 then
-            self.bu_Node_zhen_youhu:removeAllChildren()
+            self.bu_Node_zhen_youhu:addChild(officerCell)
         elseif nType == 4 then
-            self.bu_Node_zhen_houwei:removeAllChildren()
+            self.bu_Node_zhen_houwei:addChild(officerCell)
         elseif nType == 5 then
-            self.bu_Node_zhen_zhushuai:removeAllChildren()
+            self.bu_Node_zhen_zhushuai:addChild(officerCell)
         elseif nType == 6 then
-            self.bu_Node_zhen_zhongjun1:removeAllChildren()
+            self.bu_Node_zhen_zhongjun1:addChild(officerCell)
         elseif nType == 7 then
-            self.bu_Node_zhen_zhongjun2:removeAllChildren()
+            self.bu_Node_zhen_zhongjun2:addChild(officerCell)
         end
     end
 end

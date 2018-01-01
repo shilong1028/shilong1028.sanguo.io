@@ -369,6 +369,8 @@ function LoginLayer:touchEvent(sender, eventType)
             --g_NetworkMgr:StartACLogin(self.m_userName, self.m_passWord)
 
             --demo直接进入游戏,不请求网络
+            g_UserDefaultMgr:SetUserName(self.m_userName)    --保存用户名
+            g_UserDefaultMgr:SetUserPassword(self.m_passWord)  --保存用户登录密码
             g_pGameLayer:StartGameLayer()
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoginLayer)
         elseif sender == self.registerBtn then   --注册界面
