@@ -7,7 +7,7 @@
             <key>public2_chengchi.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,154},{150,119}}</string>
+                <string>{{2,900},{150,119}}</string>
                 <key>offset</key>
                 <string>{0,-3}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>public2_dushi.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{169,150}}</string>
+                <string>{{2,748},{169,150}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,11 +33,11 @@
             <key>public2_guanai.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,275},{137,124}}</string>
+                <string>{{173,774},{137,124}}</string>
                 <key>offset</key>
                 <string>{2,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{5,0},{137,124}}</string>
                 <key>sourceSize</key>
@@ -46,7 +46,7 @@
             <key>public2_sel_green.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,401},{88,88}}</string>
+                <string>{{196,684},{88,88}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -59,7 +59,7 @@
             <key>public2_sel_orange.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,401},{90,90}}</string>
+                <string>{{196,592},{90,90}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -69,6 +69,45 @@
                 <key>sourceSize</key>
                 <string>{90,90}</string>
             </dict>
+            <key>public2_yingzhai1.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,2},{300,300}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{300,300}}</string>
+                <key>sourceSize</key>
+                <string>{300,300}</string>
+            </dict>
+            <key>public2_yingzhai2.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,592},{154,192}}</string>
+                <key>offset</key>
+                <string>{4,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{27,4},{154,192}}</string>
+                <key>sourceSize</key>
+                <string>{200,200}</string>
+            </dict>
+            <key>public2_yingzhai3.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,304},{300,286}}</string>
+                <key>offset</key>
+                <string>{0,-5}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,12},{300,286}}</string>
+                <key>sourceSize</key>
+                <string>{300,300}</string>
+            </dict>
         </dict>
         <key>metadata</key>
         <dict>
@@ -77,9 +116,9 @@
             <key>realTextureFileName</key>
             <string>PublicRes2.png</string>
             <key>size</key>
-            <string>{184,493}</string>
+            <string>{304,1021}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d78d2d3f185462826cd88b5e6224f94e:f3e79c2dfa074123c5506649373abdb3:51fc9a9e87aa7dcdfda86f2d6e8477d7$</string>
+            <string>$TexturePacker:SmartUpdate:a5e4d6259e01bcbf6b64dfd73b3a93b6:a86244c02d43dae9b5f835007c16ca3e:51fc9a9e87aa7dcdfda86f2d6e8477d7$</string>
             <key>textureFileName</key>
             <string>PublicRes2.png</string>
         </dict>

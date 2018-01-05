@@ -152,6 +152,9 @@
             <PlistImageFile Name="public2_guanai.png" Key="public2_guanai.png" />
             <PlistImageFile Name="public2_sel_green.png" Key="public2_sel_green.png" />
             <PlistImageFile Name="public2_sel_orange.png" Key="public2_sel_orange.png" />
+            <PlistImageFile Name="public2_yingzhai1.png" Key="public2_yingzhai1.png" />
+            <PlistImageFile Name="public2_yingzhai2.png" Key="public2_yingzhai2.png" />
+            <PlistImageFile Name="public2_yingzhai3.png" Key="public2_yingzhai3.png" />
           </PlistImageFolder>
         </Folder>
         <Project Name="MainScene.csd" Type="Scene" />
