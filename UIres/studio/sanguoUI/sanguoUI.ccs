@@ -155,6 +155,18 @@
             <PlistImageFile Name="public2_yingzhai1.png" Key="public2_yingzhai1.png" />
             <PlistImageFile Name="public2_yingzhai2.png" Key="public2_yingzhai2.png" />
             <PlistImageFile Name="public2_yingzhai3.png" Key="public2_yingzhai3.png" />
+            <PlistImageFile Name="public2_QiZhi1.png" Key="public2_QiZhi1.png" />
+            <PlistImageFile Name="public2_QiZhi2.png" Key="public2_QiZhi2.png" />
+            <PlistImageFile Name="public2_QiZhi3.png" Key="public2_QiZhi3.png" />
+            <PlistImageFile Name="public2_QiZhi4.png" Key="public2_QiZhi4.png" />
+            <PlistImageFile Name="public2_Quan1.png" Key="public2_Quan1.png" />
+            <PlistImageFile Name="public2_Quan2.png" Key="public2_Quan2.png" />
+            <PlistImageFile Name="public2_Quan3.png" Key="public2_Quan3.png" />
+            <PlistImageFile Name="public2_Quan4.png" Key="public2_Quan4.png" />
+            <PlistImageFile Name="public2_directionWheel.png" Key="public2_directionWheel.png" />
+            <PlistImageFile Name="public2_directionWheelBg.png" Key="public2_directionWheelBg.png" />
+            <PlistImageFile Name="public2_quanBlue.png" Key="public2_quanBlue.png" />
+            <PlistImageFile Name="public2_quanPurple.png" Key="public2_quanPurple.png" />
           </PlistImageFolder>
         </Folder>
         <Project Name="MainScene.csd" Type="Scene" />
