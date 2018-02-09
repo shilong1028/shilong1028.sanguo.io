@@ -12,6 +12,10 @@ end
 
 function BattleMapLayer:onExit()
     --G_Log_Info("BattleMapLayer:onExit()")
+    if self.OnTouchMoveUpdateEntry then
+		self.OnTouchMoveUpdateEntry = g_Scheduler:unscheduleScriptEntry(self.OnTouchMoveUpdateEntry)
+	end
+	self.OnTouchMoveUpdateEntry = nil
 end
 
 function BattleMapLayer:init()  
@@ -103,16 +107,138 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 		end
 	end
 
+	self:setRoleMapPosition(cc.p(g_WinSize.width/2, g_WinSize.height/2))  --视图中心在地图上的位置
+
 	g_pGameLayer:showLoadingLayer(false) 
 end
 
+function BattleMapLayer:CreateDirectionWheel(bShow, moveLen, movePos, beginPos)
+	local wheelBgImg = self:getChildByTag(9999)   --摇杆底盘
+	local directionWheelImg = self:getChildByTag(9998)   --摇杆小球
+	if bShow == true then
+		if not wheelBgImg then
+			wheelBgImg = cc.Sprite:createWithSpriteFrameName("public2_directionWheelBg.png")
+			self:addChild(wheelBgImg, 200, 9999)
+		end
+		if not directionWheelImg then
+			directionWheelImg = cc.Sprite:createWithSpriteFrameName("public2_directionWheel.png")
+			self:addChild(directionWheelImg, 201, 9998)
+		end
+		wheelBgImg:setPosition(beginPos)
+		directionWheelImg:setPosition(beginPos)
+
+		local offsetPos = cc.p(movePos.x - beginPos.x, movePos.y - beginPos.y)
+
+		if moveLen > 80 then
+			local scale = 80/moveLen
+			local newPos = cc.p(beginPos.x + offsetPos.x*scale, beginPos.y + offsetPos.y*scale)
+			directionWheelImg:setPosition(newPos)
+		else
+			directionWheelImg:setPosition(movePos)
+		end
+
+		wheelBgImg:setVisible(true)
+		directionWheelImg:setVisible(true)
+	else
+		if wheelBgImg then
+			wheelBgImg:setVisible(false)
+		end
+		if directionWheelImg then
+			directionWheelImg:setVisible(false)
+		end
+	end
+end
+
+function BattleMapLayer:IsDirectionWheelVisible()
+	local bDirectionWheel = false  --摇杆是否出现了
+	local wheelBgImg = self:getChildByTag(9999)   --摇杆地盘
+	local directionWheelImg = self:getChildByTag(9998)   --摇杆小球
+	if wheelBgImg and directionWheelImg and wheelBgImg:isVisible() and directionWheelImg:isVisible() then
+		bDirectionWheel = true  --摇杆是否出现了
+	end
+	return bDirectionWheel
+end
+
+--显示或取消方向摇杆
+function BattleMapLayer:ShowDirectionWheel(bShow)
+	--print("ShowDirectionWheel(), bShow = ", bShow, "; self._TouchMoveLen = ", self._TouchMoveLen or 0)
+	if bShow == true then
+		if self._TouchBeginPos == nil or self._TouchMovePos == nil then
+			return 
+		end
+
+		self:CreateDirectionWheel(true, self._TouchMoveLen, self._TouchMovePos, self._TouchBeginPos)
+
+		local offsetPos = cc.p(self._TouchMovePos.x - self._TouchBeginPos.x, self._TouchMovePos.y - self._TouchBeginPos.y)
+		local offsetLen = cc.pGetDistance(cc.p(0, 0), offsetPos)
+		local scale = 50/offsetLen
+
+		local rolePos = cc.p(self.rolePos.x + offsetPos.x*scale, self.rolePos.y + offsetPos.y*scale)   --视图中心在地图上的位置
+		self:setRoleMapPosition(rolePos)
+		--hero:HeroMoveByDirectionWheel(offsetPos, self._TouchMoveLen, 0.1)
+	else
+		if self.OnTouchMoveUpdateEntry then
+			self.OnTouchMoveUpdateEntry = g_Scheduler:unscheduleScriptEntry(self.OnTouchMoveUpdateEntry)
+		end
+		self.OnTouchMoveUpdateEntry = nil
+
+		self:CreateDirectionWheel(false)
+	end
+end
+
 function BattleMapLayer:onTouchBegan(touch, event)
-    G_Log_Info("BattleMapLayer:onTouchBegan()")
-    local beginPos = touch:getLocation()   --直接从touch中获取,在getLocation()源码里会将坐标转成OpenGL坐标系,原点在屏幕左下角，x轴向右，y轴向上
+    --G_Log_Info("BattleMapLayer:onTouchBegan()")
+    --local beginPos = touch:getLocation()   --直接从touch中获取,在getLocation()源码里会将坐标转成OpenGL坐标系,原点在屏幕左下角，x轴向右，y轴向上
     --local point = touch:getLocationInView() --获得屏幕坐标系,原点在屏幕左上角，x轴向右，y轴向下
     --point = cc.Director:getInstance():convertToGL(point)  --先获得屏幕坐标，在调用convertToGL转成OpenGl坐标系
-    self:setRoleWinPosition(beginPos)
+    --self:setRoleWinPosition(beginPos)
+
+	self:ShowDirectionWheel(false)
+
+	self._TouchBeginPos = touch:getLocation()    --self:convertToNodeSpace(touch:getLocation())
+	self._TouchMovePos = nil
+	self._TouchMoveLen = 0
+
+	if self.OnTouchMoveUpdateEntry then
+		self.OnTouchMoveUpdateEntry = g_Scheduler:unscheduleScriptEntry(self.OnTouchMoveUpdateEntry)
+	end
+	self.OnTouchMoveUpdateEntry = nil
+
     return true   --只有当onTouchBegan的返回值是true时才执行后面的onTouchMoved和onTouchEnded触摸事件
+end
+
+function BattleMapLayer:onTouchMoved( touch,  event) 
+	if self._TouchBeginPos then 
+		--G_Log_Info("BattleMapLayer:onTouchMoved()")  
+		self._TouchMovePos = touch:getLocation()
+		self._TouchMoveLen = cc.pGetDistance(self._TouchBeginPos, self._TouchMovePos)
+		if self._TouchMoveLen > 0.1  then    --and self._TouchMoveLen < 300.0
+			if self.OnTouchMoveUpdateEntry == nil then
+				local function OnTouchMoveUpdate(dt)
+					self:ShowDirectionWheel(true)
+				end
+				self.OnTouchMoveUpdateEntry = g_Scheduler:scheduleScriptFunc(OnTouchMoveUpdate, 0.1, false)
+			end
+		else
+			self:ShowDirectionWheel(false)
+		end
+	else
+		self:ShowDirectionWheel(false)
+	end
+end
+
+function BattleMapLayer:onTouchEnded( touch,  event)
+	--G_Log_Info("BattleMapLayer:onTouchEnded()")  
+	local bDirectionWheel = self:IsDirectionWheelVisible()  --摇杆是否出现了
+	self:ShowDirectionWheel(false)
+
+	if self._TouchBeginPos == nil then
+		return
+	end
+
+	if bDirectionWheel == false then 
+        self:setRoleWinPosition(touch:getLocation())   --移动到到点击点位置
+	end
 end
 
 
@@ -145,6 +271,7 @@ function BattleMapLayer:setRoleMapPosition(rolePos)
 		rolePos.y = 0
 	end
 
+	self.rolePos = rolePos   --视图中心在地图上的位置
 	self:resetRootNodePos(rolePos)
 end
 

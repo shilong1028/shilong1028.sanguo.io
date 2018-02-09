@@ -61,14 +61,17 @@ end
 function CCLayerEx:initTouchEvent()
     --G_Log_Info("CCLayerEx:initTouchEvent()")
     local function onTouchBegan(touch, event)
-         self:onTouchBegan(touch, event);
+        --G_Log_Info("CCLayerEx:onTouchBegan()")
+        return self:onTouchBegan(touch, event)
     end
 
     local function onTouchMoved(touch, event)
-         self:onTouchMoved(touch, event);
+        --G_Log_Info("CCLayerEx:onTouchMoved()")
+        self:onTouchMoved(touch, event);
     end
 
     local function onTouchEnded(touch, event)
+        --G_Log_Info("CCLayerEx:onTouchEnded()")
         self:onTouchEnded(touch, event)
     end
 

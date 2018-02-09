@@ -64,6 +64,18 @@ end
 --战场营寨
 function NpcNode:initYingZhaiData(data)  
     --G_Log_Info("NpcNode:initYingZhaiData()")
+
+    local quanStr = "public2_quanPurple.png"
+    local qizhiStr = "public2_QiZhi2.png"
+    if data.bEnemy == 0 then  --我方
+        quanStr = "public2_quanBlue.png"
+        qizhiStr = "public2_QiZhi1.png"
+    end
+
+    self.quanImage = cc.Sprite:createWithSpriteFrameName(quanStr)   
+    self.quanImage:setScale(500/self.quanImage:getContentSize().width)  --500像素内可见
+    self:addChild(self.quanImage) 
+
     local imgStr = "public2_yingzhai1.png"   --中军
     if data.type == 1 then   --1中军2前锋3左军4右军5后卫
         imgStr = "public2_yingzhai1.png"
@@ -86,10 +98,15 @@ function NpcNode:initYingZhaiData(data)
     else
         self.yingzhaiName:setColor(g_ColorDef.Red)
     end
+    self.yingzhaiName:setPosition(cc.p(imgSize.width/2, -10))
     self.yingzhaiName:enableBold()   --加粗
     self.yingzhaiName:enableShadow()   --阴影
     --self.yingzhaiName:enableOutline(g_ColorDef.White, 1)   --描边
-    self:addChild(self.yingzhaiName, 5)  
+    self.yingzhaiImage:addChild(self.yingzhaiName, 5)  
+
+    self.qizhiImage = cc.Sprite:createWithSpriteFrameName(qizhiStr) 
+    self.qizhiImage:setPosition(cc.p(imgSize.width/2 + self.qizhiImage:getContentSize().width/2, imgSize.height + 10))
+    self.yingzhaiImage:addChild(self.qizhiImage) 
 end
 
 

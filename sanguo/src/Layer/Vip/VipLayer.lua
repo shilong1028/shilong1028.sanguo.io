@@ -215,8 +215,7 @@ end
 function VipLayer:initTouchEvent()
     --G_Log_Info("VipLayer:initTouchEvent()")
     local function onTouchBegan(touch, event)
-        self:onTouchBegan(touch, event)
-        return true
+        return self:onTouchBegan(touch, event)
     end
 
     local function onTouchMoved(touch, event)
