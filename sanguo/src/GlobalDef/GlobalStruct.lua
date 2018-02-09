@@ -144,6 +144,18 @@ function  g_tbl_mapJumpPtConfig:ctor()
 	self.map_pt2 = cc.p(0,0)   --以左上角为00原点的地图坐标
 end 
 
+--战场营寨表结构类
+g_tbl_battleYingZhaiConfig = class("g_tbl_battleYingZhaiConfig",__BaseStruct)
+function  g_tbl_battleYingZhaiConfig:ctor()
+	self.id_str = ""        --营寨ID字符串
+	self.name = ""     --营寨名称
+	self.type = 0     --营寨类型 1中军2前锋3左军4右军5后卫
+	self.bEnemy = 0     --0我方营寨，1敌方营寨
+	self.battleMapId = 0     --营寨所在地图Id
+	self.map_posX = 0   --以左上角为00原点的地图坐标
+	self.map_posY = 0    --以左上角为00原点的地图坐标   
+end 
+
 --州表结构类
 g_tbl_zhouConfig = class("g_tbl_zhouConfig",__BaseStruct)
 function  g_tbl_zhouConfig:ctor()

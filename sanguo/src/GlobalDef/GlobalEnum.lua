@@ -20,6 +20,7 @@ g_GameLayerTag = {
 	LAYER_TAG_MAINMENU = 20,    --主界面菜单层，主菜单以后的层可以被删除，即各显示界面层
 	LAYER_TAG_MAINCITY = 21,    --主城界面 
 	LAYER_TAG_CHINAMAP = 22,    --全国地图界面,
+	LAYER_TAG_BATTLEMAP = 23,    --战场地图界面,
 	
 	--主菜单层，主城层，全国地图层，不删除仅仅隐藏， 
 	LAYER_TAG_SocketAni = 99,    --网络通信动画层,
@@ -84,6 +85,7 @@ g_ColorDef = {
 	DarkRed = cc.c3b(101,9,9),
 	Yellow = cc.c3b(249,154,5),
 	Green = cc.c3b(0,128,0),
+	Blue = cc.c3b(0,127,255),
 }
 
 

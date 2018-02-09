@@ -67,23 +67,29 @@ function TBLMgr:LoadMapConfigTBL()
 
 		mapConfig.nearMapVec = {}    --相邻地图ID集合
 		local nearMaps = stream:ReadString()
-		local nearMapVec = string.split(nearMaps,";")
-		for k, vecStr in pairs(nearMapVec) do
-			local nearStrVec = string.split(vecStr,"-")
-			local nearVec = {}
-			for i, idx in pairs(nearStrVec) do
-				table.insert(nearVec, tonumber(idx))
+		if nearMaps ~= "" or nearMaps ~= "0" then
+			local nearMapVec = string.split(nearMaps,";")
+			for k, vecStr in pairs(nearMapVec) do
+				local nearStrVec = string.split(vecStr,"-")
+				local nearVec = {}
+				for i, idx in pairs(nearStrVec) do
+					table.insert(nearVec, tonumber(idx))
+				end
+				table.insert(mapConfig.nearMapVec, nearVec)
 			end
-			table.insert(mapConfig.nearMapVec, nearVec)
 		end
 
 		mapConfig.cityIdStrVec = {}
 		local citys = stream:ReadString()  --string 地图上所属郡城分布点
-		mapConfig.cityIdStrVec = string.split(citys,";")
+		if citys ~= "" or citys ~= "0" then
+			mapConfig.cityIdStrVec = string.split(citys,";")
+		end
 
 		mapConfig.jumpptIdStrVec = {}
 		local jump_pt = stream:ReadString()     --string 跳转到其他地图的传送点  
-		mapConfig.jumpptIdStrVec = string.split(jump_pt,";")
+		if jump_pt ~= "" or jump_pt ~= "0" then
+			mapConfig.jumpptIdStrVec = string.split(jump_pt,";")
+		end
 
 		--游戏附加数据
 		mapConfig.wTitleCount = math.floor(mapConfig.width / 32)   --32*32为单位块的横向数量
@@ -200,6 +206,45 @@ function TBLMgr:getMapJumpPtConfigTBLDataById(IdStr)
 	end
 
 	return clone(self.mapJumpPtConfigVec[""..IdStr])
+end
+
+--战场营寨表结构类
+function TBLMgr:LoadBattleYingZhaiConfigTBL()
+	--G_Log_Info("TBLMgr:LoadBattleYingZhaiConfigTBL()")
+	if self.battleYingZhaiConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/yingzhaiConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.battleYingZhaiConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local battleYingZhaiConfig = g_tbl_battleYingZhaiConfig:new()
+		battleYingZhaiConfig.id_str = stream:ReadString()         --营寨ID字符串
+		battleYingZhaiConfig.name = stream:ReadString()      --营寨名称
+		battleYingZhaiConfig.type = stream:ReadShort()     --营寨类型 1中军2前锋3左军4右军5后卫
+		battleYingZhaiConfig.bEnemy = stream:ReadShort()     --0我方营寨，1敌方营寨
+		battleYingZhaiConfig.battleMapId = stream:ReadUInt()     --营寨所在地图Id
+		battleYingZhaiConfig.map_posX = stream:ReadUInt()   --以左上角为00原点的地图坐标
+		battleYingZhaiConfig.map_posY = stream:ReadUInt()    --以左上角为00原点的地图坐标 
+
+		self.battleYingZhaiConfigVec[""..battleYingZhaiConfig.id_str] = battleYingZhaiConfig
+		--table.insert(self.battleYingZhaiConfigVec, battleYingZhaiConfig)
+	end
+end
+
+function TBLMgr:getBattleYingZhaiTBLDataById(IdStr)
+	--G_Log_Info("TBLMgr:getBattleYingZhaiTBLDataById(), IdStr = %s", IdStr)
+	if self.battleYingZhaiConfigVec == nil then
+		self:LoadBattleYingZhaiConfigTBL()
+	end
+
+	return clone(self.battleYingZhaiConfigVec[""..IdStr])
 end
 
 --州数据表

@@ -42,7 +42,7 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --className�
             layer:setLocalZOrder(-1)
         elseif uid == g_GameLayerTag.LAYER_TAG_MAINCITY then  --主城层
             layer:setLocalZOrder(-10)
-        elseif uid == g_GameLayerTag.LAYER_TAG_CHINAMAP then  --地图层
+        elseif uid == g_GameLayerTag.LAYER_TAG_CHINAMAP or uid == g_GameLayerTag.LAYER_TAG_BATTLEMAP then  --地图层,战场
             layer:setLocalZOrder(-20)
         elseif uid == g_GameLayerTag.LAYER_TAG_DialogOkCancelLayer then   --okcancel对话框  
             layer:setLocalZOrder(100)
@@ -70,6 +70,7 @@ function GameLayer:RemoveChildByUId(uid)
     if layer ~= nil then
         self:removeChildByTag(uid)
     end
+    return nil
 end
 
 function GameLayer:RemoveAllChild()
@@ -126,6 +127,8 @@ function GameLayer:GameMainLayer()
     self.MenuLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_MAINMENU, "MainMenuLayer")
     --地图层
     self.MapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_CHINAMAP, "MapLayer")
+    --战场地图
+    self.BattleMapLayer = self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_BATTLEMAP)
 
     local roleMapPosData = g_HeroDataMgr:GetHeroMapPosData()
     local mapId = roleMapPosData.mapId
@@ -141,6 +144,16 @@ function GameLayer:GameMainLayer()
     else
         self.MapLayer:changeMapBymapId(mapId, rolePos)
     end
+end
+
+--进入战斗场景
+function GameLayer:GameBattleMapLayer(battleMapId, zhenXingData)
+    self.MenuLayer = self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_MAINMENU)
+    self.MapLayer = self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+
+    --战场地图
+    self.BattleMapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_BATTLEMAP, "Battle.BattleMapLayer")
+    self.BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 end
 
 --[[

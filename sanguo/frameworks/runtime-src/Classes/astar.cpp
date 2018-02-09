@@ -510,16 +510,18 @@ bool CAStar::FindPath (int startingX, int startingY,int targetX, int targetY)
 		list<SPoint> tempPath;
 		do
 		{
-			SPoint p;
-			p.x = pathX*m_tileSize+m_tileSize/2;
-			p.y = pathY*m_tileSize+m_tileSize/2;
-			tempPath.push_front(p);
 			//d.Look up the parent of the current cell.	
 			if (pathX < 0 || pathX >= m_mapWidth || pathY < 0 || pathY >= m_mapHeight)
 			{
 				log("FindPath:%d %d %d %d %d", m_mapId, startX, startY, targetX, targetY);
 				log("FindPath:%d %d %d %d", pathX, pathY, m_mapWidth, m_mapHeight);
+				break;
 			}
+
+			SPoint p;
+			p.x = pathX*m_tileSize + m_tileSize / 2;
+			p.y = pathY*m_tileSize + m_tileSize / 2;
+			tempPath.push_front(p);
 			
 			tempx = m_pParentX[pathX][pathY];		
 			pathY = m_pParentY[pathX][pathY];

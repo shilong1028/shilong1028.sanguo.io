@@ -1,5 +1,5 @@
 
---NpcNode用于构造静态展示模型，比如城池展示模型等
+--NpcNode用于构造静态展示模型，比如城池展示模型、跳转点、战场营寨等
 local NpcNode = class("NpcNode", CCLayerEx) --填入类名
 
 function NpcNode:create()   --自定义的create()创建方法
@@ -59,6 +59,37 @@ function NpcNode:initMapJumpPtData(data)
     self.jumpPtName = cc.Label:createWithTTF(data.desc, g_sDefaultTTFpath, g_defaultJumpPtFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
     self.jumpPtName:setColor(g_ColorDef.Yellow)
     self:addChild(self.jumpPtName, 5)  
+end
+
+--战场营寨
+function NpcNode:initYingZhaiData(data)  
+    --G_Log_Info("NpcNode:initYingZhaiData()")
+    local imgStr = "public2_yingzhai1.png"   --中军
+    if data.type == 1 then   --1中军2前锋3左军4右军5后卫
+        imgStr = "public2_yingzhai1.png"
+    elseif data.type >= 2 and data.type <= 4 then
+        imgStr = "public2_yingzhai2.png"
+    elseif data.type == 5 then
+        imgStr = "public2_yingzhai3.png"
+    end
+
+    self.yingzhaiImage = cc.Sprite:createWithSpriteFrameName(imgStr) 
+    --self.yingzhaiImage:setScale(0.8)
+    self:addChild(self.yingzhaiImage)  
+    local imgSize = self.yingzhaiImage:getContentSize()
+    self:setContentSize(imgSize)
+
+    local textSize = cc.size(imgSize.width*2, g_defaultChengFontSize + 6)
+    self.yingzhaiName = cc.Label:createWithTTF(data.name, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+    if data.bEnemy == 0 then  --我方
+        self.yingzhaiName:setColor(g_ColorDef.Blue)
+    else
+        self.yingzhaiName:setColor(g_ColorDef.Red)
+    end
+    self.yingzhaiName:enableBold()   --加粗
+    self.yingzhaiName:enableShadow()   --阴影
+    --self.yingzhaiName:enableOutline(g_ColorDef.White, 1)   --描边
+    self:addChild(self.yingzhaiName, 5)  
 end
 
 
