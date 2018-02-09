@@ -6,6 +6,7 @@
         <Folder Name="csd">
           <Project Name="BagLayer.csd" Type="Layer" />
           <Project Name="BattleInfoLayer.csd" Type="Layer" />
+          <Project Name="BattleMenuLayer.csd" Type="Layer" />
           <Project Name="BattleResultLayer.csd" Type="Layer" />
           <Project Name="CreateRoleLayer.csd" Type="Layer" />
           <Project Name="DialogOkCancelLayer.csd" Type="Layer" />
@@ -34,6 +35,7 @@
           <Project Name="Zhen_XuanZhenNode.csd" Type="Node" />
           <Project Name="ZhenUINode.csd" Type="Node" />
           <Project Name="ZhenXingLayer.csd" Type="Layer" />
+          <Project Name="BattleOfficalNode.csd" Type="Layer" />
         </Folder>
         <Folder Name="font">
           <TTF Name="simkai.ttf" />
@@ -148,13 +150,10 @@
           </PlistImageFolder>
           <PlistImageFolder Image="PublicRes2.png" PListFile="PublicRes2.plist" Name=".PublicRes2_PList.Dir">
             <PlistImageFile Name="public2_chengchi.png" Key="public2_chengchi.png" />
+            <PlistImageFile Name="public2_directionWheel.png" Key="public2_directionWheel.png" />
+            <PlistImageFile Name="public2_directionWheelBg.png" Key="public2_directionWheelBg.png" />
             <PlistImageFile Name="public2_dushi.png" Key="public2_dushi.png" />
             <PlistImageFile Name="public2_guanai.png" Key="public2_guanai.png" />
-            <PlistImageFile Name="public2_sel_green.png" Key="public2_sel_green.png" />
-            <PlistImageFile Name="public2_sel_orange.png" Key="public2_sel_orange.png" />
-            <PlistImageFile Name="public2_yingzhai1.png" Key="public2_yingzhai1.png" />
-            <PlistImageFile Name="public2_yingzhai2.png" Key="public2_yingzhai2.png" />
-            <PlistImageFile Name="public2_yingzhai3.png" Key="public2_yingzhai3.png" />
             <PlistImageFile Name="public2_QiZhi1.png" Key="public2_QiZhi1.png" />
             <PlistImageFile Name="public2_QiZhi2.png" Key="public2_QiZhi2.png" />
             <PlistImageFile Name="public2_QiZhi3.png" Key="public2_QiZhi3.png" />
@@ -163,10 +162,13 @@
             <PlistImageFile Name="public2_Quan2.png" Key="public2_Quan2.png" />
             <PlistImageFile Name="public2_Quan3.png" Key="public2_Quan3.png" />
             <PlistImageFile Name="public2_Quan4.png" Key="public2_Quan4.png" />
-            <PlistImageFile Name="public2_directionWheel.png" Key="public2_directionWheel.png" />
-            <PlistImageFile Name="public2_directionWheelBg.png" Key="public2_directionWheelBg.png" />
             <PlistImageFile Name="public2_quanBlue.png" Key="public2_quanBlue.png" />
             <PlistImageFile Name="public2_quanPurple.png" Key="public2_quanPurple.png" />
+            <PlistImageFile Name="public2_sel_green.png" Key="public2_sel_green.png" />
+            <PlistImageFile Name="public2_sel_orange.png" Key="public2_sel_orange.png" />
+            <PlistImageFile Name="public2_yingzhai1.png" Key="public2_yingzhai1.png" />
+            <PlistImageFile Name="public2_yingzhai2.png" Key="public2_yingzhai2.png" />
+            <PlistImageFile Name="public2_yingzhai3.png" Key="public2_yingzhai3.png" />
           </PlistImageFolder>
         </Folder>
         <Project Name="MainScene.csd" Type="Scene" />
