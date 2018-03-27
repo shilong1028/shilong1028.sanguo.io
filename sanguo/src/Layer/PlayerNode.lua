@@ -27,12 +27,7 @@ function PlayerNode:init()
     self.curPos = nil  --人物当前位置
 
     self.MoveSpeed = 160   --人物移动速度，默认180,从人物3属性中读取
-
-    self.FollowPathVec = {}  --跟随路径点
-    self.FollowPathCount = 20   --最多的跟随点数量
-
     self.curMoveState = g_PlayerState.HMS_NOR   --人物移动的方向状态标识
-    --self.lastMoveState = g_PlayerState.HMS_NOR   --人物移动的方向状态标识
     self.FaceDirection = g_PlayerState.HMS_DOWN   --人物脸朝向，等于非站立状态
 end
 
@@ -118,15 +113,6 @@ function PlayerNode:setPauseAutoPath(bPause)
 	end
 end
 
---添加跟随点（宠物跟随时用到）
-function PlayerNode:AddFollowPathPos(pos)
-	--保存跟随点
-	table.insert(self.FollowPathVec, pos)  --跟随路径点
-	if(#self.FollowPathVec > self.FollowPathCount) then  --最多的跟随点数量
-		table.remove(self.FollowPathVec,1)
-	end
-end
-
 function PlayerNode:AutoPathUpdate()
 	--G_Log_Info("PlayerNode:AutoPathUpdate()")
 	if self.bPauseAutoMoving == true then  --暂停自动寻路，比如触发战斗，打开界面等
@@ -157,11 +143,6 @@ function PlayerNode:AutoPathUpdate()
 		local nowPos = cc.p(self:getPosition())
 		local dirIdx = g_pMapMgr:CalcMoveDirection(nowPos, dirPos)
 		
-		-- --判断是否改变移动状态
-  --       if(dirIdx == g_PlayerState.HMS_NOR) then   --表示站立
-  --       	EndAutoPathUpdate()
-  --           return
-		-- end
         --当不是当前正在执行的动作时（转向的时候，切换动作）
 		if(self.curMoveState ~= dirIdx)then
 			self:ChangeMoveAnimate(self.curMoveState, dirIdx)   --切换站立或跑步动画
@@ -198,25 +179,8 @@ function PlayerNode:AutoPathUpdate()
 			end
 		end
 
-		--保存跟随点
-		--self:AddFollowPathPos(movePos)
-
-		--重新定位人物坐标，并向服务器发送最新位置信息（服务器为地图坐标，即左上角为原点）
-		--MsgDealMgr:QueryHeroMove(MSG_CLIENT_UPDATE_POS,math.floor(movePos.x),math.floor(gameMap:GetMapSize().height - movePos.y));
 		self.mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
 		if self.mapLayer then
-			--移动完成后延时继续执行下一步操作
-			-- local function MoveEndCallBack()
-			-- 	self:AutoPathUpdate()
-			-- end
-
-			-- local moveTime = StepLen/self.MoveSpeed	
-			-- local moveTo = cc.MoveTo:create(moveTime, dirPos)
-			-- self:runAction(cc.Sequence:create(moveTo, cc.CallFunc:create(function() 
-			-- 	MoveEndCallBack()
-		 --    end)))
-		 --    mapLayer:resetRootNodePos(dirPos, moveTime)
-
 		    local moveTime = StepLen/self.MoveSpeed	
 		    local step = moveTime/0.02
 		    local posOffset = cc.p((dirPos.x - nowPos.x)/step, (dirPos.y - nowPos.y)/step )
@@ -263,7 +227,6 @@ function PlayerNode:ChangeMoveAnimate(nowState, nextState)
 		return
 	end
 
-	--self.lastMoveState = nowState
 	self.curMoveState = nextState
 
 	local heroImod = self.ImodAni_zd   --站立动画

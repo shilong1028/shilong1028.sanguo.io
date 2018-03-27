@@ -2,8 +2,8 @@
 --MapLayer用于显示地图及点击处理等
 local MapLayer = class("MapLayer", CCLayerEx) --填入类名
 
-local PlayerNode = require "Layer.PlayerNode"
-local NpcNode = require "Layer.NpcNode"
+local PlayerNode = require "Layer.PlayerNode"  --PlayerNode用于展示有属性的活动的模型，比如主角，敌怪等
+local NpcNode = require "Layer.NpcNode"  --NpcNode用于构造静态展示模型，比如城池展示模型、跳转点、战场营寨等
 
 function MapLayer:create()   --自定义的create()创建方法
     --G_Log_Info("MapLayer:create()")

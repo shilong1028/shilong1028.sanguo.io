@@ -2,7 +2,7 @@
 --BattleMapLayer用于显示战斗（PVP)地图及点击处理等
 local BattleMapLayer = class("BattleMapLayer", CCLayerEx) --填入类名
 
-local NpcNode = require "Layer.NpcNode"
+local NpcNode = require "Layer.NpcNode"  --NpcNode用于构造静态展示模型，比如城池展示模型、跳转点、战场营寨等
 
 function BattleMapLayer:create()   --自定义的create()创建方法
     --G_Log_Info("BattleMapLayer:create()")
@@ -16,100 +16,6 @@ function BattleMapLayer:onExit()
 		self.OnTouchMoveUpdateEntry = g_Scheduler:unscheduleScriptEntry(self.OnTouchMoveUpdateEntry)
 	end
 	self.OnTouchMoveUpdateEntry = nil
-end
-
-function BattleMapLayer:init()  
-    --G_Log_Info("BattleMapLayer:init()")
-    --ClearMapObj不清除的数据
-    self.rootNode = nil    --根节点
-    self.mapConfigData = nil  --地图表配置数据 
-	self.movePathMapByMap = nil  --跨地图跳转数据
-
-    -------ClearMapObj清除的数据----------
-
-
-    self:initTouchEvent()   --注册点击事件
-end
-
-function BattleMapLayer:ClearMapObj()
-	self.rootNode:removeAllChildren()
-    self.rootNode:setPosition(cc.p(0,0))
-
-end
-
-function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)  
-    G_Log_Info("BattleMapLayer:ShowBattleMapImg() battleMapId = %d", battleMapId)
-    collectgarbage("collect")
-    -- avoid memory leak
-    collectgarbage("setpause", 100)
-    collectgarbage("setstepmul", 5000)
-    math.randomseed(os.time())
-
-    g_pGameLayer:showLoadingLayer(true) 
-
-    self.mapConfigData = nil
-    self.mapConfigData = g_pMapMgr:LoadMapStreamData(battleMapId)  --地图表配置数据 
-    if self.mapConfigData == nil then
-    	G_Log_Error("MapLayer--mapConfigData = nil")
-    	return
-    end
-    --G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
-    if not self.rootNode then
-    	self.rootNode = cc.Node:create()
-    	self:addChild(self.rootNode)
-    end
-
-    self:ClearMapObj()
-
-    self.rootNode:setContentSize(cc.size(self.mapConfigData.width, self.mapConfigData.height))
-    --self.rootNode:setPosition(cc.p((g_WinSize.width - self.mapConfigData.width)/2, (g_WinSize.height - self.mapConfigData.height)/2))
-
-    local imgCount = self.mapConfigData.img_count
-    local imgName = self.mapConfigData.path
-
-    local imgWidth = 512  --self.mapConfigData.width / self.mapConfigData.column
-    local imgHeight = 512   --self.mapConfigData.height / self.mapConfigData.row
-
-    local posX = 0
-	local posY = self.mapConfigData.height
-
-	for i=1, imgCount do
-		local str = string.format("Map/%s/images/%s_%d.jpg", imgName, imgName, i)
-		local Spr = cc.Sprite:create(str)
-		if Spr == nil then
-			G_Log_Error("MapLayer--mapImg = nil, mapName = %s, idx = %d, str = %s", imgName, i, str)
-		end
-		Spr:setAnchorPoint(cc.p(0, 1))
-		Spr:setPosition(cc.p(posX, posY))
-		self.rootNode:addChild(Spr, 1)
-		--G_Log_Info("idx = %d, posX = %d, posY = %d", i, posX, posY)
-
-		if i%self.mapConfigData.column == 0 then
-			posX = 0
-			posY = posY - imgHeight
-		else
-			posX = posX + imgWidth
-		end
-	end
-
-	--添加城池(0我方营寨,1敌方营寨)
-	self.myYingZhaiVec = {}
-	self.enemyYingZhaiVec = {}
-	for k, yingzhaiId in pairs(self.mapConfigData.cityIdStrVec) do
-		local yingzhaiData = g_pTBLMgr:getBattleYingZhaiTBLDataById(yingzhaiId)
-		if yingzhaiData then
-		    local yingzhai = NpcNode:create()
-		    yingzhai:initYingZhaiData(yingzhaiData)
-		    self.rootNode:addChild(yingzhai, 10)
-
-		    local pos = cc.p(yingzhaiData.map_posX, self.mapConfigData.height - yingzhaiData.map_posY)    --以左上角为00原点转为左下角为原点的像素点
-		    yingzhai:setPosition(pos)
-		end
-	end
-
-	self:setRoleMapPosition(cc.p(g_WinSize.width/2, g_WinSize.height/2))  --视图中心在地图上的位置
-
-	g_pGameLayer:showLoadingLayer(false) 
 end
 
 function BattleMapLayer:CreateDirectionWheel(bShow, moveLen, movePos, beginPos)
@@ -325,6 +231,103 @@ function BattleMapLayer:showTouchImg(pos)
 
     self.m_touchImg:setVisible(true)
     self.m_touchImg:runAction(cc.Sequence:create(cc.Show:create(), animate, cc.Hide:create()))
+end
+
+--------------------------------- 初始化数据 ---------------------------------
+
+function BattleMapLayer:init()  
+    --G_Log_Info("BattleMapLayer:init()")
+    --ClearMapObj不清除的数据
+    self.rootNode = nil    --根节点
+    self.mapConfigData = nil  --地图表配置数据 
+
+    -------ClearMapObj清除的数据----------
+
+
+    self:initTouchEvent()   --注册点击事件
+end
+
+function BattleMapLayer:ClearMapObj()
+	self.rootNode:removeAllChildren()
+    self.rootNode:setPosition(cc.p(0,0))
+
+end
+
+function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)  
+    G_Log_Info("BattleMapLayer:ShowBattleMapImg() battleMapId = %d", battleMapId)
+    collectgarbage("collect")
+    -- avoid memory leak
+    collectgarbage("setpause", 100)
+    collectgarbage("setstepmul", 5000)
+    math.randomseed(os.time())
+
+    g_pGameLayer:showLoadingLayer(true) 
+
+    self.zhenXingData = zhenXingData    --我方出战阵容数据
+
+    self.mapConfigData = nil
+    self.mapConfigData = g_pMapMgr:LoadMapStreamData(battleMapId)  --地图表配置数据 
+    if self.mapConfigData == nil then
+    	G_Log_Error("MapLayer--mapConfigData = nil")
+    	return
+    end
+    --G_Log_Dump(self.mapConfigData, "self.mapConfigData = ")
+    if not self.rootNode then
+    	self.rootNode = cc.Node:create()
+    	self:addChild(self.rootNode)
+    end
+
+    self:ClearMapObj()
+
+    self.rootNode:setContentSize(cc.size(self.mapConfigData.width, self.mapConfigData.height))
+    --self.rootNode:setPosition(cc.p((g_WinSize.width - self.mapConfigData.width)/2, (g_WinSize.height - self.mapConfigData.height)/2))
+
+    local imgCount = self.mapConfigData.img_count
+    local imgName = self.mapConfigData.path
+
+    local imgWidth = 512  --self.mapConfigData.width / self.mapConfigData.column
+    local imgHeight = 512   --self.mapConfigData.height / self.mapConfigData.row
+
+    local posX = 0
+	local posY = self.mapConfigData.height
+
+	for i=1, imgCount do
+		local str = string.format("Map/%s/images/%s_%d.jpg", imgName, imgName, i)
+		local Spr = cc.Sprite:create(str)
+		if Spr == nil then
+			G_Log_Error("MapLayer--mapImg = nil, mapName = %s, idx = %d, str = %s", imgName, i, str)
+		end
+		Spr:setAnchorPoint(cc.p(0, 1))
+		Spr:setPosition(cc.p(posX, posY))
+		self.rootNode:addChild(Spr, 1)
+		--G_Log_Info("idx = %d, posX = %d, posY = %d", i, posX, posY)
+
+		if i%self.mapConfigData.column == 0 then
+			posX = 0
+			posY = posY - imgHeight
+		else
+			posX = posX + imgWidth
+		end
+	end
+
+	--添加城池(0我方营寨,1敌方营寨)
+	self.myYingZhaiVec = {}
+	self.enemyYingZhaiVec = {}
+	for k, yingzhaiId in pairs(self.mapConfigData.cityIdStrVec) do
+		local yingzhaiData = g_pTBLMgr:getBattleYingZhaiTBLDataById(yingzhaiId)
+		if yingzhaiData then
+		    local yingzhai = NpcNode:create()
+		    yingzhai:initYingZhaiData(yingzhaiData)
+		    self.rootNode:addChild(yingzhai, 10)
+
+		    local pos = cc.p(yingzhaiData.map_posX, self.mapConfigData.height - yingzhaiData.map_posY)    --以左上角为00原点转为左下角为原点的像素点
+		    yingzhai:setPosition(pos)
+		end
+	end
+
+	self:setRoleMapPosition(cc.p(g_WinSize.width/2, g_WinSize.height/2))  --视图中心在地图上的位置
+
+	g_pGameLayer:showLoadingLayer(false) 
 end
 
 

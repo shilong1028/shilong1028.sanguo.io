@@ -630,11 +630,11 @@ function ZhenXingLayer:touchEvent(sender, eventType)
             self:setRadioPanel(2)
         elseif sender == self.xuan_Button_left then   --选阵界面的选中左侧攻击阵型
             local attZhenXingData = g_HeroDataMgr:getAttackZheXMLData()   --玩家攻击阵型数据
-            g_pGameLayer:GameBattleMapLayer(10, attZhenXingData)   --进入战场
+            g_pGameLayer:ShowGameBattleMapLayer(10, attZhenXingData)   --进入战场
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
         elseif sender == self.xuan_Button_right then   --选阵界面的选中右侧防御阵型
             local defZhenXingData = g_HeroDataMgr:getDefendZheXMLData()   --玩家防御阵型数据
-            g_pGameLayer:GameBattleMapLayer(10, defZhenXingData)   --进入战场
+            g_pGameLayer:ShowGameBattleMapLayer(10, defZhenXingData)   --进入战场
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
         elseif sender == self.xuan_Button_AttEdit then   --选阵界面的编辑攻击阵型
             self.bZhenEditType = 1   --布阵界面编辑的阵型类型，0默认，1攻击阵型，2防御阵型
