@@ -263,8 +263,6 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 
     g_pGameLayer:showLoadingLayer(true) 
 
-    self.zhenXingData = zhenXingData    --我方出战阵容数据
-
     self.mapConfigData = nil
     self.mapConfigData = g_pMapMgr:LoadMapStreamData(battleMapId)  --地图表配置数据 
     if self.mapConfigData == nil then
@@ -324,6 +322,27 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 		    yingzhai:setPosition(pos)
 		end
 	end
+
+	self.zhenXingData = zhenXingData    --我方出战阵容数据
+	--[[
+		zhenXingData.zhenPos = 0   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+		zhenXingData.generalIdStr = "0"    --营寨武将ID字符串
+		zhenXingData.unitData = {
+			unitData.bingIdStr = "0"   --部曲兵种（游击|轻装|重装|精锐|禁军的弓刀枪骑兵）
+			unitData.bingCount = 0    --部曲兵力数量
+			unitData.level = 0    --部曲等级
+			unitData.exp = 0      --部曲训练度
+			unitData.shiqi = 0    --部曲士气
+			unitData.zhenId = "0"   --部曲阵法Id
+			--附加信息
+			unitData.bingData = nil   --兵种数据
+			unitData.zhenData = nil   --阵型数据
+		}
+		--附加信息
+		zhenXingData.generalData = nil   --营寨武将数据
+	]]
+
+
 
 	self:setRoleMapPosition(cc.p(g_WinSize.width/2, g_WinSize.height/2))  --视图中心在地图上的位置
 
