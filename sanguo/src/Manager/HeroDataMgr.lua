@@ -704,11 +704,12 @@ function HeroDataMgr:SetBagXMLData(itemVec)
     local bItemIdChanged = false   --总物品是否有增加的新物品或删除的物品
 
     for i=1, #itemVec do
+        local itemId = itemVec[i].itemId
         local itemIdStr = tostring(itemVec[i].itemId)
         local itemNum = tonumber(itemVec[i].num)
 
         --军队数量，金币粮草药材数量同步到camp数据中
-        if itemIdStr == "401" or itemIdStr == "402" or itemIdStr == "403" or itemIdStr == "404" then
+        if itemId >= g_ItemIdDef.Item_Id_qiangbing and itemId <= g_ItemIdDef.Item_Id_qibing then    --枪刀弓骑兵
             local troops = g_HeroDataMgr:GetHeroCampTroops()
             troops = troops + itemNum
             g_HeroDataMgr:SetHeroCampTroops(troops)
@@ -717,7 +718,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
             local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_troopEvent)
             event._usedata = string.format("%d", troops)  
             g_EventDispatcher:dispatchEvent(event) 
-        elseif itemIdStr == "6001" then  --金币
+        elseif itemId == g_ItemIdDef.Item_Id_glod then  --金币
             local money = g_HeroDataMgr:GetHeroCampMoney()
             money = money + itemNum
             g_HeroDataMgr:SetHeroCampMoney(money)
@@ -726,7 +727,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
             local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_moneyEvent)
             event._usedata = string.format("%d", money)  
             g_EventDispatcher:dispatchEvent(event) 
-        elseif itemIdStr == "6002" then   --粮草
+        elseif itemId == g_ItemIdDef.Item_Id_food then   --粮草
             local food = g_HeroDataMgr:GetHeroCampFood()
             food = food + itemNum
             g_HeroDataMgr:SetHeroCampFood(food)
@@ -735,7 +736,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
             local event = cc.EventCustom:new(g_EventListenerCustomName.MainMenu_foodEvent)
             event._usedata = string.format("%d", food)  
             g_EventDispatcher:dispatchEvent(event) 
-        elseif itemIdStr == "6003" then   --药材
+        elseif itemId == g_ItemIdDef.Item_Id_drug then   --药材
             local drug = g_HeroDataMgr:GetHeroCampDrug()
             drug = drug + itemNum
             g_HeroDataMgr:SetHeroCampDrug(drug)

@@ -61,21 +61,31 @@ g_PlayerState = {
 
 --物品类型定义值
 g_ItemType = {
-	Item_Glod = 1,  --金钱
-	Item_Food = 2,  --粮草
-	Item_Drug = 3,  --药材
-	Item_Army = 4, --预备役士兵
-	Item_Id_qiangbing = 401,   --枪兵
-	Item_Id_daobing = 402,   --刀兵
-	Item_Id_gongbing = 403,   --弓兵
-	Item_Id_qibing = 404,   --骑兵
+	Item_Glod = 1,  --金钱(类型)
+	Item_Food = 2,  --粮草(类型)
+	Item_Drug = 3,  --药材(类型)
+	Item_Army = 4, --预备役士兵(类型)
+	Item_SoldierEquip = 5, --士兵装备(类型)
+	Item_General_toukui = 81,  --武将头盔(类型)
+	Item_General_wuqi = 82,  --武将武器(类型)
+	Item_General_hujia = 83,  --武将护甲(类型)
+	Item_General_zuoqi = 84,  --武将坐骑(类型)
+	Item_General_daoju = 85,  --武将道具(类型)
+}
 
-	Item_SoldierEquip = 5, --士兵装备
-	Item_General_toukui = 81,  --武将头盔
-	Item_General_wuqi = 82,  --武将武器
-	Item_General_hujia = 83,  --武将护甲
-	Item_General_zuoqi = 84,  --武将坐骑
-	Item_General_daoju = 85,  --武将道具 
+g_ItemIdDef = {
+	Item_Id_qiangbing = 401,   --枪兵(ID)
+	Item_Id_daobing = 402,   --刀兵(ID)
+	Item_Id_gongbing = 403,   --弓兵(ID)
+	Item_Id_qibing = 404,   --骑兵(ID)
+	Item_Id_qiangji = 501,   --枪戟(ID)
+	Item_Id_daojian = 502,   --刀剑(ID)
+	Item_Id_gongnu = 503,   --弓弩(ID)
+	Item_Id_mapi = 504,   --马匹(ID)
+	Item_Id_bingjia = 505,   --弓弩(ID)
+	Item_Id_glod = 6001,  --金钱(ID)
+	Item_Id_food = 6002,  --粮草(ID)
+	Item_Id_drug = 6003,  --药材(ID)
 }
 
 --用户自定义颜色值

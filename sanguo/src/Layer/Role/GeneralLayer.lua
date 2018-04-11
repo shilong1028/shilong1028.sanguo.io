@@ -523,28 +523,28 @@ function GeneralLayer:initUnitUI()
         iconImg:setPosition(cc.p(self.unit_Image_qibing:getContentSize().width/2, self.unit_Image_qibing:getContentSize().height/2))
 
         local bingId = tonumber(unitData.bingIdStr)
-        if bingId == g_ItemType.Item_Id_qiangbing then   --枪兵
+        if bingId == g_ItemIdDef.Item_Id_qiangbing then   --枪兵
             self.GeneralUnitVec[1] = unitData
             self.unit_Image_qiangbing:addChild(iconImg)
             if defaultIdx < 0 then
                 self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qiangbing:getPosition()))
                 defaultIdx = 1 
             end
-        elseif bingId == g_ItemType.Item_Id_daobing then   --刀兵
+        elseif bingId == g_ItemIdDef.Item_Id_daobing then   --刀兵
             self.GeneralUnitVec[2] = unitData
             self.unit_Image_daobing:addChild(iconImg)
             if defaultIdx < 0 then
                 self.unit_Image_sel:setPosition(cc.p(self.unit_Image_daobing:getPosition()))
                 defaultIdx = 2 
             end
-        elseif bingId == g_ItemType.Item_Id_gongbing then   --弓兵
+        elseif bingId == g_ItemIdDef.Item_Id_gongbing then   --弓兵
             self.GeneralUnitVec[3] = unitData
             self.unit_Image_gongbing:addChild(iconImg)
             if defaultIdx < 0 then
                 self.unit_Image_sel:setPosition(cc.p(self.unit_Image_gongbing:getPosition()))
                 defaultIdx = 3 
             end
-        elseif bingId == g_ItemType.Item_Id_qibing then   --骑兵
+        elseif bingId == g_ItemIdDef.Item_Id_qibing then   --骑兵
             self.GeneralUnitVec[4] = unitData
             self.unit_Image_qibing:addChild(iconImg)
             if defaultIdx < 0 then
@@ -559,7 +559,7 @@ function GeneralLayer:initUnitUI()
     local PrepTroops = g_HeroDataMgr:GetHeroPrepTroops()  --获取可用劳力（预备役）人数
     self.unit_Text_bingCount:setString(string.format(lua_Role_String11, PrepTroops) )  --预备兵数量
 
-    local bingjiaItem = g_HeroDataMgr:GetBagItemDataById("504")
+    local bingjiaItem = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_bingjia))
     self.unit_Text_bingjia:setString(string.format(lua_Role_String12, bingjiaItem and bingjiaItem.num or 0) )  --兵甲数量
 
     self:initUnitRightUI(defaultIdx)
@@ -600,22 +600,22 @@ function GeneralLayer:initUnitRightUI(nType)
         self.unit_Text_numCount:setString(string.format("+%d(%d/%d)", 0, unitData.bingCount, self.GeneralData.maxBingCount))   --选中部曲的数量
         self.unit_Text_mapi:setString("")    --马匹数量
         if nType == 1 then
-            local item = g_HeroDataMgr:GetBagItemDataById("501")
+            local item = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_qiangji))
             self.unit_Text_bingqi:setString(string.format(lua_Role_String13, item and item.num or 0) )  --枪戟数
-            self:LoadSoliderItemList(g_ItemType.Item_Id_qiangbing)
+            self:LoadSoliderItemList(g_ItemIdDef.Item_Id_qiangbing)
         elseif nType == 2 then
-            local item = g_HeroDataMgr:GetBagItemDataById("502")
-            self.unit_Text_bingqi:setString(string.format(lua_Role_String14, item and item.num or 0) )  --刀枪数
-            self:LoadSoliderItemList(g_ItemType.Item_Id_daobing)
+            local item = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_daojian))
+            self.unit_Text_bingqi:setString(string.format(lua_Role_String14, item and item.num or 0) )  --刀剑数
+            self:LoadSoliderItemList(g_ItemIdDef.Item_Id_daobing)
         elseif nType == 3 then
-            local item = g_HeroDataMgr:GetBagItemDataById("503")
+            local item = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_gongnu))
             self.unit_Text_bingqi:setString(string.format(lua_Role_String15, item and item.num or 0) )  --弓弩数
-            self:LoadSoliderItemList(g_ItemType.Item_Id_gongbing)
+            self:LoadSoliderItemList(g_ItemIdDef.Item_Id_gongbing)
         elseif nType == 4 then
             self.unit_Text_bingqi:setString("")   --兵器数量
-            local item = g_HeroDataMgr:GetBagItemDataById("505")
+            local item = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_mapi))
             self.unit_Text_mapi:setString(string.format(lua_Role_String16, item and item.num or 0) )  --马匹数
-            self:LoadSoliderItemList(g_ItemType.Item_Id_qibing)
+            self:LoadSoliderItemList(g_ItemIdDef.Item_Id_qibing)
         end
         self.unit_Text_UnitName:setString(lua_unitNameVec[nType])   --部曲名称
         self.unit_Text_UnitLv:setString(string.format(lua_Role_String17, unitData.level))   --部曲等级

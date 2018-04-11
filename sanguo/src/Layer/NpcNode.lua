@@ -76,13 +76,13 @@ function NpcNode:initYingZhaiData(data)
     self.quanImage:setScale(500/self.quanImage:getContentSize().width)  --500像素内可见
     self:addChild(self.quanImage) 
 
-    local imgStr = "public2_yingzhai1.png"   --中军
-    if data.type == 1 then   --1中军2前锋3左军4右军5后卫
-        imgStr = "public2_yingzhai1.png"
-    elseif data.type >= 2 and data.type <= 4 then
+    local imgStr = "public2_yingzhai2.png"  
+    if data.type >= 1 and data.type <= 3 then  --1前锋2左军3右军4后卫5中军
         imgStr = "public2_yingzhai2.png"
-    elseif data.type == 5 then
+    elseif data.type == 4 then
         imgStr = "public2_yingzhai3.png"
+    elseif data.type == 5 then 
+        imgStr = "public2_yingzhai1.png"  --中军
     end
 
     self.yingzhaiImage = cc.Sprite:createWithSpriteFrameName(imgStr) 

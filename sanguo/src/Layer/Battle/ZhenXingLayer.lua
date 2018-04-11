@@ -476,28 +476,28 @@ function ZhenXingLayer:initBuZhenRightUI()
             iconImg:setPosition(cc.p(self.buzhen_qiangbing:getContentSize().width/2, self.buzhen_qiangbing:getContentSize().height/2))
 
             local bingId = tonumber(unitData.bingIdStr)   
-            if bingId == g_ItemType.Item_Id_qiangbing then  --布阵界面枪兵组
+            if bingId == g_ItemIdDef.Item_Id_qiangbing then  --布阵界面枪兵组
                 self.buzhenGeneralData_UnitVec[1] = unitData
                 self.buzhen_qiangbing:addChild(iconImg)
                 if defaultIdx < 0 then
                     self.buzhen_selImg:setPosition(cc.p(self.buzhen_qiangbing:getPosition()))
                     defaultIdx = 1 
                 end
-            elseif bingId == g_ItemType.Item_Id_daobing then   --布阵界面刀兵组
+            elseif bingId == g_ItemIdDef.Item_Id_daobing then   --布阵界面刀兵组
                 self.buzhenGeneralData_UnitVec[2] = unitData
                 self.buzhen_daobing:addChild(iconImg)
                 if defaultIdx < 0 then
                     self.buzhen_selImg:setPosition(cc.p(self.buzhen_daobing:getPosition()))
                     defaultIdx = 2 
                 end
-            elseif bingId == g_ItemType.Item_Id_gongbing then   --布阵界面弓兵组
+            elseif bingId == g_ItemIdDef.Item_Id_gongbing then   --布阵界面弓兵组
                 self.buzhenGeneralData_UnitVec[3] = unitData
                 self.buzhen_gongbing:addChild(iconImg)
                 if defaultIdx < 0 then
                     self.buzhen_selImg:setPosition(cc.p(self.buzhen_gongbing:getPosition()))
                     defaultIdx = 3 
                 end
-            elseif bingId == g_ItemType.Item_Id_qibing then  --布阵界面骑兵组
+            elseif bingId == g_ItemIdDef.Item_Id_qibing then  --布阵界面骑兵组
                 self.buzhenGeneralData_UnitVec[4] = unitData
                 self.buzhen_qibing:addChild(iconImg)
                 if defaultIdx < 0 then

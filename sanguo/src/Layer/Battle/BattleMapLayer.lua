@@ -3,6 +3,7 @@
 local BattleMapLayer = class("BattleMapLayer", CCLayerEx) --填入类名
 
 local NpcNode = require "Layer.NpcNode"  --NpcNode用于构造静态展示模型，比如城池展示模型、跳转点、战场营寨等
+local BattleOfficalNode = require "Layer.Battle.BattleOfficalNode"  --BattleOfficalNode 用于战斗地图中的武将表现
 
 function BattleMapLayer:create()   --自定义的create()创建方法
     --G_Log_Info("BattleMapLayer:create()")
@@ -313,17 +314,33 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 	self.enemyYingZhaiVec = {}
 	for k, yingzhaiId in pairs(self.mapConfigData.cityIdStrVec) do
 		local yingzhaiData = g_pTBLMgr:getBattleYingZhaiTBLDataById(yingzhaiId)
+		--[[
+		battleYingZhaiConfig.id_str = stream:ReadString()         --营寨ID字符串
+		battleYingZhaiConfig.name = stream:ReadString()      --营寨名称
+		battleYingZhaiConfig.type = stream:ReadShort()     --营寨类型 1前锋2左军3右军4后卫5中军
+		battleYingZhaiConfig.bEnemy = stream:ReadShort()     --0我方营寨，1敌方营寨
+		battleYingZhaiConfig.battleMapId = stream:ReadUInt()     --营寨所在地图Id
+		battleYingZhaiConfig.map_posX = stream:ReadUInt()   --以左上角为00原点的地图坐标
+		battleYingZhaiConfig.map_posY = stream:ReadUInt()    --以左上角为00原点的地图坐标 
+		]]
 		if yingzhaiData then
-		    local yingzhai = NpcNode:create()
-		    yingzhai:initYingZhaiData(yingzhaiData)
-		    self.rootNode:addChild(yingzhai, 10)
+		    local yingzhaiNode = NpcNode:create()
+		    yingzhaiNode:initYingZhaiData(yingzhaiData)
+		    self.rootNode:addChild(yingzhaiNode, 10)
 
 		    local pos = cc.p(yingzhaiData.map_posX, self.mapConfigData.height - yingzhaiData.map_posY)    --以左上角为00原点转为左下角为原点的像素点
-		    yingzhai:setPosition(pos)
+		    yingzhaiNode:setPosition(pos)
+
+		    if yingzhaiData.bEnemy == 0 then  --0我方营寨，1敌方营寨
+		    	table.insert(self.myYingZhaiVec, yingzhaiNode)
+		    else
+		    	table.insert(self.enemyYingZhaiVec, yingzhaiNode)
+		    end
 		end
 	end
 
-	self.zhenXingData = zhenXingData    --我方出战阵容数据
+	self.zhenXingData = zhenXingData    --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
+	--dump(self.zhenXingData, "self.zhenXingData = ")
 	--[[
 		zhenXingData.zhenPos = 0   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 		zhenXingData.generalIdStr = "0"    --营寨武将ID字符串
@@ -341,12 +358,41 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 		--附加信息
 		zhenXingData.generalData = nil   --营寨武将数据
 	]]
+	self.myOfficalNodeVec = {}
+	for k, battleOfficalData in pairs(zhenXingData) do   --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
+		if type(battleOfficalData) == "table" then
+			local officalNode = BattleOfficalNode:create()
+			officalNode:initBattleOfficalData(battleOfficalData)
+			self.rootNode:addChild(officalNode, 20)
 
+			local pos = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.myYingZhaiVec)
+			officalNode:setPosition(pos)
 
+			table.insert(self.myOfficalNodeVec, officalNode)
+		end
+	end
 
 	self:setRoleMapPosition(cc.p(g_WinSize.width/2, g_WinSize.height/2))  --视图中心在地图上的位置
 
 	g_pGameLayer:showLoadingLayer(false) 
+end
+
+function BattleMapLayer:getSrcOrDestPosByYingzhai(zhenPos, yingzhaiVec)
+	local pos = nil
+	if zhenPos >= 5 and zhenPos <= 7 then
+		zhenPos = 5 
+	end
+	if zhenPos >= 1 and zhenPos <= 5 then
+		for k, yingzhaiData in pairs(yingzhaiVec) do
+			--zhenPos  1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+			--yingzhaiData.type 营寨类型 1前锋2左军3右军4后卫5中军
+			if zhenPos == yingzhaiData.type then
+				pos = cc.p(yingzhaiData.map_posX, self.mapConfigData.height - yingzhaiData.map_posY)    --以左上角为00原点转为左下角为原点的像素点
+				break;
+			end
+		end
+	end
+	return pos 
 end
 
 
