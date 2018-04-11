@@ -246,12 +246,12 @@ function HeroDataMgr:initAttackZheXMLData()
                 zhenUnit.generalIdStr = attZhenXML:getNodeAttrValue(nodeStr, "generalIdStr")
 
                 local armyUnit = g_tbl_armyUnitConfig:new()
-                armyUnit.bingIdStr = attZhenXML:getNodeAttrValue(armyUnitNode, "bingIdStr")
-                armyUnit.bingCount = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "bingCount"))
-                armyUnit.level = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "level"))
-                armyUnit.exp = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "exp"))
-                armyUnit.shiqi = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "shiqi"))
-                armyUnit.zhenId = attZhenXML:getNodeAttrValue(armyUnitNode, "zhenId")
+                armyUnit.bingIdStr = attZhenXML:getNodeAttrValue(nodeStr, "bingIdStr")
+                armyUnit.bingCount = tonumber(attZhenXML:getNodeAttrValue(nodeStr, "bingCount"))
+                armyUnit.level = tonumber(attZhenXML:getNodeAttrValue(nodeStr, "level"))
+                armyUnit.exp = tonumber(attZhenXML:getNodeAttrValue(nodeStr, "exp"))
+                armyUnit.shiqi = tonumber(attZhenXML:getNodeAttrValue(nodeStr, "shiqi"))
+                armyUnit.zhenId = attZhenXML:getNodeAttrValue(nodeStr, "zhenId")
 
                 zhenUnit.unitData = armyUnit
 
