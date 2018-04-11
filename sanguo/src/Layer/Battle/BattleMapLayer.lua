@@ -372,6 +372,31 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 		end
 	end
 
+	--敌方部曲
+	local enemyUnitIdVec = self.mapConfigData.jumpptIdStrVec  --战场地图jump_pt标识敌方部曲数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+	self.enemyZhenXingData = {-1, -1, -1, -1, -1, -1, -1}
+	for k, idStr in pairs(enemyUnitIdVec) do
+		local enemyUnitData = g_pTBLMgr:getMapEnemyConfigById(idStr)
+		if enemyConfig and type(enemyConfig.zhenUnit) == "table" then
+			enemyConfig.zhenUnit.zhenPos = k   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+			self.enemyZhenXingData[k] = enemyConfig.zhenUnit
+		end
+	end
+
+	self.enemyOfficalNodeVec = {}
+	for k, battleOfficalData in pairs(self.enemyZhenXingData) do   --敌方出战阵容数据(1-7个数据，-1标识没有武将出战)
+		if type(battleOfficalData) == "table" then
+			local officalNode = BattleOfficalNode:create()
+			officalNode:initBattleOfficalData(battleOfficalData)
+			self.rootNode:addChild(officalNode, 20)
+
+			local pos = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.enemyYingZhaiVec)
+			officalNode:setPosition(pos)
+
+			table.insert(self.enemyOfficalNodeVec, officalNode)
+		end
+	end
+
 	self:setRoleMapPosition(cc.p(g_WinSize.width/2, g_WinSize.height/2))  --视图中心在地图上的位置
 
 	g_pGameLayer:showLoadingLayer(false) 
