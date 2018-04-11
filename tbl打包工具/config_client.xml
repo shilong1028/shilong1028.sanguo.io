@@ -20,5 +20,6 @@
 		<package xml="vipConfig_client.xml"/>
 		<package xml="zhouConfig_client.xml"/>
 		<package xml="yingzhaiConfig_client.xml"/>
+		<package xml="mapEnemyConfig_client.xml"/>
 	</solution>
 </config>

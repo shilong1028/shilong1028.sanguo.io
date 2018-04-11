@@ -94,20 +94,39 @@ function BattleOfficalNode:initBattleOfficalData(battleOfficalData)
             unitData.shiqi = 0    --部曲士气
             unitData.zhenId = "0"   --部曲阵法Id
             --附加信息
-            unitData.bingData = nil   --兵种数据   --和generalData数据结构相同
+            unitData.bingData = {
+                bingData.id_str = stream:ReadString()    --官职ID字符串
+                bingData.name = stream:ReadString()     --名称
+                bingData.type = stream:ReadWord()    --官职类型，0通用，1主角，2武将，3军师
+                bingData.quality = stream:ReadWord()    --品质,0五品以下，1五品，2四品，3三品，4二品，5一品，6王侯，7皇帝
+                bingData.hp = stream:ReadUInt()    --附加血量值
+                bingData.mp = stream:ReadUInt()        --附加智力值
+                bingData.troops = stream:ReadUInt()    --附加带兵数       
+                bingData.subs = {}     --下属官职id_str集合,-表示连续区间，;表示间隔区间
+                bingData.desc = stream:ReadString()    --官职介绍
+            }
             unitData.zhenData = nil   --阵型数据
         }
         --附加信息  --营寨武将数据
         battleOfficalData.generalData = {
-            officalConfig.id_str = stream:ReadString()    --官职ID字符串
-            officalConfig.name = stream:ReadString()     --名称
-            officalConfig.type = stream:ReadWord()    --官职类型，0通用，1主角，2武将，3军师
-            officalConfig.quality = stream:ReadWord()    --品质,0五品以下，1五品，2四品，3三品，4二品，5一品，6王侯，7皇帝
-            officalConfig.hp = stream:ReadUInt()    --附加血量值
-            officalConfig.mp = stream:ReadUInt()        --附加智力值
-            officalConfig.troops = stream:ReadUInt()    --附加带兵数       
-            officalConfig.subs = {}     --下属官职id_str集合,-表示连续区间，;表示间隔区间
-            officalConfig.desc = stream:ReadString()    --官职介绍
+            generalData.id_str = "0"   --武将ID字符串(xml保存)
+            generalData.name = ""     --武将名称
+            generalData.level = 0     --武将等级(xml保存)
+            generalData.type = 0    --将领类型，1英雄，2武将，3军师
+            generalData.hp = 0    --初始血量值
+            generalData.mp = 0        --初始智力值
+            generalData.atk = 0     --初始攻击力
+            generalData.def = 0     --初始防御力
+            generalData.skillVec = {}    --初始技能，技能lv-ID字符串以;分割(xml保存)
+            generalData.equipVec = {}    --初始装备，装备lv-ID字符串以;分割(xml保存)
+            generalData.desc = ""    --描述
+
+            --附加属性(xml保存)
+            generalData.exp = 0   --战斗经验
+            generalData.offical = "0"    --官职ID字符串，官职可以提升武将血智攻防、额外带兵数（默认带1000兵）等属性
+            generalData.zhongcheng = 100   --武将忠诚度
+            generalData.bingTypeVec = {}    --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种（每个兵种仅可组建一支部曲）
+            generalData.armyUnitVec = {}    --g_tbl_armyUnitConfig:new()   --武将部曲数据
         }
     ]]
 
@@ -116,7 +135,7 @@ function BattleOfficalNode:initBattleOfficalData(battleOfficalData)
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() generalData = nil")
         return
     end
-    battleOfficalData.unitData.bingData = g_HeroDataMgr:GetSingleGeneralData(battleOfficalData.unitData.bingIdStr)
+    battleOfficalData.unitData.bingData = g_pTBLMgr:getOfficalConfigById(battleOfficalData.unitData.bingIdStr)
     if battleOfficalData.unitData.bingData == nil then
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() bingData = nil")
         return
