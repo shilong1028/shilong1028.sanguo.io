@@ -130,12 +130,16 @@ function BattleOfficalNode:initBattleOfficalData(battleOfficalData)
         }
     ]]
 
-    battleOfficalData.generalData = g_HeroDataMgr:GetSingleGeneralData(battleOfficalData.generalIdStr)
+    if battleOfficalData.generalData == nil then
+        battleOfficalData.generalData = g_HeroDataMgr:GetSingleGeneralData(battleOfficalData.generalIdStr)
+    end
     if battleOfficalData.generalData == nil then
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() generalData = nil")
         return
     end
-    battleOfficalData.unitData.bingData = g_pTBLMgr:getGeneralConfigTBLDataById(battleOfficalData.unitData.bingIdStr)
+    if battleOfficalData.unitData.bingData == nil then
+        battleOfficalData.unitData.bingData = g_pTBLMgr:getGeneralConfigTBLDataById(battleOfficalData.unitData.bingIdStr)
+    end
     if battleOfficalData.unitData.bingData == nil then
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() bingData = nil")
         return

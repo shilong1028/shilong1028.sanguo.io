@@ -740,6 +740,8 @@ function GeneralLayer:touchEvent(sender, eventType)
                         unitData.level = 1
                     end
 
+                    unitData.shiqi = 100   --部曲士气默认100
+
                     g_HeroDataMgr:SetSingleGeneralUnit(self.GeneralData.id_str, unitData)   --保存玩家单个武将单个部曲数据到generalXML
 
                     self.GeneralUnitVec[self.SelUnitIdx] = unitData
