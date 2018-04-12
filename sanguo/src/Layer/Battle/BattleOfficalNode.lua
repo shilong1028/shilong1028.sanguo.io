@@ -135,7 +135,7 @@ function BattleOfficalNode:initBattleOfficalData(battleOfficalData)
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() generalData = nil")
         return
     end
-    battleOfficalData.unitData.bingData = g_pTBLMgr:getOfficalConfigById(battleOfficalData.unitData.bingIdStr)
+    battleOfficalData.unitData.bingData = g_pTBLMgr:getGeneralConfigTBLDataById(battleOfficalData.unitData.bingIdStr)
     if battleOfficalData.unitData.bingData == nil then
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() bingData = nil")
         return
@@ -172,7 +172,7 @@ function BattleOfficalNode:initBattleOfficalData(battleOfficalData)
     self.Text_shiqi:setString(battleOfficalData.unitData.shiqi.."/"..self.max_shiqi)
     --士兵数量条
     self.max_bingCount = battleOfficalData.unitData.bingCount
-    self.LoadingBar_solider:setPercent(100*battleOfficalData.unitData.bingCountp/self.max_bingCount)
+    self.LoadingBar_solider:setPercent(100*battleOfficalData.unitData.bingCount/self.max_bingCount)
     self.Text_solider:setString(battleOfficalData.unitData.bingCount.."/"..self.max_bingCount)
 
     --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下

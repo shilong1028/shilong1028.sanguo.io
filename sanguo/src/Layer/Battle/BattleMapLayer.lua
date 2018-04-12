@@ -332,9 +332,9 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 		    yingzhaiNode:setPosition(pos)
 
 		    if yingzhaiData.bEnemy == 0 then  --0我方营寨，1敌方营寨
-		    	table.insert(self.myYingZhaiVec, yingzhaiNode)
+		    	table.insert(self.myYingZhaiVec, {["node"]=yingzhaiNode, ["data"]=yingzhaiData})
 		    else
-		    	table.insert(self.enemyYingZhaiVec, yingzhaiNode)
+		    	table.insert(self.enemyYingZhaiVec, {["node"]=yingzhaiNode, ["data"]=yingzhaiData})
 		    end
 		end
 	end
@@ -377,11 +377,12 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 	self.enemyZhenXingData = {-1, -1, -1, -1, -1, -1, -1}
 	for k, idStr in pairs(enemyUnitIdVec) do
 		local enemyUnitData = g_pTBLMgr:getMapEnemyConfigById(idStr)
-		if enemyConfig and type(enemyConfig.zhenUnit) == "table" then
-			enemyConfig.zhenUnit.zhenPos = k   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
-			self.enemyZhenXingData[k] = enemyConfig.zhenUnit
+		if enemyUnitData and type(enemyUnitData.zhenUnit) == "table" then
+			enemyUnitData.zhenUnit.zhenPos = k   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+			self.enemyZhenXingData[k] = enemyUnitData.zhenUnit
 		end
 	end
+	--dump(self.enemyZhenXingData, "self.enemyZhenXingData = ")
 
 	self.enemyOfficalNodeVec = {}
 	for k, battleOfficalData in pairs(self.enemyZhenXingData) do   --敌方出战阵容数据(1-7个数据，-1标识没有武将出战)
@@ -407,12 +408,13 @@ function BattleMapLayer:getSrcOrDestPosByYingzhai(zhenPos, yingzhaiVec)
 	if zhenPos >= 5 and zhenPos <= 7 then
 		zhenPos = 5 
 	end
+
 	if zhenPos >= 1 and zhenPos <= 5 then
-		for k, yingzhaiData in pairs(yingzhaiVec) do
+		for k, yingzhai in pairs(yingzhaiVec) do
 			--zhenPos  1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 			--yingzhaiData.type 营寨类型 1前锋2左军3右军4后卫5中军
-			if zhenPos == yingzhaiData.type then
-				pos = cc.p(yingzhaiData.map_posX, self.mapConfigData.height - yingzhaiData.map_posY)    --以左上角为00原点转为左下角为原点的像素点
+			if zhenPos == yingzhai.data.type then
+				pos = cc.p(yingzhai.data.map_posX, self.mapConfigData.height - yingzhai.data.map_posY)    --以左上角为00原点转为左下角为原点的像素点
 				break;
 			end
 		end

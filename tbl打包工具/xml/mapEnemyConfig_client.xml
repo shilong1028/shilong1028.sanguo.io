@@ -12,6 +12,6 @@
 		<field name="bingCount" type="int" size="4"/>
 		<field name="unitLv" type="int" size="4"/>
 		<field name="shiqi" type="int" size="4"/>
-		<field name="zhenId" type="int" size="4"/>
+		<field name="zhenId" type="string" size="64"/>
 	</table>
 </config>

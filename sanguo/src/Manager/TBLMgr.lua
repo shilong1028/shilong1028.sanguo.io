@@ -791,8 +791,8 @@ function TBLMgr:LoadMapEnemyConfigTBL()
 		enemyConfig.zhenUnit.zhenPos = 0   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 		local generalIdStr = stream:ReadString()    --敌武将ID字符串
 		enemyConfig.zhenUnit.generalIdStr = generalIdStr
-
-		local generalData = g_pTBLMgr:getOfficalConfigById(generalIdStr)
+		local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalIdStr)
+		if generalData == nil then generalData = {} end   --20000标识没有敌人部曲
 		generalData.level = stream:ReadUInt()   --武将等级(xml保存)
 		generalData.skillVec = {}   
 		local skillsStr = stream:ReadString()    --武将技能ID字符串以;分割
@@ -828,7 +828,7 @@ function TBLMgr:LoadMapEnemyConfigTBL()
 
 		enemyConfig.zhenUnit.unitData = unitData
 
-		self.skillConfigVec[""..mapEnemyConfigVec.id_str] = enemyConfig
+		self.mapEnemyConfigVec[""..enemyConfig.id_str] = enemyConfig
 	end
 end
 
