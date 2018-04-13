@@ -246,6 +246,35 @@ function BattleMapLayer:init()
 
 
     self:initTouchEvent()   --注册点击事件
+
+    self.world = nil  --刚体世界
+    --self:initPhysicsBody()
+end
+
+function BattleMapLayer:initPhysicsBody()
+	--刚体世界  cc.PhysicsBody
+    self.world = cc.Director:getInstance():getRunningScene():getPhysicsWorld()  --创建物理世界
+
+    self.world:setGravity(cc.p(0, 0))   --设置物理世界的重力
+
+    local debug = true
+    self.world:setDebugDrawMask(debug and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)   --设置显示debug
+
+    self.world:setAutoStep(false)   --物理世界自动同步关掉, 防止PhysicsBody会乱飞乱跳、抖动
+
+    self.world:setFixedUpdateRate(0)  --当传入参数为0时表示关闭fixed step system，默认值为零。其含义是每秒钟物理世界更新多少次，一般传入30-50左右足矣，数值越大物理模拟越精确，每秒更新次数过多性能也会下降。
+
+    --创建边界盒
+    local VisibleRect = cc.Director:getInstance():getOpenGLView():getVisibleRect()
+    local wall = cc.Node:create()
+    wall:setPhysicsBody(cc.PhysicsBody:createEdgeBox(cc.size(VisibleRect.width, VisibleRect.height),
+                                                     cc.PhysicsMaterial(0.1, 1.0, 0.0)))
+    wall:setPosition(VisibleRect:center());
+    self:addChild(wall)
+
+
+
+
 end
 
 function BattleMapLayer:ClearMapObj()

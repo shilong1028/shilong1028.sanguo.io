@@ -36,6 +36,16 @@
             <PreSize X="1.0000" Y="1.0000" />
             <FileData Type="PlistSubImage" Path="public2_sel_orange.png" Plist="plist/PublicRes2.plist" />
           </AbstractNodeData>
+          <AbstractNodeData Name="LoadingBarBg_mp" ActionTag="294081636" Tag="21" IconVisible="False" TopMargin="-32.5000" BottomMargin="117.5000" Scale9Enable="True" LeftEage="10" RightEage="10" TopEage="1" BottomEage="1" Scale9OriginX="10" Scale9OriginY="1" Scale9Width="11" Scale9Height="23" ctype="ImageViewObjectData">
+            <Size X="90.0000" Y="5.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="45.0000" Y="120.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.5000" Y="1.3333" />
+            <PreSize X="1.0000" Y="0.0556" />
+            <FileData Type="PlistSubImage" Path="public_bar1.png" Plist="plist/PublicRes.plist" />
+          </AbstractNodeData>
           <AbstractNodeData Name="LoadingBar_mp" ActionTag="255514159" Tag="36" IconVisible="False" TopMargin="-32.5000" BottomMargin="117.5000" ctype="LoadingBarObjectData">
             <Size X="90.0000" Y="5.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
@@ -58,6 +68,16 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
+          <AbstractNodeData Name="LoadingBarBg_hp" ActionTag="-654005" Tag="22" IconVisible="False" TopMargin="-12.5000" BottomMargin="97.5000" Scale9Enable="True" LeftEage="10" RightEage="10" TopEage="1" BottomEage="1" Scale9OriginX="10" Scale9OriginY="1" Scale9Width="11" Scale9Height="23" ctype="ImageViewObjectData">
+            <Size X="90.0000" Y="5.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="45.0000" Y="100.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.5000" Y="1.1111" />
+            <PreSize X="1.0000" Y="0.0556" />
+            <FileData Type="PlistSubImage" Path="public_bar1.png" Plist="plist/PublicRes.plist" />
+          </AbstractNodeData>
           <AbstractNodeData Name="LoadingBar_hp" ActionTag="-1472307948" Tag="37" IconVisible="False" TopMargin="-12.5000" BottomMargin="97.5000" ctype="LoadingBarObjectData">
             <Size X="90.0000" Y="5.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
@@ -79,6 +99,16 @@
             <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="LoadingBarBg_shiqi" ActionTag="-1230873705" Tag="23" IconVisible="False" TopMargin="97.5000" BottomMargin="-12.5000" Scale9Enable="True" LeftEage="10" RightEage="10" TopEage="1" BottomEage="1" Scale9OriginX="10" Scale9OriginY="1" Scale9Width="11" Scale9Height="23" ctype="ImageViewObjectData">
+            <Size X="90.0000" Y="5.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="45.0000" Y="-10.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.5000" Y="-0.1111" />
+            <PreSize X="1.0000" Y="0.0556" />
+            <FileData Type="PlistSubImage" Path="public_bar1.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
           <AbstractNodeData Name="LoadingBar_shiqi" ActionTag="-1289359273" Tag="46" IconVisible="False" TopMargin="97.5000" BottomMargin="-12.5000" ctype="LoadingBarObjectData">
             <Size X="90.0000" Y="5.0000" />
@@ -114,12 +144,22 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
+          <AbstractNodeData Name="LoadingBarBg_solider" ActionTag="-957512683" Tag="24" IconVisible="False" TopMargin="117.5000" BottomMargin="-32.5000" Scale9Enable="True" LeftEage="10" RightEage="10" TopEage="1" BottomEage="1" Scale9OriginX="10" Scale9OriginY="1" Scale9Width="11" Scale9Height="23" ctype="ImageViewObjectData">
+            <Size X="90.0000" Y="5.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="45.0000" Y="-30.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.5000" Y="-0.3333" />
+            <PreSize X="1.0000" Y="0.0556" />
+            <FileData Type="PlistSubImage" Path="public_bar1.png" Plist="plist/PublicRes.plist" />
+          </AbstractNodeData>
           <AbstractNodeData Name="LoadingBar_solider" ActionTag="-554959485" Tag="40" IconVisible="False" TopMargin="117.5000" BottomMargin="-32.5000" ctype="LoadingBarObjectData">
             <Size X="90.0000" Y="5.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="45.0000" Y="-30.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="0" G="0" B="255" />
+            <CColor A="255" R="0" G="128" B="0" />
             <PrePosition X="0.5000" Y="-0.3333" />
             <PreSize X="1.0000" Y="0.0556" />
             <ImageFileData Type="Default" Path="Default/LoadingBarFile.png" Plist="" />

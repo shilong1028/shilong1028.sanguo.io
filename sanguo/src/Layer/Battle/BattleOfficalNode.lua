@@ -28,16 +28,28 @@ function BattleOfficalNode:init()
     self.Image_sel:setVisible(false)
 
     --智力条
+    self.LoadingBarBg_mp = csb:getChildByName("LoadingBarBg_mp") 
     self.LoadingBar_mp = csb:getChildByName("LoadingBar_mp")   
+    self.LoadingBar_mp:setScale9Enabled(true)
+    self.LoadingBar_mp:loadTexture("public_bar4.png",ccui.TextureResType.plistType)   --LoadingBar要初始化一个纹理（虽然显示颜色由studio编辑时决定），否则不显示。
     self.Text_mp = csb:getChildByName("Text_mp") 
     --生命条
+    self.LoadingBarBg_hp = csb:getChildByName("LoadingBarBg_hp") 
     self.LoadingBar_hp = csb:getChildByName("LoadingBar_hp") 
+    self.LoadingBar_hp:setScale9Enabled(true)
+    self.LoadingBar_hp:loadTexture("public_bar3.png",ccui.TextureResType.plistType)
     self.Text_hp = csb:getChildByName("Text_hp") 
     --士气条
+    self.LoadingBarBg_shiqi = csb:getChildByName("LoadingBarBg_shiqi")
     self.LoadingBar_shiqi = csb:getChildByName("LoadingBar_shiqi") 
+    self.LoadingBar_shiqi:setScale9Enabled(true)
+    self.LoadingBar_shiqi:loadTexture("public_bar2.png",ccui.TextureResType.plistType)
     self.Text_shiqi = csb:getChildByName("Text_shiqi") 
     --士兵数量条
+    self.LoadingBarBg_solider = csb:getChildByName("LoadingBarBg_solider") 
     self.LoadingBar_solider = csb:getChildByName("LoadingBar_solider") 
+    self.LoadingBar_solider:setScale9Enabled(true)
+    self.LoadingBar_solider:loadTexture("public_bar5.png",ccui.TextureResType.plistType)
     self.Text_solider = csb:getChildByName("Text_solider") 
 
     self.Text_name = csb:getChildByName("Text_name")   --武将&兵种名称
