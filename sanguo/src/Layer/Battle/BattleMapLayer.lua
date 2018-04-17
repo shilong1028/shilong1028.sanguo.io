@@ -100,6 +100,11 @@ function BattleMapLayer:onTouchBegan(touch, event)
     --point = cc.Director:getInstance():convertToGL(point)  --先获得屏幕坐标，在调用convertToGL转成OpenGl坐标系
     --self:setRoleWinPosition(beginPos)
 
+	if self.lastSelOfficalNode then
+		self.lastSelOfficalNode:setBtnIsShow(false)
+		self.lastSelOfficalNode = nil
+	end
+
 	self:ShowDirectionWheel(false)
 
 	self._TouchBeginPos = touch:getLocation()    --self:convertToNodeSpace(touch:getLocation())
@@ -387,11 +392,20 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 		--附加信息
 		zhenXingData.generalData = nil   --营寨武将数据
 	]]
+
+	local function officalSelCallBack(node)
+		if self.lastSelOfficalNode and self.lastSelOfficalNode.generalIdStr ~= node.generalIdStr then
+			self.lastSelOfficalNode:setBtnIsShow(false)
+			self.lastSelOfficalNode = nil
+		end
+		self.lastSelOfficalNode = node
+	end
+
 	self.myOfficalNodeVec = {}
 	for k, battleOfficalData in pairs(zhenXingData) do   --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
 		if type(battleOfficalData) == "table" then
 			local officalNode = BattleOfficalNode:create()
-			officalNode:initBattleOfficalData(battleOfficalData)
+			officalNode:initBattleOfficalData(battleOfficalData, 1, officalSelCallBack)
 			self.rootNode:addChild(officalNode, 20)
 
 			local pos = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.myYingZhaiVec)
@@ -417,7 +431,7 @@ function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
 	for k, battleOfficalData in pairs(self.enemyZhenXingData) do   --敌方出战阵容数据(1-7个数据，-1标识没有武将出战)
 		if type(battleOfficalData) == "table" then
 			local officalNode = BattleOfficalNode:create()
-			officalNode:initBattleOfficalData(battleOfficalData)
+			officalNode:initBattleOfficalData(battleOfficalData, -1, officalSelCallBack)
 			self.rootNode:addChild(officalNode, 20)
 
 			local pos = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.enemyYingZhaiVec)

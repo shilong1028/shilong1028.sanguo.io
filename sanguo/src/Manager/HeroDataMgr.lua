@@ -704,7 +704,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
     local bItemIdChanged = false   --总物品是否有增加的新物品或删除的物品
 
     for i=1, #itemVec do
-        local itemId = itemVec[i].itemId
+        local itemId = tonumber(itemVec[i].itemId)
         local itemIdStr = tostring(itemVec[i].itemId)
         local itemNum = tonumber(itemVec[i].num)
 

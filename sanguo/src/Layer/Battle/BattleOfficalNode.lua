@@ -78,12 +78,14 @@ function BattleOfficalNode:init()
     self.btnIsShow = false   --操作按钮是否可见
 end
 
-function BattleOfficalNode:initBattleOfficalData(battleOfficalData)
+function BattleOfficalNode:initBattleOfficalData(battleOfficalData, nType, officalSelCallBack)
     if battleOfficalData == -1 or battleOfficalData == nil then
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() data = -1")
         return
     end
     self.battleOfficalData = battleOfficalData
+    self.officalType = nType or -1  --敌人-1，友军0，我军1
+    self.officalSelCallBack = officalSelCallBack
     --dump(battleOfficalData, "battleOfficalData = ")
     --[[
     [LUA-print] -         "class"        = *REF*
@@ -149,6 +151,8 @@ function BattleOfficalNode:initBattleOfficalData(battleOfficalData)
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() generalData = nil")
         return
     end
+    self.generalIdStr = battleOfficalData.generalData.id_str
+    
     if battleOfficalData.unitData.bingData == nil then
         battleOfficalData.unitData.bingData = g_pTBLMgr:getGeneralConfigTBLDataById(battleOfficalData.unitData.bingIdStr)
     end
@@ -215,13 +219,19 @@ function BattleOfficalNode:initBattleOfficalData(battleOfficalData)
 end
 
 function BattleOfficalNode:setBtnIsShow(val)
+    if self.officalType ~= 1 then  --敌人-1，友军0，我军1
+        return
+    end
     if val == nil then 
         val = not self.btnIsShow   --操作按钮是否可见
     end
     self.btnIsShow = val
+
+    self.Image_sel:setVisible(self.btnIsShow)
+
     self.rightBtn_atk1:setVisible(self.btnIsShow)   --进攻前锋/左翼/右翼/后卫
     self.rightBtn_atk2:setVisible(self.btnIsShow)  --进攻中军
-    if self.battleOfficalData.zhenPos >= 5 and self.battleOfficalData.zhenPos <=7 then
+    if self.battleOfficalData and self.battleOfficalData.zhenPos >= 5 and self.battleOfficalData.zhenPos <=7 then
         self.leftBtn_def1:setVisible(false) 
     else
         self.leftBtn_def1:setVisible(self.btnIsShow)  --回防前锋/左翼/右翼/后卫
@@ -244,6 +254,9 @@ function BattleOfficalNode:touchEvent(sender, eventType)
             self:setBtnIsShow(false)
         elseif sender == self.Image_bg then  --选中自身
             self:setBtnIsShow()
+            if self.officalSelCallBack then
+                self.officalSelCallBack(self)
+            end
         end
     end
 end

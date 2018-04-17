@@ -120,8 +120,8 @@ function BattleInfoLayer:touchEvent(sender, eventType)
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_BattleInfoLayer)
         elseif sender == self.Button_ok then   --调兵遣将
             g_BattleDataMgr:setBattleStoryData(self.storyData)
-            g_pGameLayer:showZhenXingLayer(true)
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_BattleInfoLayer)
+            g_pGameLayer:showZhenXingLayer(true)
         end
     end
 end

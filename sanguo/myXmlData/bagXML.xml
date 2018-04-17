@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <6003 itemId="6003" num="5000"/>
-    <404 itemId="404" num="1000"/>
     <6001 itemId="6001" num="6000"/>
     <6002 itemId="6002" num="6000"/>
-    <itemIdVecNode itemIdVec="6003;6002;404;6001"/>
+    <404 itemId="404" num="1000"/>
+    <itemIdVecNode itemIdVec="404;6002;6003;6001"/>
 </root>
