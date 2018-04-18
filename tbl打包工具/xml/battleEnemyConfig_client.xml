@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="GB2312"?>
 <!-- 打包配置文件 -->
 <config>
-	<table name="mapEnemyConfig" ExcelFile="mapEnemyConfig.xlsx" sheet="Sheet1" OutputFile="mapEnemyConfig_client.tbl">			
+	<table name="battleEnemyConfig" ExcelFile="battleEnemyConfig.xlsx" sheet="Sheet1" OutputFile="battleEnemyConfig_client.tbl">			
 		<field name="enemyId" type="string" size="64"/>
 		<field name="generalId" type="string" size="64"/>
 		<field name="generalLv" type="int" size="4"/>

@@ -147,13 +147,13 @@ function GameLayer:GameMainLayer()
 end
 
 --进入战斗场景
-function GameLayer:ShowGameBattleMapLayer(battleMapId, zhenXingData)
+function GameLayer:ShowGameBattleMapLayer()
     self.MenuLayer = self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_MAINMENU)
     self.MapLayer = self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
 
     --战场地图
     self.BattleMapLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_BATTLEMAP, "Battle.BattleMapLayer")
-    self.BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)
+    self.BattleMapLayer:initBattleData()
 end
 
 --[[

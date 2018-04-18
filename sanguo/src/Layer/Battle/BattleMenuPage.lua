@@ -64,9 +64,10 @@ function BattleMenuPage:init()
     self.Button_def:addTouchEventListener(handler(self,self.touchEvent))
 end
 
-function BattleMenuPage:initBattleData(battleMapId)
-    G_Log_Info("BattleMenuPage:initBattleData() battleMapId = %d", battleMapId)
-
+function BattleMenuPage:initBattleData()
+    --G_Log_Info("BattleMenuPage:initBattleData()")
+    --战斗剧情配置数据
+    self.battleStoryData = g_BattleDataMgr:getBattleStoryData()   --self.battleStoryData.battleIdStr   --战斗ID字符串，"0"标识无战斗
     
 end
 

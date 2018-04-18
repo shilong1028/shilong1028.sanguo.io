@@ -288,8 +288,8 @@ function BattleMapPage:ClearMapObj()
 
 end
 
-function BattleMapPage:ShowBattleMapImg(battleMapId, zhenXingData)  
-    G_Log_Info("BattleMapPage:ShowBattleMapImg() battleMapId = %d", battleMapId)
+function BattleMapPage:initBattleMapImgData(battleMapId, zhenXingData)  
+    G_Log_Info("BattleMapPage:initBattleMapImgData() battleMapId = %d", battleMapId)
     collectgarbage("collect")
     -- avoid memory leak
     collectgarbage("setpause", 100)
@@ -298,6 +298,14 @@ function BattleMapPage:ShowBattleMapImg(battleMapId, zhenXingData)
 
     g_pGameLayer:showLoadingLayer(true) 
 
+    --战斗战场配置数据
+    self.battleMapData = g_BattleDataMgr:getBattleMapData() 
+    if self.battleMapData == nil then
+    	G_Log_Error("MapLayer--battleMapData = nil")
+    	return
+    end
+
+    local battleMapId = self.battleMapData.mapId
     self.mapConfigData = nil
     self.mapConfigData = g_pMapMgr:LoadMapStreamData(battleMapId)  --地图表配置数据 
     if self.mapConfigData == nil then
@@ -346,7 +354,7 @@ function BattleMapPage:ShowBattleMapImg(battleMapId, zhenXingData)
 	--添加城池(0我方营寨,1敌方营寨)
 	self.myYingZhaiVec = {}
 	self.enemyYingZhaiVec = {}
-	for k, yingzhaiId in pairs(self.mapConfigData.cityIdStrVec) do
+	for k, yingzhaiId in pairs(self.battleMapData.yingzhaiVec) do   --战斗战场配置数据
 		local yingzhaiData = g_pTBLMgr:getBattleYingZhaiTBLDataById(yingzhaiId)
 		--[[
 		battleYingZhaiConfig.id_str = stream:ReadString()         --营寨ID字符串
@@ -373,7 +381,8 @@ function BattleMapPage:ShowBattleMapImg(battleMapId, zhenXingData)
 		end
 	end
 
-	self.zhenXingData = zhenXingData    --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
+	--战斗我方阵型数据
+    self.zhenXingData = g_BattleDataMgr:getBattleZhenXingData()  --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
 	--dump(self.zhenXingData, "self.zhenXingData = ")
 	--[[
 		zhenXingData.zhenPos = 0   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
@@ -416,10 +425,10 @@ function BattleMapPage:ShowBattleMapImg(battleMapId, zhenXingData)
 	end
 
 	--敌方部曲
-	local enemyUnitIdVec = self.mapConfigData.jumpptIdStrVec  --战场地图jump_pt标识敌方部曲数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+	local enemyUnitIdVec = self.battleMapData.enemyVec  --战斗战场配置数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 	self.enemyZhenXingData = {-1, -1, -1, -1, -1, -1, -1}
 	for k, idStr in pairs(enemyUnitIdVec) do
-		local enemyUnitData = g_pTBLMgr:getMapEnemyConfigById(idStr)
+		local enemyUnitData = g_pTBLMgr:getBattleEnemyConfigById(idStr)
 		if enemyUnitData and type(enemyUnitData.zhenUnit) == "table" then
 			enemyUnitData.zhenUnit.zhenPos = k   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 			self.enemyZhenXingData[k] = enemyUnitData.zhenUnit

@@ -36,15 +36,22 @@ function BattleMapLayer:init()
     self.BattleMapPage:setVisible(false)
 end
 
-function BattleMapLayer:ShowBattleMapImg(battleMapId, zhenXingData)  
+function BattleMapLayer:initBattleData()  
+    -- --战斗剧情配置数据
+    -- self.battleStoryData = g_BattleDataMgr:getBattleStoryData()   --self.battleStoryData.battleIdStr   --战斗ID字符串，"0"标识无战斗
+    -- --战斗战场配置数据
+    -- self.battleMapData = g_BattleDataMgr:getBattleMapData() 
+    -- --战斗阵型数据
+    -- self.battleZhenXingData = g_BattleDataMgr:getBattleZhenXingData()
+
 	--菜单层
     if self.BattleMenuPage then
-    	self.BattleMenuPage:initBattleData(battleMapId)
+    	self.BattleMenuPage:initBattleData()
     end
 
     --地图层
     if self.BattleMapPage then
-    	self.BattleMapPage:ShowBattleMapImg(battleMapId, zhenXingData) 
+    	self.BattleMapPage:initBattleMapImgData() 
     	self.BattleMapPage:setVisible(true)
     end
 end

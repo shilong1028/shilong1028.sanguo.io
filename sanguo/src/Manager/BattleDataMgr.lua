@@ -22,10 +22,35 @@ function BattleDataMgr:GetInstance()
 end
 
 ------------------------------------------------------
---设置剧情战斗数据
+--设置战斗剧情数据
 function BattleDataMgr:setBattleStoryData(storyData)
-    self.battleData = storyData
+    self.battleStoryData = clone(storyData)   --战斗剧情配置数据
+    if self.battleStoryData then
+        self.battleMapData = g_pTBLMgr:getBattleMapConfigById(self.battleStoryData.battleIdStr)   --战斗ID字符串，"0"标识无战斗
+    else
+        self.battleMapData = nil   --战斗战场配置数据
+    end
+    self.battleZhenXingData = nil   --战斗阵型数据
 end
+
+function BattleDataMgr:getBattleStoryData()
+    return clone(self.battleStoryData)
+end
+
+function BattleDataMgr:getBattleMapData()
+    return clone(self.battleMapData)
+end
+
+--设置战斗阵型数据
+function BattleDataMgr:setBattleZhenXingData(zhenxingData)
+    self.battleZhenXingData = clone(zhenxingData)
+end
+
+function BattleDataMgr:getBattleZhenXingData()
+    return clone(self.battleZhenXingData)
+end
+
+
 
 
 return BattleDataMgr

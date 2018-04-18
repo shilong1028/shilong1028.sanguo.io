@@ -22,7 +22,10 @@ function TBLMgr:init()
 	self.itemConfigVec = nil  --物品装备表
 	self.talkConfigVec = nil  --对话文本表
 	self.storyConfigVec = nil  --剧情表
-	self.vipConfigVec = nil    --vip
+	self.vipConfigVec = nil    --vip配置
+	self.officalConfigVec = nil   --官职配置
+	self.skillConfigVec = nil   --技能配置
+	self.batletEnemyConfigVec = nil   --战场敌部曲
 
 end
 
@@ -80,13 +83,13 @@ function TBLMgr:LoadMapConfigTBL()
 		end
 
 		mapConfig.cityIdStrVec = {}
-		local citys = stream:ReadString()  --string 地图上所属郡城分布点  --战场地图没有相邻地图near_map，citys标识我方营寨位置和敌方营寨位置
+		local citys = stream:ReadString()  --string 地图上所属郡城分布点  
 		if citys ~= "" or citys ~= "0" then
 			mapConfig.cityIdStrVec = string.split(citys,";")
 		end
 
 		mapConfig.jumpptIdStrVec = {}
-		local jump_pt = stream:ReadString()     --string 跳转到其他地图的传送点   --战场地图jump_pt标识敌方部曲数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+		local jump_pt = stream:ReadString()     --string 跳转到其他地图的传送点  
 		if jump_pt ~= "" or jump_pt ~= "0" then
 			mapConfig.jumpptIdStrVec = string.split(jump_pt,";")
 		end
@@ -521,6 +524,8 @@ function TBLMgr:LoadStoryConfigTBL()
 		if not storyConfig.vedio or storyConfig.vedio == "0" then
 			storyConfig.vedio = ""
 		end
+		storyConfig.battleIdStr = stream:ReadString()   --战斗ID字符串，"0"标识无战斗
+
 		storyConfig.enemyIdVec = {}
 		local enemyStr = stream:ReadString()    --敌方出战将领ID字符串，以;分割
 		storyConfig.enemyIdVec = string.split(enemyStr,";")
@@ -769,20 +774,75 @@ function TBLMgr:getSkillConfigById(id_str)
 	return clone(self.skillConfigVec[""..id_str])
 end
 
---战场敌部曲结构类
-function TBLMgr:LoadMapEnemyConfigTBL()
-	--G_Log_Info("TBLMgr:LoadMapEnemyConfigTBL()")
-	if self.mapEnemyConfigVec ~= nil then
+--战斗战场结构类
+function TBLMgr:LoadBattleMapConfigTBL()
+	--G_Log_Info("TBLMgr:LoadBattleMapConfigTBL()")
+	if self.batletMapConfigVec ~= nil then
 		return
 	end
 
 	local stream = ark_Stream:new()
-	local p = stream:CreateReadStreamFromSelf("tbl/mapEnemyConfig_client.tbl")
+	local p = stream:CreateReadStreamFromSelf("tbl/battleMapConfig_client.tbl")
 	if(p == nil) then
 		return
 	end
 
-	self.mapEnemyConfigVec = {}
+	self.batletMapConfigVec = {}
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local battleMapConfig = g_tbl_battleMapConfig:new()
+		battleMapConfig.id_str = stream:ReadString()     --战斗ID字符串
+		battleMapConfig.name = stream:ReadString()      --战斗名称
+		battleMapConfig.mapId = stream:ReadWord()     --战斗战场ID
+		battleMapConfig.rewardsVec = {}   --战斗奖励集合
+		local rewardStr = stream:ReadString()
+		local rewardIdVec = string.split(rewardStr,";")
+		if rewardIdVec[1] ~= "0" then
+			for k, d in pairs(rewardIdVec) do
+				local strVec = string.split(d,"-")
+				table.insert(battleMapConfig.rewardsVec, {["itemId"] = strVec[1], ["num"] = tonumber(strVec[2])})
+			end
+		end
+
+		battleMapConfig.yingzhaiVec = {}    --营寨集合
+		local citys = stream:ReadString()  --string 标识我方营寨位置和敌方营寨位置
+		if citys ~= "" or citys ~= "0" then
+			battleMapConfig.yingzhaiVec = string.split(citys,";")
+		end
+
+		battleMapConfig.enemyVec = {}     --敌人部曲集合
+		local enemyStr = stream:ReadString()     --string 标识敌方部曲数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+		if enemyStr ~= "" or enemyStr ~= "0" then
+			battleMapConfig.enemyVec = string.split(enemyStr,";")
+		end
+
+		self.batletMapConfigVec[""..battleMapConfig.id_str] = battleMapConfig
+	end
+end
+
+function TBLMgr:getBattleMapConfigById(id_str)
+	--G_Log_Info("TBLMgr:getBattleMapConfigById(), id_str = %d", id_str)
+	if self.batletMapConfigVec == nil then
+		self:LoadBattleMapConfigTBL()
+	end
+
+	return clone(self.batletMapConfigVec[""..id_str])
+end
+
+--战场敌部曲结构类
+function TBLMgr:LoadBattleEnemyConfigTBL()
+	--G_Log_Info("TBLMgr:LoadBattleEnemyConfigTBL()")
+	if self.batletEnemyConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/battleEnemyConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.battleEnemyConfigVec = {}
 	local Count = stream:ReadWord()
 	for k=1, Count do
 		local enemyConfig = {}
@@ -828,19 +888,19 @@ function TBLMgr:LoadMapEnemyConfigTBL()
 
 		enemyConfig.zhenUnit.unitData = unitData
 
-		self.mapEnemyConfigVec[""..enemyConfig.id_str] = enemyConfig
+		self.battleEnemyConfigVec[""..enemyConfig.id_str] = enemyConfig
 	end
 end
 
-function TBLMgr:getMapEnemyConfigById(id_str)
-	--G_Log_Info("TBLMgr:getMapEnemyConfigById(), id_str = %d", id_str)
-	if self.mapEnemyConfigVec == nil then
-		self:LoadMapEnemyConfigTBL()
+function TBLMgr:getBattleEnemyConfigById(id_str)
+	--G_Log_Info("TBLMgr:getBattleEnemyConfigById(), id_str = %d", id_str)
+	if self.battleEnemyConfigVec == nil then
+		self:LoadBattleEnemyConfigTBL()
 	end
 	if id_str == "20000" then  --20000标识相应位置没有敌部曲
 		return nil
 	else
-		return clone(self.mapEnemyConfigVec[""..id_str])
+		return clone(self.battleEnemyConfigVec[""..id_str])
 	end
 end
 

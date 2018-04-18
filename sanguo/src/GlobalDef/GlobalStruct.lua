@@ -327,4 +327,15 @@ function  g_tbl_skillConfig:ctor()
 	self.desc = ""    --技能介绍
 end
 
+--战斗战场结构类
+g_tbl_battleMapConfig = class("g_tbl_battleMapConfig",__BaseStruct)
+function  g_tbl_battleMapConfig:ctor()
+	self.id_str = ""    --战斗ID字符串
+	self.name = ""     --战斗名称
+	self.mapId = 0    --战斗战场ID
+	self.rewardsVec = {}   --战斗奖励集合
+	self.yingzhaiVec = {}    --营寨集合
+	self.enemyVec = {}     --敌人部曲集合
+end
+
 
