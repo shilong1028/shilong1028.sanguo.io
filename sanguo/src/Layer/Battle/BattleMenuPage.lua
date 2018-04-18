@@ -146,20 +146,46 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
 
     self.myUnitCount = 0
     self.myBingCount = 0
+    self.myMainGeneral = nil
     for k, data in pairs(self.zhenXingData) do
         if data ~= -1 then
             self.myUnitCount = self.myUnitCount + 1
             self.myBingCount = self.myBingCount + data.unitData.bingCount
+            if data.zhenPos == 5 then
+                self.myMainGeneral = data.generalData
+                if self.myMainGeneral == nil then
+                    self.myMainGeneral = g_HeroDataMgr:GetSingleGeneralData(data.generalIdStr)
+                end
+            end
         end
     end
 
     self.enemyUnitCount = 0
     self.enemyBingCount = 0
+    self.enemyMainGeneral = nil
     for k, data in pairs(self.enemyZhenXingData) do
         if data ~= -1 then
             self.enemyUnitCount = self.enemyUnitCount + 1
             self.enemyBingCount = self.enemyBingCount + data.unitData.bingCount
+            if data.zhenPos == 5 then
+                self.enemyMainGeneral = data.generalData
+                if self.enemyMainGeneral == nil then
+                    self.enemyMainGeneral = g_HeroDataMgr:GetSingleGeneralData(data.generalIdStr)
+                end
+            end
         end
+    end
+
+    --左右主帅头像
+    self.Image_headLeft:setVisible(false)
+    if self.myMainGeneral then
+        self.Image_headLeft:loadTexture(string.format("Head/%s.png", self.myMainGeneral.id_str), ccui.TextureResType.localType)
+        self.Image_headLeft:setVisible(true)
+    end
+    self.Image_headRight:setVisible(false)
+    if self.enemyMainGeneral then
+        self.Image_headRight:loadTexture(string.format("Head/%s.png", self.enemyMainGeneral.id_str), ccui.TextureResType.localType)
+        self.Image_headRight:setVisible(true)
     end
 
     --左右兵力进度条及文本
@@ -173,7 +199,7 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
     self.Text_buquLeft:setString(self.myUnitCount)
     self.Text_buquRight:setString(self.enemyUnitCount)
 
-    self:ShowBattleMenuBtn(bShow)   --显示全军操作按钮
+    self:ShowBattleMenuBtn(true)   --显示全军操作按钮
 
     --战斗倒计时开始（10分钟）
     self.battleTimeCD = 10*60
@@ -207,7 +233,7 @@ end
 function BattleMenuPage:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_exit then   --全军撤退
-
+            
         elseif sender == self.Button_atk then   --全军攻击
 
         elseif sender == self.Button_def then   --全军回防
