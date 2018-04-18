@@ -269,6 +269,7 @@ function  g_tbl_storyConfig:ctor()
 	self.targetCity = "0"    --目标城池ID字符串
 	self.name = ""    --战役名称
 	self.vedio = "0"   --主线剧情视频文件，"0"标识无
+	self.battleIdStr = "0"   --战斗ID字符串，"0"标识无战斗
 	self.enemyIdVec = {}    --敌方出战将领ID字符串，以;分割
 	self.rewardIdVec = {}    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
 	self.soldierVec = {}    --奖励士兵，以;分割。物品ID字符串和数量用-分割  {["itemId"], ["num"]}
@@ -333,6 +334,7 @@ function  g_tbl_battleMapConfig:ctor()
 	self.id_str = ""    --战斗ID字符串
 	self.name = ""     --战斗名称
 	self.mapId = 0    --战斗战场ID
+	self.targetStr = ""  --战斗目标
 	self.rewardsVec = {}   --战斗奖励集合
 	self.yingzhaiVec = {}    --营寨集合
 	self.enemyVec = {}     --敌人部曲集合

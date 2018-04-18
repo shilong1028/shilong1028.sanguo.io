@@ -794,6 +794,8 @@ function TBLMgr:LoadBattleMapConfigTBL()
 		battleMapConfig.id_str = stream:ReadString()     --战斗ID字符串
 		battleMapConfig.name = stream:ReadString()      --战斗名称
 		battleMapConfig.mapId = stream:ReadWord()     --战斗战场ID
+		battleMapConfig.targetStr = stream:ReadString()  --战斗目标
+		
 		battleMapConfig.rewardsVec = {}   --战斗奖励集合
 		local rewardStr = stream:ReadString()
 		local rewardIdVec = string.split(rewardStr,";")

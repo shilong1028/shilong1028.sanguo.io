@@ -288,8 +288,8 @@ function BattleMapPage:ClearMapObj()
 
 end
 
-function BattleMapPage:initBattleMapImgData(battleMapId, zhenXingData)  
-    G_Log_Info("BattleMapPage:initBattleMapImgData() battleMapId = %d", battleMapId)
+function BattleMapPage:initBattleMapImgData(parent)  
+    --G_Log_Info("BattleMapPage:initBattleMapImgData()")
     collectgarbage("collect")
     -- avoid memory leak
     collectgarbage("setpause", 100)
@@ -298,12 +298,22 @@ function BattleMapPage:initBattleMapImgData(battleMapId, zhenXingData)
 
     g_pGameLayer:showLoadingLayer(true) 
 
+    self.parentBattleMapLayer = parent    --战斗场景总层
+
     --战斗战场配置数据
     self.battleMapData = g_BattleDataMgr:getBattleMapData() 
     if self.battleMapData == nil then
     	G_Log_Error("MapLayer--battleMapData = nil")
     	return
     end
+    --[[
+    	battleMapData.id_str = ""    --战斗ID字符串
+		battleMapData.name = ""     --战斗名称
+		battleMapData.mapId = 0    --战斗战场ID
+		battleMapData.rewardsVec = {}   --战斗奖励集合
+		battleMapData.yingzhaiVec = {}    --营寨集合
+		battleMapData.enemyVec = {}     --敌人部曲集合
+    ]]
 
     local battleMapId = self.battleMapData.mapId
     self.mapConfigData = nil
@@ -451,6 +461,8 @@ function BattleMapPage:initBattleMapImgData(battleMapId, zhenXingData)
 	end
 
 	self:setRoleMapPosition(cc.p(g_WinSize.width/2, g_WinSize.height/2))  --视图中心在地图上的位置
+
+	self.parentBattleMapLayer:initBattleUnitCallBack(self.enemyZhenXingData)     --战斗场景总层,最终反馈到战斗菜单层
 
 	g_pGameLayer:showLoadingLayer(false) 
 end

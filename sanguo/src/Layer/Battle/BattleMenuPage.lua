@@ -10,6 +10,10 @@ end
 
 function BattleMenuPage:onExit()
     --G_Log_Info("BattleMenuPage:onExit()")
+    if self.scheduleTime then
+        GFunc_unschedule(self.scheduleTime)
+        self.scheduleTime = nil 
+    end
 end
 
 --初始化UI界面
@@ -64,11 +68,100 @@ function BattleMenuPage:init()
     self.Button_def:addTouchEventListener(handler(self,self.touchEvent))
 end
 
-function BattleMenuPage:initBattleData()
+function BattleMenuPage:initBattleData(parent, enemyUnitVec)
     --G_Log_Info("BattleMenuPage:initBattleData()")
+    self.parentBattleMapLayer = parent    --战斗场景总层
     --战斗剧情配置数据
     self.battleStoryData = g_BattleDataMgr:getBattleStoryData()   --self.battleStoryData.battleIdStr   --战斗ID字符串，"0"标识无战斗
-    
+    --[[
+        battleStoryData.storyId = 0        --剧情ID
+        battleStoryData.targetCity = "0"    --目标城池ID字符串
+        battleStoryData.name = ""    --战役名称
+        battleStoryData.vedio = "0"   --主线剧情视频文件，"0"标识无
+        battleStoryData.battleIdStr = "0"   --战斗ID字符串，"0"标识无战斗
+        battleStoryData.enemyIdVec = {}    --敌方出战将领ID字符串，以;分割
+        battleStoryData.rewardIdVec = {}    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
+        battleStoryData.soldierVec = {}    --奖励士兵，以;分割。物品ID字符串和数量用-分割  {["itemId"], ["num"]}
+        battleStoryData.offical = "0"   --奖励官职id_str
+        battleStoryData.generalVec = {}   --奖励武将Id_str, 以;分割
+        battleStoryData.talkVec = {}    --对话内容，以;分割
+        battleStoryData.desc = ""    --剧情简要描述，用于奖励或战斗界面展示
+
+        --附加成员
+        battleStoryData.bPlayedTalk = 0   ---是否已经播放过对话，0未，1已播放（则不再播放）
+    ]]
+
+    --战斗战场配置数据
+    self.battleMapData = g_BattleDataMgr:getBattleMapData() 
+    if self.battleMapData == nil then
+        G_Log_Error("MapLayer--battleMapData = nil")
+        return
+    end
+    --[[
+        battleMapData.id_str = ""    --战斗ID字符串
+        battleMapData.name = ""     --战斗名称
+        battleMapData.mapId = 0    --战斗战场ID
+        battleMapData.rewardsVec = {}   --战斗奖励集合
+        battleMapData.yingzhaiVec = {}    --营寨集合
+        battleMapData.enemyVec = {}     --敌人部曲集合
+    ]]
+
+    --战斗我方阵型数据
+    self.zhenXingData = g_BattleDataMgr:getBattleZhenXingData()  --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
+    --敌方部曲
+    self.enemyZhenXingData = enemyUnitVec   --{-1, -1, -1, -1, -1, -1, -1}
+    --[[
+        zhenXingData.zhenPos = 0   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+        zhenXingData.generalIdStr = "0"    --营寨武将ID字符串
+        zhenXingData.unitData = {
+            unitData.bingIdStr = "0"   --部曲兵种（游击|轻装|重装|精锐|禁军的弓刀枪骑兵）
+            unitData.bingCount = 0    --部曲兵力数量
+            unitData.level = 0    --部曲等级
+            unitData.exp = 0      --部曲训练度
+            unitData.shiqi = 0    --部曲士气
+            unitData.zhenId = "0"   --部曲阵法Id
+            --附加信息
+            unitData.bingData = nil   --兵种数据
+            unitData.zhenData = nil   --阵型数据
+        }
+        --附加信息
+        zhenXingData.generalData = nil   --营寨武将数据
+    ]]
+
+    self.Text_name:setString(self.battleMapData.name)   ----地图表配置数据
+
+    self.Text_target:setString(self.battleMapData.targetStr)   ----地图表配置数据
+
+
+
+    --战斗倒计时开始（10分钟）
+    self.battleTimeCD = 10*60
+    self:OnTimeUpdate()
+
+    if self.scheduleTime then
+        GFunc_unschedule(self.scheduleTime)
+        self.scheduleTime = nil 
+    end
+    local function timeupdate( dt )
+        self:OnTimeUpdate(dt)
+    end
+    self.scheduleTime = GFunc_schedule(timeupdate, 1.0, false)
+
+end
+
+function Mdl:OnTimeUpdate(dt)
+    self.battleTimeCD = self.battleTimeCD - 1
+
+    --如果全部冷却时间都清除，可以关闭定时器
+    if self.battleTimeCD < 0 then
+        GFunc_unschedule(self.scheduleTime) 
+        self.scheduleTime = nil
+        return
+    end
+
+    if self.battleTimeCD >= 0 then
+        self.Text_time:setString(string.format("%02d:%02d", math.floor((self.battleTimeCD%3600)/60), self.battleTimeCD%60))
+    end
 end
 
 function BattleMenuPage:touchEvent(sender, eventType)

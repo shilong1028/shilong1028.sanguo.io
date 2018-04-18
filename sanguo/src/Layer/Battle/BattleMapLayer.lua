@@ -17,7 +17,6 @@ function BattleMapLayer:onExit()
 end
 
 --------------------------------- 初始化数据 ---------------------------------
-
 function BattleMapLayer:init()  
     --G_Log_Info("BattleMapLayer:init()")
     --菜单层
@@ -26,6 +25,7 @@ function BattleMapLayer:init()
     end
     self.BattleMenuPage = BattleMenuPage:create()
     self:addChild(self.BattleMenuPage, 10, 999)
+    self.BattleMapPage:setVisible(false)
 
     --地图层
     if self.BattleMapPage then
@@ -44,15 +44,22 @@ function BattleMapLayer:initBattleData()
     -- --战斗阵型数据
     -- self.battleZhenXingData = g_BattleDataMgr:getBattleZhenXingData()
 
-	--菜单层
-    if self.BattleMenuPage then
-    	self.BattleMenuPage:initBattleData()
-    end
+	-- --菜单层
+ --    if self.BattleMenuPage then
+ --    	self.BattleMenuPage:initBattleData(self)
+ --    end
 
     --地图层
     if self.BattleMapPage then
-    	self.BattleMapPage:initBattleMapImgData() 
+    	self.BattleMapPage:initBattleMapImgData(self) 
     	self.BattleMapPage:setVisible(true)
+    end
+end
+
+function BattleMapLayer:initBattleUnitCallBack(enemyUnitVec) 
+    --菜单层
+    if self.BattleMenuPage then
+        self.BattleMenuPage:initBattleData(self, enemyUnitVec)
     end
 end
 
