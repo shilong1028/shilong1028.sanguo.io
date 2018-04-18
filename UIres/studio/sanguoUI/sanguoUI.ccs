@@ -6,7 +6,7 @@
         <Folder Name="csd">
           <Project Name="BagLayer.csd" Type="Layer" />
           <Project Name="BattleInfoLayer.csd" Type="Layer" />
-          <Project Name="BattleMenuLayer.csd" Type="Layer" />
+          <Project Name="BattleMenuPage.csd" Type="Layer" />
           <Project Name="BattleOfficalNode.csd" Type="Layer" />
           <Project Name="BattleResultLayer.csd" Type="Layer" />
           <Project Name="CreateRoleLayer.csd" Type="Layer" />
@@ -16,7 +16,7 @@
           <Project Name="generalUnitNode.csd" Type="Node" />
           <Project Name="HelpInfoLayer.csd" Type="Layer" />
           <Project Name="ItemCell.csd" Type="Layer" />
-          <Project Name="LoadingLayer.csd.csd" Type="Layer" />
+          <Project Name="LoadingLayer.csd" Type="Layer" />
           <Project Name="LoginLayer.csd" Type="Layer" />
           <Project Name="MainBottomNode.csd" Type="Node" />
           <Project Name="MainChatNode.csd" Type="Node" />
@@ -149,6 +149,7 @@
             <PlistImageFile Name="public_zhucheng.png" Key="public_zhucheng.png" />
           </PlistImageFolder>
           <PlistImageFolder Image="PublicRes2.png" PListFile="PublicRes2.plist" Name=".PublicRes2_PList.Dir">
+            <PlistImageFile Name="public2_buqu.png" Key="public2_buqu.png" />
             <PlistImageFile Name="public2_chengchi.png" Key="public2_chengchi.png" />
             <PlistImageFile Name="public2_directionWheel.png" Key="public2_directionWheel.png" />
             <PlistImageFile Name="public2_directionWheelBg.png" Key="public2_directionWheelBg.png" />
@@ -166,6 +167,9 @@
             <PlistImageFile Name="public2_quanPurple.png" Key="public2_quanPurple.png" />
             <PlistImageFile Name="public2_sel_green.png" Key="public2_sel_green.png" />
             <PlistImageFile Name="public2_sel_orange.png" Key="public2_sel_orange.png" />
+            <PlistImageFile Name="public2_shibing.png" Key="public2_shibing.png" />
+            <PlistImageFile Name="public2_vsBg.png" Key="public2_vsBg.png" />
+            <PlistImageFile Name="public2_vsIcon.png" Key="public2_vsIcon.png" />
             <PlistImageFile Name="public2_yingzhai1.png" Key="public2_yingzhai1.png" />
             <PlistImageFile Name="public2_yingzhai2.png" Key="public2_yingzhai2.png" />
             <PlistImageFile Name="public2_yingzhai3.png" Key="public2_yingzhai3.png" />
