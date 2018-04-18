@@ -62,12 +62,23 @@ function BattleMenuPage:init()
 
     self.Button_exit = csb:getChildByName("Button_exit")    --全军撤退
     self.Button_exit:addTouchEventListener(handler(self,self.touchEvent))
+    self.Button_exit:setVisible(false)
     self.Button_atk = csb:getChildByName("Button_atk")    --全军攻击
     self.Button_atk:addTouchEventListener(handler(self,self.touchEvent))
+    self.Button_atk:setVisible(false)
     self.Button_def = csb:getChildByName("Button_def")    --全军回防
     self.Button_def:addTouchEventListener(handler(self,self.touchEvent))
+    self.Button_def:setVisible(false)
 end
 
+--是否显示全军操作按钮
+function BattleMenuPage:ShowBattleMenuBtn(bShow)
+    self.Button_exit:setVisible(bShow)
+    self.Button_atk:setVisible(bShow)
+    self.Button_def:setVisible(bShow)
+end
+
+--初始化战场按钮数据
 function BattleMenuPage:initBattleData(parent, enemyUnitVec)
     --G_Log_Info("BattleMenuPage:initBattleData()")
     self.parentBattleMapLayer = parent    --战斗场景总层
@@ -128,11 +139,40 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
         zhenXingData.generalData = nil   --营寨武将数据
     ]]
 
+    --战斗名称及目标
     self.Text_name:setString(self.battleMapData.name)   ----地图表配置数据
-
     self.Text_target:setString(self.battleMapData.targetStr)   ----地图表配置数据
 
+    self.myUnitCount = 0
+    self.myBingCount = 0
+    for k, data in pairs(self.zhenXingData) do
+        if data ~= -1 then
+            self.myUnitCount = self.myUnitCount + 1
+            self.myBingCount = self.myBingCount + data.unitData.bingCount
+        end
+    end
 
+    self.enemyUnitCount = 0
+    self.enemyBingCount = 0
+    for k, data in pairs(self.enemyZhenXingData) do
+        if data ~= -1 then
+            self.enemyUnitCount = self.enemyUnitCount + 1
+            self.enemyBingCount = self.enemyBingCount + data.unitData.bingCount
+        end
+    end
+
+    --左右兵力进度条及文本
+    self.LoadingBar_left:setPercent(100)
+    self.LoadingBar_right:setPercent(100)
+
+    self.Text_bingLeft:setString(self.myBingCount)
+    self.Text_bingRight:setString(self.enemyBingCount)
+
+    --左右部曲文本
+    self.Text_buquLeft:setString(self.myUnitCount)
+    self.Text_buquRight:setString(self.enemyUnitCount)
+
+    self:ShowBattleMenuBtn(bShow)   --显示全军操作按钮
 
     --战斗倒计时开始（10分钟）
     self.battleTimeCD = 10*60
@@ -146,7 +186,6 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
         self:OnTimeUpdate(dt)
     end
     self.scheduleTime = GFunc_schedule(timeupdate, 1.0, false)
-
 end
 
 function Mdl:OnTimeUpdate(dt)

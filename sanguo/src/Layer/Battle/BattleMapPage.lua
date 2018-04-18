@@ -101,6 +101,9 @@ function BattleMapPage:onTouchBegan(touch, event)
     --self:setRoleWinPosition(beginPos)
 
 	if self.lastSelOfficalNode then
+		if self.parentBattleMapLayer then
+			self.parentBattleMapLayer:ShowBattleMenuBtn(false)     --最终反馈到战斗菜单层,--是否显示全军操作按钮
+		end
 		self.lastSelOfficalNode:setBtnIsShow(false)
 		self.lastSelOfficalNode = nil
 	end
@@ -288,6 +291,7 @@ function BattleMapPage:ClearMapObj()
 
 end
 
+--初始化战场数据
 function BattleMapPage:initBattleMapImgData(parent)  
     --G_Log_Info("BattleMapPage:initBattleMapImgData()")
     collectgarbage("collect")
@@ -418,6 +422,14 @@ function BattleMapPage:initBattleMapImgData(parent)
 			self.lastSelOfficalNode = nil
 		end
 		self.lastSelOfficalNode = node
+
+		if self.parentBattleMapLayer then
+			if node.officalType == 1 and node.battleOfficalData.zhenPos ==  5 then   --我方中军主帅
+				self.parentBattleMapLayer:ShowBattleMenuBtn(true)     --最终反馈到战斗菜单层,--是否显示全军操作按钮
+			else
+				self.parentBattleMapLayer:ShowBattleMenuBtn(false) 
+			end
+		end
 	end
 
 	self.myOfficalNodeVec = {}
@@ -462,7 +474,9 @@ function BattleMapPage:initBattleMapImgData(parent)
 
 	self:setRoleMapPosition(cc.p(g_WinSize.width/2, g_WinSize.height/2))  --视图中心在地图上的位置
 
-	self.parentBattleMapLayer:initBattleUnitCallBack(self.enemyZhenXingData)     --战斗场景总层,最终反馈到战斗菜单层
+	if self.parentBattleMapLayer then
+		self.parentBattleMapLayer:initBattleUnitCallBack(self.enemyZhenXingData)     --战斗场景总层,最终反馈到战斗菜单层
+	end
 
 	g_pGameLayer:showLoadingLayer(false) 
 end

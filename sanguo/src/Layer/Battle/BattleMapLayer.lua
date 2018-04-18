@@ -63,6 +63,13 @@ function BattleMapLayer:initBattleUnitCallBack(enemyUnitVec)
     end
 end
 
+function BattleMapLayer:ShowBattleMenuBtn(bShow) 
+    --菜单层
+    if self.BattleMenuPage then
+        self.BattleMenuPage:ShowBattleMenuBtn(bShow)
+    end
+end
+
 
 return BattleMapLayer
 
