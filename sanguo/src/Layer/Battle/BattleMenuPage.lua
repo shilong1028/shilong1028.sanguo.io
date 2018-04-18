@@ -11,7 +11,7 @@ end
 function BattleMenuPage:onExit()
     --G_Log_Info("BattleMenuPage:onExit()")
     if self.scheduleTime then
-        GFunc_unschedule(self.scheduleTime)
+        g_Scheduler:unscheduleScriptEntry(self.scheduleTime)
         self.scheduleTime = nil 
     end
 end
@@ -140,7 +140,8 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
     ]]
 
     --战斗名称及目标
-    self.Text_name:setString(self.battleMapData.name)   ----地图表配置数据
+    --self.Text_name:setString(self.battleMapData.name)   ----地图表配置数据
+    self.Text_name:setString(self.battleStoryData.name)   ----地图表配置数据
     self.Text_target:setString(self.battleMapData.targetStr)   ----地图表配置数据
 
     self.myUnitCount = 0
@@ -179,21 +180,21 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
     self:OnTimeUpdate()
 
     if self.scheduleTime then
-        GFunc_unschedule(self.scheduleTime)
+        g_Scheduler:unscheduleScriptEntry(self.scheduleTime)
         self.scheduleTime = nil 
     end
     local function timeupdate( dt )
         self:OnTimeUpdate(dt)
     end
-    self.scheduleTime = GFunc_schedule(timeupdate, 1.0, false)
+    self.scheduleTime = g_Scheduler:scheduleScriptFunc(timeupdate, 1.0, false)
 end
 
-function Mdl:OnTimeUpdate(dt)
+function BattleMenuPage:OnTimeUpdate(dt)
     self.battleTimeCD = self.battleTimeCD - 1
 
     --如果全部冷却时间都清除，可以关闭定时器
     if self.battleTimeCD < 0 then
-        GFunc_unschedule(self.scheduleTime) 
+        g_Scheduler:unscheduleScriptEntry(self.scheduleTime) 
         self.scheduleTime = nil
         return
     end

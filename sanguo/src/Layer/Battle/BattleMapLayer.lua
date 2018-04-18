@@ -25,7 +25,7 @@ function BattleMapLayer:init()
     end
     self.BattleMenuPage = BattleMenuPage:create()
     self:addChild(self.BattleMenuPage, 10, 999)
-    self.BattleMapPage:setVisible(false)
+    self.BattleMenuPage:setVisible(false)
 
     --地图层
     if self.BattleMapPage then
@@ -60,6 +60,7 @@ function BattleMapLayer:initBattleUnitCallBack(enemyUnitVec)
     --菜单层
     if self.BattleMenuPage then
         self.BattleMenuPage:initBattleData(self, enemyUnitVec)
+        self.BattleMenuPage:setVisible(true)
     end
 end
 

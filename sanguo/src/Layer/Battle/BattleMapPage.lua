@@ -433,7 +433,7 @@ function BattleMapPage:initBattleMapImgData(parent)
 	end
 
 	self.myOfficalNodeVec = {}
-	for k, battleOfficalData in pairs(zhenXingData) do   --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
+	for k, battleOfficalData in pairs(self.zhenXingData) do   --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
 		if type(battleOfficalData) == "table" then
 			local officalNode = BattleOfficalNode:create()
 			officalNode:initBattleOfficalData(battleOfficalData, 1, officalSelCallBack)

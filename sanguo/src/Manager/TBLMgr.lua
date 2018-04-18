@@ -823,7 +823,7 @@ function TBLMgr:LoadBattleMapConfigTBL()
 end
 
 function TBLMgr:getBattleMapConfigById(id_str)
-	--G_Log_Info("TBLMgr:getBattleMapConfigById(), id_str = %d", id_str)
+	--G_Log_Info("TBLMgr:getBattleMapConfigById(), id_str = %s", id_str)
 	if self.batletMapConfigVec == nil then
 		self:LoadBattleMapConfigTBL()
 	end
