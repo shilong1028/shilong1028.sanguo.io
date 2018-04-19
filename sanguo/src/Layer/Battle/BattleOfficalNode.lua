@@ -260,10 +260,10 @@ function BattleOfficalNode:DelAtkLimitUpdateEntry()
     end
 end
 
-function BattleOfficalNode:atkLimitUpdate(dt)
-    if self.parentMapPage then   --节点所在的战场地图层
+function BattleOfficalNode:atkLimitUpdate(dt, bDefend)
+    if self.parentMapPage and self.atkState and self.atkState > g_AtkState.Pause then   --节点所在的战场地图层 --非待命状态
         local bCatchEnemy = false
-        if self.enemyNode then    --攻击对象节点 
+        if bDefend ~= true and self.enemyNode then    --攻击对象节点 
             local curPos = self:getNodePos()
             local enemyPos = self.enemyNode:getNodePos()
             local len = g_pMapMgr:CalcDistance(curPos, enemyPos)  
@@ -271,12 +271,15 @@ function BattleOfficalNode:atkLimitUpdate(dt)
                 bCatchEnemy = true
             end
         end
-        if bCatchEnemy == false then
+        if bDefend == true or bCatchEnemy == false then
             local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self)
             if enemyNode and atkObj > g_AtkObject.None then
                 self:setAttackObj(atkObj, enemyNode)
             end
         end
+    else
+        --self:DelAtkLimitUpdateEntry()
+        self:StopLastAutoPath()   --停止上一个自动寻路
     end
 end
 
@@ -305,14 +308,24 @@ end
 function BattleOfficalNode:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.rightBtn_atk1 then  --进攻前锋/左翼/右翼/后卫
+            self.atkState = g_AtkState.Attack   --攻击状态，0待命，1进攻，2回防，3溃败
+            self:atkLimitUpdate()
             self:setBtnIsShow(false)
         elseif sender == self.rightBtn_atk2 then   --进攻中军
+            self.atkState = g_AtkState.Attack   --攻击状态，0待命，1进攻，2回防，3溃败
+            self:atkLimitUpdate()
             self:setBtnIsShow(false)
         elseif sender == self.leftBtn_def1 then  --回防前锋/左翼/右翼/后卫
+            self.atkState = g_AtkState.Defend   --攻击状态，0待命，1进攻，2回防，3溃败
+            self:atkLimitUpdate(0.01, true)
             self:setBtnIsShow(false)
         elseif sender == self.leftBtn_def2 then  --回防中军
+            self.atkState = g_AtkState.Defend   --攻击状态，0待命，1进攻，2回防，3溃败
+            self:atkLimitUpdate(0.01, true)
             self:setBtnIsShow(false)
         elseif sender == self.topBtn_pause then  --待命
+            self.atkState = g_AtkState.Pause   --攻击状态，0待命，1进攻，2回防，3溃败
+            self:atkLimitUpdate()
             self:setBtnIsShow(false)
         elseif sender == self.Image_bg then  --选中自身
             self:setBtnIsShow()
@@ -349,6 +362,7 @@ function BattleOfficalNode:initAttackAttr()
     self.atkState = g_AtkState.Pause   --攻击状态，0待命，1进攻，2回防，3溃败
     self.enemyType = g_AtkObject.None   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
     self.enemyNode = nil    --攻击对象节点 
+    self.enemyOfficalType = -1  --敌人-1，友军0，我军1
 
     self.AutoPathVec = nil   --自动寻路路径
     self.bAutoMoving = false  --正在自动寻路
@@ -372,9 +386,12 @@ end
 function BattleOfficalNode:setAttackObj(enemyType, node, atkState)
     self.enemyType = enemyType   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
     self.enemyNode = node    --攻击对象节点
+    self.enemyOfficalType = -1  --敌人-1，友军0，我军1
 
     self.enemyNodePos = nil
     if self.enemyNode then
+        self.enemyOfficalType = node.officalType  --敌人-1，友军0，我军1
+
         if self.enemyType == g_AtkObject.EnemyUnit then
             self.enemyNodePos = node:getNodePos()   --地方对象目标位置
         elseif self.enemyType == g_AtkObject.YingZhai then
