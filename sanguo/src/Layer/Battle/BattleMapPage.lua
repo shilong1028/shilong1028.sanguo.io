@@ -279,10 +279,6 @@ function BattleMapPage:initPhysicsBody()
                                                      cc.PhysicsMaterial(0.1, 1.0, 0.0)))
     wall:setPosition(VisibleRect:center());
     self:addChild(wall)
-
-
-
-
 end
 
 function BattleMapPage:ClearMapObj()
@@ -436,11 +432,11 @@ function BattleMapPage:initBattleMapImgData(parent)
 	for k, battleOfficalData in pairs(self.zhenXingData) do   --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
 		if type(battleOfficalData) == "table" then
 			local officalNode = BattleOfficalNode:create()
-			officalNode:initBattleOfficalData(battleOfficalData, 1, officalSelCallBack)
+			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, 1, officalSelCallBack)
 			self.rootNode:addChild(officalNode, 20)
 
 			local pos = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.myYingZhaiVec)
-			officalNode:setPosition(pos)
+			officalNode:setNodePos(pos)   --自定义方法
 
 			table.insert(self.myOfficalNodeVec, officalNode)
 		end
@@ -462,11 +458,11 @@ function BattleMapPage:initBattleMapImgData(parent)
 	for k, battleOfficalData in pairs(self.enemyZhenXingData) do   --敌方出战阵容数据(1-7个数据，-1标识没有武将出战)
 		if type(battleOfficalData) == "table" then
 			local officalNode = BattleOfficalNode:create()
-			officalNode:initBattleOfficalData(battleOfficalData, -1, officalSelCallBack)
+			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, -1, officalSelCallBack)
 			self.rootNode:addChild(officalNode, 20)
 
 			local pos = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.enemyYingZhaiVec)
-			officalNode:setPosition(pos)
+			officalNode:setNodePos(pos)  --自定义方法
 
 			table.insert(self.enemyOfficalNodeVec, officalNode)
 		end

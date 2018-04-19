@@ -212,7 +212,7 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
     local function timeupdate( dt )
         self:OnTimeUpdate(dt)
     end
-    self.scheduleTime = g_Scheduler:scheduleScriptFunc(timeupdate, 1.0, false)
+    self.scheduleTime = g_Scheduler:scheduleScriptFunc(timeupdate, 1.0, false)   --是否暂停
 end
 
 function BattleMenuPage:OnTimeUpdate(dt)

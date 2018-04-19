@@ -10,7 +10,7 @@ end
 
 function BattleOfficalNode:onExit()
     --G_Log_Info("BattleOfficalNode:onExit()")
-
+    self:DelAutoPathUpdateEntry()
 end
 
 function BattleOfficalNode:init()  
@@ -78,11 +78,12 @@ function BattleOfficalNode:init()
     self.btnIsShow = false   --操作按钮是否可见
 end
 
-function BattleOfficalNode:initBattleOfficalData(battleOfficalData, nType, officalSelCallBack)
+function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalData, nType, officalSelCallBack)
     if battleOfficalData == -1 or battleOfficalData == nil then
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() data = -1")
         return
     end
+    self.mapConfigData = mapConfigData   --战场地图数据，用于AStar寻路
     self.battleOfficalData = battleOfficalData
     self.officalType = nType or -1  --敌人-1，友军0，我军1
     self.officalSelCallBack = officalSelCallBack
@@ -216,6 +217,10 @@ function BattleOfficalNode:initBattleOfficalData(battleOfficalData, nType, offic
         self.leftBtn_def1:setTitleText(lua_Battle_Str7..lua_Battle_Str1) 
     end
 
+    self.curNodePos = cc.p(0, 0) --节点当前位置
+
+    self:initAttackMoveAttr()   --初始化节点移动操作数据
+
 end
 
 function BattleOfficalNode:setBtnIsShow(val)
@@ -260,6 +265,269 @@ function BattleOfficalNode:touchEvent(sender, eventType)
         end
     end
 end
+
+--设置节点在战场上的位置
+function BattleOfficalNode:setNodePos(pos)
+    self.curNodePos = pos --节点当前位置
+    self:setPosition(pos)
+end
+
+function BattleOfficalNode:getNodePos()
+    return cc.p(self:getPosition())  --self.curNodePos
+end
+
+--初始化进攻属性对象  --初始化节点移动操作数据
+function BattleOfficalNode:initAttackAttr()
+    --[[ 
+        --初始化的部曲数据
+        self.battleOfficalData = battleOfficalData   --数据
+        self.officalType = nType or -1  --敌人-1，友军0，我军1
+        self.officalSelCallBack = officalSelCallBack   --回调
+        self.max_mp = battleOfficalData.generalData.mp  --智力条
+        self.max_hp = battleOfficalData.generalData.hp  --生命条
+        self.max_shiqi = 100  --士气条
+        self.max_bingCount = battleOfficalData.unitData.bingCount  --士兵数量条
+        self.curNodePos = cc.p(0, 0) --节点当前位置
+    ]]
+    self.atkState = g_AtkState.Pause   --攻击状态，0待命，1进攻，2回防，3溃败
+    self.enemyType = g_AtkObject.None   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+    self.enemyNode = nil    --攻击对象节点 
+
+    self.AutoPathVec = nil   --自动寻路路径
+    self.bAutoMoving = false  --正在自动寻路
+    self.bPauseAutoMoving = false  --暂停自动寻路，比如触发战斗，打开界面等
+    self.AutoPathEntry = nil  --自动寻路定时器实体
+    self.AutoPathOneByOneData = nil  --自动寻路一步步走的步伐数据
+
+    self.MoveSpeed = g_BingSpeed.QiangSpeed   --移动速度
+    local bingId = tonumber(self.battleOfficalData.unitData.bingIdStr)
+    if bingId == g_ItemIdDef.Item_Id_qiangbing then
+        self.MoveSpeed = g_BingSpeed.QiangSpeed
+    elseif bingId == g_ItemIdDef.Item_Id_daobing then
+        self.MoveSpeed = g_BingSpeed.DaoSpeed
+    elseif bingId == g_ItemIdDef.Item_Id_gongbing then
+        self.MoveSpeed = g_BingSpeed.GongSpeed
+    elseif bingId == g_ItemIdDef.Item_Id_qibing then
+        self.MoveSpeed = g_BingSpeed.QiSpeed
+    end   
+end
+
+function BattleOfficalNode:setAttackObj(nType, node, atkState)
+    self.enemyType = nType   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+    self.enemyNode = node    --攻击对象节点
+
+    self.enemyNodePos = nil
+    if self.enemyNode then
+        if self.enemyType == g_AtkObject.EnemyUnit then
+            self.enemyNodePos = node:getNodePos()   --地方对象目标位置
+        elseif self.enemyType == g_AtkObject.YingZhai then
+            self.enemyNodePos = node:getNodePos() 
+        end
+    end
+
+    if atkState then
+        self.atkState = atkState   --攻击状态，0待命，1进攻，2回防（指定营寨），3溃败（到中军后消失）
+    end
+    self:updateAttackMove()  --根据攻击状态进行移动操作（攻击、回防、溃败等）
+end
+
+--处理敌军移动
+function BattleOfficalNode:handleEnemyNodeMoved(node)
+    if self.enemyNode and self.enemyNode.generalIdStr and node and node.generalIdStr and self.enemyNode.generalIdStr == node.generalIdStr then
+        self.enemyNode = node
+        self.enemyNodePos = node:getNodePos() 
+    end
+    self:updateAttackMove()  --根据攻击状态进行移动操作（攻击、回防、溃败等）
+end
+
+--根据攻击状态进行移动操作（攻击、回防、溃败等）
+function BattleOfficalNode:updateAttackMove()
+    if self.atkState and self.enemyNodePos and self.atkState > g_AtkState.Pause then   --非待命状态
+        --开始astar寻路,endPos为目标位置的像素点（左下角为00）
+        local endPos = self.enemyNodePos
+        if endPos.x < 0 or endPos.y < 0 or endPos.x > self.mapConfigData.width or endPos.y > self.mapConfigData.height then
+            G_Log_Error("endPos is not in Map, endPos.x = %f, endPos.y = %f", endPos.x, endPos.y)  --如果越界了
+            return;
+        end
+
+        self:StopLastAutoPath()   --停止上一个自动寻路
+        local startPos = cc.p(self:getPosition())
+
+        local stepLen = g_pMapMgr:CalcDistance(endPos, startPos)
+        if stepLen < 32 then   --移动目的地就在附近
+            --G_Log_Info("移动目的地就在附近")
+            return 
+        end
+
+        local startPt = cc.p(math.floor(startPos.x / 32), math.floor((self.mapConfigData.height - startPos.y) / 32))    --地图块为32*32大小，且从0开始计数
+        local endPt = cc.p(math.floor(endPos.x / 32), math.floor((self.mapConfigData.height - endPos.y) / 32))
+
+        --G_Log_Info("startPt.x = %d, startPt.y = %d, endPt.x = %d, endPt.y = %d", startPt.x, startPt.y, endPt.x, endPt.y)
+        g_pAutoPathMgr:AStarFindPath(startPt.x, startPt.y, endPt.x, endPt.y)
+        local autoPath = g_pAutoPathMgr:AStarGetPath(g_bAStarPathSmooth)
+        if autoPath and #autoPath > 0 then
+            --寻路路径细化，50像素一个移动点
+            local AutoPathVec = {}   --自动寻路路径
+            local pt0 = cc.p(autoPath[1]:getX(), self.mapConfigData.height - autoPath[1]:getY())
+            local pt1 = pt0
+            table.insert(AutoPathVec, pt0)
+            for k=2, #autoPath do   --SPoint转ccp, autoPath为32*32的块坐标，AutoPathVec为像素坐标
+                pt1 = cc.p(autoPath[k]:getX(), self.mapConfigData.height - autoPath[k]:getY())
+                local StepLen = g_pMapMgr:CalcDistance(pt0, pt1)   
+                local count = math.floor(StepLen/50)
+                local ptoffset = cc.p((pt1.x - pt0.x)/(count+1), (pt1.y - pt0.y)/(count+1) )
+                for i=1, count do
+                    local pathPos = cc.p(pt0.x + ptoffset.x*i, pt0.y + ptoffset.y*i )
+                    table.insert(AutoPathVec, pathPos)
+                end
+                table.insert(AutoPathVec, pt1)
+                pt0 = pt1
+            end
+            self:StartAutoPath(AutoPathVec)
+        else
+            g_pGameLayer:ShowScrollTips(lua_str_WarnTips6, g_ColorDef.Red, g_defaultTipsFontSize)   --"坐标为地图不可达部分！"
+            G_Log_Error("autoPath is nil, bucause endPt not reachable! endPt.x = %d, endPt.y = %d", endPt.x, endPt.y)
+        end
+    end
+end
+
+function BattleOfficalNode:StopLastAutoPath()   --停止上一个自动寻路
+    self:DelAutoPathUpdateEntry()
+
+    self.bAutoMoving = false
+    self.bPauseAutoMoving = false
+    self.AutoPathVec = nil
+end
+
+function BattleOfficalNode:DelAutoPathUpdateEntry()
+    if self.AutoPathEntry then
+        g_Scheduler:unscheduleScriptEntry(self.AutoPathEntry)
+        self.AutoPathEntry = nil
+        self.AutoPathOneByOneData = nil  --自动寻路一步步走的步伐数据
+    end
+end
+
+function BattleOfficalNode:StartAutoPath(autoPath)
+    --G_Log_Info("BattleOfficalNode:StartAutoPath()")
+    if autoPath and #autoPath >0 then
+        if self.bAutoMoving == true then  --正在自动寻路
+            self.bAutoMoving = false
+            self:DelAutoPathUpdateEntry()
+        end
+
+        self.AutoPathVec = nil   --自动寻路路径--self.AutoPathVec为像素坐标, 非32*32的块坐标，
+        self.AutoPathVec = autoPath 
+        --G_Log_Dump(self.AutoPathVec, "self.AutoPathVec = ")
+
+        self.bAutoMoving = true
+        --self.bPauseAutoMoving = false  --暂停自动寻路，比如触发战斗，打开界面等
+
+        self:AutoPathUpdate()
+    end
+end
+
+function BattleOfficalNode:setPauseAutoPath(bPause)
+    if self.bAutoMoving == true and #self.AutoPathVec > 0 then  --正在自动寻路
+        self.bPauseAutoMoving =  bPause
+        if self.bPauseAutoMoving == true then
+            self:DelAutoPathUpdateEntry()
+        else
+            self:AutoPathUpdate()
+        end
+    end
+end
+
+function BattleOfficalNode:AutoPathUpdate()
+    --G_Log_Info("BattleOfficalNode:AutoPathUpdate()")
+    if self.bPauseAutoMoving == true then  --暂停自动寻路
+        return
+    end
+
+    local function EndAutoPathUpdate()
+        --G_Log_Info("************** BattleOfficalNode:EndAutoPathUpdate()")
+        self:DelAutoPathUpdateEntry()
+        self.bAutoMoving = false
+    end
+
+    if self.bAutoMoving == false or not self.AutoPathVec or #self.AutoPathVec <= 0 then
+        EndAutoPathUpdate()
+        return
+    end
+
+    if #self.AutoPathVec <= 0 then  --最后一个自动寻路的点索引
+        --[[移动结束回调]]
+    else   --继续寻路
+        local dirPos = cc.p(self.AutoPathVec[1].x, self.AutoPathVec[1].y)   --self.AutoPathVec为像素坐标     
+        local nowPos = cc.p(self:getPosition())
+        local dirIdx = g_pMapMgr:CalcMoveDirection(nowPos, dirPos)
+        
+        --计算距离进行移动
+        local StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)      --cc.pDistanceSQ(nowPos, dirPos) 
+        if StepLen < 32 then  --32为地图块大小
+            table.remove(self.AutoPathVec,1)  --删掉astar,取下一个点
+        else 
+            --走到一半的时候，不删除点P，生成P中间点，到达中间点后再删除P
+            local midPos = cc.pMidpoint(nowPos, dirPos)
+            --判断这个位置是否可以移动
+            local movePt = cc.p(math.floor(midPos.x/32), math.floor(midPos.y/32))
+            if g_pAutoPathMgr:AStarCanWalk(movePt.x, movePt.y) == true then
+                dirPos = midPos
+                StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)
+            else
+                local newMid = cc.pMidpoint(nowPos, midPos)
+                movePt = cc.p(math.floor(newMid.x/32), math.floor(newMid.y/32))
+                if g_pAutoPathMgr:AStarCanWalk(movePt.x, movePt.y) == true then
+                    dirPos = newMid
+                    StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)
+                else
+                    newMid = cc.pMidpoint(midPos, dirPos)
+                    movePt = cc.p(math.floor(newMid.x/32), math.floor(newMid.y/32))
+                    if g_pAutoPathMgr:AStarCanWalk(movePt.x, movePt.y) == true then
+                        dirPos = newMid
+                        StepLen = g_pMapMgr:CalcDistance(nowPos, dirPos)
+                    else
+                        --G_Log_Info("PlayerNode:AutoPathUpdate()--位置不可以移动")
+                    end
+                end     
+            end
+        end
+
+        local moveTime = StepLen/self.MoveSpeed 
+        local step = moveTime/0.02
+        local posOffset = cc.p((dirPos.x - nowPos.x)/step, (dirPos.y - nowPos.y)/step )
+        self.AutoPathOneByOneData = {}  --自动寻路一步步走的步伐数据
+        self.AutoPathOneByOneData.step = math.floor(step)
+        self.AutoPathOneByOneData.stepIdx = 1
+        self.AutoPathOneByOneData.posOffset = cc.p((dirPos.x - nowPos.x)/step, (dirPos.y - nowPos.y)/step )
+        self.AutoPathOneByOneData.dirPos = dirPos
+        self.AutoPathOneByOneData.nextPos = cc.p(nowPos.x + posOffset.x, nowPos.y + posOffset.y)
+
+        local function AutoPathUpdateOneByOne(dt)
+            self:AutoPathUpdateOneByOne(dt)
+        end
+        self.AutoPathEntry = g_Scheduler:scheduleScriptFunc(AutoPathUpdateOneByOne, 0.01, false) 
+    end
+end
+
+function BattleOfficalNode:AutoPathUpdateOneByOne(dt)
+    if self.AutoPathOneByOneData then
+        if self.AutoPathOneByOneData.stepIdx >= self.AutoPathOneByOneData.step then
+            self.curNodePos = self.AutoPathOneByOneData.dirPos  --人物当前位置
+            self:DelAutoPathUpdateEntry()
+            self:AutoPathUpdate()
+        else
+            self.curNodePos = self.AutoPathOneByOneData.nextPos  --人物当前位置
+            self.AutoPathOneByOneData.stepIdx = self.AutoPathOneByOneData.stepIdx + 1
+            local nowPos = self.AutoPathOneByOneData.nextPos
+            local posOffset = self.AutoPathOneByOneData.posOffset
+            self.AutoPathOneByOneData.nextPos = cc.p(nowPos.x + posOffset.x, nowPos.y + posOffset.y)
+        end
+    else
+        self:DelAutoPathUpdateEntry()
+        self:AutoPathUpdate()
+    end
+end
+
 
 return BattleOfficalNode
 

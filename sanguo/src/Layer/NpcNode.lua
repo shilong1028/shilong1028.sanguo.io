@@ -109,5 +109,9 @@ function NpcNode:initYingZhaiData(data)
     self.yingzhaiImage:addChild(self.qizhiImage) 
 end
 
+function NpcNode:getNodePos()
+    return cc.p(self:getPosition())
+end
+
 
 return NpcNode

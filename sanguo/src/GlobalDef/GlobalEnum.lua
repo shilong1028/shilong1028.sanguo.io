@@ -45,6 +45,29 @@ g_GameLayerTag = {
 
 }
 
+--兵种移动速度
+g_BingSpeed = {
+	QiangSpeed = 300,
+	DaoSpeed = 400,
+	GongSpeed = 450,
+	QiSpeed = 600
+}
+
+--战场部曲攻击状态，0待命，1进攻，2回防，3溃败
+g_AtkState = {
+	Pause = 0,
+	Attack = 1,
+	Defend = 2, 
+	Failed = 3
+}
+
+--战场部曲攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+g_AtkObject = {
+	None = 0,
+	YingZhai = 1,
+	EnemyUnit = 2
+}
+
 --人物移动的方向状态标识
 g_PlayerState = {
 	HMS_NUM = 9,   --状态数量
