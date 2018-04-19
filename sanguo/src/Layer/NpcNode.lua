@@ -10,7 +10,7 @@ end
 
 function NpcNode:onExit()
     --G_Log_Info("NpcNode:onExit()")
-
+    self:DelAtkLimitUpdateEntry()   --战场营寨自动探测敌军计时器
 end
 
 function NpcNode:init()  
@@ -61,20 +61,32 @@ function NpcNode:initMapJumpPtData(data)
     self:addChild(self.jumpPtName, 5)  
 end
 
---战场营寨
-function NpcNode:initYingZhaiData(data)  
+------------------------------战场营寨----------------------------------------------------
+function NpcNode:initYingZhaiData(data, parent)  
     --G_Log_Info("NpcNode:initYingZhaiData()")
+    if data == nil then
+        return 
+    end
 
-    local quanStr = "public2_quanPurple.png"
+    self.yingzhaiData = data
+    self.parentMapPage = parent   --节点所在的战场地图层
+
+    local quanStr = "public2_quanPurple.png"   --敌方紫色圈
     local qizhiStr = "public2_QiZhi2.png"
-    if data.bEnemy == 0 then  --我方
+    if data.bEnemy == 0 then  --我方篮圈
         quanStr = "public2_quanBlue.png"
         qizhiStr = "public2_QiZhi1.png"
     end
 
     self.quanImage = cc.Sprite:createWithSpriteFrameName(quanStr)   
-    self.quanImage:setScale(500/self.quanImage:getContentSize().width)  --500像素内可见
+    self.maxScale = g_AtkLimitLen.yingzhaiLen/self.quanImage:getContentSize().width   --500像素内可见
+    self.minScale = self.maxScale*0.7
+    self.quanImage:setScale(self.maxScale) 
     self:addChild(self.quanImage) 
+
+    --闪动放缩
+    local SequenceAction = cc.Sequence:create(cc.ScaleTo:create(0.5, self.minScale), cc.ScaleTo:create(0.5, self.maxScale))    --scaleAction:reverse()
+    self.quanImage:runAction(cc.RepeatForever:create(SequenceAction))
 
     local imgStr = "public2_yingzhai2.png"  
     if data.type >= 1 and data.type <= 3 then  --1前锋2左军3右军4后卫5中军
@@ -107,11 +119,48 @@ function NpcNode:initYingZhaiData(data)
     self.qizhiImage = cc.Sprite:createWithSpriteFrameName(qizhiStr) 
     self.qizhiImage:setPosition(cc.p(imgSize.width/2 + self.qizhiImage:getContentSize().width/2, imgSize.height + 10))
     self.yingzhaiImage:addChild(self.qizhiImage) 
+
+    ----------------------
+    self.enemyNode = nil   --攻击中的敌方部曲
+
+    self:DelAtkLimitUpdateEntry()
+
+    local function atkLimitUpdate(dt)
+        self:atkLimitUpdate(dt)
+    end
+    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.01, false) 
 end
 
 function NpcNode:getNodePos()
     return cc.p(self:getPosition())
 end
+
+--战场营寨自动探测敌军计时器
+function NpcNode:DelAtkLimitUpdateEntry()
+    if self.atkLimitEntry then
+        g_Scheduler:unscheduleScriptEntry(self.atkLimitEntry)
+        self.atkLimitEntry = nil
+    end
+end
+
+function NpcNode:atkLimitUpdate(dt)
+    if self.parentMapPage then   --节点所在的战场地图层
+        local bCatchEnemy = false
+        if self.enemyNode then    --攻击对象节点 
+            local curPos = self:getNodePos()
+            local enemyPos = self.enemyNode:getNodePos()
+            local len = g_pMapMgr:CalcDistance(curPos, enemyPos)  
+            if len < g_AtkLimitLen.unitLen then
+                bCatchEnemy = true
+            end
+        end
+        if bCatchEnemy == false then
+            self.enemyNode = self.parentMapPage:checkEnemyUnit(self)
+        end
+    end
+end
+
+------------------------------战场营寨----------------------------------------------------
 
 
 return NpcNode

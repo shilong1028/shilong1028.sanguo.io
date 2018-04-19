@@ -10,7 +10,9 @@ end
 
 function BattleOfficalNode:onExit()
     --G_Log_Info("BattleOfficalNode:onExit()")
+    self:DelAtkLimitUpdateEntry()
     self:DelAutoPathUpdateEntry()
+
 end
 
 function BattleOfficalNode:init()  
@@ -78,15 +80,42 @@ function BattleOfficalNode:init()
     self.btnIsShow = false   --操作按钮是否可见
 end
 
-function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalData, nType, officalSelCallBack)
+function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalData, nType, officalSelCallBack, parent)
     if battleOfficalData == -1 or battleOfficalData == nil then
         G_Log_Error("BattleOfficalNode:initBattleOfficalData() data = -1")
         return
     end
     self.mapConfigData = mapConfigData   --战场地图数据，用于AStar寻路
-    self.battleOfficalData = battleOfficalData
     self.officalType = nType or -1  --敌人-1，友军0，我军1
     self.officalSelCallBack = officalSelCallBack
+    self.parentMapPage = parent   --节点所在的战场地图层
+
+    local quanStr = "public2_Quan2.png"   --敌人方红色圈
+    if self.officalType == 0 then  --友方绿圈
+        quanStr = "public2_Quan3.png"
+    elseif self.officalType == 1 then  --我方蓝圈
+        quanStr = "public2_Quan1.png"
+    end
+    self.quanImage = cc.Sprite:createWithSpriteFrameName(quanStr)   
+    self.maxScale = g_AtkLimitLen.unitLen/self.quanImage:getContentSize().width   --200像素内可见
+    self.minScale = self.maxScale*0.7
+    self.quanImage:setScale(self.maxScale) 
+    self.quanImage:setPosition(self.Image_bg:getPosition())
+    self:addChild(self.quanImage) 
+
+    --闪动放缩
+    local SequenceAction = cc.Sequence:create(cc.ScaleTo:create(0.5, self.minScale), cc.ScaleTo:create(0.5, self.maxScale))    --scaleAction:reverse()
+    self.quanImage:runAction(cc.RepeatForever:create(SequenceAction))
+
+    self:DelAtkLimitUpdateEntry()
+
+    local function atkLimitUpdate(dt)
+        self:atkLimitUpdate(dt)
+    end
+    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.01, false) 
+
+
+    self.battleOfficalData = battleOfficalData
     --dump(battleOfficalData, "battleOfficalData = ")
     --[[
     [LUA-print] -         "class"        = *REF*
@@ -223,6 +252,34 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
 
 end
 
+--部曲的安全探测计时器更新（探测周边是否有敌军或敌营）
+function BattleOfficalNode:DelAtkLimitUpdateEntry()
+    if self.atkLimitEntry then
+        g_Scheduler:unscheduleScriptEntry(self.atkLimitEntry)
+        self.atkLimitEntry = nil
+    end
+end
+
+function BattleOfficalNode:atkLimitUpdate(dt)
+    if self.parentMapPage then   --节点所在的战场地图层
+        local bCatchEnemy = false
+        if self.enemyNode then    --攻击对象节点 
+            local curPos = self:getNodePos()
+            local enemyPos = self.enemyNode:getNodePos()
+            local len = g_pMapMgr:CalcDistance(curPos, enemyPos)  
+            if len < g_AtkLimitLen.unitLen then
+                bCatchEnemy = true
+            end
+        end
+        if bCatchEnemy == false then
+            local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self)
+            if enemyNode and atkObj > g_AtkObject.None then
+                self:setAttackObj(atkObj, enemyNode)
+            end
+        end
+    end
+end
+
 function BattleOfficalNode:setBtnIsShow(val)
     if self.officalType ~= 1 then  --敌人-1，友军0，我军1
         return
@@ -312,8 +369,8 @@ function BattleOfficalNode:initAttackAttr()
     end   
 end
 
-function BattleOfficalNode:setAttackObj(nType, node, atkState)
-    self.enemyType = nType   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+function BattleOfficalNode:setAttackObj(enemyType, node, atkState)
+    self.enemyType = enemyType   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
     self.enemyNode = node    --攻击对象节点
 
     self.enemyNodePos = nil
@@ -328,6 +385,7 @@ function BattleOfficalNode:setAttackObj(nType, node, atkState)
     if atkState then
         self.atkState = atkState   --攻击状态，0待命，1进攻，2回防（指定营寨），3溃败（到中军后消失）
     end
+
     self:updateAttackMove()  --根据攻击状态进行移动操作（攻击、回防、溃败等）
 end
 
@@ -342,6 +400,8 @@ end
 
 --根据攻击状态进行移动操作（攻击、回防、溃败等）
 function BattleOfficalNode:updateAttackMove()
+    self:StopLastAutoPath()   --停止上一个自动寻路
+    
     if self.atkState and self.enemyNodePos and self.atkState > g_AtkState.Pause then   --非待命状态
         --开始astar寻路,endPos为目标位置的像素点（左下角为00）
         local endPos = self.enemyNodePos
@@ -350,7 +410,6 @@ function BattleOfficalNode:updateAttackMove()
             return;
         end
 
-        self:StopLastAutoPath()   --停止上一个自动寻路
         local startPos = cc.p(self:getPosition())
 
         local stepLen = g_pMapMgr:CalcDistance(endPos, startPos)
@@ -393,6 +452,11 @@ end
 
 function BattleOfficalNode:StopLastAutoPath()   --停止上一个自动寻路
     self:DelAutoPathUpdateEntry()
+
+    if self.moveAction then
+        self:stopAction(self.moveAction)
+        self.moveAction = nil
+    end
 
     self.bAutoMoving = false
     self.bPauseAutoMoving = false
@@ -493,19 +557,27 @@ function BattleOfficalNode:AutoPathUpdate()
         end
 
         local moveTime = StepLen/self.MoveSpeed 
-        local step = moveTime/0.02
-        local posOffset = cc.p((dirPos.x - nowPos.x)/step, (dirPos.y - nowPos.y)/step )
-        self.AutoPathOneByOneData = {}  --自动寻路一步步走的步伐数据
-        self.AutoPathOneByOneData.step = math.floor(step)
-        self.AutoPathOneByOneData.stepIdx = 1
-        self.AutoPathOneByOneData.posOffset = cc.p((dirPos.x - nowPos.x)/step, (dirPos.y - nowPos.y)/step )
-        self.AutoPathOneByOneData.dirPos = dirPos
-        self.AutoPathOneByOneData.nextPos = cc.p(nowPos.x + posOffset.x, nowPos.y + posOffset.y)
 
-        local function AutoPathUpdateOneByOne(dt)
-            self:AutoPathUpdateOneByOne(dt)
+        if self.moveAction then
+            self:stopAction(self.moveAction)
+            self.moveAction = nil
         end
-        self.AutoPathEntry = g_Scheduler:scheduleScriptFunc(AutoPathUpdateOneByOne, 0.01, false) 
+        self.moveAction = cc.MoveTo:create(moveTime, dirPos)
+        self:runAction(self.moveActio)
+
+        -- local step = moveTime/0.02
+        -- local posOffset = cc.p((dirPos.x - nowPos.x)/step, (dirPos.y - nowPos.y)/step )
+        -- self.AutoPathOneByOneData = {}  --自动寻路一步步走的步伐数据
+        -- self.AutoPathOneByOneData.step = math.floor(step)
+        -- self.AutoPathOneByOneData.stepIdx = 1
+        -- self.AutoPathOneByOneData.posOffset = cc.p((dirPos.x - nowPos.x)/step, (dirPos.y - nowPos.y)/step )
+        -- self.AutoPathOneByOneData.dirPos = dirPos
+        -- self.AutoPathOneByOneData.nextPos = cc.p(nowPos.x + posOffset.x, nowPos.y + posOffset.y)
+
+        -- local function AutoPathUpdateOneByOne(dt)
+        --     self:AutoPathUpdateOneByOne(dt)
+        -- end
+        -- self.AutoPathEntry = g_Scheduler:scheduleScriptFunc(AutoPathUpdateOneByOne, 0.01, false) 
     end
 end
 
@@ -513,10 +585,12 @@ function BattleOfficalNode:AutoPathUpdateOneByOne(dt)
     if self.AutoPathOneByOneData then
         if self.AutoPathOneByOneData.stepIdx >= self.AutoPathOneByOneData.step then
             self.curNodePos = self.AutoPathOneByOneData.dirPos  --人物当前位置
+            self:setPosition(self.curNodePos)
             self:DelAutoPathUpdateEntry()
             self:AutoPathUpdate()
         else
             self.curNodePos = self.AutoPathOneByOneData.nextPos  --人物当前位置
+            self:setPosition(self.curNodePos)
             self.AutoPathOneByOneData.stepIdx = self.AutoPathOneByOneData.stepIdx + 1
             local nowPos = self.AutoPathOneByOneData.nextPos
             local posOffset = self.AutoPathOneByOneData.posOffset

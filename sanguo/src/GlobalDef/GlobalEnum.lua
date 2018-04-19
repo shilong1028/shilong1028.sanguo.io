@@ -68,6 +68,12 @@ g_AtkObject = {
 	EnemyUnit = 2
 }
 
+--营寨或部曲的安全探测范围（敌军显示距离）
+g_AtkLimitLen = {
+	yingzhaiLen = 500,  --500像素内可见敌方单位
+	unitLen = 200   --200像素内可见
+}
+
 --人物移动的方向状态标识
 g_PlayerState = {
 	HMS_NUM = 9,   --状态数量

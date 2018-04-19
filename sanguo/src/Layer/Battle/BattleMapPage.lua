@@ -362,8 +362,8 @@ function BattleMapPage:initBattleMapImgData(parent)
 	end
 
 	--添加城池(0我方营寨,1敌方营寨)
-	self.myYingZhaiVec = {}
-	self.enemyYingZhaiVec = {}
+	self.myYingZhaiNodeVec = {}
+	self.enemyYingZhaiNodeVec = {}
 	for k, yingzhaiId in pairs(self.battleMapData.yingzhaiVec) do   --战斗战场配置数据
 		local yingzhaiData = g_pTBLMgr:getBattleYingZhaiTBLDataById(yingzhaiId)
 		--[[
@@ -377,16 +377,16 @@ function BattleMapPage:initBattleMapImgData(parent)
 		]]
 		if yingzhaiData then
 		    local yingzhaiNode = NpcNode:create()
-		    yingzhaiNode:initYingZhaiData(yingzhaiData)
+		    yingzhaiNode:initYingZhaiData(yingzhaiData, self)
 		    self.rootNode:addChild(yingzhaiNode, 10)
 
 		    local pos = cc.p(yingzhaiData.map_posX, self.mapConfigData.height - yingzhaiData.map_posY)    --以左上角为00原点转为左下角为原点的像素点
 		    yingzhaiNode:setPosition(pos)
 
 		    if yingzhaiData.bEnemy == 0 then  --0我方营寨，1敌方营寨
-		    	table.insert(self.myYingZhaiVec, {["node"]=yingzhaiNode, ["data"]=yingzhaiData})
+		    	table.insert(self.myYingZhaiNodeVec, yingzhaiNode)
 		    else
-		    	table.insert(self.enemyYingZhaiVec, {["node"]=yingzhaiNode, ["data"]=yingzhaiData})
+		    	table.insert(self.enemyYingZhaiNodeVec, yingzhaiNode)
 		    end
 		end
 	end
@@ -432,11 +432,12 @@ function BattleMapPage:initBattleMapImgData(parent)
 	for k, battleOfficalData in pairs(self.zhenXingData) do   --我方出战阵容数据(1-7个数据，-1标识没有武将出战)
 		if type(battleOfficalData) == "table" then
 			local officalNode = BattleOfficalNode:create()
-			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, 1, officalSelCallBack)
+			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, 1, officalSelCallBack, self)
 			self.rootNode:addChild(officalNode, 20)
 
-			local pos = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.myYingZhaiVec)
+			local pos,yingzhaiNode = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.myYingZhaiNodeVec)
 			officalNode:setNodePos(pos)   --自定义方法
+			officalNode:setAttackObj(g_AtkObject.YingZhai, yingzhaiNode, g_AtkState.Pause)
 
 			table.insert(self.myOfficalNodeVec, officalNode)
 		end
@@ -458,11 +459,12 @@ function BattleMapPage:initBattleMapImgData(parent)
 	for k, battleOfficalData in pairs(self.enemyZhenXingData) do   --敌方出战阵容数据(1-7个数据，-1标识没有武将出战)
 		if type(battleOfficalData) == "table" then
 			local officalNode = BattleOfficalNode:create()
-			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, -1, officalSelCallBack)
+			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, -1, officalSelCallBack, self)
 			self.rootNode:addChild(officalNode, 20)
 
-			local pos = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.enemyYingZhaiVec)
+			local pos,yingzhaiNode = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.enemyYingZhaiNodeVec)
 			officalNode:setNodePos(pos)  --自定义方法
+			officalNode:setAttackObj(g_AtkObject.YingZhai, yingzhaiNode, g_AtkState.Pause)
 
 			table.insert(self.enemyOfficalNodeVec, officalNode)
 		end
@@ -477,23 +479,84 @@ function BattleMapPage:initBattleMapImgData(parent)
 	g_pGameLayer:showLoadingLayer(false) 
 end
 
-function BattleMapPage:getSrcOrDestPosByYingzhai(zhenPos, yingzhaiVec)
+function BattleMapPage:getSrcOrDestPosByYingzhai(zhenPos, yingzhaiNodeVec)
 	local pos = nil
+	local yingzhaiNode = nil
 	if zhenPos >= 5 and zhenPos <= 7 then
 		zhenPos = 5 
 	end
 
 	if zhenPos >= 1 and zhenPos <= 5 then
-		for k, yingzhai in pairs(yingzhaiVec) do
+		for k, yingzhai in pairs(yingzhaiNodeVec) do 
 			--zhenPos  1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 			--yingzhaiData.type 营寨类型 1前锋2左军3右军4后卫5中军
-			if zhenPos == yingzhai.data.type then
-				pos = cc.p(yingzhai.data.map_posX, self.mapConfigData.height - yingzhai.data.map_posY)    --以左上角为00原点转为左下角为原点的像素点
+			if zhenPos == yingzhai.yingzhaiData.type then
+				yingzhaiNode = yingzhai
+				pos = cc.p(yingzhaiNode:getPosition())  --cc.p(yingzhai.yingzhaiData.map_posX, self.mapConfigData.height - yingzhai.yingzhaiData.map_posY)    --以左上角为00原点转为左下角为原点的像素点
 				break;
 			end
 		end
 	end
-	return pos 
+	return pos, yingzhaiNode
+end
+
+--部曲探测周边是否有敌军或敌营
+function BattleMapPage:checkEnemyUnitOrYingzhai(node)
+	if node == nil then
+		return nil, g_AtkObject.None
+	end
+
+	local unitVec = self.enemyOfficalNodeVec
+	local yingVec = self.enemyYingZhaiNodeVec 
+
+	if node.officalType == -1 then  --敌人单位探测我军  --officalType敌人-1，友军0，我军1
+		unitVec = self.myOfficalNodeVec
+		yingVec = self.enemyYingZhaiNodeVec 
+	else   --我军探测敌人或敌营
+	end
+
+	local nodePos = node:getNodePos()
+	--敌军优先，周边敌军消灭后才进攻敌营
+	for k, unitNode in pairs(unitVec) do
+		local unitPos = unitNode:getNodePos()
+		local len = g_pMapMgr:CalcDistance(nodePos, unitPos)  
+		if len < g_AtkLimitLen.unitLen then
+			return unitNode, g_AtkObject.EnemyUnit   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+		end
+	end
+
+	for k, yingNode in pairs(yingVec) do
+		local yingPos = yingNode:getNodePos()
+		local len = g_pMapMgr:CalcDistance(nodePos, yingPos)  
+		if len < g_AtkLimitLen.unitLen then
+			return yingNode, g_AtkObject.YingZhai   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+		end
+	end
+
+	return nil, g_AtkObject.None
+end
+
+--营寨探测周边是否有敌军
+function BattleMapPage:checkEnemyUnit(node)
+	if node == nil then
+		return nil
+	end
+
+	local unitVec = self.enemyOfficalNodeVec
+	if node.yingzhaiData.bEnemy == 1 then  --0我方营寨，1敌方营寨
+		unitVec = self.myOfficalNodeVec
+	end
+
+	local nodePos = node:getNodePos()
+	for k, unitNode in pairs(unitVec) do
+		local unitPos = unitNode:getNodePos()
+		local len = g_pMapMgr:CalcDistance(nodePos, unitPos)  
+		if len < g_AtkLimitLen.yingzhaiLen then
+			return unitNode
+		end
+	end
+
+	return nil
 end
 
 
