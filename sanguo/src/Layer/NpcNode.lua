@@ -80,12 +80,12 @@ function NpcNode:initYingZhaiData(data, parent)
 
     self.quanImage = cc.Sprite:createWithSpriteFrameName(quanStr)   
     self.maxScale = g_AtkLimitLen.yingzhaiLen/self.quanImage:getContentSize().width   --500像素内可见
-    self.minScale = self.maxScale*0.7
+    self.minScale = self.maxScale*0.9
     self.quanImage:setScale(self.maxScale) 
     self:addChild(self.quanImage) 
 
     --闪动放缩
-    local SequenceAction = cc.Sequence:create(cc.ScaleTo:create(0.5, self.minScale), cc.ScaleTo:create(0.5, self.maxScale))    --scaleAction:reverse()
+    local SequenceAction = cc.Sequence:create(cc.ScaleTo:create(2.0, self.minScale), cc.ScaleTo:create(2.0, self.maxScale))    --scaleAction:reverse()
     self.quanImage:runAction(cc.RepeatForever:create(SequenceAction))
 
     local imgStr = "public2_yingzhai2.png"  
@@ -128,7 +128,7 @@ function NpcNode:initYingZhaiData(data, parent)
     local function atkLimitUpdate(dt)
         self:atkLimitUpdate(dt)
     end
-    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.01, false) 
+    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.1, false) 
 end
 
 function NpcNode:getNodePos()

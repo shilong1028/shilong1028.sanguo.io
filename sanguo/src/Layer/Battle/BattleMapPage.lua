@@ -435,7 +435,7 @@ function BattleMapPage:initBattleMapImgData(parent)
 			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, 1, officalSelCallBack, self)
 			self.rootNode:addChild(officalNode, 20)
 
-			local pos,yingzhaiNode = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.myYingZhaiNodeVec)
+			local pos,yingzhaiNode = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, 1)
 			officalNode:setNodePos(pos)   --自定义方法
 			officalNode:setAttackObj(g_AtkObject.YingZhai, yingzhaiNode, g_AtkState.Pause)
 
@@ -462,7 +462,7 @@ function BattleMapPage:initBattleMapImgData(parent)
 			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, -1, officalSelCallBack, self)
 			self.rootNode:addChild(officalNode, 20)
 
-			local pos,yingzhaiNode = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, self.enemyYingZhaiNodeVec)
+			local pos,yingzhaiNode = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, -1)
 			officalNode:setNodePos(pos)  --自定义方法
 			officalNode:setAttackObj(g_AtkObject.YingZhai, yingzhaiNode, g_AtkState.Pause)
 
@@ -476,32 +476,41 @@ function BattleMapPage:initBattleMapImgData(parent)
 		self.parentBattleMapLayer:initBattleUnitCallBack(self.enemyZhenXingData)     --战斗场景总层,最终反馈到战斗菜单层
 	end
 
-	g_pGameLayer:showLoadingLayer(false) 
+	g_pGameLayer:showLoadingLayer(false)  
 end
 
-function BattleMapPage:getSrcOrDestPosByYingzhai(zhenPos, yingzhaiNodeVec)
+function BattleMapPage:getSrcOrDestPosByYingzhai(zhenPos, nType)   --nType 敌人-1，友军0，我军1
 	local pos = nil
-	local yingzhaiNode = nil
+	local reYingzhaiNode = nil
 	if zhenPos >= 5 and zhenPos <= 7 then
 		zhenPos = 5 
 	end
 
 	if zhenPos >= 1 and zhenPos <= 5 then
-		for k, yingzhai in pairs(yingzhaiNodeVec) do 
+		for i=1, 5 do 
+			local yingzhaiNode = self.enemyYingZhaiNodeVec[i]
+			if nType == 1 then
+				yingzhaiNode = self.myYingZhaiNodeVec[i] 
+			end
 			--zhenPos  1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 			--yingzhaiData.type 营寨类型 1前锋2左军3右军4后卫5中军
-			if zhenPos == yingzhai.yingzhaiData.type then
-				yingzhaiNode = yingzhai
+			if zhenPos == yingzhaiNode.yingzhaiData.type then
+				reYingzhaiNode = self.myYingZhaiNodeVec[i]
+				if nType == 1 then
+					reYingzhaiNode = self.enemyYingZhaiNodeVec[i] 
+				end
 				pos = cc.p(yingzhaiNode:getPosition())  --cc.p(yingzhai.yingzhaiData.map_posX, self.mapConfigData.height - yingzhai.yingzhaiData.map_posY)    --以左上角为00原点转为左下角为原点的像素点
 				break;
 			end
 		end
 	end
-	return pos, yingzhaiNode
+
+	return pos, reYingzhaiNode
 end
 
 --部曲探测周边是否有敌军或敌营
 function BattleMapPage:checkEnemyUnitOrYingzhai(node)
+	--G_Log_Info("BattleMapPage:checkEnemyUnitOrYingzhai()")
 	if node == nil then
 		return nil, g_AtkObject.None
 	end
@@ -511,7 +520,7 @@ function BattleMapPage:checkEnemyUnitOrYingzhai(node)
 
 	if node.officalType == -1 then  --敌人单位探测我军  --officalType敌人-1，友军0，我军1
 		unitVec = self.myOfficalNodeVec
-		yingVec = self.enemyYingZhaiNodeVec 
+		yingVec = self.myYingZhaiNodeVec 
 	else   --我军探测敌人或敌营
 	end
 

@@ -47,10 +47,10 @@ g_GameLayerTag = {
 
 --兵种移动速度
 g_BingSpeed = {
-	QiangSpeed = 300,
-	DaoSpeed = 400,
-	GongSpeed = 450,
-	QiSpeed = 600
+	QiangSpeed = 20,
+	DaoSpeed = 25,
+	GongSpeed = 30,
+	QiSpeed = 40
 }
 
 --战场部曲攻击状态，0待命，1进攻，2回防，3溃败
