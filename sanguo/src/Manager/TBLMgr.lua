@@ -815,7 +815,7 @@ function TBLMgr:LoadBattleMapConfigTBL()
 		battleMapConfig.enemyVec = {}     --敌人部曲集合
 		local enemyStr = stream:ReadString()     --string 标识敌方部曲数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 		if enemyStr ~= "" or enemyStr ~= "0" then
-			battleMapConfig.enemyVec = string.split(enemyStr,";")
+			battleMapConfig.enemyVec = string.split(enemyStr,";")   --"0"标识相应位置没有敌部曲
 		end
 
 		self.batletMapConfigVec[""..battleMapConfig.id_str] = battleMapConfig
@@ -899,7 +899,7 @@ function TBLMgr:getBattleEnemyConfigById(id_str)
 	if self.battleEnemyConfigVec == nil then
 		self:LoadBattleEnemyConfigTBL()
 	end
-	if id_str == "20000" then  --20000标识相应位置没有敌部曲
+	if id_str == "0" then  --"0"标识相应位置没有敌部曲
 		return nil
 	else
 		return clone(self.battleEnemyConfigVec[""..id_str])

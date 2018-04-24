@@ -448,7 +448,7 @@ function BattleMapPage:initBattleMapImgData(parent)
 	local enemyUnitIdVec = self.battleMapData.enemyVec  --战斗战场配置数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 	self.enemyZhenXingData = {-1, -1, -1, -1, -1, -1, -1}
 	for k, idStr in pairs(enemyUnitIdVec) do
-		local enemyUnitData = g_pTBLMgr:getBattleEnemyConfigById(idStr)
+		local enemyUnitData = g_pTBLMgr:getBattleEnemyConfigById(idStr)   --"0"标识相应位置没有敌部曲
 		if enemyUnitData and type(enemyUnitData.zhenUnit) == "table" then
 			enemyUnitData.zhenUnit.zhenPos = k   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 			self.enemyZhenXingData[k] = enemyUnitData.zhenUnit
