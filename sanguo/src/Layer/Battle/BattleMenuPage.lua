@@ -232,13 +232,16 @@ end
 
 function BattleMenuPage:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
-        if sender == self.Button_exit then   --全军撤退
-            
-        elseif sender == self.Button_atk then   --全军攻击
-
-        elseif sender == self.Button_def then   --全军回防
-
+        if self.parentBattleMapLayer then    --战斗场景总层 
+            if sender == self.Button_exit then   --全军撤退
+                self.parentBattleMapLayer:handleAllNodeAtkOrDefOpt(g_AtkState.Failed) 
+            elseif sender == self.Button_atk then   --全军攻击
+                self.parentBattleMapLayer:handleAllNodeAtkOrDefOpt(g_AtkState.Attack) 
+            elseif sender == self.Button_def then   --全军回防
+                self.parentBattleMapLayer:handleAllNodeAtkOrDefOpt(g_AtkState.Defend) 
+            end
         end
+        self:ShowBattleMenuBtn(false)   --显示全军操作按钮
     end
 end
 

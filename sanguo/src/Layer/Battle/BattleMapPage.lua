@@ -362,8 +362,8 @@ function BattleMapPage:initBattleMapImgData(parent)
 	end
 
 	--添加城池(0我方营寨,1敌方营寨)
-	self.myYingZhaiNodeVec = {}
-	self.enemyYingZhaiNodeVec = {}
+	self.myYingZhaiNodeVec = {-1, -1, -1, -1, -1}   --1前锋2左军3右军4后卫5中军, -1标识没有营寨或营寨被摧毁
+	self.enemyYingZhaiNodeVec = {-1, -1, -1, -1, -1}
 	for k, yingzhaiId in pairs(self.battleMapData.yingzhaiVec) do   --战斗战场配置数据
 		local yingzhaiData = g_pTBLMgr:getBattleYingZhaiTBLDataById(yingzhaiId)
 		--[[
@@ -383,10 +383,11 @@ function BattleMapPage:initBattleMapImgData(parent)
 		    local pos = cc.p(yingzhaiData.map_posX, self.mapConfigData.height - yingzhaiData.map_posY)    --以左上角为00原点转为左下角为原点的像素点
 		    yingzhaiNode:setPosition(pos)
 
+		    local idx = yingzhaiData.type  --营寨类型 1前锋2左军3右军4后卫5中军
 		    if yingzhaiData.bEnemy == 0 then  --0我方营寨，1敌方营寨
-		    	table.insert(self.myYingZhaiNodeVec, yingzhaiNode)
+		    	self.myYingZhaiNodeVec[idx] = yingzhaiNode
 		    else
-		    	table.insert(self.enemyYingZhaiNodeVec, yingzhaiNode)
+		    	self.enemyYingZhaiNodeVec[idx] = yingzhaiNode
 		    end
 		end
 	end
@@ -479,6 +480,7 @@ function BattleMapPage:initBattleMapImgData(parent)
 	g_pGameLayer:showLoadingLayer(false)  
 end
 
+--获取部曲初始位置及目标攻击营寨
 function BattleMapPage:getSrcOrDestPosByYingzhai(zhenPos, nType)   --nType 敌人-1，友军0，我军1
 	local pos = nil
 	local reYingzhaiNode = nil
@@ -488,13 +490,13 @@ function BattleMapPage:getSrcOrDestPosByYingzhai(zhenPos, nType)   --nType 敌�
 
 	if zhenPos >= 1 and zhenPos <= 5 then
 		for i=1, 5 do 
-			local yingzhaiNode = self.enemyYingZhaiNodeVec[i]
+			local yingzhaiNode = self.enemyYingZhaiNodeVec[i]   --{-1, -1, -1, -1, -1}   --1前锋2左军3右军4后卫5中军, -1标识没有营寨或营寨被摧毁
 			if nType == 1 then
 				yingzhaiNode = self.myYingZhaiNodeVec[i] 
 			end
 			--zhenPos  1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 			--yingzhaiData.type 营寨类型 1前锋2左军3右军4后卫5中军
-			if zhenPos == yingzhaiNode.yingzhaiData.type then
+			if yingzhaiNode ~= -1 and type(yingzhaiNode) == "table" and zhenPos == yingzhaiNode.yingzhaiData.type then
 				reYingzhaiNode = self.myYingZhaiNodeVec[i]
 				if nType == 1 then
 					reYingzhaiNode = self.enemyYingZhaiNodeVec[i] 
@@ -508,15 +510,15 @@ function BattleMapPage:getSrcOrDestPosByYingzhai(zhenPos, nType)   --nType 敌�
 	return pos, reYingzhaiNode
 end
 
---部曲探测周边是否有敌军或敌营
-function BattleMapPage:checkEnemyUnitOrYingzhai(node)
+--部曲探测周边是否有敌军或敌营，atkState攻击状态，0待命，1进攻，2回防，3溃败，order攻击顺序1为前锋/左翼/右翼/后卫，2为中军
+function BattleMapPage:checkEnemyUnitOrYingzhai(node, atkState, order)
 	--G_Log_Info("BattleMapPage:checkEnemyUnitOrYingzhai()")
 	if node == nil then
 		return nil, g_AtkObject.None
 	end
 
 	local unitVec = self.enemyOfficalNodeVec
-	local yingVec = self.enemyYingZhaiNodeVec 
+	local yingVec = self.enemyYingZhaiNodeVec   --{-1, -1, -1, -1, -1}   --1前锋2左军3右军4后卫5中军, -1标识没有营寨或营寨被摧毁
 
 	if node.officalType == -1 then  --敌人单位探测我军  --officalType敌人-1，友军0，我军1
 		unitVec = self.myOfficalNodeVec
@@ -526,19 +528,50 @@ function BattleMapPage:checkEnemyUnitOrYingzhai(node)
 
 	local nodePos = node:getNodePos()
 	--敌军优先，周边敌军消灭后才进攻敌营
-	for k, unitNode in pairs(unitVec) do
-		local unitPos = unitNode:getNodePos()
-		local len = g_pMapMgr:CalcDistance(nodePos, unitPos)  
-		if len < g_AtkLimitLen.unitLen then
-			return unitNode, g_AtkObject.EnemyUnit   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+	if atkState == g_AtkState.Attack then
+		for k, unitNode in pairs(unitVec) do
+			local unitPos = unitNode:getNodePos()
+			local len = g_pMapMgr:CalcDistance(nodePos, unitPos)  
+			if len < g_AtkLimitLen.unitLen then
+				return unitNode, g_AtkObject.EnemyUnit   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+			end
+		end
+
+		for k, yingNode in pairs(yingVec) do
+			if yingNode ~= -1 and type(yingNode) == "table" then
+				local yingPos = yingNode:getNodePos()
+				local len = g_pMapMgr:CalcDistance(nodePos, yingPos)  
+				if len < g_AtkLimitLen.unitLen then
+					return yingNode, g_AtkObject.YingZhai   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+				end
+			end
 		end
 	end
 
-	for k, yingNode in pairs(yingVec) do
-		local yingPos = yingNode:getNodePos()
-		local len = g_pMapMgr:CalcDistance(nodePos, yingPos)  
-		if len < g_AtkLimitLen.unitLen then
-			return yingNode, g_AtkObject.YingZhai   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+	--回防或攻击范围内没有敌军或敌营
+	if order then  --节点按钮操作才有效
+		local destPos = 0
+		if atkState == g_AtkState.Attack then
+			if order == 1 then
+				destPos = node.battleOfficalData.atkPos1
+			elseif order == 2 then
+				destPos = node.battleOfficalData.atkPos2
+			end
+		elseif atkState == g_AtkState.Defend then
+			if order == 1 then
+				destPos = node.battleOfficalData.defPos1
+			elseif order == 2 then
+				destPos = node.battleOfficalData.defPos2
+			end
+
+			if node.officalType == -1 then  --敌人单位探测我军  --officalType敌人-1，友军0，我军1
+				yingVec = self.enemyYingZhaiNodeVec 
+			else   --我军探测敌人或敌营
+				yingVec = self.myYingZhaiNodeVec   --{-1, -1, -1, -1, -1}   --1前锋2左军3右军4后卫5中军, -1标识没有营寨或营寨被摧毁
+			end
+		end
+		if destPos > 0 then
+			return yingVec[destPos], g_AtkObject.YingZhai   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
 		end
 	end
 
@@ -568,6 +601,65 @@ function BattleMapPage:checkEnemyUnit(node)
 	return nil
 end
 
+--检查节点对应的攻击和防御阵营
+function BattleMapPage:checkNodeAtkAndDef_YingShow(zhenPos, nType)   --nType 敌人-1，友军0，我军1
+	local mYingVec = self.myYingZhaiNodeVec  --{-1, -1, -1, -1, -1}  --1前锋2左军3右军4后卫5中军, -1标识没有营寨或营寨被摧毁
+	local eYingVec = self.enemyYingZhaiNodeVec
+	if nType == -1 then
+		mYingVec = self.enemyYingZhaiNodeVec
+		eYingVec = self.myYingZhaiNodeVec
+	end
+
+	if zhenPos >= 5 and zhenPos <= 7 then
+		zhenPos = 5   --营寨类型 1前锋2左军3右军4后卫5中军
+	end
+
+	local atkPos1 = 0, atkPos2 = 0, defPos1 = 0, defPos2 = 5  --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+	if zhenPos ~= 5 and mYingVec[zhenPos] ~= -1 and type(mYingVec[zhenPos]) == "table" then
+		defPos1 = zhenPos   --回防前锋/左翼/右翼/后卫
+	end
+
+	if zhenPos ~= 4 then
+		if zhenPos ~= 5 then
+			if eYingVec[zhenPos] ~= -1 and type(eYingVec[zhenPos]) == "table" then
+				atkPos1 = zhenPos   --进攻前锋/左翼/右翼
+			end
+		else
+			if eYingVec[1] ~= -1 and type(eYingVec[1]) == "table" then
+				atkPos1 = 1   --中军部曲在敌前锋营未攻破前，可以进攻敌前锋营或其探测范围内的敌军部曲。
+			end
+		end
+
+		if atkPos1 == 0 then  --对应敌营寨已经被摧毁
+			--[[
+				敌前锋营被攻破后（敌该探测范围消失），前锋军可以进攻敌中军大帐或其探测范围内的敌军部曲。前锋军不可进攻敌后卫营。
+				敌左营被攻破后（敌该探测范围消失），左护军可以进攻敌中军大帐或敌后卫营或其探测范围内的敌军部曲。
+				右护军类似左护军。
+				后卫军不会主动进攻敌营寨，但可以进攻其探测范围内的敌军部曲，也可以回防中军。
+				敌前锋营被攻破后（敌该探测范围消失），中军部曲可以进攻敌中军大帐或其探测范围内的敌军部曲。中军部曲不可进攻敌后卫营。
+			]]
+			atkPos2 = 5
+			if zhenPos == 2 or zhenPos == 3 then
+				atkPos1 = 4
+			end
+		end
+	end
+
+	return atkPos1, atkPos2, defPos1, defPos2
+end
+
+--处理所有部曲的攻击或防御命令, order攻击或防御顺序，默认为1
+function BattleMapLayer:handleAllNodeAtkOrDefOpt(state, nType)  --nType 敌人-1，友军0，我军1
+	local officalVec = self.myOfficalNodeVec  --我方所有部曲的操作
+    if nType == -1 then   --敌方所有部曲的操作
+    	officalVec = self.enemyOfficalNodeVec
+    end
+
+    for k, node in pairs(officalVec) do
+    	node:handleAtkOrDefOpt(state, order)  
+    end
+end
+
 
 return BattleMapPage
 
@@ -579,16 +671,12 @@ return BattleMapPage
 	只有消灭敌方营寨探测范围内的敌方部曲单位后，才可进攻敌方营寨。
 	3、前锋军在敌前锋营未攻破前，只能进攻敌前锋营或其探测范围内的敌军部曲。
 	敌前锋营被攻破后（敌该探测范围消失），前锋军可以进攻敌中军大帐或其探测范围内的敌军部曲。前锋军不可进攻敌后卫营。
-	4、左护军在敌左营未攻破前，只能进攻敌左营、敌前锋营或其探测范围内的敌军部曲。
-	敌前锋营被攻破后（敌该探测范围消失）而左营未被攻破，左护军只能进攻敌左营或其探测范围内的敌军部曲。
-	敌左营被攻破后（敌该探测范围消失）而前锋营未被攻破，左护军只能进攻敌前锋营或其探测范围内的敌军部曲。
-	敌左营和前锋营均被攻破后（敌该探测范围消失），左护军可以进攻敌中军大帐或敌后卫营或其探测范围内的敌军部曲。
+	4、左护军在敌左营未攻破前，只能进攻敌左营或其探测范围内的敌军部曲。
+	敌左营被攻破后（敌该探测范围消失），左护军可以进攻敌中军大帐或敌后卫营或其探测范围内的敌军部曲。
 	5、右护军类似左护军。
-	6、后卫军不会主动进攻敌营寨，但可以进攻其探测范围内的敌军部曲。在我中军大帐未被攻击时，后卫军活动范围不会超出后卫营的探测范围。
-	在我中军大帐被攻击时，后卫军可以前来支援中军，但活动范围不会超出后卫营的探测范围和中军大帐的探测范围。
-	只有敌方的左护军或右护军方可进攻我后卫营，反之相同。
-	7、中军部曲在敌前锋营未攻破前，可以进攻敌前锋营、左营、右营或其探测范围内的敌军部曲。
-	敌前锋营被攻破后（敌该探测范围消失），中军部曲可以进攻敌中军大帐、左营、右营或其探测范围内的敌军部曲。中军部曲不可进攻敌后卫营。
+	6、后卫军不会主动进攻敌营寨，但可以进攻其探测范围内的敌军部曲，也可以回防中军。只有敌方的左护军或右护军方可进攻我后卫营，反之相同。
+	7、中军部曲在敌前锋营未攻破前，可以进攻敌前锋营或其探测范围内的敌军部曲。
+	敌前锋营被攻破后（敌该探测范围消失），中军部曲可以进攻敌中军大帐或其探测范围内的敌军部曲。中军部曲不可进攻敌后卫营。
 	8、战斗胜利规则：倒计时时间为0，进攻方失败；中军大帐被攻破者，失败；主帅部曲消失（主帅死亡或士兵数量为0）者，失败。
 	9、战斗开始时每只部曲士气为100，士气为0的部曲消失。部曲武将死亡时部曲消失。
 	10、前锋营、左营、右营被攻破方，中军部曲士气减少10。攻破敌左营，我方获取敌携带粮草总量的10%。攻破敌右营，我方获取敌携带金钱总量的10%。

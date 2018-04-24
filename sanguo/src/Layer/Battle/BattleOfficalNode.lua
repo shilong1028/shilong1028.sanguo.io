@@ -110,23 +110,28 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
     self:DelAtkLimitUpdateEntry()
 
     local function atkLimitUpdate(dt)
-        self:atkLimitUpdate(dt, false)
+        self:atkLimitUpdate(dt)  --部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
     end
-    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.1, false) 
+    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.5, false) 
 
 
     self.battleOfficalData = battleOfficalData
+    --当前进攻防御阵营， 0标识没有
+    self.battleOfficalData.atkPos1 = 0
+    self.battleOfficalData.atkPos2 = 0
+    self.battleOfficalData.defPos1 = 0
+    self.battleOfficalData.defPos2 = 0 
     --dump(battleOfficalData, "battleOfficalData = ")
     --[[
-    [LUA-print] -         "class"        = *REF*
-    [LUA-print] -         "generalIdStr" = "3001"
-    [LUA-print] -         "unitData" = {
-    [LUA-print] -             "bingIdStr" = ""
-    [LUA-print] -             "class"     = *REF*
-    [LUA-print] -             "zhenId"    = ""
-    [LUA-print] -         }
-    [LUA-print] -         "zhenPos"      = 5
-    ]]
+            "generalIdStr" = "3001"
+            "unitData" = {
+                "bingIdStr" = ""
+                "zhenId"    = ""
+             }  
+                "zhenPos"      = 5
+            --附加
+            atkPos1, atkPos2, defPos1, defPos2   --当前进攻防御阵营， 0标识没有
+        ]]
     --[[
         battleOfficalData.zhenPos = 0   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
         battleOfficalData.generalIdStr = "0"    --营寨武将ID字符串
@@ -259,7 +264,7 @@ function BattleOfficalNode:DelAtkLimitUpdateEntry()
         self.atkLimitEntry = nil
     end
 end
-
+--部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
 function BattleOfficalNode:atkLimitUpdate(dt)
     if self.parentMapPage and self.atkState and self.atkState > g_AtkState.Pause then   --节点所在的战场地图层 --非待命状态
         local bCatchEnemy = false
@@ -273,7 +278,7 @@ function BattleOfficalNode:atkLimitUpdate(dt)
         end
 
         if bCatchEnemy == false then
-            local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self)
+            local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState)
             if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营
                 self:setAttackObj(atkObj, enemyNode)
             else   --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
@@ -295,40 +300,54 @@ function BattleOfficalNode:setBtnIsShow(val)
     self.btnIsShow = val
 
     self.Image_sel:setVisible(self.btnIsShow)
-
-    self.rightBtn_atk1:setVisible(self.btnIsShow)   --进攻前锋/左翼/右翼/后卫
-    self.rightBtn_atk2:setVisible(self.btnIsShow)  --进攻中军
-    if self.battleOfficalData and self.battleOfficalData.zhenPos >= 5 and self.battleOfficalData.zhenPos <=7 then
-        self.leftBtn_def1:setVisible(false) 
-    else
-        self.leftBtn_def1:setVisible(self.btnIsShow)  --回防前锋/左翼/右翼/后卫
-    end
-    self.leftBtn_def2:setVisible(self.btnIsShow)  --回防中军
     self.topBtn_pause:setVisible(self.btnIsShow)  --待命
+
+    self.rightBtn_atk1:setVisible(false)   --进攻前锋/左翼/右翼/后卫
+    self.rightBtn_atk2:setVisible(false)  --进攻中军
+    self.leftBtn_def1:setVisible(false)  --回防前锋/左翼/右翼/后卫
+    self.leftBtn_def2:setVisible(false)  --回防中军
+
+    if self.btnIsShow == true and self.parentMapPage then --节点所在的战场地图层
+        --检查节点当前对应的攻击和防御阵营
+        local atkPos1, atkPos2, defPos1, defPos2 = self.parentMapPage:checkNodeAtkAndDef_YingShow(self.battleOfficalData.zhenPos, self.officalType)  --敌人-1，友军0，我军1
+        self.battleOfficalData.atkPos1 = atkPos1
+        self.battleOfficalData.atkPos2 = atkPos2
+        self.battleOfficalData.defPos1 = defPos1
+        self.battleOfficalData.defPos2 = defPos2
+
+        local strVec = {lua_Battle_Str1, lua_Battle_Str2, lua_Battle_Str3, lua_Battle_Str4, lua_Battle_Str5}   --前锋/左翼/右翼/后卫/中军
+
+        if atkPos1 > 0 then
+            self.rightBtn_atk1:setTitleText(lua_Battle_Str6..strVec[atkPos1])
+            self.rightBtn_atk1:setVisible(true)   --进攻前锋/左翼/右翼/后卫
+        end
+        if atkPos2 > 0 then
+            self.rightBtn_atk2:setTitleText(lua_Battle_Str6..strVec[atkPos2])
+            self.rightBtn_atk2:setVisible(true)  --进攻中军
+        end
+        if defPos1 > 0 then
+            self.leftBtn_def1:setTitleText(lua_Battle_Str7..strVec[defPos1])
+            self.leftBtn_def1:setVisible(true)  --回防前锋/左翼/右翼/后卫
+        end
+        if defPos2 > 0 then
+            self.leftBtn_def2:setTitleText(lua_Battle_Str7..strVec[defPos2])
+            self.leftBtn_def2:setVisible(true)  --回防中军
+        end
+    end   
 end
 
 function BattleOfficalNode:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.rightBtn_atk1 then  --进攻前锋/左翼/右翼/后卫
-            self.atkState = g_AtkState.Attack   --攻击状态，0待命，1进攻，2回防，3溃败
-            self:updateAttackMove()  --根据攻击状态进行移动操作（攻击、回防、溃败等）
-            self:setBtnIsShow(false)
+            self:handleAtkOrDefOpt(g_AtkState.Attack, 1)  
         elseif sender == self.rightBtn_atk2 then   --进攻中军
-            self.atkState = g_AtkState.Attack   --攻击状态，0待命，1进攻，2回防，3溃败
-
-            self:setBtnIsShow(false)
+            self:handleAtkOrDefOpt(g_AtkState.Attack, 2)  
         elseif sender == self.leftBtn_def1 then  --回防前锋/左翼/右翼/后卫
-            self.atkState = g_AtkState.Defend   --攻击状态，0待命，1进攻，2回防，3溃败
-
-            self:setBtnIsShow(false)
+            self:handleAtkOrDefOpt(g_AtkState.Defend, 1)  
         elseif sender == self.leftBtn_def2 then  --回防中军
-            self.atkState = g_AtkState.Defend   --攻击状态，0待命，1进攻，2回防，3溃败
-
-            self:setBtnIsShow(false)
+            self:handleAtkOrDefOpt(g_AtkState.Defend, 2)  
         elseif sender == self.topBtn_pause then  --待命
-            self.atkState = g_AtkState.Pause   --攻击状态，0待命，1进攻，2回防，3溃败
-            self:atkLimitUpdate()
-            self:setBtnIsShow(false)
+            self:handleAtkOrDefOpt(g_AtkState.Pause)
         elseif sender == self.Image_bg then  --选中自身
             self:setBtnIsShow()
             if self.officalSelCallBack then
@@ -336,6 +355,31 @@ function BattleOfficalNode:touchEvent(sender, eventType)
             end
         end
     end
+end
+
+--处理按钮的攻击或防御命令, order攻击或防御顺序，默认为1
+function BattleOfficalNode:handleAtkOrDefOpt(state, order)  
+    self.atkState = state  --攻击状态，0待命，1进攻，2回防，3溃败
+
+    if self.atkState == g_AtkState.Pause then
+        self:atkLimitUpdate()  --部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
+    else
+        if self.atkState == g_AtkState.Attack then
+        elseif self.atkState == g_AtkState.Defend then
+        end
+        if order == nil then order = 1 end
+        if self.parentMapPage and self.enemyNode and self.bEnemyFighting ~= true then --非正在和敌军部曲战斗（攻击营寨或回防被敌军攻击不算）
+            local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState, order)
+            if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营,--敌军优先，周边敌军消灭后才进攻敌营
+                self:setAttackObj(atkObj, enemyNode)  --给部曲节点设定要给攻击目标（敌军或敌营）
+            else   --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
+            end
+        elseif self.bEnemyFighting == true then
+            g_pGameLayer:ShowScrollTips(lua_str_WarnTips14, g_ColorDef.Red, g_defaultTipsFontSize)   --"该部队正在和敌军部曲战斗中！"
+        end
+    end
+
+    self:setBtnIsShow(false)
 end
 
 --设置节点在战场上的位置
@@ -365,6 +409,7 @@ function BattleOfficalNode:initAttackMoveAttr()
     self.enemyType = g_AtkObject.None   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
     self.enemyNode = nil    --攻击对象节点 
     self.enemyOfficalType = -1  --敌人-1，友军0，我军1
+    self.bEnemyFighting = false  --正在和敌军部曲战斗（攻击营寨或回防被敌军攻击不算）
 
     self.AutoPathVec = nil   --自动寻路路径
     self.bAutoMoving = false  --正在自动寻路
@@ -382,11 +427,21 @@ function BattleOfficalNode:initAttackMoveAttr()
         self.MoveSpeed = g_BingSpeed.GongSpeed
     elseif bingId == g_ItemIdDef.Item_Id_qibing then
         self.MoveSpeed = g_BingSpeed.QiSpeed
-    end   
+    end
+
+    --检查节点当前对应的攻击和防御阵营
+    if self.parentMapPage then
+        local atkPos1, atkPos2, defPos1, defPos2 = self.parentMapPage:checkNodeAtkAndDef_YingShow(self.battleOfficalData.zhenPos, self.officalType)  --敌人-1，友军0，我军1
+        self.battleOfficalData.atkPos1 = atkPos1
+        self.battleOfficalData.atkPos2 = atkPos2
+        self.battleOfficalData.defPos1 = defPos1
+        self.battleOfficalData.defPos2 = defPos2 
+    end  
 end
 
+--给部曲节点设定要给攻击目标（敌军或敌营）
 function BattleOfficalNode:setAttackObj(enemyType, node, atkState)
-    G_Log_Info("BattleOfficalNode:setAttackObj(), enemyType = %d, ", enemyType, "; self.atkState = ", self.atkState)
+    --G_Log_Info("BattleOfficalNode:setAttackObj(), enemyType = %d, ", enemyType, "; self.atkState = ", self.atkState)
     self.enemyType = enemyType   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
     self.enemyNode = node    --攻击对象节点
     self.enemyOfficalType = -1  --敌人-1，友军0，我军1
@@ -410,13 +465,13 @@ function BattleOfficalNode:setAttackObj(enemyType, node, atkState)
 end
 
 --处理敌军移动
-function BattleOfficalNode:handleEnemyNodeMoved(node)
-    if self.enemyNode and self.enemyNode.generalIdStr and node and node.generalIdStr and self.enemyNode.generalIdStr == node.generalIdStr then
-        self.enemyNode = node
-        self.enemyNodePos = node:getNodePos() 
-    end
-    self:updateAttackMove()  --根据攻击状态进行移动操作（攻击、回防、溃败等）
-end
+-- function BattleOfficalNode:handleEnemyNodeMoved(node)
+--     if self.enemyNode and self.enemyNode.generalIdStr and node and node.generalIdStr and self.enemyNode.generalIdStr == node.generalIdStr then
+--         self.enemyNode = node
+--         self.enemyNodePos = node:getNodePos() 
+--     end
+--     self:updateAttackMove()  --根据攻击状态进行移动操作（攻击、回防、溃败等）
+-- end
 
 --根据攻击状态进行移动操作（攻击、回防、溃败等）
 function BattleOfficalNode:updateAttackMove()
@@ -636,16 +691,12 @@ return BattleOfficalNode
     只有消灭敌方营寨探测范围内的敌方部曲单位后，才可进攻敌方营寨。
     3、前锋军在敌前锋营未攻破前，只能进攻敌前锋营或其探测范围内的敌军部曲。
     敌前锋营被攻破后（敌该探测范围消失），前锋军可以进攻敌中军大帐或其探测范围内的敌军部曲。前锋军不可进攻敌后卫营。
-    4、左护军在敌左营未攻破前，只能进攻敌左营、敌前锋营或其探测范围内的敌军部曲。
-    敌前锋营被攻破后（敌该探测范围消失）而左营未被攻破，左护军只能进攻敌左营或其探测范围内的敌军部曲。
-    敌左营被攻破后（敌该探测范围消失）而前锋营未被攻破，左护军只能进攻敌前锋营或其探测范围内的敌军部曲。
-    敌左营和前锋营均被攻破后（敌该探测范围消失），左护军可以进攻敌中军大帐或敌后卫营或其探测范围内的敌军部曲。
+    4、左护军在敌左营未攻破前，只能进攻敌左营或其探测范围内的敌军部曲。
+    敌左营被攻破后（敌该探测范围消失），左护军可以进攻敌中军大帐或敌后卫营或其探测范围内的敌军部曲。
     5、右护军类似左护军。
-    6、后卫军不会主动进攻敌营寨，但可以进攻其探测范围内的敌军部曲。在我中军大帐未被攻击时，后卫军活动范围不会超出后卫营的探测范围。
-    在我中军大帐被攻击时，后卫军可以前来支援中军，但活动范围不会超出后卫营的探测范围和中军大帐的探测范围。
-    只有敌方的左护军或右护军方可进攻我后卫营，反之相同。
-    7、中军部曲在敌前锋营未攻破前，可以进攻敌前锋营、左营、右营或其探测范围内的敌军部曲。
-    敌前锋营被攻破后（敌该探测范围消失），中军部曲可以进攻敌中军大帐、左营、右营或其探测范围内的敌军部曲。中军部曲不可进攻敌后卫营。
+    6、后卫军不会主动进攻敌营寨，但可以进攻其探测范围内的敌军部曲，也可以回防中军。只有敌方的左护军或右护军方可进攻我后卫营，反之相同。
+    7、中军部曲在敌前锋营未攻破前，可以进攻敌前锋营或其探测范围内的敌军部曲。
+    敌前锋营被攻破后（敌该探测范围消失），中军部曲可以进攻敌中军大帐或其探测范围内的敌军部曲。中军部曲不可进攻敌后卫营。
     8、战斗胜利规则：倒计时时间为0，进攻方失败；中军大帐被攻破者，失败；主帅部曲消失（主帅死亡或士兵数量为0）者，失败。
     9、战斗开始时每只部曲士气为100，士气为0的部曲消失。部曲武将死亡时部曲消失。
     10、前锋营、左营、右营被攻破方，中军部曲士气减少10。攻破敌左营，我方获取敌携带粮草总量的10%。攻破敌右营，我方获取敌携带金钱总量的10%。

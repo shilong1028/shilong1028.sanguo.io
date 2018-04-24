@@ -15,6 +15,7 @@ lua_str_WarnTips10 = "该兵种部曲未组建，不能上阵！"
 lua_str_WarnTips11 = "该兵种部曲兵力少于100人，不能上阵！"
 lua_str_WarnTips12 = "只有英雄类武将才能担任中军主将！"
 lua_str_WarnTips13 = "该武将已经出战！"
+lua_str_WarnTips14 = "该部队正在和敌军部曲战斗中！"
 
 lua_Dialog_TitleStr1 = "提  示"
 lua_Dialog_TitleStr2 = "帮  助"

@@ -56,6 +56,16 @@ function BattleMapLayer:initBattleData()
     end
 end
 
+--处理我方所有部曲的攻击或防御命令, order攻击或防御顺序，默认为1
+function BattleMapLayer:handleAllNodeAtkOrDefOpt(state) 
+    if state == g_AtkState.Failed then   --全军撤退
+    else
+        if self.BattleMapPage then   --地图层
+            self.BattleMapPage:handleAllNodeAtkOrDefOpt(state, 1) 
+        end
+    end
+end
+
 function BattleMapLayer:initBattleUnitCallBack(enemyUnitVec) 
     --菜单层
     if self.BattleMenuPage then
