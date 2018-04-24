@@ -122,13 +122,6 @@ function NpcNode:initYingZhaiData(data, parent)
 
     ----------------------
     self.enemyNode = nil   --攻击中的敌方部曲
-
-    self:DelAtkLimitUpdateEntry()
-
-    local function atkLimitUpdate(dt)
-        self:atkLimitUpdate(dt)
-    end
-    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.1, false) 
 end
 
 function NpcNode:getNodePos()
@@ -141,6 +134,16 @@ function NpcNode:DelAtkLimitUpdateEntry()
         g_Scheduler:unscheduleScriptEntry(self.atkLimitEntry)
         self.atkLimitEntry = nil
     end
+end
+
+--战场营寨自动探测敌军计时器
+function NpcNode:initAtkLimitUpdateEntry()
+    self:DelAtkLimitUpdateEntry()
+
+    local function atkLimitUpdate(dt)
+        self:atkLimitUpdate(dt)
+    end
+    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.1, false) 
 end
 
 function NpcNode:atkLimitUpdate(dt)

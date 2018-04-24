@@ -359,6 +359,7 @@ end
 
 --处理按钮的攻击或防御命令, order攻击或防御顺序，默认为1
 function BattleOfficalNode:handleAtkOrDefOpt(state, order)  
+    --G_Log_Info("BattleOfficalNode:handleAtkOrDefOpt(state = %d, order = %d)", state, order or 0)
     self.atkState = state  --攻击状态，0待命，1进攻，2回防，3溃败
 
     if self.atkState == g_AtkState.Pause then
@@ -368,7 +369,8 @@ function BattleOfficalNode:handleAtkOrDefOpt(state, order)
         elseif self.atkState == g_AtkState.Defend then
         end
         if order == nil then order = 1 end
-        if self.parentMapPage and self.enemyNode and self.bEnemyFighting ~= true then --非正在和敌军部曲战斗（攻击营寨或回防被敌军攻击不算）
+
+        if self.parentMapPage and self.bEnemyFighting ~= true then --非正在和敌军部曲战斗（攻击营寨或回防被敌军攻击不算）
             local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState, order)
             if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营,--敌军优先，周边敌军消灭后才进攻敌营
                 self:setAttackObj(atkObj, enemyNode)  --给部曲节点设定要给攻击目标（敌军或敌营）
