@@ -288,7 +288,7 @@ function MainMenuLayer:initStroyData(storyId, bPlayerVedio)
             
             local EffectImod = ImodAnim:create() 
             EffectImod:setPosition(cc.p(110, 40)) 
-            EffectImod:initAnimWithName("Ani/task_roundEffect.png","Ani/task_roundEffect.ani") 
+            EffectImod:initAnimWithName("Ani/effect/task_roundEffect.png","Ani/effect/task_roundEffect.ani") 
             EffectImod:PlayActionRepeat(0, 0.12) 
             EffectImod:setScaleX(0.95)
             self.mainStoryCell:addChild(EffectImod,2) 

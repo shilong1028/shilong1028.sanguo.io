@@ -47,7 +47,7 @@ end
 function NpcNode:initMapJumpPtData(data)  
 	--G_Log_Info("NpcNode:initMapJumpPtData()")
 	self.Imod = ImodAnim:create()
-	self.Imod:initAnimWithName("Ani/chuansong.png", "Ani/chuansong.ani")
+	self.Imod:initAnimWithName("Ani/effect/chuansong.png", "Ani/effect/chuansong.ani")
 	self.Imod:setScale(0.8)
 	self.Imod:PlayActionRepeat(0)
 	self:addChild(self.Imod)
