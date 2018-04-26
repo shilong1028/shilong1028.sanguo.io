@@ -76,19 +76,19 @@ g_BattleObject = {
 	EnemyUnit = 2
 }
 
---营寨或部曲的安全探测范围（敌军显示距离）
+--营寨或部曲的安全探测范围（敌军显示距离像素） 像素内可见敌方单位
 g_AtkLimitLen = {
-	yingzhaiLen = 500,  --500像素内可见敌方单位
-	unitLen = 200   --200像素内可见
+	yingzhaiLen = 300, 
+	unitLen = 200  
 }
 
 --兵种和营寨战斗攻击范围（像素）
 g_FightingLen = {
-	QiangLen= 70,
-	DaoLen = 50,
-	GongLen = 100,
-	QiLen = 60,
-	YingLen = 150
+	QiangLen= 150,
+	DaoLen = 120,
+	GongLen = 200,
+	QiLen = 130,
+	YingLen = 300
 }
 
 --兵种和营寨的物理攻击速率（秒数）

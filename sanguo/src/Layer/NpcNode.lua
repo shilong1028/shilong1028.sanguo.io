@@ -83,7 +83,7 @@ function NpcNode:initYingZhaiData(data, parent)
     end
 
     self.quanImage = cc.Sprite:createWithSpriteFrameName(quanStr)   
-    self.maxScale = g_AtkLimitLen.yingzhaiLen/self.quanImage:getContentSize().width   --500像素内可见
+    self.maxScale = g_AtkLimitLen.yingzhaiLen/(self.quanImage:getContentSize().width/2)   --300像素内可见
     self.minScale = self.maxScale*0.9
     self.quanImage:setScale(self.maxScale) 
     self:addChild(self.quanImage) 
@@ -172,21 +172,29 @@ function NpcNode:atkLimitUpdate(dt)
                 self:DelFightingCdUpdateEntry()              
             end
         end
+
         if bCatchEnemy == false then
             local enemyNode = self.parentMapPage:checkEnemyUnit(self)
-            local enemyPos = enemyNode:getNodePos()
-            local len = g_pMapMgr:CalcDistance(curPos, enemyPos) 
-            if len <= g_FightingLen.YingLen then   --兵种和营寨战斗攻击范围
-                self.enemyNode = enemyNode  
-                if self.bEnemyFighting ~= false then
-                    self.bEnemyFighting = true  --正在攻击敌军部曲战斗
-                    self:initFightingCdUpdateEntry()
+            if enemyNode then
+                --dump(enemyNode.battleOfficalData)
+                local enemyPos = enemyNode:getNodePos()
+                local len = g_pMapMgr:CalcDistance(curPos, enemyPos) 
+                if len <= g_FightingLen.YingLen then   --兵种和营寨战斗攻击范围
+                    self.enemyNode = enemyNode  
+                    if self.bEnemyFighting ~= true then
+                        self.bEnemyFighting = true  --正在攻击敌军部曲战斗
+                        self:initFightingCdUpdateEntry()
 
-                    self.enemyNode:setUnderAttackCallBack(self, true)   --向敌方单位注册攻击他的对象
+                        self.enemyNode:setUnderAttackCallBack(self, true)   --向敌方单位注册攻击他的对象
+                    end
+                else
+                    self.bEnemyFighting = false 
+                    self:DelFightingCdUpdateEntry()
                 end
             else
-                self.bEnemyFighting = false 
-                self:DelFightingCdUpdateEntry()
+                -- self.enemyNode = nil
+                -- self.bEnemyFighting = false 
+                -- self:DelFightingCdUpdateEntry()
             end
         end
     end
@@ -238,9 +246,29 @@ function NpcNode:setUnderAttackCallBack(atkNode, bAdd)
     end
 end
 
+--是否显示人物头像上方攻击动画
+function NpcNode:showFightAni(bShow)
+    if bShow == true then
+        if self.fightAni == nil then
+            self.fightAni = ImodAnim:create()
+            self.fightAni:initAnimWithName("Ani/effect/fighting.png", "Ani/effect/fighting.ani")
+            self.fightAni:PlayActionRepeat(0)
+            self.fightAni:setPosition(cc.p(self.yingzhaiImage:getPositionX(), self.yingzhaiImage:getPositionY() + 100))
+            self:addChild(self.fightAni, 10)
+        end
+        self.fightAni:setVisible(true)
+    else
+        if self.fightAni then
+            self.fightAni:setVisible(false)
+        end
+    end
+end
+
 --部曲的物理攻击速率计时器更新
 function NpcNode:initFightingCdUpdateEntry()
     self:DelFightingCdUpdateEntry()
+
+    self:showFightAni(true)  --是否显示人物头像上方攻击动画
 
     local function fightingCdUpdate(dt)
         self:fightingCdUpdate(dt) 
@@ -252,6 +280,7 @@ end
 
 --部曲的物理攻击速率计时器更新
 function NpcNode:DelFightingCdUpdateEntry()
+    self:showFightAni(false)  --是否显示人物头像上方攻击动画
     if self.fightingCdUpdateEntry then
         g_Scheduler:unscheduleScriptEntry(self.fightingCdUpdateEntry)
         self.fightingCdUpdateEntry = nil
@@ -259,7 +288,7 @@ function NpcNode:DelFightingCdUpdateEntry()
 end
 
 --部曲的物理攻击速率计时器更新
-function BattleOfficalNode:fightingCdUpdate(dt)
+function NpcNode:fightingCdUpdate(dt)
     if self.bEnemyFighting == true then
         self.fightingCDStep = self.fightingCDStep + 0.1  ----兵种和营寨的物理攻击速率计时器步数（秒数）
         if self.fightingCDStep >= self.fightingCD then  --攻击敌军

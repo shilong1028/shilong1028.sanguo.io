@@ -100,14 +100,14 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
         quanStr = "public2_Quan1.png"
     end
     self.quanImage = cc.Sprite:createWithSpriteFrameName(quanStr)   
-    self.maxScale = g_AtkLimitLen.unitLen/self.quanImage:getContentSize().width   --200像素内可见
+    self.maxScale = g_AtkLimitLen.unitLen/(self.quanImage:getContentSize().width/2)   --150像素内可见
     self.minScale = self.maxScale*0.7
     self.quanImage:setScale(self.maxScale) 
     self.quanImage:setPosition(self.Image_bg:getPosition())
     self:addChild(self.quanImage) 
 
     --闪动放缩
-    local SequenceAction = cc.Sequence:create(cc.ScaleTo:create(1.0, self.minScale), cc.ScaleTo:create(1.0, self.maxScale))    --scaleAction:reverse()
+    local SequenceAction = cc.Sequence:create(cc.ScaleTo:create(1.5, self.minScale), cc.ScaleTo:create(1.5, self.maxScale))    --scaleAction:reverse()
     self.quanImage:runAction(cc.RepeatForever:create(SequenceAction))
 
     self.battleOfficalData = battleOfficalData
@@ -322,23 +322,24 @@ end
 --处理按钮的攻击或防御命令, order攻击或防御顺序，默认为1
 function BattleOfficalNode:handleAtkOrDefOpt(state, order)  
     --G_Log_Info("BattleOfficalNode:handleAtkOrDefOpt(state = %d, order = %d)", state, order or 0)
-    self.atkState = state  --攻击状态，0待命，1进攻，2回防，3溃败, 5战斗中
-
-    if self.atkState == g_AtkState.Pause then
-        self:atkLimitUpdate()  --部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
-    elseif self.atkState == g_AtkState.Fighting or self.bEnemyFighting == true then   --正在攻击敌军或敌营
+    if self.atkState == g_AtkState.Fighting or self.bEnemyFighting == true then   --正在攻击敌军或敌营
         g_pGameLayer:ShowScrollTips(lua_str_WarnTips14, g_ColorDef.Red, g_defaultTipsFontSize)   --"该部队正在和敌军部曲战斗中！"
     else
-        -- if self.atkState == g_AtkState.Attack then
-        -- elseif self.atkState == g_AtkState.Defend then
-        -- end
-        if order == nil then order = 1 end
+        self.atkState = state  --攻击状态，0待命，1进攻，2回防，3溃败, 5战斗中
+        if self.atkState == g_AtkState.Pause then
+            self:atkLimitUpdate()  --部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
+        else
+            -- if self.atkState == g_AtkState.Attack then
+            -- elseif self.atkState == g_AtkState.Defend then
+            -- end
+            if order == nil then order = 1 end
 
-        if self.parentMapPage then 
-            local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState, order)
-            if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营,--敌军优先，周边敌军消灭后才进攻敌营
-                self:setAttackObj(atkObj, enemyNode)  --给部曲节点设定要给攻击目标（敌军或敌营）
-            else   --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
+            if self.parentMapPage then 
+                local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState, order)
+                if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营,--敌军优先，周边敌军消灭后才进攻敌营
+                    self:setAttackObj(atkObj, enemyNode)  --给部曲节点设定要给攻击目标（敌军或敌营）
+                else   --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
+                end
             end
         end
     end
@@ -427,7 +428,7 @@ function BattleOfficalNode:initAtkLimitUpdateEntry()
     local function atkLimitUpdate(dt)
         self:atkLimitUpdate(dt)  --部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
     end
-    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.5, false) 
+    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.1, false) 
 end
 
 --部曲的安全探测计时器更新（探测周边是否有敌军或敌营）
@@ -456,6 +457,7 @@ function BattleOfficalNode:atkLimitUpdate(dt)
             if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营
                 self:setAttackObj(atkObj, enemyNode)
             else   --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
+                --self:setAttackObj(g_AtkObject.None, nil)
             end
         end
     else
@@ -467,6 +469,10 @@ end
 --给部曲节点设定要给攻击目标（敌军或敌营）
 function BattleOfficalNode:setAttackObj(enemyType, node, atkState)
     --G_Log_Info("BattleOfficalNode:setAttackObj(), enemyType = %d, ", enemyType, "; self.atkState = ", self.atkState)
+    if self.enemyNode then
+        self.enemyNode:setUnderAttackCallBack(self, false)   --向敌方单位注册攻击他的对象(是否添加)
+    end
+
     self.enemyType = enemyType   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
     self.enemyNode = node    --攻击对象节点
     self.enemyOfficalType = -1  --敌人-1，友军0，我军1
@@ -492,11 +498,9 @@ function BattleOfficalNode:setAttackObj(enemyType, node, atkState)
             self.bEnemyFighting = true  --正在攻击敌军部曲或敌营
             self.atkState = g_AtkState.Fighting   --战场部曲攻击状态，0待命，1进攻，2回防，3溃败, 5战斗中
         end
-
-        self.enemyNode:setUnderAttackCallBack(self, false)   --向敌方单位注册攻击他的对象(是否添加)
     end
 
-    if self.bEnemyFighting = true then
+    if self.bEnemyFighting == true then
         self:initFightingCdUpdateEntry()
 
         self.enemyNode:setUnderAttackCallBack(self, true)   --向敌方单位注册攻击他的对象(是否添加)
