@@ -203,6 +203,10 @@ end
 
 --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
 function NpcNode:HandleMyselfDied()
+    if self.parentMapPage then   --节点所在的战场地图层
+        self.parentMapPage:handleNodeDied(self)  --战场地图中部曲或营寨消亡的处理
+    end
+
     if self.UnderAttackVec then
         for k, node in pairs(self.UnderAttackVec) do    --我方被攻击的敌方部曲列表
             node:handleEnemyNodeDied()

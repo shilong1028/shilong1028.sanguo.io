@@ -521,6 +521,10 @@ end
 
 --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
 function BattleOfficalNode:HandleMyselfDied()
+    if self.parentMapPage then   --节点所在的战场地图层
+        self.parentMapPage:handleNodeDied(self)  --战场地图中部曲或营寨消亡的处理
+    end
+
     if self.UnderAttackVec then
         for k, node in pairs(self.UnderAttackVec) do    --我方被攻击的敌方部曲列表
             node:handleEnemyNodeDied()
@@ -534,7 +538,7 @@ function BattleOfficalNode:setUnderAttackCallBack(atkNode, bAdd)
     for k, node in pairs(self.UnderAttackVec) do    --我方被攻击的敌方部曲列表
         if node.nodeType == atkNode.nodeType then   --战场对象类型，0无，1营寨，2敌军
             if atkNode.nodeType == g_BattleObject.EnemyUnit then
-                if atkNode.battleOfficalData.generalIdStr == node.battleOfficalData.generalIdStr then   --战斗一方武将具有唯一性
+                if atkNode.battleOfficalData.zhenPos == node.battleOfficalData.zhenPos then   --generalIdStr战斗一方武将具有唯一性
                     if bAdd == true then
                         bFind = true 
                         break;

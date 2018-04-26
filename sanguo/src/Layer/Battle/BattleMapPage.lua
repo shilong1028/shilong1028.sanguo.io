@@ -491,6 +491,29 @@ function BattleMapPage:initBattleMapImgData(parent)
 	g_pGameLayer:showLoadingLayer(false)  
 end
 
+--战场地图中部曲或营寨消亡的处理
+function BattleMapPage:handleNodeDied(node)
+	if node.nodeType == g_BattleObject.EnemyUnit then   --战场对象类型，0无，1营寨，2敌军
+		local vec = self.myOfficalNodeVec
+		if node.officalType == -1 then  --敌人-1，友军0，我军1
+			vec = self.enemyOfficalNodeVec
+		end
+		for k, n in pairs(vec) do
+			if node.battleOfficalData.zhenPos == n.battleOfficalData.zhenPos then
+				table.remove(vec, k)
+				return
+			end
+		end
+	elseif node.nodeType == g_BattleObject.YingZhai then
+		local idx = node.yingzhaiData.type
+		if node.yingzhaiData.bEnemy == 0 then  --敌方营寨
+			self.enemyYingZhaiNodeVec[idx] = -1   --{-1, -1, -1, -1, -1}   --1前锋2左军3右军4后卫5中军, -1标识没有营寨或营寨被摧毁
+		else
+			self.myYingZhaiNodeVec[idx] = -1 
+		end
+	end
+end
+
 --获取部曲初始位置及目标攻击营寨
 function BattleMapPage:getSrcOrDestPosByYingzhai(zhenPos, nType)   --nType 敌人-1，友军0，我军1
 	--G_Log_Info("BattleMapPage:getSrcOrDestPosByYingzhai(), zhenPos = %d, nType = %d", zhenPos, nType or -100)
