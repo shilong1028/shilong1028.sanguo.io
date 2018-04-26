@@ -10,9 +10,11 @@ end
 
 function BattleOfficalNode:onExit()
     --G_Log_Info("BattleOfficalNode:onExit()")
-    self:DelAtkLimitUpdateEntry()
-    self:DelAutoPathUpdateEntry()
+    self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
 
+    self:DelAtkLimitUpdateEntry()   --部曲的安全探测计时器更新
+    self:DelAutoPathUpdateEntry()   --自动寻路移动计时器更新
+    self:DelFightingCdUpdateEntry()  --部曲的物理攻击速率计时器更新  
 end
 
 function BattleOfficalNode:init()  
@@ -87,6 +89,7 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
     end
     self.mapConfigData = mapConfigData   --战场地图数据，用于AStar寻路
     self.officalType = nType or -1  --敌人-1，友军0，我军1
+    self.nodeType = g_BattleObject.EnemyUnit  --战场对象类型，0无，1营寨，2敌军
     self.officalSelCallBack = officalSelCallBack
     self.parentMapPage = parent   --节点所在的战场地图层
 
@@ -106,14 +109,6 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
     --闪动放缩
     local SequenceAction = cc.Sequence:create(cc.ScaleTo:create(1.0, self.minScale), cc.ScaleTo:create(1.0, self.maxScale))    --scaleAction:reverse()
     self.quanImage:runAction(cc.RepeatForever:create(SequenceAction))
-
-    self:DelAtkLimitUpdateEntry()
-
-    local function atkLimitUpdate(dt)
-        self:atkLimitUpdate(dt)  --部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
-    end
-    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.5, false) 
-
 
     self.battleOfficalData = battleOfficalData
     --当前进攻防御阵营， 0标识没有
@@ -257,39 +252,6 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
 
 end
 
---部曲的安全探测计时器更新（探测周边是否有敌军或敌营）
-function BattleOfficalNode:DelAtkLimitUpdateEntry()
-    if self.atkLimitEntry then
-        g_Scheduler:unscheduleScriptEntry(self.atkLimitEntry)
-        self.atkLimitEntry = nil
-    end
-end
---部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
-function BattleOfficalNode:atkLimitUpdate(dt)
-    if self.parentMapPage and self.atkState and self.atkState > g_AtkState.Pause then   --节点所在的战场地图层 --非待命状态
-        local bCatchEnemy = false
-        if self.enemyNode then    --攻击对象节点 
-            local curPos = self:getNodePos()
-            local enemyPos = self.enemyNode:getNodePos()
-            local len = g_pMapMgr:CalcDistance(curPos, enemyPos)  
-            if len < g_AtkLimitLen.unitLen then
-                bCatchEnemy = true
-            end
-        end
-
-        if bCatchEnemy == false then
-            local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState)
-            if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营
-                self:setAttackObj(atkObj, enemyNode)
-            else   --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
-            end
-        end
-    else
-        --self:DelAtkLimitUpdateEntry()
-        self:StopLastAutoPath()   --停止上一个自动寻路
-    end
-end
-
 function BattleOfficalNode:setBtnIsShow(val)
     if self.officalType ~= 1 then  --敌人-1，友军0，我军1
         return
@@ -360,24 +322,24 @@ end
 --处理按钮的攻击或防御命令, order攻击或防御顺序，默认为1
 function BattleOfficalNode:handleAtkOrDefOpt(state, order)  
     --G_Log_Info("BattleOfficalNode:handleAtkOrDefOpt(state = %d, order = %d)", state, order or 0)
-    self.atkState = state  --攻击状态，0待命，1进攻，2回防，3溃败
+    self.atkState = state  --攻击状态，0待命，1进攻，2回防，3溃败, 5战斗中
 
     if self.atkState == g_AtkState.Pause then
         self:atkLimitUpdate()  --部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
+    elseif self.atkState == g_AtkState.Fighting or self.bEnemyFighting == true then   --正在攻击敌军或敌营
+        g_pGameLayer:ShowScrollTips(lua_str_WarnTips14, g_ColorDef.Red, g_defaultTipsFontSize)   --"该部队正在和敌军部曲战斗中！"
     else
-        if self.atkState == g_AtkState.Attack then
-        elseif self.atkState == g_AtkState.Defend then
-        end
+        -- if self.atkState == g_AtkState.Attack then
+        -- elseif self.atkState == g_AtkState.Defend then
+        -- end
         if order == nil then order = 1 end
 
-        if self.parentMapPage and self.bEnemyFighting ~= true then --非正在和敌军部曲战斗（攻击营寨或回防被敌军攻击不算）
+        if self.parentMapPage then 
             local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState, order)
             if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营,--敌军优先，周边敌军消灭后才进攻敌营
                 self:setAttackObj(atkObj, enemyNode)  --给部曲节点设定要给攻击目标（敌军或敌营）
             else   --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
             end
-        elseif self.bEnemyFighting == true then
-            g_pGameLayer:ShowScrollTips(lua_str_WarnTips14, g_ColorDef.Red, g_defaultTipsFontSize)   --"该部队正在和敌军部曲战斗中！"
         end
     end
 
@@ -409,9 +371,10 @@ function BattleOfficalNode:initAttackMoveAttr()
     ]]
     self.atkState = g_AtkState.Pause   --攻击状态，0待命，1进攻，2回防，3溃败
     self.enemyType = g_AtkObject.None   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
-    self.enemyNode = nil    --攻击对象节点 
+    self.enemyNode = nil    --我方攻击或监视的敌方部曲
     self.enemyOfficalType = -1  --敌人-1，友军0，我军1
-    self.bEnemyFighting = false  --正在和敌军部曲战斗（攻击营寨或回防被敌军攻击不算）
+    self.bEnemyFighting = false  --正在攻击敌军部曲或敌营
+    self.UnderAttackVec = {}   --我方被攻击的敌方部曲列表
 
     self.AutoPathVec = nil   --自动寻路路径
     self.bAutoMoving = false  --正在自动寻路
@@ -419,17 +382,31 @@ function BattleOfficalNode:initAttackMoveAttr()
     self.AutoPathEntry = nil  --自动寻路定时器实体
     self.AutoPathOneByOneData = nil  --自动寻路一步步走的步伐数据
 
+    self.fightingCDStep = 0  ----兵种和营寨的物理攻击速率计时器步数（秒数）
+    self.fightingCD = g_FightingCD.DaoCD
     self.MoveSpeed = g_BingSpeed.QiangSpeed   --移动速度
+    self.FightingLen = g_FightingLen.DaoLen  --兵种和营寨战斗攻击范围
+
     local bingId = tonumber(self.battleOfficalData.unitData.bingIdStr)
     if bingId == g_ItemIdDef.Item_Id_qiangbing then
         self.MoveSpeed = g_BingSpeed.QiangSpeed
+        self.FightingLen = g_FightingLen.QiangLen
+        self.fightingCD = g_FightingCD.QiangCD
     elseif bingId == g_ItemIdDef.Item_Id_daobing then
         self.MoveSpeed = g_BingSpeed.DaoSpeed
+        self.FightingLen = g_FightingLen.DaoLen
+        self.fightingCD = g_FightingCD.DaoCD
     elseif bingId == g_ItemIdDef.Item_Id_gongbing then
         self.MoveSpeed = g_BingSpeed.GongSpeed
+        self.FightingLen = g_FightingLen.GongLen
+        self.fightingCD = g_FightingCD.GongCD
     elseif bingId == g_ItemIdDef.Item_Id_qibing then
         self.MoveSpeed = g_BingSpeed.QiSpeed
+        self.FightingLen = g_FightingLen.QiLen
+        self.fightingCD = g_FightingCD.YingCD
     end
+    self.bingId = bingId   --部曲兵种ID
+
 
     --检查节点当前对应的攻击和防御阵营
     if self.parentMapPage then
@@ -439,6 +416,52 @@ function BattleOfficalNode:initAttackMoveAttr()
         self.battleOfficalData.defPos1 = defPos1
         self.battleOfficalData.defPos2 = defPos2 
     end  
+
+    self:initAtkLimitUpdateEntry()   --部曲的安全探测计时器更新（探测周边是否有敌军或敌营）
+end
+
+--部曲的安全探测计时器更新（探测周边是否有敌军或敌营）
+function BattleOfficalNode:initAtkLimitUpdateEntry()
+    self:DelAtkLimitUpdateEntry()
+
+    local function atkLimitUpdate(dt)
+        self:atkLimitUpdate(dt)  --部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
+    end
+    self.atkLimitEntry = g_Scheduler:scheduleScriptFunc(atkLimitUpdate, 0.5, false) 
+end
+
+--部曲的安全探测计时器更新（探测周边是否有敌军或敌营）
+function BattleOfficalNode:DelAtkLimitUpdateEntry()
+    if self.atkLimitEntry then
+        g_Scheduler:unscheduleScriptEntry(self.atkLimitEntry)
+        self.atkLimitEntry = nil
+    end
+end
+
+--部曲的安全探测计时器更新（探测周边是否有敌军或敌营），待命则停止寻路
+function BattleOfficalNode:atkLimitUpdate(dt)
+    if self.parentMapPage and self.atkState and self.atkState > g_AtkState.Pause and self.atkState < g_AtkState.Fighting then   --节点所在的战场地图层 --非待命状态
+        local bCatchEnemy = false
+        if self.enemyNode and self.bEnemyFighting == true then --正在攻击敌军部曲或敌营
+            local curPos = self:getNodePos()
+            local enemyPos = self.enemyNode:getNodePos()
+            local len = g_pMapMgr:CalcDistance(curPos, enemyPos)  
+            if len < g_AtkLimitLen.FightingLen then
+                bCatchEnemy = true
+            end
+        end
+
+        if bCatchEnemy == false then
+            local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState)
+            if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营
+                self:setAttackObj(atkObj, enemyNode)
+            else   --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
+            end
+        end
+    else
+        --self:DelAtkLimitUpdateEntry()
+        self:StopLastAutoPath()   --停止上一个自动寻路
+    end
 end
 
 --给部曲节点设定要给攻击目标（敌军或敌营）
@@ -447,9 +470,14 @@ function BattleOfficalNode:setAttackObj(enemyType, node, atkState)
     self.enemyType = enemyType   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
     self.enemyNode = node    --攻击对象节点
     self.enemyOfficalType = -1  --敌人-1，友军0，我军1
-
+    self.bEnemyFighting = false  --正在攻击敌军部曲或营寨
     self.enemyNodePos = nil
+
     if self.enemyNode then
+        if atkState then
+            self.atkState = atkState   --攻击状态，0待命，1进攻，2回防（指定营寨），3溃败（到中军后消失）
+        end
+
         self.enemyOfficalType = node.officalType  --敌人-1，友军0，我军1
 
         if self.enemyType == g_AtkObject.EnemyUnit then
@@ -457,13 +485,132 @@ function BattleOfficalNode:setAttackObj(enemyType, node, atkState)
         elseif self.enemyType == g_AtkObject.YingZhai then
             self.enemyNodePos = node:getNodePos() 
         end
+
+        local curPos = self:getNodePos()
+        local len = g_pMapMgr:CalcDistance(curPos, self.enemyNodePos)  
+        if len <= self.FightingLen then  --兵种和营寨战斗攻击范围
+            self.bEnemyFighting = true  --正在攻击敌军部曲或敌营
+            self.atkState = g_AtkState.Fighting   --战场部曲攻击状态，0待命，1进攻，2回防，3溃败, 5战斗中
+        end
+
+        self.enemyNode:setUnderAttackCallBack(self, false)   --向敌方单位注册攻击他的对象(是否添加)
     end
 
-    if atkState then
-        self.atkState = atkState   --攻击状态，0待命，1进攻，2回防（指定营寨），3溃败（到中军后消失）
+    if self.bEnemyFighting = true then
+        self:initFightingCdUpdateEntry()
+
+        self.enemyNode:setUnderAttackCallBack(self, true)   --向敌方单位注册攻击他的对象(是否添加)
+    else
+        self:DelFightingCdUpdateEntry()
     end
 
     self:updateAttackMove()  --根据攻击状态进行移动操作（攻击、回防、溃败等）
+end
+
+--我方攻击对象死亡消失时的回调处理
+function BattleOfficalNode:handleEnemyNodeDied()
+    self.atkState = g_AtkState.Pause   --攻击状态，0待命，1进攻，2回防，3溃败
+    self.enemyType = g_AtkObject.None   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+    self.enemyNode = nil    --我方攻击或监视的敌方部曲
+    self.enemyOfficalType = -1  --敌人-1，友军0，我军1
+    self.bEnemyFighting = false  --正在攻击敌军部曲或敌营
+    --self.UnderAttackVec = {}   --我方被攻击的敌方部曲列表
+
+    self:DelFightingCdUpdateEntry()  --部曲的物理攻击速率计时器更新
+end
+
+--处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
+function BattleOfficalNode:HandleMyselfDied()
+    if self.UnderAttackVec then
+        for k, node in pairs(self.UnderAttackVec) do    --我方被攻击的敌方部曲列表
+            node:handleEnemyNodeDied()
+        end
+    end
+end
+
+--设置我方被攻击的敌军单位及绑定我死亡时给对方的回调
+function BattleOfficalNode:setUnderAttackCallBack(atkNode, bAdd)
+    local bFind = false
+    for k, node in pairs(self.UnderAttackVec) do    --我方被攻击的敌方部曲列表
+        if node.nodeType == atkNode.nodeType then   --战场对象类型，0无，1营寨，2敌军
+            if atkNode.nodeType == g_BattleObject.EnemyUnit then
+                if atkNode.battleOfficalData.generalIdStr == node.battleOfficalData.generalIdStr then   --战斗一方武将具有唯一性
+                    if bAdd == true then
+                        bFind = true 
+                        break;
+                    else
+                        table.remove(self.UnderAttackVec, k)
+                        return
+                    end
+                end
+            elseif atkNode.nodeType == g_BattleObject.YingZhai then
+                if atkNode.yingzhaiData.type == node.yingzhaiData.type then   --营寨类型 1前锋2左军3右军4后卫5中军
+                    if bAdd == true then
+                        bFind = true 
+                        break;
+                    else
+                        table.remove(self.UnderAttackVec, k)
+                        return
+                    end
+                end
+            end
+        end
+    end
+
+    if bFind == false and bAdd == true then
+        table.insert(self.UnderAttackVec, atkNode)
+    end
+end
+
+--是否显示人物头像上方攻击动画
+function BattleOfficalNode:showFightAni(bShow)
+    if bShow == true then
+        if self.fightAni == nil then
+            self.fightAni = ImodAnim:create()
+            self.fightAni:initAnimWithName("Ani/effect/fighting.png", "Ani/effect/fighting.ani")
+            self.fightAni:PlayActionRepeat(0)
+            self.fightAni:setPosition(cc.p(self.Image_bg:getPositionX(), self.Image_bg:getPositionY() + 50))
+            self:addChild(self.fightAni, 10)
+        end
+        self.fightAni:setVisible(true)
+    else
+        if self.fightAni then
+            self.fightAni:setVisible(false)
+        end
+    end
+end
+
+--部曲的物理攻击速率计时器更新
+function BattleOfficalNode:initFightingCdUpdateEntry()
+    self:DelFightingCdUpdateEntry()
+    self:showFightAni(true)  --是否显示人物头像上方攻击动画
+
+    local function fightingCdUpdate(dt)
+        self:fightingCdUpdate(dt) 
+    end
+    if self.bEnemyFighting == true then
+        self.fightingCdUpdateEntry = g_Scheduler:scheduleScriptFunc(fightingCdUpdate, 0.1, false) 
+    end
+end
+
+--部曲的物理攻击速率计时器更新
+function BattleOfficalNode:DelFightingCdUpdateEntry()
+    self:showFightAni(false)  --是否显示人物头像上方攻击动画
+    if self.fightingCdUpdateEntry then
+        g_Scheduler:unscheduleScriptEntry(self.fightingCdUpdateEntry)
+        self.fightingCdUpdateEntry = nil
+    end
+end
+
+--部曲的物理攻击速率计时器更新
+function BattleOfficalNode:fightingCdUpdate(dt)
+    if self.bEnemyFighting == true then
+        self.fightingCDStep = self.fightingCDStep + 0.1  ----兵种和营寨的物理攻击速率计时器步数（秒数）
+        if self.fightingCDStep >= self.fightingCD then  --攻击敌军或营寨
+
+            self.fightingCDStep = 0
+        end
+    end
 end
 
 --处理敌军移动
@@ -479,7 +626,7 @@ end
 function BattleOfficalNode:updateAttackMove()
     self:StopLastAutoPath()   --停止上一个自动寻路
     
-    if self.atkState and self.enemyNodePos and self.atkState > g_AtkState.Pause then   --非待命状态
+    if self.atkState and self.enemyNodePos and self.atkState > g_AtkState.Pause and self.atkState < g_AtkState.Fighting then   --非待命状态 --战场部曲攻击状态，0待命，1进攻，2回防，3溃败, 5战斗中
         --开始astar寻路,endPos为目标位置的像素点（左下角为00）
         local endPos = self.enemyNodePos
         if endPos.x < 0 or endPos.y < 0 or endPos.x > self.mapConfigData.width or endPos.y > self.mapConfigData.height then
@@ -541,6 +688,7 @@ function BattleOfficalNode:StopLastAutoPath()   --停止上一个自动寻路
     self.AutoPathVec = nil
 end
 
+--自动寻路移动计时器更新
 function BattleOfficalNode:DelAutoPathUpdateEntry()
     if self.AutoPathEntry then
         g_Scheduler:unscheduleScriptEntry(self.AutoPathEntry)
@@ -587,7 +735,7 @@ function BattleOfficalNode:AutoPathUpdate()
 
     local function EndAutoPathUpdate()
         --G_Log_Info("************** BattleOfficalNode:EndAutoPathUpdate()")
-        self:DelAutoPathUpdateEntry()
+        self:DelAutoPathUpdateEntry()  --自动寻路移动计时器更新
         self.bAutoMoving = false
     end
 

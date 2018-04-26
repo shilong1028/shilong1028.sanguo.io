@@ -53,12 +53,13 @@ g_BingSpeed = {
 	QiSpeed = 40
 }
 
---战场部曲攻击状态，0待命，1进攻，2回防，3溃败
+--战场部曲攻击状态，0待命，1进攻，2回防，3溃败, 5战斗中
 g_AtkState = {
 	Pause = 0,
 	Attack = 1,
 	Defend = 2, 
-	Failed = 3
+	Failed = 3,
+	Fighting = 5
 }
 
 --战场部曲攻击对象类型，0无对象，1攻击营寨，2攻击敌军
@@ -68,10 +69,35 @@ g_AtkObject = {
 	EnemyUnit = 2
 }
 
+--战场对象类型，0无，1营寨，2敌军
+g_BattleObject = {
+	None = 0,
+	YingZhai = 1,
+	EnemyUnit = 2
+}
+
 --营寨或部曲的安全探测范围（敌军显示距离）
 g_AtkLimitLen = {
 	yingzhaiLen = 500,  --500像素内可见敌方单位
 	unitLen = 200   --200像素内可见
+}
+
+--兵种和营寨战斗攻击范围（像素）
+g_FightingLen = {
+	QiangLen= 70,
+	DaoLen = 50,
+	GongLen = 100,
+	QiLen = 60,
+	YingLen = 150
+}
+
+--兵种和营寨的物理攻击速率（秒数）
+g_FightingCD = {
+	QiangCD= 5,
+	DaoCD = 4,
+	GongCD = 8,
+	QiCD = 5,
+	YingCD = 10
 }
 
 --人物移动的方向状态标识

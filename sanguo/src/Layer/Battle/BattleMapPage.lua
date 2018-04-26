@@ -540,12 +540,20 @@ function BattleMapPage:checkEnemyUnitOrYingzhai(node, atkState, order)
 	local nodePos = node:getNodePos()
 	--敌军优先，周边敌军消灭后才进攻敌营
 	if atkState == g_AtkState.Attack then
+		local minLen = g_AtkLimitLen.unitLen
+		local retUnitNode = nil
 		for k, unitNode in pairs(unitVec) do
 			local unitPos = unitNode:getNodePos()
 			local len = g_pMapMgr:CalcDistance(nodePos, unitPos)  
 			if len < g_AtkLimitLen.unitLen then
-				return unitNode, g_AtkObject.EnemyUnit   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
+				if len < minLen then
+					minLen = len
+					retUnitNode = unitNode
+				end
 			end
+		end
+		if retUnitNode then
+			return retUnitNode, g_AtkObject.EnemyUnit   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
 		end
 
 		for k, yingNode in pairs(yingVec) do
@@ -605,15 +613,21 @@ function BattleMapPage:checkEnemyUnit(node)
 	end
 
 	local nodePos = node:getNodePos()
+	local minLen = g_AtkLimitLen.yingzhaiLen
+	local retUnitNode = nil
+
 	for k, unitNode in pairs(unitVec) do
 		local unitPos = unitNode:getNodePos()
 		local len = g_pMapMgr:CalcDistance(nodePos, unitPos)  
 		if len < g_AtkLimitLen.yingzhaiLen then
-			return unitNode
+			if len < minLen then
+				minLen = len
+				retUnitNode = unitNode
+			end
 		end
 	end
 
-	return nil
+	return retUnitNode
 end
 
 --检查节点对应的攻击和防御阵营
