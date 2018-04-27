@@ -232,6 +232,9 @@ function TBLMgr:LoadBattleYingZhaiConfigTBL()
 		battleYingZhaiConfig.name = stream:ReadString()      --营寨名称
 		battleYingZhaiConfig.type = stream:ReadShort()     --营寨类型 1前锋2左军3右军4后卫5中军
 		battleYingZhaiConfig.bEnemy = stream:ReadShort()     --0我方营寨，1敌方营寨
+		battleYingZhaiConfig.imgStr = stream:ReadString()   --营寨资源路径名称
+		battleYingZhaiConfig.atk = stream:ReadUInt()   --营寨攻击力
+		battleYingZhaiConfig.hp = stream:ReadUInt()   --营寨生命防御值
 		battleYingZhaiConfig.battleMapId = stream:ReadUInt()     --营寨所在地图Id
 		battleYingZhaiConfig.map_posX = stream:ReadUInt()   --以左上角为00原点的地图坐标
 		battleYingZhaiConfig.map_posY = stream:ReadUInt()    --以左上角为00原点的地图坐标 

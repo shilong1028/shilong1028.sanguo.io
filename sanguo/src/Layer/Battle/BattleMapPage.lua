@@ -367,13 +367,16 @@ function BattleMapPage:initBattleMapImgData(parent)
 	for k, yingzhaiId in pairs(self.battleMapData.yingzhaiVec) do   --战斗战场配置数据
 		local yingzhaiData = g_pTBLMgr:getBattleYingZhaiTBLDataById(yingzhaiId)
 		--[[
-		battleYingZhaiConfig.id_str = stream:ReadString()         --营寨ID字符串
-		battleYingZhaiConfig.name = stream:ReadString()      --营寨名称
-		battleYingZhaiConfig.type = stream:ReadShort()     --营寨类型 1前锋2左军3右军4后卫5中军
-		battleYingZhaiConfig.bEnemy = stream:ReadShort()     --0我方营寨，1敌方营寨
-		battleYingZhaiConfig.battleMapId = stream:ReadUInt()     --营寨所在地图Id
-		battleYingZhaiConfig.map_posX = stream:ReadUInt()   --以左上角为00原点的地图坐标
-		battleYingZhaiConfig.map_posY = stream:ReadUInt()    --以左上角为00原点的地图坐标 
+	        yingzhaiData.id_str = ""        --营寨ID字符串
+	        yingzhaiData.name = ""     --营寨名称
+	        yingzhaiData.type = 0     --营寨类型 1前锋2左军3右军4后卫5中军
+	        yingzhaiData.bEnemy = 0     --0我方营寨，1敌方营寨
+	        yingzhaiData.imgStr = ""   --营寨资源路径名称
+	        yingzhaiData.atk = 0   --营寨攻击力
+	        yingzhaiData.hp = 0   --营寨生命防御值
+	        yingzhaiData.battleMapId = 0     --营寨所在地图Id
+	        yingzhaiData.map_posX = 0   --以左上角为00原点的地图坐标
+	        yingzhaiData.map_posY = 0    --以左上角为00原点的地图坐标 
 		]]
 		if yingzhaiData then
 		    local yingzhaiNode = NpcNode:create()

@@ -139,15 +139,7 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
             unitData.zhenId = "0"   --部曲阵法Id
             --附加信息
             unitData.bingData = {
-                bingData.id_str = stream:ReadString()    --官职ID字符串
-                bingData.name = stream:ReadString()     --名称
-                bingData.type = stream:ReadWord()    --官职类型，0通用，1主角，2武将，3军师
-                bingData.quality = stream:ReadWord()    --品质,0五品以下，1五品，2四品，3三品，4二品，5一品，6王侯，7皇帝
-                bingData.hp = stream:ReadUInt()    --附加血量值
-                bingData.mp = stream:ReadUInt()        --附加智力值
-                bingData.troops = stream:ReadUInt()    --附加带兵数       
-                bingData.subs = {}     --下属官职id_str集合,-表示连续区间，;表示间隔区间
-                bingData.desc = stream:ReadString()    --官职介绍
+                和generalData相似
             }
             unitData.zhenData = nil   --阵型数据
         }
@@ -615,20 +607,57 @@ function BattleOfficalNode:fightingCdUpdate(dt)
     if self.bEnemyFighting == true then
         self.fightingCDStep = self.fightingCDStep + 0.1  ----兵种和营寨的物理攻击速率计时器步数（秒数）
         if self.fightingCDStep >= self.fightingCD then  --攻击敌军或营寨
-
+            self:handleAttackEnemy()
             self.fightingCDStep = 0
         end
     end
 end
 
---处理敌军移动
--- function BattleOfficalNode:handleEnemyNodeMoved(node)
---     if self.enemyNode and self.enemyNode.generalIdStr and node and node.generalIdStr and self.enemyNode.generalIdStr == node.generalIdStr then
---         self.enemyNode = node
---         self.enemyNodePos = node:getNodePos() 
---     end
---     self:updateAttackMove()  --根据攻击状态进行移动操作（攻击、回防、溃败等）
--- end
+--处理攻击敌方逻辑
+function BattleOfficalNode:handleAttackEnemy()
+    if self.enemyNode and self.bEnemyFighting == true  then  --正在攻击敌军部曲或营寨
+        --物理攻击 = 武将攻击力 + 士兵数*士兵攻击力
+        local myAtk = self.battleOfficalData.generalData.atk + self.battleOfficalData.unitData.bingCount * self.battleOfficalData.unitData.bingData.atk
+        myAtk = myAtk * self.battleOfficalData.unitData.shiqi/100   --士气对攻击的影响
+      
+        local enemyDef = 0
+        if self.enemyNode.nodeType == g_BattleObject.EnemyUnit then --战场对象类型，0无，1营寨，2敌军
+            --物理防御 = 武将防御力 + 士兵数*士兵防御力
+            self.enemyNode.battleOfficalData.generalData.def + self.enemyNode.battleOfficalData.unitData.bingCount * self.enemyNode.battleOfficalData.unitData.bingData.def
+            enemyDef = enemyDef * self.enemyNode.battleOfficalData.unitData.shiqi/100   --士气对防御的影响
+        end
+
+        local realAtk = myAtk - enemyDef   --部曲作战经验 = 累次有效攻击的总量*转化因子
+        if realAtk > 0 then
+            self.enemyNode:handleUnderAttackEffect(realAtk)
+        end
+    end
+end
+
+--处理我方被攻击的逻辑
+function BattleOfficalNode:handleUnderAttackEffect(realAtk)
+    local myGeneralHp = self.battleOfficalData.generalData.hp - realAtk * 0.3
+    if myGeneralHp <= 0 then
+        --武将死亡，部曲消失
+        self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
+    else
+        self.battleOfficalData.generalData.hp = myGeneralHp
+        --生命条
+        self.LoadingBar_hp:setPercent(100*myGeneralHp/self.max_hp)
+        self.Text_hp:setString(myGeneralHp.."/"..self.max_hp)
+    end
+
+    local myBingCount = self.battleOfficalData.unitData.bingCount - math.floor((realAtk * 0.7)/self.battleOfficalData.unitData.bingData.hp)
+    if myBingCount <= 0 then
+        --部曲士兵全部死亡，部曲消失
+        self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
+    else
+        self.battleOfficalData.unitData.bingCount = myBingCount
+        --士兵数量条
+        self.LoadingBar_solider:setPercent(100*myBingCount/self.max_bingCount)
+        self.Text_solider:setString(myBingCount.."/"..self.max_bingCount)
+    end
+end
 
 --根据攻击状态进行移动操作（攻击、回防、溃败等）
 function BattleOfficalNode:updateAttackMove()

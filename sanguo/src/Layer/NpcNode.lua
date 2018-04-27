@@ -72,6 +72,18 @@ function NpcNode:initYingZhaiData(data, parent)
     end
 
     self.yingzhaiData = data
+    --[[
+        yingzhaiData.id_str = ""        --营寨ID字符串
+        yingzhaiData.name = ""     --营寨名称
+        yingzhaiData.type = 0     --营寨类型 1前锋2左军3右军4后卫5中军
+        yingzhaiData.bEnemy = 0     --0我方营寨，1敌方营寨
+        yingzhaiData.imgStr = ""   --营寨资源路径名称
+        yingzhaiData.atk = 0   --营寨攻击力
+        yingzhaiData.hp = 0   --营寨生命防御值
+        yingzhaiData.battleMapId = 0     --营寨所在地图Id
+        yingzhaiData.map_posX = 0   --以左上角为00原点的地图坐标
+        yingzhaiData.map_posY = 0    --以左上角为00原点的地图坐标   
+    ]]
     self.parentMapPage = parent   --节点所在的战场地图层
     self.nodeType = g_BattleObject.YingZhai  --战场对象类型，0无，1营寨，2敌军
 
@@ -92,14 +104,14 @@ function NpcNode:initYingZhaiData(data, parent)
     local SequenceAction = cc.Sequence:create(cc.ScaleTo:create(2.0, self.minScale), cc.ScaleTo:create(2.0, self.maxScale))    --scaleAction:reverse()
     self.quanImage:runAction(cc.RepeatForever:create(SequenceAction))
 
-    local imgStr = "public2_yingzhai2.png"  
-    if data.type >= 1 and data.type <= 3 then  --1前锋2左军3右军4后卫5中军
-        imgStr = "public2_yingzhai2.png"
-    elseif data.type == 4 then
-        imgStr = "public2_yingzhai3.png"
-    elseif data.type == 5 then 
-        imgStr = "public2_yingzhai1.png"  --中军
-    end
+    local imgStr = self.yingzhaiData.imgStr    --"public2_yingzhai2.png"  
+    -- if data.type >= 1 and data.type <= 3 then  --1前锋2左军3右军4后卫5中军
+    --     imgStr = "public2_yingzhai2.png"
+    -- elseif data.type == 4 then
+    --     imgStr = "public2_yingzhai3.png"
+    -- elseif data.type == 5 then 
+    --     imgStr = "public2_yingzhai1.png"  --中军
+    -- end
 
     self.yingzhaiImage = cc.Sprite:createWithSpriteFrameName(imgStr) 
     --self.yingzhaiImage:setScale(0.8)
@@ -123,6 +135,34 @@ function NpcNode:initYingZhaiData(data, parent)
     self.qizhiImage = cc.Sprite:createWithSpriteFrameName(qizhiStr) 
     self.qizhiImage:setPosition(cc.p(imgSize.width/2 + self.qizhiImage:getContentSize().width/2, imgSize.height + 10))
     self.yingzhaiImage:addChild(self.qizhiImage) 
+
+    --生命条
+    self.LoadingBarBg_hp = ccui.Scale9Sprite:createWithSpriteFrameName("public_bar1.png")
+    self.LoadingBarBg_hp:setInsetLeft(10)
+    self.LoadingBarBg_hp:setInsetTop(2)
+    self.LoadingBarBg_hp:setInsetRight(10)
+    self.LoadingBarBg_hp:setInsetBottom(2)
+    self.LoadingBarBg_hp:setContentSize(cc.size(100, 5)) 
+    self.LoadingBarBg_hp:setAnchorPoint(ccp(0.5, 0.5))
+    self.LoadingBarBg_hp:setPosition(cc.p(imgSize.width/2, -10))
+    self.yingzhaiImage:addChild(self.LoadingBarBg_hp, 10) 
+
+    self.LoadingBar_hp = ccui.LoadingBar:create("public_bar3.png",ccui.TextureResType.plistType, 100)
+    self.LoadingBar_hp:setDirection(ccui.LoadingBarDirection.LEFT)
+    self.LoadingBar_hp:setScale9Enabled(true)
+    self.LoadingBar_hp:setContentSize(cc.size(100, 5)) 
+    self.LoadingBar_hp:setAnchorPoint(ccp(0, 0))
+    self.LoadingBar_hp:setPosition(cc.p(0, 0))
+    self.LoadingBarBg_hp:addChild(self.LoadingBar_hp)
+
+    self.max_hp = self.yingzhaiData.hp
+    local hpStr = self.max_hp.."/"..self.max_hp)
+    local hptextSize = cc.size(120, g_defaultFontSize + 5)
+    self.Text_hp = cc.Label:createWithTTF(hpStr, g_sDefaultTTFpath, g_defaultFontSize, hptextSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+    self.Text_hp:setColor(g_ColorDef.White)
+    self.Text_hp:setAnchorPoint(ccp(0.5, 0.5))
+    self.Text_hp:setPosition(cc.p(imgSize.width/2, -10))
+    self.yingzhaiImage:addChild(self.Text_hp, 20) 
 
     ----------------------
     self.enemyNode = nil   --我方攻击或监视的敌方部曲
@@ -292,9 +332,33 @@ function NpcNode:fightingCdUpdate(dt)
     if self.bEnemyFighting == true then
         self.fightingCDStep = self.fightingCDStep + 0.1  ----兵种和营寨的物理攻击速率计时器步数（秒数）
         if self.fightingCDStep >= self.fightingCD then  --攻击敌军
-            
+            self:handleAttackEnemy()
             self.fightingCDStep = 0
         end
+    end
+end
+
+--处理攻击敌方逻辑
+function NpcNode:handleAttackEnemy()
+    if self.enemyNode and self.bEnemyFighting == true  then  --正在攻击敌军部曲或营寨
+        local realAtk = self.yingzhaiData.atk   --营寨的攻击为直接攻击，不用考虑被攻击部曲的防御能力
+        if realAtk > 0 then
+            self.enemyNode:handleUnderAttackEffect(realAtk)
+        end
+    end
+end
+
+--处理我方被攻击的逻辑
+function NpcNode:handleUnderAttackEffect(realAtk)
+    local myHp = math.floor(self.yingzhaiData.hp - realAtk/1000)    --营寨收到攻击时，自身承受攻击力的千分之一
+    if myHp <= 0 then
+        --武将死亡，部曲消失
+        self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
+    else
+        self.yingzhaiData.hp = myHp
+        --生命条
+        self.LoadingBar_hp:setPercent(100*myHp/self.max_hp)
+        self.Text_hp:setString(myHp.."/"..self.max_hp)
     end
 end
 

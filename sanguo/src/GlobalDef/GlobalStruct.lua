@@ -151,6 +151,9 @@ function  g_tbl_battleYingZhaiConfig:ctor()
 	self.name = ""     --营寨名称
 	self.type = 0     --营寨类型 1前锋2左军3右军4后卫5中军
 	self.bEnemy = 0     --0我方营寨，1敌方营寨
+	self.imgStr = ""   --营寨资源路径名称
+	self.atk = 0   --营寨攻击力
+	self.hp = 0   --营寨生命防御值
 	self.battleMapId = 0     --营寨所在地图Id
 	self.map_posX = 0   --以左上角为00原点的地图坐标
 	self.map_posY = 0    --以左上角为00原点的地图坐标   
