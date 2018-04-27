@@ -86,9 +86,9 @@ g_AtkLimitLen = {
 g_FightingLen = {
 	QiangLen= 150,
 	DaoLen = 120,
-	GongLen = 200,
+	GongLen = 180,
 	QiLen = 130,
-	YingLen = 300
+	YingLen = 250
 }
 
 --兵种和营寨的物理攻击速率（秒数）

@@ -196,31 +196,33 @@ function NpcNode:initAtkLimitUpdateEntry()
 end
 
 function NpcNode:atkLimitUpdate(dt)
+    if self.enemyNode and self.bEnemyFighting == true then
+        return
+    end
+
     if self.parentMapPage then   --节点所在的战场地图层
         local bCatchEnemy = false
         local curPos = self:getNodePos()
 
         if self.enemyNode then    --攻击对象节点   
-            self.enemyNode:setUnderAttackCallBack(self, false)   --向敌方单位注册攻击他的对象(是否添加)
-
             local enemyPos = self.enemyNode:getNodePos()
             local len = g_pMapMgr:CalcDistance(curPos, enemyPos)  
             if len <= g_FightingLen.YingLen then
                 bCatchEnemy = true
             else
-                self.bEnemyFighting = false  --正在攻击敌军部曲战斗
-                self:DelFightingCdUpdateEntry()              
+                --上一个被监视的攻击对象已经脱离我方攻击范围了
+                self.enemyNode:setUnderAttackCallBack(self, false)   --向敌方单位注册攻击他的对象(是否添加)     
             end
         end
 
         if bCatchEnemy == false then
             local enemyNode = self.parentMapPage:checkEnemyUnit(self)
             if enemyNode then
-                --dump(enemyNode.battleOfficalData)
+                self.enemyNode = enemyNode 
+
                 local enemyPos = enemyNode:getNodePos()
                 local len = g_pMapMgr:CalcDistance(curPos, enemyPos) 
                 if len <= g_FightingLen.YingLen then   --兵种和营寨战斗攻击范围
-                    self.enemyNode = enemyNode  
                     if self.bEnemyFighting ~= true then
                         self.bEnemyFighting = true  --正在攻击敌军部曲战斗
                         self:initFightingCdUpdateEntry()
@@ -232,9 +234,7 @@ function NpcNode:atkLimitUpdate(dt)
                     self:DelFightingCdUpdateEntry()
                 end
             else
-                -- self.enemyNode = nil
-                -- self.bEnemyFighting = false 
-                -- self:DelFightingCdUpdateEntry()
+                self:handleEnemyNodeDied()  --我方攻击对象死亡消失时的回调处理
             end
         end
     end
@@ -254,6 +254,10 @@ function NpcNode:HandleMyselfDied()
     if self.parentMapPage then   --节点所在的战场地图层
         self.parentMapPage:handleNodeDied(self)  --战场地图中部曲或营寨消亡的处理
     end
+
+    if self.enemyNode then
+        self.enemyNode:setUnderAttackCallBack(self, false)   --向敌方单位注册攻击他的对象(是否添加) 
+    end 
 
     if self.UnderAttackVec then
         for k, node in pairs(self.UnderAttackVec) do    --我方被攻击的敌方部曲列表
@@ -313,7 +317,7 @@ function NpcNode:initFightingCdUpdateEntry()
     local function fightingCdUpdate(dt)
         self:fightingCdUpdate(dt) 
     end
-    if self.bEnemyFighting == true then
+    if self.enemyNode and self.bEnemyFighting == true then
         self.fightingCdUpdateEntry = g_Scheduler:scheduleScriptFunc(fightingCdUpdate, 0.1, false) 
     end
 end
@@ -329,7 +333,7 @@ end
 
 --部曲的物理攻击速率计时器更新
 function NpcNode:fightingCdUpdate(dt)
-    if self.bEnemyFighting == true then
+    if self.enemyNode and self.bEnemyFighting == true then
         self.fightingCDStep = self.fightingCDStep + 0.1  ----兵种和营寨的物理攻击速率计时器步数（秒数）
         if self.fightingCDStep >= self.fightingCD then  --攻击敌军
             self:handleAttackEnemy()
