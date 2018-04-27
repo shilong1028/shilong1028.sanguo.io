@@ -10,8 +10,6 @@ end
 
 function NpcNode:onExit()
     --G_Log_Info("NpcNode:onExit()")
-    self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
-
     self:DelAtkLimitUpdateEntry()   --战场营寨自动探测敌军计时器
     self:DelFightingCdUpdateEntry()  --部曲的物理攻击速率计时器更新
 end
@@ -113,7 +111,7 @@ function NpcNode:initYingZhaiData(data, parent)
     --     imgStr = "public2_yingzhai1.png"  --中军
     -- end
 
-    self.yingzhaiImage = cc.Sprite:createWithSpriteFrameName(imgStr) 
+    self.yingzhaiImage = cc.Sprite:createWithSpriteFrameName(imgStr..".png") 
     --self.yingzhaiImage:setScale(0.8)
     self:addChild(self.yingzhaiImage)  
     local imgSize = self.yingzhaiImage:getContentSize()
@@ -143,25 +141,25 @@ function NpcNode:initYingZhaiData(data, parent)
     self.LoadingBarBg_hp:setInsetRight(10)
     self.LoadingBarBg_hp:setInsetBottom(2)
     self.LoadingBarBg_hp:setContentSize(cc.size(100, 5)) 
-    self.LoadingBarBg_hp:setAnchorPoint(ccp(0.5, 0.5))
-    self.LoadingBarBg_hp:setPosition(cc.p(imgSize.width/2, -10))
+    self.LoadingBarBg_hp:setAnchorPoint(cc.p(0.5, 0.5))
+    self.LoadingBarBg_hp:setPosition(cc.p(imgSize.width/2, 20))
     self.yingzhaiImage:addChild(self.LoadingBarBg_hp, 10) 
 
-    self.LoadingBar_hp = ccui.LoadingBar:create("public_bar3.png",ccui.TextureResType.plistType, 100)
+    self.LoadingBar_hp = ccui.LoadingBar:create("public_bar5.png",ccui.TextureResType.plistType, 100)
     self.LoadingBar_hp:setDirection(ccui.LoadingBarDirection.LEFT)
     self.LoadingBar_hp:setScale9Enabled(true)
     self.LoadingBar_hp:setContentSize(cc.size(100, 5)) 
-    self.LoadingBar_hp:setAnchorPoint(ccp(0, 0))
+    self.LoadingBar_hp:setAnchorPoint(cc.p(0, 0))
     self.LoadingBar_hp:setPosition(cc.p(0, 0))
     self.LoadingBarBg_hp:addChild(self.LoadingBar_hp)
 
     self.max_hp = self.yingzhaiData.hp
-    local hpStr = self.max_hp.."/"..self.max_hp)
+    local hpStr = self.max_hp.."/"..self.max_hp
     local hptextSize = cc.size(120, g_defaultFontSize + 5)
     self.Text_hp = cc.Label:createWithTTF(hpStr, g_sDefaultTTFpath, g_defaultFontSize, hptextSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
     self.Text_hp:setColor(g_ColorDef.White)
-    self.Text_hp:setAnchorPoint(ccp(0.5, 0.5))
-    self.Text_hp:setPosition(cc.p(imgSize.width/2, -10))
+    self.Text_hp:setAnchorPoint(cc.p(0.5, 0.5))
+    self.Text_hp:setPosition(cc.p(imgSize.width/2, 20))
     self.yingzhaiImage:addChild(self.Text_hp, 20) 
 
     ----------------------
@@ -209,6 +207,12 @@ function NpcNode:atkLimitUpdate(dt)
             local len = g_pMapMgr:CalcDistance(curPos, enemyPos)  
             if len <= g_FightingLen.YingLen then
                 bCatchEnemy = true
+                if self.bEnemyFighting ~= true then
+                    self.bEnemyFighting = true  --正在攻击敌军部曲战斗
+                    self:initFightingCdUpdateEntry()
+
+                    self.enemyNode:setUnderAttackCallBack(self, true)   --向敌方单位注册攻击他的对象
+                end
             else
                 --上一个被监视的攻击对象已经脱离我方攻击范围了
                 self.enemyNode:setUnderAttackCallBack(self, false)   --向敌方单位注册攻击他的对象(是否添加)     
@@ -229,11 +233,11 @@ function NpcNode:atkLimitUpdate(dt)
 
                         self.enemyNode:setUnderAttackCallBack(self, true)   --向敌方单位注册攻击他的对象
                     end
-                else
+                elseif self.bEnemyFighting == true then
                     self.bEnemyFighting = false 
                     self:DelFightingCdUpdateEntry()
                 end
-            else
+            elseif self.enemyNode then
                 self:handleEnemyNodeDied()  --我方攻击对象死亡消失时的回调处理
             end
         end
@@ -242,6 +246,7 @@ end
 
 --我方攻击对象死亡消失时的回调处理
 function NpcNode:handleEnemyNodeDied()
+    --G_Log_Info("NpcNode:handleEnemyNodeDied()")
     self.enemyNode = nil   --我方攻击或监视的敌方部曲
     --self.UnderAttackVec = {}   --我方被攻击的敌方部曲列表
     self.bEnemyFighting = false  --正在攻击敌军部曲
@@ -264,6 +269,8 @@ function NpcNode:HandleMyselfDied()
             node:handleEnemyNodeDied()
         end
     end
+
+    self:removeFromParent(true)
 end
 
 --设置我方被攻击的敌军单位及绑定我死亡时给对方的回调
@@ -311,6 +318,7 @@ end
 --部曲的物理攻击速率计时器更新
 function NpcNode:initFightingCdUpdateEntry()
     self:DelFightingCdUpdateEntry()
+    --G_Log_Info("NpcNode:initFightingCdUpdateEntry()")
 
     self:showFightAni(true)  --是否显示人物头像上方攻击动画
 
@@ -324,11 +332,14 @@ end
 
 --部曲的物理攻击速率计时器更新
 function NpcNode:DelFightingCdUpdateEntry()
+    --G_Log_Info("NpcNode:DelFightingCdUpdateEntry()")
     self:showFightAni(false)  --是否显示人物头像上方攻击动画
+
     if self.fightingCdUpdateEntry then
         g_Scheduler:unscheduleScriptEntry(self.fightingCdUpdateEntry)
-        self.fightingCdUpdateEntry = nil
     end
+    self.fightingCdUpdateEntry = nil
+    self.fightingCDStep = 0
 end
 
 --部曲的物理攻击速率计时器更新
@@ -358,19 +369,19 @@ function NpcNode:handleUnderAttackEffect(realAtk)
 
     local textSize = cc.size(100, g_defaultFontSize + 5)
     local hurt_text = cc.Label:createWithTTF("-"..hurt, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
-    hurt_text:setColor(g_ColorDef.White)
-    hurt_text:setAnchorPoint(ccp(0.5, 0.5))
+    hurt_text:setColor(g_ColorDef.Red)
+    hurt_text:setAnchorPoint(cc.p(0.5, 0.5))
     hurt_text:setPosition(cc.p(self.yingzhaiImage:getContentSize().width/2, self.yingzhaiImage:getContentSize().height + 50))
     self.yingzhaiImage:addChild(hurt_text, 100) 
 
-    hurt_text:runAction(cc.Sequence:create(cc.MoveBy(0.2, cc.p(0, 50)), cc.DelayTime:create(0.1), cc.CallFunc:create(function() 
+    hurt_text:runAction(cc.Sequence:create(cc.MoveBy:create(0.5, cc.p(0, 50)), cc.DelayTime:create(0.2), cc.CallFunc:create(function() 
         hurt_text:removeFromParent(true)
     end)))
 
     local myHp = math.floor(self.yingzhaiData.hp - realAtk/1000)    --营寨收到攻击时，自身承受攻击力的千分之一
     if myHp <= 0 then
-        --武将死亡，部曲消失
-        self:removeFromParent(true)  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
+        --营寨消失
+        self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
     else
         self.yingzhaiData.hp = myHp
         --生命条

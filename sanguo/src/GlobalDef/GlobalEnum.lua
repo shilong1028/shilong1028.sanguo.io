@@ -93,11 +93,11 @@ g_FightingLen = {
 
 --兵种和营寨的物理攻击速率（秒数）
 g_FightingCD = {
-	QiangCD= 5,
-	DaoCD = 4,
-	GongCD = 8,
-	QiCD = 5,
-	YingCD = 10
+	QiangCD= 3,
+	DaoCD = 2,
+	GongCD = 4,
+	QiCD = 3,
+	YingCD = 5
 }
 
 --人物移动的方向状态标识

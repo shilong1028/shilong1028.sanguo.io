@@ -157,7 +157,7 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
     local leftHeadBeginPos = cc.p(self.Text_buquLeft:getPositionX(), self.Text_buquLeft:getPositionY())
     local rightHeadBeginPos = cc.p(self.Text_buquRight:getPositionX(), self.Text_buquRight:getPositionY())
     local offsetX = 50
-    local scale = 0.35
+    local scale = 0.3
 
     self.myUnitCount = 0
     self.myBingCount = 0

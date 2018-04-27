@@ -10,8 +10,6 @@ end
 
 function BattleOfficalNode:onExit()
     --G_Log_Info("BattleOfficalNode:onExit()")
-    self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
-
     self:DelAtkLimitUpdateEntry()   --部曲的安全探测计时器更新
     self:DelAutoPathUpdateEntry()   --自动寻路移动计时器更新
     self:DelFightingCdUpdateEntry()  --部曲的物理攻击速率计时器更新  
@@ -99,7 +97,8 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
     elseif self.officalType == 1 then  --我方蓝圈
         quanStr = "public2_Quan1.png"
     end
-    self.quanImage = cc.Sprite:createWithSpriteFrameName(quanStr)   
+    self.quanImage = cc.Sprite:createWithSpriteFrameName(quanStr)  
+    self.quanImage:setOpacity(100)
     self.maxScale = g_AtkLimitLen.unitLen/(self.quanImage:getContentSize().width/2)   --150像素内可见
     self.minScale = self.maxScale*0.7
     self.quanImage:setScale(self.maxScale) 
@@ -445,28 +444,32 @@ function BattleOfficalNode:atkLimitUpdate(dt)
             local len = g_pMapMgr:CalcDistance(curPos, enemyPos)  
             if len < self.FightingLen then
                 bCatchEnemy = true
+
+                self.bEnemyFighting = true  --正在攻击敌军部曲或敌营
+                self.atkState = g_AtkState.Fighting   --战场部曲攻击状态，0待命，1进攻，2回防，3溃败, 5战斗中
+
+                self:initFightingCdUpdateEntry()
+                self.enemyNode:setUnderAttackCallBack(self, true)   --向敌方单位注册攻击他的对象(是否添加)
             else
                 --上一个被监视的攻击对象已经脱离我方攻击范围了
                 self.enemyNode:setUnderAttackCallBack(self, false)   --向敌方单位注册攻击他的对象(是否添加) 
             end
         end
 
-        if self.atkState and self.atkState > g_AtkState.Pause and self.atkState < g_AtkState.Fighting then  --非待命状态
-            if bCatchEnemy == false then
-                local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState)
-                if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营
-                    self:setAttackObj(atkObj, enemyNode)
-                else   
-                    --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
-                    self.bEnemyFighting = false  --正在攻击敌军部曲或营寨
-                    self:DelFightingCdUpdateEntry()
-                end
+        if bCatchEnemy == false then
+            local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState)
+            if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营
+                self:setAttackObj(atkObj, enemyNode)
+            elseif self.bEnemyFighting == true then   
+                --没有找到探测范围内的敌军单位，则按照既定的攻打营寨目标前进
+                self.bEnemyFighting = false  --正在攻击敌军部曲或营寨
+                self:DelFightingCdUpdateEntry()
             end
+        end
+
+        if self.atkState and self.atkState > g_AtkState.Pause and self.atkState < g_AtkState.Fighting then  --非待命状态
         else
             self:StopLastAutoPath()   --停止上一个自动寻路
-
-            self.bEnemyFighting = false  --正在攻击敌军部曲或营寨
-            self:DelFightingCdUpdateEntry()
         end
     end
 end
@@ -501,11 +504,11 @@ function BattleOfficalNode:setAttackObj(enemyType, node, atkState)
 
             self:initFightingCdUpdateEntry()
             self.enemyNode:setUnderAttackCallBack(self, true)   --向敌方单位注册攻击他的对象(是否添加)
-        else
+        elseif self.bEnemyFighting == true then
             self.bEnemyFighting = false  --正在攻击敌军部曲或营寨
             self:DelFightingCdUpdateEntry()
         end
-    else
+    elseif self.bEnemyFighting == true then
         self.bEnemyFighting = false  --正在攻击敌军部曲或营寨
         self:DelFightingCdUpdateEntry()
     end
@@ -527,6 +530,8 @@ end
 
 --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
 function BattleOfficalNode:HandleMyselfDied()
+    --G_Log_Info("BattleOfficalNode:HandleMyselfDied()")
+    self.bMyselfDied = true
     if self.parentMapPage then   --节点所在的战场地图层
         self.parentMapPage:handleNodeDied(self)  --战场地图中部曲或营寨消亡的处理
     end
@@ -540,6 +545,8 @@ function BattleOfficalNode:HandleMyselfDied()
             node:handleEnemyNodeDied()
         end
     end
+
+    self:removeFromParent(true) 
 end
 
 --设置我方被攻击的敌军单位及绑定我死亡时给对方的回调
@@ -610,10 +617,12 @@ end
 --部曲的物理攻击速率计时器更新
 function BattleOfficalNode:DelFightingCdUpdateEntry()
     self:showFightAni(false)  --是否显示人物头像上方攻击动画
+
     if self.fightingCdUpdateEntry then
         g_Scheduler:unscheduleScriptEntry(self.fightingCdUpdateEntry)
-        self.fightingCdUpdateEntry = nil
     end
+    self.fightingCdUpdateEntry = nil
+    self.fightingCDStep = 0
 end
 
 --部曲的物理攻击速率计时器更新
@@ -637,7 +646,7 @@ function BattleOfficalNode:handleAttackEnemy()
         local enemyDef = 0
         if self.enemyNode.nodeType == g_BattleObject.EnemyUnit then --战场对象类型，0无，1营寨，2敌军
             --物理防御 = 武将防御力 + 士兵数*士兵防御力
-            self.enemyNode.battleOfficalData.generalData.def + self.enemyNode.battleOfficalData.unitData.bingCount * self.enemyNode.battleOfficalData.unitData.bingData.def
+            enemyDef = self.enemyNode.battleOfficalData.generalData.def + self.enemyNode.battleOfficalData.unitData.bingCount * self.enemyNode.battleOfficalData.unitData.bingData.def
             enemyDef = enemyDef * self.enemyNode.battleOfficalData.unitData.shiqi/100   --士气对防御的影响
         end
 
@@ -650,21 +659,29 @@ end
 
 --处理我方被攻击的逻辑
 function BattleOfficalNode:handleUnderAttackEffect(realAtk)
+    --G_Log_Info("BattleOfficalNode:handleUnderAttackEffect(realAtk = %f)", realAtk)
+    if self.bMyselfDied == true then
+        return
+    end
+
     local textSize = cc.size(100, g_defaultFontSize + 5)
     local hurt_text = cc.Label:createWithTTF("-"..realAtk, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
-    hurt_text:setColor(g_ColorDef.White)
-    hurt_text:setAnchorPoint(ccp(0.5, 0.5))
+    hurt_text:setColor(g_ColorDef.Red)
+    hurt_text:setAnchorPoint(cc.p(0.5, 0.5))
     hurt_text:setPosition(cc.p(self.Image_bg:getContentSize().width/2, self.Image_bg:getContentSize().height + 50))
     self.Image_bg:addChild(hurt_text, 100) 
 
-    hurt_text:runAction(cc.Sequence:create(cc.MoveBy(0.2, cc.p(0, 50)), cc.DelayTime:create(0.1), cc.CallFunc:create(function() 
+    hurt_text:runAction(cc.Sequence:create(cc.MoveBy:create(0.5, cc.p(0, 50)), cc.DelayTime:create(0.2), cc.CallFunc:create(function() 
         hurt_text:removeFromParent(true)
     end)))
 
-    local myGeneralHp = self.battleOfficalData.generalData.hp - realAtk * 0.3
+    local hpScale = self.max_hp/(self.battleOfficalData.unitData.bingCount*50)    --伤害转移到武将身上的比例因子
+
+    local myGeneralHp = self.battleOfficalData.generalData.hp - math.floor(realAtk * hpScale)
     if myGeneralHp <= 0 then
         --武将死亡，部曲消失
-        self:removeFromParent(true) --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
+        self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
+        return
     else
         self.battleOfficalData.generalData.hp = myGeneralHp
         --生命条
@@ -672,10 +689,10 @@ function BattleOfficalNode:handleUnderAttackEffect(realAtk)
         self.Text_hp:setString(myGeneralHp.."/"..self.max_hp)
     end
 
-    local myBingCount = self.battleOfficalData.unitData.bingCount - math.floor((realAtk * 0.7)/self.battleOfficalData.unitData.bingData.hp)
+    local myBingCount = self.battleOfficalData.unitData.bingCount - math.floor(5*realAtk/self.battleOfficalData.unitData.bingData.hp)
     if myBingCount <= 0 then
         --部曲士兵全部死亡，部曲消失
-        self:removeFromParent(true)  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
+        self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）  
     else
         self.battleOfficalData.unitData.bingCount = myBingCount
         --士兵数量条

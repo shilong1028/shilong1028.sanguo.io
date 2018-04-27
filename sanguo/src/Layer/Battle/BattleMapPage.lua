@@ -496,19 +496,8 @@ end
 
 --战场地图中部曲或营寨消亡的处理
 function BattleMapPage:handleNodeDied(node)
+	--G_Log_Info("BattleMapPage:handleNodeDied(node)")
 	local pos = node:getNodePos()
-    local dieAni = ImodAnim:create()
-    dieAni:initAnimWithName("Ani/effect/die_fog.png", "Ani/effect/die_fog.ani")
-    dieAni:PlayAction(0, 0.05)  --PlayActionRepeat(0)
-    dieAni:setPosition(pos)
-    self:addChild(dieAni, 100)
-
-	local function AniCallBack(pSender,typ,idx)
-		if(typ == "end")then 
-			pSender:removeFromParent(true)
-		end
-	end
-	ScriptHandlerMgr:getInstance():registerScriptHandler(dieAni, AniCallBack, cc.Handler.EVENT_CUSTOM_COMMON)
 
 	if node.nodeType == g_BattleObject.EnemyUnit then   --战场对象类型，0无，1营寨，2敌军
 		if self.parentBattleMapLayer then
@@ -522,7 +511,7 @@ function BattleMapPage:handleNodeDied(node)
 		for k, n in pairs(vec) do
 			if node.battleOfficalData.zhenPos == n.battleOfficalData.zhenPos then
 				table.remove(vec, k)
-				return
+				break;
 			end
 		end
 	elseif node.nodeType == g_BattleObject.YingZhai then
@@ -533,6 +522,19 @@ function BattleMapPage:handleNodeDied(node)
 			self.myYingZhaiNodeVec[idx] = -1 
 		end
 	end
+
+	local dieAni = ImodAnim:create()
+    dieAni:initAnimWithName("Ani/effect/die_fog.png", "Ani/effect/die_fog.ani")
+    dieAni:PlayAction(0, 0.1)   --PlayActionRepeat(0)
+    dieAni:setPosition(pos)
+    self.rootNode:addChild(dieAni, 100)
+
+	local function AniCallBack(pSender,typ,idx)
+		if(typ == "end")then 
+			pSender:removeFromParent(true)
+		end
+	end
+	ScriptHandlerMgr:getInstance():registerScriptHandler(dieAni, AniCallBack, cc.Handler.EVENT_CUSTOM_COMMON)
 end
 
 --获取部曲初始位置及目标攻击营寨
