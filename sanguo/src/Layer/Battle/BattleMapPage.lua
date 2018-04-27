@@ -496,7 +496,25 @@ end
 
 --战场地图中部曲或营寨消亡的处理
 function BattleMapPage:handleNodeDied(node)
+	local pos = node:getNodePos()
+    local dieAni = ImodAnim:create()
+    dieAni:initAnimWithName("Ani/effect/die_fog.png", "Ani/effect/die_fog.ani")
+    dieAni:PlayAction(0, 0.05)  --PlayActionRepeat(0)
+    dieAni:setPosition(pos)
+    self:addChild(dieAni, 100)
+
+	local function AniCallBack(pSender,typ,idx)
+		if(typ == "end")then 
+			pSender:removeFromParent(true)
+		end
+	end
+	ScriptHandlerMgr:getInstance():registerScriptHandler(dieAni, AniCallBack, cc.Handler.EVENT_CUSTOM_COMMON)
+
 	if node.nodeType == g_BattleObject.EnemyUnit then   --战场对象类型，0无，1营寨，2敌军
+		if self.parentBattleMapLayer then
+			self.parentBattleMapLayer:handleNodeDied(node.battleOfficalData.generalIdStr, node.officalType)     --战斗场景总层,最终反馈到战斗菜单层
+		end
+
 		local vec = self.myOfficalNodeVec
 		if node.officalType == -1 then  --敌人-1，友军0，我军1
 			vec = self.enemyOfficalNodeVec

@@ -26,6 +26,8 @@ function BattleMenuPage:init()
     ccui.Helper:doLayout(csb)
     self:addChild(csb)
 
+    self.csbNode = csb
+
     local Image_Bg = csb:getChildByName("Image_Bg")
     self.Image_vs = csb:getChildByName("Image_vs")    --中间的vs及vs边框
     self.Image_vsBg = csb:getChildByName("Image_vsBg")
@@ -144,17 +146,37 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
     self.Text_name:setString(self.battleStoryData.name)   ----地图表配置数据
     self.Text_target:setString(self.battleMapData.targetStr)   ----地图表配置数据
 
+    --左右主帅头像
+    self.Image_headLeft:setVisible(false)
+    self.Image_headRight:setVisible(false)
+
+    --显示敌我双方武将小头像（中军为大头像）
+    self.myHeadVec = {-1, -1, -1, -1, -1, -1, -1}   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+    self.enemyHeadVec = {-1, -1, -1, -1, -1, -1, -1}
+
+    local leftHeadBeginPos = cc.p(self.Text_buquLeft:getPositionX(), self.Text_buquLeft:getPositionY())
+    local rightHeadBeginPos = cc.p(self.Text_buquRight:getPositionX(), self.Text_buquRight:getPositionY())
+    local offsetX = 50
+    local scale = 0.35
+
     self.myUnitCount = 0
     self.myBingCount = 0
-    self.myMainGeneral = nil
     for k, data in pairs(self.zhenXingData) do
         if data ~= -1 then
             self.myUnitCount = self.myUnitCount + 1
             self.myBingCount = self.myBingCount + data.unitData.bingCount
-            if data.zhenPos == 5 then
-                self.myMainGeneral = data.generalData
-                if self.myMainGeneral == nil then
-                    self.myMainGeneral = g_HeroDataMgr:GetSingleGeneralData(data.generalIdStr)
+
+            if data.generalIdStr and data.generalIdStr ~= "" and data.generalIdStr ~= "0" then
+                if data.zhenPos == 5 then
+                    self.Image_headLeft:loadTexture(string.format("Head/%s.png", data.generalIdStr), ccui.TextureResType.localType)
+                    self.Image_headLeft:setVisible(true)
+                    self.myHeadVec[5] = {["Icon"]=self.Image_headLeft, ["idStr"]=data.generalIdStr}
+                else
+                    local head = cc.Sprite:create(string.format("Head/%s.png", data.generalIdStr))
+                    head:setScale(scale)
+                    head:setPosition(cc.p(leftHeadBeginPos.x + offsetX*self.myUnitCount, leftHeadBeginPos.y))
+                    self.csbNode:addChild(head, 10)
+                    self.myHeadVec[k] = {["Icon"]=head, ["idStr"]=data.generalIdStr}
                 end
             end
         end
@@ -162,30 +184,25 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
 
     self.enemyUnitCount = 0
     self.enemyBingCount = 0
-    self.enemyMainGeneral = nil
     for k, data in pairs(self.enemyZhenXingData) do
         if data ~= -1 then
             self.enemyUnitCount = self.enemyUnitCount + 1
             self.enemyBingCount = self.enemyBingCount + data.unitData.bingCount
-            if data.zhenPos == 5 then
-                self.enemyMainGeneral = data.generalData
-                if self.enemyMainGeneral == nil then
-                    self.enemyMainGeneral = g_HeroDataMgr:GetSingleGeneralData(data.generalIdStr)
+
+            if data.generalIdStr and data.generalIdStr ~= "" and data.generalIdStr ~= "0" then
+                if data.zhenPos == 5 then
+                    self.Image_headRight:loadTexture(string.format("Head/%s.png", data.generalIdStr), ccui.TextureResType.localType)
+                    self.Image_headRight:setVisible(true)
+                    self.enemyHeadVec[5] = {["Icon"]=self.Image_headLeft, ["idStr"]=data.generalIdStr}
+                else
+                    local head = cc.Sprite:create(string.format("Head/%s.png", data.generalIdStr))
+                    head:setScale(scale)
+                    head:setPosition(cc.p(rightHeadBeginPos.x - offsetX*self.enemyUnitCount, rightHeadBeginPos.y))
+                    self.csbNode:addChild(head, 10)
+                    self.enemyHeadVec[k] = {["Icon"]=head, ["idStr"]=data.generalIdStr}
                 end
             end
         end
-    end
-
-    --左右主帅头像
-    self.Image_headLeft:setVisible(false)
-    if self.myMainGeneral then
-        self.Image_headLeft:loadTexture(string.format("Head/%s.png", self.myMainGeneral.id_str), ccui.TextureResType.localType)
-        self.Image_headLeft:setVisible(true)
-    end
-    self.Image_headRight:setVisible(false)
-    if self.enemyMainGeneral then
-        self.Image_headRight:loadTexture(string.format("Head/%s.png", self.enemyMainGeneral.id_str), ccui.TextureResType.localType)
-        self.Image_headRight:setVisible(true)
     end
 
     --左右兵力进度条及文本
@@ -227,6 +244,34 @@ function BattleMenuPage:OnTimeUpdate(dt)
 
     if self.battleTimeCD >= 0 then
         self.Text_time:setString(string.format("%02d:%02d", math.floor((self.battleTimeCD%3600)/60), self.battleTimeCD%60))
+    end
+end
+
+--战场地图中部曲或营寨消亡的处理
+function BattleMenuPage:handleNodeDied(generalIdStr, officalType)   --敌人-1，友军0，我军1
+    local headVec = self.myHeadVec
+    local offsetX = -50
+    if officalType == -1 then
+        headVec = self.enemyHeadVec 
+        offsetX = 50
+    end
+
+    local delIdx = 0
+    for k, data in pairs(headVec) do
+        if data ~= -1 and data.idStr == generalIdStr then
+            data.Icon:removeFromParent(true)
+            headVec[k] = -1
+            delIdx = k
+            break;
+        end
+    end
+
+    if delIdx > 0 and delIdx ~= 5 then   --移动头像
+        for k, data in pairs(headVec) do
+            if data ~= -1 and k > delIdx and k ~= 5 then
+                data.Icon:runAction(cc.MoveBy(0.1, cc.p(offsetX, 0)))
+            end
+        end
     end
 end
 

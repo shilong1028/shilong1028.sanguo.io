@@ -636,10 +636,21 @@ end
 
 --处理我方被攻击的逻辑
 function BattleOfficalNode:handleUnderAttackEffect(realAtk)
+    local textSize = cc.size(100, g_defaultFontSize + 5)
+    local hurt_text = cc.Label:createWithTTF("-"..realAtk, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+    hurt_text:setColor(g_ColorDef.White)
+    hurt_text:setAnchorPoint(ccp(0.5, 0.5))
+    hurt_text:setPosition(cc.p(self.Image_bg:getContentSize().width/2, self.Image_bg:getContentSize().height + 50))
+    self.Image_bg:addChild(hurt_text, 100) 
+
+    hurt_text:runAction(cc.Sequence:create(cc.MoveBy(0.2, cc.p(0, 50)), cc.DelayTime:create(0.1), cc.CallFunc:create(function() 
+        hurt_text:removeFromParent(true)
+    end)))
+
     local myGeneralHp = self.battleOfficalData.generalData.hp - realAtk * 0.3
     if myGeneralHp <= 0 then
         --武将死亡，部曲消失
-        self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
+        self:removeFromParent(true) --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
     else
         self.battleOfficalData.generalData.hp = myGeneralHp
         --生命条
@@ -650,7 +661,7 @@ function BattleOfficalNode:handleUnderAttackEffect(realAtk)
     local myBingCount = self.battleOfficalData.unitData.bingCount - math.floor((realAtk * 0.7)/self.battleOfficalData.unitData.bingData.hp)
     if myBingCount <= 0 then
         --部曲士兵全部死亡，部曲消失
-        self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
+        self:removeFromParent(true)  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
     else
         self.battleOfficalData.unitData.bingCount = myBingCount
         --士兵数量条

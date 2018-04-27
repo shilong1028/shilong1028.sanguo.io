@@ -76,90 +76,90 @@
             <PreSize X="0.1172" Y="0.0208" />
             <ImageFileData Type="PlistSubImage" Path="public_bar3.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_bingLeft" ActionTag="-2136593676" Tag="19" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="424.0480" RightMargin="803.9520" TopMargin="38.9840" BottomMargin="619.0160" LeftEage="17" RightEage="17" TopEage="20" BottomEage="20" Scale9OriginX="17" Scale9OriginY="20" Scale9Width="18" Scale9Height="22" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_bingLeft" ActionTag="-2136593676" Tag="19" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="332.4000" RightMargin="895.6000" TopMargin="5.0000" BottomMargin="653.0000" LeftEage="17" RightEage="17" TopEage="20" BottomEage="20" Scale9OriginX="17" Scale9OriginY="20" Scale9Width="18" Scale9Height="22" ctype="ImageViewObjectData">
             <Size X="52.0000" Y="62.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="450.0480" Y="650.0160" />
+            <Position X="358.4000" Y="684.0000" />
             <Scale ScaleX="0.5000" ScaleY="0.5000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.3516" Y="0.9028" />
+            <PrePosition X="0.2800" Y="0.9500" />
             <PreSize X="0.0406" Y="0.0861" />
             <FileData Type="PlistSubImage" Path="public2_shibing.png" Plist="plist/PublicRes2.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_bingRight" ActionTag="-1576205259" Tag="20" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="803.9520" RightMargin="424.0480" TopMargin="38.9840" BottomMargin="619.0160" LeftEage="17" RightEage="17" TopEage="20" BottomEage="20" Scale9OriginX="17" Scale9OriginY="20" Scale9Width="18" Scale9Height="22" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_bingRight" ActionTag="-1576205259" Tag="20" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="895.6000" RightMargin="332.4000" TopMargin="5.0000" BottomMargin="653.0000" LeftEage="17" RightEage="17" TopEage="20" BottomEage="20" Scale9OriginX="17" Scale9OriginY="20" Scale9Width="18" Scale9Height="22" ctype="ImageViewObjectData">
             <Size X="52.0000" Y="62.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="829.9520" Y="650.0160" />
+            <Position X="921.6000" Y="684.0000" />
             <Scale ScaleX="0.5000" ScaleY="0.5000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.6484" Y="0.9028" />
+            <PrePosition X="0.7200" Y="0.9500" />
             <PreSize X="0.0406" Y="0.0861" />
             <FileData Type="PlistSubImage" Path="public2_shibing.png" Plist="plist/PublicRes2.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_bingLeft" ActionTag="1172283679" Tag="21" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="480.0000" RightMargin="737.0000" TopMargin="55.4840" BottomMargin="635.5160" FontSize="24" LabelText="15000" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_bingLeft" ActionTag="1172283679" Tag="21" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="371.2000" RightMargin="845.8000" TopMargin="25.5320" BottomMargin="665.4680" FontSize="24" LabelText="15000" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="63.0000" Y="29.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="480.0000" Y="650.0160" />
+            <Position X="371.2000" Y="679.9680" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
-            <PrePosition X="0.3750" Y="0.9028" />
+            <PrePosition X="0.2900" Y="0.9444" />
             <PreSize X="0.0492" Y="0.0403" />
             <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="128" G="0" B="128" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_bingRight" ActionTag="1526958114" Tag="22" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="737.0000" RightMargin="480.0000" TopMargin="55.4840" BottomMargin="635.5160" FontSize="24" LabelText="15000" HorizontalAlignmentType="HT_Right" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+          <AbstractNodeData Name="Text_bingRight" ActionTag="1526958114" Tag="22" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="845.8000" RightMargin="371.2000" TopMargin="25.5320" BottomMargin="665.4680" FontSize="24" LabelText="15000" HorizontalAlignmentType="HT_Right" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="63.0000" Y="29.0000" />
             <AnchorPoint ScaleX="1.0000" ScaleY="0.5000" />
-            <Position X="800.0000" Y="650.0160" />
+            <Position X="908.8000" Y="679.9680" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
-            <PrePosition X="0.6250" Y="0.9028" />
+            <PrePosition X="0.7100" Y="0.9444" />
             <PreSize X="0.0492" Y="0.0403" />
             <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="128" G="0" B="128" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_buquLeft" ActionTag="-1436513155" Tag="23" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="344.0480" RightMargin="883.9520" TopMargin="18.9680" BottomMargin="639.0320" LeftEage="17" RightEage="17" TopEage="20" BottomEage="20" Scale9OriginX="17" Scale9OriginY="20" Scale9Width="18" Scale9Height="22" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_buquLeft" ActionTag="-1436513155" Tag="23" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="332.4000" RightMargin="895.6000" TopMargin="37.4000" BottomMargin="620.6000" LeftEage="17" RightEage="17" TopEage="20" BottomEage="20" Scale9OriginX="17" Scale9OriginY="20" Scale9Width="18" Scale9Height="22" ctype="ImageViewObjectData">
             <Size X="52.0000" Y="62.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="370.0480" Y="670.0320" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <Position X="358.4000" Y="651.6000" />
+            <Scale ScaleX="0.5000" ScaleY="0.5000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.2891" Y="0.9306" />
+            <PrePosition X="0.2800" Y="0.9050" />
             <PreSize X="0.0406" Y="0.0861" />
             <FileData Type="PlistSubImage" Path="public2_buqu.png" Plist="plist/PublicRes2.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_buquRight" ActionTag="2071965881" Tag="24" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="883.9520" RightMargin="344.0480" TopMargin="18.9680" BottomMargin="639.0320" LeftEage="17" RightEage="17" TopEage="20" BottomEage="20" Scale9OriginX="17" Scale9OriginY="20" Scale9Width="18" Scale9Height="22" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_buquRight" ActionTag="2071965881" Tag="24" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="895.6000" RightMargin="332.4000" TopMargin="37.4000" BottomMargin="620.6000" LeftEage="17" RightEage="17" TopEage="20" BottomEage="20" Scale9OriginX="17" Scale9OriginY="20" Scale9Width="18" Scale9Height="22" ctype="ImageViewObjectData">
             <Size X="52.0000" Y="62.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="909.9520" Y="670.0320" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <Position X="921.6000" Y="651.6000" />
+            <Scale ScaleX="0.5000" ScaleY="0.5000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.7109" Y="0.9306" />
+            <PrePosition X="0.7200" Y="0.9050" />
             <PreSize X="0.0406" Y="0.0861" />
             <FileData Type="PlistSubImage" Path="public2_buqu.png" Plist="plist/PublicRes2.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_buquLeft" ActionTag="593075166" Tag="25" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="390.0160" RightMargin="850.9840" TopMargin="28.4680" BottomMargin="648.5320" FontSize="36" LabelText="15" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="39.0000" Y="43.0000" />
+          <AbstractNodeData Name="Text_buquLeft" ActionTag="593075166" Tag="25" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="371.2000" RightMargin="881.8000" TopMargin="53.9000" BottomMargin="637.1000" FontSize="24" LabelText="15" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="27.0000" Y="29.0000" />
             <AnchorPoint ScaleY="0.5000" />
-            <Position X="390.0160" Y="670.0320" />
+            <Position X="371.2000" Y="651.6000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
-            <PrePosition X="0.3047" Y="0.9306" />
-            <PreSize X="0.0305" Y="0.0597" />
+            <PrePosition X="0.2900" Y="0.9050" />
+            <PreSize X="0.0211" Y="0.0403" />
             <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Text_buquRight" ActionTag="-1234156108" Tag="26" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="850.9840" RightMargin="390.0160" TopMargin="28.4680" BottomMargin="648.5320" FontSize="36" LabelText="15" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="39.0000" Y="43.0000" />
+          <AbstractNodeData Name="Text_buquRight" ActionTag="-1234156108" Tag="26" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="881.8000" RightMargin="371.2000" TopMargin="53.9000" BottomMargin="637.1000" FontSize="24" LabelText="15" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="27.0000" Y="29.0000" />
             <AnchorPoint ScaleX="1.0000" ScaleY="0.5000" />
-            <Position X="889.9840" Y="670.0320" />
+            <Position X="908.8000" Y="651.6000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="165" B="0" />
-            <PrePosition X="0.6953" Y="0.9306" />
-            <PreSize X="0.0305" Y="0.0597" />
+            <PrePosition X="0.7100" Y="0.9050" />
+            <PreSize X="0.0211" Y="0.0403" />
             <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />

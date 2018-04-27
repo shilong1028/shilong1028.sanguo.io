@@ -350,10 +350,23 @@ end
 
 --处理我方被攻击的逻辑
 function NpcNode:handleUnderAttackEffect(realAtk)
+    local hurt = math.floor(realAtk/1000)
+
+    local textSize = cc.size(100, g_defaultFontSize + 5)
+    local hurt_text = cc.Label:createWithTTF("-"..hurt, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+    hurt_text:setColor(g_ColorDef.White)
+    hurt_text:setAnchorPoint(ccp(0.5, 0.5))
+    hurt_text:setPosition(cc.p(self.yingzhaiImage:getContentSize().width/2, self.yingzhaiImage:getContentSize().height + 50))
+    self.yingzhaiImage:addChild(hurt_text, 100) 
+
+    hurt_text:runAction(cc.Sequence:create(cc.MoveBy(0.2, cc.p(0, 50)), cc.DelayTime:create(0.1), cc.CallFunc:create(function() 
+        hurt_text:removeFromParent(true)
+    end)))
+
     local myHp = math.floor(self.yingzhaiData.hp - realAtk/1000)    --营寨收到攻击时，自身承受攻击力的千分之一
     if myHp <= 0 then
         --武将死亡，部曲消失
-        self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
+        self:removeFromParent(true)  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点） 
     else
         self.yingzhaiData.hp = myHp
         --生命条

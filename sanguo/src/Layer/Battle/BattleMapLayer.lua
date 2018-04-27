@@ -81,6 +81,14 @@ function BattleMapLayer:ShowBattleMenuBtn(bShow)
     end
 end
 
+--战场地图中部曲或营寨消亡的处理
+function BattleMapLayer:handleNodeDied(generalIdStr, nType)   --敌人-1，友军0，我军1
+    --菜单层
+    if self.BattleMenuPage then
+        self.BattleMenuPage:handleNodeDied(generalIdStr, nType)
+    end
+end
+
 
 return BattleMapLayer
 
