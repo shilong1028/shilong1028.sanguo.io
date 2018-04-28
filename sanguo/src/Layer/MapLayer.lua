@@ -426,5 +426,138 @@ function MapLayer:drawAutoPathArrow(autoPath, bDrawPath)
 	end
 end
 
+--粒子特效试验
+function MapLayer:ParticlesTest()
+ --    --创建一个CCParticleSystem粒子系统
+ --    local ignore = cc.ParticleSystemQuad:create("Particles/bigFire.plist")
+ --    --local parent = cc.Node:create()   --第一种创建节点方式
+ --    local parent = cc.ParticleBatchNode:createWithTexture(ignore:getTexture())   --第二种创建节点方式
+ --    ignore:unscheduleUpdate()
+
+ --    ---------------------------------------
+ --    --创建一个CCParticleSystemQuad系统：每个粒子用4个点(Quad,矩形)表示的粒子系统
+	-- local emitter1 = cc.ParticleSystemQuad:create("Particles/bigFire.plist")
+	-- --设置粒子RGBA值
+ --    --emitter1:setStartColor(cc.c4f(1,0,0,1))
+ --    --是否添加混合
+ --    emitter1:setBlendAdditive(false)
+ --    --完成后制动移除
+ --    emitter1:setAutoRemoveOnFinish(false)
+
+ --    -------------------------------------
+
+ --    --粒子添加方式一（不需要parent,直接应用）
+ --    -- emitter1:setScale(0.2)
+ --    -- emitter1:setPosition(cc.p(540, 360))
+ --    -- self.rootNode:addChild(emitter1, 100)
+
+ --    --粒子添加方法二（可以将多个粒子特效添加到一个ParticleBatchNode或Node中再应用)
+ --    parent:setScale(0.5)
+ --    parent:addChild(emitter1, 0, 1)
+ --    self.rootNode:addChild(parent, 100)
+
+
+ --    --利用系统粒子模板来创建粒子
+ --    local emitter = cc.ParticleSnow:create()  
+ --    --ParticleFireworks烟花, ParticleSun太阳焰, ParticleSmoke, ParticleFire火, ParticleExplosion爆炸, ParticleFlower花, 
+ --    --ParticleGalaxy银河, ParticleSpiral螺旋, ParticleMeteor流星, ParticleSnow下雪, ParticleRain下雨
+	-- -- emitter:retain()
+
+ --    emitter:setLife(3)
+ --    emitter:setLifeVar(1)
+ --    -- gravity
+ --    emitter:setGravity(cc.p(0, -10))
+ --    -- speed of particles
+ --    emitter:setSpeed(130)
+ --    emitter:setSpeedVar(30)
+    
+ --    local startColor = emitter:getStartColor()
+ --    startColor.r = 0.9
+ --    startColor.g = 0.9
+ --    startColor.b = 0.9
+ --    emitter:setStartColor(startColor)
+
+ --    local startColorVar = emitter:getStartColorVar()
+ --    startColorVar.b = 0.1
+ --    emitter:setStartColorVar(startColorVar)
+
+ --    emitter:setEmissionRate(emitter:getTotalParticles() / emitter:getLife())
+
+ --    emitter:setTexture(cc.Director:getInstance():getTextureCache():addImage("Particles/dianImg.png"))  --设置粒子纹理图片
+ --    self.rootNode:addChild(emitter, 100)
+
+    --[[CCParticleSystem中的常用设置参数表：
+	struct {
+	        CCPoint gravity;   //重力和方向的向量
+	        float speed;  //速度
+	        float speedVar;  //粒子的速度差异
+	        float tangentialAccel;   //粒子的切线加速度
+	        float tangentialAccelVar;  //粒子间的切线加速度差异
+	        float radialAccel;   //粒子的径向加速度
+	        float radialAccelVar;  //粒子间的径向加速度差异
+	     } modeA;
+	struct {
+	        float startRadius;    //粒子开始半径
+	        float startRadiusVar;   //粒子间开始半径差异
+	        float endRadius;  //粒子结束半径
+	        float endRadiusVar;    //粒子间结束半径差异          
+	        float rotatePerSecond;  //粒子每秒的旋转角度    
+	        float rotatePerSecondVar;  //粒子间每秒的旋转角度差异  
+	     } modeB;
+    ]]
+
+    local emitter = cc.ParticleSystemQuad:createWithTotalParticles(50)
+    self.rootNode:addChild(emitter, 100)
+
+    ----emitter:release()    -- win32 :  use this line or remove this line and use autorelease()
+    emitter:setTexture( cc.Director:getInstance():getTextureCache():addImage("Particles/dianImg.png"))  --设置粒子纹理图片
+    --emitter:setTextureWithRect(cc.Director:getInstance():getTextureCache():addImage("Particles/dianImg.png"), cc.rect(0,0,32,32))
+    emitter:setDuration(cc.PARTICLE_DURATION_INFINITY)   --设置发射粒子的持续时间-1表示永远持续
+    -- gravity
+    emitter:setGravity(cc.p(0, 0))  --设置粒子的重力方向 
+    -- radius mode
+    emitter:setEmitterMode(cc.PARTICLE_MODE_GRAVITY)
+    -- angle
+    emitter:setAngle(90)   --设置角度以及偏差
+    emitter:setAngleVar(360)
+    -- speed of particles
+    emitter:setSpeed(160)
+    emitter:setSpeedVar(20)
+    -- radial
+    emitter:setRadialAccel(-120)   --设置径向加速度以及偏差
+    emitter:setRadialAccelVar(0)
+    -- tagential
+    emitter:setTangentialAccel(30)  --设置粒子的切向加速度以及偏差
+    emitter:setTangentialAccelVar(0)
+    -- emitter position
+    emitter:setPosition(160, 240)
+    emitter:setPosVar(cc.p(0, 0))   --设置粒子初始化位置偏差
+    -- life of particles
+    emitter:setLife(4)   --设置粒子生命期以及偏差
+    emitter:setLifeVar(1)
+    -- spin of particles
+    emitter:setStartSpin(0)  --设置粒子开始时候旋转角度以及偏差
+    emitter:setStartSizeVar(0)
+    emitter:setEndSpin(0)   --设置结束时候的旋转角度以及偏差
+    emitter:setEndSpinVar(0)
+    -- color of particles
+    emitter:setStartColor(cc.c4f(0.5, 0.5, 0.5, 1.0))   --设置开始时候的颜色以及偏差
+    emitter:setStartColorVar(cc.c4f(0.5, 0.5, 0.5, 1.0))
+    emitter:setEndColor(cc.c4f(0.1, 0.1, 0.1, 0.2))   --设置结束时候的颜色以及偏差
+    emitter:setEndColorVar(cc.c4f(0.1, 0.1, 0.1, 0.2))
+    -- size, in pixels
+    emitter:setStartSize(80.0)   --设置开始时候粒子大小以及偏差
+    emitter:setStartSizeVar(40.0)
+    emitter:setEndSize(cc.PARTICLE_START_SIZE_EQUAL_TO_END_SIZE )   --设置粒子结束时候大小以及偏差
+    -- emits per second
+    emitter:setEmissionRate(emitter:getTotalParticles() / emitter:getLife())   --设置每秒钟产生粒子的数量
+    -- additive
+    emitter:setBlendAdditive(true)   --是否添加混合
+
+    local move = cc.MoveBy:create(4, cc.p(300,0))
+    local move_back = move:reverse()
+    emitter:runAction(cc.RepeatForever:create(cc.Sequence:create(move, move_back)))
+end
+
 
 return MapLayer
