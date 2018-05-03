@@ -155,6 +155,8 @@
             <PlistImageFile Name="public2_directionWheelBg.png" Key="public2_directionWheelBg.png" />
             <PlistImageFile Name="public2_dushi.png" Key="public2_dushi.png" />
             <PlistImageFile Name="public2_guanai.png" Key="public2_guanai.png" />
+            <PlistImageFile Name="public2_jian_black.png" Key="public2_jian_black.png" />
+            <PlistImageFile Name="public2_jian_red.png" Key="public2_jian_red.png" />
             <PlistImageFile Name="public2_QiZhi1.png" Key="public2_QiZhi1.png" />
             <PlistImageFile Name="public2_QiZhi2.png" Key="public2_QiZhi2.png" />
             <PlistImageFile Name="public2_QiZhi3.png" Key="public2_QiZhi3.png" />
