@@ -521,6 +521,13 @@ function BattleMapPage:handleNodeDied(node)
 		else
 			self.myYingZhaiNodeVec[idx] = -1 
 		end
+
+		for k, offical in pairs(self.myOfficalNodeVec) do
+			offical:checkNodeAtkAndDef_YingShow()  --检查节点当前对应的攻击和防御阵营
+		end
+		for k, offical in pairs(self.enemyOfficalNodeVec) do
+			offical:checkNodeAtkAndDef_YingShow()  --检查节点当前对应的攻击和防御阵营
+		end
 	end
 
 	local dieAni = ImodAnim:create()
@@ -614,19 +621,24 @@ function BattleMapPage:checkEnemyUnitOrYingzhai(node, atkState, order)
 	end
 
 	--回防或攻击范围内没有敌军或敌营
+	if order == nil then 
+        order = 1 
+    end
 	if order then  --节点按钮操作才有效
 		local destPos = 0
+		local atkPos1, atkPos2, defPos1, defPos2 = self:checkNodeAtkAndDef_YingShow(node.battleOfficalData.zhenPos, node.officalType)  --敌人-1，友军0，我军1
+
 		if atkState == g_AtkState.Attack then
 			if order == 1 then
-				destPos = node.battleOfficalData.atkPos1
+				destPos = atkPos1   --node.battleOfficalData.atkPos1
 			elseif order == 2 then
-				destPos = node.battleOfficalData.atkPos2
+				destPos = atkPos2  --node.battleOfficalData.atkPos2
 			end
 		elseif atkState == g_AtkState.Defend then
 			if order == 1 then
-				destPos = node.battleOfficalData.defPos1
+				destPos = defPos1  --node.battleOfficalData.defPos1
 			elseif order == 2 then
-				destPos = node.battleOfficalData.defPos2
+				destPos = defPos2  --node.battleOfficalData.defPos2
 			end
 
 			if node.officalType == -1 then  --敌人单位探测我军  --officalType敌人-1，友军0，我军1
@@ -634,12 +646,13 @@ function BattleMapPage:checkEnemyUnitOrYingzhai(node, atkState, order)
 			else   --我军探测敌人或敌营
 				yingVec = self.myYingZhaiNodeVec   --{-1, -1, -1, -1, -1}   --1前锋2左军3右军4后卫5中军, -1标识没有营寨或营寨被摧毁
 			end
-			if destPos == 0 then
-				destPos = 5   --回访中军
-			end
 		end
 
-		if destPos > 0 then
+		if destPos == 0 then
+			destPos = 5   --进攻或回防中军
+		end
+
+		if destPos > 0 and yingVec[destPos] ~= -1 then
 			return yingVec[destPos], g_AtkObject.YingZhai   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
 		end
 	end
@@ -733,9 +746,19 @@ function BattleMapPage:handleAllNodeAtkOrDefOpt(state, nType)  --nType 敌人-1�
     if nType == -1 then   --敌方所有部曲的操作
     	officalVec = self.enemyOfficalNodeVec
     end
-
+    --[[
+    11、全军进攻可以让除后卫军和主帅部曲以外的部队按照规则前进并对敌营寨进行攻击。
+    全军待命可以让所有部曲停止前进原地警戒，但与敌接触部队仍会进行战斗，但不会进行追击。
+    全军回防可以让所有部曲撤退到初始营寨中，营寨被攻破者撤退到中军大帐（但部曲性质不变，即左护军仍旧是左护军）。
+    全军撤退则直接退出游戏，判定玩家失败。
+    ]]
     for k, node in pairs(officalVec) do
-    	node:handleAtkOrDefOpt(state, order)  
+    	if (node.battleOfficalData.zhenPos == 4 or node.battleOfficalData.zhenPos == 5)   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+    		and state == g_AtkState.Attack then
+    		node:handleAtkOrDefOpt(g_AtkState.Pause) 
+    	else
+			node:handleAtkOrDefOpt(state)  
+	    end
     end
 end
 

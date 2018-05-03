@@ -262,11 +262,7 @@ function BattleOfficalNode:setBtnIsShow(val)
 
     if self.btnIsShow == true and self.parentMapPage then --节点所在的战场地图层
         --检查节点当前对应的攻击和防御阵营
-        local atkPos1, atkPos2, defPos1, defPos2 = self.parentMapPage:checkNodeAtkAndDef_YingShow(self.battleOfficalData.zhenPos, self.officalType)  --敌人-1，友军0，我军1
-        self.battleOfficalData.atkPos1 = atkPos1
-        self.battleOfficalData.atkPos2 = atkPos2
-        self.battleOfficalData.defPos1 = defPos1
-        self.battleOfficalData.defPos2 = defPos2
+        --self:checkNodeAtkAndDef_YingShow()
 
         local strVec = {lua_Battle_Str1, lua_Battle_Str2, lua_Battle_Str3, lua_Battle_Str4, lua_Battle_Str5}   --前锋/左翼/右翼/后卫/中军
 
@@ -323,7 +319,9 @@ function BattleOfficalNode:handleAtkOrDefOpt(state, order)
             -- if self.atkState == g_AtkState.Attack then
             -- elseif self.atkState == g_AtkState.Defend then
             -- end
-            if order == nil then order = 1 end
+            if order == nil then 
+                order = 1 
+            end
 
             if self.parentMapPage then 
                 local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, self.atkState, order)
@@ -399,17 +397,26 @@ function BattleOfficalNode:initAttackMoveAttr()
     end
     self.bingId = bingId   --部曲兵种ID
 
-
     --检查节点当前对应的攻击和防御阵营
+    self:checkNodeAtkAndDef_YingShow()
+
+    self:initAtkLimitUpdateEntry()   --部曲的安全探测计时器更新（探测周边是否有敌军或敌营）
+end
+
+--检查节点当前对应的攻击和防御阵营
+function BattleOfficalNode:checkNodeAtkAndDef_YingShow()
     if self.parentMapPage then
         local atkPos1, atkPos2, defPos1, defPos2 = self.parentMapPage:checkNodeAtkAndDef_YingShow(self.battleOfficalData.zhenPos, self.officalType)  --敌人-1，友军0，我军1
         self.battleOfficalData.atkPos1 = atkPos1
         self.battleOfficalData.atkPos2 = atkPos2
         self.battleOfficalData.defPos1 = defPos1
         self.battleOfficalData.defPos2 = defPos2 
+    else
+        self.battleOfficalData.atkPos1 = 0
+        self.battleOfficalData.atkPos2 = 0
+        self.battleOfficalData.defPos1 = 0
+        self.battleOfficalData.defPos2 = 0 
     end  
-
-    self:initAtkLimitUpdateEntry()   --部曲的安全探测计时器更新（探测周边是否有敌军或敌营）
 end
 
 --部曲的安全探测计时器更新（探测周边是否有敌军或敌营）
@@ -644,32 +651,36 @@ function BattleOfficalNode:handleAttackEnemy()
         if self.officalType == -1 then --敌人-1，友军0，我军1
             arrowStr = "public2_jian_black.png"  --敌方黑箭
         end
-        local arrow = cc.Sprite:createWithSpriteFrameName(arrowStr) 
-        local curPos = self:getNodePos()
-        local enemyPos = self.enemyNode:getNodePos()
-        arrow:setPosition(curPos)
-        self:getParent():addChild(arrow, 9999)
 
-        --箭射的贝塞尔曲线运动
-        local offsetX = enemyPos.x - curPos.x
-        local offsetY = math.abs(offsetX)
+        for i=1, 5 do
+            local arrow = cc.Sprite:createWithSpriteFrameName(arrowStr) 
+            arrow:setScale(0.25)
+            local curPos = self:getNodePos()
+            local enemyPos = self.enemyNode:getNodePos()
+            arrow:setPosition(curPos)
+            self:getParent():addChild(arrow, 9999)
 
-        local bezier = {
-            cc.p(curPos.x + 0.25*offsetX, curPos.y + 0.5*offsetY),    --controlPoint_1
-            cc.p(curPos.x + 0.65*offsetX, curPos.y + 0.35*offsetY),    --controlPoint_2
-            cc.p(enemyPos.x, enemyPos.y),    --endPosition
-        }
-        arrow:runAction(cc.Sequence:create(cc.BezierBy:create(1.0, bezier), cc.CallFunc:create(function() 
-        end)))  
+            --箭射的贝塞尔曲线运动
+            local offsetX = enemyPos.x - curPos.x
+            local offsetY = math.abs(offsetX)
 
-        --贝塞尔曲线运动的同时，箭头方向变化动作（箭头默认水平朝右，cocos顺时针旋转为正反向）
-        local angle = math.deg(cc.pGetAngle(curPos, bezier[1]))*-1
-        arrow:setRotation(angle)
-        local angle2 = math.deg(cc.pGetAngle(bezier[1], bezier[2]))*-1
-        local angle3 = math.deg(cc.pGetAngle(bezier[2], enemyPos))*-1
-        arrow:runAction(cc.Sequence:create(cc.RotateTo:create(0.3, 0), cc.RotateTo:create(0.35, angle2), cc.RotateTo:create(0.35, angle3), cc.CallFunc:create(function() 
-            arrow:removeFromParent(true)
-        ))) 
+            local bezier = {
+                cc.p(curPos.x + (0.25 + (i-2)*0.01)*offsetX, curPos.y + (0.5 + (i-2)*0.02)*offsetY),    --controlPoint_1
+                cc.p(curPos.x + (0.65 + (i-2)*0.01)*offsetX, curPos.y + (0.35 + (i-2)*0.01)*offsetY),    --controlPoint_2
+                cc.p(enemyPos.x, enemyPos.y),    --endPosition
+            }
+            arrow:runAction(cc.Sequence:create(cc.BezierBy:create(1.0, bezier), cc.CallFunc:create(function() 
+            end)))  
+
+            --贝塞尔曲线运动的同时，箭头方向变化动作（箭头默认水平朝右，cocos顺时针旋转为正反向）
+            local angle = math.deg(cc.pGetAngle(curPos, bezier[1]))*-1
+            arrow:setRotation(angle)
+            local angle2 = math.deg(cc.pGetAngle(bezier[1], bezier[2]))*-1
+            local angle3 = math.deg(cc.pGetAngle(bezier[2], enemyPos))*-1
+            arrow:runAction(cc.Sequence:create(cc.RotateTo:create(0.3, 0), cc.RotateTo:create(0.35, angle2), cc.RotateTo:create(0.35, angle3), cc.CallFunc:create(function() 
+                arrow:removeFromParent(true)
+            ))) 
+        end
 
         --物理攻击 = 武将攻击力 + 士兵数*士兵攻击力
         local myAtk = self.battleOfficalData.generalData.atk + self.battleOfficalData.unitData.bingCount * self.battleOfficalData.unitData.bingData.atk
@@ -964,11 +975,13 @@ return BattleOfficalNode
     7、中军部曲在敌前锋营未攻破前，可以进攻敌前锋营或其探测范围内的敌军部曲。
     敌前锋营被攻破后（敌该探测范围消失），中军部曲可以进攻敌中军大帐或其探测范围内的敌军部曲。中军部曲不可进攻敌后卫营。
     8、战斗胜利规则：倒计时时间为0，进攻方失败；中军大帐被攻破者，失败；主帅部曲消失（主帅死亡或士兵数量为0）者，失败。
-    9、战斗开始时每只部曲士气为100，士气为0的部曲消失。部曲武将死亡时部曲消失。
+    9、战斗开始时每只部曲士气默认为100（实际出战可能不同），士气为0的部曲消失。部曲武将死亡时部曲消失。
     10、前锋营、左营、右营被攻破方，中军部曲士气减少10。攻破敌左营，我方获取敌携带粮草总量的10%。攻破敌右营，我方获取敌携带金钱总量的10%。
     攻破敌后卫营，我方获取敌携带粮草和金钱总量各20%，敌每只部曲士气减少10。攻破敌中军大帐或杀死敌主帅部曲，战斗胜利。
     11、全军进攻可以让除后卫军和主帅部曲以外的部队按照规则前进并对敌营寨进行攻击。
     全军待命可以让所有部曲停止前进原地警戒，但与敌接触部队仍会进行战斗，但不会进行追击。
     全军回防可以让所有部曲撤退到初始营寨中，营寨被攻破者撤退到中军大帐（但部曲性质不变，即左护军仍旧是左护军）。
+    全军撤退则直接退出游戏，判定玩家失败。
     12、敌军出现在我部曲探测范围内时，如果我军被敌方克制，则我军撤退到营寨，否则我军主动进攻敌部曲。我军部曲出现在敌军部曲探测范围内时，规则相同。
+    13、当营寨被攻击时，且该营寨探测范围内的营寨守军未战斗状态时，营寨守军主动攻击营寨的敌方攻击者。
 ]]

@@ -256,6 +256,8 @@ end
 
 --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
 function NpcNode:HandleMyselfDied()
+    self.bMyselfDied = true 
+
     if self.parentMapPage then   --节点所在的战场地图层
         self.parentMapPage:handleNodeDied(self)  --战场地图中部曲或营寨消亡的处理
     end
@@ -356,6 +358,43 @@ end
 --处理攻击敌方逻辑
 function NpcNode:handleAttackEnemy()
     if self.enemyNode and self.bEnemyFighting == true  then  --正在攻击敌军部曲或营寨
+        --播放射箭等攻击动作
+        local arrowStr = "public2_jian_red.png"  --我方红箭（箭头水平朝右）
+        if self.yingzhaiData.bEnemy == 1 then     --0我方营寨，1敌方营寨
+            arrowStr = "public2_jian_black.png"  --敌方黑箭
+        end
+
+        for i=1, 8 do
+            local arrow = cc.Sprite:createWithSpriteFrameName(arrowStr) 
+            arrow:setScale(0.25)
+            local curPos = self:getNodePos()
+            local enemyPos = self.enemyNode:getNodePos()
+            arrow:setPosition(curPos)
+            self:getParent():addChild(arrow, 9999)
+
+            --箭射的贝塞尔曲线运动
+            local offsetX = enemyPos.x - curPos.x
+            local offsetY = math.abs(offsetX)
+
+            local bezier = {
+                cc.p(curPos.x + (0.25 + (i-4)*0.01)*offsetX, curPos.y + (0.5 + (i-4)*0.02)*offsetY),    --controlPoint_1
+                cc.p(curPos.x + (0.65 + (i-4)*0.01)*offsetX, curPos.y + (0.35 + (i-4)*0.01)*offsetY),    --controlPoint_2
+                cc.p(enemyPos.x, enemyPos.y),    --endPosition
+            }
+            arrow:runAction(cc.Sequence:create(cc.BezierBy:create(1.0, bezier), cc.CallFunc:create(function() 
+            end)))  
+
+            --贝塞尔曲线运动的同时，箭头方向变化动作（箭头默认水平朝右，cocos顺时针旋转为正反向）
+            local angle = math.deg(cc.pGetAngle(curPos, bezier[1]))*-1
+            arrow:setRotation(angle)
+            local angle2 = math.deg(cc.pGetAngle(bezier[1], bezier[2]))*-1
+            local angle3 = math.deg(cc.pGetAngle(bezier[2], enemyPos))*-1
+            arrow:runAction(cc.Sequence:create(cc.RotateTo:create(0.3, 0), cc.RotateTo:create(0.35, angle2), cc.RotateTo:create(0.35, angle3), cc.CallFunc:create(function() 
+                arrow:removeFromParent(true)
+            ))) 
+        end
+
+         --计算敌方损伤
         local realAtk = self.yingzhaiData.atk   --营寨的攻击为直接攻击，不用考虑被攻击部曲的防御能力
         if realAtk > 0 then
             self.enemyNode:handleUnderAttackEffect(realAtk)
@@ -365,29 +404,39 @@ end
 
 --处理我方被攻击的逻辑
 function NpcNode:handleUnderAttackEffect(realAtk)
-    local hurt = math.floor(realAtk/1000)
+    if self.bMyselfDied == true then
+        return
+    end
 
-    local textSize = cc.size(100, g_defaultFontSize + 5)
-    local hurt_text = cc.Label:createWithTTF("-"..hurt, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
-    hurt_text:setColor(g_ColorDef.Red)
-    hurt_text:setAnchorPoint(cc.p(0.5, 0.5))
-    hurt_text:setPosition(cc.p(self.yingzhaiImage:getContentSize().width/2, self.yingzhaiImage:getContentSize().height + 50))
-    self.yingzhaiImage:addChild(hurt_text, 100) 
+    local hurt = math.floor(realAtk/1000)   --营寨收到攻击时，自身承受攻击力的千分之一
 
-    hurt_text:runAction(cc.Sequence:create(cc.MoveBy:create(0.5, cc.p(0, 50)), cc.DelayTime:create(0.2), cc.CallFunc:create(function() 
-        hurt_text:removeFromParent(true)
-    end)))
-
-    local myHp = math.floor(self.yingzhaiData.hp - realAtk/1000)    --营寨收到攻击时，自身承受攻击力的千分之一
+    local myHp = math.floor(self.yingzhaiData.hp - hurt)    --营寨收到攻击时，自身承受攻击力的千分之一
     if myHp <= 0 then
         --营寨消失
         self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
     else
         self.yingzhaiData.hp = myHp
-        --生命条
-        self.LoadingBar_hp:setPercent(100*myHp/self.max_hp)
-        self.Text_hp:setString(myHp.."/"..self.max_hp)
     end
+
+    --射箭等攻击动作之后，播放损伤动画及更新血条和士兵条
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(function() 
+        if self.bMyselfDied ~= true then
+            local textSize = cc.size(100, g_defaultFontSize + 5)
+            local hurt_text = cc.Label:createWithTTF("-"..hurt, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+            hurt_text:setColor(g_ColorDef.Red)
+            hurt_text:setAnchorPoint(cc.p(0.5, 0.5))
+            hurt_text:setPosition(cc.p(self.yingzhaiImage:getContentSize().width/2, self.yingzhaiImage:getContentSize().height + 50))
+            self.yingzhaiImage:addChild(hurt_text, 100) 
+
+            hurt_text:runAction(cc.Sequence:create(cc.MoveBy:create(0.5, cc.p(0, 50)), cc.DelayTime:create(0.2), cc.CallFunc:create(function() 
+                hurt_text:removeFromParent(true)
+            end)))
+
+             --生命条
+            self.LoadingBar_hp:setPercent(100*myHp/self.max_hp)
+            self.Text_hp:setString(myHp.."/"..self.max_hp)
+        end
+    end)))
 end
 
 ------------------------------战场营寨----------------------------------------------------
