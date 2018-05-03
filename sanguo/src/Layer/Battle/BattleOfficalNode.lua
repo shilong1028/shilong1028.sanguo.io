@@ -639,6 +639,38 @@ end
 --处理攻击敌方逻辑
 function BattleOfficalNode:handleAttackEnemy()
     if self.enemyNode and self.bEnemyFighting == true  then  --正在攻击敌军部曲或营寨
+        --播放射箭等攻击动作
+        local arrowStr = "public2_jian_red.png"  --我方红箭（箭头水平朝右）
+        if self.officalType == -1 then --敌人-1，友军0，我军1
+            arrowStr = "public2_jian_black.png"  --敌方黑箭
+        end
+        local arrow = cc.Sprite:createWithSpriteFrameName(arrowStr) 
+        local curPos = self:getNodePos()
+        local enemyPos = self.enemyNode:getNodePos()
+        arrow:setPosition(curPos)
+        self:getParent():addChild(arrow, 9999)
+
+        --箭射的贝塞尔曲线运动
+        local offsetX = enemyPos.x - curPos.x
+        local offsetY = math.abs(offsetX)
+
+        local bezier = {
+            cc.p(curPos.x + 0.25*offsetX, curPos.y + 0.5*offsetY),    --controlPoint_1
+            cc.p(curPos.x + 0.65*offsetX, curPos.y + 0.35*offsetY),    --controlPoint_2
+            cc.p(enemyPos.x, enemyPos.y),    --endPosition
+        }
+        arrow:runAction(cc.Sequence:create(cc.BezierBy:create(1.0, bezier), cc.CallFunc:create(function() 
+        end)))  
+
+        --贝塞尔曲线运动的同时，箭头方向变化动作（箭头默认水平朝右，cocos顺时针旋转为正反向）
+        local angle = math.deg(cc.pGetAngle(curPos, bezier[1]))*-1
+        arrow:setRotation(angle)
+        local angle2 = math.deg(cc.pGetAngle(bezier[1], bezier[2]))*-1
+        local angle3 = math.deg(cc.pGetAngle(bezier[2], enemyPos))*-1
+        arrow:runAction(cc.Sequence:create(cc.RotateTo:create(0.3, 0), cc.RotateTo:create(0.35, angle2), cc.RotateTo:create(0.35, angle3), cc.CallFunc:create(function() 
+            arrow:removeFromParent(true)
+        ))) 
+
         --物理攻击 = 武将攻击力 + 士兵数*士兵攻击力
         local myAtk = self.battleOfficalData.generalData.atk + self.battleOfficalData.unitData.bingCount * self.battleOfficalData.unitData.bingData.atk
         myAtk = myAtk * self.battleOfficalData.unitData.shiqi/100   --士气对攻击的影响
@@ -650,6 +682,7 @@ function BattleOfficalNode:handleAttackEnemy()
             enemyDef = enemyDef * self.enemyNode.battleOfficalData.unitData.shiqi/100   --士气对防御的影响
         end
 
+        --计算敌方损伤
         local realAtk = myAtk - enemyDef   --部曲作战经验 = 累次有效攻击的总量*转化因子
         if realAtk > 0 then
             self.enemyNode:handleUnderAttackEffect(realAtk)
@@ -664,29 +697,13 @@ function BattleOfficalNode:handleUnderAttackEffect(realAtk)
         return
     end
 
-    local textSize = cc.size(100, g_defaultFontSize + 5)
-    local hurt_text = cc.Label:createWithTTF("-"..realAtk, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
-    hurt_text:setColor(g_ColorDef.Red)
-    hurt_text:setAnchorPoint(cc.p(0.5, 0.5))
-    hurt_text:setPosition(cc.p(self.Image_bg:getContentSize().width/2, self.Image_bg:getContentSize().height + 50))
-    self.Image_bg:addChild(hurt_text, 100) 
-
-    hurt_text:runAction(cc.Sequence:create(cc.MoveBy:create(0.5, cc.p(0, 50)), cc.DelayTime:create(0.2), cc.CallFunc:create(function() 
-        hurt_text:removeFromParent(true)
-    end)))
-
     local hpScale = self.max_hp/(self.battleOfficalData.unitData.bingCount*50)    --伤害转移到武将身上的比例因子
-
     local myGeneralHp = self.battleOfficalData.generalData.hp - math.floor(realAtk * hpScale)
     if myGeneralHp <= 0 then
         --武将死亡，部曲消失
         self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
-        return
     else
         self.battleOfficalData.generalData.hp = myGeneralHp
-        --生命条
-        self.LoadingBar_hp:setPercent(100*myGeneralHp/self.max_hp)
-        self.Text_hp:setString(myGeneralHp.."/"..self.max_hp)
     end
 
     local myBingCount = self.battleOfficalData.unitData.bingCount - math.floor(5*realAtk/self.battleOfficalData.unitData.bingData.hp)
@@ -695,10 +712,30 @@ function BattleOfficalNode:handleUnderAttackEffect(realAtk)
         self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）  
     else
         self.battleOfficalData.unitData.bingCount = myBingCount
-        --士兵数量条
-        self.LoadingBar_solider:setPercent(100*myBingCount/self.max_bingCount)
-        self.Text_solider:setString(myBingCount.."/"..self.max_bingCount)
     end
+
+    --射箭等攻击动作之后，播放损伤动画及更新血条和士兵条
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(function() 
+        if self.bMyselfDied ~= true then
+            local textSize = cc.size(100, g_defaultFontSize + 5)
+            local hurt_text = cc.Label:createWithTTF("-"..realAtk, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+            hurt_text:setColor(g_ColorDef.Red)
+            hurt_text:setAnchorPoint(cc.p(0.5, 0.5))
+            hurt_text:setPosition(cc.p(self.Image_bg:getContentSize().width/2, self.Image_bg:getContentSize().height + 50))
+            self.Image_bg:addChild(hurt_text, 100) 
+
+            hurt_text:runAction(cc.Sequence:create(cc.MoveBy:create(0.5, cc.p(0, 50)), cc.DelayTime:create(0.2), cc.CallFunc:create(function() 
+                hurt_text:removeFromParent(true)
+            end)))
+
+            --生命条
+            self.LoadingBar_hp:setPercent(100*myGeneralHp/self.max_hp)
+            self.Text_hp:setString(myGeneralHp.."/"..self.max_hp)
+            --士兵数量条
+            self.LoadingBar_solider:setPercent(100*myBingCount/self.max_bingCount)
+            self.Text_solider:setString(myBingCount.."/"..self.max_bingCount)
+        end
+    end)))
 end
 
 --根据攻击状态进行移动操作（攻击、回防、溃败等）

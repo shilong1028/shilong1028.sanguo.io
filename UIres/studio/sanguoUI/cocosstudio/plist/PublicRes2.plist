@@ -7,7 +7,7 @@
             <key>public2_QiZhi1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{447,828},{51,54}}</string>
+                <string>{{865,444},{51,54}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>public2_QiZhi2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{394,828},{51,54}}</string>
+                <string>{{812,444},{51,54}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>public2_QiZhi3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{450,884},{49,54}}</string>
+                <string>{{918,445},{49,54}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -46,7 +46,7 @@
             <key>public2_QiZhi4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{394,884},{49,54}}</string>
+                <string>{{918,394},{49,54}}</string>
                 <key>offset</key>
                 <string>{1,0}</string>
                 <key>rotated</key>
@@ -59,7 +59,7 @@
             <key>public2_Quan1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{292,808},{100,100}}</string>
+                <string>{{874,2},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -72,11 +72,11 @@
             <key>public2_Quan2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{272,706},{100,98}}</string>
+                <string>{{710,354},{100,98}}</string>
                 <key>offset</key>
                 <string>{0,1}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{100,98}}</string>
                 <key>sourceSize</key>
@@ -85,7 +85,7 @@
             <key>public2_Quan3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,538},{100,100}}</string>
+                <string>{{808,170},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,7 +98,7 @@
             <key>public2_Quan4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{170,706},{100,100}}</string>
+                <string>{{706,170},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -111,11 +111,11 @@
             <key>public2_buqu.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{335,910},{52,62}}</string>
+                <string>{{936,158},{52,62}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{52,62}}</string>
                 <key>sourceSize</key>
@@ -124,7 +124,7 @@
             <key>public2_chengchi.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,283},{150,119}}</string>
+                <string>{{456,354},{150,119}}</string>
                 <key>offset</key>
                 <string>{0,-3}</string>
                 <key>rotated</key>
@@ -137,7 +137,7 @@
             <key>public2_directionWheel.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{115,910},{72,72}}</string>
+                <string>{{812,370},{72,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -150,7 +150,7 @@
             <key>public2_directionWheelBg.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,706},{166,166}}</string>
+                <string>{{706,2},{166,166}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -163,7 +163,7 @@
             <key>public2_dushi.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,148},{150,133}}</string>
+                <string>{{154,354},{150,133}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -176,20 +176,46 @@
             <key>public2_guanai.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,874},{111,100}}</string>
+                <string>{{608,354},{111,100}}</string>
                 <key>offset</key>
                 <string>{1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{3,0},{111,100}}</string>
                 <key>sourceSize</key>
                 <string>{115,100}</string>
             </dict>
+            <key>public2_jian_black.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{154,489},{190,9}}</string>
+                <key>offset</key>
+                <string>{1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{6,11},{190,9}}</string>
+                <key>sourceSize</key>
+                <string>{200,33}</string>
+            </dict>
+            <key>public2_jian_red.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{456,475},{192,21}}</string>
+                <key>offset</key>
+                <string>{1,-6}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{5,12},{192,21}}</string>
+                <key>sourceSize</key>
+                <string>{200,33}</string>
+            </dict>
             <key>public2_quanBlue.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,354},{350,350}}</string>
+                <string>{{354,2},{350,350}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -215,7 +241,7 @@
             <key>public2_sel_green.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{416,640},{88,88}}</string>
+                <string>{{910,212},{88,88}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -228,7 +254,7 @@
             <key>public2_sel_orange.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{189,890},{90,90}}</string>
+                <string>{{908,302},{90,90}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -241,11 +267,11 @@
             <key>public2_shibing.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{281,910},{52,62}}</string>
+                <string>{{936,104},{52,62}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{52,62}}</string>
                 <key>sourceSize</key>
@@ -254,7 +280,7 @@
             <key>public2_vsBg.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{170,808},{120,80}}</string>
+                <string>{{706,272},{120,80}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -267,7 +293,7 @@
             <key>public2_vsIcon.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,640},{60,60}}</string>
+                <string>{{874,104},{60,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -280,7 +306,7 @@
             <key>public2_yingzhai1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,404},{148,132}}</string>
+                <string>{{306,354},{148,132}}</string>
                 <key>offset</key>
                 <string>{1,-9}</string>
                 <key>rotated</key>
@@ -293,7 +319,7 @@
             <key>public2_yingzhai2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{394,730},{78,96}}</string>
+                <string>{{828,272},{78,96}}</string>
                 <key>offset</key>
                 <string>{2,0}</string>
                 <key>rotated</key>
@@ -306,7 +332,7 @@
             <key>public2_yingzhai3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,2},{150,144}}</string>
+                <string>{{2,354},{150,144}}</string>
                 <key>offset</key>
                 <string>{0,-2}</string>
                 <key>rotated</key>
@@ -324,9 +350,9 @@
             <key>realTextureFileName</key>
             <string>PublicRes2.png</string>
             <key>size</key>
-            <string>{506,984}</string>
+            <string>{1000,500}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:7c5d84d18ff7aab9fe580e47ea1c7522:9c640c9681c34efce5ef1195a061adf1:51fc9a9e87aa7dcdfda86f2d6e8477d7$</string>
+            <string>$TexturePacker:SmartUpdate:a80ed1814e4658f490a22a3e5f2c6525:7c09ab02f2d5e74935bc7cd7e188d42a:51fc9a9e87aa7dcdfda86f2d6e8477d7$</string>
             <key>textureFileName</key>
             <string>PublicRes2.png</string>
         </dict>
