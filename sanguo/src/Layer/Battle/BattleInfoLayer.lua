@@ -86,7 +86,7 @@ function BattleInfoLayer:initStoryInfo(storyId)
         end
         self.ListView_enemy:forceDoLayout()   --forceDoLayout   --refreshView
 
-        for k, reward in pairs(self.storyData.rewardIdVec) do
+        for k, reward in pairs(self.storyData.rewardsVec) do
             local itemId = reward.itemId    --{["itemId"] = strVec[1], ["num"] = strVec[2]}
             local itemData = g_pTBLMgr:getItemConfigTBLDataById(itemId) 
             if itemData then
@@ -101,7 +101,7 @@ function BattleInfoLayer:initStoryInfo(storyId)
                 self.ListView_reward:addChild(cur_item)
             end
         end
-        local len = #self.storyData.rewardIdVec
+        local len = #self.storyData.rewardsVec
         local rewardInnerWidth = len*90 + 10*(len-1)
         if rewardInnerWidth < self.ListView_rewardSize.width then
             self.ListView_reward:setContentSize(cc.size(rewardInnerWidth, self.ListView_rewardSize.height))

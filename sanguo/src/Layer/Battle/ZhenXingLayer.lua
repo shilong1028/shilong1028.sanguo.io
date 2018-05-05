@@ -727,12 +727,6 @@ function ZhenXingLayer:touchEvent(sender, eventType)
             self.buzhen_selImg:setPosition(cc.p(self.buzhen_qibing:getPosition()))
             self:initBuZhenRight_UnitUI(4)  --显示布阵界面右侧部曲信息UI(1-4枪兵，刀兵，弓兵，骑兵，0未选中)
         end
-                    -- local result = {}
-            -- result.storyId = self.storyId
-            -- result.winStar = 2
-            -- g_pGameLayer:showBattleResultLayer(result)
-
-            --g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
     end
 end
 

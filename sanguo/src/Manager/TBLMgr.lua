@@ -535,13 +535,13 @@ function TBLMgr:LoadStoryConfigTBL()
 		if storyConfig.enemyIdVec[1] == "0" then
 			storyConfig.enemyIdVec = {}
 		end
-		storyConfig.rewardIdVec = {}
+		storyConfig.rewardsVec = {}
 		local rewardStr = stream:ReadString()    --奖励物品，以;分割。物品ID字符串和数量用-分割
 		local rewardIdVec = string.split(rewardStr,";")
 		if rewardIdVec[1] ~= "0" then
 			for k, d in pairs(rewardIdVec) do
 				local strVec = string.split(d,"-")
-				table.insert(storyConfig.rewardIdVec, {["itemId"] = strVec[1], ["num"] = tonumber(strVec[2])})
+				table.insert(storyConfig.rewardsVec, {["itemId"] = strVec[1], ["num"] = tonumber(strVec[2])})
 			end
 		end
 		storyConfig.soldierVec = {}

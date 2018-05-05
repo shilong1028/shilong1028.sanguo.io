@@ -89,6 +89,12 @@ function BattleMapLayer:handleNodeDied(generalIdStr, nType)   --敌人-1，友�
     end
 end
 
+--处理战斗成功或失败
+function BattleMapLayer:handleBattleResult(star)
+    if self.BattleMapPage then   --地图层
+        self.BattleMapPage:handleBattleResult(star) 
+    end
+end
 
 return BattleMapLayer
 

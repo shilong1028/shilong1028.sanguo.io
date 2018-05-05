@@ -274,7 +274,7 @@ function  g_tbl_storyConfig:ctor()
 	self.vedio = "0"   --主线剧情视频文件，"0"标识无
 	self.battleIdStr = "0"   --战斗ID字符串，"0"标识无战斗
 	self.enemyIdVec = {}    --敌方出战将领ID字符串，以;分割
-	self.rewardIdVec = {}    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
+	self.rewardsVec = {}    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
 	self.soldierVec = {}    --奖励士兵，以;分割。物品ID字符串和数量用-分割  {["itemId"], ["num"]}
 	self.offical = "0"   --奖励官职id_str
 	self.generalVec = {}   --奖励武将Id_str, 以;分割
@@ -341,6 +341,27 @@ function  g_tbl_battleMapConfig:ctor()
 	self.rewardsVec = {}   --战斗奖励集合
 	self.yingzhaiVec = {}    --营寨集合
 	self.enemyVec = {}     --敌人部曲集合{idStr部曲ID, atkTime主动进攻时间，-1不进攻}
+end
+
+--战斗结果结构类
+g_tbl_battleRusultStruct = class("g_tbl_battleRusultStruct",__BaseStruct)
+function  g_tbl_battleRusultStruct:ctor()
+	self.battleName = ""    --战斗名称
+	self.battleDesc = ""     --战斗描述
+
+	self.starNum = 0  --战斗星级，0为失败
+	--我方主将ID，伤兵，耗金，耗粮
+	self.myGeneralIdStr = ""
+	self.myLoseBingNum = 0
+	self.myLoseMoneyNum = 0
+	self.myLoseFoodNum = 0
+	--敌方主将ID，伤兵，耗金，耗粮
+	self.enemyGeneralIdStr = ""
+	self.enemyLoseBingNum = 0
+	self.enemyLoseMoneyNum = 0
+	self.enemyLoseFoodNum = 0
+
+	self.rewardsVec = {}   --战斗奖励集合
 end
 
 

@@ -284,7 +284,6 @@ end
 function BattleMapPage:ClearMapObj()
 	self.rootNode:removeAllChildren()
     self.rootNode:setPosition(cc.p(0,0))
-
 end
 
 --初始化战场数据
@@ -439,6 +438,10 @@ function BattleMapPage:initBattleMapImgData(parent)
 			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, 1, officalSelCallBack, self)
 			self.rootNode:addChild(officalNode, 20)
 
+			if battleOfficalData.zhenPos == 5 then
+				self.myMainGeneralIdStr = battleOfficalData.generalIdStr
+			end
+
 			local pos,yingzhaiNode = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, 1)
 			officalNode:setNodePos(pos)   --自定义方法
 			officalNode:setAttackObj(g_AtkObject.YingZhai, yingzhaiNode, g_AtkState.Pause)
@@ -466,6 +469,10 @@ function BattleMapPage:initBattleMapImgData(parent)
 			local officalNode = BattleOfficalNode:create()
 			officalNode:initBattleOfficalData(self.mapConfigData, battleOfficalData, -1, officalSelCallBack, self)
 			self.rootNode:addChild(officalNode, 20)
+
+			if battleOfficalData.zhenPos == 5 then
+				self.enemyMainGeneralIdStr = battleOfficalData.generalIdStr
+			end
 
 			local pos,yingzhaiNode = self:getSrcOrDestPosByYingzhai(battleOfficalData.zhenPos, -1)
 			officalNode:setNodePos(pos)  --自定义方法
@@ -495,6 +502,35 @@ function BattleMapPage:initBattleMapImgData(parent)
 	g_pGameLayer:showLoadingLayer(false)  
 end
 
+--处理战斗成功或失败
+function BattleMapPage:handleBattleResult(star)
+    if self.battleMapData then
+        local result = g_tbl_battleRusultStruct:new()
+
+        result.battleName = self.battleMapData.name   --战斗名称
+        result.battleDesc = ""     --战斗描述
+
+        result.starNum = star  --战斗星级，0为失败
+
+        --我方主将ID，伤兵，耗金，耗粮
+        result.myGeneralIdStr = self.myMainGeneralIdStr
+        result.myLoseBingNum = 0
+        result.myLoseMoneyNum = 0
+        result.myLoseFoodNum = 0
+        --敌方主将ID，伤兵，耗金，耗粮
+        result.enemyGeneralIdStr = self.enemyMainGeneralIdStr
+        result.enemyLoseBingNum = 0
+        result.enemyLoseMoneyNum = 0
+        result.enemyLoseFoodNum = 0
+
+        result.rewardsVec = self.battleMapData.rewardsVec   --战斗奖励集合
+
+        g_pGameLayer:showBattleResultLayer(result)
+
+        --g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_BATTLEMAP)
+    end
+end
+
 --战场地图中部曲或营寨消亡的处理
 function BattleMapPage:handleNodeDied(node)
 	--G_Log_Info("BattleMapPage:handleNodeDied(node)")
@@ -506,8 +542,10 @@ function BattleMapPage:handleNodeDied(node)
 		end
 
 		local vec = self.myOfficalNodeVec
+		local star = 0
 		if node.officalType == -1 then  --敌人-1，友军0，我军1
 			vec = self.enemyOfficalNodeVec
+			star = 3
 		end
 		for k, n in pairs(vec) do
 			if node.battleOfficalData.zhenPos == n.battleOfficalData.zhenPos then
@@ -515,12 +553,22 @@ function BattleMapPage:handleNodeDied(node)
 				break;
 			end
 		end
+
+		if #vec <= 0 then
+			self:handleBattleResult(star)
+		end
 	elseif node.nodeType == g_BattleObject.YingZhai then
 		local idx = node.yingzhaiData.type
 		if node.yingzhaiData.bEnemy == 0 then  --敌方营寨
 			self.enemyYingZhaiNodeVec[idx] = -1   --{-1, -1, -1, -1, -1}   --1前锋2左军3右军4后卫5中军, -1标识没有营寨或营寨被摧毁
+			if idx == 5 then
+				self:handleBattleResult(3)
+			end
 		else
 			self.myYingZhaiNodeVec[idx] = -1 
+			if idx == 5 then
+				self:handleBattleResult(0)
+			end
 		end
 
 		for k, offical in pairs(self.myOfficalNodeVec) do

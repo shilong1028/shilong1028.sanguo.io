@@ -93,7 +93,7 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
         battleStoryData.vedio = "0"   --主线剧情视频文件，"0"标识无
         battleStoryData.battleIdStr = "0"   --战斗ID字符串，"0"标识无战斗
         battleStoryData.enemyIdVec = {}    --敌方出战将领ID字符串，以;分割
-        battleStoryData.rewardIdVec = {}    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
+        battleStoryData.rewardsVec = {}    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
         battleStoryData.soldierVec = {}    --奖励士兵，以;分割。物品ID字符串和数量用-分割  {["itemId"], ["num"]}
         battleStoryData.offical = "0"   --奖励官职id_str
         battleStoryData.generalVec = {}   --奖励武将Id_str, 以;分割
@@ -279,7 +279,8 @@ function BattleMenuPage:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if self.parentBattleMapLayer then    --战斗场景总层 
             if sender == self.Button_exit then   --全军撤退
-                self.parentBattleMapLayer:handleAllNodeAtkOrDefOpt(g_AtkState.Failed) 
+                --self.parentBattleMapLayer:handleAllNodeAtkOrDefOpt(g_AtkState.Failed) 
+                self.parentBattleMapLayer:handleBattleResult(0) 
             elseif sender == self.Button_atk then   --全军攻击
                 self.parentBattleMapLayer:handleAllNodeAtkOrDefOpt(g_AtkState.Attack) 
             elseif sender == self.Button_def then   --全军回防
