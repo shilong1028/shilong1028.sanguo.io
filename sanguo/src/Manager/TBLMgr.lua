@@ -815,10 +815,18 @@ function TBLMgr:LoadBattleMapConfigTBL()
 			battleMapConfig.yingzhaiVec = string.split(citys,";")
 		end
 
-		battleMapConfig.enemyVec = {}     --敌人部曲集合
+		battleMapConfig.enemyVec = {}     --敌人部曲集合{idStr部曲ID, atkTime主动进攻时间，-1不进攻}
 		local enemyStr = stream:ReadString()     --string 标识敌方部曲数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 		if enemyStr ~= "" or enemyStr ~= "0" then
-			battleMapConfig.enemyVec = string.split(enemyStr,";")   --"0"标识相应位置没有敌部曲
+			local s_strs = string.split(enemyStr,";") 
+			for k, s_s in pairs(s_strs) do
+				local s_t = {}
+				local st = string.split(s_s,"-")   --"0"标识相应位置没有敌部曲
+				if st[2] == nil then
+					st[2] = -1
+				end
+				table.insert(battleMapConfig.enemyVec, {["idStr"]=st[1], ["atkTime"]=tonumber(st[2])})
+			end
 		end
 
 		self.batletMapConfigVec[""..battleMapConfig.id_str] = battleMapConfig

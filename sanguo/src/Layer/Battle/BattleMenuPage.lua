@@ -116,7 +116,7 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
         battleMapData.mapId = 0    --战斗战场ID
         battleMapData.rewardsVec = {}   --战斗奖励集合
         battleMapData.yingzhaiVec = {}    --营寨集合
-        battleMapData.enemyVec = {}     --敌人部曲集合
+        battleMapData.enemyVec = {}     --敌人部曲集合{idStr部曲ID, atkTime主动进攻时间，-1不进攻}
     ]]
 
     --战斗我方阵型数据

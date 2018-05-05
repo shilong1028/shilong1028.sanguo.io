@@ -340,7 +340,7 @@ function  g_tbl_battleMapConfig:ctor()
 	self.targetStr = ""  --战斗目标
 	self.rewardsVec = {}   --战斗奖励集合
 	self.yingzhaiVec = {}    --营寨集合
-	self.enemyVec = {}     --敌人部曲集合
+	self.enemyVec = {}     --敌人部曲集合{idStr部曲ID, atkTime主动进攻时间，-1不进攻}
 end
 
 

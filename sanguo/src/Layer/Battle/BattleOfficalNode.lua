@@ -115,6 +115,11 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
     self.battleOfficalData.atkPos2 = 0
     self.battleOfficalData.defPos1 = 0
     self.battleOfficalData.defPos2 = 0 
+
+    if self.battleOfficalData.atkTime == nil then
+        self.battleOfficalData.atkTime = -1   --敌部曲主动进攻时间（毫秒）, -1为不主动攻击
+    end
+
     --dump(battleOfficalData, "battleOfficalData = ")
     --[[
             "generalIdStr" = "3001"
@@ -123,6 +128,8 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
                 "zhenId"    = ""
              }  
                 "zhenPos"      = 5
+
+                enemyUnitData.atkTime = s_t.atkTime   --敌部曲主动进攻时间, -1为不主动攻击
             --附加
             atkPos1, atkPos2, defPos1, defPos2   --当前进攻防御阵营， 0标识没有
         ]]
@@ -241,6 +248,11 @@ function BattleOfficalNode:initBattleOfficalData(mapConfigData, battleOfficalDat
 
     self:initAttackMoveAttr()   --初始化节点移动操作数据
 
+    if self.officalType == -1 and self.battleOfficalData.atkTime >= 0 then  --敌部曲主动进攻时间  --敌人-1，友军0，我军1
+        self:runAction(cc.Sequence:create(cc.DelayTime:create(self.battleOfficalData.atkTime/1000), cc.CallFunc:create(function() 
+            self:handleAtkOrDefOpt(g_AtkState.Attack, 1)   --进攻前锋/左翼/右翼/后卫， 中军不会主动攻击
+        end)))
+    end
 end
 
 function BattleOfficalNode:setBtnIsShow(val)
@@ -530,14 +542,15 @@ end
 
 --我方攻击对象死亡消失时的回调处理
 function BattleOfficalNode:handleEnemyNodeDied()
+    G_Log_Info("BattleOfficalNode:handleEnemyNodeDied()")
+    self:DelFightingCdUpdateEntry()  --部曲的物理攻击速率计时器更新
+
     self.atkState = g_AtkState.Pause   --攻击状态，0待命，1进攻，2回防，3溃败
     self.enemyType = g_AtkObject.None   --攻击对象类型，0无对象，1攻击营寨，2攻击敌军
     self.enemyNode = nil    --我方攻击或监视的敌方部曲
     self.enemyOfficalType = -1  --敌人-1，友军0，我军1
     self.bEnemyFighting = false  --正在攻击敌军部曲或敌营
     --self.UnderAttackVec = {}   --我方被攻击的敌方部曲列表
-
-    self:DelFightingCdUpdateEntry()  --部曲的物理攻击速率计时器更新
 end
 
 --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
@@ -558,6 +571,7 @@ function BattleOfficalNode:HandleMyselfDied()
         end
     end
 
+    self:stopAllActions()
     self:removeFromParent(true) 
 end
 
@@ -602,6 +616,7 @@ function BattleOfficalNode:showFightAni(bShow)
             self.fightAni = ImodAnim:create()
             self.fightAni:initAnimWithName("Ani/effect/fighting.png", "Ani/effect/fighting.ani")
             self.fightAni:PlayActionRepeat(0)
+            self.fightAni:setScale(0.5)
             self.fightAni:setPosition(cc.p(self.Image_bg:getPositionX(), self.Image_bg:getPositionY() + 50))
             self:addChild(self.fightAni, 10)
         end
@@ -721,6 +736,7 @@ function BattleOfficalNode:handleUnderAttackEffect(realAtk)
     if myGeneralHp <= 0 then
         --武将死亡，部曲消失
         self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
+        return
     else
         self.battleOfficalData.generalData.hp = myGeneralHp
     end
@@ -729,6 +745,7 @@ function BattleOfficalNode:handleUnderAttackEffect(realAtk)
     if myBingCount <= 0 then
         --部曲士兵全部死亡，部曲消失
         self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）  
+        return
     else
         self.battleOfficalData.unitData.bingCount = myBingCount
     end
@@ -736,11 +753,27 @@ function BattleOfficalNode:handleUnderAttackEffect(realAtk)
     --射箭等攻击动作之后，播放损伤动画及更新血条和士兵条
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(function() 
         if self.bMyselfDied ~= true then
+            local bgImgSize = self.Image_bg:getContentSize()
+            local emitter1 = cc.ParticleSystemQuad:create("Particles/hit.plist")
+            --设置粒子RGBA值
+            --emitter1:setStartColor(cc.c4f(1,0,0,1))
+            --是否添加混合
+            emitter1:setBlendAdditive(false)
+            --完成后制动移除       
+            emitter1:setAutoRemoveOnFinish(false)
+            emitter1:setScale(0.3)
+            emitter1:setPosition(cc.p(bgImgSize.width/2, bgImgSize.height/2 - 10))
+            self.Image_bg:addChild(emitter1, 100) 
+
+            emitter1:runAction(cc.Sequence:create(cc.DelayTime:create(0.5), cc.CallFunc:create(function() 
+                emitter1:removeFromParent(true)
+            end)))
+
             local textSize = cc.size(100, g_defaultFontSize + 5)
             local hurt_text = cc.Label:createWithTTF("-"..realAtk, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
             hurt_text:setColor(g_ColorDef.Red)
             hurt_text:setAnchorPoint(cc.p(0.5, 0.5))
-            hurt_text:setPosition(cc.p(self.Image_bg:getContentSize().width/2, self.Image_bg:getContentSize().height + 50))
+            hurt_text:setPosition(cc.p(bgImgSize.width/2, bgImgSize.height + 50))
             self.Image_bg:addChild(hurt_text, 100) 
 
             hurt_text:runAction(cc.Sequence:create(cc.MoveBy:create(0.5, cc.p(0, 50)), cc.DelayTime:create(0.2), cc.CallFunc:create(function() 

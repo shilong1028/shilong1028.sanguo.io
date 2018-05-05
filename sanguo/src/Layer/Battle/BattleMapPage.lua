@@ -312,7 +312,7 @@ function BattleMapPage:initBattleMapImgData(parent)
 		battleMapData.mapId = 0    --战斗战场ID
 		battleMapData.rewardsVec = {}   --战斗奖励集合
 		battleMapData.yingzhaiVec = {}    --营寨集合
-		battleMapData.enemyVec = {}     --敌人部曲集合
+		battleMapData.enemyVec = {}     --敌人部曲集合{idStr部曲ID, atkTime主动进攻时间，-1不进攻}
     ]]
 
     local battleMapId = self.battleMapData.mapId
@@ -448,12 +448,13 @@ function BattleMapPage:initBattleMapImgData(parent)
 	end
 
 	--敌方部曲
-	local enemyUnitIdVec = self.battleMapData.enemyVec  --战斗战场配置数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
-	self.enemyZhenXingData = {-1, -1, -1, -1, -1, -1, -1}
-	for k, idStr in pairs(enemyUnitIdVec) do
-		local enemyUnitData = g_pTBLMgr:getBattleEnemyConfigById(idStr)   --"0"标识相应位置没有敌部曲
+	local enemyUnitIdVec = self.battleMapData.enemyVec  --{idStr部曲ID, atkTime主动进攻时间，-1不进攻}
+	self.enemyZhenXingData = {-1, -1, -1, -1, -1, -1, -1}  --战斗战场配置数据，1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+	for k, s_t in pairs(enemyUnitIdVec) do
+		local enemyUnitData = g_pTBLMgr:getBattleEnemyConfigById(s_t.idStr)   --"0"标识相应位置没有敌部曲
 		if enemyUnitData and type(enemyUnitData.zhenUnit) == "table" then
 			enemyUnitData.zhenUnit.zhenPos = k   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
+			enemyUnitData.zhenUnit.atkTime = s_t.atkTime
 			self.enemyZhenXingData[k] = enemyUnitData.zhenUnit
 		end
 	end

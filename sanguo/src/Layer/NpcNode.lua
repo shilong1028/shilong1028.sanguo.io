@@ -247,11 +247,11 @@ end
 --我方攻击对象死亡消失时的回调处理
 function NpcNode:handleEnemyNodeDied()
     --G_Log_Info("NpcNode:handleEnemyNodeDied()")
+    self:DelFightingCdUpdateEntry()  --部曲的物理攻击速率计时器更新
+
     self.enemyNode = nil   --我方攻击或监视的敌方部曲
     --self.UnderAttackVec = {}   --我方被攻击的敌方部曲列表
     self.bEnemyFighting = false  --正在攻击敌军部曲
-
-    self:DelFightingCdUpdateEntry()  --部曲的物理攻击速率计时器更新
 end
 
 --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
@@ -272,6 +272,7 @@ function NpcNode:HandleMyselfDied()
         end
     end
 
+    self:stopAllActions()
     self:removeFromParent(true)
 end
 
@@ -306,6 +307,7 @@ function NpcNode:showFightAni(bShow)
             self.fightAni = ImodAnim:create()
             self.fightAni:initAnimWithName("Ani/effect/fighting.png", "Ani/effect/fighting.ani")
             self.fightAni:PlayActionRepeat(0)
+            self.fightAni:setScale(0.5)
             self.fightAni:setPosition(cc.p(self.yingzhaiImage:getPositionX(), self.yingzhaiImage:getPositionY() + 100))
             self:addChild(self.fightAni, 10)
         end
@@ -358,44 +360,34 @@ end
 --处理攻击敌方逻辑
 function NpcNode:handleAttackEnemy()
     if self.enemyNode and self.bEnemyFighting == true  then  --正在攻击敌军部曲或营寨
-        --播放射箭等攻击动作
-        local arrowStr = "public2_jian_red.png"  --我方红箭（箭头水平朝右）
-        if self.yingzhaiData.bEnemy == 1 then     --0我方营寨，1敌方营寨
-            arrowStr = "public2_jian_black.png"  --敌方黑箭
-        end
+        --创建一个CCParticleSystemQuad系统：每个粒子用4个点(Quad,矩形)表示的粒子系统
+        local emitter1 = cc.ParticleSystemQuad:create("Particles/atkFire.plist")
+        --设置粒子RGBA值
+        --emitter1:setStartColor(cc.c4f(1,0,0,1))
+        --是否添加混合
+        emitter1:setBlendAdditive(false)
+        --完成后制动移除
+        emitter1:setAutoRemoveOnFinish(false)
+        emitter1:setScale(0.25)
 
-        for i=1, 8 do
-            local arrow = cc.Sprite:createWithSpriteFrameName(arrowStr) 
-            arrow:setScale(0.25)
-            local curPos = self:getNodePos()
-            local enemyPos = self.enemyNode:getNodePos()
-            arrow:setPosition(curPos)
-            self:getParent():addChild(arrow, 9999)
+        local curPos = self:getNodePos()
+        local enemyPos = self.enemyNode:getNodePos()
+        emitter1:setPosition(curPos)
+        self:getParent():addChild(emitter1, 9999)
 
-            --箭射的贝塞尔曲线运动
-            local offsetX = enemyPos.x - curPos.x
-            local offsetY = math.abs(offsetX)
-            local maxY = math.max(curPos.y, enemyPos.y)
+        --箭射的贝塞尔曲线运动
+        local offsetX = enemyPos.x - curPos.x
+        local offsetY = math.abs(offsetX)
+        local maxY = math.max(curPos.y, enemyPos.y)
 
-            local bezier = {
-                cc.p(curPos.x + (0.25 + (i-4)*0.01)*offsetX, maxY + (0.5 + (i-4)*0.02)*offsetY),    --controlPoint_1
-                cc.p(curPos.x + (0.65 + (i-4)*0.01)*offsetX, maxY + (0.3 + (i-4)*0.01)*offsetY),    --controlPoint_2
-                cc.p(enemyPos.x, enemyPos.y),    --endPosition
-            }
-            arrow:runAction(cc.Sequence:create(cc.BezierTo:create(1.0, bezier), cc.CallFunc:create(function() 
-            end)))  
-
-            --贝塞尔曲线运动的同时，箭头方向变化动作（箭头默认水平朝右，cocos顺时针旋转为正反向）
-            --cc.pGetAngle(self,other) 获得2个点与原点之间的夹角
-            local angle0 = math.deg(cc.pToAngleSelf(cc.p(bezier[1].x - curPos.x, bezier[1].y - curPos.y)))*-1
-            arrow:setRotation(angle0)
-            local angle1 = offsetX >= 0 and 0 or 180
-            local angle2 = math.deg(cc.pToAngleSelf(cc.p(bezier[2].x - bezier[1].x, bezier[2].y - bezier[1].y)))*-1
-            local angle3 = math.deg(cc.pToAngleSelf(cc.p(enemyPos.x - bezier[2].x, enemyPos.y - bezier[2].y)))*-1
-            arrow:runAction(cc.Sequence:create(cc.RotateTo:create(0.3, angle1), cc.RotateTo:create(0.35, angle2), cc.RotateTo:create(0.35, angle3), cc.CallFunc:create(function() 
-                arrow:removeFromParent(true)
-            end))) 
-        end
+        local bezier = {
+            cc.p(curPos.x + 0.25*offsetX, maxY + 0.5*offsetY),    --controlPoint_1
+            cc.p(curPos.x + 0.65*offsetX, maxY + 0.3*offsetY),    --controlPoint_2
+            cc.p(enemyPos.x, enemyPos.y),    --endPosition
+        }
+        emitter1:runAction(cc.Sequence:create(cc.BezierTo:create(1.0, bezier), cc.CallFunc:create(function() 
+            emitter1:removeFromParent(true)
+        end)))  
 
          --计算敌方损伤
         local realAtk = self.yingzhaiData.atk   --营寨的攻击为直接攻击，不用考虑被攻击部曲的防御能力
@@ -417,6 +409,7 @@ function NpcNode:handleUnderAttackEffect(realAtk)
     if myHp <= 0 then
         --营寨消失
         self:HandleMyselfDied()  --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
+        return
     else
         self.yingzhaiData.hp = myHp
     end
@@ -424,11 +417,28 @@ function NpcNode:handleUnderAttackEffect(realAtk)
     --射箭等攻击动作之后，播放损伤动画及更新血条和士兵条
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1.0), cc.CallFunc:create(function() 
         if self.bMyselfDied ~= true then
+            local bgImgSize = self.yingzhaiImage:getContentSize()
+
+            local emitter1 = cc.ParticleSystemQuad:create("Particles/hit.plist")
+            --设置粒子RGBA值
+            --emitter1:setStartColor(cc.c4f(1,0,0,1))
+            --是否添加混合
+            emitter1:setBlendAdditive(false)
+            --完成后制动移除       
+            emitter1:setAutoRemoveOnFinish(false)
+            emitter1:setScale(0.3)
+            emitter1:setPosition(cc.p(bgImgSize.width/2, bgImgSize.height/2 - 10))
+            self.yingzhaiImage:addChild(emitter1, 100) 
+
+            emitter1:runAction(cc.Sequence:create(cc.DelayTime:create(0.5), cc.CallFunc:create(function() 
+                emitter1:removeFromParent(true)
+            end)))
+
             local textSize = cc.size(100, g_defaultFontSize + 5)
             local hurt_text = cc.Label:createWithTTF("-"..hurt, g_sDefaultTTFpath, g_defaultFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
             hurt_text:setColor(g_ColorDef.Red)
             hurt_text:setAnchorPoint(cc.p(0.5, 0.5))
-            hurt_text:setPosition(cc.p(self.yingzhaiImage:getContentSize().width/2, self.yingzhaiImage:getContentSize().height + 50))
+            hurt_text:setPosition(cc.p(bgImgSize.width/2, bgImgSize.height + 50))
             self.yingzhaiImage:addChild(hurt_text, 100) 
 
             hurt_text:runAction(cc.Sequence:create(cc.MoveBy:create(0.5, cc.p(0, 50)), cc.DelayTime:create(0.2), cc.CallFunc:create(function() 
