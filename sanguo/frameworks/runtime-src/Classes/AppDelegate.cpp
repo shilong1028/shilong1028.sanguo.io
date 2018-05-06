@@ -82,7 +82,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     register_all_packages();
 
     LuaStack* stack = engine->getLuaStack();
-    stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
+    stack->setXXTEAKeyAndSign("shilong", strlen("shilong"), "03071028", strlen("03071028"));  //lua加密XXTEA算法中的中的key和sign
 
 
     //register custom function
