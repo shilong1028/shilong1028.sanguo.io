@@ -188,7 +188,11 @@ end
 function UserDefaultMgr:loadXMLFile(strXmlPath)
     --G_Log_Info("UserDefaultMgr:loadXMLFile")
     local myXML = MyXMLManager:new()
-    local hasData = myXML:loadXMLFile(g_XmlWritePath..strXmlPath)  --android必须添加g_XmlWritePath，否则无法读写
+    local path = g_XmlWritePath..strXmlPath
+    if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
+        path = g_XmlWritePath_Win..strXmlPath
+    end
+    local hasData = myXML:loadXMLFile(path)  --android必须添加g_XmlWritePath，否则无法读写
     if hasData == true then
         return myXML
     else
@@ -200,7 +204,11 @@ end
 function UserDefaultMgr:createXMLFile(strXmlPath, strRoot)
     --G_Log_Info("UserDefaultMgr:createXMLFile")
     local myXML = MyXMLManager:new()
-    myXML:createXMLFile(g_XmlWritePath..strXmlPath, strRoot)  --android必须添加g_XmlWritePath，否则无法读写
+    local path = g_XmlWritePath..strXmlPath
+    if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
+        path = g_XmlWritePath_Win..strXmlPath
+    end
+    myXML:createXMLFile(path, strRoot)  --android必须添加g_XmlWritePath，否则无法读写
     return myXML
 end
 
@@ -213,7 +221,11 @@ function UserDefaultMgr:ClearUseXml(strXmlPath)
         heroXML:removeAllChildNode("root")
         heroXML:saveXMLFile()
         --]]
-        cc.FileUtils:getInstance():writeStringToFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n</root>", g_XmlWritePath..strXmlPath) 
+        local path = g_XmlWritePath..strXmlPath
+        if g_AppPlatform == cc.PLATFORM_OS_WINDOWS then
+            path = g_XmlWritePath_Win..strXmlPath
+        end
+        cc.FileUtils:getInstance():writeStringToFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n</root>", path) 
     end
 end
 

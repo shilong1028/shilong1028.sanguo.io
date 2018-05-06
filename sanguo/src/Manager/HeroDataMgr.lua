@@ -846,6 +846,8 @@ function HeroDataMgr:setAttackZheXMLData(attZhenData)
         attZhenXML:setNodeAttrValue("zhenPosVecNode", "zhenPosVec", tostring(totalZhenPosStr))
     end
     attZhenXML:saveXMLFile()
+
+    g_pGameLayer:ShowScrollTips(lua_str_WarnTips17, g_ColorDef.Red, g_defaultTipsFontSize)  --"阵容保存成功！"
 end
 
 --玩家attackZhenXML攻击阵型数据
@@ -905,6 +907,8 @@ function HeroDataMgr:setDefendZheXMLData(defZhenData)
         attZhenXML:setNodeAttrValue("zhenPosVecNode", "zhenPosVec", tostring(totalZhenPosStr))
     end
     attZhenXML:saveXMLFile()
+    
+    g_pGameLayer:ShowScrollTips(lua_str_WarnTips17, g_ColorDef.Red, g_defaultTipsFontSize)  --"阵容保存成功！"
 end
 
 --玩家defendZhenXML防御阵型数据

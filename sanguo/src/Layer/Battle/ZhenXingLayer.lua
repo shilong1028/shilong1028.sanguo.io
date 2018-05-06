@@ -619,7 +619,7 @@ function ZhenXingLayer:initBuZhenRight_UnitUI(nType)
     if bCompare == true and unitData and unitData ~= -1 and unitData.bingData then
         self.buzhen_bingType2:setString(string.format(unitData.bingData.name))   --部曲兵种类型    
         self.buzhen_bingCount2:setString(string.format(unitData.bingCount))    --部曲兵力    
-        self.buzhen_bingLevel2:setString(string.format(unitData.level))    --部曲等级       
+        self.buzhen_bingLevel2:setString("Lv"..string.format(unitData.level))    --部曲等级       
         self.buzhen_bingShiQi2:setString(string.format(unitData.shiqi))    --部曲士气  
         self.buzhen_bingZhen2:setString(string.format("无"))    --部曲阵型 
     else
