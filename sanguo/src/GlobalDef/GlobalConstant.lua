@@ -59,6 +59,9 @@ g_bAStarPathSmooth = true --false --寻路拉直
 --玩家阵营ID
 g_campId = 0
 
+--部曲出战最小士兵数量
+g_UnitFightMinBingCount = 100
+
 --默认文本大小
 g_defaultFontSize = 20
 g_defaultTipsFontSize = 24    --滚动提示文本大小

@@ -16,8 +16,8 @@ function BattleInfoLayer:onExit()
 end
 
 --初始化UI界面
-function BattleInfoLayer:init()  
-    --G_Log_Info("BattleInfoLayer:init()")
+function BattleInfoLayer:init() 
+    --G_Log_Info("BattleInfoLayer:init()")c
     local csb = cc.CSLoader:createNode("csd/BattleInfoLayer.csb")
     self:addChild(csb)
     csb:setContentSize(g_WinSize)

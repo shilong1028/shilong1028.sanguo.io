@@ -461,7 +461,6 @@ function BattleMapPage:initBattleMapImgData(parent)
 			self.enemyZhenXingData[k] = enemyUnitData.zhenUnit
 		end
 	end
-	--dump(self.enemyZhenXingData, "self.enemyZhenXingData = ")
 
 	self.enemyOfficalNodeVec = {}
 	for k, battleOfficalData in pairs(self.enemyZhenXingData) do   --敌方出战阵容数据(1-7个数据，-1标识没有武将出战)

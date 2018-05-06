@@ -796,6 +796,11 @@ end
 ---------------------attackZhenXML defendZhenXML阵型数据 beging   ---------------
 --保存玩家attackZhenXML攻击阵型数据
 function HeroDataMgr:setAttackZheXMLData(attZhenData)
+    if attZhenData == nil or attZhenData[5] == -1 then
+        g_pGameLayer:ShowScrollTips(lua_str_WarnTips16, g_ColorDef.Red, g_defaultTipsFontSize)  --"该阵容中军主帅部曲未组建！"
+        return
+    end
+
     self.heroData.attZhenData = attZhenData  --{-1, -1, -1, -1, -1, -1, -1}   --攻击阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 
     if not attZhenData then
@@ -850,6 +855,11 @@ end
 
 --保存玩家defendZhenXML防御阵型数据
 function HeroDataMgr:setDefendZheXMLData(defZhenData)
+    if defZhenData == nil or defZhenData[5] == -1 then
+        g_pGameLayer:ShowScrollTips(lua_str_WarnTips16, g_ColorDef.Red, g_defaultTipsFontSize)  --"该阵容中军主帅部曲未组建！"
+        return
+    end
+
     self.heroData.defZhenData = defZhenData  --{-1, -1, -1, -1, -1, -1, -1}   --攻击阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 
     if not defZhenData then

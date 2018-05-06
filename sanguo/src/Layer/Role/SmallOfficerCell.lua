@@ -49,6 +49,7 @@ end
 
 function SmallOfficerCell:initData(generalData, tagIdx, callFunc)  
     --G_Log_Info("SmallOfficerCell:initData()")
+    self.generalData = generalData
     self.tagIdx = tagIdx or -1
     self.SelCallBackFunc = callFunc or nil   --点击选中回调
 

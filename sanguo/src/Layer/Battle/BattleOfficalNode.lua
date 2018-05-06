@@ -680,29 +680,41 @@ function BattleOfficalNode:handleAttackEnemy()
             arrow:setPosition(curPos)
             self:getParent():addChild(arrow, 9999)
 
-            --箭射的贝塞尔曲线运动
+            --箭射运动
             local offsetX = enemyPos.x - curPos.x
             local offsetY = math.abs(offsetX)
-            local maxY = math.max(curPos.y, enemyPos.y)
+            if offsetY <= 20 then   --两者几乎垂直，所以抛物线不再高过头顶，而是直接向下或向上
+                --径直射出
+                local angle0 = math.deg(cc.pToAngleSelf(cc.p(enemyPos.x - curPos.x, enemyPos.y - curPos.y)))*-1
+                arrow:setRotation(angle0)
 
-            local bezier = {
-                cc.p(curPos.x + (0.25 + (i-2)*0.01)*offsetX, maxY + (0.5 + (i-2)*0.02)*offsetY),    --controlPoint_1
-                cc.p(curPos.x + (0.65 + (i-2)*0.01)*offsetX, maxY+ (0.3 + (i-2)*0.01)*offsetY),    --controlPoint_2
-                cc.p(enemyPos.x, enemyPos.y),    --endPosition
-            }
-            arrow:runAction(cc.Sequence:create(cc.BezierTo:create(1.0, bezier), cc.CallFunc:create(function() 
-            end)))  
+                local len = g_pMapMgr:CalcDistance(curPos, enemyPos)
+                arrow:runAction(cc.Sequence:create(cc.MoveTo:create(len/200, enemyPos), cc.CallFunc:create(function() 
+                end))) 
+            else
+                --箭射的贝塞尔曲线运动
+                local maxY = math.max(curPos.y, enemyPos.y)
 
-            --贝塞尔曲线运动的同时，箭头方向变化动作（箭头默认水平朝右，cocos顺时针旋转为正反向）
-            --cc.pGetAngle(self,other) 获得2个点与原点之间的夹角
-            local angle0 = math.deg(cc.pToAngleSelf(cc.p(bezier[1].x - curPos.x, bezier[1].y - curPos.y)))*-1
-            arrow:setRotation(angle0)
-            local angle1 = offsetX >= 0 and 0 or 180
-            local angle2 = math.deg(cc.pToAngleSelf(cc.p(bezier[2].x - bezier[1].x, bezier[2].y - bezier[1].y)))*-1
-            local angle3 = math.deg(cc.pToAngleSelf(cc.p(enemyPos.x - bezier[2].x, enemyPos.y - bezier[2].y)))*-1
-            arrow:runAction(cc.Sequence:create(cc.RotateTo:create(0.3, angle1), cc.RotateTo:create(0.35, angle2), cc.RotateTo:create(0.35, angle3), cc.CallFunc:create(function() 
-                arrow:removeFromParent(true)
-            end))) 
+                local bezier = {
+                    cc.p(curPos.x + (0.25 + (i-2)*0.01)*offsetX, maxY + (0.5 + (i-2)*0.02)*offsetY),    --controlPoint_1
+                    cc.p(curPos.x + (0.65 + (i-2)*0.01)*offsetX, maxY+ (0.3 + (i-2)*0.01)*offsetY),    --controlPoint_2
+                    cc.p(enemyPos.x, enemyPos.y),    --endPosition
+                }
+                arrow:runAction(cc.Sequence:create(cc.BezierTo:create(1.0, bezier), cc.CallFunc:create(function() 
+                end))) 
+
+                --贝塞尔曲线运动的同时，箭头方向变化动作（箭头默认水平朝右，cocos顺时针旋转为正反向）
+                --cc.pGetAngle(self,other) 获得2个点与原点之间的夹角
+                local angle0 = math.deg(cc.pToAngleSelf(cc.p(bezier[1].x - curPos.x, bezier[1].y - curPos.y)))*-1
+                arrow:setRotation(angle0)
+                local angle1 = offsetX >= 0 and 0 or -180
+                local angle2 = math.deg(cc.pToAngleSelf(cc.p(bezier[2].x - bezier[1].x, bezier[2].y - bezier[1].y)))*-1
+                local angle3 = math.deg(cc.pToAngleSelf(cc.p(enemyPos.x - bezier[2].x, enemyPos.y - bezier[2].y)))*-1
+                arrow:runAction(cc.Sequence:create(cc.RotateTo:create(0.3, angle1), cc.RotateTo:create(0.35, angle2), cc.RotateTo:create(0.35, angle3), cc.CallFunc:create(function() 
+                    arrow:removeFromParent(true)
+                end))) 
+            end
+
         end
 
         --物理攻击 = 武将攻击力 + 士兵数*士兵攻击力

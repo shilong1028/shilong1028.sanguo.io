@@ -68,6 +68,8 @@ function GameDataMgr:HandleImplementTask()
 	else
 		g_pGameLayer:showStoryResultLayer(curStoryId)
 	end
+
+	self:SetImplementTaskData(nil)
 end
 
 --任务剧情相关  --end
