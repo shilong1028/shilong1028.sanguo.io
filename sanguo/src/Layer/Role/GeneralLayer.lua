@@ -469,6 +469,9 @@ function GeneralLayer:touchImageEvent(sender, eventType)
             self.info_Image_sel:setPosition(cc.p(self.info_Image_daoju:getPosition()))
             self.info_Image_sel:setVisible(true)
             self:initInfoRightUI(5)
+
+        -----------------------------------------------------------------
+
         elseif sender == self.unit_Image_qibing then    --骑兵部曲
             self.unit_Image_sel:setPosition(cc.p(self.unit_Image_qibing:getPosition()))
             self.unit_Image_sel:setVisible(true)
@@ -706,7 +709,9 @@ function GeneralLayer:touchEvent(sender, eventType)
         elseif sender == self.Button_skillRadio then
             self:setRadioPanel(3)
         elseif sender == self.Button_save then   --部曲保存
+
         elseif sender == self.Button_update then   --部曲升阶
+
         elseif sender == self.Button_useItem then   --使用背包士兵Item
             local unitData = self.GeneralUnitVec[self.SelUnitIdx]  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
             if not unitData or unitData == -1 then   --未组建

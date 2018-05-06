@@ -646,6 +646,8 @@ function HeroDataMgr:SetSingleGeneralUnit(generalIdStr, armyUnit)
 
         generalXML:saveXMLFile()
 
+        g_pGameLayer:ShowScrollTips(lua_str_WarnTips18, g_ColorDef.Red, g_defaultTipsFontSize)  --"武将部曲保存成功！"
+
         if self.heroData.generalVecData[generalIdStr] then
             local bFind = false
             for k, unitData in pairs(self.heroData.generalVecData[generalIdStr].armyUnitVec) do

@@ -19,6 +19,7 @@ lua_str_WarnTips14 = "该部队正在和敌军部曲战斗中！"
 lua_str_WarnTips15 = "该部曲类型未组建！"
 lua_str_WarnTips16 = "该阵容中军主帅部曲未组建！"
 lua_str_WarnTips17 = "阵容保存成功！"
+lua_str_WarnTips18 = "武将部曲保存成功！"
 
 lua_Dialog_TitleStr1 = "提  示"
 lua_Dialog_TitleStr2 = "帮  助"
