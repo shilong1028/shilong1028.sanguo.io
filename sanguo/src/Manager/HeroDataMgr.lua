@@ -265,25 +265,25 @@ end
 function HeroDataMgr:initDefendZheXMLData()
     self.heroData.defZhenData = {-1, -1, -1, -1, -1, -1, -1}   --攻击阵型数据1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
 
-    local attZhenXML = g_UserDefaultMgr:loadXMLFile("defendZhenXML.xml")
-    if attZhenXML then
-        local vecStr = attZhenXML:getNodeAttrValue("zhenPosVecNode", "zhenPosVec")   --有效的阵型营寨数据pos集合
+    local defZhenXML = g_UserDefaultMgr:loadXMLFile("defendZhenXML.xml")
+    if defZhenXML then
+        local vecStr = defZhenXML:getNodeAttrValue("zhenPosVecNode", "zhenPosVec")   --有效的阵型营寨数据pos集合
         if vecStr and vecStr ~= "" then
             local zhenPosVec = string.split(vecStr,";") 
             for i=1, #zhenPosVec do
                 local nodeStr = "zhenPos"..tostring(zhenPosVec[i])
 
                 local zhenUnit = g_tbl_ZhenUnitStruct:new()
-                zhenUnit.zhenPos = tonumber(attZhenXML:getNodeAttrValue(nodeStr, "zhenPos"))
-                zhenUnit.generalIdStr = attZhenXML:getNodeAttrValue(nodeStr, "generalIdStr")
+                zhenUnit.zhenPos = tonumber(defZhenXML:getNodeAttrValue(nodeStr, "zhenPos"))
+                zhenUnit.generalIdStr = defZhenXML:getNodeAttrValue(nodeStr, "generalIdStr")
 
                 local armyUnit = g_tbl_armyUnitConfig:new()
-                armyUnit.bingIdStr = attZhenXML:getNodeAttrValue(armyUnitNode, "bingIdStr")
-                armyUnit.bingCount = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "bingCount"))
-                armyUnit.level = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "level"))
-                armyUnit.exp = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "exp"))
-                armyUnit.shiqi = tonumber(attZhenXML:getNodeAttrValue(armyUnitNode, "shiqi"))
-                armyUnit.zhenId = attZhenXML:getNodeAttrValue(armyUnitNode, "zhenId")
+                armyUnit.bingIdStr = defZhenXML:getNodeAttrValue(nodeStr, "bingIdStr")
+                armyUnit.bingCount = tonumber(defZhenXML:getNodeAttrValue(nodeStr, "bingCount"))
+                armyUnit.level = tonumber(defZhenXML:getNodeAttrValue(nodeStr, "level"))
+                armyUnit.exp = tonumber(defZhenXML:getNodeAttrValue(nodeStr, "exp"))
+                armyUnit.shiqi = tonumber(defZhenXML:getNodeAttrValue(nodeStr, "shiqi"))
+                armyUnit.zhenId = defZhenXML:getNodeAttrValue(nodeStr, "zhenId")
 
                 zhenUnit.unitData = armyUnit
 
