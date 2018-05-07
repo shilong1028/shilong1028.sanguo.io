@@ -551,6 +551,13 @@ function BattleOfficalNode:handleEnemyNodeDied()
     self.enemyOfficalType = -1  --敌人-1，友军0，我军1
     self.bEnemyFighting = false  --正在攻击敌军部曲或敌营
     --self.UnderAttackVec = {}   --我方被攻击的敌方部曲列表
+
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(0.01), cc.CallFunc:create(function()   
+        local enemyNode, atkObj = self.parentMapPage:checkEnemyUnitOrYingzhai(self, g_AtkState.Attack)
+        if enemyNode and atkObj > g_AtkObject.None then   --找到探测范围内的敌军或敌营
+            self:setAttackObj(atkObj, enemyNode, g_AtkState.Attack)  --攻击状态，0待命，1进攻，2回防，3溃败
+        end
+    end)))  
 end
 
 --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
