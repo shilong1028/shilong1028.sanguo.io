@@ -56,6 +56,7 @@ function PlayerNode:showPlayerImodAni(bStandUp)
 	    --调用initAnimWithName方法，会连报三个[LUA ERROR] function refid '1' does not reference a Lua function
 	    self.ImodAni_zd:PlayActionRepeat(0, 0.1)
 	    self.ImodAni_zd:setPosition(cc.p(0,0))
+	    self.ImodAni_zd:setScale(0.6)
 	    self:addChild(self.ImodAni_zd, 1)
 	elseif bStandUp ~= true and self.ImodAni_pb == nil then --跑步的动画
 		self.ImodAni_pb = ImodAnim:create()
@@ -63,6 +64,7 @@ function PlayerNode:showPlayerImodAni(bStandUp)
 	    --调用initAnimWithName方法，会连报三个[LUA ERROR] function refid '1' does not reference a Lua function
 	    self.ImodAni_pb:PlayActionRepeat(0, 0.1)
 	    self.ImodAni_pb:setPosition(cc.p(0,0))
+	    self.ImodAni_pb:setScale(0.6)
 	    self:addChild(self.ImodAni_pb, 1)
 	end
 end

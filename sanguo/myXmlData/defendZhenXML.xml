@@ -1,6 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <zhenPos3 zhenPos="3" generalIdStr="3007" bingIdStr="403" bingCount="1000" level="1" exp="0" shiqi="100" zhenId="0"/>
-    <zhenPos5 zhenPos="5" generalIdStr="3001" bingIdStr="404" bingCount="1000" level="1" exp="0" shiqi="100" zhenId="0"/>
-    <zhenPosVecNode zhenPosVec="3;5"/>
 </root>

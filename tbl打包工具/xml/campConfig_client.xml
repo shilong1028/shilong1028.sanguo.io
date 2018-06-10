@@ -6,12 +6,13 @@
 		<field name="name" type="string" size="64"/>
 		<field name="captain" type="string" size="64"/>
 		<field name="capital" type="string" size="64"/>
+		<field name="src_city" type="string" size="64"/>
 		<field name="population" type="int" size="4"/>
 		<field name="troops" type="int" size="4"/>
 		<field name="money" type="int" size="4"/>
 		<field name="food" type="int" size="4"/>
 		<field name="drug" type="int" size="4"/>
 		<field name="general" type="string" size="256"/>
-		<field name="desc" type="string" size="256"/>
+		<field name="desc" type="string" size="510"/>
 	</table>
 </config>

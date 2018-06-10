@@ -65,8 +65,8 @@ function TBLMgr:LoadMapConfigTBL()
 		mapConfig.width = stream:ReadUInt()     --int 地图宽  像素点
 		mapConfig.height = stream:ReadUInt()    --int 地图高
 		mapConfig.img_count = stream:ReadUInt()    --切成的小图数量
-		mapConfig.row = stream:ReadUInt()    --切成的小图的行列数
 		mapConfig.column = stream:ReadUInt()
+		mapConfig.row = stream:ReadUInt()    --切成的小图的行列数
 
 		mapConfig.nearMapVec = {}    --相邻地图ID集合
 		local nearMaps = stream:ReadString()
@@ -140,13 +140,24 @@ function TBLMgr:LoadCityConfigTBL()
 		cityConfig.type = stream:ReadUInt()     --城池类型1大城市，2郡城，3关隘渡口
 		cityConfig.zhou_id = stream:ReadUInt()     --所属州
 		cityConfig.mapId = stream:ReadUInt()    --所在地图ID
-		cityConfig.map_row = stream:ReadUInt()    --城池在地图的行  32*32为单位块的横向数量
 		cityConfig.map_col = stream:ReadUInt()    --城池在地图的列
+		cityConfig.map_row = stream:ReadUInt()    --城池在地图的行  32*32为单位块的横向数量
 		cityConfig.population = stream:ReadUInt()    --初始人口数量
+
+		cityConfig.pop_limits = {}
+		local pop_limits = stream:ReadString()   --最小户口-正常户口-最大户口,《最小限，人口停止增长；正常限，正常增长；》最大限，瘟疫发生，人口减少
+		local pop_limitsVec = string.split(pop_limits,";")
+		for i, val in pairs (pop_limitsVec) do
+			table.insert(cityConfig.pop_limits, tonumber(val))
+		end
 		
 		cityConfig.near_citys = {}
 		local citys = stream:ReadString()   --周边相邻连接的城池
 		cityConfig.near_citys = string.split(citys,";")
+
+		cityConfig.counties = {}
+		local counties = stream:ReadString()   --郡下辖的县名称（游戏中用）
+		cityConfig.counties = counties.split(counties,";")
 
 		cityConfig.desc = stream:ReadString()
 
@@ -186,16 +197,29 @@ function TBLMgr:LoadMapJumpPtConfigTBL()
 		local mapJumpPtConfig = g_tbl_mapJumpPtConfig:new()
 		mapJumpPtConfig.id_str = stream:ReadString()   --跳转点ID字符串
 		mapJumpPtConfig.map_id1 = stream:ReadUInt()     --地图1ID 
-		mapJumpPtConfig.map_row1 = stream:ReadUInt()     --跳转点在地图1的行  32*32为单位块的横向数量
 		mapJumpPtConfig.map_col1 = stream:ReadUInt()    --跳转点在地图1的列
-		mapJumpPtConfig.map_id2 = stream:ReadUInt()    
-		mapJumpPtConfig.map_row2 = stream:ReadUInt()   
-		mapJumpPtConfig.map_col2 = stream:ReadUInt()  
+		mapJumpPtConfig.map_row1 = stream:ReadUInt()     --跳转点在地图1的行  32*32为单位块的横向数量
+		mapJumpPtConfig.off_col1 = tonumber(stream:ReadUInt()) - 10
+		mapJumpPtConfig.off_row1 = tonumber(stream:ReadUInt()) - 10   ---跳转到地图后人物的偏移位置,针对目的地图而言，为了能表示负数，将真实值加10计算打表
+
 		mapJumpPtConfig.desc = stream:ReadString()
+		mapJumpPtConfig.sameIdStr = stream:ReadString()   --目的地图上的配对跳转点ID字符串
+
+		mapJumpPtConfig.map_id2 = stream:ReadUInt()  
+		mapJumpPtConfig.map_col2 = stream:ReadUInt()   
+		mapJumpPtConfig.map_row2 = stream:ReadUInt()   
+		mapJumpPtConfig.off_col2 = tonumber(stream:ReadUInt()) - 10
+		mapJumpPtConfig.off_row2 = tonumber(stream:ReadUInt()) - 10  ---跳转到地图后人物的偏移位置,针对目的地图而言，为了能表示负数，将真实值加10计算打表
 
 		--游戏附加数据
 		mapJumpPtConfig.map_pt1 = cc.p(mapJumpPtConfig.map_col1*32 - 16, mapJumpPtConfig.map_row1*32 - 16)    --以左上角为00原点的地图坐标
 		mapJumpPtConfig.map_pt2 = cc.p(mapJumpPtConfig.map_col2*32 - 16, mapJumpPtConfig.map_row2*32 - 16)
+
+		---跳转到地图后人物的偏移位置
+		mapJumpPtConfig.off_pt1 = cc.p((mapJumpPtConfig.map_col1+mapJumpPtConfig.off_col1)*32 - 16, 
+										(mapJumpPtConfig.map_row1+mapJumpPtConfig.off_row1)*32 - 16)    --以左上角为00原点的地图坐标
+		mapJumpPtConfig.off_pt2 = cc.p((mapJumpPtConfig.map_col2+mapJumpPtConfig.off_col2)*32 - 16, 
+										(mapJumpPtConfig.map_row2+mapJumpPtConfig.off_row2)*32 - 16)
 
 		self.mapJumpPtConfigVec[""..mapJumpPtConfig.id_str] = mapJumpPtConfig
 		--table.insert(self.mapJumpPtConfigVec, mapJumpPtConfig)
@@ -274,6 +298,9 @@ function TBLMgr:LoadZhouConfigTBL()
 		zhouConfig.name = stream:ReadString()     --string 地图名称
 		zhouConfig.map_id = stream:ReadUInt()     --int 地图ID
 		zhouConfig.capital = stream:ReadString()    --string 首府ID字符串
+		campConfig.citys = {}
+		local citys = stream:ReadString()    --下辖郡城及关隘ID字符串，以;分割
+		campConfig.citys = string.split(citys,";")
 		zhouConfig.desc = stream:ReadString()    --string
 
 		table.insert(self.zhouConfigVec, zhouConfig)
@@ -317,6 +344,7 @@ function TBLMgr:LoadCampConfigTBL()
 		campConfig.name = stream:ReadString()     --string 阵营名称
 		campConfig.captain = stream:ReadString()     --int 首领ID字符串
 		campConfig.capital = stream:ReadString()    --string 首都城池ID字符串
+		campConfig.src_city = stream:ReadString()    --人物初始城池ID字符串
 		campConfig.population = stream:ReadUInt()    --初始百姓人口（单位万）
 		campConfig.troops = stream:ReadUInt()         --初始兵力（人）
 		campConfig.money = stream:ReadUInt()     --初始财力（单位锭，1锭=100贯）

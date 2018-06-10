@@ -67,7 +67,7 @@ g_UnitFightMinBingCount = 100
 g_defaultFontSize = 20
 g_defaultTipsFontSize = 24    --滚动提示文本大小
 g_rewardTipsFontSize = 28    --奖励提示文字大小
-g_defaultChengFontSize = 40   --城池名字大小
+g_defaultChengFontSize = 30   --城池名字大小
 g_defaultJumpPtFontSize = 30   --跳转点名字大小
 
 --定义一个Zorder用于显示一些最上层数据

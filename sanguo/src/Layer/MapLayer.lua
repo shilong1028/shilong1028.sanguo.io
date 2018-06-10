@@ -204,10 +204,13 @@ function MapLayer:resetRootNodePos(rolePos, moveTime)
 		rootPos.x = g_WinSize.width/2 - rolePos.x
 	end
 
-	if rolePos.y >= self.mapConfigData.height - g_WinSize.height/2 then
-		rootPos.y = g_WinSize.height -self.mapConfigData.height
-	elseif rolePos.y >= g_WinSize.height/2 then
+	local offsetY = 80  --地图太小导致地图顶部或底部某些地方人物达不到，因此增加偏移量，为了防止黑框出现，用一些图片遮掩
+	if rolePos.y >= self.mapConfigData.height - g_WinSize.height/2 + offsetY  then
+		rootPos.y = g_WinSize.height -self.mapConfigData.height - offsetY
+	elseif rolePos.y >= g_WinSize.height/2 - offsetY then
 		rootPos.y = g_WinSize.height/2 - rolePos.y
+	else
+		rootPos.y = offsetY
 	end
 	--G_Log_Info("MapLayer:resetRootNodePos, rootPos.x = %f, rootPos.y = %f", rootPos.x, rootPos.y)
 
@@ -323,10 +326,10 @@ function MapLayer:changeMapByJumpPoint(jumpData)
 	if jumpData then
 		if jumpData.map_id1 == self.mapConfigData.id then
 			self:ShowMapImg(jumpData.map_id2)  
-			self:ShowPlayerNode(cc.p(jumpData.map_pt2.x, self.mapConfigData.height - jumpData.map_pt2.y))    --以左上角为00原点转为左下角为原点的像素点
+			self:ShowPlayerNode(cc.p(jumpData.off_pt2.x, self.mapConfigData.height - jumpData.off_pt2.y))    --以左上角为00原点转为左下角为原点的像素点
 		elseif jumpData.map_id2 == self.mapConfigData.id then
 			self:ShowMapImg(jumpData.map_id1) 
-			self:ShowPlayerNode(cc.p(jumpData.map_pt1.x, self.mapConfigData.height - jumpData.map_pt1.y))    --以左上角为00原点转为左下角为原点的像素点
+			self:ShowPlayerNode(cc.p(jumpData.off_pt1.x, self.mapConfigData.height - jumpData.off_pt1.y))    --以左上角为00原点转为左下角为原点的像素点
 		end
 		--跨地图移动
 		if self.movePathMapByMap and #self.movePathMapByMap > 0 then

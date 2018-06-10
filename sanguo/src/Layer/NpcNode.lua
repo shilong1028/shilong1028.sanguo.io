@@ -22,25 +22,31 @@ end
 function NpcNode:initChengData(data)  
     --G_Log_Info("NpcNode:initChengData()")
     local imgStr = "public2_chengchi.png"
-    if data.type == 1 then
+    if data.type == 1 then   --大都市
     	imgStr = "public2_dushi.png"
-    elseif data.type == 2 then
+    elseif data.type == 2 then   --郡城
     	imgStr = "public2_chengchi.png"
-    elseif data.type == 3 then
+    elseif data.type == 3 then   --关隘渡口
     	imgStr = "public2_guanai.png"
+    elseif data.type == 4 then   --部落
+        imgStr = "public2_buluo.png"
+    elseif data.type == 5 then  --跳转点
     end
 	self.chengImage = cc.Sprite:createWithSpriteFrameName(imgStr) 
-	self.chengImage:setScale(0.8)
+	self.chengImage:setScale(0.5)
 	self:addChild(self.chengImage)  
 	local imgSize = self.chengImage:getContentSize()
+    imgSize = cc.size(imgSize.width/2, imgSize.height/2)
 	self:setContentSize(imgSize)
+    --self.chengImage:setPosition(cc.p(imgSize.width/2, imgSize.height/2))
 
-	local textSize = cc.size(imgSize.width*2, g_defaultChengFontSize + 6)
+	local textSize = cc.size(imgSize.width*3, g_defaultChengFontSize + 6)
     self.chengName = cc.Label:createWithTTF(data.name, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
     self.chengName:setColor(g_ColorDef.Yellow)
     self.chengName:enableBold()   --加粗
     --self.chengName:enableShadow()   --阴影
     self.chengName:enableOutline(g_ColorDef.DarkRed, 1)   --描边
+    self.chengName:setPosition(cc.p(0, -imgSize.height/2))
     self:addChild(self.chengName, 5)  
 end
 
@@ -49,16 +55,18 @@ function NpcNode:initMapJumpPtData(data)
 	--G_Log_Info("NpcNode:initMapJumpPtData()")
 	self.Imod = ImodAnim:create()
 	self.Imod:initAnimWithName("Ani/effect/chuansong.png", "Ani/effect/chuansong.ani")
-	self.Imod:setScale(0.8)
+	self.Imod:setScale(0.5)
 	self.Imod:PlayActionRepeat(0)
 	self:addChild(self.Imod)
 
-	local modSize = self.Imod:getContentSize()
+	local modSize = cc.size(60, 50)   --self.Imod:getContentSize()
 	self:setContentSize(modSize)
+    --self.Imod:setPosition(cc.p(modSize.width/2, modSize.height/2))
 
-	local textSize = cc.size(modSize.width*2, g_defaultJumpPtFontSize + 6)
+	local textSize = cc.size(modSize.width*3, g_defaultJumpPtFontSize + 6)
     self.jumpPtName = cc.Label:createWithTTF(data.desc, g_sDefaultTTFpath, g_defaultJumpPtFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
     self.jumpPtName:setColor(g_ColorDef.Yellow)
+    self.jumpPtName:setPosition(cc.p(0, -modSize.height/2))
     self:addChild(self.jumpPtName, 5)  
 end
 
@@ -116,6 +124,7 @@ function NpcNode:initYingZhaiData(data, parent)
     self:addChild(self.yingzhaiImage)  
     local imgSize = self.yingzhaiImage:getContentSize()
     self:setContentSize(imgSize)
+    --self.yingzhaiImage:setPosition(cc.p(imgSize.width/2, imgSize.height/2))
 
     local textSize = cc.size(imgSize.width*2, g_defaultChengFontSize + 6)
     self.yingzhaiName = cc.Label:createWithTTF(data.name, g_sDefaultTTFpath, g_defaultChengFontSize, textSize, cc.TEXT_ALIGNMENT_CENTER, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)

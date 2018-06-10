@@ -120,7 +120,9 @@ function  g_tbl_cityConfig:ctor()
 	self.map_row = 0    --城池在地图的行  32*32为单位块的横向数量
 	self.map_col = 0    --城池在地图的列
 	self.population = 0   --初始人口数量
+	self.pop_limits = {}  --最小户口-正常户口-最大户口,《最小限，人口停止增长；正常限，正常增长；》最大限，瘟疫发生，人口减少
 	self.near_citys = {}     --周边相邻连接的城池
+	self.counties = {}   --郡下辖的县名称（游戏中用
 	self.desc = ""      --string 
 
 	--游戏附加数据
@@ -132,12 +134,17 @@ g_tbl_mapJumpPtConfig = class("g_tbl_mapJumpPtConfig",__BaseStruct)
 function  g_tbl_mapJumpPtConfig:ctor()
 	self.id_str = ""        --跳转点ID字符串
 	self.map_id1 = 0     --地图1ID 
-	self.map_row1 = 0     --跳转点在地图1的行  32*32为单位块的横向数量
 	self.map_col1 = 0     --跳转点在地图1的列
-	self.map_id2 = 0   
-	self.map_row2 = 0    
-	self.map_col2 = 0   
-	self.desc = ""     
+	self.map_row1 = 0     --跳转点在地图1的行  32*32为单位块的横向数量
+	self.off_col1 = 0 
+	self.off_row1 = 0   ---跳转到地图后人物的偏移位置,针对目的地图而言，为了能表示负数，将真实值加10计算打表
+	self.desc = ""  
+	self.sameIdStr = ""  --目的地图上的配对跳转点ID字符串
+	self.map_id2 = 0  
+	self.map_col2 = 0  
+	self.map_row2 = 0      
+	self.off_col2 = 0    
+	self.off_row2 = 0     
 
 	--游戏附加数据
 	self.map_pt1 = cc.p(0,0)   --以左上角为00原点的地图坐标
@@ -166,6 +173,7 @@ function  g_tbl_zhouConfig:ctor()
 	self.name = ""     --地图名称
 	self.map_id = 0     --地图ID
 	self.capital = "0"    --首府ID字符串
+	self.citys = {}  --下辖郡城及关隘ID字符串，以;分割
 	self.desc = ""   
 end
 
@@ -176,6 +184,7 @@ function  g_tbl_campConfig:ctor()
 	self.name = ""     --阵营名称
 	self.captain = "0"     --首领ID字符串
 	self.capital = "0"    --首都城池ID字符串
+	self.src_city = ""    --人物初始城池ID字符串
 	self.population = 0    --初始百姓人口（单位万）
 	self.troops = 0        --初始兵力（人）
 	self.money = 0     --初始财力（单位锭，1锭=100贯）
