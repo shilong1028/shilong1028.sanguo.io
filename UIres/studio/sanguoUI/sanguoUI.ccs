@@ -175,7 +175,6 @@
             <PlistImageFile Name="public2_yingzhai1.png" Key="public2_yingzhai1.png" />
             <PlistImageFile Name="public2_yingzhai2.png" Key="public2_yingzhai2.png" />
             <PlistImageFile Name="public2_yingzhai3.png" Key="public2_yingzhai3.png" />
-            <PlistImageFile Name="public2_buluo.png" Key="public2_buluo.png" />
           </PlistImageFolder>
         </Folder>
         <Project Name="MainScene.csd" Type="Scene" />
