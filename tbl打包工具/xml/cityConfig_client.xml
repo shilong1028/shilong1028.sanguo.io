@@ -7,10 +7,12 @@
 		<field name="type" type="int" size="4"/>
 		<field name="zhou_id" type="int" size="4"/>
 		<field name="mapId" type="int" size="4"/>
-		<field name="map_row" type="int" size="4"/>
 		<field name="map_col" type="int" size="4"/>
+		<field name="map_row" type="int" size="4"/>
 		<field name="population" type="int" size="4"/>
-		<field name="near_citys" type="string" size="256"/>
-		<field name="desc" type="string" size="256"/>
+		<field name="pop_limit" type="string" size="64"/>
+		<field name="near_citys" type="string" size="128"/>
+		<field name="counties" type="string" size="128"/>
+		<field name="desc" type="string" size="510"/>
 	</table>
 </config>

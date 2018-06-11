@@ -4,11 +4,16 @@
 	<table name="mapJumpConfig" ExcelFile="mapJumpConfig.xlsx" sheet="Sheet1" OutputFile="mapJumpConfig_client.tbl">			
 		<field name="id_str" type="string" size="64"/>
 		<field name="map_id1" type="int" size="4"/>
-		<field name="map_row1" type="int" size="4"/>
 		<field name="map_col1" type="int" size="4"/>
+		<field name="map_row1" type="int" size="4"/>
+		<field name="off_col1" type="int" size="4"/>
+		<field name="off_row1" type="int" size="4"/>
+		<field name="desc" type="string" size="64"/>
+		<field name="sameIdStr" type="string" size="64"/>
 		<field name="map_id2" type="int" size="4"/>
-		<field name="map_row2" type="int" size="4"/>
 		<field name="map_col2" type="int" size="4"/>
-		<field name="desc" type="string" size="256"/>
+		<field name="map_row2" type="int" size="4"/>
+		<field name="off_col2" type="int" size="4"/>
+		<field name="off_row2" type="int" size="4"/>
 	</table>
 </config>
