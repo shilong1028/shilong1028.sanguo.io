@@ -133,12 +133,12 @@ function GameLayer:GameMainLayer()
     local roleMapPosData = g_HeroDataMgr:GetHeroMapPosData()
     local mapId = roleMapPosData.mapId
     local rolePos = roleMapPosData.rolePos
-    if not mapId then  --没有地图信息，默认显示玩家阵营首府位置及地图（第一次登陆，选角之后会进入该分支）
+    if not mapId then  --没有地图信息，默认显示玩家阵营初始位置及地图（第一次登陆，选角之后会进入该分支）
         local campId = g_HeroDataMgr:GetHeroCampData().campId     --g_UserDefaultMgr:GetRoleCampId()
         if campId and campId > 0 then
             local campData = g_pTBLMgr:getCampConfigTBLDataById(campId)
             if campData then
-                self.MapLayer:changeMapByCity(campData.capital)
+                self.MapLayer:changeMapByCity(campData.src_city)
             end
         end
     else
