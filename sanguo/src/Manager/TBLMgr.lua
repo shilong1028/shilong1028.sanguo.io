@@ -394,7 +394,6 @@ function TBLMgr:LoadGeneralConfigTBL()
 		local generalConfig = g_tbl_generalConfig:new()
 		generalConfig.id_str =stream:ReadString()        --武将ID字符串
 		generalConfig.name = stream:ReadString()     --武将名称
-		generalConfig.level = stream:ReadUInt()      --武将初始登录等级
 		generalConfig.type = stream:ReadWord()   --将领类型，1英雄，2武将，3军师
 		generalConfig.bingTypeVec = {}  --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种
 		local bingzhong = stream:ReadString() 
@@ -405,24 +404,12 @@ function TBLMgr:LoadGeneralConfigTBL()
 		generalConfig.mp = stream:ReadUInt()        --初始智力值
 		generalConfig.atk = stream:ReadUInt()     --初始攻击力
 		generalConfig.def = stream:ReadUInt()     --初始防御力
-		generalConfig.skillVec = {}
-		local skillsStr = stream:ReadString()    --初始技能，技能ID字符串以;分割
-		local skillVec = string.split(skillsStr,";")
-		if skillVec[1] ~= "0" then
-			for i=1, #skillVec do
-				local vec = string.split(skillVec[i],"-")
-				table.insert(generalConfig.skillVec, {["skillId"]=vec[2], ["lv"]=vec[1]})
-			end
-		end
-		generalConfig.equipVec = {}
-		local equipsStr = stream:ReadString()    --初始装备，装备ID字符串以;分割
-		local equipVec = string.split(equipsStr,";")
-		if equipVec[1] ~= "0" then
-			for i=1, #equipVec do
-				local vec = string.split(equipVec[i],"-")
-				table.insert(generalConfig.equipVec, {["equipId"]=vec[2], ["lv"]=vec[1]})
-			end
-		end
+
+		generalConfig.qiLv = stream:ReadUInt()    --骑兵掌握熟练度等级，0-10,0为未获取相应兵种印玺
+		generalConfig.qiangLv = stream:ReadUInt()  --枪兵掌握熟练度等级
+		generalConfig.daoLv = stream:ReadUInt()     --刀兵掌握熟练度等级
+		generalConfig.gongLv = stream:ReadUInt()     --弓兵掌握熟练度等级
+
 		generalConfig.desc = stream:ReadString()    --描述
 
 		generalConfig.armyUnitVec = {}    --g_tbl_armyUnitConfig:new()   --武将部曲数据

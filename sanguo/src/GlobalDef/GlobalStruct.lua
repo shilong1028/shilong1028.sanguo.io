@@ -199,20 +199,24 @@ g_tbl_generalConfig = class("g_tbl_generalConfig",__BaseStruct)
 function  g_tbl_generalConfig:ctor()
 	self.id_str = "0"   --武将ID字符串(xml保存)
 	self.name = ""     --武将名称
-	self.level = 0     --武将等级(xml保存)
 	self.type = 0    --将领类型，1英雄，2武将，3军师
 	self.hp = 0    --初始血量值
 	self.mp = 0        --初始智力值
 	self.atk = 0     --初始攻击力
 	self.def = 0     --初始防御力
-	self.skillVec = {}    --初始技能，技能lv-ID字符串以;分割(xml保存)
-	self.equipVec = {}    --初始装备，装备lv-ID字符串以;分割(xml保存)
+	self.qiLv = 0    --骑兵掌握熟练度等级，0-10,0为未获取相应兵种印玺
+	self.qiangLv = 0   --枪兵掌握熟练度等级
+	self.daoLv = 0     --刀兵掌握熟练度等级
+	self.gongLv = 0     --弓兵掌握熟练度等级
 	self.desc = ""    --描述
 
 	--附加属性(xml保存)
+	self.level = 0     --武将等级(xml保存)
 	self.exp = 0   --战斗经验
 	self.offical = "0"    --官职ID字符串，官职可以提升武将血智攻防、额外带兵数（默认带1000兵）等属性
 	self.zhongcheng = 100   --武将忠诚度
+	self.skillVec = {}    --初始技能，技能lv-ID字符串以;分割(xml保存)
+	self.equipVec = {}    --初始装备，装备lv-ID字符串以;分割(xml保存)
 	self.bingTypeVec = {}    --轻装|重装|精锐|羽林品质的骑兵|枪戟兵|刀剑兵|弓弩兵等共16种（每个兵种仅可组建一支部曲）
 	self.armyUnitVec = {}    --g_tbl_armyUnitConfig:new()   --武将部曲数据
 end

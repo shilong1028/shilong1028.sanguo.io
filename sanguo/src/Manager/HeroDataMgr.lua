@@ -139,7 +139,13 @@ function HeroDataMgr:initGeneralXMLData()
                 generalData.hp = tblData.hp    --初始血量值
                 generalData.mp = tblData.mp        --初始智力值
                 generalData.atk = tblData.atk     --初始攻击力
-                generalData.def = tblData.def     --初始防御力              
+                generalData.def = tblData.def     --初始防御力    
+
+                generalData.qiLv = tblData.qiLv     --骑兵掌握熟练度等级，0-10,0为未获取相应兵种印玺
+                generalData.qiangLv = tblData.qiangLv   --枪兵掌握熟练度等级
+                generalData.daoLv = tblData.daoLv      --刀兵掌握熟练度等级
+                generalData.gongLv = tblData.gongLv     --弓兵掌握熟练度等级
+
                 generalData.desc = tblData.desc    --描述
 
                 generalData.level = tonumber(generalXML:getNodeAttrValue(generalIdStr, "level"))     --武将初始登录等级
