@@ -45,7 +45,11 @@ function CreateRoleLayer:init()
     self.Button_Sel = csb:getChildByName("Button_Sel")
     self.Button_Sel:addTouchEventListener(handler(self,self.touchEvent))
 
-    self.descText = csb:getChildByName("descText")
+    self.ListView_desc = csb:getChildByName("ListView_desc");
+    self.descText1 = self.ListView_desc:getChildByName("descText1")
+    self.descText1:setFontName(g_sDefaultTTFpath)
+    self.descText2 = self.ListView_desc:getChildByName("descText2")
+    self.descText2:setFontName(g_sDefaultTTFpath)
 
     self.curSelCampId = 1  --当前选中并放缩的阵营ID
     self.curSelBtn = self.Button_Han  --当前选中并放缩的阵营按钮
@@ -136,9 +140,16 @@ function CreateRoleLayer:ScaleSelBtn()
             end
         end
 
-        local descStr = campData.desc.."\n"..string.format(lua_SelCamp_String1, campData.money, campData.food, campData.drug, campData.troops, generalStr)
-        self.descText:setFontName(g_sDefaultTTFpath)
-        self.descText:setString(descStr)
+        self.descText1:setTextAreaSize(cc.size(800, 0));
+        self.descText1:setString(campData.desc)
+
+        --"初始财政：资金%s锭  粮草%s石  药材%s副\n初始兵力：%d名骑兵\n初始将领：%s"
+        local descStr = string.format(lua_SelCamp_String1, campData.money, campData.food, campData.drug, campData.troops, generalStr)
+        self.descText2:setTextAreaSize(cc.size(800, 0));
+        self.descText2:setString(descStr)
+
+        self.ListView_desc:jumpToTop();
+        self.ListView_desc:refreshView();
     end
 end
 

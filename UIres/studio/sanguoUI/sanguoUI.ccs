@@ -149,6 +149,7 @@
             <PlistImageFile Name="public_zhucheng.png" Key="public_zhucheng.png" />
           </PlistImageFolder>
           <PlistImageFolder Image="PublicRes2.png" PListFile="PublicRes2.plist" Name=".PublicRes2_PList.Dir">
+            <PlistImageFile Name="public2_buluo.png" Key="public2_buluo.png" />
             <PlistImageFile Name="public2_buqu.png" Key="public2_buqu.png" />
             <PlistImageFile Name="public2_chengchi.png" Key="public2_chengchi.png" />
             <PlistImageFile Name="public2_directionWheel.png" Key="public2_directionWheel.png" />
@@ -175,7 +176,6 @@
             <PlistImageFile Name="public2_yingzhai1.png" Key="public2_yingzhai1.png" />
             <PlistImageFile Name="public2_yingzhai2.png" Key="public2_yingzhai2.png" />
             <PlistImageFile Name="public2_yingzhai3.png" Key="public2_yingzhai3.png" />
-            <PlistImageFile Name="public2_buluo.png" Key="public2_buluo.png" />
           </PlistImageFolder>
         </Folder>
         <Project Name="MainScene.csd" Type="Scene" />
