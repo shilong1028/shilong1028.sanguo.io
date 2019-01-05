@@ -318,6 +318,7 @@ function  g_tbl_officalConfig:ctor()
 	self.name = ""     --名称
 	self.type = 0    --官职类型，0通用，1主角，2武将，3军师
 	self.quality = 0   --品质,0五品以下，1五品，2四品，3三品，4二品，5一品，6王侯，7皇帝
+	self.tips = ""     --官职小提示
 	self.hp = 0    --附加血量值
 	self.mp = 0        --附加智力值
 	self.troops = 0     --附加带兵数

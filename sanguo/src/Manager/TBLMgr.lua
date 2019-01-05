@@ -716,6 +716,7 @@ function TBLMgr:LoadOfficalConfigTBL()
 		officalConfig.name = stream:ReadString()     --名称
 		officalConfig.type = stream:ReadWord()    --官职类型，0通用，1主角，2武将，3军师
 		officalConfig.quality = stream:ReadWord()    --品质,0五品以下，1五品，2四品，3三品，4二品，5一品，6王侯，7皇帝
+		officalConfig.tips = stream:ReadString()     --官职小提示
 		officalConfig.hp = stream:ReadUInt()    --附加血量值
 		officalConfig.mp = stream:ReadUInt()        --附加智力值
 		officalConfig.troops = stream:ReadUInt()    --附加带兵数
