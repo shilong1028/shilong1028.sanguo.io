@@ -107,6 +107,7 @@
             <PlistImageFile Name="public_listbg1.png" Key="public_listbg1.png" />
             <PlistImageFile Name="public_listbg2.png" Key="public_listbg2.png" />
             <PlistImageFile Name="public_liubei.png" Key="public_liubei.png" />
+            <PlistImageFile Name="public_liuting.PNG" Key="public_liuting.PNG" />
             <PlistImageFile Name="public_loading_icon.png" Key="public_loading_icon.png" />
             <PlistImageFile Name="public_loading_icon2.png" Key="public_loading_icon2.png" />
             <PlistImageFile Name="public_mi_icon.png" Key="public_mi_icon.png" />

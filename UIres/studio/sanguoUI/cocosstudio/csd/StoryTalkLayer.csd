@@ -19,7 +19,7 @@
             <EndColor A="255" R="255" G="255" B="255" />
             <ColorVector ScaleY="1.0000" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_bg" ActionTag="1028329946" Tag="24" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" Scale9Width="46" Scale9Height="46" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="Image_bg" ActionTag="1028329946" Tag="24" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftEage="422" RightEage="422" TopEage="237" BottomEage="237" Scale9OriginX="422" Scale9OriginY="237" Scale9Width="436" Scale9Height="246" ctype="ImageViewObjectData">
             <Size X="1280.0000" Y="720.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="640.0000" Y="360.0000" />
@@ -27,7 +27,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.5000" Y="0.5000" />
             <PreSize X="1.0000" Y="1.0000" />
-            <FileData Type="Default" Path="Default/ImageFile.png" Plist="" />
+            <FileData Type="Normal" Path="img/studio_loginBg.png" Plist="" />
           </AbstractNodeData>
           <AbstractNodeData Name="Image_bottom" ActionTag="-1435188578" Alpha="127" Tag="25" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" TopMargin="518.4000" Scale9Enable="True" LeftEage="17" RightEage="109" TopEage="40" BottomEage="40" Scale9OriginX="17" Scale9OriginY="40" Scale9Width="205" Scale9Height="20" ctype="ImageViewObjectData">
             <Size X="1280.0000" Y="201.6000" />

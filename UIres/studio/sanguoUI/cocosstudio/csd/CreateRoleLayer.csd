@@ -16,6 +16,17 @@
             <PreSize X="1.0000" Y="1.0000" />
             <FileData Type="Normal" Path="img/studio_chinaMap.jpg" Plist="" />
           </AbstractNodeData>
+          <AbstractNodeData Name="xiandiHead" ActionTag="600767359" Tag="43" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="576.0000" RightMargin="576.0000" TopMargin="296.0000" BottomMargin="296.0000" ctype="SpriteObjectData">
+            <Size X="128.0000" Y="128.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="640.0000" Y="360.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.5000" Y="0.5000" />
+            <PreSize X="0.1000" Y="0.1778" />
+            <FileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
+            <BlendFunc Src="1" Dst="771" />
+          </AbstractNodeData>
           <AbstractNodeData Name="Image_Zhao" ActionTag="-1848757124" Tag="467" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="733.8240" RightMargin="482.1760" TopMargin="85.2160" BottomMargin="570.7840" LeftEage="15" RightEage="15" TopEage="15" BottomEage="15" Scale9OriginX="15" Scale9OriginY="15" Scale9Width="34" Scale9Height="34" ctype="ImageViewObjectData">
             <Size X="64.0000" Y="64.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
@@ -76,7 +87,7 @@
             <PreSize X="0.1000" Y="0.1778" />
             <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
             <TextColor A="255" R="65" G="65" B="70" />
-            <NormalFileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
+            <NormalFileData Type="PlistSubImage" Path="public_liuting.PNG" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
@@ -150,7 +161,7 @@
             <OutlineColor A="255" R="255" G="0" B="0" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
-          <AbstractNodeData Name="ListView_desc" ActionTag="-1503986781" Tag="17" IconVisible="False" LeftMargin="250.0000" RightMargin="230.0000" TopMargin="540.0000" BottomMargin="30.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="102" ColorAngle="90.0000" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="5" DirectionType="Vertical" ctype="ListViewObjectData">
+          <AbstractNodeData Name="ListView_desc" ActionTag="-1503986781" Tag="17" IconVisible="False" LeftMargin="250.0000" RightMargin="230.0000" TopMargin="540.0000" BottomMargin="30.0000" TouchEnable="True" ClipAble="True" BackColorAlpha="102" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" IsBounceEnabled="True" ScrollDirectionType="0" ItemMargin="5" DirectionType="Vertical" ctype="ListViewObjectData">
             <Size X="800.0000" Y="150.0000" />
             <Children>
               <AbstractNodeData Name="descText1" ActionTag="-488549900" Tag="18" IconVisible="False" RightMargin="700.0000" BottomMargin="121.0000" FontSize="24" LabelText="阵营描述" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
@@ -165,13 +176,13 @@
                 <OutlineColor A="255" R="165" G="42" B="42" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="descText2" ActionTag="570962657" ZOrder="1" Tag="18" IconVisible="False" RightMargin="700.0000" TopMargin="29.0000" BottomMargin="92.0000" FontSize="24" LabelText="阵营描述" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+              <AbstractNodeData Name="descText2" ActionTag="570962657" ZOrder="1" Tag="18" IconVisible="False" RightMargin="700.0000" TopMargin="34.0000" BottomMargin="87.0000" FontSize="24" LabelText="阵营描述" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
                 <Size X="100.0000" Y="29.0000" />
                 <AnchorPoint ScaleX="0.5000" ScaleY="1.0000" />
                 <Position X="50.0000" Y="116.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="165" B="0" />
-                <PrePosition X="0.0625" Y="0.8067" />
+                <PrePosition X="0.0625" Y="0.7733" />
                 <PreSize X="0.1250" Y="0.1933" />
                 <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <OutlineColor A="255" R="139" G="105" B="20" />
