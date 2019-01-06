@@ -102,10 +102,7 @@ function StoryTalkLayer:changeStoryString()
         end
         self.Image_bg:setVisible(false)
 
-        local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
-        if mapLayer then
-            mapLayer:autoPathMapByCity(self.storyData.targetCity)
-        end
+        g_pGameLayer:handleStoryIntroduceEnd(self.storyData)  --剧情故事讲述完毕，准备自动寻路或显示结果
 
         g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)
         return

@@ -41,10 +41,7 @@ function StoryTalkCell:touchEvent(sender, eventType)
         if sender == self.Image_bg then  
             g_GameDataMgr:SetImplementTaskData(self.storyData)  --保存正在执行的任务剧情，用于检查是否到达了任务目的地
             if self.storyData.bPlayedTalk == 1 then   ---是否已经播放过对话，0未，1已播放（则不再播放） 
-                local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
-                if mapLayer then
-                    mapLayer:autoPathMapByCity(self.storyData.targetCity)
-                end
+                g_pGameLayer:handleStoryIntroduceEnd(self.storyData)  --剧情故事讲述完毕，准备自动寻路或显示结果
             else
                 self.storyData.bPlayedTalk = 1
                 g_HeroDataMgr:SetStoryTalkMask(self.storyData.storyId) 

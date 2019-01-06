@@ -543,13 +543,7 @@ function TBLMgr:LoadStoryConfigTBL()
 			storyConfig.vedio = ""
 		end
 		storyConfig.battleIdStr = stream:ReadString()   --战斗ID字符串，"0"标识无战斗
-
-		storyConfig.enemyIdVec = {}
-		local enemyStr = stream:ReadString()    --敌方出战将领ID字符串，以;分割
-		storyConfig.enemyIdVec = string.split(enemyStr,";")
-		if storyConfig.enemyIdVec[1] == "0" then
-			storyConfig.enemyIdVec = {}
-		end
+		
 		storyConfig.rewardsVec = {}
 		local rewardStr = stream:ReadString()    --奖励物品，以;分割。物品ID字符串和数量用-分割
 		local rewardIdVec = string.split(rewardStr,";")

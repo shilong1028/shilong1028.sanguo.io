@@ -273,6 +273,16 @@ function GameLayer:showStoryTalkLayer(storyData)
     storytalkLayer:initStoryData(storyData)
 end
 
+--剧情故事讲述完毕，准备自动寻路或显示结果
+function GameLayer:handleStoryIntroduceEnd(storyData)
+    local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+    if mapLayer and string.len(storyData.targetCity) > 1 then
+        mapLayer:autoPathMapByCity(storyData.targetCity)
+    else
+        g_GameDataMgr:HandleImplementTask()  --故事剧情没有目的地，直接触发执行当前剧情任务结果
+    end
+end
+
 --显示剧情奖励界面
 function GameLayer:showStoryResultLayer(storyId) 
     local storyResultLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
