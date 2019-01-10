@@ -86,23 +86,6 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
     self.parentBattleMapLayer = parent    --战斗场景总层
     --战斗剧情配置数据
     self.battleStoryData = g_BattleDataMgr:getBattleStoryData()   --self.battleStoryData.battleIdStr   --战斗ID字符串，"0"标识无战斗
-    --[[
-        battleStoryData.storyId = 0        --剧情ID
-        battleStoryData.targetCity = "0"    --目标城池ID字符串
-        battleStoryData.name = ""    --战役名称
-        battleStoryData.vedio = "0"   --主线剧情视频文件，"0"标识无
-        battleStoryData.battleIdStr = "0"   --战斗ID字符串，"0"标识无战斗
-        battleStoryData.enemyIdVec = {}    --敌方出战将领ID字符串，以;分割
-        battleStoryData.rewardsVec = {}    --奖励物品，以;分割。物品ID字符串和数量用-分割   {["itemId"], ["num"]}
-        battleStoryData.soldierVec = {}    --奖励士兵，以;分割。物品ID字符串和数量用-分割  {["itemId"], ["num"]}
-        battleStoryData.offical = "0"   --奖励官职id_str
-        battleStoryData.generalVec = {}   --奖励武将Id_str, 以;分割
-        battleStoryData.talkVec = {}    --对话内容，以;分割
-        battleStoryData.desc = ""    --剧情简要描述，用于奖励或战斗界面展示
-
-        --附加成员
-        battleStoryData.bPlayedTalk = 0   ---是否已经播放过对话，0未，1已播放（则不再播放）
-    ]]
 
     --战斗战场配置数据
     self.battleMapData = g_BattleDataMgr:getBattleMapData() 

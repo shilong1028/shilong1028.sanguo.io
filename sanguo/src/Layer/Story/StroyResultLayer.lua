@@ -51,8 +51,24 @@ end
 
 function StroyResultLayer:initStoryInfo(storyId)  
     self.storyId = storyId
+
     self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId) 
     if self.storyData then
+        --G_Log_Dump(self.storyData, "self.storyData = ")
+        if string.len(self.storyData.targetCity) > 0 then  --有寻路目标
+            local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+            --G_Log_Info("storyPlayedState = %s", storyPlayedState)
+            if storyPlayedState == 1 then   --前往
+                self.Button_ok:setTitleText("前 往")
+            elseif storyPlayedState == 2 then   --领取
+                self.Button_ok:setTitleText("领 取")
+            else
+                self.Button_ok:setTitleText("")
+            end
+        else  --无寻路目的城池，直接领取奖励
+            self.Button_ok:setTitleText("领 取")
+        end
+
         self.Text_title:setString(self.storyData.name)
 
         local bgWidth = 200
@@ -141,39 +157,48 @@ function StroyResultLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_close then  
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
-        elseif sender == self.Button_ok then   --领取
-            local tipsArr = {}
-            local bagVec = {}
-            for k, itemData in pairs(self.rewardItemVec) do
-                local str = string.format(lua_Item_String2, itemData.num, itemData.quality, itemData.name)   --"恭喜你，获得%d个%d级的%s！"
-                table.insert(tipsArr, {["text"]=str, ["color"]=g_ColorDef.Green, ["fontSize"]=g_rewardTipsFontSize})
-                table.insert(bagVec, {["itemId"]=itemData.id_str, ["num"]=itemData.num})
-            end
-            if #tipsArr > 0 then
-                g_pGameLayer:ShowScrollTips(tipsArr)
-                g_HeroDataMgr:SetBagXMLData(bagVec)   --保存玩家背包物品数据到bagXML
-            end
-
-            local campData = g_HeroDataMgr:GetHeroCampData()
-            if campData and #self.storyData.generalVec > 0 then
-                local generalVec = campData.generalIdVec or {}
-                for k, generalId in pairs(self.storyData.generalVec) do
-                    table.insert(generalVec, generalId)
-
-                    local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
-                    if generalData then
-                        g_HeroDataMgr:SetSingleGeneralData(generalData)   --保存单个武将数据到generalXML
-                    else
-                        G_Log_Error("generalData = nil, generalId = ", generalId or -1)
-                    end
+        elseif sender == self.Button_ok then   --寻路或领取
+            local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+            if string.len(self.storyData.targetCity) > 0 and storyPlayedState == 1 then  --自动寻路
+                local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+                if mapLayer then
+                    mapLayer:autoPathMapByCity(self.storyData.targetCity)
+                    g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
                 end
-                g_HeroDataMgr:SetHeroCampGeneral(generalVec)    --保存新武将到heroXML
+            else   --领取奖励
+                local tipsArr = {}
+                local bagVec = {}
+                for k, itemData in pairs(self.rewardItemVec) do
+                    local str = string.format(lua_Item_String2, itemData.num, itemData.quality, itemData.name)   --"恭喜你，获得%d个%d级的%s！"
+                    table.insert(tipsArr, {["text"]=str, ["color"]=g_ColorDef.Green, ["fontSize"]=g_rewardTipsFontSize})
+                    table.insert(bagVec, {["itemId"]=itemData.id_str, ["num"]=itemData.num})
+                end
+                if #tipsArr > 0 then
+                    g_pGameLayer:ShowScrollTips(tipsArr)
+                    g_HeroDataMgr:SetBagXMLData(bagVec)   --保存玩家背包物品数据到bagXML
+                end
+
+                local campData = g_HeroDataMgr:GetHeroCampData()
+                if campData and #self.storyData.generalVec > 0 then
+                    local generalVec = campData.generalIdVec or {}
+                    for k, generalId in pairs(self.storyData.generalVec) do
+                        table.insert(generalVec, generalId)
+
+                        local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
+                        if generalData then
+                            g_HeroDataMgr:SetSingleGeneralData(generalData)   --保存单个武将数据到generalXML
+                        else
+                            G_Log_Error("generalData = nil, generalId = ", generalId or -1)
+                        end
+                    end
+                    g_HeroDataMgr:SetHeroCampGeneral(generalVec)    --保存新武将到heroXML
+                end
+
+                --下一个剧情
+                g_pGameLayer:StoryFinishCallBack(self.storyId) 
+
+                g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
             end
-
-            --下一个剧情
-            g_pGameLayer:StoryFinishCallBack(self.storyId) 
-
-            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
         end
     end
 end

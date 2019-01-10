@@ -81,7 +81,7 @@ function HeroDataMgr:initHeroXMLData()
     if heroXML then
         --剧情任务数据(主线ID) 
         self.heroData.storyData.mainStoryId = tonumber(heroXML:getNodeAttrValue("storyData", "mainStoryId")) 
-        self.heroData.storyData.bPlayedTalk = tonumber(heroXML:getNodeAttrValue("storyData", "mainStoryMask"))   ---是否已经播放过对话，0未，1已播放（则不再播放）
+        self.heroData.storyData.storyPlayedState = tonumber(heroXML:getNodeAttrValue("storyData", "storyPlayedState"))  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
 
         --vip数据
         self.heroData.vipData.vipId = tonumber(heroXML:getNodeAttrValue("vipData", "vipId")) or 0
@@ -338,13 +338,13 @@ function HeroDataMgr:GetStoryTalkId()
     return clone(self.heroData.storyData.mainStoryId)
 end
 
-function HeroDataMgr:GetStoryTalkMask()
-    return clone(self.heroData.storyData.bPlayedTalk)
+function HeroDataMgr:GetStoryPlayedState()
+    return clone(self.heroData.storyData.storyPlayedState)  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
 end
 
-function HeroDataMgr:SetStoryTalkMask(storyId)
+function HeroDataMgr:SetStoryPlayedState(storyId, storyPlayedState)
     self.heroData.storyData.mainStoryId = storyId   --剧情任务数据(主线ID) 
-    self.heroData.storyData.bPlayedTalk = 1   ---是否已经播放过对话，0未，1已播放（则不再播放）
+    self.heroData.storyData.storyPlayedState = storyPlayedState   --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
 
     local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     if not heroXML then
@@ -353,13 +353,13 @@ function HeroDataMgr:SetStoryTalkMask(storyId)
     heroXML:removeNode("storyData")
     heroXML:addChildNode("storyData")
     heroXML:setNodeAttrValue("storyData", "mainStoryId", tostring(storyId))
-    heroXML:setNodeAttrValue("storyData", "mainStoryMask", tostring(1))   ---是否已经播放过对话，0未，1已播放（则不再播放）
+    heroXML:setNodeAttrValue("storyData", "storyPlayedState", tostring(storyPlayedState))  
     heroXML:saveXMLFile()
 end
 
 function HeroDataMgr:SetNextStoryTalkId(storyId)
     self.heroData.storyData.mainStoryId = storyId   --剧情任务数据(主线ID) 
-    self.heroData.storyData.bPlayedTalk = 0   ---是否已经播放过对话，0未，1已播放（则不再播放）
+    self.heroData.storyData.storyPlayedState = 0   --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
 
     local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     if not heroXML then
@@ -368,7 +368,7 @@ function HeroDataMgr:SetNextStoryTalkId(storyId)
     heroXML:removeNode("storyData")
     heroXML:addChildNode("storyData")
     heroXML:setNodeAttrValue("storyData", "mainStoryId", tostring(storyId))
-    heroXML:setNodeAttrValue("storyData", "mainStoryMask", tostring(0))   ---是否已经播放过对话，0未，1已播放（则不再播放）
+    heroXML:setNodeAttrValue("storyData", "storyPlayedState", tostring(0))  
     heroXML:saveXMLFile()
 end
 

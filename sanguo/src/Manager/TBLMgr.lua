@@ -581,7 +581,7 @@ function TBLMgr:LoadStoryConfigTBL()
 		end
 		storyConfig.desc = stream:ReadString()   --剧情简要描述，用于奖励或战斗界面展示
 
-		storyConfig.bPlayedTalk = 0   ---是否已经播放过对话，0未，1已播放（则不再播放）
+		storyConfig.storyPlayedState = 0   --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
 
 		table.insert(self.storyConfigVec, storyConfig)
 	end

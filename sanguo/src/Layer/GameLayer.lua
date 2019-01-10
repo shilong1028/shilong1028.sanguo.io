@@ -273,13 +273,22 @@ function GameLayer:showStoryTalkLayer(storyData)
     storytalkLayer:initStoryData(storyData)
 end
 
---剧情故事讲述完毕，准备自动寻路或显示结果
-function GameLayer:handleStoryIntroduceEnd(storyData)
-    local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
-    if mapLayer and string.len(storyData.targetCity) > 1 then
-        mapLayer:autoPathMapByCity(storyData.targetCity)
-    else
-        g_GameDataMgr:HandleImplementTask()  --故事剧情没有目的地，直接触发执行当前剧情任务结果
+--剧情故事文字讲述完毕，展示任务内容并准备自动寻路
+function GameLayer:handleStoryTextIntroduceEnd(storyData)
+    local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()
+    if storyPlayedState == 0 then   --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+        g_pGameLayer:showStoryTalkLayer(storyData)
+    elseif storyPlayedState == 1 then
+        if string.len(storyData.battleIdStr) > 1 then
+            g_pGameLayer:showBattleInfoLayer(storyData.storyId)   --展示战斗任务信息界面
+        else
+            g_pGameLayer:showStoryResultLayer(storyData.storyId)  --展示剧情任务信息界面
+        end
+    elseif storyPlayedState == 2 then
+        local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+        if mapLayer then
+            mapLayer:autoPathMapByCity(storyData.targetCity)
+        end
     end
 end
 

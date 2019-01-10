@@ -276,7 +276,7 @@ function MainMenuLayer:initStroyData(storyId, bPlayerVedio)
     self.storyId = storyId
     self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId) 
     if self.storyData then
-        self.storyData.bPlayedTalk = g_HeroDataMgr:GetStoryTalkMask()  ---是否已经播放过对话，0未，1已播放（则不再播放） 
+        self.storyData.storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
         if not self.mainStoryCell then
             local storyCell = StoryTalkCell:new()
             self.mainStoryCell = storyCell

@@ -102,7 +102,10 @@ function StoryTalkLayer:changeStoryString()
         end
         self.Image_bg:setVisible(false)
 
-        g_pGameLayer:handleStoryIntroduceEnd(self.storyData)  --剧情故事讲述完毕，准备自动寻路或显示结果
+        self.storyData.storyPlayedState = 1
+        g_HeroDataMgr:SetStoryPlayedState(self.storyData.storyId, self.storyData.storyPlayedState)  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+
+        g_pGameLayer:handleStoryTextIntroduceEnd(self.storyData)  --剧情故事文字讲述完毕，展示任务内容并准备自动寻路
 
         g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)
         return

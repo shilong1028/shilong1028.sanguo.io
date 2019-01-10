@@ -60,6 +60,10 @@ function GameDataMgr:HandleImplementTask()
 	if not self.implementStoryData then
 		return
 	end
+
+	self.implementStoryData.storyPlayedState = 2
+    g_HeroDataMgr:SetStoryPlayedState(self.implementStoryData.storyId, self.implementStoryData.storyPlayedState)  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+
 	local curStoryId = self.implementStoryData.storyId
 	--G_Log_Info("GameDataMgr:HandleImplementTask(), storyId = %d", curStoryId)
 	--G_Log_Dump(self.implementStoryData, "self.implementStoryData = ")

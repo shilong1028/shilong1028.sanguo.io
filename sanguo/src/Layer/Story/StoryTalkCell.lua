@@ -43,14 +43,7 @@ function StoryTalkCell:touchEvent(sender, eventType)
             if self.storyData.vedio ~= "" then   --新主线任务，且有视频剧情
                 g_pGameLayer:showVedioLayer(self.storyData.vedio) 
             else
-                if self.storyData.bPlayedTalk == 1 then   ---是否已经播放过对话，0未，1已播放（则不再播放） 
-                    g_pGameLayer:handleStoryIntroduceEnd(self.storyData)  --剧情故事讲述完毕，准备自动寻路或显示结果
-                else
-                    self.storyData.bPlayedTalk = 1
-                    g_HeroDataMgr:SetStoryTalkMask(self.storyData.storyId) 
-
-                    g_pGameLayer:showStoryTalkLayer(self.storyData)
-                end
+                g_pGameLayer:handleStoryTextIntroduceEnd(self.storyData)  --剧情故事文字讲述完毕，展示任务内容并准备自动寻路
             end
         end
     end
