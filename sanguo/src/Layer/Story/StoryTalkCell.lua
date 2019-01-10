@@ -40,15 +40,15 @@ function StoryTalkCell:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Image_bg then  
             g_GameDataMgr:SetImplementTaskData(self.storyData)  --保存正在执行的任务剧情，用于检查是否到达了任务目的地
-            if self.storyData.bPlayedTalk == 1 then   ---是否已经播放过对话，0未，1已播放（则不再播放） 
-                g_pGameLayer:handleStoryIntroduceEnd(self.storyData)  --剧情故事讲述完毕，准备自动寻路或显示结果
+            if self.storyData.vedio ~= "" then   --新主线任务，且有视频剧情
+                g_pGameLayer:showVedioLayer(self.storyData.vedio) 
             else
-                self.storyData.bPlayedTalk = 1
-                g_HeroDataMgr:SetStoryTalkMask(self.storyData.storyId) 
-
-                if self.storyData.vedio ~= "" then   --新主线任务，且有视频剧情
-                    g_pGameLayer:showVedioLayer(self.storyData.vedio) 
+                if self.storyData.bPlayedTalk == 1 then   ---是否已经播放过对话，0未，1已播放（则不再播放） 
+                    g_pGameLayer:handleStoryIntroduceEnd(self.storyData)  --剧情故事讲述完毕，准备自动寻路或显示结果
                 else
+                    self.storyData.bPlayedTalk = 1
+                    g_HeroDataMgr:SetStoryTalkMask(self.storyData.storyId) 
+
                     g_pGameLayer:showStoryTalkLayer(self.storyData)
                 end
             end
