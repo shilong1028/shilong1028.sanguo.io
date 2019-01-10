@@ -45,7 +45,12 @@ function StoryTalkCell:touchEvent(sender, eventType)
             else
                 self.storyData.bPlayedTalk = 1
                 g_HeroDataMgr:SetStoryTalkMask(self.storyData.storyId) 
-                g_pGameLayer:showStoryTalkLayer(self.storyData)
+
+                if self.storyData.vedio ~= "" then   --新主线任务，且有视频剧情
+                    g_pGameLayer:showVedioLayer(self.storyData.vedio) 
+                else
+                    g_pGameLayer:showStoryTalkLayer(self.storyData)
+                end
             end
         end
     end

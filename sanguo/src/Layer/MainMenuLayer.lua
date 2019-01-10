@@ -276,7 +276,7 @@ function MainMenuLayer:initStroyData(storyId, bPlayerVedio)
     self.storyId = storyId
     self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId) 
     if self.storyData then
-        self.storyData.bPlayedTalk = g_HeroDataMgr:GetStoryTalkMask()
+        self.storyData.bPlayedTalk = g_HeroDataMgr:GetStoryTalkMask()  ---是否已经播放过对话，0未，1已播放（则不再播放） 
         if not self.mainStoryCell then
             local storyCell = StoryTalkCell:new()
             self.mainStoryCell = storyCell
@@ -296,9 +296,9 @@ function MainMenuLayer:initStroyData(storyId, bPlayerVedio)
         self.mainStoryCell:setVisible(false)
         self.mainStoryCell:runAction(cc.Sequence:create(cc.DelayTime:create(0.2), cc.CallFunc:create(function () 
             self.mainStoryCell:setVisible(true) 
-                if bPlayerVedio == true and self.storyData.vedio ~= "" then   --新主线任务，且有视频剧情
-                    g_pGameLayer:showVedioLayer(self.storyData.vedio) 
-                end
+                -- if bPlayerVedio == true and self.storyData.vedio ~= "" then   --新主线任务，且有视频剧情
+                --     g_pGameLayer:showVedioLayer(self.storyData.vedio) 
+                -- end
             end)))
         self.mainStoryCell:initData(self.storyData)
         self:renWuButton_pushAction(true)

@@ -52,6 +52,7 @@ end
 
 function StoryLayer:createVideoPlayer(vedioName)
     --G_Log_Info("StoryLayer:createVideoPlayer(), vedioName = %s", vedioName)
+    self.vedioName = vedioName;
     local function onVideoEventCallback(sender, eventType)
         self:onVideoEventCallback(sender, eventType)
     end
@@ -108,6 +109,14 @@ function StoryLayer:handleEndEvent()
             end
             self.vedioPlayer:removeFromParent(true)
             self.vedioPlayer = nil
+
+            if self.vedioName and string.len(self.vedioName) > 0 then
+                local curStoryData = g_GameDataMgr:GetImplementTaskData()
+                if curStoryData.vedio ~= "" and self.vedioPlayer == string.format("res/MP4/%s", curStoryData.vedio) then   --新主线任务，且有视频剧情
+                    --下一个剧情
+                    g_pGameLayer:StoryFinishCallBack(self.storyId) 
+                end
+            end
 
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_VedioLayer)
         end
