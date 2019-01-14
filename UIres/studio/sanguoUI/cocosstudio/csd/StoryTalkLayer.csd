@@ -63,40 +63,6 @@
             <PreSize X="0.1000" Y="0.1778" />
             <FileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_right1" ActionTag="-459988477" Tag="694" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="1088.0000" RightMargin="64.0000" TopMargin="404.0000" BottomMargin="188.0000" LeftEage="42" RightEage="42" TopEage="42" BottomEage="42" Scale9OriginX="42" Scale9OriginY="42" Scale9Width="44" Scale9Height="44" ctype="ImageViewObjectData">
-            <Size X="128.0000" Y="128.0000" />
-            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="1152.0000" Y="252.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.9000" Y="0.3500" />
-            <PreSize X="0.1000" Y="0.1778" />
-            <FileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
-          </AbstractNodeData>
-          <AbstractNodeData Name="Text_left" ActionTag="-97074317" Tag="695" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="64.0000" RightMargin="704.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="24" LabelText="Text Label" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="512.0000" Y="144.0000" />
-            <AnchorPoint ScaleY="1.0000" />
-            <Position X="64.0000" Y="180.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="249" G="154" B="5" />
-            <PrePosition X="0.0500" Y="0.2500" />
-            <PreSize X="0.4000" Y="0.2000" />
-            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
-            <OutlineColor A="255" R="101" G="9" B="9" />
-            <ShadowColor A="255" R="110" G="110" B="110" />
-          </AbstractNodeData>
-          <AbstractNodeData Name="Text_right" ActionTag="-999531872" Tag="696" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="704.0000" RightMargin="64.0000" TopMargin="540.0000" BottomMargin="36.0000" IsCustomSize="True" FontSize="24" LabelText="Text Label" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="512.0000" Y="144.0000" />
-            <AnchorPoint ScaleX="1.0000" ScaleY="1.0000" />
-            <Position X="1216.0000" Y="180.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="249" G="154" B="5" />
-            <PrePosition X="0.9500" Y="0.2500" />
-            <PreSize X="0.4000" Y="0.2000" />
-            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
-            <OutlineColor A="255" R="101" G="9" B="9" />
-            <ShadowColor A="255" R="110" G="110" B="110" />
-          </AbstractNodeData>
           <AbstractNodeData Name="Image_left2" ActionTag="363647313" Tag="31" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="256.0000" RightMargin="896.0000" TopMargin="404.0000" BottomMargin="188.0000" LeftEage="42" RightEage="42" TopEage="42" BottomEage="42" Scale9OriginX="42" Scale9OriginY="42" Scale9Width="44" Scale9Height="44" ctype="ImageViewObjectData">
             <Size X="128.0000" Y="128.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
@@ -107,15 +73,17 @@
             <PreSize X="0.1000" Y="0.1778" />
             <FileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="Image_right2" ActionTag="-1623207452" Tag="32" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="896.0000" RightMargin="256.0000" TopMargin="404.0000" BottomMargin="188.0000" LeftEage="42" RightEage="42" TopEage="42" BottomEage="42" Scale9OriginX="42" Scale9OriginY="42" Scale9Width="44" Scale9Height="44" ctype="ImageViewObjectData">
-            <Size X="128.0000" Y="128.0000" />
-            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="960.0000" Y="252.0000" />
+          <AbstractNodeData Name="Text_left" ActionTag="-97074317" Tag="695" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="64.0000" RightMargin="64.0000" TopMargin="540.0000" BottomMargin="108.0000" IsCustomSize="True" FontSize="24" LabelText="Text Label" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="1152.0000" Y="72.0000" />
+            <AnchorPoint ScaleY="1.0000" />
+            <Position X="64.0000" Y="180.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.7500" Y="0.3500" />
-            <PreSize X="0.1000" Y="0.1778" />
-            <FileData Type="PlistSubImage" Path="public_hanxiandi.png" Plist="plist/PublicRes.plist" />
+            <CColor A="255" R="249" G="154" B="5" />
+            <PrePosition X="0.0500" Y="0.2500" />
+            <PreSize X="0.9000" Y="0.1000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
+            <OutlineColor A="255" R="101" G="9" B="9" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
         </Children>
       </ObjectData>
