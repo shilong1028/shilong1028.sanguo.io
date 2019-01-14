@@ -47,33 +47,15 @@ function GameDataMgr:CheckImplementTask(rolePos)
 			local targetPos = cc.p(tarCityData.map_pt.x, tarMapData.height - tarCityData.map_pt.y)  --以左上角为00原点转为左下角为原点的像素点
 			local stepLen = g_pMapMgr:CalcDistance(targetPos, rolePos)
 			if stepLen < 32 then
-				self:HandleImplementTask()
+				if self.implementStoryData then
+					self.implementStoryData.storyPlayedState = g_StoryState.AutoPath   --任务故事进程状态（4寻路完成）
+                	g_pGameLayer:FinishStoryIntroduceByStep(self.implementStoryData, g_StoryState.AutoPath)  --完成当前剧情的指定步骤，并继续下一步
+				end
 				return true
 			end
 		end
 	end
 	return false
-end
-
---触发执行当前剧情任务结果
-function GameDataMgr:HandleImplementTask()
-	if not self.implementStoryData then
-		return
-	end
-
-	self.implementStoryData.storyPlayedState = 2
-    g_HeroDataMgr:SetStoryPlayedState(self.implementStoryData.storyId, self.implementStoryData.storyPlayedState)  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
-
-	local curStoryId = self.implementStoryData.storyId
-	--G_Log_Info("GameDataMgr:HandleImplementTask(), storyId = %d", curStoryId)
-	--G_Log_Dump(self.implementStoryData, "self.implementStoryData = ")
-	if string.len(self.implementStoryData.battleIdStr) > 1 then
-		g_pGameLayer:showBattleInfoLayer(curStoryId)
-	else
-		g_pGameLayer:showStoryResultLayer(curStoryId)
-	end
-
-	self:SetImplementTaskData(nil)
 end
 
 --任务剧情相关  --end

@@ -294,7 +294,7 @@ function  g_tbl_storyConfig:ctor()
 	self.desc = ""    --剧情简要描述，用于奖励或战斗界面展示
 
 	--附加成员
-	self.storyPlayedState = 0   --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+	self.storyPlayedState = g_StoryState.Init   --任务故事进程状态（0初始状态）
 end
 
 --vip表结构类

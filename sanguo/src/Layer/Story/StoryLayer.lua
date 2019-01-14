@@ -113,8 +113,7 @@ function StoryLayer:handleEndEvent()
             if self.vedioName and string.len(self.vedioName) > 0 then
                 local curStoryData = g_GameDataMgr:GetImplementTaskData()
                 if curStoryData.vedio ~= "" and self.vedioName == string.format("res/MP4/%s", curStoryData.vedio) then   --新主线任务，且有视频剧情
-                    --下一个剧情
-                    g_pGameLayer:StoryFinishCallBack(curStoryData.storyId) 
+                    g_pGameLayer:StoryFinishCallBack(curStoryData.storyId)  --下一个剧情
                 end
             end
 

@@ -37,12 +37,6 @@ function StoryTalkLayer:init()
     self.Text_left = csb:getChildByName("Text_left")   
     self.Text_left:setString("")
 
-    self.Image_right1 = csb:getChildByName("Image_right1") 
-    self.Image_right2 = csb:getChildByName("Image_right2")
-    self.Image_right2:setVisible(false) 
-    self.Text_right = csb:getChildByName("Text_right")   
-    self.Text_right:setString("")
-
     self.Button_skip = csb:getChildByName("Button_skip")   --跳过按钮
     self.Button_skip:addTouchEventListener(handler(self,self.touchEvent))  
     self.Button_skip:setVisible(false) 
@@ -72,7 +66,7 @@ function StoryTalkLayer:showStoryText()
     if self.storyStrLen  <= self.totalStrLen then
         --logger_warning(str)
         local str = string.sub(self.storyString, 1, self.storyStrLen)
-        self.Text_story:setString(str)  
+        self.Text_left:setString(str)  
     else
         if self.showUpdateHandler then
             g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
@@ -80,7 +74,7 @@ function StoryTalkLayer:showStoryText()
         self.showUpdateHandler = nil
 
         local function delayCallBack(dt)
-            self:changeStoryString()    --切换
+            --self:changeStoryString()    --切换
         end
         self.delayUpdateHandler = g_Scheduler:scheduleScriptFunc(delayCallBack, 1.0, false)
     end
@@ -100,12 +94,10 @@ function StoryTalkLayer:changeStoryString()
             g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
             self.showUpdateHandler = nil
         end
-        self.Image_bg:setVisible(false)
+        --self.Image_bg:setVisible(false)
 
-        self.storyData.storyPlayedState = 1
-        g_HeroDataMgr:SetStoryPlayedState(self.storyData.storyId, self.storyData.storyPlayedState)  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
-
-        g_pGameLayer:handleStoryTextIntroduceEnd(self.storyData)  --剧情故事文字讲述完毕，展示任务内容并准备自动寻路
+        self.storyData.storyPlayedState = g_StoryState.TextFinish   --任务故事进程状态（1文字播放完成状态）
+        g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.TextFinish)  --完成当前剧情的指定步骤，并继续下一步
 
         g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)
         return
@@ -124,31 +116,12 @@ function StoryTalkLayer:changeStoryString()
     end
 
     self.Text_left:setString("")
-    self.Text_right:setString("")
-    if self.talkIdx %2 == 0 then
-        self.Image_left1:setVisible(false)
-        self.Image_left2:setVisible(false)
-        self.Image_right1:setVisible(true)
-        self.Text_story = self.Text_right
-        self.Image_right1:loadTexture(string.format("Head/%d.png", talkData.headVec[1]), ccui.TextureResType.localType)
-        if talkData.headVec[2] ~= nil then
-            self.Image_right2:setVisible(true)
-            self.Image_right2:loadTexture(string.format("Head/%d.png", talkData.headVec[2]), ccui.TextureResType.localType)
-        else
-            self.Image_right2:setVisible(false)
-        end
-    else
-        self.Image_left1:setVisible(true)
-        self.Image_right1:setVisible(false)
-        self.Image_right2:setVisible(false)
-        self.Text_story = self.Text_left
-        self.Image_left1:loadTexture(string.format("Head/%d.png", talkData.headVec[1]), ccui.TextureResType.localType)
-        if talkData.headVec[2] ~= nil then
-            self.Image_left2:setVisible(true)
-            self.Image_left2:loadTexture(string.format("Head/%d.png", talkData.headVec[2]), ccui.TextureResType.localType)
-        else
-            self.Image_left2:setVisible(false)
-        end
+    self.Image_left1:setVisible(true)
+    self.Image_left2:setVisible(false)
+    self.Image_left1:loadTexture(string.format("Head/%d.png", talkData.headVec[1]), ccui.TextureResType.localType)
+    if talkData.headVec[2] ~= nil then
+        self.Image_left2:setVisible(true)
+        self.Image_left2:loadTexture(string.format("Head/%d.png", talkData.headVec[2]), ccui.TextureResType.localType)
     end
 
     if self.showUpdateHandler then

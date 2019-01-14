@@ -36,12 +36,14 @@ function StroyResultLayer:init()
     self.Button_ok = self.Image_bg:getChildByName("Button_ok")   
     self.Button_ok:addTouchEventListener(handler(self,self.touchEvent))
 
+    self.Text_army = self.Image_bg:getChildByName("Text_army")
     self.ListView_army = self.Image_bg:getChildByName("ListView_army")
     self.ListView_army:setBounceEnabled(true)
     self.ListView_army:setScrollBarEnabled(false)   --屏蔽列表滚动条
     self.ListView_army:setItemsMargin(10.0)
     self.ListView_armySize = self.ListView_army:getContentSize()
     
+    self.Text_reward = self.Image_bg:getChildByName("Text_reward")
     self.ListView_reward = self.Image_bg:getChildByName("ListView_reward")
     self.ListView_reward:setBounceEnabled(true)
     self.ListView_reward:setScrollBarEnabled(false)   --屏蔽列表滚动条
@@ -51,22 +53,18 @@ end
 
 function StroyResultLayer:initStoryInfo(storyId)  
     self.storyId = storyId
+    self.showType = 0   --页面展示内容，0默认，1剧情内容， 2剧情奖励
 
     self.storyData = g_pTBLMgr:getStoryConfigTBLDataById(storyId) 
     if self.storyData then
         --G_Log_Dump(self.storyData, "self.storyData = ")
-        if string.len(self.storyData.targetCity) > 0 then  --有寻路目标
-            local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
-            --G_Log_Info("storyPlayedState = %s", storyPlayedState)
-            if storyPlayedState == 1 then   --前往
-                self.Button_ok:setTitleText("前 往")
-            elseif storyPlayedState == 2 then   --领取
-                self.Button_ok:setTitleText("领 取")
-            else
-                self.Button_ok:setTitleText("")
-            end
-        else  --无寻路目的城池，直接领取奖励
-            self.Button_ok:setTitleText("领 取")
+        local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState() 
+        if storyPlayedState < g_StoryState.ShowInfo and string.len(self.storyData.targetCity) > 0 then   --前往寻路  --任务故事进程状态（3展示任务内容奖励完成）
+            self.Button_ok:setTitleText("前 往")
+            self.showType = 1   --页面展示内容，0默认，1剧情内容， 2剧情奖励
+        else  --领取奖励
+            self.Button_ok:setTitleText("领 取")  --如果无寻路目的城池，直接领取奖励
+            self.showType = 2   --页面展示内容，0默认，1剧情内容， 2剧情奖励
         end
 
         self.Text_title:setString(self.storyData.name)
@@ -79,78 +77,94 @@ function StroyResultLayer:initStoryInfo(storyId)
 
         self.Text_info:setString("    "..self.storyData.desc)
 
-        for k, generalId in pairs(self.storyData.generalVec) do
-            local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
-            if generalData then
-                local officerCell = SmallOfficerCell:new()
-                officerCell:initData(generalData, k) 
+        --self:showArmyList()  --展示武将或士兵奖励
+        self.Text_army:setVisible(false)
+        self.ListView_army:setVisible(false)
 
-                local cur_item = ccui.Layout:create()
-                cur_item:setContentSize(officerCell:getContentSize())
-                cur_item:addChild(officerCell)
-                cur_item:setEnabled(false)
-                self.ListView_army:addChild(cur_item)
-            end
-        end
-
-        self.rewardItemVec = {}
-
-        for k, soldier in pairs(self.storyData.soldierVec) do
-            local soldierId = soldier.itemId 
-            local soldierData = g_pTBLMgr:getItemConfigTBLDataById(soldierId)  
-            if soldierData then
-                soldierData.num = soldier.num 
-                table.insert(self.rewardItemVec, soldierData)
-
-                local itemCell = ItemCell:new()
-                itemCell:initData(soldierData, k) 
-
-                local cur_item = ccui.Layout:create()
-                cur_item:setContentSize(itemCell:getContentSize())
-                cur_item:addChild(itemCell)
-                cur_item:setEnabled(false)
-                self.ListView_army:addChild(cur_item)
-            end
-        end
-        local len = #self.storyData.soldierVec + #self.storyData.generalVec
-        local armyInnerWidth = len*90 + 10*(len-1)
-        if armyInnerWidth < self.ListView_armySize.width then
-            self.ListView_army:setContentSize(cc.size(armyInnerWidth, self.ListView_armySize.height))
-            self.ListView_army:setBounceEnabled(false)
-        else
-            self.ListView_army:setContentSize(self.ListView_armySize)
-            self.ListView_army:setBounceEnabled(true)
-        end
-        self.ListView_army:forceDoLayout()   --forceDoLayout   --refreshView
-
-        for k, reward in pairs(self.storyData.rewardsVec) do
-            local itemId = reward.itemId    --{["itemId"] = strVec[1], ["num"] = strVec[2]}
-            local itemData = g_pTBLMgr:getItemConfigTBLDataById(itemId) 
-            if itemData then
-                table.insert(self.rewardItemVec, itemData)
-
-                itemData.num = reward.num 
-                local itemCell = ItemCell:new()
-                itemCell:initData(itemData, k) 
-
-                local cur_item = ccui.Layout:create()
-                cur_item:setContentSize(itemCell:getContentSize())
-                cur_item:addChild(itemCell)
-                cur_item:setEnabled(false)
-                self.ListView_reward:addChild(cur_item)
-            end
-        end
-        local len = #self.storyData.rewardsVec
-        local rewardInnerWidth = len*90 + 10*(len-1)
-        if rewardInnerWidth < self.ListView_rewardSize.width then
-            self.ListView_reward:setContentSize(cc.size(rewardInnerWidth, self.ListView_rewardSize.height))
-            self.ListView_reward:setBounceEnabled(false)
-        else
-            self.ListView_reward:setContentSize(self.ListView_rewardSize)
-            self.ListView_reward:setBounceEnabled(true)
-        end
-        self.ListView_reward:forceDoLayout()   --forceDoLayout   --refreshView
+        self.Text_reward:setPositionY(250)
+        self.ListView_reward:setPositionY(250)
+        self:showRewardList()  --展示奖励物品
     end
+end
+
+--展示奖励物品
+function StroyResultLayer:showRewardList()
+    self.rewardItemVec = {}
+    for k, reward in pairs(self.storyData.rewardsVec) do
+        local itemId = reward.itemId    --{["itemId"] = strVec[1], ["num"] = strVec[2]}
+        local itemData = g_pTBLMgr:getItemConfigTBLDataById(itemId) 
+        if itemData then
+            table.insert(self.rewardItemVec, itemData)
+
+            itemData.num = reward.num 
+            local itemCell = ItemCell:new()
+            itemCell:initData(itemData, k) 
+
+            local cur_item = ccui.Layout:create()
+            cur_item:setContentSize(itemCell:getContentSize())
+            cur_item:addChild(itemCell)
+            cur_item:setEnabled(false)
+            self.ListView_reward:addChild(cur_item)
+        end
+    end
+    local len = #self.storyData.rewardsVec
+    local rewardInnerWidth = len*90 + 10*(len-1)
+    if rewardInnerWidth < self.ListView_rewardSize.width then
+        self.ListView_reward:setContentSize(cc.size(rewardInnerWidth, self.ListView_rewardSize.height))
+        self.ListView_reward:setBounceEnabled(false)
+    else
+        self.ListView_reward:setContentSize(self.ListView_rewardSize)
+        self.ListView_reward:setBounceEnabled(true)
+    end
+    self.ListView_reward:forceDoLayout()   --forceDoLayout   --refreshView
+end
+
+--展示武将或士兵奖励
+function StroyResultLayer:showArmyList()
+    --对阵武将
+    for k, generalId in pairs(self.storyData.generalVec) do
+        local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
+        if generalData then
+            local officerCell = SmallOfficerCell:new()
+            officerCell:initData(generalData, k) 
+
+            local cur_item = ccui.Layout:create()
+            cur_item:setContentSize(officerCell:getContentSize())
+            cur_item:addChild(officerCell)
+            cur_item:setEnabled(false)
+            self.ListView_army:addChild(cur_item)
+        end
+    end
+
+    --奖励士兵
+    for k, soldier in pairs(self.storyData.soldierVec) do
+        local soldierId = soldier.itemId 
+        local soldierData = g_pTBLMgr:getItemConfigTBLDataById(soldierId)  
+        if soldierData then
+            soldierData.num = soldier.num 
+            table.insert(self.rewardItemVec, soldierData)
+
+            local itemCell = ItemCell:new()
+            itemCell:initData(soldierData, k) 
+
+            local cur_item = ccui.Layout:create()
+            cur_item:setContentSize(itemCell:getContentSize())
+            cur_item:addChild(itemCell)
+            cur_item:setEnabled(false)
+            self.ListView_army:addChild(cur_item)
+        end
+    end
+
+    local len = #self.storyData.soldierVec + #self.storyData.generalVec
+    local armyInnerWidth = len*90 + 10*(len-1)
+    if armyInnerWidth < self.ListView_armySize.width then
+        self.ListView_army:setContentSize(cc.size(armyInnerWidth, self.ListView_armySize.height))
+        self.ListView_army:setBounceEnabled(false)
+    else
+        self.ListView_army:setContentSize(self.ListView_armySize)
+        self.ListView_army:setBounceEnabled(true)
+    end
+    self.ListView_army:forceDoLayout()   --forceDoLayout   --refreshView
 end
 
 function StroyResultLayer:touchEvent(sender, eventType)
@@ -158,14 +172,12 @@ function StroyResultLayer:touchEvent(sender, eventType)
         if sender == self.Button_close then  
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
         elseif sender == self.Button_ok then   --寻路或领取
-            local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
-            if string.len(self.storyData.targetCity) > 0 and storyPlayedState == 1 then  --自动寻路
-                local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
-                if mapLayer then
-                    mapLayer:autoPathMapByCity(self.storyData.targetCity)
-                    g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
-                end
-            else   --领取奖励
+            if self.showType == 1 then  --页面展示内容，0默认，1剧情内容， 2剧情奖励
+                self.storyData.storyPlayedState = g_StoryState.ShowInfo   --任务故事进程状态（3展示任务内容奖励完成）
+                g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.ShowInfo)  --完成当前剧情的指定步骤，并继续下一步
+
+                g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
+            elseif self.showType == 2 then  --页面展示内容，0默认，1剧情内容， 2剧情奖励
                 local tipsArr = {}
                 local bagVec = {}
                 for k, itemData in pairs(self.rewardItemVec) do
@@ -194,8 +206,8 @@ function StroyResultLayer:touchEvent(sender, eventType)
                     g_HeroDataMgr:SetHeroCampGeneral(generalVec)    --保存新武将到heroXML
                 end
 
-                --下一个剧情
-                g_pGameLayer:StoryFinishCallBack(self.storyId) 
+                self.storyData.storyPlayedState = g_StoryState.AllFinish   --任务故事进程状态（5最终完成）
+                g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.AllFinish)  --完成当前剧情的指定步骤，并继续下一步
 
                 g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
             end

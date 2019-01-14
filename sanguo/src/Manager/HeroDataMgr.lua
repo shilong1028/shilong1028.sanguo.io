@@ -81,7 +81,7 @@ function HeroDataMgr:initHeroXMLData()
     if heroXML then
         --剧情任务数据(主线ID) 
         self.heroData.storyData.mainStoryId = tonumber(heroXML:getNodeAttrValue("storyData", "mainStoryId")) 
-        self.heroData.storyData.storyPlayedState = tonumber(heroXML:getNodeAttrValue("storyData", "storyPlayedState"))  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+        self.heroData.storyData.storyPlayedState = tonumber(heroXML:getNodeAttrValue("storyData", "storyPlayedState"))  --任务故事进程状态
 
         --vip数据
         self.heroData.vipData.vipId = tonumber(heroXML:getNodeAttrValue("vipData", "vipId")) or 0
@@ -339,12 +339,12 @@ function HeroDataMgr:GetStoryTalkId()
 end
 
 function HeroDataMgr:GetStoryPlayedState()
-    return clone(self.heroData.storyData.storyPlayedState)  --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+    return clone(self.heroData.storyData.storyPlayedState)  --任务故事进程状态
 end
 
 function HeroDataMgr:SetStoryPlayedState(storyId, storyPlayedState)
     self.heroData.storyData.mainStoryId = storyId   --剧情任务数据(主线ID) 
-    self.heroData.storyData.storyPlayedState = storyPlayedState   --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+    self.heroData.storyData.storyPlayedState = storyPlayedState   --任务故事进程状态
 
     local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     if not heroXML then
@@ -359,7 +359,7 @@ end
 
 function HeroDataMgr:SetNextStoryTalkId(storyId)
     self.heroData.storyData.mainStoryId = storyId   --剧情任务数据(主线ID) 
-    self.heroData.storyData.storyPlayedState = 0   --任务故事进程状态（0初始，1文字播放完成，2展示寻路完成，3最终完成）
+    self.heroData.storyData.storyPlayedState = g_StoryState.Init   --任务故事进程状态(0初始状态)
 
     local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     if not heroXML then
@@ -368,7 +368,7 @@ function HeroDataMgr:SetNextStoryTalkId(storyId)
     heroXML:removeNode("storyData")
     heroXML:addChildNode("storyData")
     heroXML:setNodeAttrValue("storyData", "mainStoryId", tostring(storyId))
-    heroXML:setNodeAttrValue("storyData", "storyPlayedState", tostring(0))  
+    heroXML:setNodeAttrValue("storyData", "storyPlayedState", tostring(g_StoryState.Init))  
     heroXML:saveXMLFile()
 end
 

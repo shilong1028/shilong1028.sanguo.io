@@ -29,9 +29,12 @@ end
 function StoryTalkCell:initData(storyData)  
     --G_Log_Info("StoryTalkCell:initData()")
     self.storyData = storyData
+    self.Label_target:setVisible(false)
+    self.Text_target:setString("")
     self.Text_name:setString(storyData.name)      --战役名称
     local cityData = g_pTBLMgr:getCityConfigTBLDataById(storyData.targetCity)
     if cityData then
+        self.Label_target:setVisible(true)
         self.Text_target:setString(cityData.name)   --城池
     end
 end
@@ -43,7 +46,9 @@ function StoryTalkCell:touchEvent(sender, eventType)
             if self.storyData.vedio ~= "" then   --新主线任务，且有视频剧情
                 g_pGameLayer:showVedioLayer(self.storyData.vedio) 
             else
-                g_pGameLayer:handleStoryTextIntroduceEnd(self.storyData)  --剧情故事文字讲述完毕，展示任务内容并准备自动寻路
+                -- self.storyData.storyPlayedState = g_StoryState.Init   --任务故事进程状态（0初始状态）
+                -- g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.Init)  --完成当前剧情的指定步骤，并继续下一步
+                g_pGameLayer:handleStoryNextIntroduce(self.storyData)  --处理剧情故事下一步操作
             end
         end
     end

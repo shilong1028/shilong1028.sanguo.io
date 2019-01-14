@@ -45,6 +45,18 @@ g_GameLayerTag = {
 
 }
 
+--任务故事进程状态
+g_StoryState = {
+	Init = 0,   --0初始状态
+	TextFinish = 1,  --1文字播放完成状态
+	AddGeneral = 2,  --2武将来投完成状态
+	ShowInfo = 3,  --3展示任务内容奖励完成
+	AutoPath = 4,  --4寻路完成
+	FightFinish = 5,  --5战斗任务结束
+	AllFinish = 5   --5最终完成
+	
+}
+
 --兵种移动速度
 g_BingSpeed = {
 	QiangSpeed = 20,
