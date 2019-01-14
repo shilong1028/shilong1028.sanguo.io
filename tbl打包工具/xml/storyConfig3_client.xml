@@ -3,6 +3,7 @@
 <config>
 	<table name="storyConfig3" ExcelFile="storyConfig3.xlsx" sheet="Sheet1" OutputFile="storyConfig3_client.tbl">			
 		<field name="storyId" type="short" size="2"/>
+		<field name="type" type="short" size="2"/>
 		<field name="targetCity" type="string" size="64"/>
 		<field name="name" type="string" size="64"/>
 		<field name="vedio" type="string" size="64"/>
