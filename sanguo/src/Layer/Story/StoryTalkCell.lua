@@ -31,7 +31,9 @@ function StoryTalkCell:initData(storyData)
     self.storyData = storyData
     self.Label_target:setVisible(false)
     self.Text_target:setString("")
-    self.Text_name:setString(storyData.name)      --战役名称
+    self.Text_name:setString(storyData.name)      --任务名称
+    self.Text_desc:setString(g_StoryStr[storyData.type])    --任务类型
+
     local cityData = g_pTBLMgr:getCityConfigTBLDataById(storyData.targetCity)
     if cityData then
         self.Label_target:setVisible(true)

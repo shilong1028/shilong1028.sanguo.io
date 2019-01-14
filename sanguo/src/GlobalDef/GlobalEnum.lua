@@ -52,10 +52,22 @@ g_StoryState = {
 	AddGeneral = 2,  --2武将来投完成状态
 	ShowInfo = 3,  --3展示任务内容奖励完成
 	AutoPath = 4,  --4寻路完成
-	FightFinish = 5,  --5战斗任务结束
-	AllFinish = 5   --5最终完成
-	
+	ActionFinish = 5,  --5招募、建设、战斗等任务结束
+	AllFinish = 6   --5最终完成
 }
+
+--任务主类型
+g_StoryType = {
+	Default = 0,   --默认
+	Vedio = 1,  --视频剧情
+	Move = 2,  --移至城池
+	Soldier = 3,   --招募士兵
+	Unit = 4,   --组建部曲
+	Fight = 5,  --参加战斗
+	Offical = 6,  --封官拜将
+	Build = 7,   --主城建设
+}
+g_StoryStr = {"视频剧情", "移至城池", "招募士兵", "组建部曲", "参加战斗", "封官拜将", "主城建设"}
 
 --兵种移动速度
 g_BingSpeed = {

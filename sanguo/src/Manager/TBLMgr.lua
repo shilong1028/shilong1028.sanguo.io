@@ -536,6 +536,7 @@ function TBLMgr:LoadStoryConfigTBL()
 	for k=1, Count do
 		local storyConfig = g_tbl_storyConfig:new()
 		storyConfig.storyId = stream:ReadWord()        --剧情ID
+		storyConfig.type = stream:ReadWord()        --剧情类型
 		storyConfig.targetCity = stream:ReadString()    --目标城池ID字符串
 		storyConfig.name = stream:ReadString()    --战役名称
 		storyConfig.vedio = stream:ReadString()   --主线剧情视频文件，"0"标识无

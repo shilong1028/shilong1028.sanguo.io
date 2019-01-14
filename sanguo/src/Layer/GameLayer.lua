@@ -283,6 +283,7 @@ end
 --处理剧情故事下一步操作
 function GameLayer:handleStoryNextIntroduce(storyData)
     local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()
+    G_Log_Info("handleStoryNextIntroduce(), storyPlayedState = %d", storyPlayedState)
     if storyPlayedState == g_StoryState.Init then  --任务故事进程状态（0初始状态）
         g_pGameLayer:showStoryTalkLayer(storyData)
     elseif storyPlayedState == g_StoryState.TextFinish then   --任务故事进程状态（1文字播放完成状态）
@@ -291,23 +292,33 @@ function GameLayer:handleStoryNextIntroduce(storyData)
         end
         self:FinishStoryIntroduceByStep(storyData, g_StoryState.AddGeneral)
     elseif storyPlayedState == g_StoryState.AddGeneral then   --任务故事进程状态（2武将来投完成状态）
-        if string.len(storyData.battleIdStr) > 1 then
-            g_pGameLayer:showBattleInfoLayer(storyData.storyId)   --触发剧情战斗
-        else
-            g_pGameLayer:showStoryResultLayer(storyData.storyId)  --展示显示剧情信息或剧情奖励
-        end
+        g_pGameLayer:showStoryResultLayer(storyData.storyId)  --展示显示剧情信息或剧情奖励
     elseif storyPlayedState == g_StoryState.ShowInfo then  --任务故事进程状态（3展示任务内容奖励）
         local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
         if mapLayer then
             mapLayer:autoPathMapByCity(storyData.targetCity)
         end
     elseif storyPlayedState == g_StoryState.AutoPath then  --任务故事进程状态（4寻路完成）
+        local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+        if mapLayer then
+            local bReach = mapLayer:CheckStoryDistanceByRolePos(storyData)  --根据玩家位置判定任务完成度
+            if bReach == true then
+                if string.len(storyData.battleIdStr) > 1 then   
+                    g_pGameLayer:showBattleInfoLayer(storyData.storyId)  --触发剧情战斗
+                else
+                    g_pGameLayer:showStoryResultLayer(storyData.storyId)  --显示剧情奖励
+                end
+            else
+                mapLayer:autoPathMapByCity(storyData.targetCity)   --寻路
+            end
+        end
+    elseif storyPlayedState == g_StoryState.ActionFinish then  --任务故事进程状态（5招募、建设、战斗等任务结束）
         if string.len(storyData.battleIdStr) > 1 then   
             g_pGameLayer:showBattleInfoLayer(storyData.storyId)  --触发剧情战斗
         else
             g_pGameLayer:showStoryResultLayer(storyData.storyId)  --显示剧情奖励
         end
-    elseif storyPlayedState == g_StoryState.AllFinish then  --任务故事进程状态（5最终完成）
+    elseif storyPlayedState == g_StoryState.AllFinish then  --任务故事进程状态（6最终完成）
         g_pGameLayer:StoryFinishCallBack(storyData.storyId)  --下一个剧情
     end
 end

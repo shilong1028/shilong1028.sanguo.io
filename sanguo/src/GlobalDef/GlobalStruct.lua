@@ -282,6 +282,7 @@ end
 g_tbl_storyConfig = class("g_tbl_storyConfig",__BaseStruct)
 function  g_tbl_storyConfig:ctor()
 	self.storyId = 0        --剧情ID
+	self.type = 0        --剧情类型
 	self.targetCity = "0"    --目标城池ID字符串
 	self.name = ""    --战役名称
 	self.vedio = "0"   --主线剧情视频文件，"0"标识无

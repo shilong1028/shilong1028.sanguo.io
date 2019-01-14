@@ -188,10 +188,36 @@ function MapLayer:setRoleMapPosition(rolePos)
 
 		g_pMapMgr.curRolePos = rolePos 
 		g_HeroDataMgr:SetHeroMapPosData(self.mapConfigData.id, rolePos)   --保存主角当前地图及位置坐标
-		g_GameDataMgr:CheckImplementTask(rolePos)   --检查是否到达了任务目的地
 
+		local bReach = self:CheckStoryDistanceByRolePos(g_GameDataMgr.implementStoryData)  --根据玩家位置判定任务完成度
+		if bReach == true then
+			g_GameDataMgr.implementStoryData.storyPlayedState = g_StoryState.AutoPath   --任务故事进程状态（4寻路完成）
+            g_pGameLayer:FinishStoryIntroduceByStep(g_GameDataMgr.implementStoryData, g_StoryState.AutoPath)  --完成当前剧情的指定步骤，并继续下一步
+		end
+		
 		self:resetRootNodePos(rolePos)
 	end
+end
+
+--根据玩家位置判定任务完成度
+function MapLayer:CheckStoryDistanceByRolePos(storyData)
+	--G_Log_Dump(storyData, "storyData = ")
+	if not storyData then
+		return false
+	end
+	local targetCity = storyData.targetCity
+	local tarCityData = g_pTBLMgr:getCityConfigTBLDataById(targetCity)
+	if tarCityData then
+		local tarMapData = g_pTBLMgr:getMapConfigTBLDataById(tarCityData.mapId)
+		if tarMapData then
+			local targetPos = cc.p(tarCityData.map_pt.x, tarMapData.height - tarCityData.map_pt.y)  --以左上角为00原点转为左下角为原点的像素点
+			local stepLen = g_pMapMgr:CalcDistance(targetPos, self.curRolePos)
+			if stepLen < 32 then
+				return true
+			end
+		end
+	end
+	return false
 end
 
 --以主角为屏幕中心，适配地图

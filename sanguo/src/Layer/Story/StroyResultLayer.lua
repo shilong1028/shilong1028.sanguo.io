@@ -206,7 +206,7 @@ function StroyResultLayer:touchEvent(sender, eventType)
                     g_HeroDataMgr:SetHeroCampGeneral(generalVec)    --保存新武将到heroXML
                 end
 
-                self.storyData.storyPlayedState = g_StoryState.AllFinish   --任务故事进程状态（5最终完成）
+                self.storyData.storyPlayedState = g_StoryState.AllFinish   --任务故事进程状态（6最终完成）
                 g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.AllFinish)  --完成当前剧情的指定步骤，并继续下一步
 
                 g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
