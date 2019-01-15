@@ -192,7 +192,7 @@ function GameLayer:ShowScrollTips(tips, color, fontSize)
         return
     end
 
-    local scrollTipsLayer = g_pGameLayer:getChildByTag(g_GameLayerTag.LAYER_TAG_ScrollTipsLayer)
+    local scrollTipsLayer = self:getChildByTag(g_GameLayerTag.LAYER_TAG_ScrollTipsLayer)
     if(scrollTipsLayer == nil) then
         scrollTipsLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_ScrollTipsLayer, "TipsOrDialog.ScrollTipsLayer")
         scrollTipsLayer:setLocalZOrder(g_TopZOrder)
@@ -205,7 +205,7 @@ end
 
 --通信等待动画显示和隐藏
 function GameLayer:EnableSocketAni(bShowAni)
-    local pColorLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_SocketAni)
+    local pColorLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_SocketAni)
     local aniSprite = nil
     if not pColorLayer then
         pColorLayer = cc.LayerColor:create(cc.c4b(0, 0, 0, 255 * 0.75), g_WinSize.width, g_WinSize.height)
@@ -233,7 +233,7 @@ end
 function GameLayer:showLoadingLayer(bShow) 
     if self.LoadingLayer then
         if bShow == true then
-            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoadingLayer)
+            self:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_LoadingLayer)
         else
             self.LoadingLayer:setBreakFalse()
         end
@@ -257,7 +257,7 @@ end
 
 --显示视频动画
 function GameLayer:showVedioLayer(vedio) 
-    local vedioLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_VedioLayer)
+    local vedioLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_VedioLayer)
     if not vedioLayer then
         vedioLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_VedioLayer, "Story.StoryLayer")
     end
@@ -266,47 +266,57 @@ end
 
 --显示剧情动画
 function GameLayer:showStoryTalkLayer(storyData) 
-    local storytalkLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)
+    local storytalkLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)
     if not storytalkLayer then
         storytalkLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_StoryTalkLayer, "Story.StoryTalkLayer")
     end
     storytalkLayer:initStoryData(storyData)
 end
 
+--显示武将来投(可以显示多个)
+function GameLayer:showAddGeneralLayer(generalData) 
+    local addGeneralLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_AddGeneralLayer, "Story.StoryTalkLayer")
+    addGeneralLayer:initGeneralData(generalData)
+end
+
 --完成当前剧情的指定步骤，并继续下一步
 function GameLayer:FinishStoryIntroduceByStep(storyData, step)
     storyData.storyPlayedState = step   --任务故事进程状态
     g_HeroDataMgr:SetStoryPlayedState(storyData.storyId, step) 
-    g_pGameLayer:handleStoryNextIntroduce(storyData)  --处理剧情故事下一步操作
+    self:handleStoryNextIntroduce(storyData)  --处理剧情故事下一步操作
 end
 
 --处理剧情故事下一步操作
 function GameLayer:handleStoryNextIntroduce(storyData)
     local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()
     G_Log_Info("handleStoryNextIntroduce(), storyPlayedState = %d", storyPlayedState)
+    G_Log_Traceback()
     if storyPlayedState == g_StoryState.Init then  --任务故事进程状态（0初始状态）
-        g_pGameLayer:showStoryTalkLayer(storyData)
+        self:showStoryTalkLayer(storyData)
     elseif storyPlayedState == g_StoryState.TextFinish then   --任务故事进程状态（1文字播放完成状态）
-        if #storyData.generalVec > 0 then   --武将来投
-
-        end
         self:FinishStoryIntroduceByStep(storyData, g_StoryState.AddGeneral)
+        for k, generalId in pairs(storyData.generalVec) do   --武将来投
+            local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
+            if generalData then
+                self:showAddGeneralLayer(generalData) 
+            end
+        end
     elseif storyPlayedState == g_StoryState.AddGeneral then   --任务故事进程状态（2武将来投完成状态）
-        g_pGameLayer:showStoryResultLayer(storyData.storyId)  --展示显示剧情信息或剧情奖励
+        self:showStoryResultLayer(storyData.storyId)  --展示显示剧情信息或剧情奖励
     elseif storyPlayedState == g_StoryState.ShowInfo then  --任务故事进程状态（3展示任务内容奖励）
-        local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+        local mapLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
         if mapLayer then
             mapLayer:autoPathMapByCity(storyData.targetCity)
         end
     elseif storyPlayedState == g_StoryState.AutoPath then  --任务故事进程状态（4寻路完成）
-        local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+        local mapLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
         if mapLayer then
             local bReach = mapLayer:CheckStoryDistanceByRolePos(storyData)  --根据玩家位置判定任务完成度
             if bReach == true then
                 if string.len(storyData.battleIdStr) > 1 then   
-                    g_pGameLayer:showBattleInfoLayer(storyData.storyId)  --触发剧情战斗
+                    self:showBattleInfoLayer(storyData.storyId)  --触发剧情战斗
                 else
-                    g_pGameLayer:showStoryResultLayer(storyData.storyId)  --显示剧情奖励
+                    self:showStoryResultLayer(storyData.storyId)  --显示剧情奖励
                 end
             else
                 mapLayer:autoPathMapByCity(storyData.targetCity)   --寻路
@@ -314,18 +324,18 @@ function GameLayer:handleStoryNextIntroduce(storyData)
         end
     elseif storyPlayedState == g_StoryState.ActionFinish then  --任务故事进程状态（5招募、建设、战斗等任务结束）
         if string.len(storyData.battleIdStr) > 1 then   
-            g_pGameLayer:showBattleInfoLayer(storyData.storyId)  --触发剧情战斗
+            self:showBattleInfoLayer(storyData.storyId)  --触发剧情战斗
         else
-            g_pGameLayer:showStoryResultLayer(storyData.storyId)  --显示剧情奖励
+            self:showStoryResultLayer(storyData.storyId)  --显示剧情奖励
         end
     elseif storyPlayedState == g_StoryState.AllFinish then  --任务故事进程状态（6最终完成）
-        g_pGameLayer:StoryFinishCallBack(storyData.storyId)  --下一个剧情
+        self:StoryFinishCallBack(storyData.storyId)  --下一个剧情
     end
 end
 
 --显示剧情奖励界面
 function GameLayer:showStoryResultLayer(storyId) 
-    local storyResultLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
+    local storyResultLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
     if not storyResultLayer then
         storyResultLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_StoryResultLayer, "Story.StroyResultLayer")
     end
@@ -334,7 +344,7 @@ end
 
 --显示战役介绍界面
 function GameLayer:showBattleInfoLayer(storyId) 
-    local battleInfoLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BattleInfoLayer)
+    local battleInfoLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BattleInfoLayer)
     if not battleInfoLayer then
         battleInfoLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_BattleInfoLayer, "Battle.BattleInfoLayer")
     end
@@ -343,7 +353,7 @@ end
 
 --显示战役介绍界面
 function GameLayer:showBattleResultLayer(result) 
-    local battleResultLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BattleResultLayer)
+    local battleResultLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BattleResultLayer)
     if not battleResultLayer then
         battleResultLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_BattleResultLayer, "Battle.BattleResultLayer")
     end
@@ -352,7 +362,7 @@ end
 
 --显示阵型|布阵界面,bPreFight是否准备出战
 function GameLayer:showZhenXingLayer(bPreFight) 
-    local zhenxingLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
+    local zhenxingLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
     if not zhenxingLayer then
         zhenxingLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_ZhenXingLayer, "Battle.ZhenXingLayer")
     end
@@ -361,7 +371,7 @@ end
 
 --Vip界面
 function GameLayer:showVipLayer() 
-    local vipLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_VipLayer)
+    local vipLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_VipLayer)
     if not vipLayer then
         vipLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_VipLayer, "Vip.VipLayer")
     end
@@ -369,7 +379,7 @@ end
 
 --背包界面
 function GameLayer:showBagLayer() 
-    local bagLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BagLayer)
+    local bagLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_BagLayer)
     if not bagLayer then
         bagLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_BagLayer, "Bag.BagLayer")
     end
@@ -378,7 +388,7 @@ end
 
 --将领界面
 function GameLayer:showGeneralLayer() 
-    local generalLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_GeneralLayer)
+    local generalLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_GeneralLayer)
     if not generalLayer then
         generalLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_GeneralLayer, "Role.GeneralLayer")
     end

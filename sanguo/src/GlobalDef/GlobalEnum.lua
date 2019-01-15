@@ -41,6 +41,7 @@ g_GameLayerTag = {
 	LAYER_TAG_BagLayer = 113,    --背包界面
 	LAYER_TAG_VedioLayer = 114,    --视频播放界面
 	LAYER_TAG_GeneralLayer = 115,    --将领界面
+	LAYER_TAG_AddGeneralLayer = 116,    --武将来投界面
 
 
 }
