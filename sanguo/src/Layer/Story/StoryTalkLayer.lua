@@ -40,13 +40,11 @@ function StoryTalkLayer:init()
     self.Button_skip = csb:getChildByName("Button_skip")   --跳过按钮
     self.Button_skip:addTouchEventListener(handler(self,self.touchEvent))  
     self.Button_skip:setVisible(false) 
-
-    self.showType = 0   --显示类型，0默认，1故事剧情，2武将来投
 end
 
 function StoryTalkLayer:initStoryData(storyData)
     --G_Log_Dump(storyData, "storyData = ")
-    self.showType = 1   --显示类型，0默认，1故事剧情，2武将来投
+    self.bStoryEnd = false   --是否讲述完毕
     self.storyData = storyData
     self.talkVec = self.storyData.talkVec
     self.talkIdx = 0
@@ -71,6 +69,7 @@ function StoryTalkLayer:showStoryText()
 
         if self.talkIdx == #self.talkVec then
             self.Button_skip:setTitleText("结 束") 
+            self.bStoryEnd = true   --是否讲述完毕
         else
             self.Button_skip:setTitleText("跳 过")
         end
@@ -84,7 +83,7 @@ end
 
 --切换下一段剧情文本
 function StoryTalkLayer:changeStoryString()
-    --G_Log_Info("StoryTalkLayer:changeStoryString()")
+    G_Log_Info("StoryTalkLayer:changeStoryString()")
     if self.delayUpdateHandler then
         g_Scheduler:unscheduleScriptEntry(self.delayUpdateHandler)
         self.delayUpdateHandler = nil
@@ -98,9 +97,8 @@ function StoryTalkLayer:changeStoryString()
         end
         --self.Image_bg:setVisible(false)
 
-        self.storyData.storyPlayedState = g_StoryState.TextFinish   --任务故事进程状态（1文字播放完成状态）
-        g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.TextFinish)  --完成当前剧情的指定步骤，并继续下一步
-
+        -- self.storyData.storyPlayedState = g_StoryState.TextFinish   --任务故事进程状态（1文字播放完成状态）
+        -- g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.TextFinish)  --完成当前剧情的指定步骤，并继续下一步
         --g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)
         return
     end
@@ -133,42 +131,15 @@ function StoryTalkLayer:changeStoryString()
     self.showUpdateHandler = g_Scheduler:scheduleScriptFunc(handler(self, self.showStoryText), 0.02, false)
 end
 
---武将来投界面
-function StoryTalkLayer:initGeneralData(generalData)
-    if self.showUpdateHandler then
-        g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
-        self.showUpdateHandler = nil
-    end
-    if self.delayUpdateHandler then
-        g_Scheduler:unscheduleScriptEntry(self.delayUpdateHandler)
-        self.delayUpdateHandler = nil
-    end  
-
-    self.showType = 2   --显示类型，0默认，1故事剧情，2武将来投
-    self.Image_bg:setVisible(false)
-
-    self.Button_skip:setTitleText("接 纳")
-    self.Button_skip:setVisible(true)
-
-    self.Image_left1:setVisible(true)
-    self.Image_left2:setVisible(false)
-    self.Image_left1:loadTexture(string.format("Head/%s.png", generalData.id_str), ccui.TextureResType.localType)
-    self.Text_left:setString(generalData.desc)
-    self.Image_bg:loadTexture("StoryBg/StoryBg_23.jpg", ccui.TextureResType.localType)
-    self.Image_bg:setVisible(true)
-end
-
 function StoryTalkLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_skip then   --跳过
-            if self.showType == 1 then   --显示类型，0默认，1故事剧情，2武将来投
-                if self.talkIdx > #self.talkVec then
-                    g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)   --剧情故事
-                else
-                    self:changeStoryString()
-                end
-            elseif self.showType == 2 then
-                g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_AddGeneralLayer)   --武将来投
+            if self.talkIdx > #self.talkVec or self.bStoryEnd == true then  --是否讲述完毕
+                self.storyData.storyPlayedState = g_StoryState.TextFinish   --任务故事进程状态（1文字播放完成状态）
+                g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.TextFinish)  --完成当前剧情的指定步骤，并继续下一步
+                g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryTalkLayer)   --剧情故事
+            else
+                self:changeStoryString()
             end
         end
     end

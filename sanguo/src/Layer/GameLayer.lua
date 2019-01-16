@@ -24,7 +24,7 @@ function GameLayer:AddChild(uid, className, funcName, userTable)   --className�
     G_Log_Info("GameLayer:AddChild: uid = %d, className = %s", uid, className)
    
     local layer = self:getChildByTag(uid)
-    if layer ~= nil then
+    if layer ~= nil and uid ~= g_GameLayerTag.LAYER_TAG_AddGeneralLayer then
         self:removeChildByTag(uid)
     end
     
@@ -273,12 +273,6 @@ function GameLayer:showStoryTalkLayer(storyData)
     storytalkLayer:initStoryData(storyData)
 end
 
---显示武将来投(可以显示多个)
-function GameLayer:showAddGeneralLayer(generalData) 
-    local addGeneralLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_AddGeneralLayer, "Story.StoryTalkLayer")
-    addGeneralLayer:initGeneralData(generalData)
-end
-
 --完成当前剧情的指定步骤，并继续下一步
 function GameLayer:FinishStoryIntroduceByStep(storyData, step)
     storyData.storyPlayedState = step   --任务故事进程状态
@@ -394,7 +388,11 @@ function GameLayer:showGeneralLayer()
     end
 end
 
-
+--显示武将来投(可以显示多个)
+function GameLayer:showAddGeneralLayer(generalData) 
+    local addGeneralLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_AddGeneralLayer, "Role.AddGeneralLayer")
+    addGeneralLayer:initGeneralData(generalData)
+end
 
 
 
