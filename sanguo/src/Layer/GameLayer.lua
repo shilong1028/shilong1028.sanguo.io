@@ -298,10 +298,7 @@ function GameLayer:handleStoryNextIntroduce(storyData)
     elseif storyPlayedState == g_StoryState.AddGeneral then   --任务故事进程状态（2武将来投完成状态）
         self:showStoryResultLayer(storyData.storyId)  --展示显示剧情信息或剧情奖励
     elseif storyPlayedState == g_StoryState.ShowInfo then  --任务故事进程状态（3展示任务内容奖励）
-        local mapLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
-        if mapLayer then
-            mapLayer:autoPathMapByCity(storyData.targetCity)
-        end
+        self:hanldeStoryTaskOpt(storyData)  --根据故事类型进行任务操作
     elseif storyPlayedState == g_StoryState.AutoPath then  --任务故事进程状态（4寻路完成）
         local mapLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
         if mapLayer then
@@ -324,6 +321,29 @@ function GameLayer:handleStoryNextIntroduce(storyData)
         end
     elseif storyPlayedState == g_StoryState.AllFinish then  --任务故事进程状态（6最终完成）
         self:StoryFinishCallBack(storyData.storyId)  --下一个剧情
+    end
+end
+
+--根据故事类型进行任务操作
+function GameLayer:hanldeStoryTaskOpt(storyData)
+    G_Log_Info("hanldeStoryTaskOpt(), storyData.type = %d",storyData.type)
+    if storyData.type == g_StoryType.Vedio then --视频剧情
+
+    elseif storyData.type == g_StoryType.Move then --移至城池
+        local mapLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+        if mapLayer then
+            mapLayer:autoPathMapByCity(storyData.targetCity)
+        end
+    elseif storyData.type == g_StoryType.Soldier then --招募士兵
+
+    elseif storyData.type == g_StoryType.Unit then  --组建部曲
+
+    elseif storyData.type == g_StoryType.Fight then --参加战斗
+
+    elseif storyData.type == g_StoryType.Offical then --封官拜将
+
+    elseif storyData.type == g_StoryType.Build then  --主城建设
+
     end
 end
 

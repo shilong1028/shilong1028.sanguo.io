@@ -51,6 +51,26 @@ function StroyResultLayer:init()
     self.ListView_rewardSize = self.ListView_reward:getContentSize()
 end
 
+--根据故事类型进行任务初始化
+function StroyResultLayer:initStoryTaskInfo()
+    G_Log_Info("initStoryTaskInfo(), self.storyData.type = %d",self.storyData.type)
+    if self.storyData.type == g_StoryType.Vedio then --视频剧情
+        self.Button_ok:setTitleText("播 放")
+    elseif self.storyData.type == g_StoryType.Move then --移至城池
+        self.Button_ok:setTitleText("前 往")
+    elseif self.storyData.type == g_StoryType.Soldier then --招募士兵
+        self.Button_ok:setTitleText("进 行")
+    elseif self.storyData.type == g_StoryType.Unit then  --组建部曲
+        self.Button_ok:setTitleText("进 行")
+    elseif self.storyData.type == g_StoryType.Fight then --参加战斗
+        self.Button_ok:setTitleText("战 斗")
+    elseif self.storyData.type == g_StoryType.Offical then --封官拜将
+        self.Button_ok:setTitleText("进 行")
+    elseif self.storyData.type == g_StoryType.Build then  --主城建设
+        self.Button_ok:setTitleText("进 行")
+    end
+end
+
 function StroyResultLayer:initStoryInfo(storyId)  
     self.storyId = storyId
     self.showType = 0   --页面展示内容，0默认，1剧情内容， 2剧情奖励
@@ -60,7 +80,8 @@ function StroyResultLayer:initStoryInfo(storyId)
         --G_Log_Dump(self.storyData, "self.storyData = ")
         local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState() 
         if storyPlayedState < g_StoryState.ShowInfo and string.len(self.storyData.targetCity) > 0 then   --前往寻路  --任务故事进程状态（3展示任务内容奖励完成）
-            self.Button_ok:setTitleText("前 往")
+            --self.Button_ok:setTitleText("前 往")
+            self:initStoryTaskInfo()  --根据故事类型进行任务初始化
             self.showType = 1   --页面展示内容，0默认，1剧情内容， 2剧情奖励
         else  --领取奖励
             self.Button_ok:setTitleText("领 取")  --如果无寻路目的城池，直接领取奖励
