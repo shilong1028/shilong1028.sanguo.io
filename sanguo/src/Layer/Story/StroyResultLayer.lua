@@ -65,6 +65,8 @@ function StroyResultLayer:initStoryInfo(storyId)
         else  --领取奖励
             self.Button_ok:setTitleText("领 取")  --如果无寻路目的城池，直接领取奖励
             self.showType = 2   --页面展示内容，0默认，1剧情内容， 2剧情奖励
+
+            g_GameDataMgr:SetImplementTaskData(nil)    --暂时清除任务剧情数据
         end
 
         self.Text_title:setString(self.storyData.name)

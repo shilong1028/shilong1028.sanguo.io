@@ -284,7 +284,7 @@ end
 function GameLayer:handleStoryNextIntroduce(storyData)
     local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()
     G_Log_Info("handleStoryNextIntroduce(), storyPlayedState = %d", storyPlayedState)
-    G_Log_Traceback()
+    --G_Log_Traceback()
     if storyPlayedState == g_StoryState.Init then  --任务故事进程状态（0初始状态）
         self:showStoryTalkLayer(storyData)
     elseif storyPlayedState == g_StoryState.TextFinish then   --任务故事进程状态（1文字播放完成状态）

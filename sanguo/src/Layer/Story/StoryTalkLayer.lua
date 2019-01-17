@@ -95,6 +95,10 @@ function StoryTalkLayer:changeStoryString()
             g_Scheduler:unscheduleScriptEntry(self.showUpdateHandler)
             self.showUpdateHandler = nil
         end
+        self.Text_left:setString(self.storyString)  
+        self.Button_skip:setTitleText("结 束") 
+        self.bStoryEnd = true   --是否讲述完毕
+
         --self.Image_bg:setVisible(false)
 
         -- self.storyData.storyPlayedState = g_StoryState.TextFinish   --任务故事进程状态（1文字播放完成状态）
