@@ -35,4 +35,21 @@ end
 
 --任务剧情相关  --end
 
+--保存武将数据到XML中
+function GameDataMgr:SaveGeneralDataToXML(generalId)
+    local campData = g_HeroDataMgr:GetHeroCampData()
+    if campData and generalId then
+        local generalVec = campData.generalIdVec or {}
+        table.insert(generalVec, generalId)
+
+        local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
+        if generalData then
+            g_HeroDataMgr:SetSingleGeneralData(generalData)   --保存单个武将数据到generalXML
+        else
+            G_Log_Error("generalData = nil, generalId = ", generalId or -1)
+        end
+        g_HeroDataMgr:SetHeroCampGeneral(generalVec)    --保存新武将到heroXML
+    end
+end
+
 return GameDataMgr

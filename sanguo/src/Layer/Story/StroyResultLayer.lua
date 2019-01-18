@@ -213,22 +213,6 @@ function StroyResultLayer:touchEvent(sender, eventType)
                     g_HeroDataMgr:SetBagXMLData(bagVec)   --保存玩家背包物品数据到bagXML
                 end
 
-                local campData = g_HeroDataMgr:GetHeroCampData()
-                if campData and #self.storyData.generalVec > 0 then
-                    local generalVec = campData.generalIdVec or {}
-                    for k, generalId in pairs(self.storyData.generalVec) do
-                        table.insert(generalVec, generalId)
-
-                        local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
-                        if generalData then
-                            g_HeroDataMgr:SetSingleGeneralData(generalData)   --保存单个武将数据到generalXML
-                        else
-                            G_Log_Error("generalData = nil, generalId = ", generalId or -1)
-                        end
-                    end
-                    g_HeroDataMgr:SetHeroCampGeneral(generalVec)    --保存新武将到heroXML
-                end
-
                 self.storyData.storyPlayedState = g_StoryState.AllFinish   --任务故事进程状态（6最终完成）
                 g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.AllFinish)  --完成当前剧情的指定步骤，并继续下一步
 

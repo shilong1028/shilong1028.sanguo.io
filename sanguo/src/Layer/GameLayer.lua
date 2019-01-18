@@ -290,9 +290,10 @@ function GameLayer:handleStoryNextIntroduce(storyData)
     elseif storyPlayedState == g_StoryState.TextFinish then   --任务故事进程状态（1文字播放完成状态）
         self:FinishStoryIntroduceByStep(storyData, g_StoryState.AddGeneral)
         for k, generalId in pairs(storyData.generalVec) do   --武将来投
+            g_GameDataMgr:SaveGeneralDataToXML(generalId)  --保存武将数据到XML中
             local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
             if generalData then
-                self:showAddGeneralLayer(generalData) 
+                self:showAddGeneralLayer(generalData)  --展示武将来投界面
             end
         end
     elseif storyPlayedState == g_StoryState.AddGeneral then   --任务故事进程状态（2武将来投完成状态）
