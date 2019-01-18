@@ -25,6 +25,7 @@ function TBLMgr:init()
 	self.vipConfigVec = nil    --vip配置
 	self.officalConfigVec = nil   --官职配置
 	self.skillConfigVec = nil   --技能配置
+	self.levelConfigVec = nil   --等级配置
 	self.batletEnemyConfigVec = nil   --战场敌部曲
 
 end
@@ -742,6 +743,39 @@ function TBLMgr:getOfficalConfigById(id_str)
 		self:LoadOfficalConfigTBL()
 	end
 	return clone(self.officalConfigVec[""..id_str])
+end
+
+--等级结构类
+function TBLMgr:LoadLevelConfigTBL()
+	--G_Log_Info("TBLMgr:LoadLevelConfigTBL()")
+	if self.levelConfigVec ~= nil then
+		return
+	end
+
+	local stream = ark_Stream:new()
+	local p = stream:CreateReadStreamFromSelf("tbl/levelConfig_client.tbl")
+	if(p == nil) then
+		return
+	end
+
+	self.levelConfigVec = {}   --等级配置
+	local Count = stream:ReadWord()
+	for k=1, Count do
+		local levelConfig = g_tbl_levelConfig:new()
+		levelConfig.lv_str = stream:ReadString()   --等级Lv字符串
+		levelConfig.exp = stream:ReadDouble()    --经验门限
+		levelConfig.add_exp = stream:ReadDouble()    --升级需求经验
+
+		self.levelConfigVec[""..levelConfig.lv_str] = levelConfig
+	end
+end
+
+function TBLMgr:getLevelConfigById(lv_str)
+	--G_Log_Info("TBLMgr:getLevelConfigById(), lv_str = %d", lv_str)
+	if self.levelConfigVec == nil then
+		self:LoadLevelConfigTBL()
+	end
+	return clone(self.levelConfigVec[""..lv_str])
 end
 
 --技能结构类

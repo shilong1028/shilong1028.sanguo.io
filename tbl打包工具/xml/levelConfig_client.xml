@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!-- 打包配置文件 -->
+<config>
+	<table name="levelConfig" ExcelFile="levelConfig.xlsx" sheet="Sheet1" OutputFile="levelConfig_client.tbl">			
+		<field name="lv_str" type="string" size="64"/>
+		<field name="exp" type="double" size="8"/>
+		<field name="add_exp" type="double" size="8"/>
+	</table>
+</config>

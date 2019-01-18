@@ -22,5 +22,6 @@
 		<package xml="yingzhaiConfig_client.xml"/>
 		<package xml="battleEnemyConfig_client.xml"/>
 		<package xml="battleMapConfig_client.xml"/>
+		<package xml="levelConfig_client.xml"/>
 	</solution>
 </config>

@@ -326,6 +326,14 @@ function  g_tbl_officalConfig:ctor()
 	self.desc = ""    --官职介绍
 end
 
+--等级表结构类
+g_tbl_levelConfig = class("g_tbl_levelConfig",__BaseStruct)
+function  g_tbl_levelConfig:ctor()
+	self.lv_str = "0"    --等级Lv字符串
+	self.exp = 0     --经验门限
+	self.add_exp = 0    --升级需求经验
+end
+
 --技能表结构类
 g_tbl_skillConfig = class("g_tbl_skillConfig",__BaseStruct)
 function  g_tbl_skillConfig:ctor()

@@ -146,6 +146,7 @@ g_ItemType = {
 	Item_Drug = 3,  --药材(类型)
 	Item_Army = 4, --预备役士兵(类型)
 	Item_SoldierEquip = 5, --士兵装备(类型)
+	Item_General_Exp = 6,  --武将经验
 	Item_General_toukui = 81,  --武将头盔(类型)
 	Item_General_wuqi = 82,  --武将武器(类型)
 	Item_General_hujia = 83,  --武将护甲(类型)

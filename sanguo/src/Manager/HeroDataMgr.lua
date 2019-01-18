@@ -399,6 +399,15 @@ end
 --玩家地图位置信息处理 ---end  ------------------------------------------------------
 
 -----阵营信息处理  --begin
+--获取主角武将ID字符串
+function HeroDataMgr:getHeroCaptainIdStr()
+    local generalIdStr = nil
+    if self.heroData and self.heroData.campData then
+        generalIdStr = self.heroData.campData.captain
+    end
+    return generalIdStr
+end
+
 function HeroDataMgr:GetHeroCampData()
 	return clone(self.heroData.campData)
 end

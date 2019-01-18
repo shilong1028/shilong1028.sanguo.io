@@ -207,6 +207,12 @@ function StroyResultLayer:touchEvent(sender, eventType)
                     local str = string.format(lua_Item_String2, itemData.num, itemData.quality, itemData.name)   --"恭喜你，获得%d个%d级的%s！"
                     table.insert(tipsArr, {["text"]=str, ["color"]=g_ColorDef.Green, ["fontSize"]=g_rewardTipsFontSize})
                     table.insert(bagVec, {["itemId"]=itemData.id_str, ["num"]=itemData.num})
+
+                    if itemData.type == g_ItemType.Item_General_Exp then
+                        local captainId = g_HeroDataMgr:getHeroCaptainIdStr()
+                        local captainData = g_HeroDataMgr:GetSingleGeneralData(captainId)
+                        g_GameDataMgr:handleGeneralExpAdd(captainData, itemData.num, false)  --处理武将经验导致等级增加
+                    end
                 end
                 if #tipsArr > 0 then
                     g_pGameLayer:ShowScrollTips(tipsArr)

@@ -36,19 +36,60 @@ end
 --任务剧情相关  --end
 
 --保存武将数据到XML中
-function GameDataMgr:SaveGeneralDataToXML(generalId)
+function GameDataMgr:SaveGeneralDataToXML(generalData)
     local campData = g_HeroDataMgr:GetHeroCampData()
-    if campData and generalId then
+    if campData and generalData then
         local generalVec = campData.generalIdVec or {}
-        table.insert(generalVec, generalId)
+        table.insert(generalVec, generalData.id_str)
 
-        local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
-        if generalData then
-            g_HeroDataMgr:SetSingleGeneralData(generalData)   --保存单个武将数据到generalXML
-        else
-            G_Log_Error("generalData = nil, generalId = ", generalId or -1)
-        end
+        g_HeroDataMgr:SetSingleGeneralData(generalData)   --保存单个武将数据到generalXML
+
         g_HeroDataMgr:SetHeroCampGeneral(generalVec)    --保存新武将到heroXML
+    end
+end
+
+--处理武将经验导致等级增加
+function GameDataMgr:handleGeneralExpAdd(generalData, expVal, bTotalExp)
+    if not generalData then
+        return
+    end
+    if not bTotalExp then
+        bTotalExp = false
+    end
+    --G_Log_Info("handleGeneralExpAdd(), exp = %d, bTotalExp= %s", expVal, bTotalExp)
+
+    local lv = generalData.level
+    local exp = generalData.exp
+    --G_Log_Info("generalData, lv = %d, exp= %d", lv, exp)
+
+    local levelConfig = g_pTBLMgr:getLevelConfigById(lv)
+    --G_Log_Dump(levelConfig, "levelConfig =")
+    if levelConfig then
+        local totalAddExp = exp + expVal
+        if bTotalExp == true then
+            totalAddExp = expVal - levelConfig.exp
+        end
+
+        while totalAddExp > 0 do
+            if totalAddExp >= levelConfig.add_exp then   --连升多级
+                lv = lv +1
+                levelConfig = g_pTBLMgr:getLevelConfigById(lv)
+                if levelConfig then
+                    totalAddExp = totalAddExp - levelConfig.exp
+                else
+                    totalAddExp = 0
+                    break
+                end
+                --升级
+            else  
+                break
+            end
+        end
+        --G_Log_Info("new generalData, lv = %d, exp= %d", lv, totalAddExp)
+        generalData.level = lv
+        generalData.exp = totalAddExp
+
+        g_HeroDataMgr:SetSingleGeneralData(generalData)  --保存单个武将数据
     end
 end
 
