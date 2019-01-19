@@ -16,10 +16,10 @@
             <PreSize X="0.0000" Y="0.0000" />
             <FileData Type="PlistSubImage" Path="public_caocao.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="headMask" ActionTag="21140365" Tag="26" IconVisible="False" RightMargin="-224.0000" BottomMargin="-128.0000" ctype="SpriteObjectData">
+          <AbstractNodeData Name="headMask" ActionTag="21140365" Tag="26" IconVisible="False" LeftMargin="0.4843" RightMargin="-224.4843" TopMargin="0.9690" BottomMargin="-128.9690" ctype="SpriteObjectData">
             <Size X="224.0000" Y="128.0000" />
             <AnchorPoint ScaleY="1.0000" />
-            <Position />
+            <Position X="0.4843" Y="-0.9690" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition />
@@ -119,6 +119,50 @@
             <TextColor A="255" R="65" G="65" B="70" />
             <NormalFileData Type="PlistSubImage" Path="public_add.png" Plist="plist/PublicRes.plist" />
             <OutlineColor A="255" R="255" G="0" B="0" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Text_Lv" ActionTag="651280735" Tag="106" IconVisible="False" RightMargin="-44.0000" TopMargin="-0.5000" BottomMargin="-24.5000" IsCustomSize="True" FontSize="20" LabelText="Lv10" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="44.0000" Y="25.0000" />
+            <AnchorPoint ScaleY="0.5000" />
+            <Position Y="-12.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="249" G="154" B="5" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
+            <OutlineColor A="255" R="101" G="9" B="9" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="LoadingBg" ActionTag="-2112049546" Tag="156" IconVisible="False" RightMargin="-120.0000" TopMargin="127.5000" BottomMargin="-142.5000" LeftEage="178" RightEage="178" TopEage="9" BottomEage="9" Scale9OriginX="178" Scale9OriginY="9" Scale9Width="186" Scale9Height="10" ctype="ImageViewObjectData">
+            <Size X="120.0000" Y="15.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="60.0000" Y="-135.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <FileData Type="PlistSubImage" Path="public_scene_loading_bg.png" Plist="plist/PublicRes.plist" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="LoadingBar" ActionTag="263882313" Tag="154" IconVisible="False" RightMargin="-120.0000" TopMargin="127.5000" BottomMargin="-142.5000" ProgressInfo="81" ctype="LoadingBarObjectData">
+            <Size X="120.0000" Y="15.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="60.0000" Y="-135.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <ImageFileData Type="PlistSubImage" Path="public_scene_loading.png" Plist="plist/PublicRes.plist" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="Text_Exp" ActionTag="100109645" Tag="157" IconVisible="False" LeftMargin="34.5000" RightMargin="-85.5000" TopMargin="125.5000" BottomMargin="-144.5000" FontSize="15" LabelText="10/100" HorizontalAlignmentType="HT_Center" VerticalAlignmentType="VT_Center" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="51.0000" Y="19.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="60.0000" Y="-135.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="0" G="0" B="255" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
+            <OutlineColor A="255" R="77" G="77" B="77" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
         </Children>

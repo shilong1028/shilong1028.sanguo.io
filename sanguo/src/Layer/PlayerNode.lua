@@ -69,6 +69,23 @@ function PlayerNode:showPlayerImodAni(bStandUp)
 	end
 end
 
+--显示人物升级动画
+function PlayerNode:ShowPlayerLvUpAni() 
+	--G_Log_Info("ShowPlayerLvUpAni")
+	local lvUpAni = ImodAnim:create()
+	lvUpAni:initAnimWithName("Ani/effect/levelUp.png", "Ani/effect/levelUp.ani", true)   
+    lvUpAni:PlayAction(0, 0.1)   --PlayActionRepeat(0)
+    lvUpAni:setScale(0.6)
+    self:addChild(lvUpAni, 0)
+
+    local function AniCallBack(pSender,typ,idx)
+		if(typ == "end")then 
+			pSender:removeFromParent(true)
+		end
+	end  
+	ScriptHandlerMgr:getInstance():registerScriptHandler(lvUpAni, AniCallBack, cc.Handler.EVENT_CUSTOM_COMMON)
+end
+
 function PlayerNode:StopLastAutoPath()   --停止上一个自动寻路
 	self:DelAutoPathUpdateEntry()
 

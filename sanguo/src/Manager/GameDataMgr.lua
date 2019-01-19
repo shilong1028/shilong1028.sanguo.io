@@ -65,6 +65,15 @@ function GameDataMgr:handleGeneralExpAdd(generalData, expVal, bTotalExp)
     local levelConfig = g_pTBLMgr:getLevelConfigById(lv)
     --G_Log_Dump(levelConfig, "levelConfig =")
     if levelConfig then
+        local bCaptain = false
+        local campData = g_HeroDataMgr:GetHeroCampData()
+        if campData then
+            local captainId = g_HeroDataMgr:getHeroCaptainIdStr()
+            if captainId == generalData.id_str then
+                bCaptain = true
+            end
+        end
+
         local totalAddExp = exp + expVal
         if bTotalExp == true then
             totalAddExp = expVal - levelConfig.exp
@@ -73,15 +82,31 @@ function GameDataMgr:handleGeneralExpAdd(generalData, expVal, bTotalExp)
         while totalAddExp > 0 do
             if totalAddExp >= levelConfig.add_exp then   --连升多级
                 lv = lv +1
+                totalAddExp = totalAddExp - levelConfig.add_exp
+
                 levelConfig = g_pTBLMgr:getLevelConfigById(lv)
-                if levelConfig then
-                    totalAddExp = totalAddExp - levelConfig.exp
-                else
-                    totalAddExp = 0
+                if not levelConfig then
+                    totalAddExp = 0    --最高级
+                    if g_pGameLayer and g_pGameLayer.MenuLayer then
+                        g_pGameLayer.MenuLayer:initLevelData(lv, totalAddExp, 999999)  --更新主角经验等级信息
+                    end
                     break
                 end
-                --升级
+
+                --主角升级
+                if bCaptain == true then
+                    local mapLayer = g_pGameLayer:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
+                    if mapLayer and mapLayer.playerNode then
+                        mapLayer.playerNode:ShowPlayerLvUpAni()  --显示人物升级动画
+                    end
+                    -- if g_pGameLayer and g_pGameLayer.MenuLayer then
+                    --     g_pGameLayer.MenuLayer:initLevelData(lv, totalAddExp, levelConfig.add_exp)  --更新主角经验等级信息
+                    -- end
+                end
             else  
+                if g_pGameLayer and g_pGameLayer.MenuLayer then
+                    g_pGameLayer.MenuLayer:initLevelData(lv, totalAddExp, levelConfig.add_exp)  --更新主角经验等级信息
+                end
                 break
             end
         end

@@ -114,6 +114,9 @@ function MainMenuLayer:init()
     local FileNode_head = csb:getChildByName("FileNode_head")
     self.head_icon = FileNode_head:getChildByName("head_icon")   --玩家头像
     self.Text_nick = FileNode_head:getChildByName("Text_nick")    --玩家昵称
+    self.Text_Lv = FileNode_head:getChildByName("Text_Lv")    --玩家等级
+    self.Text_Exp = FileNode_head:getChildByName("Text_Exp")    --经验数值
+    self.LoadingBar = FileNode_head:getChildByName("LoadingBar")    --经验条
     self.Button_chongzhi = FileNode_head:getChildByName("Button_chongzhi")   --充值按钮
     self.Button_chongzhi:addTouchEventListener(handler(self,self.touchEvent))
     self.Button_qiandao = FileNode_head:getChildByName("Button_qiandao")
@@ -236,6 +239,15 @@ function MainMenuLayer:initData()
     if campId and campId > 0 then
         g_campId = campId
         self.head_icon:loadTexture(string.format("Head/%d001.png", campId), ccui.TextureResType.localType)
+    
+        local captainId = g_HeroDataMgr:getHeroCaptainIdStr()
+        local captainData = g_HeroDataMgr:GetSingleGeneralData(captainId)
+        local expLimit = 999999
+        local levelConfig = g_pTBLMgr:getLevelConfigById(captainData.level)
+        if levelConfig then
+            expLimit = levelConfig.add_exp
+        end
+        self:initLevelData(captainData.level, captainData.exp, expLimit)  --更新主角经验等级信息
     end
     self.Text_glod:setString(campData.money)  --元宝数量
     self.Text_liang:setString(campData.food)  --粮草数量 担
@@ -261,6 +273,18 @@ function MainMenuLayer:initData()
 
     self.mainStoryCell = nil   --主线剧情Cell
     self:initStroyData(storyId, bPlayerVedio)
+end
+
+--更新主角经验等级信息
+function MainMenuLayer:initLevelData(lv, exp, limitExp)
+    --G_Log_Info("initLevelData(), lv = %d, exp = %d, limitExp = %d", lv, exp, limitExp)
+    self.Text_Lv:setString("Lv"..lv)    --玩家等级
+    self.Text_Exp:setString(""..exp.."/"..limitExp)    --经验数值
+    local progress = 100*exp/limitExp
+    if progress > 100 then
+        progress = 100
+    end
+    self.LoadingBar:setPercent(progress)   --经验条
 end
 
 function MainMenuLayer:initVipData(vipId)
