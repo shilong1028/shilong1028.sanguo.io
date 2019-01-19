@@ -711,7 +711,7 @@ function TBLMgr:LoadOfficalConfigTBL()
 		officalConfig.id_str = stream:ReadString()    --官职ID字符串
 		officalConfig.name = stream:ReadString()     --名称
 		officalConfig.type = stream:ReadWord()    --官职类型，0通用，1主角，2武将，3军师
-		officalConfig.quality = stream:ReadWord()    --品质,0五品以下，1五品，2四品，3三品，4二品，5一品，6王侯，7皇帝
+		officalConfig.quality = stream:ReadWord()    --品质
 		officalConfig.tips = stream:ReadString()     --官职小提示
 		officalConfig.hp = stream:ReadUInt()    --附加血量值
 		officalConfig.mp = stream:ReadUInt()        --附加智力值
@@ -723,9 +723,7 @@ function TBLMgr:LoadOfficalConfigTBL()
 		if subsVec[1] ~= "0" then
 			for k, str in pairs(subsVec) do
 				local idVec = string.split(str,"-")
-				local beginId = tonumber(idVec[1])
-				local endId = tonumber(idVec[2])
-				for id = beginId, endId do
+				for kk, id in pairs(idVec) do
 					table.insert(officalConfig.subs, tostring(id))
 				end
 			end
