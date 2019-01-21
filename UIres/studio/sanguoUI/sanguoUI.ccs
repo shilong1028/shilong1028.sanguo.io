@@ -5,6 +5,8 @@
       <RootFolder Name=".">
         <Folder Name="csd">
           <Project Name="AddGeneralLayer.csd" Type="Layer" />
+          <Project Name="AddSoldierLayer.csd" Type="Layer" />
+          <Project Name="addSoldierNode.csd" Type="Node" />
           <Project Name="BagLayer.csd" Type="Layer" />
           <Project Name="BattleInfoLayer.csd" Type="Layer" />
           <Project Name="BattleMenuPage.csd" Type="Layer" />
@@ -48,6 +50,7 @@
           <Image Name="studio_layerBg.png" />
           <Image Name="studio_layerBg2.png" />
           <Image Name="studio_loginBg.png" />
+          <Image Name="studio_xiangke.jpg" />
           <Image Name="wujianglaitou.jpg" />
         </Folder>
         <Folder Name="plist">
