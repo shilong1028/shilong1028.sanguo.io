@@ -42,7 +42,7 @@ g_GameLayerTag = {
 	LAYER_TAG_VedioLayer = 114,    --视频播放界面
 	LAYER_TAG_GeneralLayer = 115,    --将领界面
 	LAYER_TAG_AddGeneralLayer = 116,    --武将来投界面
-
+	LAYER_TAG_AddSoldierLayer = 117,    --招募士兵界面
 
 }
 
@@ -163,7 +163,7 @@ g_ItemIdDef = {
 	Item_Id_daojian = 502,   --刀剑(ID)
 	Item_Id_gongnu = 503,   --弓弩(ID)
 	Item_Id_mapi = 504,   --马匹(ID)
-	Item_Id_bingjia = 505,   --弓弩(ID)
+	Item_Id_bingjia = 505,   --兵甲(ID)
 	Item_Id_glod = 6001,  --金钱(ID)
 	Item_Id_food = 6002,  --粮草(ID)
 	Item_Id_drug = 6003,  --药材(ID)

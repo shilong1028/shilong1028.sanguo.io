@@ -336,7 +336,7 @@ function GameLayer:hanldeStoryTaskOpt(storyData)
             mapLayer:autoPathMapByCity(storyData.targetCity)
         end
     elseif storyData.type == g_StoryType.Soldier then --招募士兵
-
+        self:showAddSoldierLayer() 
     elseif storyData.type == g_StoryType.Unit then  --组建部曲
 
     elseif storyData.type == g_StoryType.Fight then --参加战斗
@@ -413,6 +413,14 @@ end
 function GameLayer:showAddGeneralLayer(generalData) 
     local addGeneralLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_AddGeneralLayer, "Role.AddGeneralLayer")
     addGeneralLayer:initGeneralData(generalData)
+end
+
+--招募士兵界面
+function GameLayer:showAddSoldierLayer() 
+    local addSoldierLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_AddSoldierLayer)
+    if not addSoldierLayer then
+        addSoldierLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_AddSoldierLayer, "Role.AddSoldierLayer")
+    end
 end
 
 
