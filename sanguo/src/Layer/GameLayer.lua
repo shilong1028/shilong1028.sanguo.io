@@ -338,7 +338,7 @@ function GameLayer:hanldeStoryTaskOpt(storyData)
     elseif storyData.type == g_StoryType.Soldier then --招募士兵
         self:showAddSoldierLayer() 
     elseif storyData.type == g_StoryType.Unit then  --组建部曲
-
+        self:showGeneralLayer(2)   --1--武将信息，2--武将部曲，3--武将技能
     elseif storyData.type == g_StoryType.Fight then --参加战斗
 
     elseif storyData.type == g_StoryType.Offical then --封官拜将
@@ -401,12 +401,13 @@ function GameLayer:showBagLayer()
     bagLayer:initBagGrid()
 end
 
---将领界面
-function GameLayer:showGeneralLayer() 
+--将领界面 1--武将信息，2--武将部曲，3--武将技能
+function GameLayer:showGeneralLayer(idx) 
     local generalLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_GeneralLayer)
     if not generalLayer then
         generalLayer = self:AddChild(g_GameLayerTag.LAYER_TAG_GeneralLayer, "Role.GeneralLayer")
     end
+    generalLayer:setRadioPanel(idx)
 end
 
 --显示武将来投(可以显示多个)

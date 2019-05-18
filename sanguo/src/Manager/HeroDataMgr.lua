@@ -107,6 +107,7 @@ function HeroDataMgr:initHeroXMLData()
         self.heroData.campData.troops = tonumber(heroXML:getNodeAttrValue("campData", "troops"))        --初始兵力（人）
         self.heroData.campData.money = tonumber(heroXML:getNodeAttrValue("campData", "money"))     --初始财力（单位锭，1锭=1000贯）
         self.heroData.campData.food = tonumber(heroXML:getNodeAttrValue("campData", "food"))     --初始粮草（单位石，1石=1000斤）
+        self.heroData.campData.drug = tonumber(heroXML:getNodeAttrValue("campData", "drug"))     --初始药材（单位付，1付药材=100份药材）
         self.heroData.campData.generalIdVec = {}
         local generalStr = heroXML:getNodeAttrValue("campData", "general")    --初始将领ID字符串，以;分割
         if generalStr and generalStr ~= "" then
@@ -225,7 +226,7 @@ function HeroDataMgr:initBagXMLData()
                 local itemIdStr = tostring(itemIdVec[i])
                 local itemId = bagXML:getNodeAttrValue(itemIdStr, "itemId")
                 local itemNum = tonumber(bagXML:getNodeAttrValue(itemIdStr, "num"))
-                if itemNum > 0 then
+                if itemNum and itemNum > 0 then
                     local itemData = {["itemId"] = itemId, ["num"] = itemNum }
                     self.heroData.bagVecData[itemIdStr] = itemData
                 end
@@ -512,7 +513,7 @@ function HeroDataMgr:GetHeroCampDrug()
 end
 
 function HeroDataMgr:SetHeroCampDrug(drug)
-    self.heroData.campData.drug = food
+    self.heroData.campData.drug = drug
     local heroXML = g_UserDefaultMgr:loadXMLFile("heroXML.xml")
     if heroXML then
         heroXML:setNodeAttrValue("campData", "drug", tostring(drug))
@@ -696,19 +697,8 @@ function HeroDataMgr:GetBagItemDataById(itemId)
     return nil
 end
 
-function HeroDataMgr:GetSoliderItemListById(itemId)
-    local itemIdStr = tostring(itemId)
-    local soliderList = {}
-    for k, data in pairs(self.heroData.bagVecData) do
-        if itemIdStr == data.itemId then   --{["itemId"] = itemId, ["num"] = itemNum }
-            table.insert(soliderList, clone(data))
-        end
-    end
-    return soliderList
-end
-
 function HeroDataMgr:SetBagXMLData(itemVec)
-    --G_Log_Info("HeroDataMgr:SetBagXMLData()")
+    --G_Log_Dump(itemVec, "HeroDataMgr:SetBagXMLData()， itemVec = ")
     if not itemVec then
         G_Log_Error("HeroDataMgr:SetBagXMLData(), error: itemVec = nil")
     end
@@ -723,7 +713,9 @@ function HeroDataMgr:SetBagXMLData(itemVec)
     for i=1, #itemVec do
         local itemId = tonumber(itemVec[i].itemId)
         local itemIdStr = tostring(itemVec[i].itemId)
+        itemVec[i].itemId = itemIdStr
         local itemNum = tonumber(itemVec[i].num)
+        itemVec[i].num = itemNum
 
         --军队数量，金币粮草药材数量同步到camp数据中
         if itemId >= g_ItemIdDef.Item_Id_qiangbing and itemId <= g_ItemIdDef.Item_Id_qibing then    --枪刀弓骑兵
@@ -765,16 +757,19 @@ function HeroDataMgr:SetBagXMLData(itemVec)
         end
 
         if self.heroData.bagVecData[itemIdStr] == nil then
-            bItemIdChanged = true    --增加新物品
-            self.heroData.bagVecData[itemIdStr] = itemVec[i]
+            if itemNum > 0 then
+                bItemIdChanged = true    --增加新物品
+                self.heroData.bagVecData[itemIdStr] = itemVec[i]
+            end
         else
             itemNum = itemNum + tonumber(self.heroData.bagVecData[itemIdStr].num)   --合并现有物品数量
-            if itemNum == 0 then
-                bItemIdChanged = true    --删除的物品
-                self.heroData.bagVecData[itemIdStr] = nil
-            else   
+            if itemNum > 0 then
                 itemVec[i].num = itemNum
                 self.heroData.bagVecData[itemIdStr] = itemVec[i]
+            else   
+                bItemIdChanged = true    --删除的物品
+                self.heroData.bagVecData[itemIdStr] = nil
+                table.remove(self.heroData.bagVecData, itemIdStr)
             end
         end
         
@@ -787,6 +782,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
     end
 
     if bItemIdChanged == true then  --总物品有增加的新物品或删除的物品
+        G_Log_Dump(self.heroData.bagVecData, "self.heroData.bagVecData = ")
         local totalIdStr = ""
         local bNeedSub = false   --是否需要移除最后一个;号
         for k, data in pairs(self.heroData.bagVecData) do

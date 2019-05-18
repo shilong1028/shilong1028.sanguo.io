@@ -6,13 +6,13 @@
       <ObjectData Name="Layer" Tag="557" ctype="GameLayerObjectData">
         <Size X="1280.0000" Y="720.0000" />
         <Children>
-          <AbstractNodeData Name="Panel_Bg" ActionTag="-1253906496" Alpha="127" Tag="235" IconVisible="False" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="0.9365" RightMargin="-0.9365" BottomMargin="0.0000" TouchEnable="True" ClipAble="False" BackColorAlpha="153" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
+          <AbstractNodeData Name="Panel_Bg" ActionTag="-1253906496" Alpha="127" Tag="235" IconVisible="False" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="0.9365" RightMargin="-0.9365" TouchEnable="True" ClipAble="False" BackColorAlpha="153" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
             <Size X="1280.0000" Y="720.0000" />
             <AnchorPoint />
-            <Position X="0.9365" Y="0.0000" />
+            <Position X="0.9365" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="0" G="0" B="0" />
-            <PrePosition X="0.0007" Y="0.0000" />
+            <PrePosition X="0.0007" />
             <PreSize X="1.0000" Y="1.0000" />
             <SingleColor A="255" R="0" G="0" B="0" />
             <FirstColor A="255" R="150" G="200" B="255" />
@@ -112,52 +112,38 @@
                 <PreSize X="0.0000" Y="0.0000" />
                 <FileData Type="Normal" Path="csd/addSoldierNode.csd" Plist="" />
               </AbstractNodeData>
-              <AbstractNodeData Name="Text_bingjia" ActionTag="1688968095" Tag="1078" IconVisible="False" LeftMargin="70.0000" RightMargin="720.0000" TopMargin="110.5000" BottomMargin="445.5000" FontSize="24" LabelText="兵甲数量" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-                <Size X="99.0000" Y="29.0000" />
+              <AbstractNodeData Name="Text_bingjia" ActionTag="1688968095" Tag="1078" IconVisible="False" LeftMargin="70.0000" RightMargin="672.0000" TopMargin="110.5000" BottomMargin="445.5000" FontSize="24" LabelText="兵甲库存数量" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+                <Size X="147.0000" Y="29.0000" />
                 <AnchorPoint ScaleY="0.5000" />
                 <Position X="70.0000" Y="460.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="165" B="0" />
                 <PrePosition X="0.0787" Y="0.7863" />
-                <PreSize X="0.1114" Y="0.0496" />
+                <PreSize X="0.1654" Y="0.0496" />
                 <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <OutlineColor A="255" R="165" G="42" B="42" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="Text_count_equip" ActionTag="1426397834" Tag="1138" IconVisible="False" LeftMargin="170.0000" RightMargin="673.0000" TopMargin="112.5000" BottomMargin="447.5000" FontSize="22" LabelText="2000" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+              <AbstractNodeData Name="Text_count_equip" ActionTag="1426397834" Tag="1138" IconVisible="False" LeftMargin="230.0000" RightMargin="613.0000" TopMargin="112.5000" BottomMargin="447.5000" FontSize="22" LabelText="2000" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
                 <Size X="46.0000" Y="25.0000" />
                 <AnchorPoint ScaleY="0.5000" />
-                <Position X="170.0000" Y="460.0000" />
+                <Position X="230.0000" Y="460.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="165" B="0" />
-                <PrePosition X="0.1912" Y="0.7863" />
+                <PrePosition X="0.2587" Y="0.7863" />
                 <PreSize X="0.0517" Y="0.0427" />
                 <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <OutlineColor A="255" R="165" G="42" B="42" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="CheckBox" ActionTag="499216637" Tag="1139" IconVisible="False" LeftMargin="233.0000" RightMargin="622.0000" TopMargin="108.0000" BottomMargin="443.0000" TouchEnable="True" CheckedState="True" ctype="CheckBoxObjectData">
-                <Size X="34.0000" Y="34.0000" />
-                <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-                <Position X="250.0000" Y="460.0000" />
-                <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                <CColor A="255" R="255" G="255" B="255" />
-                <PrePosition X="0.2812" Y="0.7863" />
-                <PreSize X="0.0382" Y="0.0581" />
-                <NormalBackFileData Type="PlistSubImage" Path="public_bar6.png" Plist="plist/PublicRes.plist" />
-                <PressedBackFileData Type="PlistSubImage" Path="public_bar6.png" Plist="plist/PublicRes.plist" />
-                <DisableBackFileData Type="Default" Path="Default/CheckBox_Disable.png" Plist="" />
-                <NodeNormalFileData Type="PlistSubImage" Path="public_ok.png" Plist="plist/PublicRes.plist" />
-                <NodeDisableFileData Type="Default" Path="Default/CheckBoxNode_Disable.png" Plist="" />
-              </AbstractNodeData>
-              <AbstractNodeData Name="Text_autoBuy" ActionTag="1944182311" Tag="1140" IconVisible="False" LeftMargin="270.0000" RightMargin="82.0000" TopMargin="112.0000" BottomMargin="447.0000" FontSize="21" LabelText="装备不足是否自动购买。提示：每个士兵都需要一副兵甲！" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-                <Size X="537.0000" Y="26.0000" />
+              <AbstractNodeData Name="Text_autoBuy" ActionTag="1944182311" Tag="1140" IconVisible="False" LeftMargin="300.0000" RightMargin="94.0000" TopMargin="112.0000" BottomMargin="447.0000" FontSize="21" LabelText="提示：每个士兵都需要一副兵甲！兵甲不足自动购买。" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+                <Size X="495.0000" Y="26.0000" />
                 <AnchorPoint ScaleY="0.5000" />
-                <Position X="270.0000" Y="460.0000" />
+                <Position X="300.0000" Y="460.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="165" B="0" />
-                <PrePosition X="0.3037" Y="0.7863" />
-                <PreSize X="0.6040" Y="0.0444" />
+                <PrePosition X="0.3375" Y="0.7863" />
+                <PreSize X="0.5568" Y="0.0444" />
                 <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <OutlineColor A="255" R="165" G="42" B="42" />
                 <ShadowColor A="255" R="110" G="110" B="110" />

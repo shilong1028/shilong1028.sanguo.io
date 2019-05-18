@@ -43,7 +43,7 @@ function AddSoldierLayer:init()
     self.soldierEquipCount = 0  --由玩家武库中装备免费招募的兵甲限制
     self.totalEquipBuyNum = 0   --已经使用的兵甲数量
     self.soldierIdVec = {g_ItemIdDef.Item_Id_qiangji, g_ItemIdDef.Item_Id_daojian, g_ItemIdDef.Item_Id_gongnu, g_ItemIdDef.Item_Id_mapi, g_ItemIdDef.Item_Id_bingjia}
-    self.autoBuyVec = {false, false, false, false, false}   --枪刀弓骑四种兵种自动购买及兵甲购买
+    self.autoBuyVec = {false, false, false, false, true}   --枪刀弓骑四种兵种自动购买及兵甲购买
 
     self.Image_bg = csb:getChildByName("Image_bg")
     self.titleBg = self.Image_bg:getChildByName("titleBg")
@@ -81,9 +81,6 @@ function AddSoldierLayer:init()
 
     self.Text_count_equip = self.Image_bg:getChildByName("Text_count_equip")   --兵甲数量
     self.Text_count_equip:setString("0")
-    self.CheckBox = self.Image_bg:getChildByName("CheckBox")   --自动购买
-    self.CheckBox:setSelected(false)
-    self.CheckBox:addEventListener(handler(self,self.CheckboxSelectedEvent))
 
     self.Text_gold = self.Image_bg:getChildByName("Text_gold")    --金币花费
     self.Text_gold:setString("0")
@@ -105,30 +102,21 @@ function AddSoldierLayer:init()
 end
 
 function AddSoldierLayer:initSoldierNodeView()
-    local desc = "    骑枪刀弓四个兵种之间存在克制关系：枪兵克制骑兵、刀兵克制枪兵、弓兵克制刀兵、骑兵克制弓兵。\
-    兵种相克伤害在基础伤害之上，再加50%的附加伤害。这种附加伤害是单向伤害。刀兵在攻击相同防御力的枪兵和弓兵时，弓兵受到的伤害比枪兵大50%。\
-    *枪戟兵拥有长枪或戟矛，护甲厚、防御高、攻击适中、行动缓慢，可以克制骑兵，但受到刀兵克制。枪戟兵攻城战，战斗力都没有额外加成。\
-    *刀剑兵拥有前盾牌，护甲适中、防御适中、攻击适中、行动适中，可以克制枪兵，但受到弓兵克制。刀剑兵攻城战，战斗力都没有额外加成。\
-    *弓弩兵拥有弓箭或弩机，护甲薄、防御低、攻击适高、行动快捷，可以克制刀兵，但受到骑兵克制。弓弩兵攻城战时，战斗力有5%加成。\
-    *骑兵拥有马匹和一件马刀或短矛，护甲薄、防御低、攻击适中、冲击力强、行动灵敏，可以克制弓兵，但受到枪兵克制。骑兵攻城战时，战斗力有5%减弱。\
-"
     self.descText:setTextAreaSize(cc.size(480, 0))   --480, 330
-    self.descText:setString(desc)
+    self.descText:setString(lua_Help_SoliderStr)
 
     self.ListView_desc:jumpToTop()
     self.ListView_desc:refreshView()
 
     local imgStrVec = {"public_qiangbing.png", "public_daobing.png", "public_gongbing.png", "public_qibing.png"}
-    local nameStrVec = {"招募枪兵", "招募刀兵", "招募弓兵", "招募骑兵"}
-    local equipStrVec = {"枪戟库存数量", "刀剑库存数量", "弓弩库存数量", "马匹库存数量", "兵甲库存"}
 
     for k=1, 4 do
         local nodeStruct = self.bingNodeVec[k]
         nodeStruct.bingImg:setSpriteFrame(imgStrVec[k])  --兵种图片
         --nodeStruct.bingImg:loadTexture(imgStrVec[k], ccui.TextureResType.plistType)  --兵种图片
-        nodeStruct.Text_bing:setString(nameStrVec[k])   --兵种文本
+        nodeStruct.Text_bing:setString(lua_buySoliderVec[k])   --兵种文本
 
-        nodeStruct.Text_equip:setString(equipStrVec[k])    --兵器文本
+        nodeStruct.Text_equip:setString(lua_buySoliderVec2[k])    --兵器文本
         local bagItem = g_HeroDataMgr:GetBagItemDataById(self.soldierIdVec[k])
         local itemNum = 0
         if bagItem then   --{["itemId"] = itemId, ["num"] = itemNum }
@@ -149,8 +137,6 @@ function AddSoldierLayer:initSoldierNodeView()
     end
 
     self.Text_count_equip:setString(""..self.soldierEquipCount)  --兵甲数量
-    self.CheckBox:setSelected(false)   --自动购买
-
     self.Text_gold:setString("0") --金币花费
 
 end
@@ -163,15 +149,17 @@ function AddSoldierLayer:touchEvent(sender, eventType)
             local campMoney = g_HeroDataMgr:GetHeroCampMoney()
             if campMoney >= self.totalCostGold then    
                 local bagItemVec = {
-                    {["itemId"] = g_ItemIdDef.Item_Id_glod, ["num"] = -1*self.totalCostGold}   --金币减少量
+                    {["itemId"] = tostring(g_ItemIdDef.Item_Id_glod), ["num"] = -1*self.totalCostGold}   --金币减少量
                 } 
 
                 --兵甲减少量
-                local equipNum = math.floor(self.soldierEquipCount/1000)
-                if self.totalEquipBuyNum < self.soldierEquipCount then  
-                    equipNum =  math.floor(self.totalEquipBuyNum/1000)  --士兵或装备都是每1000为一个单位
+                if self.soldierEquipCount > 0 then
+                    local equipNum = math.floor(self.soldierEquipCount/1000)
+                    if self.totalEquipBuyNum < self.soldierEquipCount then  
+                        equipNum =  math.floor(self.totalEquipBuyNum/1000)  --士兵或装备都是每1000为一个单位
+                    end
+                    table.insert(bagItemVec, {["itemId"] = tostring(self.soldierIdVec[5]), ["num"] = -1*equipNum})
                 end
-                table.insert(bagItemVec, {["itemId"] = self.soldierIdVec[5], ["num"] = -1*equipNum})
 
                 local addSoldierCount = 0  --招募的士兵数量
                 local idVec = {g_ItemIdDef.Item_Id_qiangbing, g_ItemIdDef.Item_Id_daobing, g_ItemIdDef.Item_Id_gongbing, g_ItemIdDef.Item_Id_qibing}
@@ -179,15 +167,17 @@ function AddSoldierLayer:touchEvent(sender, eventType)
                     local nodeStruct = self.bingNodeVec[k]
                     if nodeStruct.buyEquipCount >= 1000 then
                         --装备减少
-                        equipNum = math.floor(nodeStruct.limitEquipCount/1000)
-                        if nodeStruct.buyEquipCount < nodeStruct.limitEquipCount then 
-                            equipNum =  math.floor(nodeStruct.buyEquipCount/1000)  --士兵或装备都是每1000为一个单位
+                        if nodeStruct.limitEquipCount > 0 then
+                            equipNum = math.floor(nodeStruct.limitEquipCount/1000)
+                            if nodeStruct.buyEquipCount < nodeStruct.limitEquipCount then 
+                                equipNum =  math.floor(nodeStruct.buyEquipCount/1000)  --士兵或装备都是每1000为一个单位
+                            end
+                            table.insert(bagItemVec, {["itemId"] = tostring(self.soldierIdVec[k]), ["num"] = -1*equipNum})
                         end
-                        table.insert(bagItemVec, {["itemId"] = self.soldierIdVec[k], ["num"] = -1*equipNum})
                         --士兵增加
                         addSoldierCount = addSoldierCount + nodeStruct.buyEquipCount
-                        equipNum =  math.floor(nodeStruct.buyEquipCount/1000) 
-                        table.insert(bagItemVec, {["itemId"] = idVec[k], ["num"] = equipNum})
+                        equipNum =  math.floor(nodeStruct.buyEquipCount) 
+                        table.insert(bagItemVec, {["itemId"] = tostring(idVec[k]), ["num"] = equipNum})
                     end
                 end
 
@@ -197,14 +187,15 @@ function AddSoldierLayer:touchEvent(sender, eventType)
                     if addSoldierCount >= 3000 then
                         g_pGameLayer:FinishStoryIntroduceByStep(storyData, g_StoryState.ActionFinish)  --5招募、建设、战斗等任务结束
                     else
-                        g_pGameLayer:ShowScrollTips("招募士兵不足三千，请添加！", g_ColorDef.Red)
+                        g_pGameLayer:ShowScrollTips(lua_str_WarnTips20, g_ColorDef.Red)   --"招募士兵不足三千，请添加！"
                         return
                     end
                 end
                 g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML
+
                 g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_AddSoldierLayer)
             else
-                g_pGameLayer:ShowScrollTips("金币不足！", g_ColorDef.Red)
+                g_pGameLayer:ShowScrollTips(lua_str_WarnTips19, g_ColorDef.Red)   --金币不足！
             end
         elseif sender == self.Button_help then   --招募帮助信息
             self.Button_close:setVisible(true);   --默认不显示关闭按钮只显示提示按钮，关闭提示之后关闭按钮出现
@@ -223,29 +214,44 @@ function AddSoldierLayer:touchJianEvent(sender, eventType)
         for k=1, 4 do
             local nodeStruct = self.bingNodeVec[k]
             if nodeStruct and nodeStruct.Button_jian == sender then
-                if nodeStruct.buyEquipCount >= 1000 then
-                    --归还兵甲
-                    if self.totalEquipBuyNum > self.soldierEquipCount then  
-                        local cost = g_pTBLMgr:getBuyItemCost(self.soldierIdVec[5], 1) 
-                        self.totalCostGold = self.totalCostGold - cost   
-                    end
-                    self.totalEquipBuyNum = self.totalEquipBuyNum - 1000
-
-                    --归还装备
-                    if nodeStruct.buyEquipCount > nodeStruct.limitEquipCount then 
-                        local cost = g_pTBLMgr:getBuyItemCost(self.soldierIdVec[k], 1) 
-                        self.totalCostGold = self.totalCostGold - cost  
-                    end
-                    nodeStruct.buyEquipCount = nodeStruct.buyEquipCount - 1000
-                else
-                    nodeStruct.buyEquipCount = 0   --玩家当前购买的装备数量（每次1000增加或减少）
-                end
-                nodeStruct.Text_count_soldier:setString("+"..nodeStruct.buyEquipCount)  --实际招募数量
-                self:showCostGoldLabel()  --显示花费金币
+                self:handleJianSolider(nodeStruct, k, 1000)  --处理减少招募的数量
                 return
             end
         end
     end
+end
+
+--处理减少招募的数量
+function AddSoldierLayer:handleJianSolider(nodeStruct, k, count)
+    if nodeStruct.buyEquipCount >= count then
+        --归还兵甲
+        if self.totalEquipBuyNum > self.soldierEquipCount then  
+            local offset = self.totalEquipBuyNum - self.soldierEquipCount
+            if offset >= count then
+                offset = count
+            end
+ 
+            local cost = g_pTBLMgr:getBuyItemCost(self.soldierIdVec[5], math.floor(offset/1000)) 
+            self.totalCostGold = self.totalCostGold - cost   
+        end
+        self.totalEquipBuyNum = self.totalEquipBuyNum - count
+
+        --归还装备
+        if nodeStruct.buyEquipCount > nodeStruct.limitEquipCount then 
+            local offset = nodeStruct.buyEquipCount - nodeStruct.limitEquipCount
+            if offset >= count then
+                offset = count
+            end
+
+            local cost = g_pTBLMgr:getBuyItemCost(self.soldierIdVec[k], math.floor(offset/1000)) 
+            self.totalCostGold = self.totalCostGold - cost  
+        end
+        nodeStruct.buyEquipCount = nodeStruct.buyEquipCount - count
+    else
+        nodeStruct.buyEquipCount = 0   --玩家当前购买的装备数量（每次1000增加或减少）
+    end
+    nodeStruct.Text_count_soldier:setString("+"..nodeStruct.buyEquipCount)  --实际招募数量
+    self:showCostGoldLabel()  --显示花费金币
 end
 
 --士兵招募增加数量
@@ -264,7 +270,7 @@ function AddSoldierLayer:touchJiaEvent(sender, eventType)
                         end
                     else
                         if nextCount > self.soldierEquipCount then   --兵甲库存数量
-                            g_pGameLayer:ShowScrollTips("兵甲库存不足！", g_ColorDef.Red)
+                            g_pGameLayer:ShowScrollTips(lua_str_WarnTips21, g_ColorDef.Red)   --"兵甲库存不足！"
                             return
                         end
                     end
@@ -275,7 +281,7 @@ function AddSoldierLayer:touchJiaEvent(sender, eventType)
                     end
                 else
                     if nextCount > nodeStruct.limitEquipCount then   --装备库存
-                        g_pGameLayer:ShowScrollTips("装备库存不足！", g_ColorDef.Red)
+                        g_pGameLayer:ShowScrollTips(lua_str_WarnTips22, g_ColorDef.Red)   --"装备库存不足！"
                         return
                     end
                 end
@@ -296,7 +302,7 @@ function AddSoldierLayer:showCostGoldLabel()
         self.Text_gold:setColor(cc.c3b(255,165,0))
     else
         self.Text_gold:setColor(cc.c3b(255,0,0))
-        g_pGameLayer:ShowScrollTips("金币不足！", g_ColorDef.Red)
+        g_pGameLayer:ShowScrollTips(lua_str_WarnTips19, g_ColorDef.Red)  --金币不足！
     end
 
     self.Text_gold:setString(""..self.totalCostGold)   --花费金币
@@ -310,18 +316,21 @@ function AddSoldierLayer:CheckboxSelectedEvent(sender,eventType)
     elseif eventType == ccui.CheckBoxEventType.unselected then
         bSel = false
     end
-    if sender == self.CheckBox then
-        self.autoBuyVec[5] = bSel
-    else
-        for k=1, 4 do
-            local nodeStruct = self.bingNodeVec[k]
-            if nodeStruct and nodeStruct.CheckBox == sender then
-                self.autoBuyVec[k] = bSel
-                nodeStruct.Text_limitNum:setVisible(not bSel)  --招募数量（由玩家武库中装备免费招募的限制）
-                break
+
+    for k=1, 4 do
+        local nodeStruct = self.bingNodeVec[k]
+        if nodeStruct and nodeStruct.CheckBox == sender then
+            self.autoBuyVec[k] = bSel
+            if bSel ~= true then
+                if nodeStruct.buyEquipCount > nodeStruct.limitEquipCount then 
+                    local offset = nodeStruct.buyEquipCount - nodeStruct.limitEquipCount
+                    self:handleJianSolider(nodeStruct, k, offset)  --处理减少招募的数量
+                end
             end
+            return
         end
     end
+
 end
 
 

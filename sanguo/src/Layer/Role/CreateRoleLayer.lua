@@ -73,10 +73,10 @@ function CreateRoleLayer:touchEvent(sender, eventType)
 
             --创角之后，构建玩家数据heroXML、generalXML、BagXML等
             local bagItemVec = {
-                {["itemId"] = "404", ["num"] = campData.troops},  --骑兵
-                {["itemId"] = "6001", ["num"] = campData.money},  --金币
-                {["itemId"] = "6002", ["num"] = campData.food},  --粮草
-                {["itemId"] = "6003", ["num"] = campData.drug},  --药材
+                {["itemId"] = tostring(g_ItemIdDef.Item_Id_qibing), ["num"] = campData.troops},  --骑兵 
+                {["itemId"] = tostring(g_ItemIdDef.Item_Id_glod), ["num"] = campData.money},  --金币
+                {["itemId"] = tostring(g_ItemIdDef.Item_Id_food), ["num"] = campData.food},  --粮草
+                {["itemId"] = tostring(g_ItemIdDef.Item_Id_drug), ["num"] = campData.drug},  --药材
             }
 
             g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML

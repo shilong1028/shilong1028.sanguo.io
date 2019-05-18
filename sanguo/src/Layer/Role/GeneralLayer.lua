@@ -111,57 +111,28 @@ function GeneralLayer:init()
     self.unit_Image_gongbing:addTouchEventListener(handler(self,self.touchImageEvent))
 
     self.unit_Text_name = generalUnitNode:getChildByName("Text_name")    --武将名称
+    self.unit_Text_name:setString("")
     self.unit_Text_UnitName = generalUnitNode:getChildByName("Text_unit_name")    --部曲名称
+    self.unit_Text_UnitName:setString("")
     self.unit_Text_UnitLv = generalUnitNode:getChildByName("Text_unit_lv")    --部曲等级
+    self.unit_Text_UnitLv:setString("")
 
-    self.unit_Text_bingCount = generalUnitNode:getChildByName("Text_bingCount")   --预备兵数量
-    self.unit_Text_bingjia = generalUnitNode:getChildByName("Text_bingjia")   --兵甲数量
-    self.unit_Text_bingqi = generalUnitNode:getChildByName("Text_bingqi")   --兵器数量
-    self.unit_Text_mapi = generalUnitNode:getChildByName("Text_mapi")   --马匹数量
+    self.bagSoliderNum = generalUnitNode:getChildByName("bagSoliderNum")    --预备役士兵数量
+    self.bagSoliderNum:setString("0")
+    self.unitSoliderNum = generalUnitNode:getChildByName("unitSoliderNum")    --部曲当前士兵数量/最大数量
+    self.unitSoliderNum:setString("0")
+    self.soliderDesc = generalUnitNode:getChildByName("soliderDesc")    --士兵描述
+    self.soliderDesc:setString("")
 
-    self.unit_Text_cost = generalUnitNode:getChildByName("Text_cost")    --花费金币
-    self.unit_Text_cost_gold = generalUnitNode:getChildByName("Text_cost_gold")   --花费金币数量
+    self.sliderNum = generalUnitNode:getChildByName("sliderNum")   --部曲士兵数量滑动条
+    self.sliderNum:setPercent(0)
+    self.sliderNum:setMaxPercent(1000)  
+    self.sliderNum:addEventListener(handler(self,self.sliderChangedEvent))
 
-    self.unit_Text_numCount = generalUnitNode:getChildByName("Text_numCount")   --选中部曲的数量
-    self.unit_Slider_num = generalUnitNode:getChildByName("Slider_num")   --滑动条
-    self.unit_Slider_num:setMaxPercent(100)   --默认是100
-    self.unit_Slider_num:setPercent(0)
-    self.unit_Slider_num:setEnabled(true)
-
-    --[[
-    local slider = ccui.Slider:create()
-    slider:setTouchEnabled(true)
-    slider:loadBarTexture("cocosui/sliderTrack.png")
-    slider:loadProgressBarTexture("cocosui/sliderProgress.png")
-    slider:loadSlidBallTextures("cocosui/sliderThumb.png", "cocosui/sliderThumb.png", "")  
-    slider:setPosition(cc.p(size.width / 2.0, size.height * 0.15 + slider:getSize().height * 2.0))
-    slider:setPercent(52)
-    slider:addEventListenerSlider(sliderEvent)
-    layer:addChild(slider)
-    ]]
-    local function sliderEvent(sender, eventType)
-        if eventType == ccui.SliderEventType.percentChanged then
-            --print("SliderPercent = ", sender:getPercent() / 100.0)
-            self:hanldeSliderEvent(sender, eventType)
-        end
-    end
-    self.unit_Slider_num:addEventListener(sliderEvent)   --addEventListener  --addEventListenerSlider
-
-    self.Button_save = generalUnitNode:getChildByName("Button_save")   --部曲保存
-    self.Button_save:addTouchEventListener(handler(self,self.touchEvent))
     self.Button_update = generalUnitNode:getChildByName("Button_update")    --部曲升阶
     self.Button_update:addTouchEventListener(handler(self,self.touchEvent))
-    self.Button_useItem = generalUnitNode:getChildByName("Button_useItem")   --使用背包士兵Item
-    self.Button_useItem:addTouchEventListener(handler(self,self.touchEvent))
-
-    --背包士兵Item列表
-    self.ListView_Item = generalUnitNode:getChildByName("ListView_Item")
-    self.ListView_Item:setTouchEnabled(true)
-    self.ListView_Item:setBounceEnabled(true)
-    self.ListView_Item:setScrollBarEnabled(false)   --屏蔽列表滚动条
-    self.ListView_Item:setItemsMargin(10.0)
-    self.ListView_ItemSize = self.ListView_Item:getContentSize()
-
+    self.Button_save = generalUnitNode:getChildByName("Button_save")   --保存部曲
+    self.Button_save:addTouchEventListener(handler(self,self.touchEvent))
 
     self:LoadGeneralList()
 
@@ -494,12 +465,6 @@ end
 
 --初始化部曲增兵界面显示
 function GeneralLayer:initUnitUI()
-    self.unit_Text_cost:setVisible(false)   --花费金币
-    self.unit_Text_cost_gold:setString("")   --花费金币数量
-    self.unit_Slider_num:setPercent(100)   ----滑动条
-    self.unit_Slider_num:setPercent(0)
-    self.unit_Slider_num:setEnabled(true)
-
     local bgHeadSize = self.info_Image_headBg:getContentSize()
     if not self.unit_headImg then  --头像背景
         self.unit_headImg =  ccui.ImageView:create(string.format("Head/%s.png", self.GeneralData.id_str), ccui.TextureResType.localType)
@@ -559,144 +524,80 @@ function GeneralLayer:initUnitUI()
         defaultIdx = 4 
     end 
 
-    local PrepTroops = g_HeroDataMgr:GetHeroPrepTroops()  --获取可用劳力（预备役）人数
-    self.unit_Text_bingCount:setString(string.format(lua_Role_String11, PrepTroops) )  --预备兵数量
-
-    local bingjiaItem = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_bingjia))
-    self.unit_Text_bingjia:setString(string.format(lua_Role_String12, bingjiaItem and bingjiaItem.num or 0) )  --兵甲数量
-
     self:initUnitRightUI(defaultIdx)
 end
 
-function GeneralLayer:hanldeSliderEvent(sender, eventType)
-    if eventType == ccui.SliderEventType.percentChanged then
-        local addSoliderNum = sender:getPercent()
-        --G_Log_Info("addSoliderNum = %d", addSoliderNum)
-    end
-end
-
 --初始化部曲界面右侧信息（部曲信息1-4），默认选中武将默认兵种
-function GeneralLayer:initUnitRightUI(nType)
+function GeneralLayer:initUnitRightUI(nType)  
     self.SelUnitIdx = nType 
     local unitData = self.GeneralUnitVec[self.SelUnitIdx]  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
-
     if not unitData or unitData == -1 then
-        self.unit_Slider_num:setMaxPercent(100)   --默认是100
-        self.unit_Slider_num:setPercent(0)
-        self.unit_Slider_num:setEnabled(false)
-        self.unit_Text_numCount:setString("+0")
-        self.unit_Text_bingqi:setString("")   --兵器数量
-        self.unit_Text_mapi:setString("")    --马匹数量
         self.unit_Text_UnitName:setString(lua_general_Str3..lua_unitNameVec[nType])   --部曲名称  --"未组建"
         self.unit_Text_UnitLv:setString("")   --部曲等级
     else
-        local offsetCount = self.GeneralData.maxBingCount - unitData.bingCount
-        if offsetCount <= 0 then
-            self.unit_Slider_num:setMaxPercent(100)   --默认是100
-            self.unit_Slider_num:setPercent(0)
-            self.unit_Slider_num:setEnabled(false)
-        else
-            self.unit_Slider_num:setMaxPercent(offsetCount)   --默认是100
-            self.unit_Slider_num:setPercent(0)
-            self.unit_Slider_num:setEnabled(true)
-        end
-        self.unit_Text_numCount:setString(string.format("+%d(%d/%d)", 0, unitData.bingCount, self.GeneralData.maxBingCount))   --选中部曲的数量
-        self.unit_Text_mapi:setString("")    --马匹数量
-        if nType == 1 then
-            local item = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_qiangji))
-            self.unit_Text_bingqi:setString(string.format(lua_Role_String13, item and item.num or 0) )  --枪戟数
-            self:LoadSoliderItemList(g_ItemIdDef.Item_Id_qiangbing)
-        elseif nType == 2 then
-            local item = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_daojian))
-            self.unit_Text_bingqi:setString(string.format(lua_Role_String14, item and item.num or 0) )  --刀剑数
-            self:LoadSoliderItemList(g_ItemIdDef.Item_Id_daobing)
-        elseif nType == 3 then
-            local item = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_gongnu))
-            self.unit_Text_bingqi:setString(string.format(lua_Role_String15, item and item.num or 0) )  --弓弩数
-            self:LoadSoliderItemList(g_ItemIdDef.Item_Id_gongbing)
-        elseif nType == 4 then
-            self.unit_Text_bingqi:setString("")   --兵器数量
-            local item = g_HeroDataMgr:GetBagItemDataById(tostring(g_ItemIdDef.Item_Id_mapi))
-            self.unit_Text_mapi:setString(string.format(lua_Role_String16, item and item.num or 0) )  --马匹数
-            self:LoadSoliderItemList(g_ItemIdDef.Item_Id_qibing)
-        end
         self.unit_Text_UnitName:setString(lua_unitNameVec[nType])   --部曲名称
         self.unit_Text_UnitLv:setString(string.format(lua_Role_String17, unitData.level))   --部曲等级
     end
+
+    if nType == 1 then  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
+        self:LoadSoliderItemData(g_ItemIdDef.Item_Id_qiangbing, unitData, -1)
+        self.soliderDesc:setString(lua_desc_SoliderVec[nType])
+    elseif nType == 2 then
+        self:LoadSoliderItemData(g_ItemIdDef.Item_Id_daobing, unitData, -1)
+        self.soliderDesc:setString(lua_desc_SoliderVec[nType])
+    elseif nType == 3 then
+        self:LoadSoliderItemData(g_ItemIdDef.Item_Id_gongbing, unitData, -1)
+        self.soliderDesc:setString(lua_desc_SoliderVec[nType])
+    elseif nType == 4 then
+        self:LoadSoliderItemData(g_ItemIdDef.Item_Id_qibing, unitData, -1)
+        self.soliderDesc:setString(lua_desc_SoliderVec[nType])
+    end
 end
 
---加载背包中的预备役士兵,401-404:枪兵\刀兵\弓兵\骑兵
-function GeneralLayer:LoadSoliderItemList(soliderId)
-    self.SoliderItemVec = {}  
-    self.SoliderItemCellVec = {}
-
-    self.ListView_Item:removeAllChildren()
-
-    local function callFunc(target, tagIdx)
-        self:SoliderItemListCallBack(target, tagIdx)
-    end
-
-    local soliderList = g_HeroDataMgr:GetSoliderItemListById(soliderId)
-    if soliderList and #soliderList >0 then
-        self.ListView_Item:setVisible(true)
-        self.Button_useItem:setVisible(true)
-
-        for k, item in pairs(soliderList) do  --{["itemId"] = itemId, ["num"] = itemNum }
-            local soliderData = g_pTBLMgr:getItemConfigTBLDataById(item.itemId) 
-            if soliderData then
-                soliderData.num = item.num
-                table.insert(self.SoliderItemVec, soliderData)
-
-                local itemCell = ItemCell:new()
-                itemCell:initData(soliderData, k) 
-                itemCell:setSelCallBack(callFunc)
-                table.insert(self.SoliderItemCellVec, itemCell)
-
-                local cur_item = ccui.Layout:create()
-                cur_item:setContentSize(itemCell:getContentSize())
-                cur_item:addChild(itemCell)
-                --cur_item:setEnabled(true)
-
-                self.ListView_Item:addChild(cur_item)
-                local pos = cc.p(cur_item:getPosition())
+--加载背包中的预备役士兵,401-404:枪兵\刀兵\弓兵\骑兵 
+function GeneralLayer:LoadSoliderItemData(soliderId, unitData, count)
+    local soliderItem = g_HeroDataMgr:GetBagItemDataById(soliderId)
+    if soliderItem then  --{["itemId"] = itemId, ["num"] = itemNum }
+        local soliderCount = soliderItem.num   --预备役士兵数量
+        local maxCount = self.GeneralData.maxBingCount   --武将最大带兵数
+        if not unitData or unitData == -1 then  --未组建
+            self.sliderNum:setTouchEnabled(false)
+            count = 0
+        else
+            self.sliderNum:setTouchEnabled(true)
+            if count < 0 then   --初始
+                count = soliderItem.num + unitData.bingCount    --部曲兵力数量
+                if count < self.GeneralData.maxBingCount then
+                    maxCount = count
+                end
+                count = unitData.bingCount    --部曲兵力数量
+            else   --拖动滑动条
+                local offset = unitData.bingCount - count
+                soliderCount = soliderCount + offset
             end
         end
-        local len = #self.SoliderItemCellVec
-        local InnerWidth = len*90 + 10*(len-1)
-        if InnerWidth < self.ListView_ItemSize.width then
-            self.ListView_Item:setContentSize(cc.size(InnerWidth, self.ListView_ItemSize.height))
-            self.ListView_Item:setBounceEnabled(false)
+
+        self.bagSoliderNum:setString(""..soliderCount)   --预备役士兵数量
+        self.unitSoliderNum:setString(count.."/"..maxCount)   --部曲当前士兵数量/最大数量
+        self.sliderNum:setPercent(count)   --部曲士兵数量滑动条
+        self.sliderNum:setMaxPercent(maxCount)  
+    end
+end
+
+--部曲士兵数量滑动条事件
+function GeneralLayer:sliderChangedEvent(sender,eventType)
+    if eventType == ccui.SliderEventType.percentChanged then
+        local unitData = self.GeneralUnitVec[self.SelUnitIdx]  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
+        if not unitData or unitData == -1 then  --未组建
         else
-            self.ListView_Item:setContentSize(self.ListView_ItemSize)
-            self.ListView_Item:setBounceEnabled(true)
+            local count = math.floor(sender:getPercent())  --/ sender:getMaxPercent()
+            self:LoadSoliderItemData(unitData.bingIdStr, unitData, count)
         end
-        self.ListView_Item:forceDoLayout()   --forceDoLayout   --refreshView
-    else
-        self.ListView_Item:setVisible(false)
-        self.Button_useItem:setVisible(false)
-    end
-
-    self.lastSelSoliderIdx = 1
-    self.lastSelSoliderCell = self.SoliderItemCellVec[1]
-    if self.lastSelSoliderCell then
-        self.lastSelSoliderCell:showSelEffect(true)
+    elseif eventType == ccui.SliderEventType.slideBallUp then
+    elseif eventType == ccui.SliderEventType.slideBallDown then
+    elseif eventType == ccui.SliderEventType.slideBallCancel then
     end
 end
-
-function GeneralLayer:SoliderItemListCallBack(target, tagIdx)
-    --G_Log_Info("GeneralLayer:SoliderItemListCallBack(), tagIdx = %d", tagIdx)
-    if self.lastSelSoliderCell and target ~= self.lastSelSoliderCell then
-        self.lastSelSoliderCell:showSelEffect(false)
-    end
-    self.lastSelSoliderCell = target
-    if self.lastSelSoliderCell then
-        self.lastSelSoliderCell:showSelEffect(true)
-    end
-
-    self.lastSelSoliderIdx = tagIdx
-end
-
-
 
 function GeneralLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
@@ -708,45 +609,22 @@ function GeneralLayer:touchEvent(sender, eventType)
             self:setRadioPanel(2)
         elseif sender == self.Button_skillRadio then
             self:setRadioPanel(3)
-        elseif sender == self.Button_save then   --部曲保存
-
         elseif sender == self.Button_update then   --部曲升阶
 
-        elseif sender == self.Button_useItem then   --使用背包士兵Item
+        elseif sender == self.Button_save then   --保存部曲
             local unitData = self.GeneralUnitVec[self.SelUnitIdx]  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
             if not unitData or unitData == -1 then   --未组建
                 g_pGameLayer:ShowScrollTips(lua_str_WarnTips8, g_ColorDef.Red, g_defaultTipsFontSize)  -- "该兵种部曲未解锁，暂不能组建！"
-                return
-            end
-
-            if self.lastSelSoliderIdx and self.lastSelSoliderIdx > 0 then
-                local soliderData = self.SoliderItemVec[self.lastSelSoliderIdx]
-                if soliderData then
-                    if tonumber(unitData.bingIdStr) ~= tonumber(soliderData.id_str) then
-                        G_Log_Error("错误，兵种类型不一致！")
-                        return
-                    end
-
-                    local costNum = self.GeneralData.maxBingCount - unitData.bingCount
-                    if costNum == 0 then
-                        g_pGameLayer:ShowScrollTips(lua_str_WarnTips9, g_ColorDef.Red, g_defaultTipsFontSize)  -- "该兵种部曲士兵已满员！"
-                        return
-                    end
-
-                    local offsetCount = soliderData.num - costNum
-                    if offsetCount >= 0 then   --有剩余
-                        unitData.bingCount = self.GeneralData.maxBingCount
-                    else
-                        unitData.bingCount = unitData.bingCount + soliderData.num
-                        costNum = soliderData.num
-                    end
-
-                    if unitData.bingCount >0 and unitData.level == 0 then   --初次组建
+            else
+                local count = math.floor(self.sliderNum:getPercent()) 
+                local offset = unitData.bingCount - count
+                if offset ~= 0 then
+                    if unitData.level == 0 then   --初次组建
                         unitData.level = 1
                     end
-
                     unitData.shiqi = 100   --部曲士气默认100
 
+                    unitData.bingCount = count    --部曲兵力数量
                     g_HeroDataMgr:SetSingleGeneralUnit(self.GeneralData.id_str, unitData)   --保存玩家单个武将单个部曲数据到generalXML
 
                     self.GeneralUnitVec[self.SelUnitIdx] = unitData
@@ -759,7 +637,7 @@ function GeneralLayer:touchEvent(sender, eventType)
 
                     --G_Log_Dump(self.generalVec, "self.generalVec = ", 5)
                     local bagItemVec = {
-                        {["itemId"] = soliderData.id_str, ["num"] = -1*costNum}
+                        {["itemId"] = unitData.bingIdStr, ["num"] = offset}
                     }
                     g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML
 
