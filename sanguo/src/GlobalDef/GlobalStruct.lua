@@ -253,6 +253,7 @@ function  g_tbl_itemConfig:ctor()
 	self.id_str = "0"        --物品ID字符串
 	self.name = ""     --物品名称
 	self.type = 0    --物品类型，
+	self.cost = 1000   --购买物品花费
 	self.quality = 0     --技能或装备等物品的品质
 	self.skill = "0"     --物品关联的技能ID字符串
 	self.hp = 0    --装备增加的血量值

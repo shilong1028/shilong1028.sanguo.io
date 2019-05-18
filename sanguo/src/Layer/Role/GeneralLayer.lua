@@ -757,7 +757,7 @@ function GeneralLayer:touchEvent(sender, eventType)
                     end
                     self.generalVec[self.lastSelOfficalIdx] = self.GeneralData
 
-                    --dump(self.generalVec, "self.generalVec = ", 5)
+                    --G_Log_Dump(self.generalVec, "self.generalVec = ", 5)
                     local bagItemVec = {
                         {["itemId"] = soliderData.id_str, ["num"] = -1*costNum}
                     }

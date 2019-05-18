@@ -454,6 +454,7 @@ function TBLMgr:LoadItemConfigTBL()
 		itemConfig.id_str = stream:ReadString()        --物品ID字符串
 		itemConfig.name = stream:ReadString()     --物品名称
 		itemConfig.type = stream:ReadWord()     --物品类型
+		itemConfig.cost = stream:ReadUInt()     --购买物品花费
 		itemConfig.quality = stream:ReadUInt()      --技能或装备等物品的品质
 		itemConfig.skill = stream:ReadString()     --物品关联的技能ID字符串
 		itemConfig.hp = stream:ReadUInt()     --装备增加的血量值
@@ -476,6 +477,18 @@ function TBLMgr:getItemConfigTBLDataById(itemId)
 	end
 
 	return clone(self.itemConfigVec[""..itemId])
+end
+
+function TBLMgr:getBuyItemCost(itemId, num)
+	if self.itemConfigVec == nil then
+		self:LoadItemConfigTBL()
+	end
+	local cost = self.itemConfigVec[""..itemId].cost
+	if cost == nil then
+		cost = 1000
+	end
+
+	return cost*num
 end
 
 --对话文本表结构类

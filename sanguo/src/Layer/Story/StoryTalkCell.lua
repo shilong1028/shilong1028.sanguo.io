@@ -26,8 +26,8 @@ function StoryTalkCell:init()
     self:setContentSize(cc.size(220, 80))
 end
 
-function StoryTalkCell:initData(storyData)  
-    --G_Log_Info("StoryTalkCell:initData()")
+function StoryTalkCell:initStoryTalkCellData(storyData)  
+    --G_Log_Info("StoryTalkCell:initStoryTalkCellData()")
     self.storyData = storyData
     self.Label_target:setVisible(false)
     self.Text_target:setString("")

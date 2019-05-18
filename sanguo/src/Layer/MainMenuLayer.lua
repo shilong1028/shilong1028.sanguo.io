@@ -20,19 +20,19 @@ function MainMenuLayer:onExit()
     end
 
     if nil ~= self.troop_listener then   --军队数量变化监听
-        g_EventDispatcher:removeEventListener(self.vip_listener)
+        g_EventDispatcher:removeEventListener(self.troop_listener)
     end
 
     if nil ~= self.money_listener then   --金币变化监听
-        g_EventDispatcher:removeEventListener(self.vip_listener)
+        g_EventDispatcher:removeEventListener(self.money_listener)
     end
 
     if nil ~= self.food_listener then   --粮草变化监听
-        g_EventDispatcher:removeEventListener(self.vip_listener)
+        g_EventDispatcher:removeEventListener(self.food_listener)
     end
 
     if nil ~= self.drug_listener then   --药材变化监听
-        g_EventDispatcher:removeEventListener(self.vip_listener)
+        g_EventDispatcher:removeEventListener(self.drug_listener)
     end
 end
 
@@ -321,7 +321,7 @@ function MainMenuLayer:initStroyData(storyId, bPlayerVedio)
         self.mainStoryCell:runAction(cc.Sequence:create(cc.DelayTime:create(0.2), cc.CallFunc:create(function () 
                 self.mainStoryCell:setVisible(true) 
             end)))
-        self.mainStoryCell:initData(self.storyData)
+        self.mainStoryCell:initStoryTalkCellData(self.storyData)
         self:renWuButton_pushAction(true)
     else  --没有剧情任务
         if self.mainStoryCell then

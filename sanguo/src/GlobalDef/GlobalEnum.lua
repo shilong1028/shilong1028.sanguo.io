@@ -159,11 +159,13 @@ g_ItemIdDef = {
 	Item_Id_daobing = 402,   --刀兵(ID)
 	Item_Id_gongbing = 403,   --弓兵(ID)
 	Item_Id_qibing = 404,   --骑兵(ID)
+
 	Item_Id_qiangji = 501,   --枪戟(ID)
 	Item_Id_daojian = 502,   --刀剑(ID)
 	Item_Id_gongnu = 503,   --弓弩(ID)
 	Item_Id_mapi = 504,   --马匹(ID)
 	Item_Id_bingjia = 505,   --兵甲(ID)
+	
 	Item_Id_glod = 6001,  --金钱(ID)
 	Item_Id_food = 6002,  --粮草(ID)
 	Item_Id_drug = 6003,  --药材(ID)

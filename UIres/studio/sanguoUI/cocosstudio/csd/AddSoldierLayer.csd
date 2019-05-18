@@ -6,13 +6,13 @@
       <ObjectData Name="Layer" Tag="557" ctype="GameLayerObjectData">
         <Size X="1280.0000" Y="720.0000" />
         <Children>
-          <AbstractNodeData Name="Panel_Bg" ActionTag="-1253906496" Alpha="127" Tag="235" IconVisible="False" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" TouchEnable="True" ClipAble="False" BackColorAlpha="153" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
+          <AbstractNodeData Name="Panel_Bg" ActionTag="-1253906496" Alpha="127" Tag="235" IconVisible="False" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" LeftMargin="0.9365" RightMargin="-0.9365" BottomMargin="0.0000" TouchEnable="True" ClipAble="False" BackColorAlpha="153" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
             <Size X="1280.0000" Y="720.0000" />
             <AnchorPoint />
-            <Position />
+            <Position X="0.9365" Y="0.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="0" G="0" B="0" />
-            <PrePosition />
+            <PrePosition X="0.0007" Y="0.0000" />
             <PreSize X="1.0000" Y="1.0000" />
             <SingleColor A="255" R="0" G="0" B="0" />
             <FirstColor A="255" R="150" G="200" B="255" />
@@ -72,7 +72,7 @@
                 <OutlineColor A="255" R="255" G="0" B="0" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="daoNode" ActionTag="-535734176" Tag="796" IconVisible="True" LeftMargin="75.0000" RightMargin="814.0000" TopMargin="225.0000" BottomMargin="360.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
+              <AbstractNodeData Name="qiangNode" ActionTag="-2115798637" Tag="927" IconVisible="True" LeftMargin="75.0000" RightMargin="814.0000" TopMargin="225.0000" BottomMargin="360.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
                 <Size X="0.0000" Y="0.0000" />
                 <AnchorPoint />
                 <Position X="75.0000" Y="360.0000" />
@@ -82,7 +82,7 @@
                 <PreSize X="0.0000" Y="0.0000" />
                 <FileData Type="Normal" Path="csd/addSoldierNode.csd" Plist="" />
               </AbstractNodeData>
-              <AbstractNodeData Name="qiangNode" ActionTag="-2115798637" Tag="927" IconVisible="True" LeftMargin="450.0000" RightMargin="439.0000" TopMargin="225.0000" BottomMargin="360.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
+              <AbstractNodeData Name="daoNode" ActionTag="-535734176" Tag="796" IconVisible="True" LeftMargin="450.0000" RightMargin="439.0000" TopMargin="225.0000" BottomMargin="360.0000" StretchWidthEnable="False" StretchHeightEnable="False" InnerActionSpeed="1.0000" CustomSizeEnabled="False" ctype="ProjectNodeObjectData">
                 <Size X="0.0000" Y="0.0000" />
                 <AnchorPoint />
                 <Position X="450.0000" Y="360.0000" />
@@ -112,57 +112,37 @@
                 <PreSize X="0.0000" Y="0.0000" />
                 <FileData Type="Normal" Path="csd/addSoldierNode.csd" Plist="" />
               </AbstractNodeData>
-              <AbstractNodeData Name="Text_bingjia" ActionTag="1688968095" Tag="1078" IconVisible="False" LeftMargin="90.0000" RightMargin="700.0000" TopMargin="110.5000" BottomMargin="445.5000" FontSize="24" LabelText="兵甲数量" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+              <AbstractNodeData Name="Text_bingjia" ActionTag="1688968095" Tag="1078" IconVisible="False" LeftMargin="70.0000" RightMargin="720.0000" TopMargin="110.5000" BottomMargin="445.5000" FontSize="24" LabelText="兵甲数量" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
                 <Size X="99.0000" Y="29.0000" />
                 <AnchorPoint ScaleY="0.5000" />
-                <Position X="90.0000" Y="460.0000" />
+                <Position X="70.0000" Y="460.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="165" B="0" />
-                <PrePosition X="0.1012" Y="0.7863" />
+                <PrePosition X="0.0787" Y="0.7863" />
                 <PreSize X="0.1114" Y="0.0496" />
                 <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <OutlineColor A="255" R="165" G="42" B="42" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="LoadingBg" ActionTag="1871263786" Tag="1137" IconVisible="False" LeftMargin="210.0000" RightMargin="529.0000" TopMargin="117.5000" BottomMargin="452.5000" LeftEage="178" RightEage="178" TopEage="9" BottomEage="9" Scale9OriginX="178" Scale9OriginY="9" Scale9Width="186" Scale9Height="10" ctype="ImageViewObjectData">
-                <Size X="150.0000" Y="15.0000" />
-                <AnchorPoint ScaleY="0.5000" />
-                <Position X="210.0000" Y="460.0000" />
-                <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                <CColor A="255" R="255" G="255" B="255" />
-                <PrePosition X="0.2362" Y="0.7863" />
-                <PreSize X="0.1687" Y="0.0256" />
-                <FileData Type="PlistSubImage" Path="public_scene_loading_bg.png" Plist="plist/PublicRes.plist" />
-              </AbstractNodeData>
-              <AbstractNodeData Name="LoadingBar" ActionTag="571709775" Tag="1136" IconVisible="False" LeftMargin="210.0000" RightMargin="529.0000" TopMargin="117.5000" BottomMargin="452.5000" ProgressInfo="81" ctype="LoadingBarObjectData">
-                <Size X="150.0000" Y="15.0000" />
-                <AnchorPoint ScaleY="0.5000" />
-                <Position X="210.0000" Y="460.0000" />
-                <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                <CColor A="255" R="255" G="255" B="255" />
-                <PrePosition X="0.2362" Y="0.7863" />
-                <PreSize X="0.1687" Y="0.0256" />
-                <ImageFileData Type="PlistSubImage" Path="public_scene_loading.png" Plist="plist/PublicRes.plist" />
-              </AbstractNodeData>
-              <AbstractNodeData Name="Text_count_equip" ActionTag="1426397834" Tag="1138" IconVisible="False" LeftMargin="370.0000" RightMargin="473.0000" TopMargin="112.5000" BottomMargin="447.5000" FontSize="22" LabelText="2000" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+              <AbstractNodeData Name="Text_count_equip" ActionTag="1426397834" Tag="1138" IconVisible="False" LeftMargin="170.0000" RightMargin="673.0000" TopMargin="112.5000" BottomMargin="447.5000" FontSize="22" LabelText="2000" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
                 <Size X="46.0000" Y="25.0000" />
                 <AnchorPoint ScaleY="0.5000" />
-                <Position X="370.0000" Y="460.0000" />
+                <Position X="170.0000" Y="460.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="165" B="0" />
-                <PrePosition X="0.4162" Y="0.7863" />
+                <PrePosition X="0.1912" Y="0.7863" />
                 <PreSize X="0.0517" Y="0.0427" />
                 <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <OutlineColor A="255" R="165" G="42" B="42" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="CheckBox" ActionTag="499216637" Tag="1139" IconVisible="False" LeftMargin="443.0000" RightMargin="412.0000" TopMargin="108.0000" BottomMargin="443.0000" TouchEnable="True" CheckedState="True" ctype="CheckBoxObjectData">
+              <AbstractNodeData Name="CheckBox" ActionTag="499216637" Tag="1139" IconVisible="False" LeftMargin="233.0000" RightMargin="622.0000" TopMargin="108.0000" BottomMargin="443.0000" TouchEnable="True" CheckedState="True" ctype="CheckBoxObjectData">
                 <Size X="34.0000" Y="34.0000" />
                 <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-                <Position X="460.0000" Y="460.0000" />
+                <Position X="250.0000" Y="460.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="255" B="255" />
-                <PrePosition X="0.5174" Y="0.7863" />
+                <PrePosition X="0.2812" Y="0.7863" />
                 <PreSize X="0.0382" Y="0.0581" />
                 <NormalBackFileData Type="PlistSubImage" Path="public_bar6.png" Plist="plist/PublicRes.plist" />
                 <PressedBackFileData Type="PlistSubImage" Path="public_bar6.png" Plist="plist/PublicRes.plist" />
@@ -170,14 +150,14 @@
                 <NodeNormalFileData Type="PlistSubImage" Path="public_ok.png" Plist="plist/PublicRes.plist" />
                 <NodeDisableFileData Type="Default" Path="Default/CheckBoxNode_Disable.png" Plist="" />
               </AbstractNodeData>
-              <AbstractNodeData Name="Text_autoBuy" ActionTag="1944182311" Tag="1140" IconVisible="False" LeftMargin="490.0000" RightMargin="177.0000" TopMargin="111.5000" BottomMargin="446.5000" FontSize="22" LabelText="装备不足是否自动购买" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-                <Size X="222.0000" Y="27.0000" />
+              <AbstractNodeData Name="Text_autoBuy" ActionTag="1944182311" Tag="1140" IconVisible="False" LeftMargin="270.0000" RightMargin="82.0000" TopMargin="112.0000" BottomMargin="447.0000" FontSize="21" LabelText="装备不足是否自动购买。提示：每个士兵都需要一副兵甲！" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+                <Size X="537.0000" Y="26.0000" />
                 <AnchorPoint ScaleY="0.5000" />
-                <Position X="490.0000" Y="460.0000" />
+                <Position X="270.0000" Y="460.0000" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="165" B="0" />
-                <PrePosition X="0.5512" Y="0.7863" />
-                <PreSize X="0.2497" Y="0.0462" />
+                <PrePosition X="0.3037" Y="0.7863" />
+                <PreSize X="0.6040" Y="0.0444" />
                 <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
                 <OutlineColor A="255" R="165" G="42" B="42" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
@@ -231,7 +211,7 @@
                 <OutlineColor A="255" R="255" G="0" B="0" />
                 <ShadowColor A="255" R="110" G="110" B="110" />
               </AbstractNodeData>
-              <AbstractNodeData Name="Panel_help" ActionTag="1200720693" Tag="277" IconVisible="False" LeftMargin="65.7616" RightMargin="73.2384" TopMargin="85.0764" BottomMargin="49.9236" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Enable="True" LeftEage="50" RightEage="200" TopEage="50" BottomEage="40" Scale9OriginX="-200" Scale9OriginY="-40" Scale9Width="250" Scale9Height="90" ctype="PanelObjectData">
+              <AbstractNodeData Name="Panel_help" ActionTag="1200720693" VisibleForFrame="False" Tag="277" IconVisible="False" LeftMargin="65.7616" RightMargin="73.2384" TopMargin="85.0764" BottomMargin="49.9236" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Enable="True" LeftEage="50" RightEage="200" TopEage="50" BottomEage="40" Scale9OriginX="-200" Scale9OriginY="-40" Scale9Width="250" Scale9Height="90" ctype="PanelObjectData">
                 <Size X="750.0000" Y="450.0000" />
                 <Children>
                   <AbstractNodeData Name="Image_helpBg" ActionTag="954742360" Tag="279" IconVisible="False" LeftMargin="240.0000" RightMargin="10.0000" TopMargin="20.0000" BottomMargin="80.0000" Scale9Enable="True" LeftEage="30" RightEage="230" TopEage="50" BottomEage="40" Scale9OriginX="30" Scale9OriginY="50" Scale9Width="71" Scale9Height="10" ctype="ImageViewObjectData">
