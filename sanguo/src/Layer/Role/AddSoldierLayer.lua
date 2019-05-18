@@ -180,6 +180,7 @@ function AddSoldierLayer:touchEvent(sender, eventType)
                         table.insert(bagItemVec, {["itemId"] = tostring(idVec[k]), ["num"] = equipNum})
                     end
                 end
+                g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML
 
                 local storyData = g_pGameLayer.MenuLayer.storyData
                 --G_Log_Dump(storyData, "storyData = ")
@@ -191,7 +192,6 @@ function AddSoldierLayer:touchEvent(sender, eventType)
                         return
                     end
                 end
-                g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML
 
                 g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_AddSoldierLayer)
             else

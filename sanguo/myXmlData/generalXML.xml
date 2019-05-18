@@ -10,9 +10,9 @@
             <401 bingIdStr="401" bingCount="1000" level="1" exp="0" shiqi="100" zhenId="0"/>
         </armyUnitRoot>
     </3005>
-    <3001 id_str="3001" exp="200" level="2" offical="0" zhongcheng="100" bingTypeVec="404" skillIdVec="" skillLvVec="" equipIdVec="" equipLvVec="">
+    <3001 id_str="3001" exp="1000" level="3" offical="0" zhongcheng="100" bingTypeVec="404" skillIdVec="" skillLvVec="" equipIdVec="" equipLvVec="">
         <armyUnitRoot>
-            <404 bingIdStr="404" bingCount="0" level="0" exp="0" shiqi="0" zhenId="0"/>
+            <404 bingIdStr="404" bingCount="1000" level="1" exp="0" shiqi="100" zhenId="0"/>
         </armyUnitRoot>
     </3001>
 </root>

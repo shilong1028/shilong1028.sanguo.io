@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <403 itemId="403" num="1000"/>
-    <404 itemId="404" num="2000"/>
-    <6001 itemId="6001" num="1000"/>
-    <6002 itemId="6002" num="7000"/>
     <6003 itemId="6003" num="7000"/>
-    <6101 itemId="6101" num="2000"/>
     <itemIdVecNode itemIdVec="404;6101;6002;403;6003;6001"/>
+    <404 itemId="404" num="1000"/>
+    <6001 itemId="6001" num="3000"/>
+    <6002 itemId="6002" num="9000"/>
+    <6101 itemId="6101" num="4000"/>
 </root>

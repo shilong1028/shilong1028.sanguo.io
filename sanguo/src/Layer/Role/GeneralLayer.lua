@@ -530,6 +530,9 @@ end
 --初始化部曲界面右侧信息（部曲信息1-4），默认选中武将默认兵种
 function GeneralLayer:initUnitRightUI(nType)  
     self.SelUnitIdx = nType 
+    self.bagSoliderNum:setString("0")   --预备役士兵数量
+    self.sliderNum:setPercent(0)   --部曲士兵数量滑动条
+
     local unitData = self.GeneralUnitVec[self.SelUnitIdx]  --武将枪兵\刀兵\弓兵\骑兵部曲信息，-1表示未组建
     if not unitData or unitData == -1 then
         self.unit_Text_UnitName:setString(lua_general_Str3..lua_unitNameVec[nType])   --部曲名称  --"未组建"
@@ -557,31 +560,33 @@ end
 --加载背包中的预备役士兵,401-404:枪兵\刀兵\弓兵\骑兵 
 function GeneralLayer:LoadSoliderItemData(soliderId, unitData, count)
     local soliderItem = g_HeroDataMgr:GetBagItemDataById(soliderId)
+    local soliderCount = 0
     if soliderItem then  --{["itemId"] = itemId, ["num"] = itemNum }
-        local soliderCount = soliderItem.num   --预备役士兵数量
-        local maxCount = self.GeneralData.maxBingCount   --武将最大带兵数
-        if not unitData or unitData == -1 then  --未组建
-            self.sliderNum:setTouchEnabled(false)
-            count = 0
-        else
-            self.sliderNum:setTouchEnabled(true)
-            if count < 0 then   --初始
-                count = soliderItem.num + unitData.bingCount    --部曲兵力数量
-                if count < self.GeneralData.maxBingCount then
-                    maxCount = count
-                end
-                count = unitData.bingCount    --部曲兵力数量
-            else   --拖动滑动条
-                local offset = unitData.bingCount - count
-                soliderCount = soliderCount + offset
-            end
-        end
-
-        self.bagSoliderNum:setString(""..soliderCount)   --预备役士兵数量
-        self.unitSoliderNum:setString(count.."/"..maxCount)   --部曲当前士兵数量/最大数量
-        self.sliderNum:setPercent(count)   --部曲士兵数量滑动条
-        self.sliderNum:setMaxPercent(maxCount)  
+        soliderCount = soliderItem.num   --预备役士兵数量
     end
+
+    local maxCount = self.GeneralData.maxBingCount   --武将最大带兵数
+    if not unitData or unitData == -1 then  --未组建
+        self.sliderNum:setTouchEnabled(false)
+        count = 0
+    else
+        self.sliderNum:setTouchEnabled(true)
+        if count < 0 then   --初始
+            count = soliderCount + unitData.bingCount    --部曲兵力数量
+            if count < self.GeneralData.maxBingCount then
+                maxCount = count
+            end
+            count = unitData.bingCount    --部曲兵力数量
+        else   --拖动滑动条
+            local offset = unitData.bingCount - count
+            soliderCount = soliderCount + offset
+        end
+    end
+
+    self.bagSoliderNum:setString(""..soliderCount)   --预备役士兵数量
+    self.unitSoliderNum:setString(count.."/"..maxCount)   --部曲当前士兵数量/最大数量
+    self.sliderNum:setPercent(count)   --部曲士兵数量滑动条
+    self.sliderNum:setMaxPercent(maxCount)  
 end
 
 --部曲士兵数量滑动条事件
@@ -642,6 +647,14 @@ function GeneralLayer:touchEvent(sender, eventType)
                     g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML
 
                     self:initUnitRightUI(self.SelUnitIdx)
+
+                    local storyData = g_pGameLayer.MenuLayer.storyData
+                    --G_Log_Dump(storyData, "storyData = ")
+                    if storyData and storyData.type == g_StoryType.Unit then   --任务
+                        g_pGameLayer:FinishStoryIntroduceByStep(storyData, g_StoryState.ActionFinish)  --5招募、建设、战斗等任务结束
+
+                        g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_GeneralLayer)
+                    end
                 end
             end
         end
