@@ -44,6 +44,7 @@ function AddSoldierLayer:init()
     self.totalEquipBuyNum = 0   --已经使用的兵甲数量
     self.soldierIdVec = {g_ItemIdDef.Item_Id_qiangji, g_ItemIdDef.Item_Id_daojian, g_ItemIdDef.Item_Id_gongnu, g_ItemIdDef.Item_Id_mapi, g_ItemIdDef.Item_Id_bingjia}
     self.autoBuyVec = {false, false, false, false, true}   --枪刀弓骑四种兵种自动购买及兵甲购买
+    self.bRecruitSoldier = false   --是否本次打卡界面招募了士兵，用于招募士兵任务的判定
 
     self.Image_bg = csb:getChildByName("Image_bg")
     self.titleBg = self.Image_bg:getChildByName("titleBg")
@@ -144,6 +145,13 @@ end
 function AddSoldierLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_close then  
+            if self.bRecruitSoldier == true then  --是否本次打卡界面招募了士兵，用于招募士兵任务的判定
+                local storyData = g_pGameLayer.MenuLayer.storyData
+                --G_Log_Dump(storyData, "storyData = ")
+                if storyData and storyData.type == g_StoryType.Soldier then   --招募士兵任务
+                    g_pGameLayer:FinishStoryIntroduceByStep(storyData, g_StoryState.ActionFinish)  --5招募、建设、战斗等任务结束
+                end
+            end
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_AddSoldierLayer)
         elseif sender == self.Button_ok then    --招募
             local campMoney = g_HeroDataMgr:GetHeroCampMoney()
@@ -161,7 +169,6 @@ function AddSoldierLayer:touchEvent(sender, eventType)
                     table.insert(bagItemVec, {["itemId"] = tostring(self.soldierIdVec[5]), ["num"] = -1*equipNum})
                 end
 
-                local addSoldierCount = 0  --招募的士兵数量
                 local idVec = {g_ItemIdDef.Item_Id_qiangbing, g_ItemIdDef.Item_Id_daobing, g_ItemIdDef.Item_Id_gongbing, g_ItemIdDef.Item_Id_qibing}
                 for k=1, 4 do
                     local nodeStruct = self.bingNodeVec[k]
@@ -175,25 +182,14 @@ function AddSoldierLayer:touchEvent(sender, eventType)
                             table.insert(bagItemVec, {["itemId"] = tostring(self.soldierIdVec[k]), ["num"] = -1*equipNum})
                         end
                         --士兵增加
-                        addSoldierCount = addSoldierCount + nodeStruct.buyEquipCount
                         equipNum =  math.floor(nodeStruct.buyEquipCount) 
                         table.insert(bagItemVec, {["itemId"] = tostring(idVec[k]), ["num"] = equipNum})
                     end
                 end
                 g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML
 
-                local storyData = g_pGameLayer.MenuLayer.storyData
-                --G_Log_Dump(storyData, "storyData = ")
-                if storyData and storyData.type == g_StoryType.Soldier then   --招募士兵任务
-                    if addSoldierCount >= 3000 then
-                        g_pGameLayer:FinishStoryIntroduceByStep(storyData, g_StoryState.ActionFinish)  --5招募、建设、战斗等任务结束
-                    else
-                        g_pGameLayer:ShowScrollTips(lua_str_WarnTips20, g_ColorDef.Red)   --"招募士兵不足三千，请添加！"
-                        return
-                    end
-                end
-
-                g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_AddSoldierLayer)
+                self.bRecruitSoldier = true   --是否本次打卡界面招募了士兵，用于招募士兵任务的判定
+                self:initSoldierNodeView()
             else
                 g_pGameLayer:ShowScrollTips(lua_str_WarnTips19, g_ColorDef.Red)   --金币不足！
             end

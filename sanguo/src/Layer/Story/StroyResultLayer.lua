@@ -53,7 +53,7 @@ end
 
 --根据故事类型进行任务初始化
 function StroyResultLayer:initStoryTaskInfo()
-    G_Log_Info("initStoryTaskInfo(), self.storyData.type = %d",self.storyData.type)
+    --G_Log_Info("initStoryTaskInfo(), self.storyData.type = %d",self.storyData.type)
     if self.storyData.type == g_StoryType.Vedio then --视频剧情
         self.Button_ok:setTitleText("播 放")
     elseif self.storyData.type == g_StoryType.Move then --移至城池
@@ -198,7 +198,6 @@ function StroyResultLayer:touchEvent(sender, eventType)
             if self.showType == 1 then  --页面展示内容，0默认，1剧情内容， 2剧情奖励
                 self.storyData.storyPlayedState = g_StoryState.ShowInfo   --任务故事进程状态（3展示任务内容奖励完成）
                 g_pGameLayer:FinishStoryIntroduceByStep(self.storyData, g_StoryState.ShowInfo)  --完成当前剧情的指定步骤，并继续下一步
-
                 g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_StoryResultLayer)
             elseif self.showType == 2 then  --页面展示内容，0默认，1剧情内容， 2剧情奖励
                 local tipsArr = {}

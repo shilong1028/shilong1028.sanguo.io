@@ -94,6 +94,7 @@ function GeneralLayer:init()
     --部曲层
     local generalUnitNode = self.Panel_Info:getChildByName("generalUnitNode")
     self.generalUnitNode = generalUnitNode
+    self.bCreateNeUnit = false   --此次打开界面是否组建了新的部曲，用于部曲组建任务的判定
 
     self.unit_Image_headBg = generalUnitNode:getChildByName("Image_headBg")    --头像背景
     self.unit_Image_color = generalUnitNode:getChildByName("Image_color")   --品质颜色
@@ -607,6 +608,14 @@ end
 function GeneralLayer:touchEvent(sender, eventType)
     if eventType == ccui.TouchEventType.ended then  
         if sender == self.Button_close then 
+            if self.bCreateNeUnit == true then  --此次打开界面是否组建了新的部曲，用于部曲组建任务的判定
+                local storyData = g_pGameLayer.MenuLayer.storyData
+                --G_Log_Dump(storyData, "storyData = ")
+                if storyData and storyData.type == g_StoryType.Unit then   --任务
+                    g_pGameLayer:FinishStoryIntroduceByStep(storyData, g_StoryState.ActionFinish)  --5招募、建设、战斗等任务结束
+                end
+            end
+
             g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_GeneralLayer)
         elseif sender == self.Button_InfoRadio then 
             self:setRadioPanel(1)
@@ -640,6 +649,8 @@ function GeneralLayer:touchEvent(sender, eventType)
                     end
                     self.generalVec[self.lastSelOfficalIdx] = self.GeneralData
 
+                    self.bCreateNeUnit = true   --此次打开界面是否组建了新的部曲，用于部曲组建任务的判定
+
                     --G_Log_Dump(self.generalVec, "self.generalVec = ", 5)
                     local bagItemVec = {
                         {["itemId"] = unitData.bingIdStr, ["num"] = offset}
@@ -647,14 +658,6 @@ function GeneralLayer:touchEvent(sender, eventType)
                     g_HeroDataMgr:SetBagXMLData(bagItemVec)   --保存玩家背包物品数据到bagXML
 
                     self:initUnitRightUI(self.SelUnitIdx)
-
-                    local storyData = g_pGameLayer.MenuLayer.storyData
-                    --G_Log_Dump(storyData, "storyData = ")
-                    if storyData and storyData.type == g_StoryType.Unit then   --任务
-                        g_pGameLayer:FinishStoryIntroduceByStep(storyData, g_StoryState.ActionFinish)  --5招募、建设、战斗等任务结束
-
-                        g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_GeneralLayer)
-                    end
                 end
             end
         end

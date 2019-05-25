@@ -285,9 +285,9 @@ function GameLayer:handleStoryNextIntroduce(storyData)
     local storyPlayedState = g_HeroDataMgr:GetStoryPlayedState()
     G_Log_Info("handleStoryNextIntroduce(), storyPlayedState = %d", storyPlayedState)
     --G_Log_Traceback()
-    if storyPlayedState == g_StoryState.Init then  --任务故事进程状态（0初始状态）
+    if storyPlayedState == g_StoryState.Init then  --0任务故事进程状态（0初始状态）
         self:showStoryTalkLayer(storyData)
-    elseif storyPlayedState == g_StoryState.TextFinish then   --任务故事进程状态（1文字播放完成状态）
+    elseif storyPlayedState == g_StoryState.TextFinish then   --1任务故事进程状态（1文字播放完成状态）
         self:FinishStoryIntroduceByStep(storyData, g_StoryState.AddGeneral)
         for k, generalId in pairs(storyData.generalVec) do   --武将来投
             local generalData = g_pTBLMgr:getGeneralConfigTBLDataById(generalId) 
@@ -296,11 +296,11 @@ function GameLayer:handleStoryNextIntroduce(storyData)
                 self:showAddGeneralLayer(generalData)  --展示武将来投界面
             end
         end
-    elseif storyPlayedState == g_StoryState.AddGeneral then   --任务故事进程状态（2武将来投完成状态）
+    elseif storyPlayedState == g_StoryState.AddGeneral then   --2任务故事进程状态（2武将来投完成状态或任务播放完毕）
         self:showStoryResultLayer(storyData.storyId)  --展示显示剧情信息或剧情奖励
-    elseif storyPlayedState == g_StoryState.ShowInfo then  --任务故事进程状态（3展示任务内容奖励）
+    elseif storyPlayedState == g_StoryState.ShowInfo then  --3任务故事进程状态（3展示任务内容奖励或战斗展示）
         self:hanldeStoryTaskOpt(storyData)  --根据故事类型进行任务操作
-    elseif storyPlayedState == g_StoryState.AutoPath then  --任务故事进程状态（4寻路完成）
+    elseif storyPlayedState == g_StoryState.AutoPath then  --4任务故事进程状态（4寻路完成）
         local mapLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
         if mapLayer then
             local bReach = mapLayer:CheckStoryDistanceByRolePos(storyData)  --根据玩家位置判定任务完成度
@@ -314,13 +314,13 @@ function GameLayer:handleStoryNextIntroduce(storyData)
                 mapLayer:autoPathMapByCity(storyData.targetCity)   --寻路
             end
         end
-    elseif storyPlayedState == g_StoryState.ActionFinish then  --任务故事进程状态（5招募、建设、战斗等任务结束）
+    elseif storyPlayedState == g_StoryState.ActionFinish then  --5任务故事进程状态（5招募、建设、战斗等任务结束）
         if string.len(storyData.battleIdStr) > 1 then   
             self:showBattleInfoLayer(storyData.storyId)  --触发剧情战斗
         else
             self:showStoryResultLayer(storyData.storyId)  --显示剧情奖励
         end
-    elseif storyPlayedState == g_StoryState.AllFinish then  --任务故事进程状态（6最终完成）
+    elseif storyPlayedState == g_StoryState.AllFinish then  --6任务故事进程状态（6最终完成）
         self:StoryFinishCallBack(storyData.storyId)  --下一个剧情
     end
 end
@@ -328,22 +328,25 @@ end
 --根据故事类型进行任务操作
 function GameLayer:hanldeStoryTaskOpt(storyData)
     G_Log_Info("hanldeStoryTaskOpt(), storyData.type = %d",storyData.type)
-    if storyData.type == g_StoryType.Vedio then --视频剧情
+    --G_Log_Dump(storyData, "storyData = ")
+    if storyData.type == g_StoryType.Vedio then --1视频剧情
 
-    elseif storyData.type == g_StoryType.Move then --移至城池
+    elseif storyData.type == g_StoryType.Move then --2移至城池
         local mapLayer = self:GetLayerByUId(g_GameLayerTag.LAYER_TAG_CHINAMAP)
         if mapLayer then
             mapLayer:autoPathMapByCity(storyData.targetCity)
         end
-    elseif storyData.type == g_StoryType.Soldier then --招募士兵
+    elseif storyData.type == g_StoryType.Soldier then --3招募士兵
         self:showAddSoldierLayer() 
-    elseif storyData.type == g_StoryType.Unit then  --组建部曲
+    elseif storyData.type == g_StoryType.Unit then  --4组建部曲
         self:showGeneralLayer(2)   --1--武将信息，2--武将部曲，3--武将技能
-    elseif storyData.type == g_StoryType.Fight then --参加战斗
+    elseif storyData.type == g_StoryType.Fight then --5参加战斗
+        if string.len(storyData.battleIdStr) > 1 then   
+            self:showBattleInfoLayer(storyData.storyId)  --触发剧情战斗
+        end
+    elseif storyData.type == g_StoryType.Offical then --6封官拜将
 
-    elseif storyData.type == g_StoryType.Offical then --封官拜将
-
-    elseif storyData.type == g_StoryType.Build then  --主城建设
+    elseif storyData.type == g_StoryType.Build then  --7主城建设
 
     end
 end
