@@ -14,7 +14,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.5000" Y="0.5000" />
             <PreSize X="1.0000" Y="1.0000" />
-            <FileData Type="Normal" Path="img/studio_loginBg.png" Plist="" />
+            <FileData Type="Normal" Path="img/studio_loginBg2.png" Plist="" />
           </AbstractNodeData>
           <AbstractNodeData Name="Text_title" ActionTag="-656111089" Tag="13" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="493.0000" RightMargin="493.0000" TopMargin="98.0000" BottomMargin="530.0000" FontSize="72" LabelText="汉末英雄" OutlineSize="5" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
             <Size X="294.0000" Y="92.0000" />

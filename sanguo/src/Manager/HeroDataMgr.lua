@@ -782,7 +782,7 @@ function HeroDataMgr:SetBagXMLData(itemVec)
     end
 
     if bItemIdChanged == true then  --总物品有增加的新物品或删除的物品
-        G_Log_Dump(self.heroData.bagVecData, "self.heroData.bagVecData = ")
+        --G_Log_Dump(self.heroData.bagVecData, "self.heroData.bagVecData = ")
         local totalIdStr = ""
         local bNeedSub = false   --是否需要移除最后一个;号
         for k, data in pairs(self.heroData.bagVecData) do

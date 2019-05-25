@@ -50,6 +50,7 @@
           <Image Name="studio_layerBg.png" />
           <Image Name="studio_layerBg2.png" />
           <Image Name="studio_loginBg.png" />
+          <Image Name="studio_loginBg2.png" />
           <Image Name="studio_xiangke.jpg" />
           <Image Name="wujianglaitou.jpg" />
         </Folder>

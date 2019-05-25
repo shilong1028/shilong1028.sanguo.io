@@ -423,12 +423,13 @@ function MainMenuLayer:touchEvent(sender, eventType)
             -- end
         elseif sender == self.Button_jingji then   --竞技场
         elseif sender == self.Button_peiyang then  --士兵培养
+            g_pGameLayer:showAddSoldierLayer()   --招募士兵界面
         elseif sender == self.Button_beibao then   --背包武库
             g_pGameLayer:showBagLayer()
         elseif sender == self.Button_jiangling then  --将领部队
             g_pGameLayer:showGeneralLayer(1)  --1--武将信息，2--武将部曲，3--武将技能
         elseif sender == self.Button_lianmeng then   --联盟
-            cc.Application:getInstance():openURL("http://blog.csdn.net/dcliu2012/article/details/45313653")  
+            cc.Application:getInstance():openURL("https://www.ali213.net/zt/twtk/")  
         elseif sender == self.Button_shejiao then   --社交好友
         elseif sender == self.Button_shezhi then   --设置
             local function okCallBack()

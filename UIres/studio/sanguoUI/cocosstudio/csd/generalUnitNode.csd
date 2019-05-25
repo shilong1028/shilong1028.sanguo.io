@@ -250,12 +250,12 @@
             <BallPressedData Type="PlistSubImage" Path="public_red_dot.png" Plist="plist/PublicRes.plist" />
             <BallDisabledData Type="PlistSubImage" Path="public_red_dot2.png" Plist="plist/PublicRes.plist" />
           </AbstractNodeData>
-          <AbstractNodeData Name="soliderDesc" ActionTag="1719353611" Tag="350" IconVisible="False" LeftMargin="20.0000" RightMargin="-380.0000" TopMargin="-20.0000" BottomMargin="-60.0000" IsCustomSize="True" FontSize="18" LabelText="枪戟兵拥有长枪或戟矛，护甲厚、防御高、攻击适中、行动缓慢，可以克制骑兵，但受到刀兵克制。枪戟兵攻城战，战斗力都没有额外加成。" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
-            <Size X="360.0000" Y="80.0000" />
+          <AbstractNodeData Name="soliderDesc" ActionTag="1719353611" Tag="350" IconVisible="False" LeftMargin="20.0000" RightMargin="-370.0000" TopMargin="-20.0000" BottomMargin="-60.0000" IsCustomSize="True" FontSize="18" LabelText="枪戟兵拥有长枪或戟矛，护甲厚、防御高、攻击适中、行动缓慢，可以克制骑兵，但受到刀兵克制。枪戟兵攻城战，战斗力都没有额外加成。" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="350.0000" Y="80.0000" />
             <AnchorPoint ScaleY="1.0000" />
             <Position X="20.0000" Y="20.0000" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="255" G="165" B="0" />
+            <CColor A="255" R="0" G="0" B="0" />
             <PrePosition />
             <PreSize X="0.0000" Y="0.0000" />
             <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
