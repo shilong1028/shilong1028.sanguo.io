@@ -159,7 +159,7 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
                     head:setScale(scale)
                     head:setPosition(cc.p(leftHeadBeginPos.x + offsetX*self.myUnitCount, leftHeadBeginPos.y))
                     self.csbNode:addChild(head, 10)
-                    self.myHeadVec[k] = {["Icon"]=head, ["idStr"]=data.generalIdStr}
+                    self.myHeadVec[data.zhenPos] = {["Icon"]=head, ["idStr"]=data.generalIdStr}
                 end
             end
         end
@@ -167,7 +167,7 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
 
     self.enemyUnitCount = 0
     self.enemyBingCount = 0
-    for k, data in pairs(self.enemyZhenXingData) do
+    for k, data in pairs(self.enemyZhenXingData) do  --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下
         if data ~= -1 then
             self.enemyUnitCount = self.enemyUnitCount + 1
             self.enemyBingCount = self.enemyBingCount + data.unitData.bingCount
@@ -176,13 +176,13 @@ function BattleMenuPage:initBattleData(parent, enemyUnitVec)
                 if data.zhenPos == 5 then
                     self.Image_headRight:loadTexture(string.format("Head/%s.png", data.generalIdStr), ccui.TextureResType.localType)
                     self.Image_headRight:setVisible(true)
-                    self.enemyHeadVec[5] = {["Icon"]=self.Image_headLeft, ["idStr"]=data.generalIdStr}
+                    self.enemyHeadVec[5] = {["Icon"]=self.Image_headRight, ["idStr"]=data.generalIdStr}
                 else
                     local head = cc.Sprite:create(string.format("Head/%s.png", data.generalIdStr))
                     head:setScale(scale)
                     head:setPosition(cc.p(rightHeadBeginPos.x - offsetX*self.enemyUnitCount, rightHeadBeginPos.y))
                     self.csbNode:addChild(head, 10)
-                    self.enemyHeadVec[k] = {["Icon"]=head, ["idStr"]=data.generalIdStr}
+                    self.enemyHeadVec[data.zhenPos] = {["Icon"]=head, ["idStr"]=data.generalIdStr}
                 end
             end
         end
@@ -232,6 +232,7 @@ end
 
 --战场地图中部曲或营寨消亡的处理
 function BattleMenuPage:handleNodeDied(generalIdStr, officalType)   --敌人-1，友军0，我军1
+    G_Log_Info("handleNodeDied(), generalIdStr = %s, officalType = %d",generalIdStr, officalType)
     local headVec = self.myHeadVec
     local offsetX = -50
     if officalType == -1 then
@@ -240,22 +241,19 @@ function BattleMenuPage:handleNodeDied(generalIdStr, officalType)   --敌人-1�
     end
 
     local delIdx = 0
-    for k, data in pairs(headVec) do
-        if data ~= -1 and data.idStr == generalIdStr then
-            data.Icon:removeFromParent(true)
-            headVec[k] = -1
-            delIdx = k
-            break;
-        end
-    end
-
-    if delIdx > 0 and delIdx ~= 5 then   --移动头像
-        for k, data in pairs(headVec) do
-            if data ~= -1 and k > delIdx and k ~= 5 then
-                data.Icon:runAction(cc.MoveBy(0.1, cc.p(offsetX, 0)))
+    for k, data in pairs(headVec) do   --{["Icon"]=head, ["idStr"]=data.generalIdStr}
+        if type(data) == "table" then
+            if data.idStr == generalIdStr then
+                data.Icon:removeFromParent(true)
+                headVec[k] = -1
+                delIdx = k
+                break
+            -- elseif delIdx > 0 and k ~= 5 and k > delIdx then --移动顶部未阵亡的头像（主帅头像不移动）
+            --     data.Icon:runAction(cc.MoveBy(0.1, cc.p(offsetX, 0)))
             end
         end
     end
+
 end
 
 function BattleMenuPage:touchEvent(sender, eventType)

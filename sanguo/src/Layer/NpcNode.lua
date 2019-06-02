@@ -188,8 +188,8 @@ end
 function NpcNode:DelAtkLimitUpdateEntry()
     if self.atkLimitEntry then
         g_Scheduler:unscheduleScriptEntry(self.atkLimitEntry)
-        self.atkLimitEntry = nil
     end
+    self.atkLimitEntry = nil
 end
 
 --战场营寨自动探测敌军计时器(战场地图初始化营寨和部曲之后，在战场层调用)
@@ -211,7 +211,7 @@ function NpcNode:atkLimitUpdate(dt)
         local bCatchEnemy = false
         local curPos = self:getNodePos()
 
-        if self.enemyNode then    --攻击对象节点   
+        if self.enemyNode ~= nil then    --攻击对象节点   
             local enemyPos = self.enemyNode:getNodePos()
             local len = g_pMapMgr:CalcDistance(curPos, enemyPos)  
             if len <= g_FightingLen.YingLen then

@@ -799,7 +799,7 @@ function ZhenXingLayer:touchEvent(sender, eventType)
             local attZhenXingData = g_HeroDataMgr:getAttackZheXMLData()   --玩家攻击阵型数据
             local bHaveData = false;
             for k, zhenD in pairs(attZhenXingData) do
-                if zhenD and zhenD ~= -1 then
+                if zhenD and type(zhenD) == "table" then
                     bHaveData = true
                     break
                 end
@@ -816,7 +816,7 @@ function ZhenXingLayer:touchEvent(sender, eventType)
             local attZhenXingData = g_HeroDataMgr:getAttackZheXMLData()   --玩家攻击阵型数据
             local bHaveData = false;
             for k, zhenD in pairs(attZhenXingData) do
-                if zhenD and zhenD ~= -1 then
+                if zhenD and type(zhenD) == "table" then
                     bHaveData = true
                     break
                 end

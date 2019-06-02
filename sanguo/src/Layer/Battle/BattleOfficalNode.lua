@@ -562,8 +562,12 @@ end
 
 --处理自身节点消亡（通知我方被攻击的敌方部曲列表中节点）
 function BattleOfficalNode:HandleMyselfDied()
-    --G_Log_Info("BattleOfficalNode:HandleMyselfDied()")
+    G_Log_Info("BattleOfficalNode:HandleMyselfDied()")
     self.bMyselfDied = true
+    self:DelAtkLimitUpdateEntry()   --部曲的安全探测计时器更新
+    self:DelAutoPathUpdateEntry()   --自动寻路移动计时器更新
+    self:DelFightingCdUpdateEntry()  --部曲的物理攻击速率计时器更新  
+
     if self.parentMapPage then   --节点所在的战场地图层
         self.parentMapPage:handleNodeDied(self)  --战场地图中部曲或营寨消亡的处理
     end
