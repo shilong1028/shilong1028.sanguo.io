@@ -914,7 +914,7 @@ function TBLMgr:LoadBattleEnemyConfigTBL()
 	self.battleEnemyConfigVec = {}
 	local Count = stream:ReadWord()
 	for k=1, Count do
-		local enemyConfig = {}
+		local enemyConfig = g_tbl_battleEnemyConfig:new()
 		enemyConfig.id_str = stream:ReadString()    --敌部曲ID字符串
 		enemyConfig.zhenUnit = g_tbl_ZhenUnitStruct:new()
 		enemyConfig.zhenUnit.zhenPos = 0   --1前锋营\2左护军\3右护军\4后卫营\5中军主帅\6中军武将上\7中军武将下

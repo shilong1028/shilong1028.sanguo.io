@@ -62,30 +62,7 @@ function BattleInfoLayer:initStoryInfo(storyId)
 
         self.Text_info:setString("    "..self.storyData.desc)
 
-        for k, enemyId in pairs(self.storyData.enemyIdVec) do
-            local enemyData = g_pTBLMgr:getGeneralConfigTBLDataById(enemyId) 
-            if enemyData then
-                local officerCell = SmallOfficerCell:new()
-                officerCell:initData(enemyData, k) 
-
-                local cur_item = ccui.Layout:create()
-                cur_item:setContentSize(officerCell:getContentSize())
-                cur_item:addChild(officerCell)
-                cur_item:setEnabled(false)
-                self.ListView_enemy:addChild(cur_item)
-            end
-        end
-        local len = #self.storyData.enemyIdVec
-        local enemyInnerWidth = len*90 + 10*(len-1)
-        if enemyInnerWidth < self.ListView_enemySize.width then
-            self.ListView_enemy:setContentSize(cc.size(enemyInnerWidth, self.ListView_enemySize.height))
-            self.ListView_enemy:setBounceEnabled(false)
-        else
-            self.ListView_enemy:setContentSize(self.ListView_enemySize)
-            self.ListView_enemy:setBounceEnabled(true)
-        end
-        self.ListView_enemy:forceDoLayout()   --forceDoLayout   --refreshView
-
+        --奖励
         for k, reward in pairs(self.storyData.rewardsVec) do
             local itemId = reward.itemId    --{["itemId"] = strVec[1], ["num"] = strVec[2]}
             local itemData = g_pTBLMgr:getItemConfigTBLDataById(itemId) 
@@ -111,6 +88,35 @@ function BattleInfoLayer:initStoryInfo(storyId)
             self.ListView_reward:setBounceEnabled(true)
         end
         self.ListView_reward:forceDoLayout()   --forceDoLayout   --refreshView
+
+        --敌人
+        local battleInfo = g_pTBLMgr:getBattleMapConfigById(self.storyData.battleIdStr)   --战斗ID字符串，"0"标识无战斗
+        for k, enemy in pairs(battleInfo.enemyVec) do  --{["idStr"]=st[1], ["atkTime"]=tonumber(st[2])}
+            local enemyData = g_pTBLMgr:getBattleEnemyConfigById(enemy.idStr)
+            if enemyData and enemyData.zhenUnit then
+                local generalData = enemyData.zhenUnit.generalData
+                if generalData then
+                    local officerCell = SmallOfficerCell:new()
+                    officerCell:initData(generalData, k) 
+
+                    local cur_item = ccui.Layout:create()
+                    cur_item:setContentSize(officerCell:getContentSize())
+                    cur_item:addChild(officerCell)
+                    cur_item:setEnabled(false)
+                    self.ListView_enemy:addChild(cur_item)
+                end
+            end
+        end
+        local len = #battleInfo.enemyVec
+        local enemyInnerWidth = len*90 + 10*(len-1)
+        if enemyInnerWidth < self.ListView_enemySize.width then
+            self.ListView_enemy:setContentSize(cc.size(enemyInnerWidth, self.ListView_enemySize.height))
+            self.ListView_enemy:setBounceEnabled(false)
+        else
+            self.ListView_enemy:setContentSize(self.ListView_enemySize)
+            self.ListView_enemy:setBounceEnabled(true)
+        end
+        self.ListView_enemy:forceDoLayout()   --forceDoLayout   --refreshView
     end
 end
 

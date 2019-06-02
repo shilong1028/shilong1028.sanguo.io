@@ -24,6 +24,7 @@ lua_str_WarnTips19 = "金币不足！"
 lua_str_WarnTips20 = "招募士兵不足三千，请添加！"
 lua_str_WarnTips21 = "兵甲库存不足！"
 lua_str_WarnTips22 = "装备库存不足！"
+lua_str_WarnTips23 = "不存在阵型数据，请先设定阵型！"
 
 lua_Dialog_TitleStr1 = "提  示"
 lua_Dialog_TitleStr2 = "帮  助"

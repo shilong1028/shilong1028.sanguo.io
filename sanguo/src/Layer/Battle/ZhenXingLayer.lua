@@ -114,6 +114,7 @@ function ZhenXingLayer:init()
     self.bu_Node_zhen_zhongjun2 = self.bu_Node_zhen:getChildByName("Image_zhongjun2")   --布阵UI节点中的中军将2（下）
     self.bu_Node_zhen_zhongjun2:addTouchEventListener(handler(self,self.touchEvent))
 
+    self.bu_Node_Text_tips = self.buZhenNode:getChildByName("Text_tips")  --先选择阵型方可布阵提示
     self.bu_Node_zhen_save = self.buZhenNode:getChildByName("Button_save")      --保存阵型
     self.bu_Node_zhen_save:addTouchEventListener(handler(self,self.touchEvent))
     self.bu_Node_zhen_cancel = self.buZhenNode:getChildByName("Button_cancel")       --部曲下阵
@@ -241,10 +242,12 @@ function ZhenXingLayer:setRadioPanel(idx)
             self.bu_Node_zhen_save:setVisible(true)      --保存阵型
             self.bu_Node_zhen_cancel:setVisible(true)       --部曲下阵
             self.bu_Node_zhen_fight:setVisible(true)      --部曲上阵
+            self.bu_Node_Text_tips:setVisible(false)  --先选择阵型方可布阵提示
         else
             self.bu_Node_zhen_save:setVisible(false)      --保存阵型
             self.bu_Node_zhen_cancel:setVisible(false)       --部曲下阵
             self.bu_Node_zhen_fight:setVisible(false)      --部曲上阵
+            self.bu_Node_Text_tips:setVisible(true)  --先选择阵型方可布阵提示
         end
 
         if not self.generalVec or not self.generalCellVec then
@@ -794,14 +797,37 @@ function ZhenXingLayer:touchEvent(sender, eventType)
 
         elseif sender == self.xuan_Button_left then   --选阵界面的选中左侧攻击阵型
             local attZhenXingData = g_HeroDataMgr:getAttackZheXMLData()   --玩家攻击阵型数据
-            g_BattleDataMgr:setBattleZhenXingData(attZhenXingData)
-            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
-            g_pGameLayer:ShowGameBattleMapLayer()   --进入战场
+            local bHaveData = false;
+            for k, zhenD in pairs(attZhenXingData) do
+                if zhenD and zhenD ~= -1 then
+                    bHaveData = true
+                    break
+                end
+            end
+            if bHaveData == true then
+                g_BattleDataMgr:setBattleZhenXingData(attZhenXingData)
+                g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
+                g_pGameLayer:ShowGameBattleMapLayer()   --进入战场
+            else
+                g_pGameLayer:ShowScrollTips(lua_str_WarnTips23, g_ColorDef.Red, g_defaultTipsFontSize)  --"不存在阵型数据，请先设定阵型！"
+            end
         elseif sender == self.xuan_Button_right then   --选阵界面的选中右侧防御阵型
             local defZhenXingData = g_HeroDataMgr:getDefendZheXMLData()   --玩家防御阵型数据
-            g_BattleDataMgr:setBattleZhenXingData(defZhenXingData)
-            g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
-            g_pGameLayer:ShowGameBattleMapLayer()   --进入战场
+            local attZhenXingData = g_HeroDataMgr:getAttackZheXMLData()   --玩家攻击阵型数据
+            local bHaveData = false;
+            for k, zhenD in pairs(attZhenXingData) do
+                if zhenD and zhenD ~= -1 then
+                    bHaveData = true
+                    break
+                end
+            end
+            if bHaveData == true then
+                g_BattleDataMgr:setBattleZhenXingData(defZhenXingData)
+                g_pGameLayer:RemoveChildByUId(g_GameLayerTag.LAYER_TAG_ZhenXingLayer)
+                g_pGameLayer:ShowGameBattleMapLayer()   --进入战场
+            else
+                g_pGameLayer:ShowScrollTips(lua_str_WarnTips23, g_ColorDef.Red, g_defaultTipsFontSize)  --"不存在阵型数据，请先设定阵型！"
+            end
         elseif sender == self.xuan_Button_AttEdit then   --选阵界面的编辑攻击阵型
             self.bZhenEditType = 1   --布阵界面编辑的阵型类型，0默认，1攻击阵型，2防御阵型
             self:setRadioPanel(2)

@@ -247,6 +247,46 @@ function  g_tbl_ZhenUnitStruct:ctor()
 	self.generalData = nil   --营寨武将数据
 end
 
+--战斗敌人部曲结构类
+g_tbl_battleEnemyConfig = class("g_tbl_battleEnemyConfig",__BaseStruct)
+function  g_tbl_battleEnemyConfig:ctor()
+	self.id_str = ""    --敌部曲ID字符串
+	self.zhenUnit = nil     --敌部曲数据 g_tbl_ZhenUnitStruct
+end
+
+--战斗战场结构类
+g_tbl_battleMapConfig = class("g_tbl_battleMapConfig",__BaseStruct)
+function  g_tbl_battleMapConfig:ctor()
+	self.id_str = ""    --战斗ID字符串
+	self.name = ""     --战斗名称
+	self.mapId = 0    --战斗战场ID
+	self.targetStr = ""  --战斗目标
+	self.rewardsVec = {}   --战斗奖励集合
+	self.yingzhaiVec = {}    --营寨集合
+	self.enemyVec = {}     --敌人部曲集合{idStr部曲ID, atkTime主动进攻时间，-1不进攻}
+end
+
+--战斗结果结构类
+g_tbl_battleRusultStruct = class("g_tbl_battleRusultStruct",__BaseStruct)
+function  g_tbl_battleRusultStruct:ctor()
+	self.battleName = ""    --战斗名称
+	self.battleDesc = ""     --战斗描述
+
+	self.starNum = 0  --战斗星级，0为失败
+	--我方主将ID，伤兵，耗金，耗粮
+	self.myGeneralIdStr = ""
+	self.myLoseBingNum = 0
+	self.myLoseMoneyNum = 0
+	self.myLoseFoodNum = 0
+	--敌方主将ID，伤兵，耗金，耗粮
+	self.enemyGeneralIdStr = ""
+	self.enemyLoseBingNum = 0
+	self.enemyLoseMoneyNum = 0
+	self.enemyLoseFoodNum = 0
+
+	self.rewardsVec = {}   --战斗奖励集合
+end
+
 --物品装备表结构类
 g_tbl_itemConfig = class("g_tbl_itemConfig",__BaseStruct)
 function  g_tbl_itemConfig:ctor()
@@ -354,37 +394,5 @@ function  g_tbl_skillConfig:ctor()
 	self.desc = ""    --技能介绍
 end
 
---战斗战场结构类
-g_tbl_battleMapConfig = class("g_tbl_battleMapConfig",__BaseStruct)
-function  g_tbl_battleMapConfig:ctor()
-	self.id_str = ""    --战斗ID字符串
-	self.name = ""     --战斗名称
-	self.mapId = 0    --战斗战场ID
-	self.targetStr = ""  --战斗目标
-	self.rewardsVec = {}   --战斗奖励集合
-	self.yingzhaiVec = {}    --营寨集合
-	self.enemyVec = {}     --敌人部曲集合{idStr部曲ID, atkTime主动进攻时间，-1不进攻}
-end
-
---战斗结果结构类
-g_tbl_battleRusultStruct = class("g_tbl_battleRusultStruct",__BaseStruct)
-function  g_tbl_battleRusultStruct:ctor()
-	self.battleName = ""    --战斗名称
-	self.battleDesc = ""     --战斗描述
-
-	self.starNum = 0  --战斗星级，0为失败
-	--我方主将ID，伤兵，耗金，耗粮
-	self.myGeneralIdStr = ""
-	self.myLoseBingNum = 0
-	self.myLoseMoneyNum = 0
-	self.myLoseFoodNum = 0
-	--敌方主将ID，伤兵，耗金，耗粮
-	self.enemyGeneralIdStr = ""
-	self.enemyLoseBingNum = 0
-	self.enemyLoseMoneyNum = 0
-	self.enemyLoseFoodNum = 0
-
-	self.rewardsVec = {}   --战斗奖励集合
-end
 
 

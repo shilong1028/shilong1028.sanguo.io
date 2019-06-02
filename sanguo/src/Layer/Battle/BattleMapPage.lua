@@ -305,14 +305,6 @@ function BattleMapPage:initBattleMapImgData(parent)
     	G_Log_Error("MapLayer--battleMapData = nil")
     	return
     end
-    --[[
-    	battleMapData.id_str = ""    --战斗ID字符串
-		battleMapData.name = ""     --战斗名称
-		battleMapData.mapId = 0    --战斗战场ID
-		battleMapData.rewardsVec = {}   --战斗奖励集合
-		battleMapData.yingzhaiVec = {}    --营寨集合
-		battleMapData.enemyVec = {}     --敌人部曲集合{idStr部曲ID, atkTime主动进攻时间，-1不进攻}
-    ]]
 
     local battleMapId = self.battleMapData.mapId
     self.mapConfigData = nil

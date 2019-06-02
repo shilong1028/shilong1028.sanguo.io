@@ -505,6 +505,18 @@
             <OutlineColor A="255" R="165" G="42" B="42" />
             <ShadowColor A="255" R="110" G="110" B="110" />
           </AbstractNodeData>
+          <AbstractNodeData Name="Text_tips" ActionTag="1000743732" Tag="208" IconVisible="False" LeftMargin="-401.2918" RightMargin="55.2918" TopMargin="79.8096" BottomMargin="-151.8096" FontSize="30" LabelText="注意，先选择攻击阵型或&#xA;防御阵型，方可布阵操作！" OutlineEnabled="True" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
+            <Size X="346.0000" Y="72.0000" />
+            <AnchorPoint ScaleY="0.5000" />
+            <Position X="-401.2918" Y="-115.8096" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="165" B="0" />
+            <PrePosition />
+            <PreSize X="0.0000" Y="0.0000" />
+            <FontResource Type="Normal" Path="font/simkai.ttf" Plist="" />
+            <OutlineColor A="255" R="165" G="42" B="42" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
         </Children>
       </ObjectData>
     </Content>
