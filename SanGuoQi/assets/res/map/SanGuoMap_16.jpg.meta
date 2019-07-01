@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "518f5715-7b9a-482b-95d4-3404c76beb78",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "SanGuoMap_16": {
+      "ver": "1.0.4",
+      "uuid": "c29ec917-a2c5-4c90-9158-865210830224",
+      "rawTextureUuid": "518f5715-7b9a-482b-95d4-3404c76beb78",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 961,
+      "height": 877,
+      "rawWidth": 961,
+      "rawHeight": 877,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

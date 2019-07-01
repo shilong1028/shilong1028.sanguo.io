@@ -1,0 +1,100 @@
+[1]
+type = 1
+targetCity = 403
+name = 黄巾之乱
+vedio = huangjinqiyi
+battle = 
+reward = 
+talk = 101;102;103
+desc = 汉灵帝光和七年，全国大旱，颗粒不收而赋税不减，冀州巨鹿人张角趁此机会，掀起了推翻汉王朝的大规模起义。
+
+[2]
+type = 2
+targetCity = 411
+name = 拜官募兵
+vedio = 
+battle = 
+reward = 
+talk = 104;105
+desc = 朝廷册封曹操为骑都尉，命与皇甫嵩等人合军进攻颍川的黄巾军。
+
+[3]
+type = 5
+targetCity = 413
+name = 长社之战
+vedio = 
+battle = 101
+reward = 
+talk = 106;107
+desc = 波才率部击败朱儁，进围皇甫蒿于长社。皇甫蒿与朱儁、曹操三军合击，斩杀黄巾军万人，取得长社大捷。
+
+[4]
+type = 3
+targetCity = 403
+name = 西园募兵
+vedio = 
+battle = 
+reward = 
+talk = 108;109;110;111
+desc = 汉灵帝为巩固统治，设置西园八校尉，曹操因其家世被任命为八校尉中的典军校尉。
+
+[5]
+type = 1
+targetCity = 403
+name = 董卓入京
+vedio = dongzhuorujing
+battle = 
+reward = 
+talk = 112;113
+desc = 灵帝崩，大将军何进召并州牧董卓入洛。宦官杀何进，袁绍尽诛宦官，董卓迎少帝于北邙。
+
+[6]
+type = 4
+targetCity = 312
+name = 陈留举兵
+vedio = 
+battle = 
+reward = 
+talk = 114;115
+desc = 董卓令李儒毒死弘农王(少帝)，各路诸侯起兵反董卓。董卓焚洛阳，迁都长安，董卓自留洛阳抗击关东军。
+
+[7]
+type = 5
+targetCity = 9016
+name = 荥阳之战
+vedio = 
+battle = 102
+reward = 
+talk = 116;117
+desc = 曹操率兵向西，张邈派卫兹领兵随曹操。曹操行至荥阳汴水，与董卓大将徐荣交锋，因士兵数量悬殊，曹操大败。
+
+[8]
+type = 5
+targetCity = 316
+name = 东郡之战
+vedio = 
+battle = 103
+reward = 
+talk = 118;119
+desc = 黑山贼于毒、白绕、眭固、於扶罗等十余万众攻魏郡、东郡，王肱不能御，曹操引兵入东郡，击白绕于濮阳，破之。
+
+[9]
+type = 1
+targetCity = 405
+name = 诸侯割据
+vedio = zhuhougeju
+battle = 
+reward = 
+talk = 120;121;122
+desc = 袁术与袁绍开战，袁术向公孙瓒求援，同时联合陶谦，用来威逼袁绍。至此，诸侯割据形成。
+
+[10]
+type = 2
+targetCity = 315
+name = 开启主城
+vedio = 
+battle = 
+reward = 
+talk = 201;202;203
+desc = 鲍信等人至东郡迎曹操领兖州牧。击败青州黄巾军于寿张东，收编黄巾军三十余万人，建“青州兵”，实力得以壮大。
+

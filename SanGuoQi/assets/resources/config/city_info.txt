@@ -1,0 +1,1359 @@
+[101]
+name = 辽西郡
+type = 3
+pos_x = 1580
+pos_y = 2300
+population = 44150
+near_citys = 102;5003;9001
+counties = 昌黎;阳乐;令支
+desc = 辽西郡，战国燕置。秦汉治所在阳乐县，辖境相当今河北迁西、乐亭以东、长城以南，辽宁松岭山以东、大凌河下游以西地区。
+
+[102]
+name = 辽东郡
+type = 2
+pos_x = 1875
+pos_y = 2375
+population = 64158
+near_citys = 101;103;104;5002
+counties = 襄平;安市;险渎;侯城;西安平
+desc = 辽东郡，战国时期燕国燕置。郡治襄平城，辖今辽宁大凌河以东，开原市以南，朝鲜清川江下游以北地区。
+
+[103]
+name = 玄菟郡
+type = 3
+pos_x = 2410
+pos_y = 2255
+population = 10594
+near_citys = 102;104;5002
+counties = 夫租;西盖马;上殷台
+desc = 玄菟郡是汉四郡之一，大约是今盖马高原及其周边平原、朝鲜咸镜南道、咸镜北道以及中国辽宁东部、吉林省东部一带。
+
+[104]
+name = 乐浪郡
+type = 2
+pos_x = 2340
+pos_y = 1865
+population = 61492
+near_citys = 102;103;5001
+counties = 王险;带方;增地
+desc = 乐浪郡是汉四郡之一。全郡管辖今朝鲜北部和中部，治所在卫氏朝鲜都城王险城。
+
+[105]
+name = 右北平
+type = 3
+pos_x = 1065
+pos_y = 1995
+population = 29170
+near_citys = 106;9001
+counties = 土垠;徐无;无终
+desc = 右北平郡，战国燕置，东汉治土垠县。辖境约为今北京市东北部、河北省东北部、辽宁省西部、内蒙古赤峰市南部等地。
+
+[106]
+name = 广阳郡
+type = 2
+pos_x = 810
+pos_y = 2050
+population = 64550
+near_citys = 105;107;110
+counties = 蓟城;广阳;安次;昌平;军都
+desc = 广阳郡以春秋战国的燕国国都蓟县为中心，有幽州刺史台。治蓟县，所领蓟县、良乡县在今北京市境。
+
+[107]
+name = 渔阳郡
+type = 3
+pos_x = 760
+pos_y = 2225
+population = 48456
+near_citys = 106;9002
+counties = 渔阳;平谷;犷平
+desc = 渔阳郡，秦置，治渔阳县。郡范围历代有变化，曾包括今天北京市、河北省、天津市三省市的部分地区。
+
+[108]
+name = 上谷郡
+type = 3
+pos_x = 445
+pos_y = 2290
+population = 10352
+near_citys = 109;9002
+counties = 沮阳;涿鹿;居庸
+desc = 上谷郡，战国燕置，治所沮阳县。所辖范围大致包括今张家口市怀来县、宣化、涿鹿县、赤城县、沽源县以及北京延庆县等地。
+
+[109]
+name = 代郡
+type = 3
+pos_x = 210
+pos_y = 2155
+population = 20123
+near_citys = 108;201;5004
+counties = 高柳;当城;桑亁
+desc = 代郡原本是代戎活动的区域，为代国。赵武灵王置代郡。郡治在代县，东汉移治高柳。
+
+[110]
+name = 涿郡
+type = 2
+pos_x = 645
+pos_y = 1902
+population = 82218
+near_citys = 106;207;209
+counties = 涿县;范阳;良乡
+desc = 涿郡，汉高祖置，治所在涿县。辖境相当今北京市房山区以南，河北省易县、清苑以东，安平、河间以北，霸州、任丘以西地区。
+
+[5001]
+name = 辰韩部
+type = 5
+pos_x = 2640
+pos_y = 1490
+population = 0
+near_citys = 104
+counties = 辰韩部
+desc = 辰韩是古代朝鲜半岛南部政权之一，由秦朝移民所建，与本土人政权马韩及弁韩合称三韩，辰韩位于马韩之东。
+
+[5002]
+name = 高句丽部
+type = 5
+pos_x = 2260
+pos_y = 2430
+population = 0
+near_citys = 102;103
+counties = 高句丽部
+desc = 高句丽是古代在中国东北地区和朝鲜半岛存在的一个政权。其人民主要是扶馀人和靺鞨人，后又吸收一部分古朝鲜遗民及三韩人。
+
+[5003]
+name = 乌恒部
+type = 5
+pos_x = 1240
+pos_y = 2400
+population = 0
+near_citys = 101;9001
+counties = 乌恒部
+desc = 乌桓是中国古代民族之一，亦作乌丸。公元前三世纪末，匈奴破东胡后，迁至乌桓山，遂以山名为族号。
+
+[9001]
+name = 卢龙塞
+type = 4
+pos_x = 1200
+pos_y = 2180
+population = 0
+near_citys = 101;105
+counties = 卢龙塞
+desc = 卢龙塞，即今河北喜峰口，位于徐无山麓地东边。坐落有两山之间，一边是云山，一边叫做梅山。这里是辽西北部的门户，具有极为重要的战略地位。
+
+[9002]
+name = 居庸关
+type = 4
+pos_x = 620
+pos_y = 2150
+population = 0
+near_citys = 107;108
+counties = 居庸关
+desc = 居庸关，著名古关城，关城所在的峡谷，属太行余脉军都山地，西山夹峙，下有巨涧，悬崖峭壁，地形极为险要。
+
+[201]
+name = 雁门郡
+type = 3
+pos_x = 10
+pos_y = 1995
+population = 21862
+near_citys = 109;206;9003
+counties = 阴馆;马邑;繁峙
+desc = 雁门郡，郡治阴馆，所辖范围大致包括今山西旧代州宁武之北部、及朔平南部、大同东部北部皆其境。
+
+[202]
+name = 太原郡
+type = 2
+pos_x = -30
+pos_y = 1500
+population = 50902
+near_citys = 203;204;402;9003;9004
+counties = 晋阳;祁县;榆次;阳曲
+desc = 太原郡，治所在晋阳，有并州刺史台，所辖范围大致包括今山西省五台山和管涔山南部一带、霍山北部一带地区。
+
+[203]
+name = 上党郡
+type = 3
+pos_x = 15
+pos_y = 1280
+population = 26222
+near_citys = 202;9005;9011
+counties = 长子;襄垣;泫氏
+desc = 上党郡，战国韩置，治所长子县。所辖范围大致包括今山西省和顺、榆社二县以西，沁水流域以东地。
+
+[204]
+name = 西河郡
+type = 3
+pos_x = -295
+pos_y = 1560
+population = 5698
+near_citys = 202;205
+counties = 离石;中阳;皋狼
+desc = 西河郡，汉武帝元朔四年分上郡北部置西河郡，永和五年移治离石县，辖十三县。
+
+[205]
+name = 上郡
+type = 3
+pos_x = -430
+pos_y = 1730
+population = 5169
+near_citys = 204;206;5005
+counties = 肤施;定阳;桢林
+desc = 上郡，郡治在肤施，所辖范围大致包括今陕西省中北部级毗邻内蒙古部分。
+
+[206]
+name = 云中郡
+type = 3
+pos_x = -245
+pos_y = 2165
+population = 13171
+near_citys = 201;205;5004;5005
+counties = 云中;朔方;五原;定襄
+desc = 云中郡，辖境约是今内蒙古土默特右旗、大青山一带。汉武帝收河南地置朔方、五原郡，辖境约是今内蒙古河套地区。
+
+[5004]
+name = 漠北匈奴
+type = 5
+pos_x = -5
+pos_y = 2235
+population = 0
+near_citys = 109;206
+counties = 漠北匈奴
+desc = 漠北又称岭北，指中国北方沙漠、戈壁以北的广大地区，漠北政治军事文化中心和林。
+
+[5005]
+name = 漠南匈奴
+type = 5
+pos_x = -660
+pos_y = 1955
+population = 0
+near_citys = 205;206;505
+counties = 漠南匈奴
+desc = 公元前60年左右，匈奴虚闾权渠单于死，先后出现五单于争立的情况，最后发展为南下附汉的为南匈奴和留在漠北的为北匈奴。
+
+[9003]
+name = 雁门关
+type = 4
+pos_x = 10
+pos_y = 1850
+population = 0
+near_citys = 201;202
+counties = 雁门关
+desc = 雁门关，位于中国山西省忻州市代县县城以北约20公里处的雁门山中，是长城上的重要关隘。
+
+[9004]
+name = 故关
+type = 4
+pos_x = 120
+pos_y = 1580
+population = 0
+near_citys = 202;210
+counties = 故关
+desc = 故关又名旧关、井陉关、井陉口、土门关，在山西省平定东九十里，为战国赵长城的重要关卡，冀晋通衢中最具战略地位的冲要。
+
+[9005]
+name = 壶关
+type = 4
+pos_x = 160
+pos_y = 1285
+population = 0
+near_citys = 203;214
+counties = 壶关
+desc = 壶关是上党盆地通往平原的要道，扼晋冀之咽喉，历来为兵家必争之地。
+
+[207]
+name = 河间郡
+type = 2
+pos_x = 765
+pos_y = 1765
+population = 93754
+near_citys = 110;208
+counties = 乐成;中水;高阳;东平舒
+desc = 河间郡，因处九河流域之间而得其名。治乐成县，所辖范围大致包括今河北献县、交河、阜城、武强一带。
+
+[208]
+name = 渤海郡
+type = 1
+pos_x = 815
+pos_y = 1625
+population = 152389
+near_citys = 207;212;306
+counties = 南皮;浮阳;阳信;东光
+desc = 渤海郡，治所南皮县，所辖范围大致包括今河北省沧州市、衡水市、山东省德州市一带。
+
+[209]
+name = 中山国
+type = 2
+pos_x = 440
+pos_y = 1825
+population = 77412
+near_citys = 110;210
+counties = 卢奴;新市;上曲阳
+desc = 中山国由白狄所建，治所卢奴县，所辖范围大致包括今石家庄市、灵寿、平山、晋州一带。
+
+[210]
+name = 常山郡
+type = 2
+pos_x = 335
+pos_y = 1670
+population = 77500
+near_citys = 209;211;212;9004
+counties = 真定;灵寿;元氏;井陉;南行唐
+desc = 常山郡也称恒山郡，所辖范围大致包括今河北石家庄市及周边正定、元氏等地，治所真定县。
+
+[211]
+name = 钜鹿郡
+type = 2
+pos_x = 370
+pos_y = 1455
+population = 59517
+near_citys = 210;214
+counties = 巨鹿;瘿陶;广宗;任县
+desc = 钜鹿郡，因钜鹿泽而得名，所辖范围大致包括今河北省白洋淀、文安洼以南，南运河以西、高阳、宁晋、任县以东，威县及邯郸市鸡泽以北。
+
+[212]
+name = 安平郡
+type = 1
+pos_x = 560
+pos_y = 1590
+population = 161440
+near_citys = 208;210;213
+counties = 信都;阜城;饶阳;南宫;武遂
+desc = 安平郡，治所信都县，所辖范围在今河北省冀州市一带。冀州刺史台始在邺县，后移治信都。
+
+[213]
+name = 清河郡
+type = 2
+pos_x = 580
+pos_y = 1400
+population = 63964
+near_citys = 212;214
+counties = 甘陵;广川;东武城
+desc = 清河郡，因境内有清河流经而得名。辖境相当今河北清河及枣强、南宫各一部分，山东临清、夏津、武城及高唐、平原各一部分地。
+
+[214]
+name = 赵郡
+type = 2
+pos_x = 365
+pos_y = 1315
+population = 62719
+near_citys = 211;213;215;9005
+counties = 邯郸;易阳;中丘
+desc = 赵郡，秦朝为邯郸郡，治所邯郸，下辖邯郸县、易阳县、柏人县、襄国县四个县。
+
+[215]
+name = 魏郡
+type = 1
+pos_x = 220
+pos_y = 1140
+population = 159310
+near_citys = 214;401;9005;9006
+counties = 邺城;内黄;黎阳;魏县;馆陶
+desc = 魏郡，郡治在邺。其辖境大致相当于今河南安阳，河北邯郸及山东冠县、莘县等县地。冀州刺史台始在邺县，后移治信都。
+
+[9006]
+name = 延津口
+type = 4
+pos_x = 330
+pos_y = 1000
+population = 0
+near_citys = 215;316;9008
+counties = 延津口
+desc = 古延津有孟津、棘津、延寿津、灵昌津、石济津，延续百里，首位相接，故称为延津，兵家必争之地。
+
+[9007]
+name = 仓亭津
+type = 4
+pos_x = 700
+pos_y = 1310
+population = 0
+near_citys = 306;316
+counties = 仓亭津
+desc = 仓亭津，一作苍亭津。在今山东阳谷县北古黄河上，为东汉以后黄河南北重要渡口。
+
+[301]
+name = 济南郡
+type = 2
+pos_x = 870
+pos_y = 1305
+population = 78544
+near_citys = 302;306;314
+counties = 东平陵;历城;土鼓;菅县
+desc = 济南郡，治所东平陵，所辖范围大致包括今山东省济南市及章丘、济阳、邹平等市县。
+
+[302]
+name = 齐郡
+type = 2
+pos_x = 1165
+pos_y = 1330
+population = 64415
+near_citys = 301;303;304;311
+counties = 临菑;昌国;临朐;广县
+desc = 齐郡又称齐国，有青州刺史台。治所临淄，所辖范围大致包括今淄博市区东部及青州、临朐、广饶一带。
+
+[303]
+name = 乐安郡
+type = 2
+pos_x = 1025
+pos_y = 1510
+population = 74400
+near_citys = 302
+counties = 临济;乐安;博昌;寿光
+desc = 乐安郡，郡治在临济，辖境大致相当于今山东省滨州市东部、淄博市西北部、东营市南部及寿光市一带。
+
+[304]
+name = 北海郡
+type = 1
+pos_x = 1415
+pos_y = 1300
+population = 158641
+near_citys = 302;305
+counties = 剧县;高密;即墨;都昌;安丘
+desc = 北海郡，西汉置，始治营陵，后迁徙治剧县。辖境大致相当于今山东中部潍坊市。
+
+[305]
+name = 东莱郡
+type = 2
+pos_x = 1430
+pos_y = 1500
+population = 74297
+near_citys = 304
+counties = 黄县;牟平;曲城;昌阳
+desc = 东莱郡，治所为黄县，东莱郡领十七县，辖境大致相当于今山东烟台、威海以及青岛平度市北部一带。
+
+[306]
+name = 平原郡
+type = 2
+pos_x = 845
+pos_y = 1450
+population = 125588
+near_citys = 208;301;9007
+counties = 平原;高唐;乐陵;祝阿;厌次
+desc = 平原郡，郡治在平原县，所辖范围大致包括今山东省德州市中南部及齐河县、惠民县、阳信县一带。
+
+[307]
+name = 东海郡
+type = 1
+pos_x = 1110
+pos_y = 870
+population = 158784
+near_citys = 308;309;311;408
+counties = 郯城;阴平;赣榆;朐县;兰陵
+desc = 东海郡，郡治在郯县，有徐州刺史台。辖境大致相当于今山东费县、临沂、江苏赣榆以南，山东枣庄、江苏邳州以东和宿迁、灌南以北一带地区。
+
+[308]
+name = 彭城郡
+type = 2
+pos_x = 940
+pos_y = 750
+population = 86170
+near_citys = 307;309;409;411
+counties = 彭城;吕县;傅阳;武原;菑丘
+desc = 彭城郡，或为楚国、楚郡。郡治在彭城县）。其辖境大致相当于今江苏徐州市中部、安徽淮北市东部一带。 
+
+[309]
+name = 下邳郡
+type = 1
+pos_x = 1120
+pos_y = 580
+population = 156389
+near_citys = 307;308;310;809
+counties = 下邳;淮阴;盱眙;淮浦;东城
+desc = 下邳郡，汉定天下，改郯郡为东海郡。东汉光武帝建武五年，拔郯城置下邳郡，旋改下邳郡为临淮郡。治所下邳。
+
+[310]
+name = 广陵郡
+type = 2
+pos_x = 1305
+pos_y = 450
+population = 83907
+near_citys = 309;9028
+counties = 广陵;高邮;射阳;海陵;海西
+desc = 广陵郡，治所广陵县，领广陵、江都、高邮、平安4县。
+
+[311]
+name = 琅玡郡
+type = 2
+pos_x = 1150
+pos_y = 1115
+population = 50840
+near_citys = 302;307;313
+counties = 东武;临沂;莒县;琅玡;阳都
+desc = 琅琊郡，治东武，包括今山东半岛东南部的临沂以东等地。
+
+[312]
+name = 陈留郡
+type = 1
+pos_x = 450
+pos_y = 920
+population = 211244
+near_citys = 315;410;9008
+counties = 陈留;尉氏;封丘;定陶;单父;鄄城
+desc = 陈留郡，治所陈留），辖境相当于今河南省民权县、宁陵县以西，开封市、尉氏县以东，延津县、长垣县以南，杞县、睢县以北之地。
+
+[313]
+name = 泰山郡
+type = 2
+pos_x = 945
+pos_y = 1160
+population = 54618
+near_citys = 311;314
+counties = 奉高;蛇丘;莱芜;南城
+desc = 泰山郡，治奉高县。济北郡，秦析齐郡置，因在济水之北得名，治博阳县。汉昭帝始元元年，国除，其地并入泰山郡。
+
+[314]
+name = 东平郡
+type = 2
+pos_x = 745
+pos_y = 1180
+population = 99012
+near_citys = 301;313;315;408
+counties = 无盐;寿张;亢父
+desc = 东平郡，汉甘露二年改大河郡为东平国，治所在无盐。东汉章帝元和元年，分东平国置任城国。
+
+[315]
+name = 山阳郡
+type = 1
+pos_x = 605
+pos_y = 1020
+population = 155352
+near_citys = 312;314;409
+counties = 昌邑;钜野;金乡;任城
+desc = 山阳郡，汉景帝中元六年，分梁国东部数县置山阳国，国都为昌邑县。汉武帝建元五年，山阳国除为郡。
+
+[316]
+name = 东郡
+type = 2
+pos_x = 495
+pos_y = 1125
+population = 136880
+near_citys = 9006;9007
+counties = 濮阳;范县;聊城;顿丘;白马
+desc = 东郡，秦王政五年置，秦汉治濮阳，辖二十二县，地约今河南省东北部、山东省西部。
+
+[401]
+name = 河内郡
+type = 2
+pos_x = 165
+pos_y = 990
+population = 109770
+near_citys = 215;9006;9010;9011
+counties = 怀县;朝歌;沁水;温县;修武
+desc = 河内郡，治怀县，其辖境大致相当于今河南焦作、济源全境和新乡、安阳西部部分地域。
+
+[402]
+name = 河东郡
+type = 2
+pos_x = -220
+pos_y = 1085
+population = 93543
+near_citys = 202;9009;9011
+counties = 安邑;临汾;绛邑;闻喜;蒲坂
+desc = 河东郡，自战国魏始有河内河东之名，而秦汉因以置郡，治安邑,其辖境大致相当于今山西沁水以西、霍山以南地区。
+
+[403]
+name = 河南尹
+type = 1
+pos_x = -95
+pos_y = 835
+population = 208486
+near_citys = 9010;9014
+counties = 雒阳;偃师;荥阳;中牟;新郑;密县
+desc = 河南尹，公元25年，刘秀定都洛阳，复改“洛”为“雒”，建武十五年改为河南尹，兼置司隶校尉。
+
+[404]
+name = 弘农郡
+type = 3
+pos_x = -335
+pos_y = 860
+population = 46815
+near_citys = 9014;9015
+counties = 弘农;渑池;卢氏;华阴
+desc = 弘农郡，郡治在弘农，其辖境大致相当于今河南三门峡市、南阳市西部以及陕西商洛市。
+
+[405]
+name = 京兆尹
+type = 1
+pos_x = -720
+pos_y = 735
+population = 153299
+near_citys = 406;407;9013
+counties = 长安;阳陵;新丰;蓝田;商县
+desc = 京兆尹，汉代三辅（京畿地区的京兆尹、左冯翊、右扶风）之一，治所为长安县，其辖境大致相当于今陕西西安市一带。
+
+[406]
+name = 左冯翊
+type = 2
+pos_x = -585
+pos_y = 865
+population = 57090
+near_citys = 405;9009;9015
+counties = 高陵;频阳;池阳;祋祤
+desc = 左冯翊，汉代三辅（京畿地区的京兆尹、左冯翊、右扶风）之一，因地属畿辅，故不称郡，东汉移治高陵。
+
+[407]
+name = 右扶风
+type = 2
+pos_x = -935
+pos_y = 810
+population = 47352
+near_citys = 405;9017;9018;9019
+counties = 槐里;美阳;陈仓
+desc = 右扶风，汉代三辅之一，因地属畿辅，故不称郡。其辖境大致相当于今陕西秦岭以北的、鄠县、咸阳、枸邑以西之地，东汉移治槐里。
+
+[9008]
+name = 官渡口
+type = 4
+pos_x = 275
+pos_y = 880
+population = 0
+near_citys = 312;413;9006;9016
+counties = 官渡口
+desc = 官渡位于河南省中牟县黄河之南，是从河北进军河南地界的军事要冲之地，因发生震惊天下的官渡大战而闻名。
+
+[9009]
+name = 蒲坂津
+type = 4
+pos_x = -405
+pos_y = 1000
+population = 0
+near_citys = 402;406
+counties = 蒲坂津
+desc = 蒲坂津，又称蒲津关、临晋关，黄河重要的古渡口和秦晋间的重险之地，以东岸在蒲坂得名。战国时魏在此设蒲津关。汉武帝时改名临晋关。
+
+[9010]
+name = 小平津
+type = 4
+pos_x = 15
+pos_y = 890
+population = 0
+near_citys = 401;403;9012;9016
+counties = 小平津
+desc = 小平津，在今河南孟津东北，为古代黄河重要渡口。它和孟津关形成掎角之势，共扼黄河咽喉，镇守洛阳北大门。
+
+[9011]
+name = 箕关
+type = 4
+pos_x = -20
+pos_y = 1015
+population = 0
+near_citys = 203;401;402
+counties = 箕关
+desc = 箕关，又名濝关、淇关，自古以来，由河内、洛阳，经过太行山到达河东的道路只有一条，即战国时期开始称之为轵道，
+
+[408]
+name = 鲁郡
+type = 2
+pos_x = 845
+pos_y = 1000
+population = 78447
+near_citys = 307;314;409
+counties = 鲁县;邹县;薛县;卞县
+desc = 鲁郡，治所鲁县(今山东曲阜市)，领6县：鲁、卡、汶阳、蕃、驺、薛。
+
+[409]
+name = 沛郡
+type = 2
+pos_x = 715
+pos_y = 820
+population = 100495
+near_citys = 308;315;408;410
+counties = 沛县;相县;萧县;公丘
+desc = 沛郡又称沛国，东汉建安十八年，曹操析沛国南部到谯郡，治所迁沛县。沛郡和小沛（沛县，归沛郡管辖）是不同的概念。
+
+[410]
+name = 梁郡
+type = 2
+pos_x = 520
+pos_y = 725
+population = 83300
+near_citys = 312;409;411;412
+counties = 睢阳;砀山;夏邑;宁陵
+desc = 梁郡又称梁国，都城睢阳。东汉建初四年，徙封刘畅为梁王。梁国面积最大时拥有40余座城市，到了后期被削得只剩下9县。
+
+[411]
+name = 谯郡
+type = 1
+pos_x = 670
+pos_y = 550
+population = 154564
+near_citys = 308;410;809
+counties = 谯县;蕲县;太丘;龙亢;临睢
+desc = 谯郡，东汉建安十八年，曹操析汝南郡之城父及沛郡数县置谯郡，治谯县。东汉建武十八年在谯治豫州刺史台。
+
+[412]
+name = 陈郡
+type = 2
+pos_x = 400
+pos_y = 580
+population = 112653
+near_citys = 410;413;414;809
+counties = 陈县;武平;宁平;阳夏
+desc = 陈郡，或为陈国、淮阳国、淮阳郡。治陈县，其辖境大致相当于今河南淮阳、太康、鹿邑、西华、柘城一带。
+
+[413]
+name = 颍川郡
+type = 1
+pos_x = 165
+pos_y = 645
+population = 263440
+near_citys = 412;707;9008;9012;9016
+counties = 阳翟;长社;许县;襄城;鄢陵;临颍
+desc = 颍川郡在历史上一直是大郡，以颍水得名，其辖境大致相当于今河南许昌市、平顶山市、漯河市等地，治所在阳翟（战国时韩都城）。
+
+[414]
+name = 汝南郡
+type = 1
+pos_x = 365
+pos_y = 325
+population = 304448
+near_citys = 412;809
+counties = 平舆;上蔡;汝南;新蔡;固始;南顿;慎县
+desc = 汝南郡，郡治迁至平舆，其辖境大致相当于今河南东南部、安徽阜阳一带。建安十八年，曹操析汝南郡之城父及沛郡数县置谯郡。
+
+[9012]
+name = 大谷关
+type = 4
+pos_x = 5
+pos_y = 740
+population = 0
+near_citys = 413;9010
+counties = 大谷关
+desc = 大谷关，又名太谷关，是洛阳通往南阳、汝州、许昌等地的重要关口。
+
+[9013]
+name = 武关
+type = 4
+pos_x = -285
+pos_y = 590
+population = 0
+near_citys = 405;707
+counties = 武关
+desc = 武关位于东武关河的北岸，关城建立在峡谷间一座较为平坦的高地上，北依高峻的少习山，南濒险要，为古代兵家必争之地。
+
+[9014]
+name = 函谷关
+type = 4
+pos_x = -195
+pos_y = 905
+population = 0
+near_citys = 403;404
+counties = 函谷关
+desc = 函谷关历史上有两座：秦关和汉关。因其地处“两京古道”，紧靠黄河岸边，因关在谷中，深险如函，故称函谷关。
+
+[9015]
+name = 潼关
+type = 4
+pos_x = -445
+pos_y = 800
+population = 0
+near_citys = 404;406
+counties = 潼关
+desc = 潼关是关中的东大门，历来为兵家必争之地。潼关南有秦岭，东南有禁谷，谷南又有12连城，北有渭、洛二川会黄河抱关而下，西近华岳。
+
+[9016]
+name = 虎牢关
+type = 4
+pos_x = 135
+pos_y = 880
+population = 0
+near_citys = 413;9008;9010
+counties = 虎牢关
+desc = 虎牢关，又称汜水关、成皋关、古崤关，因周穆王在此牢虎而得名，是洛阳东边门户和重要的关隘，位于今河南荥阳市汜水镇境内。
+
+[9017]
+name = 斜谷关
+type = 4
+pos_x = -1060
+pos_y = 690
+population = 0
+near_citys = 407;508;9021
+counties = 斜谷关
+desc = 斜谷又称褒斜谷，全长四百七十里，两旁山势峻险，扼关陕而控川蜀，古来为兵家必争之地。
+
+[9018]
+name = 散关
+type = 4
+pos_x = -1135
+pos_y = 815
+population = 0
+near_citys = 407;509
+counties = 散关
+desc = 大散关又称散关。自古为“川陕咽喉”，兵家必争之地。 自古以来是关中四大门户（东有函谷关、南有武关、西有大散关、北有萧关）之一。
+
+[9019]
+name = 萧关
+type = 4
+pos_x = -1095
+pos_y = 970
+population = 0
+near_citys = 407;506
+counties = 萧关
+desc = 萧关在六盘山山口依险而立，扼守自泾河方向进入关中的通道。因此是关中西北方向的重要关口，屏护关中西北的安全。
+
+[501]
+name = 酒泉郡
+type = 3
+pos_x = -2455
+pos_y = 1990
+population = 3454
+near_citys = 502;9020
+counties = 福禄;敦煌
+desc = 酒泉郡，因“城下有金泉，其水若酒”而得名。辖黄河以西的匈奴休屠王、浑邪王故地。
+
+[502]
+name = 张掖郡
+type = 3
+pos_x = -2150
+pos_y = 1790
+population = 7768
+near_citys = 501;503
+counties = 张掖;删丹;居延
+desc = 张掖郡，原为匈奴昆邪王地，取“张国臂掖，以通西域”之意，其辖境大致相当于今甘肃省永昌县以西、高台县以东，以及内蒙古额济纳旗等地。
+
+[503]
+name = 武威郡
+type = 3
+pos_x = -1810
+pos_y = 1565
+population = 10420
+near_citys = 502;504
+counties = 姑臧;骊靬;休屠
+desc = 武威郡，古称雍州、凉州，辖黄河以西的匈奴休屠王、浑邪王故地，自古以来就是富足之地，兵家极其重视的地方。
+
+[504]
+name = 金城郡
+type = 3
+pos_x = -1605
+pos_y = 1230
+population = 17858
+near_citys = 503;507
+counties = 允吾;金城;枝阳;允街
+desc = 金城郡，辖今甘肃兰州以西和青海一部分，治允吾县，领7县，领允吾、金城、允街、枝阳、浩门、令居、榆中县。
+
+[505]
+name = 北地郡
+type = 3
+pos_x = -1170
+pos_y = 1690
+population = 8122
+near_citys = 506;5005
+counties = 富平;灵州;泥阳
+desc = 北地郡，秦灭义渠国，于其地置陇西郡、北地郡二郡。郡治富平县，后由于羌族作乱，北地郡不断内迁。
+
+[506]
+name = 安定郡
+type = 3
+pos_x = -1150
+pos_y = 1200
+population = 11094
+near_citys = 505;509;9019
+counties = 临泾;高平;乌枝;彭阳
+desc = 安定郡，西汉元鼎三年，析北地郡地置安定郡，治临泾县。东汉永初五年，由于羌族攻入安定郡内，郡治徙美阳。
+
+[507]
+name = 陇西郡
+type = 3
+pos_x = -1545
+pos_y = 1015
+population = 10628
+near_citys = 504;509;5007
+counties = 狄道;首阳;抱罕
+desc = 陇西郡，因在陇山以西而得名。陇西郡治在狄道，为当时右拒西羌、左护咸阳之要郡，兵家必争之要地。
+
+[508]
+name = 武都郡
+type = 3
+pos_x = -1340
+pos_y = 615
+population = 7102
+near_citys = 509;9017;9021;9022
+counties = 武都;下辨;沮县
+desc = 武都郡，汉武帝元鼎六年以氐人之地置，郡治内多有氐族、羌族。治所在武都道。
+
+[509]
+name = 汉阳郡
+type = 3
+pos_x = -1330
+pos_y = 890
+population = 27423
+near_citys = 506;507;508;9018
+counties = 冀县;西县;上邽;阿阳
+desc = 汉阳郡，治冀县。其辖境大致相当于今甘肃省定西以东，黄河以南，嶓冢山以北地区。凉州刺史台初在陇县，后迁至冀城。
+
+[5006]
+name = 西域
+type = 5
+pos_x = -2750
+pos_y = 2180
+population = 0
+near_citys = 9020
+counties = 西域诸国
+desc = 西域，自汉代以来，西域指玉门关、阳关以西，葱岭即今帕米尔高原以东，巴尔喀什湖东、南及新疆广大地区。
+
+[5007]
+name = 羌戎部
+type = 5
+pos_x = -2075
+pos_y = 1035
+population = 0
+near_citys = 507
+counties = 羌戎部
+desc = 羌人曾是古东方大族，形成于青藏高原、黄土高原地区，以羊为图腾。氐族是我国历史上一个重要的民族，大部分集中于陇南地区。
+
+[9020]
+name = 玉门关
+type = 4
+pos_x = -2645
+pos_y = 2080
+population = 0
+near_citys = 501;5006
+counties = 玉门关
+desc = 玉门关，始置于汉武帝开通西域道路、设置河西四郡之时，因西域输入玉石时取道于此而得名。
+
+[601]
+name = 巴西郡
+type = 2
+pos_x = -1120
+pos_y = 90
+population = 148110
+near_citys = 602;603;9022
+counties = 阆中;宣汉;宕渠;汉昌
+desc = 巴西郡，治阆中县。益州牧刘璋将巴郡一分为三：垫江以北为巴西郡，江州至临江为巴郡、朐忍至鱼复为巴东郡，这就是“三巴”的来源。
+
+[602]
+name = 巴郡
+type = 1
+pos_x = -1065
+pos_y = -265
+population = 300691
+near_citys = 601;605;607;9023
+counties = 江州;垫江;充国;涪陵;安汉;鱼复
+desc = 巴郡，秦置，郡治江州县。益州牧刘璋将巴郡一分为三：垫江以北为巴西郡，江州至临江为巴郡、朐忍至鱼复为巴东郡，这就是“三巴”的来源。
+
+[603]
+name = 广汉郡
+type = 1
+pos_x = -1365
+pos_y = 100
+population = 239865
+near_citys = 601;604
+counties = 梓潼;雒县;绵竹;葭萌;郪县
+desc = 广汉郡是古四川地区最早的三郡之一，治梓潼，后徙治雒县。汉武帝建元六年，割广汉郡南部僰道等县与新征服的南夷地区置犍为郡。
+
+[604]
+name = 蜀郡
+type = 1
+pos_x = -1650
+pos_y = -20
+population = 350452
+near_citys = 603;605
+counties = 成都;临邛;严道;郫县
+desc = 蜀郡，蜀郡以成都一带为中心，刘焉做益州牧，从原广汉郡雒县移治于成都，用成都作为州、郡、县治地。
+
+[605]
+name = 犍为郡
+type = 1
+pos_x = -1615
+pos_y = -325
+population = 197713
+near_citys = 602;604;606
+counties = 武阳;汉安;资中;南安
+desc = 犍为郡，西汉武帝建元六年，开“西南夷”，置犍为郡。移治僰道，后移至武阳县。
+
+[606]
+name = 越嶲郡
+type = 2
+pos_x = -1870
+pos_y = -700
+population = 30120
+near_citys = 605;608
+counties = 邛都;朱提;台凳
+desc = 越嶲郡，汉武帝元鼎六年开邛都国而置，治所在邛都县。
+
+[607]
+name = 牂牁郡
+type = 3
+pos_x = -1040
+pos_y = -640
+population = 31523
+near_citys = 602
+counties = 且兰;夜郎;漏江
+desc = 牂牁郡，汉武帝元鼎六年 开置牂牁郡，又名牂柯，其辖境大致相当于今贵州，郡治且兰。
+
+[608]
+name = 益州郡
+type = 2
+pos_x = -1725
+pos_y = -1170
+population = 59036
+near_citys = 606;609;5008
+counties = 滇池;连然;味县
+desc = 益州郡，是南蛮古王国滇国的领地，郡治在滇池县，其辖境大致相当于今云南南盘江流域以北，武定县以南，双柏县以东地区。
+
+[609]
+name = 永昌郡
+type = 3
+pos_x = -2340
+pos_y = -1245
+population = 33897
+near_citys = 608;5008
+counties = 不韦;邪龙;哀牢
+desc = 永昌郡，郡治不韦，其辖境大致相当于今中国云南西部、缅甸克钦邦东部、掸邦东部一带。
+
+[610]
+name = 西城郡
+type = 3
+pos_x = -595
+pos_y = 430
+population = 6397
+near_citys = 611;708
+counties = 西城;上庸;房陵
+desc = 东汉建安二十年，曹操攻取汉中，分汉中郡东部之安阳、西城置西城郡，治西城县。
+
+[611]
+name = 汉中郡
+type = 2
+pos_x = -995
+pos_y = 545
+population = 57344
+near_citys = 610;9021;9022
+counties = 南郑;成固;褒中
+desc = 汉中郡，因在汉水中游得名。治所南郑县，其辖境大致相当于今陕西秦岭以南，勉县以东，湖北郧县以西，珍珠岭以北地。
+
+[5008]
+name = 南蛮部
+type = 5
+pos_x = -1980
+pos_y = -1570
+population = 0
+near_citys = 608;609
+counties = 南蛮部
+desc = 南蛮，南方额头有纹饰的族群即是南蛮，是先秦时代中原王朝对中原以南各部落的称呼。南蛮的地理区域实际上已经囊括了整个东南亚。
+
+[9021]
+name = 阳平关
+type = 4
+pos_x = -1195
+pos_y = 600
+population = 0
+near_citys = 508;611;9017
+counties = 阳平关
+desc = 古阳平关，又名白马城、尽口城，南倚鸡公山，北濒嘉陵江，地势极为险要。南可入川，北通略阳，西至陇南，东达汉中。
+
+[9022]
+name = 剑门关
+type = 4
+pos_x = -1265
+pos_y = 380
+population = 0
+near_citys = 508;601;611
+counties = 剑门关
+desc = 剑门关居于大剑山和小剑山之间，绝崖断离，两壁相对，直入云霄，峰峦倚天似剑，其状似门，故称剑门。
+
+[9023]
+name = 扞关
+type = 4
+pos_x = -625
+pos_y = 50
+population = 0
+near_citys = 602;702
+counties = 扞关
+desc = 扞关，又名捍关、江关、瞿塘关，相传战国时巴、楚相争，于今四川奉节东长江北岸赤甲山上置。后移于长江南岸，为瞿塘峡南面屏障。
+
+[701]
+name = 江夏郡
+type = 2
+pos_x = 365
+pos_y = -40
+population = 108434
+near_citys = 9024;9025;9026
+counties = 西陵;竟陵;蕲春;安陆;沙羡
+desc = 江夏郡，治西陵县。领西陵、竟陵、安陆、沙羡、蕲春、云杜、下雉等十四县。
+
+[702]
+name = 南郡
+type = 1
+pos_x = -100
+pos_y = -110
+population = 162570
+near_citys = 703;9023;9024;9025
+counties = 江陵;当阳;州陵;华容;秭归;夷陵
+desc = 南郡，治所在江陵县，建安十三年，曹操析南阳郡的樊城、山都县、邓县等县及南郡北部设立襄阳郡。
+
+[703]
+name = 武陵郡
+type = 2
+pos_x = -25
+pos_y = -360
+population = 146672
+near_citys = 702;704;9025
+counties = 汉寿;临沅;零阳;迁陵;沅陵
+desc = 武陵郡，郡治临沅。其地土著人多为苗族、土家族，并与少数汉族错居，古称武陵”。汉寿县有荆州刺史台，后刘表移至襄阳。
+
+[704]
+name = 长沙郡
+type = 1
+pos_x = 100
+pos_y = -600
+population = 205854
+near_citys = 703;705;706;808
+counties = 临湘;益阳;安城;攸县;醴陵
+desc = 长沙郡，最先设于秦朝，有万里沙祠，故曰长沙，汉为长沙国，治所湘县。东汉初，废除经过一系列变化的长沙国，重建长沙郡。
+
+[705]
+name = 零陵郡
+type = 2
+pos_x = -240
+pos_y = -940
+population = 102284
+near_citys = 704;706;905
+counties = 泉陵;湘乡;邵阳;蒸阳;零陵
+desc = 零陵得名于舜葬九疑。汉文帝末年，析长沙国置零陵郡，郡治在零陵县，后迁至泉陵侯国。
+
+[706]
+name = 桂阳郡
+type = 2
+pos_x = 5
+pos_y = -1100
+population = 145029
+near_citys = 704;705;906
+counties = 郴县;耒阳;临武;桂阳;曲江
+desc = 桂阳郡，郡治在郴县，领十一个县，其辖境大致相当于今郴州各个区县，及广东的北部的一部分，如阳山、含洭、曲江、浈阳、桂阳等县。
+
+[707]
+name = 南阳郡
+type = 1
+pos_x = -80
+pos_y = 485
+population = 328551
+near_citys = 413;708;9013
+counties = 宛城;邓县;新野;鲁阳;博望;丹水
+desc = 南阳郡，治所在宛县。其辖境大致相当于今河南熊耳山以南和湖北大洪山以北的大部分地区。东汉时宛被封南都，为天下经济之首。
+
+[708]
+name = 襄阳郡
+type = 1
+pos_x = -110
+pos_y = 220
+population = 242565
+near_citys = 610;707;9024
+counties = 襄阳;宜城;武当;临沮
+desc = 襄阳郡，建安十三年，曹操析南阳郡的樊城、山都县、邓县等县及南郡北部设立襄阳郡 ，治襄阳县。
+
+[9024]
+name = 汉津口
+type = 4
+pos_x = 5
+pos_y = 10
+population = 0
+near_citys = 701;702;708
+counties = 汉津口
+desc = 汉津口，古渡口名，位于汉江中游西岸，地理位置十分重要，北上可达襄阳，南下直抵夏口。
+
+[9025]
+name = 陆口
+type = 4
+pos_x = 160
+pos_y = -190
+population = 0
+near_citys = 701;702;703
+counties = 陆口
+desc = 陆口位于陆水湖出长江口，地处丘陵地带，历史上是兵家重地，尤其以三国时期为最。
+
+[801]
+name = 九江郡
+type = 2
+pos_x = 1020
+pos_y = 160
+population = 89436
+near_citys = 802;806;9027
+counties = 历阳;芜湖;全椒;当涂;阜陵
+desc = 九江郡，因此地有众多水泽而得名，东汉郡治迁历阳，其辖境大致相当于今安徽省中部淮河以南、瓦埠湖流域以东、巢湖以北地区。
+
+[802]
+name = 丹阳郡
+type = 1
+pos_x = 1185
+pos_y = 230
+population = 196518
+near_citys = 801;803;9028
+counties = 建邺;丹阳;溧阳;宛陵;泾县
+desc = 丹阳郡，始治宛陵，后移治建邺，其辖境大致相当于今安徽长江以南，江苏大茅山及浙江天目山脉以西、浙江新安江支流武强溪以北地区。
+
+[803]
+name = 吴郡
+type = 1
+pos_x = 1530
+pos_y = 110
+population = 164164
+near_citys = 802;804
+counties = 吴县;无锡;乌程;余杭;海盐
+desc = 吴郡，东汉分原会稽郡的浙江以西部分设吴郡，治所在原会稽郡的治所吴县，而会稽郡仅保留浙江以东部分，徙治山阴。
+
+[804]
+name = 会稽郡
+type = 2
+pos_x = 1420
+pos_y = -160
+population = 123090
+near_citys = 803;805;807
+counties = 山阴;上虞;余姚;太末;诸暨
+desc = 会稽郡，秦朝置，郡治在吴县，辖春秋时长江以南的吴国、越国故地。东汉中期，分会稽郡浙江以北诸县置吴郡。会稽郡治所移至山阴县。
+
+[805]
+name = 临海郡
+type = 3
+pos_x = 1540
+pos_y = -465
+population = 39613
+near_citys = 804;5010
+counties = 临海;章安;东冶
+desc = 吴太平二年，分会稽郡东部置临海郡，郡治在临海（今浙江台州市），其辖境大致相当于今浙江台州市、温州市、丽水市全部及闽北一部。
+
+[806]
+name = 庐江郡
+type = 2
+pos_x = 860
+pos_y = -10
+population = 101392
+near_citys = 801;9026;9027
+counties = 皖县;舒县;六安;寻阳;龙舒
+desc = 庐江郡，治所在皖城。其辖境大致相当于今安徽省铜陵市、池州市，江西九江市、景德镇市、上饶等市。
+
+[807]
+name = 鄱阳郡
+type = 2
+pos_x = 700
+pos_y = -330
+population = 101346
+near_citys = 804;808;5009;9026
+counties = 鄱阳;彭泽;黟县;歙县;石城
+desc = 鄱阳郡，孙权分豫章郡置鄱阳郡，治所鄱阳县，其辖境大致相当于今江西鄱阳湖以东信江、鄱江流域及进贤、都昌等县地。
+
+[808]
+name = 豫章郡
+type = 1
+pos_x = 520
+pos_y = -500
+population = 206496
+near_citys = 704;807
+counties = 南昌;庐陵;柴桑;艾县;赣县
+desc = 豫章郡，治南昌县，其郡辖地大致相当于今江西省。孙策分孙权分豫章郡置鄱阳郡、庐陵郡等。
+
+[809]
+name = 淮南郡
+type = 2
+pos_x = 880
+pos_y = 490
+population = 89436
+near_citys = 309;411;412;414;9027
+counties = 寿春;合肥;阴陵;平阿;下蔡
+desc = 秦破楚后，废楚国为楚郡，汉初改淮南国。郡治寿春县，其辖境大致相当于今淮南市、合肥市区、寿县、长丰以及怀远、定远之一部分。
+
+[5009]
+name = 百越部
+type = 5
+pos_x = 775
+pos_y = -725
+population = 0
+near_citys = 807
+counties = 百越部
+desc = 古代以中原为中。"蛮夷戎狄"不包括东南沿海一带的“百越”部落及西南一带的"百濮"部落。
+
+[5010]
+name = 夷洲
+type = 5
+pos_x = 1420
+pos_y = -1500
+population = 0
+near_citys = 805
+counties = 夷洲海盗
+desc = 夷洲，一作夷州，古地名。史载孙权曾派卫温、诸葛直抵达夷洲。
+
+[9026]
+name = 湖口
+type = 4
+pos_x = 615
+pos_y = -200
+population = 0
+near_citys = 701;806;807
+counties = 湖口
+desc = 湖口，因长江与鄱阳湖唯一交汇口而得名，也是长江下游的起点线。
+
+[9027]
+name = 濡须口
+type = 4
+pos_x = 860
+pos_y = 190
+population = 0
+near_citys = 801;806;809
+counties = 濡须口
+desc = 濡须口实指濡须山和七宝山之间的水口。两山对峙，形势险要，为巢湖的出口，曾为吴魏相争的古战场。
+
+[9028]
+name = 北固关
+type = 4
+pos_x = 1300
+pos_y = 320
+population = 0
+near_citys = 310;802
+counties = 北固关
+desc = 北固关，远眺北固，横枕大江，石壁嵯峨，山势险固，因此得名北固山。北固山与金山、焦山成犄角之势，三山鼎立，雄壮险要。
+
+[901]
+name = 九真郡
+type = 3
+pos_x = -1240
+pos_y = -2260
+population = 10067
+near_citys = 902
+counties = 胥浦;咸懽;西卷
+desc = 九真郡地秦时属于象郡，汉武帝于元鼎六年置此郡，治胥浦县，下辖七县。其郡辖地大致相当于今越南横山以南到平定省以北这一带地区。
+
+[902]
+name = 交趾郡
+type = 2
+pos_x = -1200
+pos_y = -2000
+population = 121634
+near_citys = 901;903
+counties = 龙编;曲阳;安定;望海
+desc = 交趾郡，位于今越南北部红河流域，治羸娄，东汉治龙编。
+
+[903]
+name = 合浦郡
+type = 3
+pos_x = -785
+pos_y = -1810
+population = 23121
+near_citys = 902;904
+counties = 合浦;徐闻;朱崖
+desc = 合浦郡，汉武帝划出南海、象郡交界地方置合浦郡，郡治合浦。
+
+[904]
+name = 郁林郡
+type = 2
+pos_x = -530
+pos_y = -1500
+population = 115687
+near_citys = 903;905
+counties = 布山;潭中;桂林;领方
+desc = 郁林郡，治布山。元鼎六年，汉武帝灭南越国，改秦桂林郡为郁林郡。其郡辖地大致相当于今南宁、柳州、玉林、河池及百色一带。
+
+[905]
+name = 苍梧郡
+type = 2
+pos_x = -220
+pos_y = -1460
+population = 111395
+near_citys = 705;904;906
+counties = 广信;富川;荔浦;临贺
+desc = 苍梧郡，郡治在广信县，辖地大致相当于今广西都庞岭、大瑶山以东，广东肇庆、罗定以西，湖南江永、江华以南，广西藤县、广东信宜以北。
+
+[906]
+name = 南海郡
+type = 2
+pos_x = 70
+pos_y = -1530
+population = 71477
+near_citys = 706;905
+counties = 番禺;四会;博罗;揭阳
+desc = 南海郡，秦置，治番禺县。交州刺史台初在龙编，东汉建安八年迁广信。建安十五年迁番禺。

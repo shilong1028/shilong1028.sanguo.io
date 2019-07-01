@@ -1,0 +1,1391 @@
+[401]
+name = 骑兵千户
+bingzhong = 401
+hp = 500
+mp = 20
+atk = 40
+def = 30
+
+[402]
+name = 步兵千户
+bingzhong = 402
+hp = 500
+mp = 20
+atk = 40
+def = 30
+
+[403]
+name = 弓兵千户
+bingzhong = 403
+hp = 500
+mp = 20
+atk = 40
+def = 30
+
+[1001]
+name = 刘亭
+bingzhong = 401
+hp = 960
+mp = 57
+atk = 89
+def = 90
+
+[1002]
+name = 皇甫嵩
+bingzhong = 401
+hp = 870
+mp = 41
+atk = 81
+def = 73
+
+[1003]
+name = 朱儁
+bingzhong = 401
+hp = 860
+mp = 43
+atk = 75
+def = 80
+
+[1004]
+name = 徐荣
+bingzhong = 401
+hp = 780
+mp = 36
+atk = 74
+def = 67
+
+[1005]
+name = 樊稠
+bingzhong = 401
+hp = 780
+mp = 37
+atk = 75
+def = 64
+
+[1006]
+name = 郭汜
+bingzhong = 402
+hp = 790
+mp = 40
+atk = 79
+def = 71
+
+[1007]
+name = 李傕
+bingzhong = 402
+hp = 770
+mp = 31
+atk = 73
+def = 69
+
+[1008]
+name = 张济
+bingzhong = 402
+hp = 790
+mp = 37
+atk = 75
+def = 68
+
+[1009]
+name = 董承
+bingzhong = 402
+hp = 770
+mp = 35
+atk = 72
+def = 73
+
+[1010]
+name = 马腾
+bingzhong = 402
+hp = 790
+mp = 37
+atk = 63
+def = 79
+
+[1011]
+name = 庞德
+bingzhong = 402
+hp = 760
+mp = 37
+atk = 58
+def = 75
+
+[1012]
+name = 李肃
+bingzhong = 402
+hp = 760
+mp = 42
+atk = 71
+def = 80
+
+[1013]
+name = 张绣
+bingzhong = 402
+hp = 700
+mp = 43
+atk = 73
+def = 80
+
+[1014]
+name = 贾诩
+bingzhong = 403
+hp = 860
+mp = 85
+atk = 58
+def = 57
+
+[1015]
+name = 徐庶
+bingzhong = 403
+hp = 840
+mp = 80
+atk = 64
+def = 53
+
+[1016]
+name = 王允
+bingzhong = 403
+hp = 760
+mp = 80
+atk = 56
+def = 57
+
+[1017]
+name = 李儒
+bingzhong = 403
+hp = 710
+mp = 75
+atk = 56
+def = 53
+
+[1018]
+name = 华歆
+bingzhong = 403
+hp = 680
+mp = 83
+atk = 53
+def = 52
+
+[1019]
+name = 王朗
+bingzhong = 403
+hp = 770
+mp = 81
+atk = 55
+def = 59
+
+[1020]
+name = 孔融
+bingzhong = 403
+hp = 700
+mp = 75
+atk = 55
+def = 52
+
+[2001]
+name = 袁绍
+bingzhong = 401
+hp = 910
+mp = 59
+atk = 90
+def = 83
+
+[2002]
+name = 高干
+bingzhong = 401
+hp = 810
+mp = 35
+atk = 74
+def = 76
+
+[2003]
+name = 淳于琼
+bingzhong = 401
+hp = 840
+mp = 35
+atk = 82
+def = 79
+
+[2004]
+name = 颜良
+bingzhong = 401
+hp = 790
+mp = 33
+atk = 72
+def = 62
+
+[2005]
+name = 文丑
+bingzhong = 401
+hp = 780
+mp = 34
+atk = 75
+def = 65
+
+[2006]
+name = 张郃
+bingzhong = 402
+hp = 750
+mp = 29
+atk = 73
+def = 67
+
+[2007]
+name = 高览
+bingzhong = 402
+hp = 760
+mp = 32
+atk = 75
+def = 60
+
+[2008]
+name = 高柔
+bingzhong = 402
+hp = 770
+mp = 33
+atk = 71
+def = 69
+
+[2009]
+name = 周昂
+bingzhong = 402
+hp = 720
+mp = 36
+atk = 69
+def = 79
+
+[2010]
+name = 辛评
+bingzhong = 402
+hp = 740
+mp = 33
+atk = 66
+def = 75
+
+[2011]
+name = 麹义
+bingzhong = 402
+hp = 720
+mp = 38
+atk = 71
+def = 78
+
+[2012]
+name = 郭援
+bingzhong = 402
+hp = 660
+mp = 33
+atk = 66
+def = 73
+
+[2013]
+name = 蒋义渠
+bingzhong = 402
+hp = 710
+mp = 38
+atk = 67
+def = 71
+
+[2014]
+name = 逢纪
+bingzhong = 403
+hp = 770
+mp = 81
+atk = 44
+def = 50
+
+[2015]
+name = 审配
+bingzhong = 403
+hp = 800
+mp = 85
+atk = 53
+def = 53
+
+[2016]
+name = 郭图
+bingzhong = 403
+hp = 720
+mp = 75
+atk = 52
+def = 55
+
+[2017]
+name = 沮授
+bingzhong = 403
+hp = 680
+mp = 75
+atk = 50
+def = 49
+
+[2018]
+name = 田丰
+bingzhong = 403
+hp = 720
+mp = 70
+atk = 53
+def = 53
+
+[2019]
+name = 荀谌
+bingzhong = 403
+hp = 690
+mp = 75
+atk = 47
+def = 52
+
+[2020]
+name = 许攸
+bingzhong = 403
+hp = 660
+mp = 71
+atk = 50
+def = 51
+
+[3001]
+name = 曹操
+bingzhong = 401
+hp = 940
+mp = 52
+atk = 91
+def = 84
+
+[3002]
+name = 曹休
+bingzhong = 401
+hp = 840
+mp = 35
+atk = 78
+def = 76
+
+[3003]
+name = 夏侯惇
+bingzhong = 401
+hp = 820
+mp = 40
+atk = 78
+def = 70
+
+[3004]
+name = 曹仁
+bingzhong = 401
+hp = 750
+mp = 36
+atk = 76
+def = 66
+
+[3005]
+name = 夏侯渊
+bingzhong = 401
+hp = 770
+mp = 31
+atk = 74
+def = 71
+
+[3006]
+name = 张辽
+bingzhong = 402
+hp = 730
+mp = 32
+atk = 78
+def = 67
+
+[3007]
+name = 曹洪
+bingzhong = 402
+hp = 740
+mp = 31
+atk = 74
+def = 65
+
+[3008]
+name = 徐晃
+bingzhong = 402
+hp = 780
+mp = 30
+atk = 74
+def = 68
+
+[3009]
+name = 乐进
+bingzhong = 402
+hp = 700
+mp = 34
+atk = 62
+def = 75
+
+[3010]
+name = 李典
+bingzhong = 402
+hp = 780
+mp = 32
+atk = 59
+def = 74
+
+[3011]
+name = 于禁
+bingzhong = 402
+hp = 740
+mp = 38
+atk = 62
+def = 77
+
+[3012]
+name = 典韦
+bingzhong = 402
+hp = 760
+mp = 35
+atk = 65
+def = 78
+
+[3013]
+name = 许褚
+bingzhong = 402
+hp = 650
+mp = 36
+atk = 66
+def = 80
+
+[3014]
+name = 郭嘉
+bingzhong = 403
+hp = 810
+mp = 85
+atk = 52
+def = 44
+
+[3015]
+name = 司马懿
+bingzhong = 403
+hp = 830
+mp = 83
+atk = 52
+def = 53
+
+[3016]
+name = 荀彧
+bingzhong = 403
+hp = 520
+mp = 74
+atk = 51
+def = 48
+
+[3017]
+name = 荀攸
+bingzhong = 403
+hp = 730
+mp = 76
+atk = 54
+def = 48
+
+[3018]
+name = 程昱
+bingzhong = 403
+hp = 700
+mp = 77
+atk = 50
+def = 49
+
+[3019]
+name = 刘晔
+bingzhong = 403
+hp = 710
+mp = 72
+atk = 52
+def = 53
+
+[3020]
+name = 满宠
+bingzhong = 403
+hp = 700
+mp = 71
+atk = 52
+def = 54
+
+[4001]
+name = 孙坚
+bingzhong = 401
+hp = 930
+mp = 50
+atk = 84
+def = 83
+
+[4002]
+name = 孙策
+bingzhong = 401
+hp = 820
+mp = 42
+atk = 85
+def = 80
+
+[4003]
+name = 朱治
+bingzhong = 401
+hp = 760
+mp = 33
+atk = 72
+def = 81
+
+[4004]
+name = 程普
+bingzhong = 401
+hp = 740
+mp = 39
+atk = 79
+def = 64
+
+[4005]
+name = 韩当
+bingzhong = 401
+hp = 760
+mp = 35
+atk = 76
+def = 61
+
+[4006]
+name = 黄盖
+bingzhong = 402
+hp = 730
+mp = 33
+atk = 75
+def = 65
+
+[4007]
+name = 周泰
+bingzhong = 402
+hp = 750
+mp = 31
+atk = 73
+def = 58
+
+[4008]
+name = 潘璋
+bingzhong = 402
+hp = 760
+mp = 30
+atk = 80
+def = 58
+
+[4009]
+name = 凌操
+bingzhong = 402
+hp = 750
+mp = 31
+atk = 62
+def = 75
+
+[4010]
+name = 蒋钦
+bingzhong = 402
+hp = 720
+mp = 34
+atk = 61
+def = 72
+
+[4011]
+name = 丁奉
+bingzhong = 402
+hp = 710
+mp = 30
+atk = 61
+def = 75
+
+[4012]
+name = 徐盛
+bingzhong = 402
+hp = 770
+mp = 31
+atk = 58
+def = 75
+
+[4013]
+name = 太史慈
+bingzhong = 402
+hp = 720
+mp = 33
+atk = 66
+def = 78
+
+[4014]
+name = 周瑜
+bingzhong = 403
+hp = 770
+mp = 81
+atk = 56
+def = 55
+
+[4015]
+name = 吕范
+bingzhong = 403
+hp = 710
+mp = 82
+atk = 52
+def = 53
+
+[4016]
+name = 吕蒙
+bingzhong = 403
+hp = 710
+mp = 81
+atk = 49
+def = 48
+
+[4017]
+name = 孙静
+bingzhong = 403
+hp = 730
+mp = 73
+atk = 54
+def = 55
+
+[4018]
+name = 张纮
+bingzhong = 403
+hp = 700
+mp = 80
+atk = 53
+def = 47
+
+[4019]
+name = 张昭
+bingzhong = 403
+hp = 730
+mp = 73
+atk = 54
+def = 57
+
+[4020]
+name = 顾雍
+bingzhong = 403
+hp = 730
+mp = 78
+atk = 50
+def = 60
+
+[5001]
+name = 刘备
+bingzhong = 401
+hp = 900
+mp = 53
+atk = 90
+def = 88
+
+[5002]
+name = 关羽
+bingzhong = 401
+hp = 820
+mp = 37
+atk = 80
+def = 72
+
+[5003]
+name = 张飞
+bingzhong = 401
+hp = 810
+mp = 38
+atk = 80
+def = 72
+
+[5004]
+name = 赵云
+bingzhong = 401
+hp = 810
+mp = 36
+atk = 76
+def = 65
+
+[5005]
+name = 黄忠
+bingzhong = 401
+hp = 730
+mp = 33
+atk = 75
+def = 71
+
+[5006]
+name = 魏延
+bingzhong = 402
+hp = 710
+mp = 32
+atk = 73
+def = 69
+
+[5007]
+name = 马超
+bingzhong = 402
+hp = 750
+mp = 37
+atk = 74
+def = 66
+
+[5008]
+name = 马岱
+bingzhong = 402
+hp = 710
+mp = 35
+atk = 76
+def = 64
+
+[5009]
+name = 糜竺
+bingzhong = 402
+hp = 730
+mp = 29
+atk = 57
+def = 73
+
+[5010]
+name = 糜芳
+bingzhong = 402
+hp = 740
+mp = 31
+atk = 62
+def = 73
+
+[5011]
+name = 廖化
+bingzhong = 402
+hp = 730
+mp = 36
+atk = 64
+def = 79
+
+[5012]
+name = 刘封
+bingzhong = 402
+hp = 720
+mp = 29
+atk = 64
+def = 73
+
+[5013]
+name = 孟达
+bingzhong = 402
+hp = 710
+mp = 33
+atk = 64
+def = 76
+
+[5014]
+name = 诸葛亮
+bingzhong = 403
+hp = 820
+mp = 88
+atk = 55
+def = 55
+
+[5015]
+name = 庞统
+bingzhong = 403
+hp = 750
+mp = 84
+atk = 54
+def = 55
+
+[5016]
+name = 简雍
+bingzhong = 403
+hp = 700
+mp = 72
+atk = 54
+def = 51
+
+[5017]
+name = 孙乾
+bingzhong = 403
+hp = 700
+mp = 73
+atk = 48
+def = 54
+
+[5018]
+name = 伊籍
+bingzhong = 403
+hp = 730
+mp = 74
+atk = 50
+def = 46
+
+[5019]
+name = 马良
+bingzhong = 403
+hp = 710
+mp = 73
+atk = 50
+def = 50
+
+[5020]
+name = 法正
+bingzhong = 403
+hp = 720
+mp = 77
+atk = 54
+def = 48
+
+[6001]
+name = 董卓
+bingzhong = 401
+hp = 840
+mp = 37
+atk = 79
+def = 79
+
+[6002]
+name = 吕布
+bingzhong = 401
+hp = 870
+mp = 30
+atk = 86
+def = 73
+
+[6003]
+name = 韩遂
+bingzhong = 401
+hp = 790
+mp = 30
+atk = 77
+def = 71
+
+[6004]
+name = 张角
+bingzhong = 401
+hp = 860
+mp = 75
+atk = 76
+def = 70
+
+[6005]
+name = 于毒
+bingzhong = 401
+hp = 730
+mp = 33
+atk = 67
+def = 72
+
+[6006]
+name = 张燕
+bingzhong = 401
+hp = 820
+mp = 31
+atk = 73
+def = 78
+
+[6007]
+name = 张纯
+bingzhong = 401
+hp = 750
+mp = 30
+atk = 68
+def = 69
+
+[6008]
+name = 公孙瓒
+bingzhong = 401
+hp = 840
+mp = 33
+atk = 70
+def = 76
+
+[6009]
+name = 袁术
+bingzhong = 401
+hp = 840
+mp = 35
+atk = 71
+def = 76
+
+[6010]
+name = 严白虎
+bingzhong = 401
+hp = 770
+mp = 30
+atk = 63
+def = 71
+
+[7001]
+name = 胡珍
+bingzhong = 402
+hp = 730
+mp = 36
+atk = 74
+def = 57
+
+[7002]
+name = 董越
+bingzhong = 402
+hp = 730
+mp = 31
+atk = 70
+def = 62
+
+[7003]
+name = 杨秋
+bingzhong = 402
+hp = 770
+mp = 34
+atk = 78
+def = 63
+
+[7004]
+name = 成宜
+bingzhong = 402
+hp = 740
+mp = 32
+atk = 71
+def = 58
+
+[7005]
+name = 管亥
+bingzhong = 402
+hp = 700
+mp = 32
+atk = 70
+def = 65
+
+[7006]
+name = 张曼成
+bingzhong = 402
+hp = 730
+mp = 31
+atk = 75
+def = 57
+
+[7007]
+name = 波才
+bingzhong = 402
+hp = 710
+mp = 34
+atk = 72
+def = 55
+
+[7008]
+name = 彭脱
+bingzhong = 402
+hp = 710
+mp = 33
+atk = 74
+def = 59
+
+[7009]
+name = 眭固
+bingzhong = 402
+hp = 730
+mp = 31
+atk = 78
+def = 57
+
+[7010]
+name = 公孙范
+bingzhong = 402
+hp = 740
+mp = 32
+atk = 77
+def = 54
+
+[7011]
+name = 严纲
+bingzhong = 402
+hp = 780
+mp = 31
+atk = 70
+def = 51
+
+[7012]
+name = 单经
+bingzhong = 402
+hp = 710
+mp = 38
+atk = 73
+def = 59
+
+[7013]
+name = 张勋
+bingzhong = 402
+hp = 720
+mp = 38
+atk = 71
+def = 59
+
+[7014]
+name = 桥蕤
+bingzhong = 402
+hp = 740
+mp = 39
+atk = 78
+def = 61
+
+[7015]
+name = 纪灵
+bingzhong = 402
+hp = 780
+mp = 33
+atk = 71
+def = 58
+
+[7016]
+name = 张超
+bingzhong = 402
+hp = 790
+mp = 39
+atk = 78
+def = 62
+
+[7017]
+name = 张举
+bingzhong = 402
+hp = 780
+mp = 34
+atk = 78
+def = 59
+
+[7018]
+name = 薛礼
+bingzhong = 402
+hp = 760
+mp = 33
+atk = 72
+def = 55
+
+[7019]
+name = 张英
+bingzhong = 402
+hp = 750
+mp = 34
+atk = 71
+def = 64
+
+[7020]
+name = 陈瑀
+bingzhong = 402
+hp = 740
+mp = 34
+atk = 79
+def = 59
+
+[7021]
+name = 祖郎
+bingzhong = 402
+hp = 740
+mp = 36
+atk = 75
+def = 64
+
+[7022]
+name = 高顺
+bingzhong = 402
+hp = 750
+mp = 36
+atk = 75
+def = 66
+
+[7023]
+name = 文聘
+bingzhong = 402
+hp = 760
+mp = 32
+atk = 76
+def = 69
+
+[8001]
+name = 段煨
+bingzhong = 402
+hp = 730
+mp = 34
+atk = 65
+def = 74
+
+[8002]
+name = 牛辅
+bingzhong = 402
+hp = 780
+mp = 30
+atk = 61
+def = 76
+
+[8003]
+name = 李堪
+bingzhong = 402
+hp = 780
+mp = 29
+atk = 63
+def = 77
+
+[8004]
+name = 阎行
+bingzhong = 402
+hp = 720
+mp = 34
+atk = 61
+def = 68
+
+[8005]
+name = 赵弘
+bingzhong = 402
+hp = 760
+mp = 32
+atk = 58
+def = 72
+
+[8006]
+name = 李大目
+bingzhong = 402
+hp = 750
+mp = 35
+atk = 61
+def = 79
+
+[8007]
+name = 白绕
+bingzhong = 402
+hp = 750
+mp = 32
+atk = 63
+def = 72
+
+[8008]
+name = 于氐根
+bingzhong = 402
+hp = 750
+mp = 34
+atk = 56
+def = 73
+
+[8009]
+name = 于扶罗
+bingzhong = 402
+hp = 750
+mp = 34
+atk = 61
+def = 71
+
+[8010]
+name = 邹丹
+bingzhong = 402
+hp = 710
+mp = 34
+atk = 64
+def = 67
+
+[8011]
+name = 公孙续
+bingzhong = 402
+hp = 730
+mp = 38
+atk = 64
+def = 63
+
+[8012]
+name = 周昕
+bingzhong = 402
+hp = 750
+mp = 32
+atk = 62
+def = 65
+
+[8013]
+name = 曹豹
+bingzhong = 402
+hp = 740
+mp = 29
+atk = 62
+def = 71
+
+[8014]
+name = 王楷
+bingzhong = 402
+hp = 730
+mp = 30
+atk = 56
+def = 67
+
+[8015]
+name = 秦颉
+bingzhong = 402
+hp = 720
+mp = 33
+atk = 60
+def = 74
+
+[8016]
+name = 郭石
+bingzhong = 402
+hp = 720
+mp = 35
+atk = 60
+def = 72
+
+[8017]
+name = 丘力居
+bingzhong = 402
+hp = 730
+mp = 31
+atk = 56
+def = 72
+
+[8018]
+name = 王睿
+bingzhong = 402
+hp = 740
+mp = 37
+atk = 56
+def = 68
+
+[8019]
+name = 袁胤
+bingzhong = 402
+hp = 770
+mp = 34
+atk = 59
+def = 71
+
+[8020]
+name = 曹性
+bingzhong = 402
+hp = 740
+mp = 34
+atk = 58
+def = 67
+
+[8021]
+name = 金旋
+bingzhong = 402
+hp = 720
+mp = 38
+atk = 63
+def = 69
+
+[8022]
+name = 赵范
+bingzhong = 402
+hp = 710
+mp = 44
+atk = 61
+def = 66
+
+[8023]
+name = 蔡瑁
+bingzhong = 403
+hp = 770
+mp = 30
+atk = 67
+def = 72
+
+[9001]
+name = 陶谦
+bingzhong = 401
+hp = 710
+mp = 77
+atk = 63
+def = 73
+
+[9002]
+name = 刘表
+bingzhong = 401
+hp = 780
+mp = 71
+atk = 61
+def = 71
+
+[9003]
+name = 刘繇
+bingzhong = 401
+hp = 720
+mp = 67
+atk = 66
+def = 70
+
+[9004]
+name = 韩玄
+bingzhong = 401
+hp = 720
+mp = 73
+atk = 47
+def = 54
+
+[9005]
+name = 陈宫
+bingzhong = 401
+hp = 680
+mp = 75
+atk = 49
+def = 53
+
+[9051]
+name = 张宝
+bingzhong = 401
+hp = 730
+mp = 71
+atk = 51
+def = 64
+
+[9052]
+name = 张梁
+bingzhong = 401
+hp = 680
+mp = 70
+atk = 48
+def = 52
+
+[9053]
+name = 笮融
+bingzhong = 403
+hp = 700
+mp = 69
+atk = 48
+def = 51
+
+[9054]
+name = 蒯越
+bingzhong = 403
+hp = 690
+mp = 77
+atk = 49
+def = 58
+
+[9055]
+name = 张邈
+bingzhong = 403
+hp = 720
+mp = 73
+atk = 50
+def = 54
+
+[9056]
+name = 许贡
+bingzhong = 403
+hp = 740
+mp = 66
+atk = 54
+def = 54
+
+[9057]
+name = 虞翻
+bingzhong = 403
+hp = 730
+mp = 76
+atk = 46
+def = 51
+
+[9058]
+name = 刘度
+bingzhong = 403
+hp = 730
+mp = 73
+atk = 51
+def = 55
+
+[9059]
+name = 陈登
+bingzhong = 403
+hp = 690
+mp = 74
+atk = 51
+def = 50
+
+[9060]
+name = 蒯良
+bingzhong = 403
+hp = 680
+mp = 73
+atk = 48
+def = 52
