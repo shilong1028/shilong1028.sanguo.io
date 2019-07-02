@@ -1,6 +1,7 @@
 import FightScene from "../fight/fightScene";
-import { Cfg, st_general_info } from "./ConfigManager";
+
 import { CardInfo } from "./Enum";
+import { CfgMgr, st_general_info } from "./ConfigManager";
 
 //战斗管理器
 const {ccclass, property} = cc._decorator;
@@ -75,12 +76,12 @@ class FightManager {
 
     /**获取随机的武将数据 */
     getRandomGeneralData(): st_general_info {
-        let keys = Object.getOwnPropertyNames(Cfg.C_general_info);
+        let keys = Object.getOwnPropertyNames(CfgMgr.C_general_info);
         let idx = Math.ceil(Math.random()*keys.length);
         if(idx == 0){
             idx = 1;
         }
-        let general: st_general_info = Cfg.C_general_info[idx];
+        let general: st_general_info = CfgMgr.C_general_info[idx];
         return general.clone();
     }
 

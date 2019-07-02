@@ -1,5 +1,6 @@
-import { Cfg, st_city_info } from "../manager/ConfigManager";
+
 import City from "./city";
+import { CfgMgr, st_city_info } from "../manager/ConfigManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -17,9 +18,9 @@ export default class Map extends cc.Component {
     // onLoad () {}
 
     start () {
-        let keys = Object.getOwnPropertyNames(Cfg.C_city_info);
+        let keys = Object.getOwnPropertyNames(CfgMgr.C_city_info);
         for (let k of keys) {
-            let cityInfo: st_city_info = Cfg.C_city_info[k];
+            let cityInfo: st_city_info = CfgMgr.C_city_info[k];
             let city = cc.instantiate(this.pfCity);
             city.position = cc.v2(cityInfo.pos_x, cityInfo.pos_y);
             this.citysNode.addChild(city);

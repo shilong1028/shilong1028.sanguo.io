@@ -47,7 +47,10 @@ export default class MainScene extends cc.Component {
         let task = cc.instantiate(this.pfTask)
         task.name = "TaskInfo";
         task.y = -95;
-        this.taskNode.addChild(task);
+        this.taskNode.addChild(task, 10);
+
+        this.bTaskUp = false;
+        this.onTaskOptBtn();
     }
 
 

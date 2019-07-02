@@ -26,18 +26,18 @@
         "__id__": 8
       },
       {
-        "__id__": 13
+        "__id__": 16
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 27
+        "__id__": 24
       }
     ],
     "_prefab": {
-      "__id__": 28
+      "__id__": 25
     },
     "_opacity": 255,
     "_color": {
@@ -105,13 +105,13 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 255,
+      "g": 0,
       "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 175,
+      "width": 140,
       "height": 40
     },
     "_anchorPoint": {
@@ -154,8 +154,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "官拜骑都尉",
-    "_N$string": "官拜骑都尉",
+    "_string": "拜骑都尉",
+    "_N$string": "拜骑都尉",
     "_fontSize": 35,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -204,13 +204,13 @@
       "__type__": "cc.Color",
       "r": 255,
       "g": 255,
-      "b": 255,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 400,
-      "height": 75
+      "height": 84
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -219,7 +219,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 20,
+      "x": 10,
       "y": 0,
       "z": 0
     },
@@ -255,7 +255,7 @@
     "_string": "主公，5月皇甫嵩与朱儁将军被颍川郡黄巾军波才部大败，被围困在长社，军心不稳。朝廷急诏我军速速支援… …",
     "_N$string": "主公，5月皇甫嵩与朱儁将军被颍川郡黄巾军波才部大败，被围困在长社，军心不稳。朝廷急诏我军速速支援… …",
     "_fontSize": 20,
-    "_lineHeight": 25,
+    "_lineHeight": 28,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -286,19 +286,23 @@
     "_parent": {
       "__id__": 1
     },
-    "_children": [],
+    "_children": [
+      {
+        "__id__": 9
+      }
+    ],
     "_active": true,
     "_level": 5,
     "_components": [
       {
-        "__id__": 9
+        "__id__": 12
       },
       {
-        "__id__": 10
+        "__id__": 13
       }
     ],
     "_prefab": {
-      "__id__": 12
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -320,7 +324,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 300,
+      "x": 290,
       "y": 0,
       "z": 0
     },
@@ -343,6 +347,104 @@
     "_skewY": 0,
     "groupIndex": 0,
     "_id": ""
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "New Label",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 8
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 6,
+    "_components": [
+      {
+        "__id__": 10
+      }
+    ],
+    "_prefab": {
+      "__id__": 11
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 100,
+      "height": 30
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "groupIndex": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 9
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_string": "领取奖励",
+    "_N$string": "领取奖励",
+    "_fontSize": 25,
+    "_lineHeight": 30,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0,
+    "_N$cacheMode": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "ac71971f-b574-46cb-be92-1e3a910a2edb"
+    },
+    "fileId": "f1/SEHYuREuohPnt06gRD6",
+    "sync": false
   },
   {
     "__type__": "cc.Sprite",
@@ -386,7 +488,7 @@
     "zoomScale": 1.2,
     "clickEvents": [
       {
-        "__id__": 11
+        "__id__": 14
       }
     ],
     "_N$interactable": true,
@@ -474,27 +576,21 @@
     },
     "_children": [
       {
-        "__id__": 14
-      },
-      {
         "__id__": 17
-      },
-      {
-        "__id__": 20
       }
     ],
     "_active": true,
     "_level": 5,
     "_components": [
       {
-        "__id__": 23
+        "__id__": 20
       },
       {
-        "__id__": 24
+        "__id__": 21
       }
     ],
     "_prefab": {
-      "__id__": 26
+      "__id__": 23
     },
     "_opacity": 255,
     "_color": {
@@ -516,7 +612,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 300,
+      "x": 290,
       "y": 0,
       "z": 0
     },
@@ -545,105 +641,7 @@
     "_name": "New Label",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 13
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 6,
-    "_components": [
-      {
-        "__id__": 15
-      }
-    ],
-    "_prefab": {
       "__id__": 16
-    },
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 0,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 80,
-      "height": 30
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 35,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_quat": {
-      "__type__": "cc.Quat",
-      "x": 0,
-      "y": 0,
-      "z": 0,
-      "w": 1
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "groupIndex": 0,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.Label",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 14
-    },
-    "_enabled": true,
-    "_useOriginalSize": false,
-    "_string": "任务目标",
-    "_N$string": "任务目标",
-    "_fontSize": 20,
-    "_lineHeight": 30,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
-    "_N$cacheMode": 0,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__uuid__": "ac71971f-b574-46cb-be92-1e3a910a2edb"
-    },
-    "fileId": "12ekJz36VFhKZgeJeGlNXR",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "New Label",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 13
     },
     "_children": [],
     "_active": true,
@@ -677,7 +675,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -35,
+      "y": 0,
       "z": 0
     },
     "_scale": {
@@ -709,9 +707,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "点击可前往",
-    "_N$string": "点击可前往",
-    "_fontSize": 20,
+    "_string": "查看详情",
+    "_N$string": "查看详情",
+    "_fontSize": 25,
     "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": null,
@@ -733,105 +731,7 @@
     "asset": {
       "__uuid__": "ac71971f-b574-46cb-be92-1e3a910a2edb"
     },
-    "fileId": "dfYbFgdrJFcoALXN12rTpG",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "destLabel",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 13
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 6,
-    "_components": [
-      {
-        "__id__": 21
-      }
-    ],
-    "_prefab": {
-      "__id__": 22
-    },
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 0,
-      "g": 191,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 90,
-      "height": 35
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_quat": {
-      "__type__": "cc.Quat",
-      "x": 0,
-      "y": 0,
-      "z": 0,
-      "w": 1
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "groupIndex": 0,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.Label",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 20
-    },
-    "_enabled": true,
-    "_useOriginalSize": false,
-    "_string": "颍川郡",
-    "_N$string": "颍川郡",
-    "_fontSize": 30,
-    "_lineHeight": 35,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
-    "_N$cacheMode": 0,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__uuid__": "ac71971f-b574-46cb-be92-1e3a910a2edb"
-    },
-    "fileId": "5bFfY3z+FBtq33kkMtJ41l",
+    "fileId": "14757U+7pEPI1iImrWhbmY",
     "sync": false
   },
   {
@@ -839,13 +739,13 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 13
+      "__id__": 16
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "37dcdb9b-71b7-4ca5-b7d8-306188ef8366"
+      "__uuid__": "98d3f892-ce51-4b43-a6d5-fa1328eabef8"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -869,14 +769,14 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 13
+      "__id__": 16
     },
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
       {
-        "__id__": 25
+        "__id__": 22
       }
     ],
     "_N$interactable": true,
@@ -969,11 +869,8 @@
     "taskTitle": {
       "__id__": 3
     },
-    "taskDest": {
-      "__id__": 21
-    },
     "destNode": {
-      "__id__": 13
+      "__id__": 16
     },
     "rewardNode": {
       "__id__": 8
