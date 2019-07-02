@@ -1,3 +1,5 @@
+import { ROOT_NODE } from "../common/rootNode";
+import RewardLayer from "../common/rewardLayer";
 
 
 //游戏菜单管理器
@@ -5,12 +7,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 class GameManager {
-
-    /**加载配置数据完毕 */
-    handleLoadConfigOver(){
-        //cc.log("handleLoadConfigOver()");
-        cc.director.loadScene("mainScene");
-    }
 
     /**显示子层 */
     showLayer(prefab: cc.Prefab, parent: cc.Node = null){
@@ -30,6 +26,15 @@ class GameManager {
         }
         parent.addChild(layer);
         return layer;
+    }
+
+    /**显示通用奖励提示框 */
+    showRewardLayer(rewardList:any, callback: any=null, target: any=null){
+        let layer = this.showLayer(ROOT_NODE.pfReward);
+        let rewardSc = layer.getComponent(RewardLayer);
+        if(rewardSc){
+            rewardSc.setRewardCallback(callback, target);
+        }
     }
 
     /**通过内存图集创建序列帧动画 */

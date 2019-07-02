@@ -7,19 +7,43 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class StartScene extends cc.Component {
+    @property(cc.Node)
+    btnNode: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.btnNode.active = false;
+    }
 
     start () {
 
         MyUserMgr.initUserData();    //初始化用户信息
 
+
+        CfgMgr.setOverCallback(this.handleLoadConfigOver, this);  //设置加载配置完毕回调
         CfgMgr.loadAllConfig();   //加载配置
     }
 
     // update (dt) {}
+
+    onLoginGame(){
+        this.btnNode.active = false;
+        cc.director.loadScene("mainScene");
+    }
+
+    onResetGame(){
+        this.btnNode.active = false;
+        MyUserMgr.clearUserData();   //清除所有用户数据
+        cc.director.loadScene("mainScene");
+    }
+
+    /**加载配置数据完毕 */
+    handleLoadConfigOver(){
+        //cc.log("handleLoadConfigOver()");
+        //cc.director.loadScene("mainScene");
+        this.btnNode.active = true;
+    }
 
 
 }

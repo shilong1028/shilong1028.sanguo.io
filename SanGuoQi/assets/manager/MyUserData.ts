@@ -1,4 +1,6 @@
 import { LDMgr, LDKey } from "./StorageManager";
+import { NoticeMgr } from "./NoticeManager";
+import { NoticeType } from "./Enum";
 
 
 //用户数据管理
@@ -16,6 +18,17 @@ export var MyUserData = {
 
 @ccclass
 class MyUserManager {
+
+    /**清除所有用户数据 */
+    clearUserData(){
+        MyUserData.GoldCount = 0;   //用户金币
+        MyUserData.DiamondCount = 0;   //用户钻石(金锭）数
+        MyUserData.FoodCount = 0;   //用户粮食数量
+
+        MyUserData.TaskId = 1;   //当前任务ID
+        MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
+        LDMgr.setItem(LDKey.KEY_StoryData, "1-0");
+    }
 
     /**初始化用户信息 */
     initUserData(){
@@ -44,13 +57,22 @@ class MyUserManager {
         }
     }
 
-    /**修改用户任务 */
+    /**修改用户任务 0未完成，1完成未领取，2已领取 */
     updateTaskState(taskId: number, state: number, bSave: boolean = true){
         MyUserData.TaskId = taskId;
         MyUserData.TaskState = state;
+
+        if(state == 2){   //2已领取，下一个任务
+            MyUserData.TaskId ++;
+            MyUserData.TaskState = 0;
+            bSave = true;
+        }
+
         if(bSave){
             LDMgr.setItem(LDKey.KEY_StoryData, taskId.toString()+"-"+state);
         }
+
+        NoticeMgr.emit(NoticeType.UpdateTaskState, null);   //任务状态更新
     }
 
 

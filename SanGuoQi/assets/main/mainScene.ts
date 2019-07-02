@@ -1,6 +1,7 @@
 import { NoticeMgr } from "../manager/NoticeManager";
 import { NoticeType } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
+import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 
 //全国地图场景
 const {ccclass, property} = cc._decorator;
@@ -94,7 +95,6 @@ export default class MainScene extends cc.Component {
 
         let moveTime = destPos.sub(midPos).mag()/1000;
         this.mapNode.runAction(cc.sequence(cc.moveTo(moveTime, destPos), cc.callFunc(function(){
-            cc.log("talkType = "+talkType);
             let aniNode = GameMgr.createAtlasAniNode(this.cicleAtlas, 12, cc.WrapMode.Default);
             aniNode.position = cityPos;
             this.mapNode.addChild(aniNode, 100);
@@ -182,5 +182,4 @@ export default class MainScene extends cc.Component {
 
     }
 
-    
 }

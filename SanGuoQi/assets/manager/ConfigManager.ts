@@ -1,5 +1,4 @@
 
-import { GameMgr } from "./GameManager";
 
 const { ccclass } = cc._decorator;
 
@@ -136,6 +135,9 @@ export class st_talk_info{
 class CfgManager_class {
 
     index = 0;
+
+    overCallBack: any = null;   //加载完毕后回调
+    overTarget: any = null;   //加载完毕回调注册者
 
     //战斗配置表
     C_battle_info : Map<number, st_battle_info> = new Map<number, st_battle_info>();
@@ -280,8 +282,18 @@ class CfgManager_class {
         if (self.index <= 0) {
             cc.log("load all config finsih!");
 
-            GameMgr.handleLoadConfigOver();
+            if(this.overCallBack && this.overTarget){
+                this.overCallBack.call(this.overTarget, null);
+            }
+            this.overCallBack = null;
+            this.overTarget = null;
         }
+    }
+
+    //设置加载配置完毕回调
+    setOverCallback(callback: any, target: any){
+        this.overCallBack = callback;
+        this.overTarget = target;
     }
 
 

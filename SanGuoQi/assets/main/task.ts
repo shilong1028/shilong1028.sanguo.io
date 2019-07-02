@@ -1,7 +1,9 @@
-import { MyUserData } from "../manager/MyUserData";
+import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import { CfgMgr, st_story_info } from "../manager/ConfigManager";
 import { GameMgr } from "../manager/GameManager";
 import StoryLayer from "./storyLayer";
+import { NoticeMgr } from "../manager/NoticeManager";
+import { NoticeType } from "../manager/Enum";
 
 
 //任务信息
@@ -29,7 +31,14 @@ export default class Task extends cc.Component {
     taskConf: st_story_info = null;   //剧情配置
 
     onLoad () {
+        NoticeMgr.on(NoticeType.UpdateTaskState, this.initMainStory, this);  //任务状态更新
+
         this.clearStoryInfo();   //清除任务数据
+    }
+
+    onDestroy(){
+        this.node.targetOff(this);
+        NoticeMgr.offAll(this);
     }
 
     start () {
@@ -44,7 +53,14 @@ export default class Task extends cc.Component {
     }
 
     onRewardBtn(){
-        
+        GameMgr.showRewardLayer(null, this.handleReceiveReward, this);
+    }
+
+    //领取奖励回调
+    handleReceiveReward(){
+        if(this.taskConf){
+            MyUserMgr.updateTaskState(MyUserData.TaskId, 2);   //修改用户任务 0未完成，1完成未领取，2已领取 
+        }
     }
 
     /**初始化主线任务 */
@@ -56,9 +72,11 @@ export default class Task extends cc.Component {
                 this.taskDesc.string = this.taskConf.desc;
 
                 if(MyUserData.TaskState == 1){   //已完成未领取
+                    this.detailNode.active = false;
                     this.rewardNode.active = true;
                 }else{
                     this.detailNode.active = true;
+                    this.rewardNode.active = false;
                 }
             }
         }

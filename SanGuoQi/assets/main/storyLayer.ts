@@ -1,5 +1,5 @@
 import { st_story_info, CfgMgr, st_talk_info, st_city_info } from "../manager/ConfigManager";
-import { MyUserData } from "../manager/MyUserData";
+import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import { NoticeMgr } from "../manager/NoticeManager";
 import { NoticeType } from "../manager/Enum";
 
@@ -119,9 +119,9 @@ export default class StoryLayer extends cc.Component {
 
     playLocalVideo (videoName: string) {
         cc.log("playLocalVideo(), videoName = "+videoName);
-        this.videoPlayer.resourceType = cc.VideoPlayer.ResourceType.LOCAL;
+        //this.videoPlayer.resourceType = cc.VideoPlayer.ResourceType.LOCAL;
 
-        this.videoPlayer.clip = "mp4/"+videoName+".mp4";
+        //this.videoPlayer.clip = "mp4/"+videoName+".mp4";
         this.videoPlayer.play();
     }
 
@@ -130,6 +130,10 @@ export default class StoryLayer extends cc.Component {
         if(this.curTalkConf && this.curTalkIdx < this.taskConf.talk.length-1){
             this.setTalkStr();   //设置话本内容
         }else{
+            if(this.taskConf && this.taskConf.type == 1){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+                MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
+            }
+
             this.node.removeFromParent(true);
         }
     }
@@ -158,11 +162,11 @@ export default class StoryLayer extends cc.Component {
         // }
     }
 
-    playOnlineVideo () {
-        this.videoPlayer.resourceType = cc.VideoPlayer.ResourceType.REMOTE;
-        this.videoPlayer.remoteURL = 'http://benchmark.cocos2d-x.org/cocosvideo.mp4';
-        //this.videoPlayer.isFullscreen = true;
-        this.videoPlayer.play();
-    }
+    // playOnlineVideo () {
+    //     this.videoPlayer.resourceType = cc.VideoPlayer.ResourceType.REMOTE;
+    //     this.videoPlayer.remoteURL = 'http://benchmark.cocos2d-x.org/cocosvideo.mp4';
+    //     //this.videoPlayer.isFullscreen = true;
+    //     this.videoPlayer.play();
+    // }
 
 }
