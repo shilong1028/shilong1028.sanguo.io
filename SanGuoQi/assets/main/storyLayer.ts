@@ -1,5 +1,7 @@
-import { st_story_info, CfgMgr, st_talk_info } from "../manager/ConfigManager";
+import { st_story_info, CfgMgr, st_talk_info, st_city_info } from "../manager/ConfigManager";
 import { MyUserData } from "../manager/MyUserData";
+import { NoticeMgr } from "../manager/NoticeManager";
+import { NoticeType } from "../manager/Enum";
 
 //剧情阐述
 const {ccclass, property} = cc._decorator;
@@ -36,6 +38,11 @@ export default class StoryLayer extends cc.Component {
         this.talkLabel.string = "";
         this.tvNode.active = false;
         this.skipNode.active = false;
+    }
+
+    onDestroy(){
+        this.node.targetOff(this);
+        NoticeMgr.offAll(this);
     }
 
     start () {
@@ -97,8 +104,15 @@ export default class StoryLayer extends cc.Component {
 
                 let talkId = this.taskConf.talk[this.curTalkIdx];
                 this.curTalkConf = CfgMgr.getTalkConf(talkId);
-                cc.log("this.curTalkConf = "+JSON.stringify(this.curTalkConf));
+                //cc.log("this.curTalkConf = "+JSON.stringify(this.curTalkConf));
                 this.bUpdateStr = true;
+
+                if(this.curTalkConf.city > 0){   //话本目标城池
+                    let cityConf: st_city_info = CfgMgr.getCityConf(this.curTalkConf.city);
+                    if(cityConf){
+                        NoticeMgr.emit(NoticeType.MapMoveByCity, cc.v2(cityConf.pos_x, cityConf.pos_y), this.curTalkConf.type);   //话本目标通知（地图移动）
+                    }
+                }
             }
         }
     }

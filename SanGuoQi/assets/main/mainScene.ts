@@ -1,3 +1,7 @@
+import { NoticeMgr } from "../manager/NoticeManager";
+import { NoticeType } from "../manager/Enum";
+import { GameMgr } from "../manager/GameManager";
+
 //全国地图场景
 const {ccclass, property} = cc._decorator;
 
@@ -14,6 +18,9 @@ export default class MainScene extends cc.Component {
     @property(cc.Prefab)
     pfTask: cc.Prefab = null;  
 
+    @property(cc.SpriteAtlas)
+    cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
+
     // LIFE-CYCLE CALLBACKS:
 
     MapLimitPos: cc.Vec2 = cc.v2(2884, 2632);  //地图位置限制
@@ -29,6 +36,8 @@ export default class MainScene extends cc.Component {
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
 
+        NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
+
         this.mapNode.position = cc.v2(0, -900);   //初始显示洛阳  5768*5264   2884*2632
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
     }
@@ -41,6 +50,7 @@ export default class MainScene extends cc.Component {
 
     onDestroy(){
         this.node.targetOff(this);
+        NoticeMgr.offAll(this);
     }
 
     setTaskInfo(){
@@ -53,9 +63,46 @@ export default class MainScene extends cc.Component {
         this.onTaskOptBtn();
     }
 
+    /**预处理地图将要移动的目标坐标，放置移动过大地图出现黑边 */
+    preCheckMapDestPos(offset: cc.Vec2){
+        let destPos = this.mapNode.position.add(offset);
+        if(destPos.x > this.MapLimitPos.x){
+            destPos.x = this.MapLimitPos.x;
+        }else if(destPos.x < -this.MapLimitPos.x){
+            destPos.x = -this.MapLimitPos.x;
+        }
+        if(destPos.y > this.MapLimitPos.y){
+            destPos.y = this.MapLimitPos.y;
+        }else if(destPos.y < -this.MapLimitPos.y){
+            destPos.y = -this.MapLimitPos.y;
+        }
+        return destPos;
+    }
 
 
-    /************************  以下为各种按钮事件 */
+    //*******************  以下为各种事件处理方法  ************ */
+    
+    /** 将地图移动到指定目标点
+     *  @param talkType 故事类型，0默认（摇旗）1起义暴乱（火） 2 战斗（双刀）
+    */
+    handleMapMoveByCityPos(cityPos: cc.Vec2, talkType:number=0){
+        this.mapNode.stopAllActions();
+
+        let midPos = this.mapNode.position.neg();    //当前视图中心在地图上的坐标
+        let offset = midPos.sub(cityPos);
+        let destPos = this.preCheckMapDestPos(offset);   //预处理地图将要移动的目标坐标，放置移动过大地图出现黑边
+
+        let moveTime = destPos.sub(midPos).mag()/1000;
+        this.mapNode.runAction(cc.sequence(cc.moveTo(moveTime, destPos), cc.callFunc(function(){
+            cc.log("talkType = "+talkType);
+            let aniNode = GameMgr.createAtlasAniNode(this.cicleAtlas, 12, cc.WrapMode.Default);
+            aniNode.position = cityPos;
+            this.mapNode.addChild(aniNode, 100);
+        }.bind(this))));
+    }
+
+
+    /************************  以下为各种按钮事件 ***************/
 
     /**后台切回前台 */
     onShow() {
@@ -77,18 +124,10 @@ export default class MainScene extends cc.Component {
             let pos = event.getLocation();
             let offset = pos.sub(this.touchBeginPos);
             this.touchBeginPos = pos;
+
+            this.mapNode.stopAllActions();
             
-            let mapPos = this.mapNode.position.add(offset);
-            if(mapPos.x > this.MapLimitPos.x){
-                mapPos.x = this.MapLimitPos.x;
-            }else if(mapPos.x < -this.MapLimitPos.x){
-                mapPos.x = -this.MapLimitPos.x;
-            }
-            if(mapPos.y > this.MapLimitPos.y){
-                mapPos.y = this.MapLimitPos.y;
-            }else if(mapPos.y < -this.MapLimitPos.y){
-                mapPos.y = -this.MapLimitPos.y;
-            }
+            let mapPos = this.preCheckMapDestPos(offset);   //预处理地图将要移动的目标坐标，放置移动过大地图出现黑边
             this.mapNode.position = mapPos;
         }
     }
