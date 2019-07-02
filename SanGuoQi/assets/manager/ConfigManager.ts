@@ -168,6 +168,11 @@ class CfgManager_class {
         return this.C_story_info[taskId];
     }
 
+    /**获取话本配置数据 */
+    getTalkConf(talkId: number): st_talk_info{
+        return this.C_talk_info[talkId];
+    }
+
     /**获取城池配置数据 */
     getCityConf(cityId: number): st_city_info{
         return this.C_city_info[cityId];
