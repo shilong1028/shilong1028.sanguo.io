@@ -29,8 +29,10 @@ export class CardInfo{
 /**异步消息通知类型 */
 export const NoticeType = {
     GAME_ON_HIDE: "GAME_ON_HIDE", //游戏切入后台
+
     UpdateGold: "UpdateGold",   //更新金币显示
     UpdateDiamond: "UpdateDiamond",   //更新钻石（金锭）显示
+    UpdateFood: "UpdateFood",   //更新粮食显示
 
     MapMoveByCity: "MapMoveByCity",   //话本目标通知（地图移动）
     UpdateTaskState: "UpdateTaskState",   //任务状态更新

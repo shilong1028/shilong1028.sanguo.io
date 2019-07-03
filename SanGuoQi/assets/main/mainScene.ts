@@ -9,6 +9,13 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class MainScene extends cc.Component {
 
+    @property(cc.Label)
+    goldLabel: cc.Label = null;
+    @property(cc.Label)
+    diamondLabel: cc.Label = null;
+    @property(cc.Label)
+    foodLabel: cc.Label = null;
+
     @property(cc.Node)
     mapNode: cc.Node = null;   //地图总节点
 
@@ -18,6 +25,9 @@ export default class MainScene extends cc.Component {
     taskOptNode: cc.Node = null;  //任务伸缩按钮节点
     @property(cc.Prefab)
     pfTask: cc.Prefab = null;  
+
+    @property(cc.Prefab)
+    pfBag: cc.Prefab = null;
 
     @property(cc.SpriteAtlas)
     cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
@@ -37,6 +47,9 @@ export default class MainScene extends cc.Component {
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
 
+        NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this); 
+        NoticeMgr.on(NoticeType.UpdateDiamond, this.UpdateDiamondCount, this); 
+        NoticeMgr.on(NoticeType.UpdateFood, this.UpdateFoodCount, this); 
         NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
 
         this.mapNode.position = cc.v2(0, -900);   //初始显示洛阳  5768*5264   2884*2632
@@ -44,6 +57,10 @@ export default class MainScene extends cc.Component {
     }
 
     start () {
+        this.UpdateGoldCount();
+        this.UpdateDiamondCount();
+        this.UpdateFoodCount();
+
         this.setTaskInfo();   //初始化任务
     }
 
@@ -52,6 +69,18 @@ export default class MainScene extends cc.Component {
     onDestroy(){
         this.node.targetOff(this);
         NoticeMgr.offAll(this);
+    }
+
+    UpdateGoldCount(){
+        this.goldLabel.string = MyUserData.GoldCount.toString();
+    }
+
+    UpdateDiamondCount(){
+        this.diamondLabel.string = MyUserData.DiamondCount.toString();
+    }
+
+    UpdateFoodCount(){
+        this.foodLabel.string = MyUserData.FoodCount.toString();
     }
 
     setTaskInfo(){
@@ -152,6 +181,10 @@ export default class MainScene extends cc.Component {
             let destY = this.taskNode.y - 45;
             this.taskNode.runAction(cc.moveTo(destY/500, cc.v2(0, 45)));
         }
+    }
+
+    onBagBtn(){
+        GameMgr.showLayer(this.pfBag);
     }
 
     onShopBtn(){
