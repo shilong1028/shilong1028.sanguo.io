@@ -1,9 +1,22 @@
-import { st_general_info } from "./ConfigManager";
+import { st_general_info, st_item_info, CfgMgr } from "./ConfigManager";
 
 
 //常量或类定义
 
+//道具背包信息
+export class ItemInfo{
+    itemId: number = 0;   
+    count: number = 0;   
+    itemCfg: st_item_info = null;   //配置信息
 
+    constructor(itemId:number, count: number){
+        this.itemId = itemId;
+        this.count = count;
+        this.itemCfg = CfgMgr.getItemConf(itemId);
+    }
+}
+
+//武将卡牌战斗信息
 export class CardInfo{
     campId: number = 0;   //阵营，0默认，1蓝方，2红方
     maxHp: number = 0;   //最大血量

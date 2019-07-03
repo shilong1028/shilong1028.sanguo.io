@@ -50,6 +50,7 @@ export default class MainScene extends cc.Component {
         NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this); 
         NoticeMgr.on(NoticeType.UpdateDiamond, this.UpdateDiamondCount, this); 
         NoticeMgr.on(NoticeType.UpdateFood, this.UpdateFoodCount, this); 
+        
         NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
 
         this.mapNode.position = cc.v2(0, -900);   //初始显示洛阳  5768*5264   2884*2632

@@ -6,6 +6,9 @@ const {ccclass, property} = cc._decorator;
 export default class RootNode extends cc.Component {
 
     @property(cc.Prefab)
+    pfItem: cc.Prefab = null;
+
+    @property(cc.Prefab)
     pfReward: cc.Prefab = null;   //获取奖励通用提示框
 
     // LIFE-CYCLE CALLBACKS:

@@ -11,8 +11,11 @@ export var MyUserData = {
     GoldCount: 0,   //用户金币
     DiamondCount: 0,   //用户钻石(金锭）数
     FoodCount: 0,  //用户粮食数量
+
     TaskId: 1,   //当前任务ID
     TaskState: 0,    //当前任务状态 0未完成，1完成未领取，2已领取
+
+    ItemList: [],   //背包物品列表
     
 };
 
@@ -31,6 +34,9 @@ class MyUserManager {
         MyUserData.TaskId = 1;   //当前任务ID
         MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
         LDMgr.setItem(LDKey.KEY_StoryData, "1-0");
+
+        MyUserData.ItemList = new Array();   //背包物品列表
+        LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
     }
 
     /**初始化用户信息 */
@@ -47,6 +53,8 @@ class MyUserManager {
             MyUserData.TaskId = parseInt(taskInfo.key);
             MyUserData.TaskState = taskInfo.val;
         }
+
+        MyUserData.ItemList = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表
 
 
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));

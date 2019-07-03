@@ -1,5 +1,6 @@
 import { ROOT_NODE } from "../common/rootNode";
 import RewardLayer from "../common/rewardLayer";
+import { ItemInfo } from "./Enum";
 
 
 //游戏菜单管理器
@@ -35,6 +36,7 @@ class GameManager {
         if(rewardSc){
             rewardSc.setRewardCallback(callback, target);
         }
+        return layer;
     }
 
     /**通过内存图集创建序列帧动画 */
@@ -91,7 +93,24 @@ class GameManager {
         
         return effNode;
     }
+
+
+
+
+    //********************  以下为应用接口函数  ********************* */
     
+    /**通过配置keyVal数据砖块道具列表 */
+    getItemArrByKeyVal(rewards: any[]): Array<ItemInfo>{
+        //cc.log("getItemArrByKeyVal(), rewards = "+JSON.stringify(rewards));
+        let rewardArr: ItemInfo[] = new Array();
+        for(let i=0; i<rewards.length; ++i){
+            let itemId = parseInt(rewards[i].key);
+            let count = rewards[i].val;
+            let item = new ItemInfo(itemId, count);
+            rewardArr.push(item);
+        }
+        return rewardArr;
+    }
 
 }
 export var GameMgr = new GameManager();

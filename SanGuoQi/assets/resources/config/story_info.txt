@@ -4,7 +4,7 @@ targetCity = 403
 name = 黄巾之乱
 vedio = huangjinqiyi
 battle = 
-reward = 
+reward = 6001-1000;6002-10;6003-100;6101-10
 talk = 101;102;103
 desc = 汉灵帝光和七年，全国大旱，颗粒不收而赋税不减，冀州巨鹿人张角趁此机会，掀起了推翻汉王朝的大规模起义。
 

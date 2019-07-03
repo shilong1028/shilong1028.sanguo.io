@@ -107,7 +107,7 @@ export class st_story_info{
         this.type = parseInt(this.type);
         this.targetCity = parseInt(this.targetCity);
         this.battle = parseInt(this.battle);
-        this.reward = CfgMgr.getKeyValAry(this.reward, ";");
+        this.reward = CfgMgr.getKeyValAry(this.reward, ";");   //[{"key":ss[0], "val":parseInt(ss[1])}]
         this.talk = CfgMgr.getIntAry(this.talk, ";");
     }
 }
@@ -178,6 +178,11 @@ class CfgManager_class {
     /**获取城池配置数据 */
     getCityConf(cityId: number): st_city_info{
         return this.C_city_info[cityId];
+    }
+
+    /**获取道具配置数据 */
+    getItemConf(itemId: number): st_item_info{
+        return this.C_item_info[itemId];
     }
 
     //*************************************  以下为读取配置接口 *********************************** */
@@ -312,17 +317,17 @@ class CfgManager_class {
     }
 
     /**解析复杂的字符串，获取整形数组 */
-	getKeyValAry(str: string, sp: string = "|", sp2: string = "-"): Array<number> {
+	getKeyValAry(str: string, sp: string = "|", sp2: string = "-"): Array<any> {
 		let ret: Array<any> = [];
-		let sL = str.toString().split(sp);
+        let sL = str.toString().split(sp);
 		for (let p of sL) {
 			if (p.length > 0) {
-                let ss = str.toString().split(sp2);
+                let ss = p.toString().split(sp2);
                 if(ss[0] && ss[1]){
-                    ret.push({"key":ss[0], "val":parseFloat(ss[1])});
+                    ret.push({"key":ss[0], "val":parseInt(ss[1])});
                 }
 			}
-		}
+        }
 		return ret;
     }
     

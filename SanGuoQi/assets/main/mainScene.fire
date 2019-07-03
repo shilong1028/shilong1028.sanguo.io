@@ -127,6 +127,9 @@
       "__id__": 2
     },
     "_enabled": true,
+    "pfItem": {
+      "__uuid__": "a0ca7b10-91ab-4a41-8fa3-c8b880cebabb"
+    },
     "pfReward": {
       "__uuid__": "f6ffd6aa-7d9b-437e-83ca-b0d9d3eaae6f"
     },

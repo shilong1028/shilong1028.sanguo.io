@@ -1,3 +1,5 @@
+import { ItemInfo } from "../manager/Enum";
+import TableView from "../tableView/tableView";
 
 //领取奖励通用提示框
 const {ccclass, property} = cc._decorator;
@@ -5,6 +7,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class RewardLayer extends cc.Component {
 
+    @property(TableView)
+    tableView: TableView = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -36,7 +40,8 @@ export default class RewardLayer extends cc.Component {
     }
 
     /**展示奖励列表 */
-    showRewardList(){
-
+    showRewardList(rewards: ItemInfo[]){  
+        //cc.log("showRewardList(), rewards = "+JSON.stringify(rewards));
+        this.tableView.initTableView(rewards.length, { array: rewards, target: this }); 
     }
 }

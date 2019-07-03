@@ -4,6 +4,7 @@ import { GameMgr } from "../manager/GameManager";
 import StoryLayer from "./storyLayer";
 import { NoticeMgr } from "../manager/NoticeManager";
 import { NoticeType } from "../manager/Enum";
+import RewardLayer from "../common/rewardLayer";
 
 
 //任务信息
@@ -53,7 +54,9 @@ export default class Task extends cc.Component {
     }
 
     onRewardBtn(){
-        GameMgr.showRewardLayer(null, this.handleReceiveReward, this);
+        let layer = GameMgr.showRewardLayer(null, this.handleReceiveReward, this);
+        let rewardArr = GameMgr.getItemArrByKeyVal(this.taskConf.reward);   //通过配置keyVal数据砖块道具列表
+        layer.getComponent(RewardLayer).showRewardList(rewardArr);
     }
 
     //领取奖励回调
