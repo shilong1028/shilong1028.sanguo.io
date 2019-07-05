@@ -1,6 +1,6 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NoticeMgr } from "./NoticeManager";
-import { NoticeType } from "./Enum";
+import { NoticeType, ItemInfo } from "./Enum";
 
 
 //用户数据管理
@@ -55,9 +55,59 @@ class MyUserManager {
         }
 
         MyUserData.ItemList = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表
-
+        if(MyUserData.ItemList == null || MyUserData.ItemList == undefined){
+            cc.warn("读取背包错误, MyUserData.ItemList = "+MyUserData.ItemList);
+            MyUserData.ItemList = new Array();   //背包物品列表
+        }
 
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+    }
+
+    /**修改用户背包物品列表 */
+    updateItemByCount(itemId: number, val: number, bSave: boolean = true){
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let bagItem: ItemInfo = MyUserData.ItemList[i];
+            if(bagItem.itemId == itemId){
+                MyUserData.ItemList[i].count += val;
+                if(MyUserData.ItemList[i].count <= 0){
+                    MyUserData.ItemList[i].count = 0;
+                }
+                NoticeMgr.emit(NoticeType.UpdateBagItem, MyUserData.ItemList[i]);  //更新单个背包物品
+                if(MyUserData.ItemList[i].count <= 0){
+                    MyUserData.ItemList.splice(i, 1);  //道具用完，从背包删除
+                }
+                if(bSave){
+                    LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
+                }
+                break;
+            }
+        }
+    }
+    /**修改用户背包物品列表 */
+    updateItemList(item: ItemInfo, bSave: boolean = true){
+        let bUpdateItem: boolean = false;
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let bagItem: ItemInfo = MyUserData.ItemList[i];
+            if(bagItem.itemId == item.itemId){
+                MyUserData.ItemList[i].count += item.count;
+                NoticeMgr.emit(NoticeType.UpdateBagItem, MyUserData.ItemList[i]);  //更新单个背包物品
+                bUpdateItem = true;
+                break;
+            }
+        }
+
+        if(bUpdateItem == false){
+            MyUserData.ItemList.push(item);
+            NoticeMgr.emit(NoticeType.UpdateBagItem, item);  //更新单个背包物品
+        }
+
+        if(bSave){
+            LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
+        }
+    }
+    /**保存背包物品列表 */
+    saveItemList(){
+        LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
     }
 
     /**修改用户金币 */
@@ -69,7 +119,7 @@ class MyUserManager {
         NoticeMgr.emit(NoticeType.UpdateGold, null);
     }
 
-    /**修改用户钻石 */
+    /**修改用户钻石(金锭) */
     updateUserDiamond(val:number, bSave: boolean = true){
         MyUserData.DiamondCount += val;
         if(bSave){
@@ -99,7 +149,7 @@ class MyUserManager {
         }
 
         if(bSave){
-            LDMgr.setItem(LDKey.KEY_StoryData, taskId.toString()+"-"+state);
+            LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString()+"-"+MyUserData.TaskState);
         }
 
         NoticeMgr.emit(NoticeType.UpdateTaskState, null);   //任务状态更新

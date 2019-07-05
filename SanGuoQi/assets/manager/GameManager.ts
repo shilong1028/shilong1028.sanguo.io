@@ -1,6 +1,8 @@
 import { ROOT_NODE } from "../common/rootNode";
 import RewardLayer from "../common/rewardLayer";
 import { ItemInfo } from "./Enum";
+import { MyUserMgr, MyUserData } from "./MyUserData";
+import { LDMgr, LDKey } from "./StorageManager";
 
 
 //游戏菜单管理器
@@ -110,6 +112,34 @@ class GameManager {
             rewardArr.push(item);
         }
         return rewardArr;
+    }
+
+    /** 领取奖励*/
+    receiveRewards(rewards: ItemInfo[]){
+        cc.log("")
+        if(rewards){
+            cc.log("领取奖励(), rewards = "+JSON.stringify(rewards))
+            let bSaveList = false;
+            for(let i=0; i<rewards.length; ++i){
+                let itemInfo: ItemInfo = rewards[i];
+                if(itemInfo.itemId == 6001){   //金币
+                    MyUserMgr.updateUserGold(itemInfo.count);
+                }else if(itemInfo.itemId == 6002){   //钻石
+                    MyUserMgr.updateUserDiamond(itemInfo.count);
+                }else if(itemInfo.itemId == 6003){   //粮草
+                    MyUserMgr.updateUserFood(itemInfo.count);
+                }else{   //其他道具
+                    bSaveList = true;
+                    MyUserMgr.updateItemList(itemInfo, false);
+                }
+            }
+            if(bSaveList == true){
+                MyUserMgr.saveItemList();   //保存背包物品列表
+            }
+            cc.log("receiveRewards() MyUserData = "+JSON.stringify(MyUserData));
+
+            let list = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表
+        }
     }
 
 }

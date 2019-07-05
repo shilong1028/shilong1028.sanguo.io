@@ -47,6 +47,8 @@ export const NoticeType = {
     UpdateDiamond: "UpdateDiamond",   //更新钻石（金锭）显示
     UpdateFood: "UpdateFood",   //更新粮食显示
 
+    UpdateBagItem: "UpdateBagItem",  //更新单个背包物品
+
     MapMoveByCity: "MapMoveByCity",   //话本目标通知（地图移动）
     UpdateTaskState: "UpdateTaskState",   //任务状态更新
 

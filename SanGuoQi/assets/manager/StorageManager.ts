@@ -89,8 +89,8 @@ export  const LDMgr = new StorageManager_class();
 
 export const LDKey = {
     KEY_GoldCount: "KEY_GoldCount",   //金币数量
-    KEY_DiamondCount: "KEY_GoldCount",//钻石（金锭）数量
-    KEY_FoodCount: "KEY_GoldCount",   //粮食数量
+    KEY_DiamondCount: "KEY_DiamondCount",//钻石（金锭）数量
+    KEY_FoodCount: "KEY_FoodCount",   //粮食数量
     KEY_StoryData : "KEY_StoryData",  //当前进行的剧情故事  {key=id, val=state}  0未完成，1完成未领取，2已领取
     KEY_ItemList: "KEY_ItemList",     //背包道具列表
 

@@ -24,7 +24,9 @@ export default class Item extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    bCanSelEvent: boolean = false;   //是否可以响应点击选中
+    selCallBack: any = null;   //响应点击选中回调
+    selCallTarget: any = null;
+
     itemInfo: ItemInfo = null;   //道具数据
 
     onLoad () {
@@ -39,20 +41,28 @@ export default class Item extends cc.Component {
     }
 
     // update (dt) {}
-
+    /**选中状态切换 */
     onClicked(){
-        if(this.bCanSelEvent == true){
-            if(this.selImg.active == true){
-                this.selImg.active = false;
-            }else{
+        if(this.selCallBack && this.selCallTarget){
+            if(this.selImg.active == false){
                 this.selImg.active = true;
+                this.selCallBack.call(this.selCallTarget, this);   //选中回调
             }
         }
     }
 
-    initItemData(info: ItemInfo, bCanSel:boolean=false){
+    /**显示选中状态 */
+    showSelState(bShow:boolean = false){
+        this.selImg.active = bShow;
+    }
+
+    /**初始化道具数据 */
+    initItemData(info: ItemInfo, selCallBack:any=null, selCallTarget:any=null){
         //cc.log("initItemData(), info = "+JSON.stringify(info));
-        this.bCanSelEvent = bCanSel;
+        this.selCallBack = selCallBack;   //响应点击选中回调
+        this.selCallTarget = selCallTarget;
+        this.itemInfo = info;   //道具数据
+        
         if(info){
             this.numLabel.string = "x"+info.count;
 

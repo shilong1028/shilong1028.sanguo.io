@@ -40,7 +40,7 @@ export default class ItemCell extends viewCell {
             this.node.addChild(itemNode, 10);
             this.itemSc = itemNode.getComponent(Item);
         }
-        this.itemSc.initItemData(this.cellData, false);
+        this.itemSc.initItemData(this.cellData);
 
     }
 

@@ -15,6 +15,8 @@ export default class RewardLayer extends cc.Component {
     receiveCallback: any = null;    //领取回调
     receiveTarget: any = null;
 
+    rewardArr: ItemInfo[] = new Array();   //奖励
+
     // onLoad () {}
 
     start () {
@@ -25,7 +27,7 @@ export default class RewardLayer extends cc.Component {
 
     onOkBtn(){
         if(this.receiveCallback && this.receiveTarget){
-            this.receiveCallback.call(this.receiveTarget, null);
+            this.receiveCallback.call(this.receiveTarget, this.rewardArr);
         }
         this.receiveCallback = null;
         this.receiveTarget = null;
@@ -42,6 +44,7 @@ export default class RewardLayer extends cc.Component {
     /**展示奖励列表 */
     showRewardList(rewards: ItemInfo[]){  
         //cc.log("showRewardList(), rewards = "+JSON.stringify(rewards));
+        this.rewardArr = rewards;
         this.tableView.initTableView(rewards.length, { array: rewards, target: this }); 
     }
 }

@@ -2297,6 +2297,15 @@
       "__id__": 1
     },
     "_enabled": true,
+    "goldLabel": {
+      "__id__": 40
+    },
+    "diamondLabel": {
+      "__id__": 58
+    },
+    "foodLabel": {
+      "__id__": 49
+    },
     "grid": {
       "__id__": 15
     },
@@ -2314,9 +2323,6 @@
     },
     "iconAtlas": {
       "__uuid__": "6cdaf350-d28c-4aa5-8856-a60d396e825d"
-    },
-    "pfItem": {
-      "__uuid__": "a0ca7b10-91ab-4a41-8fa3-c8b880cebabb"
     },
     "_id": ""
   },

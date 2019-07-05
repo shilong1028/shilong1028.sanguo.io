@@ -3,7 +3,7 @@ import { CfgMgr, st_story_info } from "../manager/ConfigManager";
 import { GameMgr } from "../manager/GameManager";
 import StoryLayer from "./storyLayer";
 import { NoticeMgr } from "../manager/NoticeManager";
-import { NoticeType } from "../manager/Enum";
+import { NoticeType, ItemInfo } from "../manager/Enum";
 import RewardLayer from "../common/rewardLayer";
 
 
@@ -60,8 +60,10 @@ export default class Task extends cc.Component {
     }
 
     //领取奖励回调
-    handleReceiveReward(){
+    handleReceiveReward(rewards: ItemInfo[]){
         if(this.taskConf){
+            GameMgr.receiveRewards(rewards);   //领取奖励
+
             MyUserMgr.updateTaskState(MyUserData.TaskId, 2);   //修改用户任务 0未完成，1完成未领取，2已领取 
         }
     }
