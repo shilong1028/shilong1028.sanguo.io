@@ -46,7 +46,6 @@ class MyUserManager {
         MyUserData.FoodCount = LDMgr.getItemInt(LDKey.KEY_FoodCount);   //用户粮食数量
 
         let taskInfo = LDMgr.getItemKeyVal(LDKey.KEY_StoryData);  //当前任务ID
-        cc.log("taskInfo = "+JSON.stringify(taskInfo));
         if(taskInfo == null){
             this.updateTaskState(1, 0);   //修改用户任务ID
         }else{

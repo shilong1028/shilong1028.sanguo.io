@@ -434,6 +434,11 @@ export default class TableView extends cc.ScrollView {
         this._addCellsToView();
     }
 
+    /**是否开启Cell选中状态变换 */
+    openListCellSelEffect(bOpen:boolean=true){
+        this.isCellSelEffect = bOpen;   //是否开启Cell选中状态变换
+    }
+
     /**根据cell点击事件来更新tableview当前选中cell索引值 */
     updateCellSelectedState(selCellIdx){
         if(this.isCellSelEffect){   //是否开启Cell选中状态变换

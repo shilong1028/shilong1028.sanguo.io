@@ -27,7 +27,9 @@ export default class MainScene extends cc.Component {
     pfTask: cc.Prefab = null;  
 
     @property(cc.Prefab)
-    pfBag: cc.Prefab = null;
+    pfBag: cc.Prefab = null;   //背包界面
+    @property(cc.Prefab)
+    pfRecruit: cc.Prefab = null;  //招募界面
 
     @property(cc.SpriteAtlas)
     cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
@@ -209,7 +211,7 @@ export default class MainScene extends cc.Component {
     }
 
     onSoldierBtn(){
-
+        GameMgr.showLayer(this.pfRecruit);   //招募界面
     }
 
     onGeneralBtn(){

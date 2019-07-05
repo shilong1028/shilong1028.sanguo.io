@@ -3,6 +3,7 @@ import RewardLayer from "../common/rewardLayer";
 import { ItemInfo } from "./Enum";
 import { MyUserMgr, MyUserData } from "./MyUserData";
 import { LDMgr, LDKey } from "./StorageManager";
+import { st_story_info } from "./ConfigManager";
 
 
 //游戏菜单管理器
@@ -116,9 +117,8 @@ class GameManager {
 
     /** 领取奖励*/
     receiveRewards(rewards: ItemInfo[]){
-        cc.log("")
+        cc.log("receiveRewards(), rewards = "+JSON.stringify(rewards));
         if(rewards){
-            cc.log("领取奖励(), rewards = "+JSON.stringify(rewards))
             let bSaveList = false;
             for(let i=0; i<rewards.length; ++i){
                 let itemInfo: ItemInfo = rewards[i];
@@ -136,9 +136,19 @@ class GameManager {
             if(bSaveList == true){
                 MyUserMgr.saveItemList();   //保存背包物品列表
             }
-            cc.log("receiveRewards() MyUserData = "+JSON.stringify(MyUserData));
+        }
+    }
 
-            let list = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表
+    /**任务宣读(第一阶段）完毕处理 */
+    handleStoryShowOver(storyConf: st_story_info){
+        cc.log("handleStoryShowOver(), storyConf = "+JSON.stringify(storyConf));
+        if(storyConf == null || storyConf == undefined){
+            return;
+        }
+        if(storyConf.type == 1){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+            MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
+        }else if(storyConf.type == 3){
+             
         }
     }
 

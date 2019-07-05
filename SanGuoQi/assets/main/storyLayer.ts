@@ -2,6 +2,7 @@ import { st_story_info, CfgMgr, st_talk_info, st_city_info } from "../manager/Co
 import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import { NoticeMgr } from "../manager/NoticeManager";
 import { NoticeType } from "../manager/Enum";
+import { GameMgr } from "../manager/GameManager";
 
 //剧情阐述
 const {ccclass, property} = cc._decorator;
@@ -130,10 +131,8 @@ export default class StoryLayer extends cc.Component {
         if(this.curTalkConf && this.curTalkIdx < this.taskConf.talk.length-1){
             this.setTalkStr();   //设置话本内容
         }else{
-            if(this.taskConf && this.taskConf.type == 1){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
-                MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
-            }
-
+            GameMgr.handleStoryShowOver(this.taskConf);
+            
             this.node.removeFromParent(true);
         }
     }

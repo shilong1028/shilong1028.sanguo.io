@@ -6,7 +6,10 @@ const {ccclass, property} = cc._decorator;
 export default class RootNode extends cc.Component {
 
     @property(cc.Prefab)
-    pfItem: cc.Prefab = null;
+    pfItem: cc.Prefab = null;   //背包道具通用显示
+
+    @property(cc.Prefab)
+    pfMoney: cc.Prefab = null;   //一级界面上的金币钻石粮草公用控件
 
     @property(cc.Prefab)
     pfReward: cc.Prefab = null;   //获取奖励通用提示框
@@ -24,6 +27,13 @@ export default class RootNode extends cc.Component {
     }
 
     // update (dt) {}
+
+    //一级界面上的金币钻石粮草公用控件
+    showLayerMoney(parent: cc.Node, pos: cc.Vec2, zIndex:number=10){
+        let topMoney = cc.instantiate(this.pfMoney);
+        topMoney.position = pos;
+        parent.addChild(topMoney, zIndex);
+    }
 }
 
 export var ROOT_NODE : RootNode;

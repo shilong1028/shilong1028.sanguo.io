@@ -1,22 +1,15 @@
 import { NoticeMgr } from "../manager/NoticeManager";
-import { NoticeType, ItemInfo } from "../manager/Enum";
+import { ItemInfo } from "../manager/Enum";
 import { MyUserData } from "../manager/MyUserData";
-import { ROOT_NODE } from "./rootNode";
-import Item from "./item";
 import { st_item_info } from "../manager/ConfigManager";
+import { ROOT_NODE } from "../common/rootNode";
+import Item from "../common/item";
 
 //背包 背包最多包含30个不同的道具（6*5）
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class BagLayer extends cc.Component {
-    @property(cc.Label)
-    goldLabel: cc.Label = null;
-    @property(cc.Label)
-    diamondLabel: cc.Label = null;
-    @property(cc.Label)
-    foodLabel: cc.Label = null;
-
     @property(cc.Node)
     grid: cc.Node = null;
 
@@ -38,12 +31,9 @@ export default class BagLayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this); 
-        NoticeMgr.on(NoticeType.UpdateDiamond, this.UpdateDiamondCount, this); 
-        NoticeMgr.on(NoticeType.UpdateFood, this.UpdateFoodCount, this); 
-
         this.updateSelItemInfo(null);  //显示底部选中道具信息
         this.initBagGrid();
+        ROOT_NODE.showLayerMoney(this.node, cc.v2(0, 334));    //一级界面上的金币钻石粮草公用控件
     }
 
     onDestroy(){
@@ -105,17 +95,5 @@ export default class BagLayer extends cc.Component {
 
     onCloseBtn(){
         this.node.removeFromParent(true);
-    }
-
-    UpdateGoldCount(){
-        this.goldLabel.string = MyUserData.GoldCount.toString();
-    }
-
-    UpdateDiamondCount(){
-        this.diamondLabel.string = MyUserData.DiamondCount.toString();
-    }
-
-    UpdateFoodCount(){
-        this.foodLabel.string = MyUserData.FoodCount.toString();
     }
 }

@@ -130,6 +130,9 @@
     "pfItem": {
       "__uuid__": "a0ca7b10-91ab-4a41-8fa3-c8b880cebabb"
     },
+    "pfMoney": {
+      "__uuid__": "474ce99b-04a7-41bd-a4be-2a34ef539a63"
+    },
     "pfReward": {
       "__uuid__": "f6ffd6aa-7d9b-437e-83ca-b0d9d3eaae6f"
     },
@@ -7040,6 +7043,9 @@
     },
     "pfBag": {
       "__uuid__": "e28c9d3d-9ff9-468d-8e92-81870086d1f2"
+    },
+    "pfRecruit": {
+      "__uuid__": "7923f9ee-880e-4713-a5aa-ba60a162743f"
     },
     "cicleAtlas": {
       "__uuid__": "0306fc32-bd5f-4f32-945e-228370c5829e"
