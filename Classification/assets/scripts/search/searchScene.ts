@@ -1,3 +1,5 @@
+import { CfgMgr, st_rubbish_info } from "../manager/ConfigManager";
+
 
 //垃圾分类主界面
 const {ccclass, property} = cc._decorator;
@@ -34,10 +36,10 @@ export default class SearchScene extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        this.resultNode.opacity = 0;
-        this.gameNode.opacity = 255;
+    bSearching: boolean = false;   //正在查询中
 
+    onLoad () {
+        this.showResultNode(false);  //一定时间内显示答案
         this.showSearchResult(null);
     }
 
@@ -49,8 +51,7 @@ export default class SearchScene extends cc.Component {
 
     editingDidBegan (event) {
         cc.log('editing did began');
-        // this.editText.node.active = true;
-        // this.editPlaceText.node.active = false;
+        this.showResultNode(false);  //一定时间内显示答案
     }
 
     textChanged (event) {
@@ -67,20 +68,96 @@ export default class SearchScene extends cc.Component {
     }
 
     onSearchBtn(){
-        // this.editText.node.active = false;
-        // this.editPlaceText.node.active = true;
+        if(this.bSearching == true){  //正在查询中
+            return;
+        }
+        this.bSearching = true;
+        let keyStr = this.editText.string;
+
+        if(keyStr && keyStr.length > 0){
+            let keys = Object.getOwnPropertyNames(CfgMgr.C_rubbish_info);
+            let mathchArr = new Array();   //匹配数据
+            for (let i=1; i<=keys.length; ++i) { // 遍历Map
+                let idstr = keys[i];
+                let obj: st_rubbish_info = CfgMgr.C_rubbish_info[idstr];
+                if(obj){
+                    if(keyStr == obj.name){
+                        this.showSearchResult([{"mathchCount":100, "obj":obj}], 1);
+                        return;
+                    }else{
+                        let mathchCount = 0;
+                        for(let j=0; j<keyStr.length; ++j){
+                            if(obj.name.indexOf(keyStr[j]) != -1){   //indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。如果要检索的字符串值没有出现，则该方法返回 -1。
+                                mathchCount ++;
+                            }
+                        }
+                        if(mathchCount > 0){
+                            mathchArr.push({"mathchCount":mathchCount, "obj":obj});
+                        }
+                    }
+                }
+            }
+
+            if(mathchArr.length > 0){
+                mathchArr.sort((a:any, b:any)=>{ return b.mathchCount - a.mathchCount;})
+                cc.log("相似答案有 mathchArr = "+JSON.stringify(mathchArr));
+                this.showSearchResult(mathchArr, 2);
+            }else{
+                cc.log("没有找到相似的答案");
+                this.showSearchResult([], -1);
+            }
+        }else{
+            cc.log("请输入查询关键字");
+            this.bSearching = false;  //正在查询中
+        }
     }
 
-    showSearchResult(result:any){
+    showSearchResult(results: any[], resultType: number=0){
+        this.bSearching = false;  //正在查询中
         this.iconSpr.spriteFrame = null;
-        this.resultLable.string = "";
+        this.resultLable.string = "";   //答案：大骨头为干垃圾
         this.descLabel.string = "";
         this.otherLabel.string = "";
 
-        if(result){
+        if(results){   //{"mathchCount":mathchCount, "obj":obj}
+            if(resultType == -1){
+                this.resultLable.string = "数据库中未找到匹配或相似答案!";  
+            }else if(resultType == 1){
+                let conf: st_rubbish_info = results[0].obj;
+                this.resultLable.string = "答案："+conf.name+"是"+conf.typeName;  
+                this.descLabel.string = conf.desc;
+                this.iconSpr.spriteFrame = this.iconFrames[conf.type-1];
+            }else if(resultType == 2){
+                this.resultLable.string = "未找到匹配答案，相似答案有：";  
+                let otherStr = ""
+                let len = Math.min(3, results.length);
+                for(let i=0; i<len; ++i){
+                    let conf: st_rubbish_info = results[i].obj;
+                    otherStr += conf.name+"是"+conf.typeName+"; 理由："+conf.desc;  
+                    if(i <len -1){
+                        otherStr += "\n";
+                    }
+                }
+                this.otherLabel.string = otherStr;
+            }
 
+            this.showResultNode();  //一定时间内显示答案
+        }
+    }
+
+    //一定时间内显示答案
+    showResultNode(bShow:boolean = true){
+        this.resultNode.stopAllActions();
+        if(bShow == true){
             this.gameNode.opacity = 0;
             this.resultNode.opacity = 255;
+
+            this.resultNode.runAction(cc.sequence(cc.delayTime(5.0), cc.callFunc(function(){
+                this.showResultNode(false);
+            }.bind(this))));
+        }else{
+            this.resultNode.opacity = 0;
+            this.gameNode.opacity = 255;
         }
     }
 
