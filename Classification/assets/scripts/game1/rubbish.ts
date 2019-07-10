@@ -14,7 +14,7 @@ export default class Rubbish extends cc.Component {
     gameScene: any = null;
     rubbishConf: st_rubbish_info = null;
 
-    bTouchEnabled: boolean = false;  //是否相应触摸事件
+    bTouchMoveEnabled: boolean = false;  //是否可以触摸移动
 
     //只有在new cc.NodePool(Dot)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
     //使用 Pool.put() 回收节点后，会调用unuse 方法
@@ -33,7 +33,7 @@ export default class Rubbish extends cc.Component {
     //垃圾数据重置
     clearRubbishData(){
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
-        this.bTouchEnabled = false;  //是否相应触摸事件
+        this.bTouchMoveEnabled = false;  //是否可以触摸移动
 
         this.gameScene = null;
         this.rubbishConf = null;
@@ -68,19 +68,10 @@ export default class Rubbish extends cc.Component {
 
     // update (dt) {}
 
-    onClick(){
-        if(this.bTouchEnabled == false && this.rubbishConf && this.gameScene){
-            if(this.rubbishConf.type == this.gameScene.fightRubbishType){
-                this.handleReclaimRubbish(true);   //是否正确回收垃圾
-            }else{
-                this.handleReclaimRubbish(false);   //是否正确回收垃圾
-            }
-        }
-    }
-
     //初始化垃圾数据
-    initRubbish(id: number, target: any, bTouchEnabled:boolean){
-        this.bTouchEnabled = bTouchEnabled;  //是否相应触摸事件
+    initRubbish(id: number, target: any, bTouchMoveEnabled:boolean){
+        //cc.log("initRubbish(), id = "+id+"; bTouchMoveEnabled = "+bTouchMoveEnabled);
+        this.bTouchMoveEnabled = bTouchMoveEnabled;  //是否可以触摸移动
         this.gameScene = target;
         this.rubbishConf = CfgMgr.C_rubbish_info[id];
         if(this.rubbishConf){
@@ -94,22 +85,39 @@ export default class Rubbish extends cc.Component {
     resetMoveToEnd(){
         this.node.stopAllActions();
 
-        let destPosX = (Math.random()-0.5)*(this.gameScene.qipanNode.width/2 - 50);
-        let destPos = cc.v2(destPosX, -this.gameScene.qipanNode.height/2);
-        let moveTime = this.node.position.sub(destPos).mag()/this.gameScene.rubbishSpeed;
-
-        this.node.runAction(cc.sequence(cc.moveTo(moveTime, destPos), cc.callFunc(function(){   //.easing(cc.easeBezierAction(0.5, 0.5, 1.0, 1.0))
+        if(this.node.y <= -this.gameScene.qipanNode.height/2){
             this.handleReclaimRubbish(false);   //是否正确回收垃圾
-        }.bind(this))));
+        }else{
+            let destPosX = (Math.random()-0.5)*(this.gameScene.qipanNode.width/2 - 50);
+            let destPos = cc.v2(destPosX, -this.gameScene.qipanNode.height/2);
+            let moveTime = this.node.position.sub(destPos).mag()/this.gameScene.rubbishSpeed;
+            moveTime = moveTime -  Math.random()*moveTime/5;
+    
+            this.node.runAction(cc.sequence(cc.moveTo(moveTime, destPos), cc.callFunc(function(){   //.easing(cc.easeBezierAction(0.5, 0.5, 1.0, 1.0))
+                this.handleReclaimRubbish(false);   //是否正确回收垃圾
+            }.bind(this))));
+        }
     }
 
 
     //*********************   触摸事件处理  ************ */
     onTouchStart(event: cc.Event.EventTouch) {
-        if(this.bTouchEnabled == true){  //是否相应触摸事件
+        if(this.bTouchMoveEnabled == true){  //是否可以触摸移动
             this.node.stopAllActions();
             this.gameScene.setSelectRubbish(this);   //拖动更新选中的模型的位置
-        } 
+        }else{
+            this.onClick();
+        }
+    }
+
+    onClick(){
+        if(this.bTouchMoveEnabled == false && this.rubbishConf && this.gameScene){
+            if(this.rubbishConf.type == this.gameScene.fightRubbishType){
+                this.handleReclaimRubbish(true);   //是否正确回收垃圾
+            }else{
+                this.handleReclaimRubbish(false);   //是否正确回收垃圾
+            }
+        }
     }
 
     //根据触摸更新垃圾位置

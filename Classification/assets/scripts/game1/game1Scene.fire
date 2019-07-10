@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.49929640782302853,
-      "y": 0.49929640782302853,
+      "x": 0.8224320728740262,
+      "y": 0.8224320728740262,
       "z": 1
     },
     "_quat": {
@@ -80,10 +80,10 @@
         "__id__": 12
       },
       {
-        "__id__": 13
+        "__id__": 16
       },
       {
-        "__id__": 17
+        "__id__": 22
       },
       {
         "__id__": 23
@@ -528,62 +528,6 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "qipan",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 2
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 1,
-    "_components": [],
-    "_prefab": null,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 700,
-      "height": 750
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_quat": {
-      "__type__": "cc.Quat",
-      "x": 0,
-      "y": 0,
-      "z": 0,
-      "w": 1
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "groupIndex": 0,
-    "_id": "6cF5vmnERPGJ3G65X1qCTI"
-  },
-  {
-    "__type__": "cc.Node",
     "_name": "backBtn",
     "_objFlags": 0,
     "_parent": {
@@ -594,10 +538,10 @@
     "_level": 1,
     "_components": [
       {
-        "__id__": 14
+        "__id__": 13
       },
       {
-        "__id__": 15
+        "__id__": 14
       }
     ],
     "_prefab": null,
@@ -650,7 +594,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 13
+      "__id__": 12
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -680,14 +624,14 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 13
+      "__id__": 12
     },
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
       {
-        "__id__": 16
+        "__id__": 15
       }
     ],
     "_N$interactable": true,
@@ -764,6 +708,9 @@
     },
     "_children": [
       {
+        "__id__": 17
+      },
+      {
         "__id__": 18
       },
       {
@@ -771,16 +718,13 @@
       },
       {
         "__id__": 20
-      },
-      {
-        "__id__": 21
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 22
+        "__id__": 21
       }
     ],
     "_prefab": null,
@@ -833,7 +777,7 @@
     "_name": "reclaim1",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 17
+      "__id__": 16
     },
     "_children": [],
     "_active": true,
@@ -889,7 +833,7 @@
     "_name": "reclaim2",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 17
+      "__id__": 16
     },
     "_children": [],
     "_active": true,
@@ -945,7 +889,7 @@
     "_name": "reclaim3",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 17
+      "__id__": 16
     },
     "_children": [],
     "_active": true,
@@ -1001,7 +945,7 @@
     "_name": "reclaim4",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 17
+      "__id__": 16
     },
     "_children": [],
     "_active": true,
@@ -1057,7 +1001,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 17
+      "__id__": 16
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -1079,6 +1023,62 @@
     "_state": 0,
     "_atlas": null,
     "_id": "e63Wrhbl1AYq2gxqEWXq2q"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "qipan",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 1,
+    "_components": [],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 700,
+      "height": 750
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "groupIndex": 0,
+    "_id": "6cF5vmnERPGJ3G65X1qCTI"
   },
   {
     "__type__": "cc.Node",
@@ -1405,7 +1405,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 160,
       "height": 40
     },
     "_anchorPoint": {
@@ -1448,8 +1448,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "回收数量：",
-    "_N$string": "回收数量：",
+    "_string": "回收数量",
+    "_N$string": "回收数量",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -1495,12 +1495,12 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": 0.5,
       "y": 0.5
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -180,
+      "x": -130,
       "y": 0,
       "z": 0
     },
@@ -1952,7 +1952,7 @@
     },
     "_enabled": true,
     "qipanNode": {
-      "__id__": 12
+      "__id__": 22
     },
     "stepLabel": {
       "__id__": 24
@@ -1961,9 +1961,12 @@
       "__id__": 25
     },
     "reclaimNode": {
-      "__id__": 17
+      "__id__": 16
     },
     "reclaimArr": [
+      {
+        "__id__": 17
+      },
       {
         "__id__": 18
       },
@@ -1972,9 +1975,6 @@
       },
       {
         "__id__": 20
-      },
-      {
-        "__id__": 21
       }
     ],
     "resultNode": {

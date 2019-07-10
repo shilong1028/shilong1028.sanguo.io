@@ -1,6 +1,7 @@
 import Rubbish from "./rubbish";
 import { CfgMgr } from "../manager/ConfigManager";
 import { GameMgr } from "../manager/GameManager";
+import GameOver from "./gameover";
 
 //垃圾分类小游戏2
 const {ccclass, property} = cc._decorator;
@@ -48,9 +49,9 @@ export default class Game2Scene extends cc.Component {
 
     rubbishDropCount: number = 0;  //关卡战斗垃圾落地总数
     rubbishSuccClickNum: number = 0;   //点击正确的垃圾总数
-    rubbishCreateStep: number = 5;   //垃圾产出帧数间隔
+    rubbishCreateStep: number = 50;   //垃圾产出帧数间隔
 
-    rubbishSpeed: number = 500;  //垃圾下落速度
+    rubbishSpeed: number = 300;  //垃圾下落速度
     rubbishKeys: string[] = new Array();  //配置中的垃圾ID集合
 
     bStopTouch: boolean = false;   //是否停止触摸反应
@@ -64,7 +65,7 @@ export default class Game2Scene extends cc.Component {
 
         this.rubbishDropCount = 0;  //关卡战斗垃圾落地总数
         this.rubbishSuccClickNum = 0;   //点击正确的垃圾总数
-        this.rubbishCreateStep = 5;   //垃圾产出帧数间隔
+        this.rubbishCreateStep = 50;   //垃圾产出帧数间隔
 
         this.bGameOver = false;
 
@@ -86,8 +87,7 @@ export default class Game2Scene extends cc.Component {
     }
 
     onBackBtn(){
-        this.bGameOver = true;
-        GameMgr.showLayer(this.pfGameOver);
+        this.handleGameOver();   //游戏结束
     }
 
     start () {
@@ -116,7 +116,7 @@ export default class Game2Scene extends cc.Component {
     update (dt) {
         if(this.bGameOver == false){
             this.beginTime ++;
-            if(this.beginTime >= 60.0){
+            if(this.beginTime >= 60.0 && this.beginStep <= 4){
                 if(this.beginStep < 4){
                     this.beginTime = 0;
                     this.beginStep ++;
@@ -126,13 +126,13 @@ export default class Game2Scene extends cc.Component {
                     this.beginStep = 5;   //开始战斗
                     this.stepLabel.string = "";
                     this.targetNode.active = false;
-
-                    if(this.rubbishCreateStep >= 1){  //垃圾产出帧数间隔
-                        this.rubbishCreateStep = 0;
-                        this.createOneRandomRubbish();
-                    }else{
-                        this.rubbishCreateStep ++;
-                    }
+                }
+            }
+            if(this.beginStep == 5){
+                if(this.rubbishCreateStep >= 50){  //垃圾产出帧数间隔
+                    this.createOneRandomRubbish();
+                }else{
+                    this.rubbishCreateStep ++;
                 }
             }
         }
@@ -154,15 +154,14 @@ export default class Game2Scene extends cc.Component {
 
     //随机产生一个垃圾
     createOneRandomRubbish(){
+        this.rubbishCreateStep = 0;
         let randIdx = Math.ceil(Math.random()*this.rubbishKeys.length);
         let randIdStr = this.rubbishKeys[randIdx];
-        cc.log("createOneRandomRubbish(), randIdStr = "+randIdStr);
 
         let rubbishNode = this.createRubbishFromPool();
         if(rubbishNode){
             let randPosX = (Math.random()-0.5)*(this.qipanNode.width/2 - 50);
             rubbishNode.position = cc.v2(randPosX, this.qipanNode.height/2);
-            cc.log("rubbishNode.position = "+rubbishNode.position);
             this.qipanNode.addChild(rubbishNode, 10);
             rubbishNode.getComponent(Rubbish).initRubbish(parseInt(randIdStr), this, false);
         }
@@ -170,14 +169,14 @@ export default class Game2Scene extends cc.Component {
 
     //垃圾落地
     handleRubbishEnd(rubbishType: number){
-        if(this.bGameOver == false && this.fightRubbishType == rubbishType){
+        if(this.bGameOver == false){  //错误回收的垃圾
             this.rubbishDropCount ++;  //关卡战斗垃圾落地总数
             let num = 10 - this.rubbishDropCount;
             this.tipNum.string = num + "/10";
             this.progressBar.progress = num/10;
 
             if(this.rubbishDropCount > 10){   //游戏结束
-                this.bGameOver = true;
+                this.handleGameOver();   //游戏结束
             }
         }
     }
@@ -187,6 +186,14 @@ export default class Game2Scene extends cc.Component {
         if(this.bGameOver == false && this.fightRubbishType == rubbishType){
             this.rubbishSuccClickNum ++;   //点击正确的垃圾总数
             this.countLabel.string = this.rubbishSuccClickNum.toString();
+
+            this.createOneRandomRubbish();
         }
+    }
+
+    handleGameOver(){
+        this.bGameOver = true;
+        let layer = GameMgr.showLayer(this.pfGameOver);
+        layer.getComponent(GameOver).initGameOverData(this.beginTime, this.rubbishSuccClickNum);
     }
 }

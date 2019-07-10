@@ -18,13 +18,13 @@ export default class GameOver extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.touchNode.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);
+        //this.touchNode.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);
 
         this.descLabel.string = "";
     }
 
     start () {
-        this.descLabel.string = "恭喜你，在5.0秒的时间内成功回收/分拣100件垃圾。我代表居委会和广大业主感谢你的贡献。";
+
     }
 
     // update (dt) {}
@@ -35,7 +35,6 @@ export default class GameOver extends cc.Component {
         if(!rect1.contains(pos1)){
             this.onCloseBtn();
         }
-
     }
 
     onCloseBtn(){
@@ -46,6 +45,11 @@ export default class GameOver extends cc.Component {
     onShareBtn(){
         this.node.removeFromParent(true);
         cc.director.loadScene("searchScene");
+    }
+
+    initGameOverData(gameTime: number, collectNum: number){
+        let timeStr = Math.floor(gameTime/60)+"分"+(gameTime/60).toFixed(2);
+        this.descLabel.string = "恭喜你，在"+timeStr+"秒的时间内成功回收/分拣"+collectNum+"件垃圾。我代表居委会和广大业主感谢你的贡献。";
     }
 
 }

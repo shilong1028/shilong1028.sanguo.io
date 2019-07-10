@@ -1258,7 +1258,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 160,
       "height": 40
     },
     "_anchorPoint": {
@@ -1301,8 +1301,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "回收数量：",
-    "_N$string": "回收数量：",
+    "_string": "回收数量",
+    "_N$string": "回收数量",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -1348,12 +1348,12 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": 0.5,
       "y": 0.5
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -180,
+      "x": -130,
       "y": 0,
       "z": 0
     },
