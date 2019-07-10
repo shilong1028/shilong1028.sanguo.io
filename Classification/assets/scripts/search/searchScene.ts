@@ -50,21 +50,21 @@ export default class SearchScene extends cc.Component {
     // update (dt) {}
 
     editingDidBegan (event) {
-        cc.log('editing did began');
+        //cc.log('editing did began');
         this.showResultNode(false);  //一定时间内显示答案
     }
 
     textChanged (event) {
-        cc.log('text changed: ' + event);
+        //cc.log('text changed: ' + event);
         this.editText.string = event;
     }
 
     editingDidEnded (event) {
-        cc.log('editing did ended');
+        //cc.log('editing did ended');
     }
 
     editingReturn (event) {
-        cc.log('editing retrun');
+        //cc.log('editing retrun');
     }
 
     onSearchBtn(){
@@ -100,8 +100,7 @@ export default class SearchScene extends cc.Component {
 
             if(mathchArr.length > 0){
                 mathchArr.sort((a:any, b:any)=>{ return b.mathchCount - a.mathchCount;})
-                cc.log("相似答案有 mathchArr = "+JSON.stringify(mathchArr));
-                this.showSearchResult(mathchArr, 2);
+                this.showSearchResult(mathchArr, 2);   //相似答案
             }else{
                 cc.log("没有找到相似的答案");
                 this.showSearchResult([], -1);
@@ -113,6 +112,7 @@ export default class SearchScene extends cc.Component {
     }
 
     showSearchResult(results: any[], resultType: number=0){
+        cc.log("showSearchResult() results = "+JSON.stringify(results));
         this.bSearching = false;  //正在查询中
         this.iconSpr.spriteFrame = null;
         this.resultLable.string = "";   //答案：大骨头为干垃圾
@@ -141,12 +141,12 @@ export default class SearchScene extends cc.Component {
                 this.otherLabel.string = otherStr;
             }
 
-            this.showResultNode();  //一定时间内显示答案
+            this.showResultNode(true);  //一定时间内显示答案
         }
     }
 
     //一定时间内显示答案
-    showResultNode(bShow:boolean = true){
+    showResultNode(bShow:boolean){
         this.resultNode.stopAllActions();
         if(bShow == true){
             this.gameNode.opacity = 0;
@@ -158,11 +158,22 @@ export default class SearchScene extends cc.Component {
         }else{
             this.resultNode.opacity = 0;
             this.gameNode.opacity = 255;
+
+            // this.editText.node.active = false;
+            // this.editPlaceText.node.active = true;
         }
     }
 
-    onGameBtn(){
+    onHideRusult(){
+        this.showResultNode(false);
+    }
+
+    onGame1Btn(){
         cc.director.loadScene("game1Scene");
+    }
+
+    onGame2Btn(){
+        cc.director.loadScene("game2Scene");
     }
 
     gameHandActions(){
@@ -172,6 +183,10 @@ export default class SearchScene extends cc.Component {
             }.bind(this)), cc.delayTime(0.3), cc.callFunc(function(){
                 this.handSpr.spriteFrame = this.handFrames[0];
             }.bind(this))
+        )));
+
+        this.handSpr.node.runAction(cc.repeatForever(cc.sequence(
+            cc.moveTo(3.0, cc.v2(250, -100)), cc.moveTo(3.0, cc.v2(40, -100))
         )));
     }
 

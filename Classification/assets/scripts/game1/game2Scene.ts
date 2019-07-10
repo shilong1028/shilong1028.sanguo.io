@@ -2,11 +2,11 @@ import Rubbish from "./rubbish";
 import { CfgMgr } from "../manager/ConfigManager";
 import { GameMgr } from "../manager/GameManager";
 
-//垃圾分类小游戏1
+//垃圾分类小游戏2
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Game1Scene extends cc.Component {
+export default class Game2Scene extends cc.Component {
 
     @property(cc.Node)
     qipanNode: cc.Node = null;
@@ -14,11 +14,10 @@ export default class Game1Scene extends cc.Component {
     stepLabel: cc.Label = null;
     @property(cc.Node)
     targetNode: cc.Node = null;   //回收任务节点
-
-    @property(cc.Node)
-    reclaimNode: cc.Node = null;   //垃圾回收节点
-    @property([cc.Node])
-    reclaimArr: cc.Node[] = new Array(4);
+    @property(cc.Label)
+    targetText: cc.Label = null;
+    @property(cc.Sprite)
+    targetIcon: cc.Sprite = null;
 
     @property(cc.Node)
     resultNode: cc.Node = null;
@@ -45,6 +44,7 @@ export default class Game1Scene extends cc.Component {
     beginStep: number = 0;   //战斗步骤，0准备开始，1-4倒计时3-2-1-0
 
     bGameOver: boolean = false;  //战斗是否结束
+    fightRubbishType: number = 1;   //战斗中找出的垃圾类型 1有害垃圾 2可回收垃圾 3餐厨（湿垃圾） 4其他（干垃圾）
 
     rubbishDropCount: number = 0;  //关卡战斗垃圾落地总数
     rubbishSuccClickNum: number = 0;   //点击正确的垃圾总数
@@ -58,11 +58,6 @@ export default class Game1Scene extends cc.Component {
 
 
     onLoad () {
-        this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
-        this.node.on(cc.Node.EventType.TOUCH_END, this.ontTouchEnd, this);
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.ontTouchEnd, this);
-
         this.beginTime = 0;
         this.beginStep = 0;
         this.stepLabel.string = "准备开始";
@@ -73,10 +68,10 @@ export default class Game1Scene extends cc.Component {
 
         this.bGameOver = false;
 
+        this.fightRubbishType = Math.ceil(Math.random()*4);  //战斗中找出的垃圾类型
         this.targetNode.active = false;
-        this.reclaimNode.active = false;
 
-        this.countLabel.string = "0";
+        this.countLabel.string = "";
         this.tipNum.string = "10/10";
         this.progressBar.progress = 100;
 
@@ -97,6 +92,25 @@ export default class Game1Scene extends cc.Component {
 
     start () {
         this.targetNode.active = true;
+        this.targetIcon.spriteFrame = this.targetFrames[this.fightRubbishType-1];
+        if(this.fightRubbishType == 1){
+            this.targetText.string = "有害垃圾";
+            this.targetText.node.color = cc.color(233, 47, 35);
+            this.countLabel.node.color = cc.color(233, 47, 35);
+        }else if(this.fightRubbishType == 2){
+            this.targetText.string = "可回收垃圾";
+            this.targetText.node.color = cc.color(16, 71, 131);
+            this.countLabel.node.color = cc.color(16, 71, 131);
+        }else if(this.fightRubbishType == 3){
+            this.targetText.string = "湿(餐厨)垃圾";
+            this.targetText.node.color = cc.color(105, 65, 55);
+            this.countLabel.node.color = cc.color(105, 65, 55);
+        }else if(this.fightRubbishType == 4){
+            this.targetText.string = "干(其他)垃圾";
+            this.targetText.node.color = cc.color(44, 43, 41);
+            this.countLabel.node.color = cc.color(44, 43, 41);
+        }
+        this.countLabel.string = "0";
     }
 
     update (dt) {
@@ -107,10 +121,6 @@ export default class Game1Scene extends cc.Component {
                     this.beginTime = 0;
                     this.beginStep ++;
                     this.stepLabel.string = (4 - this.beginStep).toString();
-
-                    if(this.beginStep == 4){
-                        this.reclaimNode.active = true;
-                    }
                 }else{
                     this.beginTime = 0;
                     this.beginStep = 5;   //开始战斗
@@ -154,75 +164,18 @@ export default class Game1Scene extends cc.Component {
             rubbishNode.position = cc.v2(randPosX, this.qipanNode.height/2);
             cc.log("rubbishNode.position = "+rubbishNode.position);
             this.qipanNode.addChild(rubbishNode, 10);
-            rubbishNode.getComponent(Rubbish).initRubbish(parseInt(randIdStr), this, true);
+            rubbishNode.getComponent(Rubbish).initRubbish(parseInt(randIdStr), this, false);
         }
-    }
-
-    onTouchStart(event: cc.Event.EventTouch) {  
-        if(this.bGameOver == false && this.selectRubbish){ //是否停止触摸反应
-            this.updateSelectRubbish(event.getLocation());  
-        }
-    }
-
-    onTouchMove(event: cc.Event.EventTouch) {
-        if(this.bGameOver == false && this.selectRubbish){
-            this.updateSelectRubbish(event.getLocation());   //拖动更新选中模型的位置
-        }
-    }
-
-    ontTouchEnd(event: cc.Event.EventTouch) {
-        if(this.bGameOver == false && this.selectRubbish){
-            this.placeSelectRubbish(event.getLocation());   //放置选中的模型
-        }
-    }
-
-    /**设置选中的将要移动的模型 */
-    setSelectRubbish(block: Rubbish){
-        if(this.bGameOver == false){
-            this.selectRubbish = block; 
-        }
-    }
-
-    /**拖动更新选中的模型的位置 */
-    updateSelectRubbish(touchPos: cc.Vec2){
-        if(this.selectRubbish == null){
-            return;
-        }
-        let pos = this.qipanNode.convertToNodeSpaceAR(touchPos);
-        this.selectRubbish.udpatePosByTouch(pos);
-    }
-
-    /**放置选中的模型 */
-    placeSelectRubbish(touchPos : cc.Vec2){
-        if(this.selectRubbish == null){
-            return;
-        }
-        let pos = this.reclaimNode.convertToNodeSpaceAR(touchPos);   //删除节点
-        let rect = cc.rect(-this.reclaimNode.width/2, -this.reclaimNode.height/2, this.reclaimNode.width, this.reclaimNode.height);
-        if(rect.contains(pos)){  //删除
-            let rubbishType = this.selectRubbish.rubbishConf.type;
-            let destNode = this.reclaimArr[rubbishType-1];
-            let destRect = cc.rect(destNode.x-destNode.width/2, destNode.y-destNode.height/2, destNode.width, destNode.height);
-            if(destRect.contains(pos)){   //回收正确
-                this.selectRubbish.handleReclaimRubbish(true);   //是否正确回收垃圾
-            }else{
-                this.selectRubbish.handleReclaimRubbish(false);   //是否正确回收垃圾
-            }
-        }else{
-            this.selectRubbish.resetMoveToEnd();   //垃圾移动到底部
-        }
-
-        this.selectRubbish = null;   //拖动的模型数据
     }
 
     //垃圾落地
-    handleRubbishEnd(){
-        if(this.bGameOver == false){
+    handleRubbishEnd(rubbishType: number){
+        if(this.bGameOver == false && this.fightRubbishType == rubbishType){
             this.rubbishDropCount ++;  //关卡战斗垃圾落地总数
             let num = 10 - this.rubbishDropCount;
             this.tipNum.string = num + "/10";
             this.progressBar.progress = num/10;
-    
+
             if(this.rubbishDropCount > 10){   //游戏结束
                 this.bGameOver = true;
             }
@@ -230,8 +183,8 @@ export default class Game1Scene extends cc.Component {
     }
 
     //正确点击回收的垃圾
-    handleRubbishSuccClick(){
-        if(this.bGameOver == false){
+    handleRubbishSuccClick(rubbishType: number){
+        if(this.bGameOver == false && this.fightRubbishType == rubbishType){
             this.rubbishSuccClickNum ++;   //点击正确的垃圾总数
             this.countLabel.string = this.rubbishSuccClickNum.toString();
         }
