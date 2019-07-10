@@ -79,7 +79,7 @@ export default class SearchScene extends cc.Component {
             let mathchArr = new Array();   //匹配数据
             for (let i=1; i<=keys.length; ++i) { // 遍历Map
                 let idstr = keys[i];
-                let obj: st_rubbish_info = CfgMgr.C_rubbish_info[idstr];
+                let obj: st_rubbish_info = CfgMgr.C_rubbish_info[parseInt(idstr)];
                 if(obj){
                     if(keyStr == obj.name){
                         this.showSearchResult([{"mathchCount":100, "obj":obj}], 1);
