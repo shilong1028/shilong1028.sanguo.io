@@ -896,7 +896,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 160,
-      "height": 40
+      "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -906,7 +906,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": -60,
-      "y": 50,
+      "y": 45,
       "z": 0
     },
     "_scale": {
@@ -941,7 +941,7 @@
     "_string": "道具名称",
     "_N$string": "道具名称",
     "_fontSize": 40,
-    "_lineHeight": 40,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -994,7 +994,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 164.49,
-      "height": 40
+      "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1004,7 +1004,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 80,
-      "y": 50,
+      "y": 45,
       "z": 0
     },
     "_scale": {
@@ -1039,7 +1039,7 @@
     "_string": "数量：99",
     "_N$string": "数量：99",
     "_fontSize": 40,
-    "_lineHeight": 40,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
