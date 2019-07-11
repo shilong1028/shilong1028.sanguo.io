@@ -204,9 +204,9 @@ export default class Game1Scene extends cc.Component {
             let destNode = this.reclaimArr[rubbishType-1];
             let destRect = cc.rect(destNode.x-destNode.width/2, destNode.y-destNode.height/2, destNode.width, destNode.height);
             if(destRect.contains(pos)){   //回收正确
-                this.selectRubbish.handleReclaimRubbish(true);   //是否正确回收垃圾
+                this.selectRubbish.handleReclaimRubbish(true, true);   //是否正确回收垃圾
             }else{
-                this.selectRubbish.handleReclaimRubbish(false);   //是否正确回收垃圾
+                this.selectRubbish.handleReclaimRubbish(false, true);   //是否正确回收垃圾
             }
         }else{
             this.selectRubbish.resetMoveToEnd();   //垃圾移动到底部
@@ -242,6 +242,6 @@ export default class Game1Scene extends cc.Component {
     handleGameOver(){
         this.bGameOver = true;
         let layer = GameMgr.showLayer(this.pfGameOver);
-        layer.getComponent(GameOver).initGameOverData(this.beginTime, this.rubbishSuccClickNum);
+        layer.getComponent(GameOver).initGameOverData(this.beginTime, this.rubbishSuccClickNum, this.rubbishSuccClickNum*5);
     }
 }

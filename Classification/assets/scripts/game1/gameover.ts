@@ -1,3 +1,5 @@
+import { GameMgr } from "../manager/GameManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 
 //游戏结束界面
@@ -16,6 +18,7 @@ export default class GameOver extends cc.Component {
     descLabel: cc.Label = null;
 
     // LIFE-CYCLE CALLBACKS:
+    rewardsCount: number = 0;   //奖励积分数量
 
     onLoad () {
         //this.touchNode.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);
@@ -38,16 +41,24 @@ export default class GameOver extends cc.Component {
     }
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
-        cc.director.loadScene("searchScene");
+        SDKMgr.shareGame("分享！", (succ:boolean)=>{
+            console.log("turntable 分享 succ = "+succ);
+            if(succ == true){
+                GameMgr.updateUserGold(this.rewardsCount, true);
+                cc.director.loadScene("searchScene");
+            }
+        }, this);
     }
 
     onShareBtn(){
-        this.node.removeFromParent(true);
+        GameMgr.updateUserGold(this.rewardsCount*2, true);
+
         cc.director.loadScene("searchScene");
     }
 
-    initGameOverData(gameTime: number, collectNum: number){
+    initGameOverData(gameTime: number, collectNum: number, rewardCount:number){
+        this.rewardsCount = rewardCount;   //奖励积分数量
+
         let timeStr = Math.floor(gameTime/60)+"分"+(gameTime/60).toFixed(2);
         this.descLabel.string = "恭喜你，在"+timeStr+"秒的时间内成功回收/分拣"+collectNum+"件垃圾。我代表居委会和广大业主感谢你的贡献。";
     }

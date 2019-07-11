@@ -19,6 +19,9 @@ export default class CostWarn extends cc.Component {
     @property(cc.Node)
     tipsNode: cc.Node = null;
 
+    @property(cc.Button)
+    okBtn: cc.Button = null;
+
     // LIFE-CYCLE CALLBACKS:
 
     callback: any = null;
@@ -69,6 +72,7 @@ export default class CostWarn extends cc.Component {
 
         if(GameMgr.GoldCount < cost){
             this.tipsNode.active = true;
+            this.okBtn.interactable = false;
         }
     }
 

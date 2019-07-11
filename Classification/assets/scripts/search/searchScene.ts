@@ -149,7 +149,7 @@ export default class SearchScene extends cc.Component {
     }
 
     showSearchResult(results: any[], resultType: number=0){
-        cc.log("showSearchResult() results = "+JSON.stringify(results));
+        //cc.log("showSearchResult() results = "+JSON.stringify(results));
         this.bSearching = false;  //正在查询中
         this.iconSpr.spriteFrame = null;
         this.resultLable.string = "";   //答案：大骨头为干垃圾

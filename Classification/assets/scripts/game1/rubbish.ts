@@ -8,6 +8,9 @@ const {ccclass, property} = cc._decorator;
 export default class Rubbish extends cc.Component {
 
     @property(cc.Sprite)
+    bgSpr: cc.Sprite = null;
+
+    @property(cc.Sprite)
     iconSpr: cc.Sprite = null;
 
     // LIFE-CYCLE CALLBACKS:
@@ -38,6 +41,7 @@ export default class Rubbish extends cc.Component {
         this.gameScene = null;
         this.rubbishConf = null;
 
+        this.bgSpr.spriteFrame = null;
         this.iconSpr.spriteFrame = null;
         this.node.stopAllActions();
     }
@@ -55,13 +59,18 @@ export default class Rubbish extends cc.Component {
         this.gameScene.removeRubbishToPool(this.node);   //回收到缓存池
     }
 
-    //是否正确回收垃圾
-    handleReclaimRubbish(bCollect:boolean){
+    /** 是否正确回收垃圾
+     * @param bCollect 是否操作（回收）正确
+     * @param bSendGame 是否作为计入失败操作的次数
+    */
+    handleReclaimRubbish(bCollect:boolean, bInFailed:boolean){
         this.node.stopAllActions();
         if(bCollect == true){
             this.gameScene.handleRubbishSuccClick(this.rubbishConf.type);   //正确点击回收的垃圾
         }else{
-            this.gameScene.handleRubbishEnd(this.rubbishConf.type);  //垃圾落地(回收失败)
+            if(bInFailed == true){  //只有点击错误才会发送游戏统计
+                this.gameScene.handleRubbishEnd(this.rubbishConf.type);  //垃圾落地(回收失败)
+            }
         }
         this.handleRemoveMySelf();
     }
@@ -75,7 +84,8 @@ export default class Rubbish extends cc.Component {
         this.gameScene = target;
         this.rubbishConf = CfgMgr.C_rubbish_info[id];
         if(this.rubbishConf){
-            this.iconSpr.spriteFrame = this.gameScene.targetFrames[this.rubbishConf.type-1];
+            this.bgSpr.spriteFrame = this.gameScene.targetFrames[this.rubbishConf.type-1];
+            //this.iconSpr.spriteFrame = this.gameScene.targetFrames[this.rubbishConf.type-1];
         }
 
         this.resetMoveToEnd();   //垃圾移动到底部
@@ -86,7 +96,7 @@ export default class Rubbish extends cc.Component {
         this.node.stopAllActions();
 
         if(this.node.y <= -this.gameScene.qipanNode.height/2){
-            this.handleReclaimRubbish(false);   //是否正确回收垃圾
+            this.handleReclaimRubbish(false, false);   //是否正确回收垃圾
         }else{
             let destPosX = (Math.random()-0.5)*(this.gameScene.qipanNode.width/2 - 50);
             let destPos = cc.v2(destPosX, -this.gameScene.qipanNode.height/2);
@@ -94,7 +104,7 @@ export default class Rubbish extends cc.Component {
             moveTime = moveTime -  Math.random()*moveTime/5;
     
             this.node.runAction(cc.sequence(cc.moveTo(moveTime, destPos), cc.callFunc(function(){   //.easing(cc.easeBezierAction(0.5, 0.5, 1.0, 1.0))
-                this.handleReclaimRubbish(false);   //是否正确回收垃圾
+                this.handleReclaimRubbish(false, false);   //是否正确回收垃圾
             }.bind(this))));
         }
     }
@@ -113,9 +123,9 @@ export default class Rubbish extends cc.Component {
     onClick(){
         if(this.bTouchMoveEnabled == false && this.rubbishConf && this.gameScene){
             if(this.rubbishConf.type == this.gameScene.fightRubbishType){
-                this.handleReclaimRubbish(true);   //是否正确回收垃圾
+                this.handleReclaimRubbish(true, true);   //是否正确回收垃圾
             }else{
-                this.handleReclaimRubbish(false);   //是否正确回收垃圾
+                this.handleReclaimRubbish(false, true);   //是否正确回收垃圾
             }
         }
     }

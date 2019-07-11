@@ -20,8 +20,8 @@ export default class AddCost extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    shareCost: number = 100;
-    videoCost: number = 300;
+    shareCost: number = 50;
+    videoCost: number = 100;
 
     onLoad () {
         //this.touchNode.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);

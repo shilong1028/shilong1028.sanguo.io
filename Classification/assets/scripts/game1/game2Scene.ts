@@ -194,6 +194,6 @@ export default class Game2Scene extends cc.Component {
     handleGameOver(){
         this.bGameOver = true;
         let layer = GameMgr.showLayer(this.pfGameOver);
-        layer.getComponent(GameOver).initGameOverData(this.beginTime, this.rubbishSuccClickNum);
+        layer.getComponent(GameOver).initGameOverData(this.beginTime, this.rubbishSuccClickNum, this.rubbishSuccClickNum*3);
     }
 }
