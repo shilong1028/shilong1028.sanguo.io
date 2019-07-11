@@ -1,5 +1,6 @@
 import { ItemInfo } from "../manager/Enum";
 import TableView from "../tableView/tableView";
+import { ROOT_NODE } from "./rootNode";
 
 //领取奖励通用提示框
 const {ccclass, property} = cc._decorator;
@@ -26,6 +27,14 @@ export default class RewardLayer extends cc.Component {
     // update (dt) {}
 
     onOkBtn(){
+        let str = "";
+        for(let i=0; i<this.rewardArr.length; ++i){
+            let item = this.rewardArr[i];
+            let itemStr = "获得"+item.itemCfg.name + " x " + item.count + "  ";
+            str += itemStr;
+        }
+        ROOT_NODE.showTipsText(str);
+
         if(this.receiveCallback && this.receiveTarget){
             this.receiveCallback.call(this.receiveTarget, this.rewardArr);
         }

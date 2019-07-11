@@ -78,10 +78,21 @@ class MyUserManager {
                 if(bSave){
                     LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
                 }
-                break;
+                return;
+            }
+        }
+
+        if(val > 0){   //增加的新道具
+            let item = new ItemInfo(itemId, val);
+            MyUserData.ItemList.push(item);
+            NoticeMgr.emit(NoticeType.UpdateBagItem, item);  //更新单个背包物品
+
+            if(bSave){
+                LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
             }
         }
     }
+    
     /**修改用户背包物品列表 */
     updateItemList(item: ItemInfo, bSave: boolean = true){
         let bUpdateItem: boolean = false;

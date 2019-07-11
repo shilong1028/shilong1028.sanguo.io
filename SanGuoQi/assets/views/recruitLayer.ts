@@ -1,7 +1,7 @@
 import TableView from "../tableView/tableView";
 import { ROOT_NODE } from "../common/rootNode";
 import { ItemInfo } from "../manager/Enum";
-import { CfgMgr, st_item_info } from "../manager/ConfigManager";
+import { CfgMgr} from "../manager/ConfigManager";
 
 
 //招募
@@ -30,7 +30,7 @@ export default class RecruitLayer extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    cellArr: st_item_info[] = new Array();
+    cellArr: ItemInfo[] = new Array();
 
     cellTitles: string[] = new Array("骑兵千人", "步兵千人", "弓兵千人");
     cellDescs: string[] = new Array("用于组建武将部曲，克制步兵", "用于组建武将部曲，克制弓兵", "用于组建武将部曲，克制骑兵");
@@ -48,8 +48,7 @@ export default class RecruitLayer extends cc.Component {
 
     start () {
         for(let i=0; i<3; ++i){
-            let soliderConf = CfgMgr.getItemConf(401+i);
-            this.cellArr.push(soliderConf);
+            this.cellArr.push(new ItemInfo(401+i, 1));
         }
         this.tableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
         this.tableView.initTableView(this.cellArr.length, { array: this.cellArr, target: this }); 
@@ -69,11 +68,11 @@ export default class RecruitLayer extends cc.Component {
         this.numLabel.string = "";
         this.descLabel.string = "";
 
-        let itemConf = this.cellArr[cellIdx];
-        if(itemConf){
-            this.nameLabel.string = itemConf.name;
+        let item = this.cellArr[cellIdx];
+        if(item && item.itemCfg){
+            this.nameLabel.string = item.itemCfg.name;
             this.iconSpr.spriteFrame = this.iconFrames[cellIdx];
-            this.descLabel.string = itemConf.desc;
+            this.descLabel.string = item.itemCfg.desc;
         }
     }
 

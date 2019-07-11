@@ -1,6 +1,9 @@
 
 import viewCell from "../tableView/viewCell";
 import RecruitLayer from "./recruitLayer";
+import { MyUserData, MyUserMgr } from "../manager/MyUserData";
+import { ItemInfo } from "../manager/Enum";
+import { ROOT_NODE } from "../common/rootNode";
 
 //用于tableView的itemCell
 const {ccclass, property} = cc._decorator;
@@ -20,7 +23,10 @@ export default class RecruitCell extends viewCell {
     @property(cc.Sprite)
     iconSpr: cc.Sprite = null;
 
-    cellData : any = null;  
+    @property(cc.Label)
+    costLabel:cc.Label = null;
+
+    cellData : ItemInfo = null;  
     cellIdx : number = -1;  
     targetSc: RecruitLayer = null;
 
@@ -46,6 +52,8 @@ export default class RecruitCell extends viewCell {
         this.iconSpr.spriteFrame = this.targetSc.iconFrames[index];
         this.titleLabel.string = this.targetSc.cellTitles[index];
         this.descLabel.string = this.targetSc.cellDescs[index];
+
+        this.costLabel.string = this.cellData.itemCfg.cost;
     }
 
     onSelected(bSel:boolean){
@@ -68,6 +76,14 @@ export default class RecruitCell extends viewCell {
 
     onRecruitBtn(){
         cc.log("招募, this.cellData = "+JSON.stringify(this.cellData));
+        if(MyUserData.GoldCount >= this.cellData.itemCfg.cost){
+            MyUserMgr.updateUserGold(-this.cellData.itemCfg.cost, false);  //修改用户金币
+            MyUserMgr.updateItemList(this.cellData, true);   //修改用户背包物品列表
+
+            ROOT_NODE.showTipsText("招募"+this.cellData.itemCfg.name +" x "+this.cellData.count);
+        }else{
+            ROOT_NODE.showTipsText("金币不足！");
+        }
     }
 
 }
