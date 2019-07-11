@@ -175,7 +175,7 @@ export default class Game2Scene extends cc.Component {
             this.tipNum.string = num + "/10";
             this.progressBar.progress = num/10;
 
-            if(this.rubbishDropCount > 10){   //游戏结束
+            if(this.rubbishDropCount >= 10){   //游戏结束
                 this.handleGameOver();   //游戏结束
             }
         }

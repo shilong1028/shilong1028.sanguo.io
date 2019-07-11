@@ -96,7 +96,7 @@ export default class Rubbish extends cc.Component {
         this.node.stopAllActions();
 
         if(this.node.y <= -this.gameScene.qipanNode.height/2){
-            this.handleReclaimRubbish(false, false);   //是否正确回收垃圾
+            this.handleReclaimRubbish(false, this.bTouchMoveEnabled);   //是否正确回收垃圾
         }else{
             let destPosX = (Math.random()-0.5)*(this.gameScene.qipanNode.width/2 - 50);
             let destPos = cc.v2(destPosX, -this.gameScene.qipanNode.height/2);
@@ -104,7 +104,7 @@ export default class Rubbish extends cc.Component {
             moveTime = moveTime -  Math.random()*moveTime/5;
     
             this.node.runAction(cc.sequence(cc.moveTo(moveTime, destPos), cc.callFunc(function(){   //.easing(cc.easeBezierAction(0.5, 0.5, 1.0, 1.0))
-                this.handleReclaimRubbish(false, false);   //是否正确回收垃圾
+                this.handleReclaimRubbish(false, this.bTouchMoveEnabled);   //是否正确回收垃圾
             }.bind(this))));
         }
     }

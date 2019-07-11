@@ -40,7 +40,7 @@ export default class GameOver extends cc.Component {
         }
     }
 
-    onCloseBtn(){
+    onShareBtn(){
         SDKMgr.shareGame("分享！", (succ:boolean)=>{
             console.log("turntable 分享 succ = "+succ);
             if(succ == true){
@@ -50,7 +50,7 @@ export default class GameOver extends cc.Component {
         }, this);
     }
 
-    onShareBtn(){
+    onCloseBtn(){
         GameMgr.updateUserGold(this.rewardsCount*2, true);
 
         cc.director.loadScene("searchScene");
