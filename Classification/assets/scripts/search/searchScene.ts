@@ -1,4 +1,7 @@
 import { CfgMgr, st_rubbish_info } from "../manager/ConfigManager";
+import { NoticeMgr, NoticeType } from "../manager/NoticeManager";
+import { GameMgr } from "../manager/GameManager";
+import CostWarn from "./costWarn";
 
 
 //垃圾分类主界面
@@ -6,6 +9,9 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class SearchScene extends cc.Component {
+
+    @property(cc.Label)
+    goldLabel: cc.Label = null;  //金币积分数量
 
     @property(cc.EditBox)
     editbox: cc.EditBox = null;
@@ -34,17 +40,37 @@ export default class SearchScene extends cc.Component {
     @property([cc.SpriteFrame])
     handFrames: cc.SpriteFrame[] = new Array(2);
 
+    @property(cc.Prefab)
+    pfCost: cc.Prefab = null;   //花费支出
+
+    @property(cc.Prefab)
+    pfAddCost: cc.Prefab = null;   //积分获取
+
     // LIFE-CYCLE CALLBACKS:
 
     bSearching: boolean = false;   //正在查询中
 
     onLoad () {
+        this.goldLabel.string = "";  //金币积分数量
+        
         this.showResultNode(false);  //一定时间内显示答案
         this.showSearchResult(null);
+
+        NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this); 
+    }
+
+    onDestroy(){
+        this.node.targetOff(this);
+        NoticeMgr.offAll(this);
     }
 
     start () {
+        this.UpdateGoldCount();
         this.gameHandActions();
+    }
+
+    UpdateGoldCount(){
+        this.goldLabel.string = GameMgr.getUserGold().toString();
     }
 
     // update (dt) {}
@@ -71,6 +97,17 @@ export default class SearchScene extends cc.Component {
         if(this.bSearching == true){  //正在查询中
             return;
         }
+
+        let keyStr = this.editText.string;
+        if(keyStr && keyStr.length > 0){
+            let layer = GameMgr.showLayer(this.pfCost);
+            layer.getComponent(CostWarn).initCostData(50, ()=>{
+                this.handleSearch();
+            });
+        }
+    }
+
+    handleSearch(){
         this.bSearching = true;
         let keyStr = this.editText.string;
 
@@ -168,12 +205,22 @@ export default class SearchScene extends cc.Component {
         this.showResultNode(false);
     }
 
+    onAddCost(){
+        GameMgr.showLayer(this.pfAddCost);
+    }
+
     onGame1Btn(){
-        cc.director.loadScene("game1Scene");
+        let layer = GameMgr.showLayer(this.pfCost);
+        layer.getComponent(CostWarn).initCostData(10, ()=>{
+            cc.director.loadScene("game1Scene");
+        });
     }
 
     onGame2Btn(){
-        cc.director.loadScene("game2Scene");
+        let layer = GameMgr.showLayer(this.pfCost);
+        layer.getComponent(CostWarn).initCostData(10, ()=>{
+            cc.director.loadScene("game2Scene");
+        });
     }
 
     gameHandActions(){

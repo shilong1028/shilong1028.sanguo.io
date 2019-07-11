@@ -1,9 +1,36 @@
+import { LDMgr, LDKey } from "./StorageManager";
+import { NoticeMgr, NoticeType } from "./NoticeManager";
 
 //游戏菜单管理器
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 class GameManager {
+    GoldCount: number = null;   //用户金币积分数
+
+    /**修改用户金币 */
+    updateUserGold(val:number, bSave: boolean = true){
+        this.GoldCount += val;
+        if(bSave){
+            LDMgr.setItem(LDKey.KEY_GoldCount, this.GoldCount);
+        }
+        NoticeMgr.emit(NoticeType.UpdateGold, null);
+    }
+    getUserGold(){
+        if(this.GoldCount == null){
+            let goldStr = cc.sys.localStorage.getItem(LDKey.KEY_GoldCount);
+            if(goldStr == "" || isNaN(goldStr) == true || goldStr == null || goldStr == undefined){   //第一次进入游戏
+                this.GoldCount = 0;
+                this.updateUserGold(200, true);
+            }else{
+                this.GoldCount = parseInt(goldStr);
+            }
+        }
+        return this.GoldCount;
+    }
+
+
+    //************************* 以下为一些UI通用接口 ************************* */
 
     /**显示子层 */
     showLayer(prefab: cc.Prefab, parent: cc.Node = null){
