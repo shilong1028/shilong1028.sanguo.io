@@ -12,6 +12,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 class GameManager {
 
+    curTaskConf: st_story_info = null;   //当前任务配置
+
     /**显示子层 */
     showLayer(prefab: cc.Prefab, parent: cc.Node = null){
         let layer = cc.instantiate(prefab);
@@ -148,7 +150,7 @@ class GameManager {
         if(storyConf.type == 1){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
         }else if(storyConf.type == 3){
-             
+            MyUserMgr.updateTaskState(MyUserData.TaskId, 1); 
         }
     }
 

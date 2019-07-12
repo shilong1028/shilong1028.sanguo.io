@@ -5,6 +5,8 @@ import StoryLayer from "./storyLayer";
 import { NoticeMgr } from "../manager/NoticeManager";
 import { NoticeType, ItemInfo } from "../manager/Enum";
 import RewardLayer from "../common/rewardLayer";
+import { ROOT_NODE } from "../common/rootNode";
+import GeneralJoin from "../views/generalJoin";
 
 
 //任务信息
@@ -27,6 +29,9 @@ export default class Task extends cc.Component {
 
     @property(cc.Prefab)
     pfStoryLayer: cc.Prefab = null; 
+
+    @property(cc.Prefab)
+    pfGenJoin: cc.Prefab = null;   //武将来投
 
     // LIFE-CYCLE CALLBACKS:
     taskConf: st_story_info = null;   //剧情配置
@@ -54,9 +59,16 @@ export default class Task extends cc.Component {
     }
 
     onRewardBtn(){
-        let layer = GameMgr.showRewardLayer(null, this.handleReceiveReward, this);
-        let rewardArr = GameMgr.getItemArrByKeyVal(this.taskConf.reward);   //通过配置keyVal数据砖块道具列表
-        layer.getComponent(RewardLayer).showRewardList(rewardArr);
+        if(this.taskConf.generals && this.taskConf.generals.length > 0){    //武将来投
+            let layer = GameMgr.showLayer(this.pfGenJoin);
+            layer.getComponent(GeneralJoin).initGeneralIds(this.taskConf.generals);
+
+            //MyUserMgr.updateTaskState(MyUserData.TaskId, 2);   //修改用户任务 0未完成，1完成未领取，2已领取 
+        }else{
+            let layer = GameMgr.showRewardLayer(null, this.handleReceiveReward, this);
+            let rewardArr = GameMgr.getItemArrByKeyVal(this.taskConf.rewards);   //通过配置keyVal数据砖块道具列表
+            layer.getComponent(RewardLayer).showRewardList(rewardArr);
+        }
     }
 
     //领取奖励回调
@@ -70,9 +82,12 @@ export default class Task extends cc.Component {
 
     /**初始化主线任务 */
     initMainStory(){
+        GameMgr.curTaskConf = null;  //当前任务配置
         if(MyUserData.TaskId > 0){
             this.taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
             if(this.taskConf){
+                GameMgr.curTaskConf = this.taskConf;  //当前任务配置
+
                 this.taskTitle.string = this.taskConf.name;
                 this.taskDesc.string = this.taskConf.desc;
 
@@ -82,6 +97,8 @@ export default class Task extends cc.Component {
                 }else{
                     this.detailNode.active = true;
                     this.rewardNode.active = false;
+
+                    ROOT_NODE.showTipsText("任务更新 "+this.taskConf.name);
                 }
             }
         }

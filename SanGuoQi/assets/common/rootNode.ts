@@ -10,6 +10,9 @@ export default class RootNode extends cc.Component {
     pfItem: cc.Prefab = null;   //背包道具通用显示
 
     @property(cc.Prefab)
+    pfCard: cc.Prefab =  null;   //武将卡牌
+
+    @property(cc.Prefab)
     pfMoney: cc.Prefab = null;   //一级界面上的金币钻石粮草公用控件
 
     @property(cc.Prefab)
@@ -73,28 +76,27 @@ export default class RootNode extends cc.Component {
     /**显示提示文本 */
     showTipsText(tipStr: string){
         this.tipsArr.push(tipStr);
-        if(this.tipsStep == 0){
+
+        if(this.tipsArr.length == 1 && this.tipsStep == 0){
             this.createTipsText();  //创建并提示文本
         }
     }
     //创建并提示文本
     createTipsText(){
-        if(this.tipsArr.length == 0){
-            return;
-        }
-
-        if(this.tipsArr.length > 1){
-            this.tipsStep = 10;
-        }else{
+        if(this.tipsArr.length <= 0){
             this.tipsStep = 0;
-        }
-        let tipStr = this.tipsArr.shift();
+            return;
+        }else{
+            this.tipsStep = 20;
 
-        let tips = cc.instantiate(this.pfTipsDialog);
-        tips.y = 700;
-        tips.x = cc.winSize.width/2;
-        cc.director.getScene().addChild(tips);
-        tips.getComponent(TipsText).initTipsText(tipStr);
+            let tipStr = this.tipsArr.shift();
+
+            let tips = cc.instantiate(this.pfTipsDialog);
+            tips.y = 700;
+            tips.x = cc.winSize.width/2;
+            cc.director.getScene().addChild(tips);
+            tips.getComponent(TipsText).initTipsText(tipStr);
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 
 import { CardInfo } from "../manager/Enum";
+import { st_general_info } from "../manager/ConfigManager";
 
 //卡牌节点
 const {ccclass, property} = cc._decorator;
@@ -47,12 +48,14 @@ export default class Card extends cc.Component {
     onLoad () {
         this.cardSpr.node.opacity = 0;
         this.campSpr.node.opacity = 0;
+        this.bingSpr.node.opacity = 0;
+
         this.hpProgressBar.progress = 0;
         this.mpProgressBar.progress = 0;
         this.atkProgressBar.progress = 0;
         this.defProgressBar.progress = 0;
+
         this.nameLable.string = "";
-        this.bingSpr.node.opacity = 0;
     }
 
     onDestroy(){
@@ -95,6 +98,25 @@ export default class Card extends cc.Component {
         this.atkProgressBar.progress = this.cardInfo.cardCfg.atk/100;
         this.defProgressBar.progress = this.cardInfo.cardCfg.def/100;
 
+    }
+
+    /**显示武将头像信息 */
+    showGeneralCard(cardCfg: st_general_info){
+        cc.log("showGeneralCard(), cardCfg = "+JSON.stringify(cardCfg));
+        this.nameLable.node.color = cc.color(255, 0, 255);
+        this.nameLable.string = cardCfg.name;
+
+        this.cardSpr.spriteFrame = this.cardAtlas.getSpriteFrame(cardCfg.id_str);
+        this.cardSpr.node.opacity = 255;
+
+        let nType = cardCfg.bingzhong - 400;
+        this.bingSpr.spriteFrame = this.bingSprFrames[nType-1];
+        this.bingSpr.node.opacity = 255;
+
+        this.hpProgressBar.progress = cardCfg.hp/1000;
+        this.mpProgressBar.progress = cardCfg.mp/100;
+        this.atkProgressBar.progress = cardCfg.atk/100;
+        this.defProgressBar.progress = cardCfg.def/100;
     }
 
 

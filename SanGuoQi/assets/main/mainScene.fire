@@ -130,6 +130,9 @@
     "pfItem": {
       "__uuid__": "a0ca7b10-91ab-4a41-8fa3-c8b880cebabb"
     },
+    "pfCard": {
+      "__uuid__": "7945de08-b7f2-4a8b-af81-5e218970dadf"
+    },
     "pfMoney": {
       "__uuid__": "474ce99b-04a7-41bd-a4be-2a34ef539a63"
     },

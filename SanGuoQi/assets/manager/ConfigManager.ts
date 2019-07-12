@@ -16,14 +16,14 @@ export class st_battle_info{
     name;     //战斗名称
     tower;    //营寨数量，补充血量
     town;     //箭楼数量，提高攻击力
-    solider;   //敌方士兵编队  401-2;402-2;403-2
-    general;   //敌方部曲 1004;6001;6002;7001;7002;8001;8002
+    soliders;   //敌方士兵编队  401-2;402-2;403-2
+    generals;   //敌方部曲 1004;6001;6002;7001;7002;8001;8002
     
     transType(){
         this.tower = parseInt(this.tower);
         this.town = parseInt(this.town);
-        this.solider = CfgMgr.getKeyValAry(this.solider);
-        this.general = CfgMgr.getIntAry(this.general, ";");
+        this.soliders = CfgMgr.getKeyValAry(this.soliders);
+        this.generals = CfgMgr.getIntAry(this.generals, ";");
     }
 }
 
@@ -99,16 +99,18 @@ export class st_story_info{
     name;   //名称
     vedio;   //视频名称 
     battle;   //战斗ID 
-    reward;   //奖励 id-val;id-val
-    talk;   //对话 104;105
+    rewards;   //奖励 id-val;id-val
+    generals;   //武将来投，此时不会有reward奖励
+    talks;   //对话 104;105
     desc;   //剧情简介
     
     transType(){
         this.type = parseInt(this.type);
         this.targetCity = parseInt(this.targetCity);
         this.battle = parseInt(this.battle);
-        this.reward = CfgMgr.getKeyValAry(this.reward, ";");   //[{"key":ss[0], "val":parseInt(ss[1])}]
-        this.talk = CfgMgr.getIntAry(this.talk, ";");
+        this.rewards = CfgMgr.getKeyValAry(this.rewards, ";");   //[{"key":ss[0], "val":parseInt(ss[1])}]
+        this.generals = CfgMgr.getIntAry(this.generals, ";");
+        this.talks = CfgMgr.getIntAry(this.talks, ";");
     }
 }
 
@@ -117,14 +119,11 @@ export class st_talk_info{
     desc;   //对话内容
     city;   //目标城池
     type;   //对话类型 type 故事类型，0默认（摇旗）1起义暴乱（火） 2 战斗（双刀）
-    general;   //武将来投 
-    reward;   //奖励物品 id-val;id-val 
+    
     
     transType(){
         this.city = parseInt(this.city);
         this.type = parseInt(this.type);
-        this.general = CfgMgr.getIntAry(this.general, ";");
-        this.reward = CfgMgr.getKeyValAry(this.reward, ";");
     }
 }
 
@@ -183,6 +182,15 @@ class CfgManager_class {
     /**获取道具配置数据 */
     getItemConf(itemId: number): st_item_info{
         return this.C_item_info[itemId];
+    }
+
+    /**获取武将配置数据 */
+    getGeneralConf(generalId: number): st_general_info{
+        let obj = this.C_general_info[generalId];
+        if(obj){
+            obj.id_str = generalId;
+        }
+        return obj;
     }
 
     //*************************************  以下为读取配置接口 *********************************** */

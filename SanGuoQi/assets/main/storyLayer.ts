@@ -56,7 +56,7 @@ export default class StoryLayer extends cc.Component {
                 this.talkLabel.string = this.curTalkConf.desc;
                 this.bUpdateStr = false;
 
-                if(this.curTalkIdx == this.taskConf.talk.length-1){
+                if(this.curTalkIdx == this.taskConf.talks.length-1){
                     if(this.bVedioPlayedOver == true){
                         this.skipNode.active = true;
                     }
@@ -96,14 +96,14 @@ export default class StoryLayer extends cc.Component {
             this.curTalkConf = null;
             this.curTalkStrIdx = 0;
             
-            if(this.curTalkIdx < this.taskConf.talk.length){
-                if(this.curTalkIdx == this.taskConf.talk.length-1){
+            if(this.curTalkIdx < this.taskConf.talks.length){
+                if(this.curTalkIdx == this.taskConf.talks.length-1){
                     this.skipLabel.string = "结束";
                 }else{
                     this.skipLabel.string = "继续";
                 }
 
-                let talkId = this.taskConf.talk[this.curTalkIdx];
+                let talkId = this.taskConf.talks[this.curTalkIdx];
                 this.curTalkConf = CfgMgr.getTalkConf(talkId);
                 //cc.log("this.curTalkConf = "+JSON.stringify(this.curTalkConf));
                 this.bUpdateStr = true;
@@ -128,11 +128,13 @@ export default class StoryLayer extends cc.Component {
 
     onSkipBtn(){
         this.skipNode.active = false;
-        if(this.curTalkConf && this.curTalkIdx < this.taskConf.talk.length-1){
+        if(this.curTalkConf && this.curTalkIdx < this.taskConf.talks.length-1){
             this.setTalkStr();   //设置话本内容
         }else{
-            GameMgr.handleStoryShowOver(this.taskConf);
-            
+            if(this.taskConf.type == 1){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+                GameMgr.handleStoryShowOver(this.taskConf);   //任务宣读(第一阶段）完毕处理
+            }
+
             this.node.removeFromParent(true);
         }
     }
@@ -141,7 +143,7 @@ export default class StoryLayer extends cc.Component {
         cc.log("onVideoPlayerEvent(), event = "+event);
         if (event === cc.VideoPlayer.EventType.COMPLETED) {
             this.bVedioPlayedOver = true;
-            if(this.curTalkIdx == this.taskConf.talk.length-1 && this.curTalkStrIdx >= this.curTalkConf.desc.length){
+            if(this.curTalkIdx == this.taskConf.talks.length-1 && this.curTalkStrIdx >= this.curTalkConf.desc.length){
                 this.skipNode.active = true;
             }
 

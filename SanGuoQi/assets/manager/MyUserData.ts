@@ -37,6 +37,8 @@ class MyUserManager {
 
         MyUserData.ItemList = new Array();   //背包物品列表
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
+
+        this.initUserData();
     }
 
     /**初始化用户信息 */
@@ -149,6 +151,9 @@ class MyUserManager {
 
     /**修改用户任务 0未完成，1完成未领取，2已领取 */
     updateTaskState(taskId: number, state: number, bSave: boolean = true){
+        if(MyUserData.TaskId == taskId && MyUserData.TaskState == state){
+            return;
+        }
         MyUserData.TaskId = taskId;
         MyUserData.TaskState = state;
 
