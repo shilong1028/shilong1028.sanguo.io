@@ -3,6 +3,7 @@ import RewardLayer from "../common/rewardLayer";
 import { ItemInfo } from "./Enum";
 import { MyUserMgr, MyUserData } from "./MyUserData";
 import { st_story_info } from "./ConfigManager";
+import MainScene from "../main/mainScene";
 
 
 //游戏菜单管理器
@@ -12,6 +13,16 @@ const {ccclass, property} = cc._decorator;
 class GameManager {
 
     curTaskConf: st_story_info = null;   //当前任务配置
+
+    /**获取主场景 */
+    getMainScene(): MainScene {
+        let mainScene: MainScene = null;
+        let layer = cc.director.getScene().getChildByName("Canvas");
+        if (layer != null) {
+            mainScene = layer.getComponent(MainScene);
+        }
+        return mainScene;
+    }
 
     /**显示子层 */
     showLayer(prefab: cc.Prefab, parent: cc.Node = null){

@@ -104,8 +104,6 @@ export default class FightScene extends cc.Component {
 
     /**卡牌初始化 */
     createDefaultCards(){
-        FightMgr.clearFightData();
-
         this.showCampDesc();
         this.showRoundDesc();
 

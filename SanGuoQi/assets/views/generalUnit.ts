@@ -77,7 +77,7 @@ export default class GeneralUnit extends cc.Component {
     //刷新武将列表
     initGeneralList(){
         this.tableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
-        this.tableView.initTableView(MyUserData.GeneralList.length, { array: MyUserData.GeneralList, target: this }); 
+        this.tableView.initTableView(MyUserData.GeneralList.length, { array: MyUserData.GeneralList, target: this, bClick: true}); 
         this.handleGeneralCellClick(0);   //点击武将
     }
 

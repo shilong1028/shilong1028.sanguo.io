@@ -31,6 +31,8 @@ export class GeneralInfo{
     generalId: number = 0;  
     generalCfg: st_general_info = null;   //卡牌配置信息
 
+    bReadyFight: boolean = false;   //准备出战（临时数据不用保存）
+
     //注意以下数据需要重新重新赋值
     generalLv: number = 1;   //武将等级
     bingCount: number = 0;   //部曲士兵数量
@@ -45,6 +47,7 @@ export class GeneralInfo{
             this.generalLv = 1;
             this.bingCount = 0;
         }
+        this.bReadyFight = false;
         this.generalId = generalId;
         this.generalCfg = CfgMgr.getGeneralConf(generalId);
     }

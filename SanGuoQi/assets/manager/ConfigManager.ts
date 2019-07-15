@@ -16,14 +16,14 @@ export class st_battle_info{
     name;     //战斗名称
     tower;    //营寨数量，补充血量
     town;     //箭楼数量，提高攻击力
-    soliders;   //敌方士兵编队  401-2;402-2;403-2
-    generals;   //敌方部曲 1004;6001;6002;7001;7002;8001;8002
+    soliders;   //敌方士兵编队-千人数量  401-2;402-2;403-2
+    generals;   //敌方部曲（武将ID-等级） 1004-1;6001-3
     
     transType(){
         this.tower = parseInt(this.tower);
         this.town = parseInt(this.town);
-        this.soliders = CfgMgr.getKeyValAry(this.soliders);
-        this.generals = CfgMgr.getIntAry(this.generals, ";");
+        this.soliders = CfgMgr.getKeyValAry(this.soliders, ";");
+        this.generals = CfgMgr.getKeyValAry(this.generals, ";");   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
     }
 }
 
@@ -99,7 +99,7 @@ export class st_story_info{
     targetCity;   //目标城池
     name;   //名称
     vedio;   //视频名称 
-    battle;   //战斗ID 
+    battleId;   //战斗ID 
     rewards;   //奖励 id-val;id-val
     generals;   //武将来投，此时不会有reward奖励
     talks;   //对话 104;105
@@ -108,7 +108,7 @@ export class st_story_info{
     transType(){
         this.type = parseInt(this.type);
         this.targetCity = parseInt(this.targetCity);
-        this.battle = parseInt(this.battle);
+        this.battleId = parseInt(this.battleId);
         this.rewards = CfgMgr.getKeyValAry(this.rewards, ";");   //[{"key":ss[0], "val":parseInt(ss[1])}]
         this.generals = CfgMgr.getIntAry(this.generals, ";");
         this.talks = CfgMgr.getIntAry(this.talks, ";");
@@ -188,6 +188,11 @@ class CfgManager_class {
     /**获取武将配置数据 */
     getGeneralConf(generalId: number): st_general_info{
         return this.C_general_info[generalId];
+    }
+
+    /**获取战场数据 */
+    getBattleConf(battleId: number): st_battle_info{
+        return this.C_battle_info[battleId];
     }
 
     //*************************************  以下为读取配置接口 *********************************** */

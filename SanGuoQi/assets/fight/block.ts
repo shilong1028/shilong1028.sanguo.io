@@ -73,10 +73,6 @@ export default class Block extends cc.Component {
             this.showBlockCard(this.cardInfo);
     
             if(FightMgr.bMyRound == true){
-                if(FightMgr.myCampId == 0){
-                    FightMgr.myCampId = this.cardInfo.campId;
-                    FightMgr.getFightScene().showCampDesc();
-                }
                 FightMgr.handleEnemyRoundOpt();   //敌方回合处理
             }else{
                 FightMgr.handleMyRoundOpt();   //我方回合处理

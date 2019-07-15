@@ -2,6 +2,8 @@ import { NoticeMgr } from "../manager/NoticeManager";
 import { NoticeType } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserData, MyUserMgr } from "../manager/MyUserData";
+import { st_story_info } from "../manager/ConfigManager";
+import FightReady from "../views/fightReady";
 
 //全国地图场景
 const {ccclass, property} = cc._decorator;
@@ -32,6 +34,8 @@ export default class MainScene extends cc.Component {
     pfRecruit: cc.Prefab = null;  //招募界面
     @property(cc.Prefab)
     pfUnit: cc.Prefab = null;   //武将部曲界面
+    @property(cc.Prefab)
+    pfFightReady: cc.Prefab = null;   //武将出战界面
 
     @property(cc.SpriteAtlas)
     cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
@@ -168,6 +172,14 @@ export default class MainScene extends cc.Component {
 
     touchEnd(event: cc.Touch){
         this.touchBeginPos = null;
+    }
+
+    /**任务战斗准备 */
+    openFightByTask(taskConf: st_story_info){
+        if(taskConf.type == 5 && taskConf.battleId > 0){  //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+            let layer = GameMgr.showLayer(this.pfFightReady);
+            layer.getComponent(FightReady).initBattleInfo(taskConf.battleId);
+        }
     }
 
     onHomeBtn(){

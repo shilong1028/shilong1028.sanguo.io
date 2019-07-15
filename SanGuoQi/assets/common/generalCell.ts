@@ -16,22 +16,28 @@ export default class GeneralCell extends viewCell {
 
     cellData : GeneralInfo = null;  
     cellIdx : number = -1;  
+
     targetSc: any = null;
+    bClick: boolean = false;
 
 
     //加载需要初始化数据时调用
     init (index, data, reload, group) {
-        if (index >= data.array.length) {   //{ array: list, target: x.js }
+        if (index >= data.array.length) {   //{ array: list, target: x.js , bClick: true}
             //不显示
             this.cellData = null;  
             this.node.active = false;
             return;
         }
 
+        this.selBg.active = false;
+
         this.onSelected(this._selectState);
 
         //if(reload){
             this.targetSc = data.target;
+            this.bClick = data.bClick;
+            
             this.cellIdx = index;  
             this.cellData = data.array[this.cellIdx];
             this.node.active = true;
@@ -43,11 +49,10 @@ export default class GeneralCell extends viewCell {
             this.cardSc = itemNode.getComponent(Card);
         }
         this.cardSc.showGeneralCard(this.cellData);
-
     }
 
     onSelected(bSel){
-        if(this.selBg){
+        if(this.bClick == true && this.selBg){
             if(bSel){
                 this.selBg.active = true;
 

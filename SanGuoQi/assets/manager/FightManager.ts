@@ -1,13 +1,13 @@
 import FightScene from "../fight/fightScene";
 
-import { CardInfo } from "./Enum";
+import { CardInfo, GeneralInfo } from "./Enum";
 import { CfgMgr, st_general_info } from "./ConfigManager";
 
 //战斗管理器
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-class FightManager {
+class FightManager { 
     campCount_blue: number = 0;
     campCount_red: number = 0;
     randomGeneralArr: CardInfo[] = new Array();
@@ -15,19 +15,20 @@ class FightManager {
     cardsCol: number = 4;    //行 Row 列 Column
     cardsRow: number = 5;
 
-    myCampId: number = 0;   //阵营，0默认，1蓝方，2红方
+    myCampId: number = 1;   //阵营，0默认，1蓝方，2红方
     bStopTouch: boolean = false;   //是否停止触摸反应
     bMyRound: boolean = true;  //是否我方回合
 
     FightWin: boolean = false;  //战斗胜利或失败
     EnemyAutoAi: boolean = true;  //敌方自动AI
 
-    clearFightData(){
+    /**清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组 */
+    clearAndInitFightData(enemyArr:GeneralInfo[], generalArr: GeneralInfo[]){
         this.campCount_blue = 0;
         this.campCount_red = 0;
         this.randomGeneralArr = new Array();
     
-        this.myCampId = 0;   //阵营，0默认，1蓝方，2红方
+        this.myCampId = 1;   //阵营，0默认，1蓝方，2红方
         this.bStopTouch = false;   //是否停止触摸反应
         this.bMyRound = true;  //是否我方回合
 
