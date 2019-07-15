@@ -76,7 +76,7 @@ export default class RecruitCell extends viewCell {
     }
 
     onRecruitBtn(){
-        cc.log("招募, this.cellData = "+JSON.stringify(this.cellData));
+        //cc.log("招募, this.cellData = "+JSON.stringify(this.cellData));
         if(MyUserData.GoldCount >= this.cellData.itemCfg.cost){
             MyUserMgr.updateUserGold(-this.cellData.itemCfg.cost, false);  //修改用户金币
             MyUserMgr.updateItemList(this.cellData, true);   //修改用户背包物品列表

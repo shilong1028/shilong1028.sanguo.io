@@ -34,6 +34,12 @@ export default class Card extends cc.Component {
     @property(cc.Label)
     nameLable: cc.Label = null;
 
+    @property(cc.Label)
+    lvLabel: cc.Label = null;   //武将等级
+
+    @property(cc.Label)
+    bingNumLabel: cc.Label = null;  //兵力
+
     @property(cc.Sprite)
     bingSpr: cc.Sprite = null;   //兵种 401骑兵402步兵403弓兵
 
@@ -55,6 +61,8 @@ export default class Card extends cc.Component {
         this.defProgressBar.progress = 0;
 
         this.nameLable.string = "";
+        this.lvLabel.string = "Lv1";
+        this.bingNumLabel.string = "";
     }
 
     onDestroy(){
@@ -101,7 +109,7 @@ export default class Card extends cc.Component {
 
     /**显示武将头像信息 */
     showGeneralCard(info: GeneralInfo){
-        cc.log("showGeneralCard(), info = "+JSON.stringify(info));
+        //cc.log("showGeneralCard(), info = "+JSON.stringify(info));
         this.nameLable.node.color = cc.color(255, 0, 255);
         this.nameLable.string = info.generalCfg.name;
 
@@ -116,6 +124,9 @@ export default class Card extends cc.Component {
         this.mpProgressBar.progress = info.generalCfg.mp/100;
         this.atkProgressBar.progress = info.generalCfg.atk/100;
         this.defProgressBar.progress = info.generalCfg.def/100;
+
+        this.lvLabel.string = "Lv"+info.generalLv;
+        this.bingNumLabel.string = info.bingCount.toString();
     }
 
 

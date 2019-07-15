@@ -28,16 +28,23 @@ export class ItemInfo{
 //武将信息
 export class GeneralInfo{
     timeId: number = 0;   //武将的时间ID，玩家武将唯一编号
-    generalLv: number = 1;   //武将等级
-    bingCount: number = 0;   //部曲士兵数量
-    
     generalId: number = 0;  
     generalCfg: st_general_info = null;   //卡牌配置信息
 
-    constructor(generalId:number){
+    //注意以下数据需要重新重新赋值
+    generalLv: number = 1;   //武将等级
+    bingCount: number = 0;   //部曲士兵数量
+
+
+    constructor(generalId:number, info:any=null){
         this.timeId = new Date().getTime();
-        this.generalLv = 1;
-        this.bingCount = 0;
+        if(info){
+            this.generalLv = info.generalLv;
+            this.bingCount = info.bingCount;
+        }else{
+            this.generalLv = 1;
+            this.bingCount = 0;
+        }
         this.generalId = generalId;
         this.generalCfg = CfgMgr.getGeneralConf(generalId);
     }

@@ -37,7 +37,7 @@ export default class GeneralJoin extends cc.Component {
     }
 
     initGeneralIds(idArr: number[]){
-        cc.log("initGeneralIds(), idArr = "+JSON.stringify(idArr));
+        //cc.log("initGeneralIds(), idArr = "+JSON.stringify(idArr));
         let nameStr = ""
         for(let i=0; i<idArr.length; ++i){
             let info = new GeneralInfo(idArr[i]);

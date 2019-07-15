@@ -1,9 +1,11 @@
 
 import TableView from "../tableView/tableView";
-import { GeneralInfo, ItemInfo } from "../manager/Enum";
+import { GeneralInfo, ItemInfo, NoticeType } from "../manager/Enum";
 import { MyUserMgr, MyUserData } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
 import Item from "../common/item";
+import { GameMgr } from "../manager/GameManager";
+import { NoticeMgr } from "../manager/NoticeManager";
 
 //武将来投
 const {ccclass, property} = cc._decorator;
@@ -40,6 +42,8 @@ export default class GeneralUnit extends cc.Component {
 
 
     onLoad () {
+        NoticeMgr.on(NoticeType.UpdateGeneral, this.handleUpdateGeneral, this);   //更新单个武将
+
         this.clearShowInfo();
 
         ROOT_NODE.showLayerMoney(this.node, cc.v2(0, 385));    //一级界面上的金币钻石粮草公用控件
@@ -49,7 +53,7 @@ export default class GeneralUnit extends cc.Component {
 
     onDestroy(){
         //this.node.targetOff(this);
-        //NoticeMgr.offAll(this);
+        NoticeMgr.offAll(this);
     }
 
     start () {
@@ -70,16 +74,27 @@ export default class GeneralUnit extends cc.Component {
         this.buyBtn.interactable = false;
     }
 
+    //刷新武将列表
     initGeneralList(){
         this.tableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
         this.tableView.initTableView(MyUserData.GeneralList.length, { array: MyUserData.GeneralList, target: this }); 
         this.handleGeneralCellClick(0);   //点击武将
     }
 
+    //单个武将数据更新
+    handleUpdateGeneral(info: GeneralInfo){
+        //cc.log("handleUpdateGeneral(), 单个武将数据更新, info = "+JSON.stringify(info));
+
+        this.selCellIdx = -1;
+        this.tableView.clear();
+        this.initGeneralList();  //刷新武将列表
+
+        this.bBuying = false;  //正在购买中
+    }
+
     /**点击武将 */
-    handleGeneralCellClick(clickIdx: number){
-        cc.log("handleGeneralCellClick(), clickIdx = "+clickIdx);
-        if(this.selCellIdx == clickIdx){
+    handleGeneralCellClick(clickIdx: number, bUpdate:boolean=false){
+        if(bUpdate == false && this.selCellIdx == clickIdx){
             return;
         }
         this.selCellIdx = clickIdx;   //选中的Cell索引
@@ -121,9 +136,7 @@ export default class GeneralUnit extends cc.Component {
         if(this.selBingItem.count > 0){  //选中武将对应的士兵道具信息
             MyUserMgr.updateItemByCount(this.selBingItem.itemId, -1, true);  //修改用户背包物品列表
 
-            let selGeneralInfo: GeneralInfo = MyUserData.GeneralList[this.selCellIdx];
-            selGeneralInfo.updateBingCount(1000);
-            MyUserMgr.updateGeneralList(selGeneralInfo, true);   //修改用户武将列表
+            this.updateGeneralBingCount();   //更新武将部曲士兵数量
         }
     }
 
@@ -136,9 +149,18 @@ export default class GeneralUnit extends cc.Component {
         if(MyUserData.DiamondCount >= cost){  //选中武将对应的士兵道具信息
             MyUserMgr.updateUserDiamond(-cost, true);  //修改用户背包物品列表
 
-            let selGeneralInfo: GeneralInfo = MyUserData.GeneralList[this.selCellIdx];
-            selGeneralInfo.updateBingCount(1000);
-            MyUserMgr.updateGeneralList(selGeneralInfo, true);   //修改用户武将列表
+            this.updateGeneralBingCount();   //更新武将部曲士兵数量
+        }
+    }
+
+    //更新武将部曲士兵数量
+    updateGeneralBingCount(){
+        let selGeneralInfo: GeneralInfo = MyUserData.GeneralList[this.selCellIdx];
+        selGeneralInfo.updateBingCount(1000);
+        MyUserMgr.updateGeneralList(selGeneralInfo, true);   //修改用户武将列表
+
+        if(GameMgr.curTaskConf.type == 4){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+            GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
         }
     }
 }

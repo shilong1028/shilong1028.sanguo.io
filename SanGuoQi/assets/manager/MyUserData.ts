@@ -153,24 +153,18 @@ class MyUserManager {
 
     /**修改用户武将列表 */
     updateGeneralList(general: GeneralInfo, bSave: boolean = true){
-        let bUpdateList: boolean = false;
+        //cc.log("updateGeneralList(), general = "+JSON.stringify(general));
         for(let i=0; i<MyUserData.GeneralList.length; ++i){
             let info: GeneralInfo = MyUserData.GeneralList[i];
             if(general.timeId == info.timeId){
                 MyUserData.GeneralList[i] = general;
-                bUpdateList = true;
                 NoticeMgr.emit(NoticeType.UpdateGeneral, general);  //更新单个武将
+
+                if(bSave){
+                    this.saveGeneralList();
+                }
                 break;
             }
-        }
-
-        if(bUpdateList == false){
-            MyUserData.GeneralList.push(general);
-            NoticeMgr.emit(NoticeType.UpdateGeneral, general);  //更新单个武将
-        }
-
-        if(bSave){
-            this.saveGeneralList();
         }
     }
     /**添加武将到列表 */
@@ -197,7 +191,7 @@ class MyUserManager {
         let tempList = new Array();
         if(GeneralList){
             for(let i=0; i<GeneralList.length; ++i){
-                let tempItem = new GeneralInfo(GeneralList[i].generalId);
+                let tempItem = new GeneralInfo(GeneralList[i].generalId, GeneralList[i]);
                 tempList.push(tempItem);
             }
         }

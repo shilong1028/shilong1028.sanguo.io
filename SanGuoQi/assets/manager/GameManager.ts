@@ -150,6 +150,8 @@ class GameManager {
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
         }else if(storyConf.type == 3){
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1); 
+        }else if(storyConf.type == 4){
+            MyUserMgr.updateTaskState(MyUserData.TaskId, 1); 
         }
     }
 

@@ -541,7 +541,7 @@
       "__id__": 1
     },
     "component": "",
-    "_componentId": "d30d7MKLYVNGbdz4x4zMAj+",
+    "_componentId": "02e0atyeoNIc5rlJu0YVuAc",
     "handler": "onCloseBtn",
     "customEventData": ""
   },
@@ -2321,8 +2321,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 500,
-      "height": 80
+      "width": 530,
+      "height": 70
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2366,8 +2366,8 @@
     "_useOriginalSize": false,
     "_string": "荀彧、荀攸、乐进、李典、于禁等将军前来投靠。",
     "_N$string": "荀彧、荀攸、乐进、李典、于禁等将军前来投靠。",
-    "_fontSize": 30,
-    "_lineHeight": 40,
+    "_fontSize": 28,
+    "_lineHeight": 35,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
