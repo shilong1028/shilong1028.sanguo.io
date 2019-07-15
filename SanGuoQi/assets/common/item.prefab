@@ -52,8 +52,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 75,
-      "height": 75
+      "width": 150,
+      "height": 150
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -117,8 +117,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 75,
-      "height": 75
+      "width": 150,
+      "height": 150
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -300,8 +300,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 80
+      "width": 160,
+      "height": 160
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -419,8 +419,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
+      "x": 2,
+      "y": 2,
       "z": 1
     },
     "_rotationX": 0,
@@ -506,8 +506,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 72,
-      "height": 23
+      "width": 120,
+      "height": 40
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -517,7 +517,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -25,
+      "y": -50,
       "z": 0
     },
     "_scale": {
@@ -551,8 +551,8 @@
     "_useOriginalSize": false,
     "_string": "道具名称",
     "_N$string": "道具名称",
-    "_fontSize": 18,
-    "_lineHeight": 23,
+    "_fontSize": 30,
+    "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -604,8 +604,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 32.25,
-      "height": 25
+      "width": 48.37,
+      "height": 40
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -614,8 +614,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 35,
-      "y": 20,
+      "x": 65,
+      "y": 50,
       "z": 0
     },
     "_scale": {
@@ -649,8 +649,8 @@
     "_useOriginalSize": false,
     "_string": "x99",
     "_N$string": "x99",
-    "_fontSize": 20,
-    "_lineHeight": 25,
+    "_fontSize": 30,
+    "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,

@@ -30,6 +30,8 @@ export default class MainScene extends cc.Component {
     pfBag: cc.Prefab = null;   //背包界面
     @property(cc.Prefab)
     pfRecruit: cc.Prefab = null;  //招募界面
+    @property(cc.Prefab)
+    pfUnit: cc.Prefab = null;   //武将部曲界面
 
     @property(cc.SpriteAtlas)
     cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
@@ -215,7 +217,7 @@ export default class MainScene extends cc.Component {
     }
 
     onGeneralBtn(){
-
+        GameMgr.showLayer(this.pfUnit);   //武将部曲
     }
 
 }

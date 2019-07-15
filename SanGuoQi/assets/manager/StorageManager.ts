@@ -93,5 +93,6 @@ export const LDKey = {
     KEY_FoodCount: "KEY_FoodCount",   //粮食数量
     KEY_StoryData : "KEY_StoryData",  //当前进行的剧情故事  {key=id, val=state}  0未完成，1完成未领取，2已领取
     KEY_ItemList: "KEY_ItemList",     //背包道具列表
+    KEY_GeneralList: "KEY_GeneralList",     //武将列表
 
 }

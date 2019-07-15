@@ -63,7 +63,7 @@ export default class Task extends cc.Component {
             let layer = GameMgr.showLayer(this.pfGenJoin);
             layer.getComponent(GeneralJoin).initGeneralIds(this.taskConf.generals);
 
-            //MyUserMgr.updateTaskState(MyUserData.TaskId, 2);   //修改用户任务 0未完成，1完成未领取，2已领取 
+            MyUserMgr.updateTaskState(MyUserData.TaskId, 2);   //修改用户任务 0未完成，1完成未领取，2已领取 
         }else{
             let layer = GameMgr.showRewardLayer(null, this.handleReceiveReward, this);
             let rewardArr = GameMgr.getItemArrByKeyVal(this.taskConf.rewards);   //通过配置keyVal数据砖块道具列表

@@ -1,6 +1,7 @@
 
 import TableView from "../tableView/tableView";
-import { st_general_info, CfgMgr } from "../manager/ConfigManager";
+import { GeneralInfo } from "../manager/Enum";
+import { MyUserMgr } from "../manager/MyUserData";
 
 //武将来投
 const {ccclass, property} = cc._decorator;
@@ -16,7 +17,7 @@ export default class GeneralJoin extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    cellArr: st_general_info[] = new Array();
+    cellArr: GeneralInfo[] = new Array();
 
     onLoad () {
     }
@@ -39,11 +40,15 @@ export default class GeneralJoin extends cc.Component {
         cc.log("initGeneralIds(), idArr = "+JSON.stringify(idArr));
         let nameStr = ""
         for(let i=0; i<idArr.length; ++i){
-            let cardCfg = CfgMgr.getGeneralConf(idArr[i]);
-            this.cellArr.push(cardCfg);
-            nameStr += cardCfg.name;
+            let info = new GeneralInfo(idArr[i]);
+            this.cellArr.push(info);
+
+            nameStr += info.generalCfg.name;
             if(i < idArr.length-1){
                 nameStr +="、";
+                MyUserMgr.addGeneralToList(info, false);   //添加武将到列表
+            }else{
+                MyUserMgr.addGeneralToList(info, true);
             }
         }
         nameStr +="武将来投";

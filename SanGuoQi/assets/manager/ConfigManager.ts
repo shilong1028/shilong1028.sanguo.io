@@ -57,6 +57,7 @@ export class st_general_info {
     mp;    //智力
     atk;  //攻击
     def;   //防御
+    desc;
     
     transType(){
         this.bingzhong = parseInt(this.bingzhong);
@@ -186,11 +187,7 @@ class CfgManager_class {
 
     /**获取武将配置数据 */
     getGeneralConf(generalId: number): st_general_info{
-        let obj = this.C_general_info[generalId];
-        if(obj){
-            obj.id_str = generalId;
-        }
-        return obj;
+        return this.C_general_info[generalId];
     }
 
     //*************************************  以下为读取配置接口 *********************************** */
@@ -238,7 +235,7 @@ class CfgManager_class {
             let sc = data["S" + name];
             
             if (typeof str != "string") {
-                cc.error("load config " + name + "error!");
+                cc.error("load config " + name + " error!");
             } else {
 
                 let sList;
@@ -287,7 +284,7 @@ class CfgManager_class {
                 }
 
                 self[name] = retObj;
-                cc.log("load config " + name + "finsih! length:" + str.length);
+                cc.log("load config " + name + " finsih! length:" + str.length);
             }
         }
 

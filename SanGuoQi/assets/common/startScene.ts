@@ -17,11 +17,8 @@ export default class StartScene extends cc.Component {
     }
 
     start () {
-
-        MyUserMgr.initUserData();    //初始化用户信息
-
-
         CfgMgr.setOverCallback(this.handleLoadConfigOver, this);  //设置加载配置完毕回调
+
         CfgMgr.loadAllConfig();   //加载配置
     }
 
@@ -41,7 +38,8 @@ export default class StartScene extends cc.Component {
     /**加载配置数据完毕 */
     handleLoadConfigOver(){
         //cc.log("handleLoadConfigOver()");
-        //cc.director.loadScene("mainScene");
+        MyUserMgr.initUserData();    //初始化用户信息
+
         this.btnNode.active = true;
     }
 

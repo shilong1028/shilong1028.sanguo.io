@@ -5,7 +5,7 @@ import { st_item_info } from "../manager/ConfigManager";
 import { ROOT_NODE } from "../common/rootNode";
 import Item from "../common/item";
 
-//背包 背包最多包含30个不同的道具（6*5）
+//背包 背包最多包含9个不同的道具（3*3）
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -33,7 +33,7 @@ export default class BagLayer extends cc.Component {
     onLoad () {
         this.updateSelItemInfo(null);  //显示底部选中道具信息
         this.initBagGrid();
-        ROOT_NODE.showLayerMoney(this.node, cc.v2(0, 334));    //一级界面上的金币钻石粮草公用控件
+        ROOT_NODE.showLayerMoney(this.node, cc.v2(0, 355));    //一级界面上的金币钻石粮草公用控件
     }
 
     onDestroy(){
@@ -50,7 +50,7 @@ export default class BagLayer extends cc.Component {
     initBagGrid(){
         this.grid.removeAllChildren();
         let defaultSelItem = null;
-        for(let i=0; i<MyUserData.ItemList.length; ++i){
+        for(let i=0; i<MyUserData.ItemList.length && i<9; ++i){
             let bagItem: ItemInfo = MyUserData.ItemList[i];
 
             let itemNode = cc.instantiate(ROOT_NODE.pfItem);
@@ -96,4 +96,12 @@ export default class BagLayer extends cc.Component {
     onCloseBtn(){
         this.node.removeFromParent(true);
     }
+
+    /**
+     * 游戏中，金锭与金币、粮草等资源之间兑换关系为：1人民币= 10金币=1000贯钱；1人民币=10石粮草= 1000斤粮草；100贯钱=100斤粮=1金币=1石粮草。
+     * 金锭是特殊货币，主要由充值、活动、广告产出。金锭兑换金币时，1金锭=1000金币。但是如果是金币兑换金锭时为2000金币=1金锭。
+        游戏中，每千名士兵每月（自然日24h）消耗300石粮300金币（30000斤粮草30000贯钱），即每人每月消耗30斤粮30贯钱。
+        游戏中，每个游戏月（自然日24h）金币、粮草的税率分别为每万人100金币、每万人100石、即每人每月需要向官府缴纳1贯钱、1斤粮。
+
+     */
 }

@@ -14,6 +14,54 @@ export class ItemInfo{
         this.count = count;
         this.itemCfg = CfgMgr.getItemConf(itemId);
     }
+
+    cloneNoCfg(){
+        let temp = new ItemInfo(this.itemId, this.count);
+
+        //不必写入本地存储的变量
+        temp.itemCfg = null;
+
+        return temp;
+    }
+}
+
+//武将信息
+export class GeneralInfo{
+    timeId: number = 0;   //武将的时间ID，玩家武将唯一编号
+    generalLv: number = 1;   //武将等级
+    bingCount: number = 0;   //部曲士兵数量
+    
+    generalId: number = 0;  
+    generalCfg: st_general_info = null;   //卡牌配置信息
+
+    constructor(generalId:number){
+        this.timeId = new Date().getTime();
+        this.generalLv = 1;
+        this.bingCount = 0;
+        this.generalId = generalId;
+        this.generalCfg = CfgMgr.getGeneralConf(generalId);
+    }
+
+    cloneNoCfg(){
+        let temp = new GeneralInfo(this.generalId);
+        temp.generalLv = this.generalLv;
+        temp.bingCount = this.bingCount;
+
+        //不必写入本地存储的变量
+        temp.timeId = 0;
+        temp.generalCfg = null;
+
+        return temp;
+    }
+
+    updateBingCount(num: number){
+        this.bingCount += num;
+        if(this.bingCount < 0){
+            this.bingCount = 0;
+        }else if(this.bingCount > this.generalLv*1000){
+            this.bingCount = this.generalLv*1000;
+        }
+    }
 }
 
 //武将卡牌战斗信息
@@ -48,6 +96,7 @@ export const NoticeType = {
     UpdateFood: "UpdateFood",   //更新粮食显示
 
     UpdateBagItem: "UpdateBagItem",  //更新单个背包物品
+    UpdateGeneral: "UpdateGeneral",  //更新单个武将
 
     MapMoveByCity: "MapMoveByCity",   //话本目标通知（地图移动）
     UpdateTaskState: "UpdateTaskState",   //任务状态更新
