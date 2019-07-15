@@ -149,6 +149,7 @@ export default class FightReady extends cc.Component {
         cc.log("出战， this.enmeyArr = "+JSON.stringify(this.enmeyArr)+"; generalArr = "+JSON.stringify(this.fightArr));
 
         FightMgr.clearAndInitFightData(this.enmeyArr, this.fightArr);   //清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组
+        cc.director.loadScene("fightScene");
     }
 
 }

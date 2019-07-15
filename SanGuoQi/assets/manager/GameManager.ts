@@ -157,12 +157,8 @@ class GameManager {
         if(storyConf == null || storyConf == undefined){
             return;
         }
-        if(storyConf.type == 1){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+        if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
-        }else if(storyConf.type == 3){
-            MyUserMgr.updateTaskState(MyUserData.TaskId, 1); 
-        }else if(storyConf.type == 4){
-            MyUserMgr.updateTaskState(MyUserData.TaskId, 1); 
         }
     }
 

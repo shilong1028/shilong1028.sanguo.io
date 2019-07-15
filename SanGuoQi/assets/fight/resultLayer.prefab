@@ -85,7 +85,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Sprite(Splash)",
+    "_name": "bg",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -194,7 +194,7 @@
     "asset": {
       "__uuid__": "2922cdb8-8154-4ebd-93cc-18e852d8a577"
     },
-    "fileId": "b60nj2vKZHcZNdqcygsFP1",
+    "fileId": "6cw8qkyZpCgb7ulGNQkW5T",
     "sync": false
   },
   {
@@ -405,7 +405,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "reStartBtn",
+    "_name": "backBtn",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -500,7 +500,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 240,
+      "width": 120,
       "height": 80
     },
     "_anchorPoint": {
@@ -543,8 +543,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "重新开始",
-    "_N$string": "重新开始",
+    "_string": "返回",
+    "_N$string": "返回",
     "_fontSize": 60,
     "_lineHeight": 80,
     "_enableWrapText": true,
@@ -581,7 +581,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "6e20ab1f-0537-40c5-bda2-b009bf65c5a1"
+      "__uuid__": "2b14e28f-165a-4527-970f-b99f2e70979e"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -596,7 +596,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": {
-      "__uuid__": "6d9f8df5-2b25-47cc-8cb3-5c4daba87da9"
+      "__uuid__": "1e160530-179f-401a-a8cd-d78265814531"
     },
     "_id": ""
   },
@@ -677,7 +677,7 @@
     },
     "component": "",
     "_componentId": "29ae8FH24NOeLKAax1MVJQU",
-    "handler": "onReStartBtn",
+    "handler": "onBackBtn",
     "customEventData": ""
   },
   {

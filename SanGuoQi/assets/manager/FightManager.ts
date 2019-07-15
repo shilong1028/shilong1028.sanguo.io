@@ -8,9 +8,10 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 class FightManager { 
-    campCount_blue: number = 0;
-    campCount_red: number = 0;
-    randomGeneralArr: CardInfo[] = new Array();
+    randomGeneralArr: CardInfo[] = new Array();   //随机散布的卡牌
+
+    battleEnemyArr: GeneralInfo[] = null;   //出战敌方部曲（和士兵）
+    battleGeneralArr: GeneralInfo[] = null;   //出战我方部曲
 
     cardsCol: number = 4;    //行 Row 列 Column
     cardsRow: number = 5;
@@ -24,9 +25,10 @@ class FightManager {
 
     /**清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组 */
     clearAndInitFightData(enemyArr:GeneralInfo[], generalArr: GeneralInfo[]){
-        this.campCount_blue = 0;
-        this.campCount_red = 0;
-        this.randomGeneralArr = new Array();
+        this.randomGeneralArr = new Array();  //随机散布的卡牌
+
+        this.battleEnemyArr = enemyArr;   //出战敌方部曲（和士兵）
+        this.battleGeneralArr = generalArr;   //出战我方部曲
     
         this.myCampId = 1;   //阵营，0默认，1蓝方，2红方
         this.bStopTouch = false;   //是否停止触摸反应
@@ -49,41 +51,26 @@ class FightManager {
 
     /**获取全部随机武将数据 */
     getAllRandomGenerals(){
-        this.campCount_blue = 0;
-        this.campCount_red = 0;
-        this.randomGeneralArr = new Array();
+        this.randomGeneralArr = new Array();  //随机散布的卡牌
 
-        let totalCardCount = this.cardsCol*this.cardsRow;
-        for(let i=0; i<totalCardCount;++i){
-            let cardInfo = new CardInfo();
-            if(this.campCount_blue >= totalCardCount/2){
-                cardInfo.campId = 2;
-            }else if(this.campCount_red >= totalCardCount/2){
-                cardInfo.campId = 1;
-            }else{
-                if(Math.random()<0.5){
-                    cardInfo.campId = 1;
-                    this.campCount_blue ++;
-                }else{
-                    cardInfo.campId = 2;
-                    this.campCount_red ++;
-                }
+        if(this.battleEnemyArr && this.battleGeneralArr){
+            //我方
+            for(let i=0; i<this.battleGeneralArr.length; ++i){
+                let card = new CardInfo(1, this.battleGeneralArr[i]);
+                this.randomGeneralArr.push(card);
             }
-            cardInfo.cardCfg = FightMgr.getRandomGeneralData();
-
-            this.randomGeneralArr.push(cardInfo);
+            //敌方
+            for(let i=0; i<this.battleEnemyArr.length; ++i){
+                let card = new CardInfo(2, this.battleEnemyArr[i]);
+                this.randomGeneralArr.push(card);
+            }
         }
-    }
-
-    /**获取随机的武将数据 */
-    getRandomGeneralData(): st_general_info {
-        let keys = Object.getOwnPropertyNames(CfgMgr.C_general_info);
-        let idx = Math.ceil(Math.random()*keys.length);
-        if(idx == 0){
-            idx = 1;
+        //空
+        let totalCardCount = this.cardsCol*this.cardsRow - this.battleGeneralArr.length - this.battleEnemyArr.length;
+        for(let i=0; i<totalCardCount; ++i){
+            let card = new CardInfo(0);
+            this.randomGeneralArr.push(card);
         }
-        let general: st_general_info = CfgMgr.C_general_info[idx];
-        return general.clone();
     }
 
     /**从随机数组中获取武将数据 */

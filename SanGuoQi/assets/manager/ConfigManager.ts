@@ -50,7 +50,6 @@ export class st_city_info {
 
 //武将配置数据
 export class st_general_info {
-    id_str;   //ID字符串
     name;   //武将名称
     bingzhong;   //兵种 401骑兵402步兵403弓兵
     hp;   //血量
@@ -69,7 +68,6 @@ export class st_general_info {
 
     clone(){
         let temp = new st_general_info();
-        temp.id_str = this.id_str;
         temp.name = this.name;
         temp.bingzhong = this.bingzhong;
         temp.hp = this.hp;

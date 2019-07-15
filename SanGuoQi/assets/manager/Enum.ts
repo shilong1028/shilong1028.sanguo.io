@@ -79,15 +79,22 @@ export class CardInfo{
     campId: number = 0;   //阵营，0默认，1蓝方，2红方
     maxHp: number = 0;   //最大血量
     maxMp: number = 0;   //最大智力
-    cardCfg: st_general_info = null;   //卡牌配置信息
+    generalInfo: GeneralInfo = null;   //武将信息
 
-    constructor(){
+    constructor(campId: number, generalInfo: GeneralInfo=null){
+        this.campId = campId;
+        this.generalInfo = generalInfo;
+        if(generalInfo){
+            this.maxHp = this.generalInfo.generalCfg.hp;
+            this.maxMp = this.generalInfo.generalCfg.mp;
+        }else{
+            this.maxHp = 0;
+            this.maxMp = 0;
+        }
     }
 
     clone(){
-        let temp = new CardInfo();
-        temp.campId = this.campId;
-        temp.cardCfg = this.cardCfg;
+        let temp = new CardInfo(this.campId, this.generalInfo);
         temp.maxMp = this.maxMp;
         temp.maxHp = this.maxHp;
 

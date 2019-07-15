@@ -2,6 +2,7 @@ import Card from "./card";
 import Block from "./block";
 import { FightMgr } from "../manager/FightManager";
 import { CardInfo } from "../manager/Enum";
+import { GameMgr } from "../manager/GameManager";
 
 //战斗场景
 const {ccclass, property} = cc._decorator;
@@ -14,9 +15,6 @@ export default class FightScene extends cc.Component {
 
     @property(cc.Node)
     gridNode: cc.Node = null;   //棋盘网格节点
-
-    @property(cc.Label)
-    myCampLabel: cc.Label = null;
 
     @property(cc.Label)
     roundDesc: cc.Label = null;
@@ -52,31 +50,17 @@ export default class FightScene extends cc.Component {
     }
 
     start () {
-        this.onHelpBtn();
         this.createDefaultCards();
     }
 
     // update (dt) {}
 
     onHelpBtn(){
-        FightMgr.showLayer(this.pfHelp);
+        GameMgr.showLayer(this.pfHelp);
     }
 
     onResetBtn(){
         this.createDefaultCards();
-    }
-
-    showCampDesc(){
-        if(FightMgr.myCampId == 0){   //阵营，0默认，1蓝方，2红方
-            this.myCampLabel.string = "我方阵营："
-            this.myCampLabel.node.color = cc.color(255, 255, 255);
-        }else if(FightMgr.myCampId == 1){
-            this.myCampLabel.string = "我方阵营：蓝方"
-            this.myCampLabel.node.color = cc.color(0, 0, 255);
-        }else if(FightMgr.myCampId == 2){
-            this.myCampLabel.string = "我方阵营：红方"
-            this.myCampLabel.node.color = cc.color(255, 0, 0);
-        }
     }
 
     showRoundDesc(){
@@ -104,19 +88,18 @@ export default class FightScene extends cc.Component {
 
     /**卡牌初始化 */
     createDefaultCards(){
-        this.showCampDesc();
         this.showRoundDesc();
 
         this.autoToggle.isChecked = FightMgr.EnemyAutoAi;  //敌方自动AI
 
         this.gridNode.removeAllChildren(true);
-        FightMgr.getAllRandomGenerals();
+        FightMgr.getAllRandomGenerals();   //获取全部随机武将数据
 
         let totalCardCount = FightMgr.cardsCol*FightMgr.cardsRow;
         for(let i=0; i<totalCardCount;++i){
             let block = cc.instantiate(this.pfBlock);
             this.gridNode.addChild(block);
-            block.getComponent(Block).randCardData(i);
+            block.getComponent(Block).randCardData(i);   //随机产生卡牌
         }
     }
 
@@ -197,7 +180,7 @@ export default class FightScene extends cc.Component {
                     if(offX < 20 || offY < 20){   //同行或同列
                         let blockLen = blocks[i].getPosition().sub(this.selectBlock.node.position).mag();
                         if(block.cardInfo){   //攻击或合并
-                            if(this.selectBlock.cardInfo.cardCfg.bingzhong == 403){   //弓兵攻击两格
+                            if(this.selectBlock.cardInfo.generalInfo.generalCfg.bingzhong == 403){   //弓兵攻击两格
                                 if(blockLen <= 400){
                                     return block;
                                 }
@@ -219,8 +202,15 @@ export default class FightScene extends cc.Component {
         return null;
     }
 
-    /**检查是否游戏结束 */
-    checkGameOver(){
+    //检查敌方可用的卡牌数量（包括未开启的也算敌方）
+    checkEnemyCardCount(){
+
+    }
+
+    /**检查是否游戏结束 
+     * bCheckOver =true 做游戏检测， bCheckOver = false 返回敌方（包括未开启）卡牌数量
+    */
+    checkGameOver(bCheckOver:boolean=true){
         let myCampCount = 0;
         let enemyCampCount = 0;
         
@@ -229,7 +219,11 @@ export default class FightScene extends cc.Component {
             let block = blocks[i].getComponent(Block);
             if(block){
                 if(block.isLock == true){
-                    return false;
+                    if(bCheckOver == true){
+                        return false;
+                    }else{
+                        return 100;
+                    }
                 }else{
                     if(block.cardInfo){
                         if(block.cardInfo.campId == FightMgr.myCampId){
@@ -243,16 +237,20 @@ export default class FightScene extends cc.Component {
         }
         cc.log("checkGameOver(), myCampCount = "+myCampCount+"; enemyCampCount = "+enemyCampCount);
 
-        if(myCampCount == 0){   //失败
-            FightMgr.FightWin = false;  //战斗胜利或失败
-            FightMgr.showLayer(this.pfResult);
-            return true;
-        }else if(enemyCampCount == 0){   //胜利
-            FightMgr.FightWin = true;  //战斗胜利或失败
-            FightMgr.showLayer(this.pfResult);
-            return true;
+        if(bCheckOver == true){
+            if(myCampCount == 0){   //失败
+                FightMgr.FightWin = false;  //战斗胜利或失败
+                FightMgr.showLayer(this.pfResult);
+                return true;
+            }else if(enemyCampCount == 0){   //胜利
+                FightMgr.FightWin = true;  //战斗胜利或失败
+                FightMgr.showLayer(this.pfResult);
+                return true;
+            }
+            return false;
+        }else{
+            return enemyCampCount;
         }
-        return false;
     }
 
     /**或者相邻地块数据 */
@@ -293,8 +291,10 @@ export default class FightScene extends cc.Component {
                                 if(nearBlock && nearBlock.cardInfo){
                                     let nearCardInfo: CardInfo = nearBlock.cardInfo;
                                     if(nearCardInfo && nearCardInfo.campId == FightMgr.myCampId){
-                                        let enemyNum = enmyCardInfo.cardCfg.atk + enmyCardInfo.cardCfg.def + enmyCardInfo.cardCfg.mp + enmyCardInfo.cardCfg.hp;
-                                        let nearNum = nearCardInfo.cardCfg.atk + nearCardInfo.cardCfg.def + nearCardInfo.cardCfg.mp + nearCardInfo.cardCfg.hp;
+                                        let enemyCardCfg = enmyCardInfo.generalInfo.generalCfg;
+                                        let enemyNum = enemyCardCfg.atk + enemyCardCfg.def + enemyCardCfg.mp + enemyCardCfg.hp;
+                                        let nearCardCfg = nearCardInfo.generalInfo.generalCfg;
+                                        let nearNum = nearCardCfg.atk + nearCardCfg.def + nearCardCfg.mp + nearCardCfg.hp;
                                         if(enemyNum > nearNum){
                                             if(Math.random() < 0.8){
                                                 cc.log("敌方选择战斗");
@@ -333,6 +333,12 @@ export default class FightScene extends cc.Component {
                                         nearBlock.onCardDropBlock(block);
                                         return;
                                     }
+                                }
+
+                                //无路可逃
+                                if(this.checkGameOver(false) == 1){   //只剩一个敌方卡牌且没有未开启卡牌
+                                    cc.log("敌方选择战斗");
+                                    nearArr[0].onCardDropBlock(block);
                                 }
                             }
                         }

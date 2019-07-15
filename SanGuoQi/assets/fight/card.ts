@@ -78,7 +78,7 @@ export default class Card extends cc.Component {
     /**设置卡牌数据 */
     setCardData(info: CardInfo){
         this.cardInfo = info;
-
+        cc.log("setCardData(), info = "+JSON.stringify(info));
         if(this.cardInfo.campId == 1){  //阵营，0默认，1蓝方，2红方
             this.nameLable.node.color = cc.color(0, 0, 255);
             this.campSpr.spriteFrame = this.campFrames[1];
@@ -91,20 +91,22 @@ export default class Card extends cc.Component {
             this.nameLable.node.color = cc.color(255, 255, 255);
         }
 
-        let idstr = this.cardInfo.cardCfg.id_str;
-        this.cardSpr.spriteFrame = this.cardAtlas.getSpriteFrame(idstr);
-        this.cardSpr.node.opacity = 255;
-
-        this.nameLable.string = this.cardInfo.cardCfg.name;
-        let nType = this.cardInfo.cardCfg.bingzhong - 400;
-        this.bingSpr.spriteFrame = this.bingSprFrames[nType-1];
-        this.bingSpr.node.opacity = 255;
-
-        this.hpProgressBar.progress = this.cardInfo.cardCfg.hp/1000;
-        this.mpProgressBar.progress = this.cardInfo.cardCfg.mp/100;
-        this.atkProgressBar.progress = this.cardInfo.cardCfg.atk/100;
-        this.defProgressBar.progress = this.cardInfo.cardCfg.def/100;
-
+        let cardCfg = this.cardInfo.generalInfo.generalCfg;
+        if(cardCfg){
+            let generalId = this.cardInfo.generalInfo.generalId;
+            this.cardSpr.spriteFrame = this.cardAtlas.getSpriteFrame(generalId.toString());
+            this.cardSpr.node.opacity = 255;
+    
+            this.nameLable.string = cardCfg.name;
+            let nType = cardCfg.bingzhong - 400;
+            this.bingSpr.spriteFrame = this.bingSprFrames[nType-1];
+            this.bingSpr.node.opacity = 255;
+    
+            this.hpProgressBar.progress = cardCfg.hp/1000;
+            this.mpProgressBar.progress = cardCfg.mp/100;
+            this.atkProgressBar.progress = cardCfg.atk/100;
+            this.defProgressBar.progress = cardCfg.def/100;
+        }
     }
 
     /**显示武将头像信息 */

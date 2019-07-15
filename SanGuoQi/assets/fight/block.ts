@@ -12,6 +12,8 @@ export default class Block extends cc.Component {
 
     @property(cc.Sprite)
     blockSpr: cc.Sprite = null;
+    @property(cc.SpriteFrame)
+    openFrame: cc.SpriteFrame = null;  //开启后的背景
 
     @property([cc.SpriteFrame])
     sprFrames: cc.SpriteFrame[] = new Array(2);
@@ -41,9 +43,16 @@ export default class Block extends cc.Component {
     /**随机卡牌数据 */
     randCardData(idx: number){
         this.blockId = idx;
-        this.cardInfo = FightMgr.getGeneralDataFromRandomArr();
+        let cardInfo = FightMgr.getGeneralDataFromRandomArr();  //从随机数组中获取武将数据
+        if(cardInfo.campId == 0 && cardInfo.generalInfo == null){
+            this.cardInfo = null;   //空卡
+            this.isLock = false;
+            this.showBlockCard(this.cardInfo);
+        }else{
+            this.cardInfo = cardInfo;
+            this.isLock = true;
+        }
     }
-
 
     onTouchStart(event: cc.Event.EventTouch) {
         if(FightMgr.bMyRound == true && FightMgr.bStopTouch == false){  //是否停止触摸反应
@@ -100,18 +109,22 @@ export default class Block extends cc.Component {
 
     /**显示地块上卡牌 */
     showBlockCard(info: CardInfo){
-        cc.log("showBlockCard(), this.blockId = "+this.blockId+"; info = "+JSON.stringify(info));
-        if(this.isLock == false){
-            this.cardInfo = info;
-            this.blockSpr.spriteFrame = this.sprFrames[1];
-
-            if(this.cardNode == null){
-                let cardNode = cc.instantiate(FightMgr.getFightScene().pfCard);
-                this.node.addChild(cardNode);
-                this.cardNode = cardNode;
+        cc.log("showBlockCard(), this.blockId = "+this.blockId+"; this.isLock = "+this.isLock+"; info = "+JSON.stringify(info));
+        if(this.isLock == false){   //地块未锁定
+            if(info){
+                this.cardInfo = info;
+                this.blockSpr.spriteFrame = this.sprFrames[1];
+    
+                if(this.cardNode == null){
+                    let cardNode = cc.instantiate(FightMgr.getFightScene().pfCard);
+                    this.node.addChild(cardNode);
+                    this.cardNode = cardNode;
+                }
+                this.cardNode.opacity = 255; 
+                this.cardNode.getComponent(Card).setCardData(info);
             }
-            this.cardNode.opacity = 255; 
-            this.cardNode.getComponent(Card).setCardData(info);
+
+            this.blockSpr.spriteFrame = this.openFrame;
         }
     }
 
