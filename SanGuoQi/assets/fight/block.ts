@@ -15,9 +15,6 @@ export default class Block extends cc.Component {
     @property(cc.SpriteFrame)
     openFrame: cc.SpriteFrame = null;  //开启后的背景
 
-    @property([cc.SpriteFrame])
-    sprFrames: cc.SpriteFrame[] = new Array(2);
-
     blockId: number = 0;   //地块ID
     isLock: boolean = true;   //是否锁定的地块
 
@@ -51,6 +48,8 @@ export default class Block extends cc.Component {
         }else{
             this.cardInfo = cardInfo;
             this.isLock = true;
+
+            FightMgr.getFightScene().setLockBlock(true, this);   //设置地块开启或锁定
         }
     }
 
@@ -80,6 +79,8 @@ export default class Block extends cc.Component {
         this.blockSpr.node.runAction(cc.sequence(cc.repeat(cc.sequence(cc.scaleTo(0.1, -1, 1), cc.scaleTo(0.1, 1, 1)), 3), cc.callFunc(function(){
             this.isLock = false;
             this.showBlockCard(this.cardInfo);
+
+            FightMgr.getFightScene().setLockBlock(false, this);   //设置地块开启或锁定
     
             if(FightMgr.bMyRound == true){
                 FightMgr.handleEnemyRoundOpt();   //敌方回合处理
@@ -109,11 +110,10 @@ export default class Block extends cc.Component {
 
     /**显示地块上卡牌 */
     showBlockCard(info: CardInfo){
-        cc.log("showBlockCard(), this.blockId = "+this.blockId+"; this.isLock = "+this.isLock+"; info = "+JSON.stringify(info));
+        //cc.log("showBlockCard(), this.blockId = "+this.blockId+"; this.isLock = "+this.isLock+"; info = "+JSON.stringify(info));
         if(this.isLock == false){   //地块未锁定
             if(info){
                 this.cardInfo = info;
-                this.blockSpr.spriteFrame = this.sprFrames[1];
     
                 if(this.cardNode == null){
                     let cardNode = cc.instantiate(FightMgr.getFightScene().pfCard);
@@ -136,7 +136,7 @@ export default class Block extends cc.Component {
 
     /**将一个地块上的卡牌放置到本地块上 */
     onCardDropBlock(dropBlock: Block){
-        cc.log("onCardDropBlock(), this.blockId = "+this.blockId+"; dropBlock.blockId = "+dropBlock.blockId);
+        //cc.log("onCardDropBlock(), this.blockId = "+this.blockId+"; dropBlock.blockId = "+dropBlock.blockId);
         if(this.isLock == true){
             dropBlock.onCardDropBlock(dropBlock);   //将一个地块上的卡牌放置到本地块上
             return;
@@ -157,6 +157,15 @@ export default class Block extends cc.Component {
             }
         }else{  //移动
             this.showBlockCard(dropCardInfo);  //设置地块上的卡牌模型
+
+            if(dropCardInfo.campId == FightMgr.myCampId){
+                FightMgr.getFightScene().setMyOpenBlock(false, dropBlock); 
+                FightMgr.getFightScene().setMyOpenBlock(true, this);  //设置我方已经开启的卡牌
+            }else{
+                FightMgr.getFightScene().setEnemyOpenBlock(false, dropBlock); 
+                FightMgr.getFightScene().setEnemyOpenBlock(true, this);   //设置敌方已经开启的卡牌
+            }
+
             dropBlock.onRemoveCardNode();   //将本地块上的卡牌移走了
             FightMgr.nextRoundOpt();  //下回合处理
         }
@@ -164,7 +173,7 @@ export default class Block extends cc.Component {
 
     /**将本地块上的卡牌移走了 */
     onRemoveCardNode(){
-        cc.log("onRemoveCardNode(), this.blockId = "+this.blockId);
+        //cc.log("onRemoveCardNode(), this.blockId = "+this.blockId);
         if( this.isLock == false && this.cardNode){
             this.cardNode.removeFromParent(true);
             this.cardInfo = null;

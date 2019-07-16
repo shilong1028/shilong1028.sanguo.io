@@ -1,7 +1,5 @@
 import FightScene from "../fight/fightScene";
-
 import { CardInfo, GeneralInfo } from "./Enum";
-import { CfgMgr, st_general_info } from "./ConfigManager";
 
 //战斗管理器
 const {ccclass, property} = cc._decorator;

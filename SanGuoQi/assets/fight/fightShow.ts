@@ -271,12 +271,42 @@ export default class FightShow extends cc.Component {
                 if(rightCardCfg.hp <= 0){
                     if(leftCardCfg.bingzhong == 403){  //弓兵攻击后不移动位置
                         this.srcBlock.showBlockCard(this.leftCardInfo);  //设置地块上的卡牌模型
+
+                        if(this.destBlock.cardInfo.campId == FightMgr.myCampId){
+                            FightMgr.getFightScene().setMyOpenBlock(false, this.destBlock);   //设置我方已经开启的卡牌
+                        }else{
+                            FightMgr.getFightScene().setEnemyOpenBlock(false, this.destBlock);   //设置敌方已经开启的卡牌
+                        }
+
                         this.destBlock.onRemoveCardNode();   //将本地块上的卡牌移走了
                     }else{
+                        if(this.destBlock.cardInfo.campId == FightMgr.myCampId){
+                            FightMgr.getFightScene().setMyOpenBlock(false, this.destBlock);   //设置我方已经开启的卡牌
+                        }else{
+                            FightMgr.getFightScene().setEnemyOpenBlock(false, this.destBlock);   //设置敌方已经开启的卡牌
+                        }
+                        if(this.srcBlock.cardInfo.campId == FightMgr.myCampId){
+                            FightMgr.getFightScene().setMyOpenBlock(false, this.srcBlock);   //设置我方已经开启的卡牌
+                        }else{
+                            FightMgr.getFightScene().setEnemyOpenBlock(false, this.srcBlock);   //设置敌方已经开启的卡牌
+                        }
+
                         this.destBlock.showBlockCard(this.leftCardInfo);  //设置地块上的卡牌模型
                         this.srcBlock.onRemoveCardNode();   //将本地块上的卡牌移走了
+
+                        if(this.destBlock.cardInfo.campId == FightMgr.myCampId){
+                            FightMgr.getFightScene().setMyOpenBlock(true, this.destBlock);   //设置我方已经开启的卡牌
+                        }else{
+                            FightMgr.getFightScene().setEnemyOpenBlock(true, this.destBlock);   //设置敌方已经开启的卡牌
+                        }
                     }
                 }else if(leftCardCfg.hp <= 0){
+                    if(this.srcBlock.cardInfo.campId == FightMgr.myCampId){
+                        FightMgr.getFightScene().setMyOpenBlock(false, this.srcBlock);   //设置我方已经开启的卡牌
+                    }else{
+                        FightMgr.getFightScene().setEnemyOpenBlock(false, this.srcBlock);   //设置敌方已经开启的卡牌
+                    }
+
                     this.srcBlock.onRemoveCardNode();   //将本地块上的卡牌移走了
                     this.destBlock.showBlockCard(this.rightCardInfo);  //设置地块上的卡牌模型
                 }else{
@@ -355,8 +385,26 @@ export default class FightShow extends cc.Component {
                 this.rightDef.string = "防御：0";
             }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
                 effNode.removeFromParent(true);
+
+                if(this.destBlock.cardInfo.campId == FightMgr.myCampId){
+                    FightMgr.getFightScene().setMyOpenBlock(false, this.destBlock);   //设置我方已经开启的卡牌
+                }else{
+                    FightMgr.getFightScene().setEnemyOpenBlock(false, this.destBlock);   //设置敌方已经开启的卡牌
+                }
+                if(this.srcBlock.cardInfo.campId == FightMgr.myCampId){
+                    FightMgr.getFightScene().setMyOpenBlock(false, this.srcBlock);   //设置我方已经开启的卡牌
+                }else{
+                    FightMgr.getFightScene().setEnemyOpenBlock(false, this.srcBlock);   //设置敌方已经开启的卡牌
+                }
+
                 this.destBlock.showBlockCard(this.leftCardInfo);  //设置地块上的卡牌模型
                 this.srcBlock.onRemoveCardNode();   //将本地块上的卡牌移走了
+
+                if(this.destBlock.cardInfo.campId == FightMgr.myCampId){
+                    FightMgr.getFightScene().setMyOpenBlock(true, this.destBlock);   //设置我方已经开启的卡牌
+                }else{
+                    FightMgr.getFightScene().setEnemyOpenBlock(true, this.destBlock);   //设置敌方已经开启的卡牌
+                }
             }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
                 this.node.removeFromParent(true);
                 FightMgr.nextRoundOpt();  //下回合处理

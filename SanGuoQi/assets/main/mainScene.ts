@@ -61,6 +61,7 @@ export default class MainScene extends cc.Component {
         
         NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
 
+        this.mapNode.active = true;
         this.mapNode.position = cc.v2(0, -900);   //初始显示洛阳  5768*5264   2884*2632
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
     }

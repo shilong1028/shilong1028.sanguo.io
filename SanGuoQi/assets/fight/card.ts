@@ -78,7 +78,7 @@ export default class Card extends cc.Component {
     /**设置卡牌数据 */
     setCardData(info: CardInfo){
         this.cardInfo = info;
-        cc.log("setCardData(), info = "+JSON.stringify(info));
+        //cc.log("setCardData(), info = "+JSON.stringify(info));
         if(this.cardInfo.campId == 1){  //阵营，0默认，1蓝方，2红方
             this.nameLable.node.color = cc.color(0, 0, 255);
             this.campSpr.spriteFrame = this.campFrames[1];
