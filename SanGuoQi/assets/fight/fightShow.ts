@@ -3,6 +3,7 @@ import { FightMgr } from "../manager/FightManager";
 import Card from "./card";
 import { CardInfo } from "../manager/Enum";
 import ShowLabel from "./showLabel";
+import { CfgMgr } from "../manager/ConfigManager";
 
 //战斗或合成展示层
 const {ccclass, property} = cc._decorator;
@@ -168,9 +169,10 @@ export default class FightShow extends cc.Component {
         this.rightDef.string = "防御：" + cardCfg.def;
     }
 
+
     showFightProgress(attackCardInfo: CardInfo, defendCardInfo: CardInfo){
         let atkCardCfg = attackCardInfo.generalInfo.generalCfg;
-        let defCardCfg = this.rightCardInfo.generalInfo.generalCfg;
+        let defCardCfg = defendCardInfo.generalInfo.generalCfg;
 
         if(atkCardCfg.hp <= 0 || defCardCfg.hp <= 0){
             return [attackCardInfo, defendCardInfo];
@@ -180,54 +182,98 @@ export default class FightShow extends cc.Component {
         let attack = atkCardCfg.atk;
         let defend = defCardCfg.def;
 
-        if(atkCardCfg.mp > defCardCfg.mp){
-            let multi = atkCardCfg.mp/defCardCfg.mp + 0.2;
+        if(atkCardCfg.mp > defCardCfg.mp){   //攻击方智力越高，攻击越高
+            let multi = atkCardCfg.mp/defCardCfg.mp + 0.2 - 1.0;
             multi = parseFloat(multi.toFixed(2)); 
-            if(multi > 1.5){
-                multi = 1.5;
+            if(multi > 0.5){
+                multi = 0.5;
             }
-            this.showTipsLable("攻击方智力值远高于防御方，攻击方攻击力提升！"+multi, cc.Color.YELLOW);
-            attack *= multi;
-            atkCardCfg.mp -= 10;
+            this.showTipsLable("攻击方智力值远高于防御方，攻击方攻击力增加50%！", cc.Color.YELLOW);
+            attack += multi*atkCardCfg.atk;
+            atkCardCfg.mp -= 1;
             if(atkCardCfg.mp < 0){
                 atkCardCfg.mp = 0;
             }
-        }else if(defCardCfg.mp > atkCardCfg.mp){
-            let multi = defCardCfg.mp/atkCardCfg.mp + 0.2;
+        }else if(defCardCfg.mp > atkCardCfg.mp){  //防御方智力越高，防御越高
+            let multi = defCardCfg.mp/atkCardCfg.mp + 0.2 - 1.0;
             multi = parseFloat(multi.toFixed(2)); 
-            if(multi > 1.5){
-                multi = 1.5;
+            if(multi > 0.5){
+                multi = 0.5;
             }
-            this.showTipsLable("攻击方智力值远低于防御方，防御方防御力提升!"+multi, cc.Color.YELLOW);
-            defend *= multi;
-            defCardCfg.mp -= 10;
+            this.showTipsLable("攻击方智力值远低于防御方，防御方防御力增加50%!", cc.Color.YELLOW);
+            defend += multi * defCardCfg.def;
+            defCardCfg.mp -= 1;
             if(defCardCfg.mp < 0){
                 defCardCfg.mp = 0;
             }
         }
 
+        //兵种相克，401骑兵克制402步兵， 402步兵克制403弓兵，403弓兵克制401骑兵
         let restriction = FightMgr.checkBingRestriction(atkCardCfg.bingzhong, defCardCfg.bingzhong);
         if(restriction == 1){
-            this.showTipsLable("攻击方兵种克制防御方，攻击方攻击力提升1.3倍！", cc.Color.RED);
-            attack *= 1.3;
+            this.showTipsLable("攻击方兵种克制防御方，攻击方攻击力增加50%！", cc.Color.RED);
+            attack += atkCardCfg.atk * 0.5;
         }else if(restriction == -1){
-            this.showTipsLable("攻击方兵种被防御方克制，防御方防御力提升1.3倍！", cc.Color.BLUE);
-            defend *= 1.3;
+            this.showTipsLable("攻击方兵种被防御方克制，防御方防御力增加50%！", cc.Color.BLUE);
+            defend += defCardCfg.def * 0.5;
         }
 
-        let harm = Math.floor(attack - defend)*10;
+        let atkSoliderCount = attackCardInfo.generalInfo.bingCount;
+        if(atkSoliderCount >= 1000){
+            this.showTipsLable("攻击方兵力充足，攻击方攻击力提升！", cc.Color.RED);
+            attack += attack * (atkSoliderCount - 1000)/1000 * 0.5;
+            attack = parseFloat(attack.toFixed(2)); 
+        }else if(atkSoliderCount > 200){
+            this.showTipsLable("攻击方兵力不足，攻击方攻击力减弱！", cc.Color.BLUE);
+            attack = attack * atkSoliderCount/1000;
+            attack = parseFloat(attack.toFixed(2)); 
+        }else{
+            this.showTipsLable("攻击方兵力严重不足，攻击方攻击力骤减！", cc.Color.BLUE);
+            attack *= 0.2;
+        }
+
+        let defSoldierCount = defendCardInfo.generalInfo.bingCount;
+        if(defSoldierCount >= 1000){
+            this.showTipsLable("防御方兵力充足，防御方防御力提升！", cc.Color.BLUE);
+            defend += defend * (defSoldierCount - 1000)/1000 * 0.5;
+            defend = parseFloat(defend.toFixed(2)); 
+        }else if(defSoldierCount > 200){
+            this.showTipsLable("防御方兵力不足，防御方防御力减弱！", cc.Color.RED);
+            defend = defend * defSoldierCount/1000;
+            defend = parseFloat(defend.toFixed(2)); 
+        }else{
+            this.showTipsLable("防御方兵力严重不足，防御方防御力骤减！", cc.Color.RED);
+            defend *= 0.2;
+        }
+
+        let harm = Math.floor(attack - defend*0.7)*5;
         if(harm <= 0){
             harm = 1;
             this.showTipsLable("攻击方太弱，防御方收到伤害：1", cc.Color.GREEN);
         }else{
             this.showTipsLable("防御方收到伤害："+harm);
         }
-        let blood = defCardCfg.hp - harm;
-        if(blood <= 0){
-            this.showTipsLable("攻击方击败防御方，防御方阵亡！"+defCardCfg.name, cc.Color.GREEN);
-        }
 
+        let generalHarm = Math.floor(harm/2);
+        let soldierHarm = harm - generalHarm;
+        cc.log("攻击 "+attack+"; 防御 "+defend+"; 伤害 "+harm+"; 武将伤害 "+generalHarm+"; 士兵伤害 "+soldierHarm);
+
+        let blood = defCardCfg.hp - generalHarm;
+        if(blood <= 0){
+            blood = 0;
+            this.showTipsLable("攻击方击败防御方，防御方武将阵亡！"+defCardCfg.name, cc.Color.GREEN);
+        }
         defCardCfg.hp = blood;
+
+        let bingCount = defSoldierCount - soldierHarm;
+        if(bingCount <= 0){
+            bingCount = 0;
+            attackCardInfo.generalInfo.killCount += defSoldierCount;
+            this.showTipsLable("攻击方击败防御方，防御方武将麾下无士兵，部曲解散！"+defCardCfg.name, cc.Color.GREEN);
+        }else{
+            attackCardInfo.generalInfo.killCount += soldierHarm;
+        }
+        defendCardInfo.generalInfo.bingCount = bingCount;
 
         return [attackCardInfo, defendCardInfo];
     }
@@ -248,6 +294,7 @@ export default class FightShow extends cc.Component {
         let rightCardCfg = this.rightCardInfo.generalInfo.generalCfg;
         let leftCardCfg = this.leftCardInfo.generalInfo.generalCfg;
 
+        ////////////////////////// 战斗 ////////////////////////////////////////
         if(this.nShowType == 2){
             this.node.runAction(cc.sequence(
                 cc.repeat(cc.sequence(cc.delayTime(stepDelay), cc.callFunc(function(){
@@ -268,7 +315,11 @@ export default class FightShow extends cc.Component {
                 cc.log("fightEnd(), this.leftCardInfo = "+JSON.stringify(this.leftCardInfo));
                 cc.log("fightEnd(), this.rightCardInfo = "+JSON.stringify(this.rightCardInfo));
                 
-                if(rightCardCfg.hp <= 0){
+                if(rightCardCfg.hp <= 0 || this.rightCardInfo.generalInfo.bingCount <= 0){
+                    if(this.rightCardInfo.campId == FightMgr.myCampId){
+                        FightMgr.getFightScene().addMyDeadCard(this.rightCardInfo);   //添加我方武将战死数据
+                    }
+
                     if(leftCardCfg.bingzhong == 403){  //弓兵攻击后不移动位置
                         this.srcBlock.showBlockCard(this.leftCardInfo);  //设置地块上的卡牌模型
 
@@ -300,7 +351,11 @@ export default class FightShow extends cc.Component {
                             FightMgr.getFightScene().setEnemyOpenBlock(true, this.destBlock);   //设置敌方已经开启的卡牌
                         }
                     }
-                }else if(leftCardCfg.hp <= 0){
+                }else if(leftCardCfg.hp <= 0  || this.leftCardInfo.generalInfo.bingCount <= 0){
+                    if(this.leftCardInfo.campId == FightMgr.myCampId){
+                        FightMgr.getFightScene().addMyDeadCard(this.leftCardInfo);   //添加我方武将战死数据
+                    }
+
                     if(this.srcBlock.cardInfo.campId == FightMgr.myCampId){
                         FightMgr.getFightScene().setMyOpenBlock(false, this.srcBlock);   //设置我方已经开启的卡牌
                     }else{
@@ -318,18 +373,19 @@ export default class FightShow extends cc.Component {
                 FightMgr.nextRoundOpt();  //下回合处理
             }.bind(this))))
         }
-        else if(this.nShowType == 1){   //合成
+        ///////////////////////////////////合成////////////////////////////
+        //合成之后，血量直接叠加，兵力按照兵种叠加（有损失），智力折中叠加，攻击折中叠加，防御折中叠加，
+        else if(this.nShowType == 1){  
             this.node.runAction(cc.sequence(cc.delayTime(stepDelay), cc.callFunc(function(){
-                let totalVal = leftCardCfg.hp + rightCardCfg.hp;
-                let newVal = Math.floor(totalVal/2);
+                let newVal = leftCardCfg.hp + rightCardCfg.hp;
                 if(leftCardCfg.bingzhong == rightCardCfg.bingzhong){
-                    newVal = Math.floor(newVal*1.2);
-                    if(newVal > 1000){
-                        newVal = 1000;
-                    }
-                    this.showTipsLable("兵种相同，合成新血量为双方血量折中后的1.2倍！", cc.Color.GREEN);
+                    this.showTipsLable("兵种相同，合成新血量为血量总和！", cc.Color.GREEN);
                 }else{
-                    this.showTipsLable("兵种不同，合成新血量为双方血量折中！", cc.Color.GREEN);
+                    newVal = Math.floor(newVal * 0.8);
+                    this.showTipsLable("兵种不同，合成新血量为双方血量总和的80%！", cc.Color.GREEN);
+                }
+                if(newVal > 1000){
+                    newVal = 1000;
                 }
                 leftCardCfg.hp = newVal;
                 this.leftHp.string = "血量："+newVal;
@@ -337,14 +393,14 @@ export default class FightShow extends cc.Component {
             }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
                 let totalVal = leftCardCfg.mp + rightCardCfg.mp;
                 let newVal = Math.floor(totalVal/2);
-                if(leftCardCfg.bingzhong == rightCardCfg.bingzhong){
-                    newVal = Math.floor(newVal*1.2);
-                    if(newVal > 100){
-                        newVal = 100;
-                    }
-                    this.showTipsLable("兵种相同，合成新智力为双方智力折中后的1.2倍！", cc.Color.YELLOW);
+                if(leftCardCfg.mp >= rightCardCfg.mp * 1.2){
+                    newVal = Math.floor(newVal*1.5);
+                    this.showTipsLable("卡牌智力较高，合成新智力为双方智力折中后的1.5倍！", cc.Color.YELLOW);
                 }else{
-                    this.showTipsLable("兵种不同，合成新智力为双方智力折中！", cc.Color.YELLOW);
+                    this.showTipsLable("卡牌智力一般，合成新智力为双方智力折中！", cc.Color.YELLOW);
+                }
+                if(newVal > 100){
+                    newVal = 100;
                 }
                 leftCardCfg.mp = newVal;
                 this.leftMp.string = "智力："+newVal;
@@ -353,17 +409,13 @@ export default class FightShow extends cc.Component {
                 let totalVal = leftCardCfg.atk + rightCardCfg.atk;
                 let newVal = Math.floor(totalVal/2);
                 if(leftCardCfg.bingzhong == rightCardCfg.bingzhong){
-                    newVal = Math.floor(newVal*1.3);
-                    if(newVal > 100){
-                        newVal = 100;
-                    }
-                    this.showTipsLable("兵种相同，合成新攻击为双方攻击折中后的1.3倍！", cc.Color.RED);
+                    newVal = Math.floor(newVal*1.5);
+                    this.showTipsLable("兵种相同，合成新攻击为双方攻击折中后的1.5倍！", cc.Color.RED);
                 }else{
-                    newVal = Math.floor(newVal*1.1);
-                    if(newVal > 100){
-                        newVal = 100;
-                    }
-                    this.showTipsLable("兵种不同，合成新攻击为双方攻击折中后的1.1倍！", cc.Color.RED);
+                    this.showTipsLable("兵种不同，合成新攻击为双方攻击折中值！", cc.Color.RED);
+                }
+                if(newVal > 100){
+                    newVal = 100;
                 }
                 leftCardCfg.atk = newVal;
                 this.leftAtk.string = "攻击："+newVal;
@@ -371,18 +423,37 @@ export default class FightShow extends cc.Component {
             }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
                 let totalVal = leftCardCfg.def + rightCardCfg.def;
                 let newVal = Math.floor(totalVal/2);
-                if(leftCardCfg.bingzhong == rightCardCfg.bingzhong){
-                    newVal = Math.floor(newVal*1.2);
-                    if(newVal > 100){
-                        newVal = 100;
-                    }
-                    this.showTipsLable("兵种相同，合成新防御为双方防御折中后的1.2倍！", cc.Color.BLUE);
+                if(leftCardCfg.bingzhong != rightCardCfg.bingzhong){
+                    newVal = Math.floor(newVal*1.6);
+                    this.showTipsLable("兵种互补，合成新防御为双方防御折中后的1.6倍！", cc.Color.BLUE);
                 }else{
-                    this.showTipsLable("兵种不同，合成新防御为双方防御折中！", cc.Color.BLUE);
+                    newVal = Math.floor(newVal*1.2);
+                    this.showTipsLable("兵种相同，合成新防御为双方防御折中后的1.2倍！", cc.Color.BLUE);
+                }
+                if(newVal > 100){
+                    newVal = 100;
                 }
                 leftCardCfg.def = newVal;
                 this.leftDef.string = "防御："+newVal;
                 this.rightDef.string = "防御：0";
+            }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
+                let totalVal = this.leftCardInfo.generalInfo.bingCount + this.rightCardInfo.generalInfo.bingCount;
+                let newVal = Math.floor(totalVal/2);
+                if(leftCardCfg.bingzhong == rightCardCfg.bingzhong){
+                    newVal = Math.floor(newVal*1.5);
+                    this.showTipsLable("兵种相同，合成新兵力为双方兵力折中后的1.5倍！", cc.Color.BLUE);
+                }else{
+                    newVal = Math.floor(newVal*1.2);
+                    this.showTipsLable("兵种不同，合成新兵力为双方兵力折中后后的1.2倍！", cc.Color.BLUE);
+                }
+                let bingMax = this.leftCardInfo.generalInfo.generalLv * 1000;
+                if(newVal > bingMax){
+                    newVal = bingMax;
+                }
+                this.leftCardInfo.generalInfo.bingCount = newVal;
+                this.rightCardInfo.generalInfo.bingCount = 0;
+
+                cc.log("合成后的卡牌 this.leftCardInfo = "+JSON.stringify(this.leftCardInfo));
             }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
                 effNode.removeFromParent(true);
 
@@ -395,6 +466,10 @@ export default class FightShow extends cc.Component {
                     FightMgr.getFightScene().setMyOpenBlock(false, this.srcBlock);   //设置我方已经开启的卡牌
                 }else{
                     FightMgr.getFightScene().setEnemyOpenBlock(false, this.srcBlock);   //设置敌方已经开启的卡牌
+                }
+
+                if(this.destBlock.cardInfo.campId == FightMgr.myCampId){
+                    FightMgr.getFightScene().addMyDeadCard(this.rightCardInfo);   //添加我方武将战死数据
                 }
 
                 this.destBlock.showBlockCard(this.leftCardInfo);  //设置地块上的卡牌模型

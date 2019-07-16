@@ -153,7 +153,7 @@ class MyUserManager {
 
     /**修改用户武将列表 */
     updateGeneralList(general: GeneralInfo, bSave: boolean = true){
-        //cc.log("updateGeneralList(), general = "+JSON.stringify(general));
+        cc.log("updateGeneralList(), general = "+JSON.stringify(general));
         for(let i=0; i<MyUserData.GeneralList.length; ++i){
             let info: GeneralInfo = MyUserData.GeneralList[i];
             if(general.timeId == info.timeId){
@@ -163,12 +163,28 @@ class MyUserManager {
                 if(bSave){
                     this.saveGeneralList();
                 }
-                break;
+                return;
             }
         }
     }
     /**添加武将到列表 */
     addGeneralToList(general: GeneralInfo, bSave: boolean = true){
+        //cc.log("addGeneralToList(), general = "+JSON.stringify(general));
+        let minTimeId = 0;
+        let bConflictTimeId = false;
+        for(let i=0; i<MyUserData.GeneralList.length; ++i){
+            let info: GeneralInfo = MyUserData.GeneralList[i];
+            if(general.timeId == info.timeId){
+                bConflictTimeId = true;
+            }
+            if(minTimeId == 0 || minTimeId > info.timeId){
+                minTimeId = info.timeId;
+            }
+        }
+        if(bConflictTimeId == true){
+            general.timeId = minTimeId -1;
+        }
+
         MyUserData.GeneralList.push(general);
 
         if(bSave){
@@ -182,16 +198,18 @@ class MyUserManager {
             let tempItem = MyUserData.GeneralList[i].cloneNoCfg();
             GeneralList.push(tempItem);
         }
-
+        cc.log("GeneralList = "+JSON.stringify(GeneralList));
         LDMgr.setItem(LDKey.KEY_GeneralList, JSON.stringify(GeneralList));
     }
     /**从本地存储中获取武将列表 */
     getGeneralListByLD(){
         let GeneralList = LDMgr.getJsonItem(LDKey.KEY_GeneralList);  //武将列表
         let tempList = new Array();
+        let curTime = new Date().getTime();
         if(GeneralList){
             for(let i=0; i<GeneralList.length; ++i){
                 let tempItem = new GeneralInfo(GeneralList[i].generalId, GeneralList[i]);
+                tempItem.timeId = curTime - i;   //防止一起读取时多个武将timeId一致
                 tempList.push(tempItem);
             }
         }

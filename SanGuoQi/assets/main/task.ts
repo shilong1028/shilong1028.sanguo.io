@@ -59,6 +59,7 @@ export default class Task extends cc.Component {
     }
 
     onRewardBtn(){
+        cc.log("onRewardBtn(), this.taskConf = "+JSON.stringify(this.taskConf));
         if(this.taskConf.generals && this.taskConf.generals.length > 0){    //武将来投
             let layer = GameMgr.showLayer(this.pfGenJoin);
             layer.getComponent(GeneralJoin).initGeneralIds(this.taskConf.generals);
@@ -94,11 +95,23 @@ export default class Task extends cc.Component {
                 if(MyUserData.TaskState == 1){   //已完成未领取
                     this.detailNode.active = false;
                     this.rewardNode.active = true;
+
+                    GameMgr.getMainScene().showHandActions(cc.v2(320, -640));   //引导用的手指动画
                 }else{
                     this.detailNode.active = true;
                     this.rewardNode.active = false;
 
                     ROOT_NODE.showTipsText("任务更新 "+this.taskConf.name);
+
+                    if(this.taskConf.type == 2){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+                        GameMgr.getMainScene().showHandActions(cc.v2(350, 525));   //引导用的手指动画
+                    }else if(this.taskConf.type == 3){
+                        GameMgr.getMainScene().showHandActions(cc.v2(350, 305));   //引导用的手指动画
+                    }else if(this.taskConf.type == 4){
+                        GameMgr.getMainScene().showHandActions(cc.v2(350, 295));   //引导用的手指动画
+                    }else{
+                        GameMgr.getMainScene().showHandActions(cc.v2(320, -640));   //引导用的手指动画
+                    }
                 }
             }
         }

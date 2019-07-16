@@ -18,6 +18,11 @@ export default class MainScene extends cc.Component {
     @property(cc.Label)
     foodLabel: cc.Label = null;
 
+    @property(cc.Sprite)
+    handSpr: cc.Sprite = null;
+    @property([cc.SpriteFrame])
+    handFrames: cc.SpriteFrame[] = new Array(2);
+
     @property(cc.Node)
     mapNode: cc.Node = null;   //地图总节点
 
@@ -70,6 +75,8 @@ export default class MainScene extends cc.Component {
         this.UpdateGoldCount();
         this.UpdateDiamondCount();
         this.UpdateFoodCount();
+
+        this.showHandActions(null);   //引导用的手指动画（一定要放到任务之前初始，因为位置由任务决定）
 
         this.setTaskInfo();   //初始化任务
     }
@@ -140,6 +147,33 @@ export default class MainScene extends cc.Component {
         }.bind(this))));
     }
 
+    /**引导用的手指动画 */
+    showHandActions(pos: cc.Vec2){
+        if(pos == null){   //初始
+            this.handSpr.node.opacity = 0;
+
+            this.handSpr.node.runAction(cc.repeatForever(cc.sequence(
+                cc.delayTime(0.3), cc.callFunc(function(){
+                    this.handSpr.spriteFrame = this.handFrames[1];
+                }.bind(this)), cc.delayTime(0.3), cc.callFunc(function(){
+                    this.handSpr.spriteFrame = this.handFrames[0];
+                }.bind(this))
+            )));
+        }else{
+            this.handSpr.node.position = pos;
+
+            if(pos.y < 0){
+                if(this.bTaskUp == true){  //任务是否拉伸出来了
+                    this.handSpr.node.opacity = 255;
+                }else{
+                    this.handSpr.node.opacity = 0;
+                }
+            }else{
+                this.handSpr.node.opacity = 255;
+            }   
+        }
+    }
+
 
     /************************  以下为各种按钮事件 ***************/
 
@@ -190,14 +224,22 @@ export default class MainScene extends cc.Component {
     onTaskOptBtn(){
         this.taskNode.stopAllActions();
         this.bTaskUp = !this.bTaskUp;
-        if(this.bTaskUp == true){
+        if(this.bTaskUp == true){  //任务是否拉伸出来了
             this.taskOptNode.scaleY = -1;
             let destY = 150 - this.taskNode.y;
             this.taskNode.runAction(cc.moveTo(destY/500, cc.v2(0, 150)));
+
+            if(this.handSpr.node.y < 0){
+                this.handSpr.node.opacity = 255;
+            }
         }else{
             this.taskOptNode.scaleY = 1;
             let destY = this.taskNode.y - 45;
             this.taskNode.runAction(cc.moveTo(destY/500, cc.v2(0, 45)));
+
+            if(this.handSpr.node.y < 0){
+                this.handSpr.node.opacity = 0;
+            }
         }
     }
 

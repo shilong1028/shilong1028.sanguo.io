@@ -132,6 +132,7 @@ export default class FightReady extends cc.Component {
                 return;
             }else{
                 this.generalArr[this.selCellIdx].bReadyFight = true;
+                this.generalArr[this.selCellIdx].killCount = 0;
                 this.fightArr.push(this.generalArr[this.selCellIdx]);
             }
         }

@@ -37,6 +37,7 @@ export class GeneralInfo{
     generalLv: number = 1;   //武将等级
     bingCount: number = 0;   //部曲士兵数量
 
+    killCount: number = 0;   //杀敌（士兵）数量
 
     constructor(generalId:number, info:any=null){
         this.timeId = new Date().getTime();
@@ -48,6 +49,7 @@ export class GeneralInfo{
             this.bingCount = 0;
         }
         this.bReadyFight = false;
+        this.killCount = 0;
         this.generalId = generalId;
         this.generalCfg = CfgMgr.getGeneralConf(generalId);
     }
@@ -59,6 +61,7 @@ export class GeneralInfo{
 
         //不必写入本地存储的变量
         temp.timeId = 0;
+        temp.bingCount = 0;
         temp.generalCfg = null;
 
         return temp;

@@ -83,9 +83,11 @@ export default class GeneralUnit extends cc.Component {
 
     //单个武将数据更新
     handleUpdateGeneral(info: GeneralInfo){
-        //cc.log("handleUpdateGeneral(), 单个武将数据更新, info = "+JSON.stringify(info));
+        cc.log("handleUpdateGeneral(), 单个武将数据更新, info = "+JSON.stringify(info));
 
         this.selCellIdx = -1;
+        this.selBingItem = null;
+        
         this.tableView.clear();
         this.initGeneralList();  //刷新武将列表
 
@@ -155,6 +157,7 @@ export default class GeneralUnit extends cc.Component {
 
     //更新武将部曲士兵数量
     updateGeneralBingCount(){
+        cc.log("updateGeneralBingCount(), this.selCellIdx = "+this.selCellIdx);
         let selGeneralInfo: GeneralInfo = MyUserData.GeneralList[this.selCellIdx];
         selGeneralInfo.updateBingCount(1000);
         MyUserMgr.updateGeneralList(selGeneralInfo, true);   //修改用户武将列表

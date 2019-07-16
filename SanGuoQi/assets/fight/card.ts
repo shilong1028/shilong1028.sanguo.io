@@ -91,6 +91,9 @@ export default class Card extends cc.Component {
             this.nameLable.node.color = cc.color(255, 255, 255);
         }
 
+        this.lvLabel.string = "Lv"+this.cardInfo.generalInfo.generalLv;
+        this.bingNumLabel.string = this.cardInfo.generalInfo.bingCount.toString();
+
         let cardCfg = this.cardInfo.generalInfo.generalCfg;
         if(cardCfg){
             let generalId = this.cardInfo.generalInfo.generalId;
