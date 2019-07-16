@@ -9,14 +9,12 @@
   "design-resolution-width": 750,
   "excluded-modules": [
     "LabelOutline",
-    "Mask",
     "ParticleSystem",
     "TiledMap",
     "Spine Skeleton",
     "DragonBones",
     "RichText",
     "MotionStreak",
-    "WebView",
     "Physics",
     "StudioComponent"
   ],
@@ -35,7 +33,7 @@
   "group-list": [
     "default"
   ],
-  "last-module-event-record-time": 1562062620373,
+  "last-module-event-record-time": 1563266641676,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,

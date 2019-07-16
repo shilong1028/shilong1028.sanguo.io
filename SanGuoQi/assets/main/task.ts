@@ -108,7 +108,7 @@ export default class Task extends cc.Component {
                     }else if(this.taskConf.type == 3){
                         GameMgr.getMainScene().showHandActions(cc.v2(350, 305));   //引导用的手指动画
                     }else if(this.taskConf.type == 4){
-                        GameMgr.getMainScene().showHandActions(cc.v2(350, 295));   //引导用的手指动画
+                        GameMgr.getMainScene().showHandActions(cc.v2(350, 195));   //引导用的手指动画
                     }else{
                         GameMgr.getMainScene().showHandActions(cc.v2(320, -640));   //引导用的手指动画
                     }
