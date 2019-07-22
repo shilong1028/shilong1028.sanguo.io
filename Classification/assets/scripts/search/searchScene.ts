@@ -189,9 +189,9 @@ export default class SearchScene extends cc.Component {
             this.gameNode.opacity = 0;
             this.resultNode.opacity = 255;
 
-            this.resultNode.runAction(cc.sequence(cc.delayTime(5.0), cc.callFunc(function(){
-                this.showResultNode(false);
-            }.bind(this))));
+            // this.resultNode.runAction(cc.sequence(cc.delayTime(5.0), cc.callFunc(function(){
+            //     this.showResultNode(false);
+            // }.bind(this))));
         }else{
             this.resultNode.opacity = 0;
             this.gameNode.opacity = 255;

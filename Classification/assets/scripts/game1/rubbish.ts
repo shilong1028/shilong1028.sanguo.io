@@ -1,4 +1,4 @@
-import Game1Scene from "./game1Scene";
+
 import { st_rubbish_info, CfgMgr } from "../manager/ConfigManager";
 
 //垃圾
@@ -12,6 +12,9 @@ export default class Rubbish extends cc.Component {
 
     @property(cc.Sprite)
     iconSpr: cc.Sprite = null;
+
+    @property(cc.SpriteAtlas)
+    iconAtlas: cc.SpriteAtlas = null;
 
     // LIFE-CYCLE CALLBACKS:
     gameScene: any = null;
@@ -85,7 +88,7 @@ export default class Rubbish extends cc.Component {
         this.rubbishConf = CfgMgr.C_rubbish_info[id];
         if(this.rubbishConf){
             this.bgSpr.spriteFrame = this.gameScene.targetFrames[this.rubbishConf.type-1];
-            //this.iconSpr.spriteFrame = this.gameScene.targetFrames[this.rubbishConf.type-1];
+            this.iconSpr.spriteFrame = this.iconAtlas.getSpriteFrame(id.toString());
         }
 
         this.resetMoveToEnd();   //垃圾移动到底部

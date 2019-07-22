@@ -208,8 +208,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
-      "height": 120
+      "width": 100,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -296,6 +296,9 @@
     },
     "iconSpr": {
       "__id__": 6
+    },
+    "iconAtlas": {
+      "__uuid__": "d16f12f8-e150-4c09-a698-6ce055a2592f"
     },
     "_id": ""
   },
