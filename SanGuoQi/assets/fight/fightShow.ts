@@ -170,7 +170,7 @@ export default class FightShow extends cc.Component {
     }
 
 
-    showFightProgress(attackCardInfo: CardInfo, defendCardInfo: CardInfo){
+    showFightProgress(attackCardInfo: CardInfo, defendCardInfo: CardInfo, bAtkArrowTown:boolean=false){
         let atkCardCfg = attackCardInfo.generalInfo.generalCfg;
         let defCardCfg = defendCardInfo.generalInfo.generalCfg;
 
@@ -218,6 +218,12 @@ export default class FightShow extends cc.Component {
             defend += defCardCfg.def * 0.5;
         }
 
+        //攻击方在箭塔下
+        if(bAtkArrowTown == true){
+            this.showTipsLable("箭塔辅助攻击，攻击方攻击力增加50%！", cc.Color.RED);
+            attack += atkCardCfg.atk * 0.5;
+        }
+
         let atkSoliderCount = attackCardInfo.generalInfo.bingCount;
         if(atkSoliderCount >= 1000){
             this.showTipsLable("攻击方兵力充足，攻击方攻击力提升！", cc.Color.RED);
@@ -246,7 +252,7 @@ export default class FightShow extends cc.Component {
             defend *= 0.2;
         }
 
-        let harm = Math.floor(attack - defend*0.7)*5;
+        let harm = Math.floor(attack - defend*0.7)*2;
         if(harm <= 0){
             harm = 1;
             this.showTipsLable("攻击方太弱，防御方收到伤害：1", cc.Color.GREEN);
@@ -298,17 +304,31 @@ export default class FightShow extends cc.Component {
         if(this.nShowType == 2){
             this.node.runAction(cc.sequence(
                 cc.repeat(cc.sequence(cc.delayTime(stepDelay), cc.callFunc(function(){
-                    let arr = this.showFightProgress(this.leftCardInfo, this.rightCardInfo);
+                    //攻击方进攻
+                    let arr = this.showFightProgress(this.leftCardInfo, this.rightCardInfo, false);
                     this.leftCardInfo = arr[0];
                     this.rightCardInfo = arr[1];
                     this.showLeftUI();
                     this.showRightUI();
                 }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
-                    let arr = this.showFightProgress(this.rightCardInfo, this.leftCardInfo);
-                    this.rightCardInfo = arr[0];
-                    this.leftCardInfo = arr[1];
-                    this.showLeftUI();
-                    this.showRightUI();
+                    //防御方反击
+                    let bDefenderAtk: boolean = true;   //防御方反击
+                    if(this.leftCardInfo.generalInfo.generalCfg.bingzhong == 403){   //弓兵攻击两格
+                        if(this.rightCardInfo.generalInfo.generalCfg.bingzhong != 403){ 
+                            let defPos = this.srcBlock.node.position;
+                            let atkPos = this.destBlock.node.position;
+                            if(defPos.sub(atkPos).mag() >= 250 ){
+                                bDefenderAtk = false;  //两格且防御非弓兵
+                            }
+                        }
+                    }
+                    if(bDefenderAtk == true){
+                        let arr = this.showFightProgress(this.rightCardInfo, this.leftCardInfo, this.destBlock.bArrowTown);
+                        this.rightCardInfo = arr[0];
+                        this.leftCardInfo = arr[1];
+                        this.showLeftUI();
+                        this.showRightUI();
+                    }
                 }.bind(this))), 3), 
             cc.delayTime(stepDelay), cc.callFunc(function(){
                 effNode.removeFromParent(true);

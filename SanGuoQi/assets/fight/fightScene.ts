@@ -2,7 +2,8 @@ import Card from "./card";
 import Block from "./block";
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
-import { CardInfo } from "../manager/Enum";
+import { CardInfo, NoticeType } from "../manager/Enum";
+import { NoticeMgr } from "../manager/NoticeManager";
 
 //战斗场景
 const {ccclass, property} = cc._decorator;
@@ -21,6 +22,8 @@ export default class FightScene extends cc.Component {
 
     @property(cc.Toggle)
     autoToggle: cc.Toggle = null;
+    @property(cc.Node)
+    toggleNode: cc.Node = null;
 
     @property(cc.Prefab)
     pfBlock: cc.Prefab = null;   //棋盘格对象
@@ -55,8 +58,14 @@ export default class FightScene extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.ontTouchEnd, this);
     }
 
+    onDestroy(){
+        this.node.targetOff(this);
+        NoticeMgr.offAll(this);
+    }
+
     start () {
         this.createDefaultCards();
+        //this.toggleNode.active = true;   //敌方AI选择节点
     }
 
     // update (dt) {}
@@ -112,6 +121,11 @@ export default class FightScene extends cc.Component {
     /**设置选中的将要移动的卡牌地块 */
     setSelectCard(block: Block){
         this.selectBlock = block;  
+        NoticeMgr.emit(NoticeType.SelBlockMove, block);  //准备拖动砖块
+
+        if(this.toggleNode.active == true){
+            this.toggleNode.active = false;   //敌方AI选择节点
+        }
     }
 
     onAutoToggle(){
@@ -160,6 +174,8 @@ export default class FightScene extends cc.Component {
         if(this.selCardNode == null || this.selectBlock == null){
             return;
         }
+        NoticeMgr.emit(NoticeType.SelBlockMove, null);  //准备拖动砖块
+
         this.selCardNode.setPosition(-3000, -3000);
         touchPos.y += this.gridNode.y;
 
@@ -195,10 +211,17 @@ export default class FightScene extends cc.Component {
                                     return block;
                                 }
                             }
-                        }else{   //只能移动相邻格子
-                            if(blockLen <= 200){
-                                return block;
+                        }else{  //移动
+                            if(this.selectBlock.cardInfo.generalInfo.generalCfg.bingzhong == 401){   //骑兵移动两格
+                                if(blockLen <= 400){
+                                    return block;
+                                }
+                            }else{
+                                if(blockLen <= 200){   //只能移动相邻格子
+                                    return block;
+                                }
                             }
+
                         }
                     }
                 }

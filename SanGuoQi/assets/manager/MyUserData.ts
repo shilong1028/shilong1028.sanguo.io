@@ -53,7 +53,8 @@ class MyUserManager {
 
         let taskInfo = LDMgr.getItemKeyVal(LDKey.KEY_StoryData);  //当前任务ID
         if(taskInfo == null){
-            this.updateTaskState(1, 0);   //修改用户任务ID
+            MyUserData.TaskId = 1;   //当前任务ID
+            MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
         }else{
             MyUserData.TaskId = parseInt(taskInfo.key);
             MyUserData.TaskState = taskInfo.val;

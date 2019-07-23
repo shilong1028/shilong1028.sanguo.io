@@ -19,7 +19,7 @@ class FightManager {
     bMyRound: boolean = true;  //是否我方回合
 
     FightWin: boolean = false;  //战斗胜利或失败
-    EnemyAutoAi: boolean = true;  //敌方自动AI
+    EnemyAutoAi: boolean = false;  //敌方是否自动AI
 
     /**清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组 */
     clearAndInitFightData(enemyArr:GeneralInfo[], generalArr: GeneralInfo[]){
@@ -33,7 +33,7 @@ class FightManager {
         this.bMyRound = true;  //是否我方回合
 
         this.FightWin = false;  //战斗胜利或失败
-        this.EnemyAutoAi = true;  //敌方自动AI
+        this.EnemyAutoAi = false;  //敌方自动AI
     }
 
 
@@ -72,17 +72,57 @@ class FightManager {
     }
 
     /**从随机数组中获取武将数据 */
-    getGeneralDataFromRandomArr(): CardInfo{
-        let len = this.randomGeneralArr.length;
-        let idx = Math.ceil(Math.random()*len);
-        idx --;
-        if(idx < 0){
-            idx = 0;
-        }
-        let cardInfo = this.randomGeneralArr[idx];
-        this.randomGeneralArr.splice(idx, 1);
+    getGeneralDataFromRandomArr(blockIdx: number): CardInfo{
+        // let len = this.randomGeneralArr.length;
+        // let idx = Math.ceil(Math.random()*len);
+        // idx --;
+        // if(idx < 0){
+        //     idx = 0;
+        // }
+        // let cardInfo = this.randomGeneralArr[idx];
+        // this.randomGeneralArr.splice(idx, 1);
 
-        return cardInfo.clone();
+        // return cardInfo.clone();
+
+        //demo中卡牌均开启并制定位置
+        //敌方
+        if(blockIdx == 0){
+            let card = new CardInfo(2, this.battleEnemyArr[4]);
+            return card.clone();
+        }else if(blockIdx == 1){
+            let card = new CardInfo(2, this.battleEnemyArr[0]);
+            return card.clone();
+        }else if(blockIdx == 2){
+            let card = new CardInfo(2, this.battleEnemyArr[2]);
+            return card.clone();
+        }else if(blockIdx == 5){
+            let card = new CardInfo(2, this.battleEnemyArr[1]);
+            return card.clone();
+        }else if(blockIdx == 7){
+            let card = new CardInfo(2, this.battleEnemyArr[3]);
+            return card.clone();
+        }
+        //我方
+        else if(blockIdx == 19){
+            let card = new CardInfo(1, this.battleGeneralArr[4]);
+            return card.clone();
+        }else if(blockIdx == 18){
+            let card = new CardInfo(1, this.battleGeneralArr[0]);
+            return card.clone();
+        }else if(blockIdx == 17){
+            let card = new CardInfo(1, this.battleGeneralArr[2]);
+            return card.clone();
+        }else if(blockIdx == 14){
+            let card = new CardInfo(1, this.battleGeneralArr[1]);
+            return card.clone();
+        }else if(blockIdx == 12){
+            let card = new CardInfo(1, this.battleGeneralArr[3]);
+            return card.clone();
+        }
+        else{   //空
+            let card = new CardInfo(0);  
+            return card.clone();
+        }
     }
 
     /**兵种相克 */
@@ -112,11 +152,11 @@ class FightManager {
 
     /**下回合处理 */
     nextRoundOpt(){
-        if(FightMgr.getFightScene().checkGameOver() == false){
-            if(FightMgr.bMyRound == true){
-                FightMgr.handleEnemyRoundOpt();   //敌方回合处理
+        if(this.getFightScene().checkGameOver() == false){
+            if(this.bMyRound == true){
+                this.handleEnemyRoundOpt();   //敌方回合处理
             }else{
-                FightMgr.handleMyRoundOpt();   //我方回合处理
+                this.handleMyRoundOpt();   //我方回合处理
             }
         }
     }
@@ -124,17 +164,20 @@ class FightManager {
     /**我方回合处理 */
     handleMyRoundOpt(){
         this.bMyRound = true;
-        this.bStopTouch = false;
-        FightMgr.getFightScene().showRoundDesc();
+        this.bStopTouch = false;  //是否停止触摸反应
+        this.getFightScene().showRoundDesc();
     }
 
     /**敌方回合处理 */
     handleEnemyRoundOpt(){
         this.bMyRound = false;
-        this.bStopTouch = true;
-        FightMgr.getFightScene().showRoundDesc();
-
-        FightMgr.getFightScene().handleEnemyRoundOpt();
+        if(this.EnemyAutoAi == true){
+            this.bStopTouch = true;  //是否停止触摸反应
+            this.getFightScene().handleEnemyRoundOpt();
+        }else{
+            this.bStopTouch = false;  //是否停止触摸反应
+        }
+        this.getFightScene().showRoundDesc();
     }
 
 

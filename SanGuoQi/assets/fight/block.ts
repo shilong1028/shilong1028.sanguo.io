@@ -1,8 +1,9 @@
 
-import { CardInfo } from "../manager/Enum";
+import { CardInfo, NoticeType } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
 import Card from "./card";
 import FightShow from "./fightShow";
+import { NoticeMgr } from "../manager/NoticeManager";
 
 //棋盘格子对象
 const {ccclass, property} = cc._decorator;
@@ -14,6 +15,15 @@ export default class Block extends cc.Component {
     blockSpr: cc.Sprite = null;
     @property(cc.SpriteFrame)
     openFrame: cc.SpriteFrame = null;  //开启后的背景
+    @property(cc.SpriteFrame)
+    arrowFrame: cc.SpriteFrame = null;   //箭楼纹理
+
+    @property(cc.Node)
+    headNode: cc.Node = null;
+    @property(cc.Node)
+    runBg: cc.Node = null;
+    @property(cc.Node)
+    atkBg: cc.Node = null;
 
     blockId: number = 0;   //地块ID
     isLock: boolean = true;   //是否锁定的地块
@@ -21,14 +31,21 @@ export default class Block extends cc.Component {
     cardNode: cc.Node = null;
     cardInfo: CardInfo = null;
 
+    bArrowTown: boolean = false;   //是否为箭楼  
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+        NoticeMgr.on(NoticeType.SelBlockMove, this.handleSelBlockMove, this);  //准备拖动砖块
+
+        this.runBg.active = false;
+        this.atkBg.active = false;
     }
 
     onDestroy(){
         this.node.targetOff(this);
+        NoticeMgr.offAll(this);
     }
 
     start () {
@@ -37,10 +54,62 @@ export default class Block extends cc.Component {
 
     // update (dt) {}
 
+     //准备拖动砖块
+    handleSelBlockMove(selBlock: Block){
+        if(this.isLock == true){   //未解锁
+            return;
+        }
+
+        this.runBg.active = false;
+        this.atkBg.active = false;
+
+        if(selBlock && selBlock.blockId != this.blockId){
+            let offX = Math.abs(this.node.x - selBlock.node.x);
+            let offY = Math.abs(this.node.y - selBlock.node.y);
+            if(offX < 20 || offY < 20){   //同行或同列
+                let blockLen = this.node.position.sub(selBlock.node.position).mag();
+                if(blockLen <= 400){
+                    if(this.cardInfo){
+                        if(selBlock.isLock == false && this.cardInfo.campId != selBlock.cardInfo.campId){   //敌对阵营
+                            this.showRunAndAtkBg(selBlock, blockLen);
+                        }
+                    }else{   //空砖块
+                        this.showRunAndAtkBg(selBlock, blockLen);
+                    }
+                }
+            }
+        }
+    } 
+
+    //显示路径或攻击底图
+    showRunAndAtkBg(selBlock: Block, blockLen: number){
+        if(selBlock.cardInfo.generalInfo.generalCfg.bingzhong == 403){   //弓兵攻击两格
+            this.atkBg.active = true;
+        }else{
+            if(blockLen <= 200){
+                this.atkBg.active = true;
+            }
+        }
+
+        if(selBlock.cardInfo.generalInfo.generalCfg.bingzhong == 401){   //骑兵移动两格
+            this.runBg.active = true;
+        }else{
+            if(blockLen <= 200){
+                this.runBg.active = true;
+            }
+        }
+    }
+
     /**随机卡牌数据 */
     randCardData(idx: number){
         this.blockId = idx;
-        let cardInfo = FightMgr.getGeneralDataFromRandomArr();  //从随机数组中获取武将数据
+        if(idx == 4 || idx == 15){
+            this.bArrowTown = true;    //箭楼
+        }else{
+            this.bArrowTown = false;
+        }
+
+        let cardInfo = FightMgr.getGeneralDataFromRandomArr(this.blockId);  //从随机数组中获取武将数据
         if(cardInfo.campId == 0 && cardInfo.generalInfo == null){
             this.cardInfo = null;   //空卡
             this.isLock = false;
@@ -49,7 +118,10 @@ export default class Block extends cc.Component {
             this.cardInfo = cardInfo;
             this.isLock = true;
 
-            FightMgr.getFightScene().setLockBlock(true, this);   //设置地块开启或锁定
+            //FightMgr.getFightScene().setLockBlock(true, this);   //设置地块开启或锁定
+            //demo中所有地块均开启
+            this.isLock = false;
+            this.showBlockCard(this.cardInfo);
         }
     }
 
@@ -117,21 +189,25 @@ export default class Block extends cc.Component {
     
                 if(this.cardNode == null){
                     let cardNode = cc.instantiate(FightMgr.getFightScene().pfCard);
-                    this.node.addChild(cardNode);
+                    this.headNode.addChild(cardNode);
                     this.cardNode = cardNode;
                 }
                 this.cardNode.opacity = 255; 
                 this.cardNode.getComponent(Card).setCardData(info);
             }
 
-            this.blockSpr.spriteFrame = this.openFrame;
+            if(this.bArrowTown == true){
+                this.blockSpr.spriteFrame = this.arrowFrame;
+            }else{
+                this.blockSpr.spriteFrame = this.openFrame;
+            }
         }
     }
 
     /**显示战斗或合成 */
-    showFightShow(nType: number, srcBlock: Block, destBlock: Block){
+    showFightShow(nType: number, srcBlock: Block){
         let layer = FightMgr.showLayer(FightMgr.getFightScene().pfFightShow);
-        layer.getComponent(FightShow).initFightShowData(nType, srcBlock, destBlock);
+        layer.getComponent(FightShow).initFightShowData(nType, srcBlock, this);
     }
 
     /**将一个地块上的卡牌放置到本地块上 */
@@ -151,9 +227,11 @@ export default class Block extends cc.Component {
 
         if(this.cardInfo && dropCardInfo){
             if(this.cardInfo.campId == dropCardInfo.campId){   //同阵营合成
-                this.showFightShow(1, dropBlock, this);
+                //this.showFightShow(1, dropBlock);
+                //demo不开启合成
+                dropBlock.onCardDropBlock(dropBlock);   //将一个地块上的卡牌放置到本地块上
             }else{    //战斗
-                this.showFightShow(2, dropBlock, this);
+                this.showFightShow(2, dropBlock);
             }
         }else{  //移动
             this.showBlockCard(dropCardInfo);  //设置地块上的卡牌模型

@@ -67,6 +67,17 @@ export class GeneralInfo{
         return temp;
     }
 
+    clone(){
+        let temp = new GeneralInfo(this.generalId);
+        temp.timeId = this.timeId;
+        temp.generalLv = this.generalLv;
+        temp.bingCount = this.bingCount;
+        temp.bReadyFight = this.bReadyFight;
+        temp.killCount = this.killCount;
+
+        return temp;
+    }
+
     updateBingCount(num: number){
         this.bingCount += num;
         if(this.bingCount < 0){
@@ -121,5 +132,5 @@ export const NoticeType = {
     MapMoveByCity: "MapMoveByCity",   //话本目标通知（地图移动）
     UpdateTaskState: "UpdateTaskState",   //任务状态更新
 
-
+    SelBlockMove: "SelBlockMove",   //准备拖动砖块
 }
