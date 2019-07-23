@@ -18,6 +18,7 @@
     "PageView",
     "PageViewIndicator",
     "VideoPlayer",
+    "Collider",
     "Physics",
     "StudioComponent"
   ],

@@ -89,6 +89,9 @@ export default class Rubbish extends cc.Component {
         if(this.rubbishConf){
             this.bgSpr.spriteFrame = this.gameScene.targetFrames[this.rubbishConf.type-1];
             this.iconSpr.spriteFrame = this.iconAtlas.getSpriteFrame(id.toString());
+            if(this.iconSpr.spriteFrame == null){
+                cc.log("this.iconSpr.spriteFrame == null id = "+id);
+            }
         }
 
         this.resetMoveToEnd();   //垃圾移动到底部

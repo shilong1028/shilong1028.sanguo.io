@@ -1031,7 +1031,7 @@
                 <key>sourceSize</key>
                 <string>{115,115}</string>
             </dict>
-            <key>2030 - 副本.png</key>
+            <key>2030.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{587,353},{115,115}}</string>
@@ -1626,7 +1626,7 @@
             <key>size</key>
             <string>{1874,938}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e375e3739bf47995602979deeeb93ee8:e350d53abe32fdf079bcd5a8e8b3dc6e:c963d24bcd01d05514294fb77d1d16dd$</string>
+            <string>$TexturePacker:SmartUpdate:632b9e69ae721247edf3456dd1c8c14a:e350d53abe32fdf079bcd5a8e8b3dc6e:c963d24bcd01d05514294fb77d1d16dd$</string>
             <key>textureFileName</key>
             <string>rubbishIcon.png</string>
         </dict>

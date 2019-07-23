@@ -2,6 +2,7 @@ import { CfgMgr, st_rubbish_info } from "../manager/ConfigManager";
 import { NoticeMgr, NoticeType } from "../manager/NoticeManager";
 import { GameMgr } from "../manager/GameManager";
 import CostWarn from "./costWarn";
+import TableView from "../tableView/tableView";
 
 
 //垃圾分类主界面
@@ -21,17 +22,18 @@ export default class SearchScene extends cc.Component {
     editPlaceText: cc.Label = null;
 
     @property(cc.Node)
-    resultNode: cc.Node = null;   //查询返回节点
-    @property(cc.Sprite)
-    iconSpr: cc.Sprite = null;   //垃圾类型图标
+    resultNode: cc.Node = null;   //查询返回节点\
     @property(cc.Label)
-    resultLable: cc.Label = null;   //答案
-    @property(cc.Label)
-    descLabel: cc.Label = null;  //说明
-    @property(cc.Label)
-    otherLabel: cc.Label = null;  //没有找到答案的参考
+    resultLabel: cc.Label = null;  //答案
+    @property(TableView)
+    tableView: TableView = null;
+    @property(cc.Node)
+    classTipNode: cc.Node = null;   //无解时的提示
+
     @property([cc.SpriteFrame])
-    iconFrames: cc.SpriteFrame[] = new Array(4);
+    typeFrames: cc.SpriteFrame[] = new Array(4);
+    @property(cc.SpriteAtlas)
+    iconAtlas: cc.SpriteAtlas = null;
 
     @property(cc.Node)
     gameNode: cc.Node = null;   //小游戏节点
@@ -109,27 +111,27 @@ export default class SearchScene extends cc.Component {
 
     handleSearch(){
         this.bSearching = true;
-        let keyStr = this.editText.string;
+        let inputStr = this.editText.string;
 
-        if(keyStr && keyStr.length > 0){
+        if(inputStr && inputStr.length > 0){
             let keys = Object.getOwnPropertyNames(CfgMgr.C_rubbish_info);
             let mathchArr = new Array();   //匹配数据
             for (let i=1; i<=keys.length; ++i) { // 遍历Map
                 let idstr = keys[i];
-                let obj: st_rubbish_info = CfgMgr.C_rubbish_info[parseInt(idstr)];
+                let obj: st_rubbish_info = CfgMgr.getRubbishConf(parseInt(idstr));
                 if(obj){
-                    if(keyStr == obj.name){
-                        this.showSearchResult([{"mathchCount":100, "obj":obj}], 1);
+                    if(inputStr == obj.name){
+                        this.showSearchResult([{"mathchCount":100, "obj":obj, "idstr":idstr}], 1);
                         return;
                     }else{
                         let mathchCount = 0;
-                        for(let j=0; j<keyStr.length; ++j){
-                            if(obj.name.indexOf(keyStr[j]) != -1){   //indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。如果要检索的字符串值没有出现，则该方法返回 -1。
+                        for(let j=0; j<inputStr.length; ++j){
+                            if(obj.name.indexOf(inputStr[j]) != -1){   //indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。如果要检索的字符串值没有出现，则该方法返回 -1。
                                 mathchCount ++;
                             }
                         }
                         if(mathchCount > 0){
-                            mathchArr.push({"mathchCount":mathchCount, "obj":obj});
+                            mathchArr.push({"mathchCount":mathchCount, "obj":obj, "idstr":idstr});
                         }
                     }
                 }
@@ -149,33 +151,25 @@ export default class SearchScene extends cc.Component {
     }
 
     showSearchResult(results: any[], resultType: number=0){
-        //cc.log("showSearchResult() results = "+JSON.stringify(results));
+        cc.log("showSearchResult() results = "+JSON.stringify(results));
         this.bSearching = false;  //正在查询中
-        this.iconSpr.spriteFrame = null;
-        this.resultLable.string = "";   //答案：大骨头为干垃圾
-        this.descLabel.string = "";
-        this.otherLabel.string = "";
+        this.tableView.clear();
+        this.classTipNode.active = false;  //无解时的提示
 
         if(results){   //{"mathchCount":mathchCount, "obj":obj}
             if(resultType == -1){
-                this.resultLable.string = "数据库中未找到匹配或相似答案!";  
-            }else if(resultType == 1){
-                let conf: st_rubbish_info = results[0].obj;
-                this.resultLable.string = "答案："+conf.name+"是"+conf.typeName;  
-                this.descLabel.string = conf.desc;
-                this.iconSpr.spriteFrame = this.iconFrames[conf.type-1];
-            }else if(resultType == 2){
-                this.resultLable.string = "未找到匹配答案，相似答案有：";  
-                let otherStr = ""
-                let len = Math.min(3, results.length);
-                for(let i=0; i<len; ++i){
-                    let conf: st_rubbish_info = results[i].obj;
-                    otherStr += conf.name+"是"+conf.typeName+"; 理由："+conf.desc;  
-                    if(i <len -1){
-                        otherStr += "\n";
-                    }
+                this.resultLabel.string = "数据库中未找到匹配答案!";  
+                this.classTipNode.active = true;  //无解时的提示
+            }else{
+                if(resultType == 1){
+                    let conf: st_rubbish_info = results[0].obj;
+                    this.resultLabel.string = "答案："+conf.name+"是"+conf.typeName;  
+                }else if(resultType == 2){
+                    this.resultLabel.string = "未找到匹配答案，可参考：";  
                 }
-                this.otherLabel.string = otherStr;
+
+                this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
+                this.tableView.initTableView(results.length, { array: results, target: this }); 
             }
 
             this.showResultNode(true);  //一定时间内显示答案
@@ -195,9 +189,6 @@ export default class SearchScene extends cc.Component {
         }else{
             this.resultNode.opacity = 0;
             this.gameNode.opacity = 255;
-
-            // this.editText.node.active = false;
-            // this.editPlaceText.node.active = true;
         }
     }
 

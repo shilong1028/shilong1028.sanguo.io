@@ -23,6 +23,8 @@ export default class Game2Scene extends cc.Component {
     @property(cc.Node)
     resultNode: cc.Node = null;
     @property(cc.Label)
+    totalLabel: cc.Label = null;  //剩余数量
+    @property(cc.Label)
     countLabel: cc.Label = null;  //回收数量
     @property(cc.Label)
     tipNum: cc.Label = null;  //原谅次数
@@ -51,7 +53,8 @@ export default class Game2Scene extends cc.Component {
     rubbishSuccClickNum: number = 0;   //点击正确的垃圾总数
     rubbishCreateStep: number = 50;   //垃圾产出帧数间隔
 
-    rubbishSpeed: number = 300;  //垃圾下落速度
+    totalCount: number = 50;  //垃圾总数
+    rubbishSpeed: number = 350;  //垃圾下落速度
     rubbishKeys: string[] = new Array();  //配置中的垃圾ID集合
 
     bStopTouch: boolean = false;   //是否停止触摸反应
@@ -66,6 +69,8 @@ export default class Game2Scene extends cc.Component {
         this.rubbishDropCount = 0;  //关卡战斗垃圾落地总数
         this.rubbishSuccClickNum = 0;   //点击正确的垃圾总数
         this.rubbishCreateStep = 50;   //垃圾产出帧数间隔
+        this.totalCount = 50;  //垃圾总数
+        this.totalLabel.string = this.totalCount.toString();  //剩余数量
 
         this.bGameOver = false;
 
@@ -97,18 +102,22 @@ export default class Game2Scene extends cc.Component {
             this.targetText.string = "有害垃圾";
             this.targetText.node.color = cc.color(233, 47, 35);
             this.countLabel.node.color = cc.color(233, 47, 35);
+            this.totalLabel.node.color = cc.color(233, 47, 35);  //剩余数量
         }else if(this.fightRubbishType == 2){
             this.targetText.string = "可回收垃圾";
             this.targetText.node.color = cc.color(16, 71, 131);
             this.countLabel.node.color = cc.color(16, 71, 131);
+            this.totalLabel.node.color = cc.color(16, 71, 131);  //剩余数量
         }else if(this.fightRubbishType == 3){
             this.targetText.string = "湿(餐厨)垃圾";
             this.targetText.node.color = cc.color(105, 65, 55);
             this.countLabel.node.color = cc.color(105, 65, 55);
+            this.totalLabel.node.color = cc.color(105, 65, 55);  //剩余数量
         }else if(this.fightRubbishType == 4){
             this.targetText.string = "干(其他)垃圾";
             this.targetText.node.color = cc.color(44, 43, 41);
             this.countLabel.node.color = cc.color(44, 43, 41);
+            this.totalLabel.node.color = cc.color(44, 43, 41);  //剩余数量
         }
         this.countLabel.string = "0";
     }
@@ -154,16 +163,29 @@ export default class Game2Scene extends cc.Component {
 
     //随机产生一个垃圾
     createOneRandomRubbish(){
-        this.rubbishCreateStep = 0;
-        let randIdx = Math.ceil(Math.random()*this.rubbishKeys.length);
-        let randIdStr = this.rubbishKeys[randIdx];
-
-        let rubbishNode = this.createRubbishFromPool();
-        if(rubbishNode){
-            let randPosX = (Math.random()-0.5)*(this.qipanNode.width/2 - 50);
-            rubbishNode.position = cc.v2(randPosX, this.qipanNode.height/2);
-            this.qipanNode.addChild(rubbishNode, 10);
-            rubbishNode.getComponent(Rubbish).initRubbish(parseInt(randIdStr), this, false);
+        if(this.bGameOver == false){
+            this.totalCount --;  //垃圾总数
+            if(this.totalCount < 0){
+                this.totalLabel.string = "0";  //剩余数量
+    
+                this.node.runAction(cc.sequence(cc.delayTime(1.0), cc.callFunc(function(){
+                    this.handleGameOver();   //游戏结束
+                }.bind(this))));
+            }else{
+                this.totalLabel.string = this.totalCount.toString();  //剩余数量
+                this.rubbishCreateStep = 0;
+                let randIdx = Math.ceil(Math.random()*this.rubbishKeys.length);
+                let randIdStr = this.rubbishKeys[randIdx];
+        
+                let rubbishNode = this.createRubbishFromPool();
+                if(rubbishNode){
+                    rubbishNode.scale = 1.5;
+                    let randPosX = (Math.random()-0.5)*(this.qipanNode.width/2 - 50);
+                    rubbishNode.position = cc.v2(randPosX, this.qipanNode.height/2);
+                    this.qipanNode.addChild(rubbishNode, 10);
+                    rubbishNode.getComponent(Rubbish).initRubbish(parseInt(randIdStr), this, false);
+                }
+            }
         }
     }
 
@@ -192,8 +214,10 @@ export default class Game2Scene extends cc.Component {
     }
 
     handleGameOver(){
-        this.bGameOver = true;
-        let layer = GameMgr.showLayer(this.pfGameOver);
-        layer.getComponent(GameOver).initGameOverData(this.beginTime, this.rubbishSuccClickNum, this.rubbishSuccClickNum*3);
+        if(this.bGameOver == false){
+            this.bGameOver = true;
+            let layer = GameMgr.showLayer(this.pfGameOver);
+            layer.getComponent(GameOver).initGameOverData(this.beginTime, this.rubbishSuccClickNum, this.rubbishSuccClickNum*2);
+        }
     }
 }

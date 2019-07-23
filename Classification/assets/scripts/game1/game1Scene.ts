@@ -51,7 +51,7 @@ export default class Game1Scene extends cc.Component {
     rubbishSuccClickNum: number = 0;   //点击正确的垃圾总数
     rubbishCreateStep: number = 50;   //垃圾产出帧数间隔
 
-    rubbishSpeed: number = 200;  //垃圾下落速度
+    rubbishSpeed: number = 150;  //垃圾下落速度
     rubbishKeys: string[] = new Array();  //配置中的垃圾ID集合
 
     bStopTouch: boolean = false;   //是否停止触摸反应
@@ -145,16 +145,18 @@ export default class Game1Scene extends cc.Component {
 
     //随机产生一个垃圾
     createOneRandomRubbish(){
-        this.rubbishCreateStep = 0;
-        let randIdx = Math.ceil(Math.random()*this.rubbishKeys.length);
-        let randIdStr = this.rubbishKeys[randIdx];
-
-        let rubbishNode = this.createRubbishFromPool();
-        if(rubbishNode){
-            let randPosX = (Math.random()-0.5)*(this.qipanNode.width/2 - 50);
-            rubbishNode.position = cc.v2(randPosX, this.qipanNode.height/2);
-            this.qipanNode.addChild(rubbishNode, 10);
-            rubbishNode.getComponent(Rubbish).initRubbish(parseInt(randIdStr), this, true);
+        if(this.bGameOver == false){
+            this.rubbishCreateStep = 0;
+            let randIdx = Math.ceil(Math.random()*this.rubbishKeys.length);
+            let randIdStr = this.rubbishKeys[randIdx];
+    
+            let rubbishNode = this.createRubbishFromPool();
+            if(rubbishNode){
+                let randPosX = (Math.random()-0.5)*(this.qipanNode.width/2 - 50);
+                rubbishNode.position = cc.v2(randPosX, this.qipanNode.height/2);
+                this.qipanNode.addChild(rubbishNode, 10);
+                rubbishNode.getComponent(Rubbish).initRubbish(parseInt(randIdStr), this, true);
+            }
         }
     }
 
@@ -240,8 +242,10 @@ export default class Game1Scene extends cc.Component {
     }
 
     handleGameOver(){
-        this.bGameOver = true;
-        let layer = GameMgr.showLayer(this.pfGameOver);
-        layer.getComponent(GameOver).initGameOverData(this.beginTime, this.rubbishSuccClickNum, this.rubbishSuccClickNum*5);
+        if(this.bGameOver == false){
+            this.bGameOver = true;
+            let layer = GameMgr.showLayer(this.pfGameOver);
+            layer.getComponent(GameOver).initGameOverData(this.beginTime, this.rubbishSuccClickNum, this.rubbishSuccClickNum*3);
+        }
     }
 }

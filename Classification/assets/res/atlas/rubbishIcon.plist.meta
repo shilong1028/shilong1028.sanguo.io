@@ -1746,9 +1746,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "2030 - 副本.png": {
+    "2030.png": {
       "ver": "1.0.4",
-      "uuid": "6b23ff34-7127-4496-92d3-e7c96e27b861",
+      "uuid": "6ed940cd-a20e-4d98-b975-f06137658ae2",
       "rawTextureUuid": "ade4a6c0-2465-48ea-9195-dec433d652f5",
       "trimType": "auto",
       "trimThreshold": 1,
