@@ -183,24 +183,24 @@ export default class FightShow extends cc.Component {
         let defend = defCardCfg.def;
 
         if(atkCardCfg.mp > defCardCfg.mp){   //攻击方智力越高，攻击越高
-            let multi = atkCardCfg.mp/defCardCfg.mp + 0.2 - 1.0;
+            let multi = (atkCardCfg.mp-defCardCfg.mp)/100;
             multi = parseFloat(multi.toFixed(2)); 
             if(multi > 0.5){
                 multi = 0.5;
             }
-            this.showTipsLable("攻击方智力值远高于防御方，攻击方攻击力增加50%！", cc.Color.YELLOW);
+            this.showTipsLable("攻击方智力值远高于防御方，攻击方攻击提升！", cc.Color.YELLOW);
             attack += multi*atkCardCfg.atk;
             atkCardCfg.mp -= 1;
             if(atkCardCfg.mp < 0){
                 atkCardCfg.mp = 0;
             }
         }else if(defCardCfg.mp > atkCardCfg.mp){  //防御方智力越高，防御越高
-            let multi = defCardCfg.mp/atkCardCfg.mp + 0.2 - 1.0;
+            let multi = (defCardCfg.mp-atkCardCfg.mp)/100*1.5;
             multi = parseFloat(multi.toFixed(2)); 
             if(multi > 0.5){
                 multi = 0.5;
             }
-            this.showTipsLable("攻击方智力值远低于防御方，防御方防御力增加50%!", cc.Color.YELLOW);
+            this.showTipsLable("攻击方智力值远低于防御方，防御方防御力提升!", cc.Color.YELLOW);
             defend += multi * defCardCfg.def;
             defCardCfg.mp -= 1;
             if(defCardCfg.mp < 0){
@@ -211,27 +211,23 @@ export default class FightShow extends cc.Component {
         //兵种相克，401骑兵克制402步兵， 402步兵克制403弓兵，403弓兵克制401骑兵
         let restriction = FightMgr.checkBingRestriction(atkCardCfg.bingzhong, defCardCfg.bingzhong);
         if(restriction == 1){
-            this.showTipsLable("攻击方兵种克制防御方，攻击方攻击力增加50%！", cc.Color.RED);
-            attack += atkCardCfg.atk * 0.5;
+            this.showTipsLable("攻击方兵种克制防御方，攻击方攻击力增加20%！", cc.Color.RED);
+            attack += atkCardCfg.atk * 0.2;
         }else if(restriction == -1){
-            this.showTipsLable("攻击方兵种被防御方克制，防御方防御力增加50%！", cc.Color.BLUE);
-            defend += defCardCfg.def * 0.5;
+            this.showTipsLable("攻击方兵种被防御方克制，防御方防御力增加20%！", cc.Color.BLUE);
+            defend += defCardCfg.def * 0.2;
         }
 
         //攻击方在箭塔下
         if(bAtkArrowTown == true){
-            this.showTipsLable("箭塔辅助攻击，攻击方攻击力增加50%！", cc.Color.RED);
-            attack += atkCardCfg.atk * 0.5;
+            this.showTipsLable("箭塔辅助攻击，攻击方攻击力增加10%！", cc.Color.RED);
+            attack += atkCardCfg.atk * 0.1;
         }
 
         let atkSoliderCount = attackCardInfo.generalInfo.bingCount;
-        if(atkSoliderCount >= 1000){
-            this.showTipsLable("攻击方兵力充足，攻击方攻击力提升！", cc.Color.RED);
-            attack += attack * (atkSoliderCount - 1000)/1000 * 0.5;
-            attack = parseFloat(attack.toFixed(2)); 
-        }else if(atkSoliderCount > 200){
-            this.showTipsLable("攻击方兵力不足，攻击方攻击力减弱！", cc.Color.BLUE);
-            attack = attack * atkSoliderCount/1000;
+        if(atkSoliderCount > 200){
+            this.showTipsLable("攻击方攻击力随兵力变化！", cc.Color.BLUE);
+            attack = attack * ((atkSoliderCount*0.8+200)/1000);
             attack = parseFloat(attack.toFixed(2)); 
         }else{
             this.showTipsLable("攻击方兵力严重不足，攻击方攻击力骤减！", cc.Color.BLUE);
@@ -239,18 +235,18 @@ export default class FightShow extends cc.Component {
         }
 
         let defSoldierCount = defendCardInfo.generalInfo.bingCount;
-        if(defSoldierCount >= 1000){
-            this.showTipsLable("防御方兵力充足，防御方防御力提升！", cc.Color.BLUE);
-            defend += defend * (defSoldierCount - 1000)/1000 * 0.5;
-            defend = parseFloat(defend.toFixed(2)); 
-        }else if(defSoldierCount > 200){
-            this.showTipsLable("防御方兵力不足，防御方防御力减弱！", cc.Color.RED);
-            defend = defend * defSoldierCount/1000;
+        if(defSoldierCount > 200){
+            this.showTipsLable("防御方防御力随兵力变化！", cc.Color.RED);
+            defend = defend * ((defSoldierCount*0.8+200)/1000);
             defend = parseFloat(defend.toFixed(2)); 
         }else{
             this.showTipsLable("防御方兵力严重不足，防御方防御力骤减！", cc.Color.RED);
             defend *= 0.2;
         }
+
+        attack = attack * (attackCardInfo.shiqi/100);
+        defend = defend * (defendCardInfo.shiqi/100);
+        this.showTipsLable("攻击方士气"+attackCardInfo.shiqi+" 防御方士气"+defendCardInfo.shiqi, cc.Color.WHITE);
 
         let harm = Math.floor(attack - defend*0.7)*2;
         if(harm <= 0){
@@ -338,6 +334,9 @@ export default class FightShow extends cc.Component {
                 if(rightCardCfg.hp <= 0 || this.rightCardInfo.generalInfo.bingCount <= 0){
                     if(this.rightCardInfo.campId == FightMgr.myCampId){
                         FightMgr.getFightScene().addMyDeadCard(this.rightCardInfo);   //添加我方武将战死数据
+                        FightMgr.getFightScene().handelShiqiChangeByDead(true, this.srcBlock);  
+                    }else{
+                        FightMgr.getFightScene().handelShiqiChangeByDead(false, this.srcBlock);  //当敌对方武将死亡时的士气变动
                     }
 
                     if(leftCardCfg.bingzhong == 403){  //弓兵攻击后不移动位置
@@ -374,6 +373,9 @@ export default class FightShow extends cc.Component {
                 }else if(leftCardCfg.hp <= 0  || this.leftCardInfo.generalInfo.bingCount <= 0){
                     if(this.leftCardInfo.campId == FightMgr.myCampId){
                         FightMgr.getFightScene().addMyDeadCard(this.leftCardInfo);   //添加我方武将战死数据
+                        FightMgr.getFightScene().handelShiqiChangeByDead(true, this.destBlock);  
+                    }else{
+                        FightMgr.getFightScene().handelShiqiChangeByDead(false, this.destBlock);  //当敌对方武将死亡时的士气变动
                     }
 
                     if(this.srcBlock.cardInfo.campId == FightMgr.myCampId){

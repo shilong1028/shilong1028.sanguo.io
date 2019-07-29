@@ -9,40 +9,33 @@ export default class Card extends cc.Component {
 
     @property(cc.Sprite)
     cardSpr: cc.Sprite = null;
-
     @property(cc.Sprite)
     campSpr: cc.Sprite = null;
-
     @property(cc.SpriteAtlas)
     cardAtlas: cc.SpriteAtlas = null;
-
     @property([cc.SpriteFrame])
     campFrames: cc.SpriteFrame[] = new Array(3);
 
     @property(cc.ProgressBar)
     hpProgressBar: cc.ProgressBar =  null;   //血量条（最大值1000）
-
     @property(cc.ProgressBar)
     mpProgressBar: cc.ProgressBar =  null;   //智力条（最大值100）
-
     @property(cc.ProgressBar)
     atkProgressBar: cc.ProgressBar =  null;   //攻击条（最大值100）
-
     @property(cc.ProgressBar)
     defProgressBar: cc.ProgressBar =  null;   //防御条（最大值100）
 
     @property(cc.Label)
     nameLable: cc.Label = null;
-
     @property(cc.Label)
     lvLabel: cc.Label = null;   //武将等级
-
     @property(cc.Label)
     bingNumLabel: cc.Label = null;  //兵力
+    @property(cc.Label)
+    shiqiLabel: cc.Label = null;   //士气
 
     @property(cc.Sprite)
     bingSpr: cc.Sprite = null;   //兵种 401骑兵402步兵403弓兵
-
     @property([cc.SpriteFrame])
     bingSprFrames: cc.SpriteFrame[] = new Array(3);
 
@@ -62,7 +55,8 @@ export default class Card extends cc.Component {
 
         this.nameLable.string = "";
         this.lvLabel.string = "Lv1";
-        this.bingNumLabel.string = "";
+        this.bingNumLabel.string = "兵";
+        this.shiqiLabel.string = "士气100";  
     }
 
     onDestroy(){
@@ -74,6 +68,17 @@ export default class Card extends cc.Component {
     }
 
     // update (dt) {}
+
+    //士气变动
+    handleShiqiChange(val: number){
+        if(this.cardInfo){
+            // this.cardInfo.shiqi += val;
+            // if(this.cardInfo.shiqi < 0){
+            //     this.cardInfo.shiqi = 0;
+            // }
+            this.shiqiLabel.string = "士气"+this.cardInfo.shiqi.toString(); 
+        }
+    }
 
     /**设置卡牌数据 */
     setCardData(info: CardInfo){
@@ -92,7 +97,7 @@ export default class Card extends cc.Component {
         }
 
         this.lvLabel.string = "Lv"+this.cardInfo.generalInfo.generalLv;
-        this.bingNumLabel.string = this.cardInfo.generalInfo.bingCount.toString();
+        this.bingNumLabel.string = "兵"+this.cardInfo.generalInfo.bingCount.toString();
 
         let cardCfg = this.cardInfo.generalInfo.generalCfg;
         if(cardCfg){
@@ -131,7 +136,7 @@ export default class Card extends cc.Component {
         this.defProgressBar.progress = info.generalCfg.def/100;
 
         this.lvLabel.string = "Lv"+info.generalLv;
-        this.bingNumLabel.string = info.bingCount.toString();
+        this.bingNumLabel.string = "兵"+info.bingCount.toString();
     }
 
 

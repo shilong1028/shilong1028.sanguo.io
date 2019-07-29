@@ -91,12 +91,14 @@ export class GeneralInfo{
 //武将卡牌战斗信息
 export class CardInfo{
     campId: number = 0;   //阵营，0默认，1蓝方，2红方
+    shiqi: number = 100;   //士气值
     maxHp: number = 0;   //最大血量
     maxMp: number = 0;   //最大智力
     generalInfo: GeneralInfo = null;   //武将信息
 
     constructor(campId: number, generalInfo: GeneralInfo=null){
         this.campId = campId;
+        this.shiqi = 100;
         this.generalInfo = generalInfo;
         if(generalInfo){
             this.maxHp = this.generalInfo.generalCfg.hp;
@@ -109,6 +111,7 @@ export class CardInfo{
 
     clone(){
         let temp = new CardInfo(this.campId, this.generalInfo);
+        temp.shiqi = this.shiqi;
         temp.maxMp = this.maxMp;
         temp.maxHp = this.maxHp;
 
@@ -133,4 +136,6 @@ export const NoticeType = {
     UpdateTaskState: "UpdateTaskState",   //任务状态更新
 
     SelBlockMove: "SelBlockMove",   //准备拖动砖块
+
+    PerNextRound: "PerNextRound",   //下一个回合准备
 }

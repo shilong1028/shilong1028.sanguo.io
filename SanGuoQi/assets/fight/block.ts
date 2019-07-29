@@ -24,12 +24,19 @@ export default class Block extends cc.Component {
     runBg: cc.Node = null;
     @property(cc.Node)
     atkBg: cc.Node = null;
+    @property(cc.Node)
+    effNode: cc.Node = null;
+
+    @property(cc.SpriteAtlas)
+    qiupAtlas: cc.SpriteAtlas = null;  //士气增加的特效
+    @property(cc.SpriteAtlas)
+    qidownAtlas: cc.SpriteAtlas = null;  //士气降低的特效
 
     blockId: number = 0;   //地块ID
     isLock: boolean = true;   //是否锁定的地块
 
     cardNode: cc.Node = null;
-    cardInfo: CardInfo = null;
+    cardInfo: CardInfo = null;   //注意，地块的cardInfo和卡牌的cardInfo是公用一块内存的。
 
     bArrowTown: boolean = false;   //是否为箭楼  
 
@@ -38,6 +45,7 @@ export default class Block extends cc.Component {
     onLoad () {
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
         NoticeMgr.on(NoticeType.SelBlockMove, this.handleSelBlockMove, this);  //准备拖动砖块
+        NoticeMgr.on(NoticeType.PerNextRound, this.handlePerNextRound, this);  //下一个回合准备
 
         this.runBg.active = false;
         this.atkBg.active = false;
@@ -53,6 +61,47 @@ export default class Block extends cc.Component {
     }
 
     // update (dt) {}
+    //下一个回合准备
+    handlePerNextRound(){
+        this.effNode.removeAllChildren();
+        if(FightMgr.fightRoundCount > 0){
+            this.handleShiqiChange(-1, false);  //每回合降低士气
+        }
+    }
+
+    //士气变动
+    handleShiqiChange(val: number, bShowAni:boolean = true){
+        if(this.isLock == false && this.cardInfo && this.cardNode){
+            this.cardInfo.shiqi += val;
+            if(this.cardInfo.shiqi < 0){
+                this.cardInfo.shiqi = 0;
+            }
+            this.cardNode.getComponent(Card).handleShiqiChange(val);
+
+            if(bShowAni){
+                let effNode = null;
+                if(val > 0){
+                    effNode = FightMgr.showFramesAniAndRemove(this.effNode, cc.v2(0, 0), this.qiupAtlas, false);
+                }else if(val < 0){
+                    effNode = FightMgr.showFramesAniAndRemove(this.effNode, cc.v2(0, 0), this.qidownAtlas, false);
+                }
+                if(effNode){
+                    effNode.runAction(cc.sequence(cc.delayTime(0.5), cc.removeSelf(true)));
+                }
+            }
+
+            if(this.cardInfo.shiqi < 10){  //士气过低，逃离战场
+                if(this.cardInfo.campId == FightMgr.myCampId){
+                    FightMgr.getFightScene().addMyDeadCard(this.cardInfo);   //添加我方武将战死数据
+                    FightMgr.getFightScene().setMyOpenBlock(false, this);   //设置我方已经开启的卡牌
+                }else{
+                    FightMgr.getFightScene().setEnemyOpenBlock(false, this);   //设置敌方已经开启的卡牌
+                }
+
+                this.onRemoveCardNode();   //将本地块上的卡牌移走了
+            }
+        }
+    }
 
      //准备拖动砖块
     handleSelBlockMove(selBlock: Block){

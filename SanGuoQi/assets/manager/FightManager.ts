@@ -1,5 +1,6 @@
 import FightScene from "../fight/fightScene";
-import { CardInfo, GeneralInfo } from "./Enum";
+import { CardInfo, GeneralInfo, NoticeType } from "./Enum";
+import { NoticeMgr } from "./NoticeManager";
 
 //战斗管理器
 const {ccclass, property} = cc._decorator;
@@ -17,6 +18,7 @@ class FightManager {
     myCampId: number = 1;   //阵营，0默认，1蓝方，2红方
     bStopTouch: boolean = false;   //是否停止触摸反应
     bMyRound: boolean = true;  //是否我方回合
+    fightRoundCount: number = 0;   //战斗回合数
 
     FightWin: boolean = false;  //战斗胜利或失败
     EnemyAutoAi: boolean = false;  //敌方是否自动AI
@@ -31,6 +33,7 @@ class FightManager {
         this.myCampId = 1;   //阵营，0默认，1蓝方，2红方
         this.bStopTouch = false;   //是否停止触摸反应
         this.bMyRound = true;  //是否我方回合
+        this.fightRoundCount = 0;   //战斗回合数
 
         this.FightWin = false;  //战斗胜利或失败
         this.EnemyAutoAi = false;  //敌方自动AI
@@ -55,11 +58,13 @@ class FightManager {
             //我方
             for(let i=0; i<this.battleGeneralArr.length; ++i){
                 let card = new CardInfo(1, this.battleGeneralArr[i]);
+                card.shiqi = 100;   //士气值
                 this.randomGeneralArr.push(card);
             }
             //敌方
             for(let i=0; i<this.battleEnemyArr.length; ++i){
                 let card = new CardInfo(2, this.battleEnemyArr[i]);
+                card.shiqi = 100;   //士气值
                 this.randomGeneralArr.push(card);
             }
         }
@@ -153,6 +158,8 @@ class FightManager {
     /**下回合处理 */
     nextRoundOpt(){
         if(this.getFightScene().checkGameOver() == false){
+            this.fightRoundCount ++;   //战斗回合数
+            NoticeMgr.emit(NoticeType.PerNextRound, null);  //下一个回合准备
             if(this.bMyRound == true){
                 this.handleEnemyRoundOpt();   //敌方回合处理
             }else{
@@ -171,13 +178,13 @@ class FightManager {
     /**敌方回合处理 */
     handleEnemyRoundOpt(){
         this.bMyRound = false;
+        this.getFightScene().showRoundDesc();
         if(this.EnemyAutoAi == true){
             this.bStopTouch = true;  //是否停止触摸反应
             this.getFightScene().handleEnemyRoundOpt();
         }else{
             this.bStopTouch = false;  //是否停止触摸反应
         }
-        this.getFightScene().showRoundDesc();
     }
 
 

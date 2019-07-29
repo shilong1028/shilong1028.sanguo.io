@@ -13,13 +13,10 @@ export default class FightScene extends cc.Component {
 
     @property(cc.Node)
     qipanNode: cc.Node = null;   //棋盘节点
-
     @property(cc.Node)
     gridNode: cc.Node = null;   //棋盘网格节点
-
     @property(cc.Label)
     roundDesc: cc.Label = null;
-
     @property(cc.Toggle)
     autoToggle: cc.Toggle = null;
     @property(cc.Node)
@@ -27,16 +24,12 @@ export default class FightScene extends cc.Component {
 
     @property(cc.Prefab)
     pfBlock: cc.Prefab = null;   //棋盘格对象
-
     @property(cc.Prefab)
     pfCard: cc.Prefab = null;   //卡牌对象
-
     @property(cc.Prefab)
     pfFightShow: cc.Prefab = null;  //战斗或合成展示层
-
     @property(cc.Prefab)
     pfHelp: cc.Prefab = null;
-
     @property(cc.Prefab)
     pfResult: cc.Prefab = null;
 
@@ -65,7 +58,6 @@ export default class FightScene extends cc.Component {
 
     start () {
         this.createDefaultCards();
-        //this.toggleNode.active = true;   //敌方AI选择节点
     }
 
     // update (dt) {}
@@ -99,13 +91,15 @@ export default class FightScene extends cc.Component {
                 this.roundDesc.node.color = cc.color(0, 0, 255);
             }
         }
+        
+        if(FightMgr.fightRoundCount > 0){  //战斗回合数)
+            this.handelShiqiChangeByRound();   //处理回合开始士气变化
+        }
     }
 
     /**卡牌初始化 */
     createDefaultCards(){
         this.showRoundDesc();
-
-        this.autoToggle.isChecked = FightMgr.EnemyAutoAi;  //敌方自动AI
 
         this.gridNode.removeAllChildren(true);
         FightMgr.getAllRandomGenerals();   //获取全部随机武将数据
@@ -130,7 +124,7 @@ export default class FightScene extends cc.Component {
 
     onAutoToggle(){
         FightMgr.EnemyAutoAi = !FightMgr.EnemyAutoAi;
-        this.autoToggle.isChecked = FightMgr.EnemyAutoAi;  //敌方自动AI
+        //this.autoToggle.isChecked = FightMgr.EnemyAutoAi;  //敌方自动AI，注意控件会自己处理这个isCheck勾选显示，不用代码调用，否则会递归溢出
     }
 
     onTouchStart(event: cc.Event.EventTouch) {  
@@ -332,6 +326,47 @@ export default class FightScene extends cc.Component {
                     this.enemyOpenBlocks.splice(i, 1);
                     return;
                 }
+            }
+        }
+    }
+
+    //处理回合开始士气变化
+    handelShiqiChangeByRound(){
+        let checkBlocks = null;
+        if(FightMgr.bMyRound){
+            checkBlocks = this.enemyOpenBlocks;
+        }else{
+            checkBlocks = this.myOpenBlocks;
+        }
+
+        for(let i=0; i<checkBlocks.length; ++i){
+            let block = checkBlocks[i];
+            let nearArr = this.getNearEnemyBlock(block);   //获得相邻敌对地块数据
+            if(nearArr.length > 2){
+                block.handleShiqiChange(-nearArr.length);
+            }else if(nearArr.length == 2){
+                if(Math.abs(nearArr[0].node.x - nearArr[1].node.x) < 10 || Math.abs(nearArr[0].node.y - nearArr[1].node.y) < 10){   //被前后夹击
+                    block.handleShiqiChange(-2);
+                }
+            }
+        }
+    }
+    
+    //当敌对方武将死亡时的士气变动
+    handelShiqiChangeByDead(bMyCampDead:boolean, winBlock: Block){
+        let checkBlocks = null;
+        if(bMyCampDead == true){   //我方阵营死亡
+            checkBlocks = this.enemyOpenBlocks;
+        }else{
+            checkBlocks = this.myOpenBlocks;
+        }
+
+        for(let i=0; i<checkBlocks.length; ++i){
+            let block = checkBlocks[i];
+            if(block.blockId == winBlock.blockId){  //击杀获胜的一方
+                block.handleShiqiChange(3);
+            }else{
+                block.handleShiqiChange(1);
             }
         }
     }
@@ -557,7 +592,7 @@ export default class FightScene extends cc.Component {
             }else{
                 for(let i=0; i<this.enemyOpenBlocks.length; ++i){
                     let enemyBlock = this.enemyOpenBlocks[i];
-                    let nearArr = this.getNearBlock(enemyBlock);   //获得相邻空地块数据
+                    let nearArr = this.getNearEnemyBlock(enemyBlock);   //获得相邻敌对地块数据
                     if(nearArr.length > 0){
                         cc.log("强迫操作");
                         let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
@@ -576,15 +611,36 @@ export default class FightScene extends cc.Component {
 
     /**获得相邻空地块数据 */
     getNearEmptyBlock(srcBlock: Block){
-        let pos = srcBlock.node.position;
         let nearArr = new Array();
-        let blocks = this.gridNode.children;
-        for(let i=0; i< blocks.length; i++){
-            let len = blocks[i].getPosition().sub(pos).mag();
-            if(len <= 200 && len > 50){
-                let block = blocks[i].getComponent(Block);
-                if(block && block.isLock == false && block.cardInfo == null){
-                    nearArr.push(block);
+        if(srcBlock && srcBlock.cardInfo){
+            let pos = srcBlock.node.position;
+            let blocks = this.gridNode.children;
+            for(let i=0; i< blocks.length; i++){
+                let len = blocks[i].getPosition().sub(pos).mag();
+                if(len <= 200 && len > 50){
+                    let block = blocks[i].getComponent(Block);
+                    if(block && block.isLock == false && block.cardInfo == null){
+                        nearArr.push(block);
+                    }
+                }
+            }
+        }
+        return nearArr;
+    }
+
+    //获取相邻的敌方砖块
+    getNearEnemyBlock(srcBlock: Block){
+        let nearArr = new Array();
+        if(srcBlock && srcBlock.cardInfo){
+            let pos = srcBlock.node.position;
+            let blocks = this.gridNode.children;
+            for(let i=0; i< blocks.length; i++){
+                let len = blocks[i].getPosition().sub(pos).mag();
+                if(len <= 200 && len > 50){
+                    let block = blocks[i].getComponent(Block);
+                    if(block && block.isLock == false && block.cardInfo && block.cardInfo.campId != srcBlock.cardInfo.campId){
+                        nearArr.push(block);
+                    }
                 }
             }
         }
@@ -593,15 +649,17 @@ export default class FightScene extends cc.Component {
 
     /**获得相邻地块数据 */
     getNearBlock(srcBlock: Block){
-        let pos = srcBlock.node.position;
         let nearArr = new Array();
-        let blocks = this.gridNode.children;
-        for(let i=0; i< blocks.length; i++){
-            let len = blocks[i].getPosition().sub(pos).mag();
-            if(len <= 200 && len > 50){
-                let block = blocks[i].getComponent(Block);
-                if(block && block.isLock == false){
-                    nearArr.push(block);
+        if(srcBlock && srcBlock.cardInfo){
+            let pos = srcBlock.node.position;
+            let blocks = this.gridNode.children;
+            for(let i=0; i< blocks.length; i++){
+                let len = blocks[i].getPosition().sub(pos).mag();
+                if(len <= 200 && len > 50){
+                    let block = blocks[i].getComponent(Block);
+                    if(block && block.isLock == false){
+                        nearArr.push(block);
+                    }
                 }
             }
         }
