@@ -4,6 +4,14 @@ import { NoticeMgr, NoticeType } from "./NoticeManager";
 //游戏菜单管理器
 const {ccclass, property} = cc._decorator;
 
+export const TipsClassStr = [
+"有害垃圾：是指废电池、废灯管、废药品、废油漆及其容器等对人体健康或自然环境造成直接或潜在危害的废弃物。",
+"可回收物：是指废纸张、废塑料、废玻璃制品、废金属、废织物等适宜回收循环利用和资源化利用的废弃物。",
+"湿垃圾：日常生活产生的易腐的生物质废弃物（比如食材厨余、蔬菜花卉、瓜皮果核、中药渣等），注意应将包装物（如塑料袋）去除。",
+"干垃圾：除有害垃圾、湿垃圾、可回收物以外的成分复杂难以分辨类别的其他生活废弃物。"
+];
+
+
 @ccclass
 class GameManager {
     GoldCount: number = null;   //用户金币积分数
