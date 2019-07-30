@@ -2,6 +2,7 @@
 import City from "./city";
 import { CfgMgr} from "../manager/ConfigManager";
 import { CityInfo } from "../manager/Enum";
+import { GameMgr } from "../manager/GameManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -21,7 +22,10 @@ export default class Map extends cc.Component {
     start () {
         let keys = Object.getOwnPropertyNames(CfgMgr.C_city_info);
         for (let k of keys) {
-            let cityInfo = new CityInfo(parseInt(k));
+            let cityId = parseInt(k);
+            let cityInfo = new CityInfo(cityId);
+
+            GameMgr.CityNearsMap[cityId] = cityInfo.cityCfg.near_citys;   //邻近城池Map
 
             let city = cc.instantiate(this.pfCity);
             city.position = cc.v2(cityInfo.cityCfg.pos_x, cityInfo.cityCfg.pos_y);

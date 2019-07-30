@@ -14,6 +14,54 @@ class GameManager {
 
     curTaskConf: st_story_info = null;   //当前任务配置
 
+    CityNearsMap : Map<number, number[]> = new Map<number, number[]>();  //邻近城池Map
+
+    //获取城池路径
+    getNearCitysLine(srcCityId: number, destCityId: number){
+        cc.log("getNearCitysLine(), srcCityId = "+srcCityId+"; destCityId = "+destCityId);
+
+        let retArr = new Array();
+        let srcIdsArr = new Array();
+        srcIdsArr.push([srcCityId]);
+
+        for(let t=0; t<10; t++){
+            let tempSrcIds = new Array();
+            for(let s=0; s<srcIdsArr.length; ++s){
+                let tempSrcArr = srcIdsArr[s];
+                let lastSrcId = tempSrcArr[tempSrcArr.length-1];
+
+                if(lastSrcId == destCityId){  //源路径衔接上了目标路径
+                    retArr.push(tempSrcArr);
+                }else{
+                    let srcNears = this.CityNearsMap[lastSrcId];
+                    for(let i=0; i<srcNears.length; ++i){
+                        let tempArr = new Array();
+                        for(let j=0; j<tempSrcArr.length; ++j){
+                            tempArr.push(tempSrcArr[j]);
+                        }
+                        tempArr.push(srcNears[i]);
+
+                        tempSrcIds.push(tempArr);  //新的源路径
+                    }
+                }
+            }
+
+            srcIdsArr = tempSrcIds;   //新的源路径
+            if(srcIdsArr.length == 0 || retArr.length >= 2){   //已经规划了两条路线了
+                break;
+            }
+        }
+
+        if(retArr.length == 0){
+            return null;   //两城相距太远
+        }else{
+            return retArr;
+        }
+    }
+
+
+    /************************  以下为UI接口  ************** */
+
     /**获取主场景 */
     getMainScene(): MainScene {
         let mainScene: MainScene = null;

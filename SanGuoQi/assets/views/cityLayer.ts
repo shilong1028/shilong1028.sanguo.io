@@ -1,5 +1,6 @@
 import { st_city_info, CfgMgr } from "../manager/ConfigManager";
 import { CityInfo } from "../manager/Enum";
+import { GameMgr } from "../manager/GameManager";
 
 //城池介绍
 const {ccclass, property} = cc._decorator;
@@ -21,6 +22,9 @@ export default class CityLayer extends cc.Component {
     nearLabel: cc.Label = null;
     @property(cc.Label)
     campLabel: cc.Label = null;
+
+    @property(cc.Label)
+    otherLabel: cc.Label = null;
 
     @property(cc.Button)
     buyBtn: cc.Button = null;
@@ -47,7 +51,7 @@ export default class CityLayer extends cc.Component {
         this.nearLabel.string = "邻近城池：";
         this.campLabel.string = "势力阵营：";
 
-        this.buyBtn.interactable = false;
+        //this.buyBtn.interactable = false;
         this.fightBtn.interactable = false;
 
         this.iconSpr.spriteFrame = null;
@@ -99,7 +103,31 @@ export default class CityLayer extends cc.Component {
     }
 
     onBuyBtn(){
-        this.node.removeFromParent(true);
+        //this.node.removeFromParent(true);
+        let nearArr = GameMgr.getNearCitysLine(403, this.cityInfo.cityId);   //雒阳到此的路径
+        cc.log("nearArr = "+JSON.stringify(nearArr));
+        let str = "雒阳到此城距离太遥远！"
+        if(nearArr){
+            str = "";
+            for(let k=0; k<nearArr.length; ++k){
+                str += "\n路径"+(k+1)+"：";
+                let cityIds = nearArr[k];
+                for(let i=0; i<cityIds.length; ++i){
+                    let cityId = cityIds[i];
+                    let cityCfg = CfgMgr.getCityConf(cityId);
+                    str += cityCfg.name;
+                    if(i == cityIds.length-1){
+                    }else{
+                        str +="、"
+                    }
+                }
+            }
+        }
+
+        this.otherLabel.string = "路径规划："+str;
+
+        let cityCfg = CfgMgr.getCityConf(this.cityInfo.cityId);
+        cc.log("cityCfg = "+JSON.stringify(cityCfg));
     }
 
     onFightBtn(){
