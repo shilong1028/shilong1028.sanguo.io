@@ -1,4 +1,7 @@
 import { st_city_info } from "../manager/ConfigManager";
+import { GameMgr } from "../manager/GameManager";
+import { CityInfo } from "../manager/Enum";
+import CityLayer from "../views/cityLayer";
 
 
 const {ccclass, property} = cc._decorator;
@@ -15,11 +18,15 @@ export default class City extends cc.Component {
     @property(cc.Sprite)
     flagSpr: cc.Sprite = null;
 
+    @property(cc.Prefab)
+    pfCityLayer: cc.Prefab = null;
+
     @property(cc.SpriteAtlas)
     cityAtlas: cc.SpriteAtlas = null;  //纹理图集
 
     // LIFE-CYCLE CALLBACKS:
 
+    cityInfo: CityInfo = null;
     cityConf: st_city_info = null;  //城池配置表
 
     onLoad () {
@@ -35,11 +42,13 @@ export default class City extends cc.Component {
     // update (dt) {}
 
     onCityBtn(){
-        
+        let layer = GameMgr.showLayer(this.pfCityLayer);
+        layer.getComponent(CityLayer).initCityByConf(this.cityInfo);
     }
 
-    initCityConf(conf: st_city_info){
-        this.cityConf = conf;
+    initCityConf(cityInfo: CityInfo){
+        this.cityInfo = cityInfo;
+        this.cityConf = cityInfo.cityCfg;
         if(this.cityConf){
             this.nameLabel.string = this.cityConf.name;
             this.citySpr.spriteFrame = this.cityAtlas.getSpriteFrame("menu_city"+this.cityConf.type);

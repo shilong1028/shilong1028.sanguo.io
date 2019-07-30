@@ -1,6 +1,7 @@
 
 import City from "./city";
-import { CfgMgr, st_city_info } from "../manager/ConfigManager";
+import { CfgMgr} from "../manager/ConfigManager";
+import { CityInfo } from "../manager/Enum";
 
 const {ccclass, property} = cc._decorator;
 
@@ -20,10 +21,12 @@ export default class Map extends cc.Component {
     start () {
         let keys = Object.getOwnPropertyNames(CfgMgr.C_city_info);
         for (let k of keys) {
-            let cityInfo: st_city_info = CfgMgr.C_city_info[k];
+            let cityInfo = new CityInfo(parseInt(k));
+
             let city = cc.instantiate(this.pfCity);
-            city.position = cc.v2(cityInfo.pos_x, cityInfo.pos_y);
+            city.position = cc.v2(cityInfo.cityCfg.pos_x, cityInfo.cityCfg.pos_y);
             this.citysNode.addChild(city);
+
             city.getComponent(City).initCityConf(cityInfo);
         }
     }

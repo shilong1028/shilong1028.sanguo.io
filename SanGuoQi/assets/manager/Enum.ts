@@ -1,4 +1,4 @@
-import { st_general_info, st_item_info, CfgMgr } from "./ConfigManager";
+import { st_general_info, st_item_info, CfgMgr, st_city_info } from "./ConfigManager";
 
 
 //常量或类定义
@@ -114,6 +114,28 @@ export class CardInfo{
         temp.shiqi = this.shiqi;
         temp.maxMp = this.maxMp;
         temp.maxHp = this.maxHp;
+
+        return temp;
+    }
+}
+
+//城池信息
+export class CityInfo{
+    cityId: number = 0;   
+    campId: number = 0;    //势力阵营
+    cityCfg: st_city_info = null;   //配置信息
+
+    constructor(cityId:number){
+        this.cityId = cityId;
+        this.campId = 0;
+        this.cityCfg = CfgMgr.getCityConf(cityId);
+    }
+
+    cloneNoCfg(){
+        let temp = new CityInfo(this.cityId);
+        temp.campId = this.campId;
+        //不必写入本地存储的变量
+        temp.cityCfg = null;
 
         return temp;
     }

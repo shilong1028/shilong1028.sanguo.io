@@ -484,6 +484,9 @@
     "flagSpr": {
       "__id__": 11
     },
+    "pfCityLayer": {
+      "__uuid__": "625bcb24-e174-45a7-afe8-aa8d9426b828"
+    },
     "cityAtlas": {
       "__uuid__": "1e160530-179f-401a-a8cd-d78265814531"
     },
