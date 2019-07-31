@@ -208,7 +208,7 @@ export default class FightShow extends cc.Component {
             }
         }
 
-        //兵种相克，401骑兵克制402步兵， 402步兵克制403弓兵，403弓兵克制401骑兵
+        //兵种相克，401骑兵克制402刀兵， 402刀兵克制403枪兵，403枪兵克制401骑兵， 404弓兵为不克制兵种
         let restriction = FightMgr.checkBingRestriction(atkCardCfg.bingzhong, defCardCfg.bingzhong);
         if(restriction == 1){
             this.showTipsLable("攻击方兵种克制防御方，攻击方攻击力增加20%！", cc.Color.RED);

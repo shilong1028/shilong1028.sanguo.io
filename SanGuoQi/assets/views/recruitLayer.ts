@@ -26,14 +26,11 @@ export default class RecruitLayer extends cc.Component {
     descLabel: cc.Label = null;
 
     @property([cc.SpriteFrame])
-    iconFrames: cc.SpriteFrame[] = new Array(3);
+    iconFrames: cc.SpriteFrame[] = new Array(4);
 
     // LIFE-CYCLE CALLBACKS:
 
     cellArr: ItemInfo[] = new Array();
-
-    cellTitles: string[] = new Array("骑兵千人", "步兵千人", "弓兵千人");
-    cellDescs: string[] = new Array("用于组建武将部曲，克制步兵", "用于组建武将部曲，克制弓兵", "用于组建武将部曲，克制骑兵");
 
     onLoad () {
         this.updateSelItemInfo(null);  //显示底部选中道具信息
@@ -47,7 +44,7 @@ export default class RecruitLayer extends cc.Component {
     }
 
     start () {
-        for(let i=0; i<3; ++i){
+        for(let i=0; i<4; ++i){
             this.cellArr.push(new ItemInfo(401+i, 1));
         }
         this.tableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换

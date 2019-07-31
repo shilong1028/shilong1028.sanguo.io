@@ -51,7 +51,7 @@ export class st_city_info {
 //武将配置数据
 export class st_general_info {
     name;   //武将名称
-    bingzhong;   //兵种 401骑兵402步兵403弓兵
+    bingzhong;   //兵种 401骑兵402刀兵403枪兵404弓兵
     hp;   //血量，最大为1000
     mp;    //智力，最大100
     atk;  //攻击，最大100

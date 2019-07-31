@@ -51,8 +51,8 @@ export default class RecruitCell extends viewCell {
         //}
 
         this.iconSpr.spriteFrame = this.targetSc.iconFrames[index];
-        this.titleLabel.string = this.targetSc.cellTitles[index];
-        this.descLabel.string = this.targetSc.cellDescs[index];
+        this.titleLabel.string = this.cellData.itemCfg.name;
+        this.descLabel.string = this.cellData.itemCfg.desc;
 
         this.costLabel.string = this.cellData.itemCfg.cost;
     }

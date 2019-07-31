@@ -2,7 +2,7 @@ import Card from "./card";
 import Block from "./block";
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
-import { CardInfo, NoticeType } from "../manager/Enum";
+import { CardInfo, NoticeType, SoliderType } from "../manager/Enum";
 import { NoticeMgr } from "../manager/NoticeManager";
 
 //战斗场景
@@ -196,7 +196,7 @@ export default class FightScene extends cc.Component {
                     if(offX < 20 || offY < 20){   //同行或同列
                         let blockLen = blocks[i].getPosition().sub(this.selectBlock.node.position).mag();
                         if(block.cardInfo){   //攻击或合并
-                            if(this.selectBlock.cardInfo.generalInfo.generalCfg.bingzhong == 403){   //弓兵攻击两格
+                            if(this.selectBlock.cardInfo.generalInfo.generalCfg.bingzhong == SoliderType.gongbing){   //弓兵攻击两格
                                 if(blockLen <= 400){
                                     return block;
                                 }
@@ -206,7 +206,7 @@ export default class FightScene extends cc.Component {
                                 }
                             }
                         }else{  //移动
-                            if(this.selectBlock.cardInfo.generalInfo.generalCfg.bingzhong == 401){   //骑兵移动两格
+                            if(this.selectBlock.cardInfo.generalInfo.generalCfg.bingzhong == SoliderType.qibing){   //骑兵移动两格
                                 if(blockLen <= 400){
                                     return block;
                                 }

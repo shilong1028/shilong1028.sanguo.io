@@ -1,5 +1,5 @@
 import FightScene from "../fight/fightScene";
-import { CardInfo, GeneralInfo, NoticeType } from "./Enum";
+import { CardInfo, GeneralInfo, NoticeType, SoliderType } from "./Enum";
 import { NoticeMgr } from "./NoticeManager";
 
 //战斗管理器
@@ -131,23 +131,24 @@ class FightManager {
     }
 
     /**兵种相克 */
-    checkBingRestriction(srcType: number, destType: number){  //401骑兵402步兵403弓兵
-        if(srcType == 401){
-            if(destType == 402){
+    checkBingRestriction(srcType: number, destType: number){  
+        //兵种相克，401骑兵克制402刀兵， 402刀兵克制403枪兵，403枪兵克制401骑兵， 404弓兵为不克制兵种
+        if(srcType == SoliderType.qibing){
+            if(destType == SoliderType.daobing){
                 return 1;
-            }else if(destType == 403){
+            }else if(destType == SoliderType.qiangbing){
                 return -1;
             }
-        }else if(srcType == 402){
-            if(destType == 403){
+        }else if(srcType == SoliderType.daobing){
+            if(destType == SoliderType.qiangbing){
                 return 1;
-            }else if(destType == 401){
+            }else if(destType == SoliderType.qibing){
                 return -1;
             }
-        }else if(srcType == 403){
-            if(destType == 401){
+        }else if(srcType == SoliderType.qiangbing){
+            if(destType == SoliderType.qibing){
                 return 1;
-            }else if(destType == 402){
+            }else if(destType == SoliderType.daobing){
                 return -1;
             }
         }

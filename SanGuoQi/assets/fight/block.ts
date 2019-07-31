@@ -1,5 +1,5 @@
 
-import { CardInfo, NoticeType } from "../manager/Enum";
+import { CardInfo, NoticeType, SoliderType } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
 import Card from "./card";
 import FightShow from "./fightShow";
@@ -132,7 +132,7 @@ export default class Block extends cc.Component {
 
     //显示路径或攻击底图
     showRunAndAtkBg(selBlock: Block, blockLen: number){
-        if(selBlock.cardInfo.generalInfo.generalCfg.bingzhong == 403){   //弓兵攻击两格
+        if(selBlock.cardInfo.generalInfo.generalCfg.bingzhong == SoliderType.gongbing){   //弓兵攻击两格
             this.atkBg.active = true;
         }else{
             if(blockLen <= 200){
@@ -140,7 +140,7 @@ export default class Block extends cc.Component {
             }
         }
 
-        if(selBlock.cardInfo.generalInfo.generalCfg.bingzhong == 401){   //骑兵移动两格
+        if(selBlock.cardInfo.generalInfo.generalCfg.bingzhong == SoliderType.qibing){   //骑兵移动两格
             this.runBg.active = true;
         }else{
             if(blockLen <= 200){

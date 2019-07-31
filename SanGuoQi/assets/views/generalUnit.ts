@@ -69,9 +69,11 @@ export default class GeneralUnit extends cc.Component {
         this.descLabel.string = "";
         this.bagNumLabel.string = "x0";
         this.buyNumLabel.string = "";
+        this.bagItemNode.removeAllChildren();
 
         this.bagBtn.interactable = false;
         this.buyBtn.interactable = false;
+        
     }
 
     //刷新武将列表

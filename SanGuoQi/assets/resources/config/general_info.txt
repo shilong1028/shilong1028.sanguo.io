@@ -5,25 +5,34 @@ hp = 500
 mp = 20
 atk = 40
 def = 30
-desc = 骑兵装备战马和马刀，高移动力，弱防御力，攻击力一般。克制步兵，但被弓兵克制。
+desc = 骑兵装备战马和马刀，高移动力，防御力一般，攻击力一般。克制刀兵，但被枪兵克制。
 
 [402]
-name = 步兵千户
+name = 刀兵千户
 bingzhong = 402
 hp = 500
 mp = 20
 atk = 40
 def = 30
-desc = 步兵装备厚甲和长枪或钢刀，攻击力弱，防御力高。克制弓兵，但被骑兵克制。
+desc = 刀兵装备大盾和钢刀，移动力一般，防御力高，攻击力一般。克制枪兵，但被骑兵克制。
 
 [403]
-name = 弓兵千户
+name = 枪兵千户
 bingzhong = 403
 hp = 500
 mp = 20
 atk = 40
 def = 30
-desc = 弓兵装备长弓或连弩，可以远程攻击，但攻击力弱，防御力弱。克制骑兵，但被步兵克制。
+desc = 枪兵装备厚甲和长枪，移动力一般，防御力一般，攻击力高。克制骑兵，但被刀兵克制。
+
+[404]
+name = 弓兵千户
+bingzhong = 404
+hp = 500
+mp = 20
+atk = 40
+def = 30
+desc = 弓兵装备长弓或连弩，可以远程攻击，但移动力一般，防御力弱，攻击力弱。
 
 [1001]
 name = 刘亭
@@ -54,7 +63,7 @@ desc = 朱儁，字公伟。会稽郡上虞县（今浙江绍兴上虞区）人�
 
 [1004]
 name = 徐荣
-bingzhong = 401
+bingzhong = 402
 hp = 780
 mp = 36
 atk = 74
@@ -63,7 +72,7 @@ desc = 徐荣，辽东襄平人（今辽宁辽阳），东汉末年将领。曾�
 
 [1005]
 name = 樊稠
-bingzhong = 401
+bingzhong = 402
 hp = 780
 mp = 37
 atk = 75
@@ -99,7 +108,7 @@ desc = 张济，武威祖厉（今甘肃靖远东南）人，东汉末年将领�
 
 [1009]
 name = 董承
-bingzhong = 402
+bingzhong = 403
 hp = 770
 mp = 35
 atk = 72
@@ -108,7 +117,7 @@ desc = 董承，东汉末年将领、外戚，汉献帝刘协妃嫔董贵人之�
 
 [1010]
 name = 马腾
-bingzhong = 402
+bingzhong = 403
 hp = 790
 mp = 37
 atk = 63
@@ -117,7 +126,7 @@ desc = 马腾，字寿成。扶风茂陵（今陕西兴平）人，东汉末年�
 
 [1011]
 name = 庞德
-bingzhong = 402
+bingzhong = 403
 hp = 760
 mp = 37
 atk = 58
@@ -126,7 +135,7 @@ desc = 庞德，字令明，南安郡狟道县（今甘肃天水市武山县四�
 
 [1012]
 name = 李肃
-bingzhong = 402
+bingzhong = 403
 hp = 760
 mp = 42
 atk = 71
@@ -135,7 +144,7 @@ desc = 李肃，五原（治今内蒙古包头西北）人。
 
 [1013]
 name = 张绣
-bingzhong = 402
+bingzhong = 403
 hp = 700
 mp = 43
 atk = 73
@@ -144,7 +153,7 @@ desc = 张绣，武威祖厉（今甘肃靖远）人。东汉末年将领，骠�
 
 [1014]
 name = 贾诩
-bingzhong = 403
+bingzhong = 404
 hp = 860
 mp = 85
 atk = 58
@@ -153,7 +162,7 @@ desc = 贾诩，字文和，凉州姑臧（今甘肃武威市凉州区）人。�
 
 [1015]
 name = 徐庶
-bingzhong = 403
+bingzhong = 404
 hp = 840
 mp = 80
 atk = 64
@@ -162,7 +171,7 @@ desc = 徐庶，字元直。颍川郡长社县（今河南长葛东）人。东�
 
 [1016]
 name = 王允
-bingzhong = 403
+bingzhong = 404
 hp = 760
 mp = 80
 atk = 56
@@ -171,7 +180,7 @@ desc = 王允，字子师，太原祁（今山西祁县）人。东汉末年大�
 
 [1017]
 name = 李儒
-bingzhong = 403
+bingzhong = 404
 hp = 710
 mp = 75
 atk = 56
@@ -180,7 +189,7 @@ desc = 李儒，字文优，东汉末年谋士，生卒年不详。198年李傕�
 
 [1018]
 name = 华歆
-bingzhong = 403
+bingzhong = 404
 hp = 680
 mp = 83
 atk = 53
@@ -189,7 +198,7 @@ desc = 华歆，字子鱼，平原高唐人（今山东聊城高唐县）。东�
 
 [1019]
 name = 王朗
-bingzhong = 403
+bingzhong = 404
 hp = 770
 mp = 81
 atk = 55
@@ -198,7 +207,7 @@ desc = 王朗，字景兴，东海郯（今山东临沂市郯城西北）人。�
 
 [1020]
 name = 孔融
-bingzhong = 403
+bingzhong = 404
 hp = 700
 mp = 75
 atk = 55
@@ -234,7 +243,7 @@ desc = 淳于琼，字仲简，颍川（治今河南禹州）人。西园八校�
 
 [2004]
 name = 颜良
-bingzhong = 401
+bingzhong = 402
 hp = 790
 mp = 33
 atk = 72
@@ -243,7 +252,7 @@ desc = 颜良，琅琊临沂（今山东临沂）人，东汉末年河北军阀�
 
 [2005]
 name = 文丑
-bingzhong = 401
+bingzhong = 402
 hp = 780
 mp = 34
 atk = 75
@@ -279,7 +288,7 @@ desc = 高柔，字文惠。陈留郡圉县（今河南杞县南）人，并州�
 
 [2009]
 name = 周昂
-bingzhong = 402
+bingzhong = 403
 hp = 720
 mp = 36
 atk = 69
@@ -288,7 +297,7 @@ desc = 周昂，会稽人，东汉末年袁绍的部将，周昕之弟，周喁�
 
 [2010]
 name = 辛评
-bingzhong = 402
+bingzhong = 403
 hp = 740
 mp = 33
 atk = 66
@@ -297,7 +306,7 @@ desc = 辛评，字仲治，颍川阳翟人，东汉末年人物。曹魏卫尉�
 
 [2011]
 name = 麹义
-bingzhong = 402
+bingzhong = 403
 hp = 720
 mp = 38
 atk = 71
@@ -306,7 +315,7 @@ desc = 麴义，是东汉末年军阀袁绍部下的将领，能征善战，屡�
 
 [2012]
 name = 郭援
-bingzhong = 402
+bingzhong = 403
 hp = 660
 mp = 33
 atk = 66
@@ -315,7 +324,7 @@ desc = 郭援，沛国（治今安徽濉溪人）。东汉末年人物，袁尚�
 
 [2013]
 name = 蒋义渠
-bingzhong = 402
+bingzhong = 403
 hp = 710
 mp = 38
 atk = 67
@@ -324,7 +333,7 @@ desc = 蒋义渠，东汉末年袁绍军将军，其名最早见于《后汉书�
 
 [2014]
 name = 逢纪
-bingzhong = 403
+bingzhong = 404
 hp = 770
 mp = 81
 atk = 44
@@ -333,7 +342,7 @@ desc = 逢纪，字元图，南阳人。东汉末年袁绍部下谋臣，袁绍�
 
 [2015]
 name = 审配
-bingzhong = 403
+bingzhong = 404
 hp = 800
 mp = 85
 atk = 53
@@ -342,7 +351,7 @@ desc = 审配，字正南，魏郡阴安（今河北清丰北）人。为人正�
 
 [2016]
 name = 郭图
-bingzhong = 403
+bingzhong = 404
 hp = 720
 mp = 75
 atk = 52
@@ -351,7 +360,7 @@ desc = 郭图，字公则，颍川人。东汉末年袁绍帐下谋士，袁绍�
 
 [2017]
 name = 沮授
-bingzhong = 403
+bingzhong = 404
 hp = 680
 mp = 75
 atk = 50
@@ -360,7 +369,7 @@ desc = 沮授，广平人，东汉末年袁绍帐下谋士。史载他“少有�
 
 [2018]
 name = 田丰
-bingzhong = 403
+bingzhong = 404
 hp = 720
 mp = 70
 atk = 53
@@ -369,7 +378,7 @@ desc = 田丰，字元皓，钜鹿（今河北巨鹿一带）人，一说渤海�
 
 [2019]
 name = 荀谌
-bingzhong = 403
+bingzhong = 404
 hp = 690
 mp = 75
 atk = 47
@@ -378,7 +387,7 @@ desc = 荀谌，字友若，荀彧之兄（一说荀彧之弟），荀绲之子�
 
 [2020]
 name = 许攸
-bingzhong = 403
+bingzhong = 404
 hp = 660
 mp = 71
 atk = 50
@@ -414,7 +423,7 @@ desc = 夏侯惇，字元让，沛国谯（今安徽亳州）人。东汉末年�
 
 [3004]
 name = 曹仁
-bingzhong = 401
+bingzhong = 402
 hp = 750
 mp = 36
 atk = 76
@@ -423,7 +432,7 @@ desc = 曹仁，字子孝，汉族，沛国谯（今安徽亳州）人，曹操�
 
 [3005]
 name = 夏侯渊
-bingzhong = 401
+bingzhong = 402
 hp = 770
 mp = 31
 atk = 74
@@ -459,7 +468,7 @@ desc = 徐晃，字公明，河东杨（今山西洪洞东南）人。三国时�
 
 [3009]
 name = 乐进
-bingzhong = 402
+bingzhong = 403
 hp = 700
 mp = 34
 atk = 62
@@ -468,7 +477,7 @@ desc = 乐进，字文谦，阳平卫国（今河南清丰）人。东汉末年�
 
 [3010]
 name = 李典
-bingzhong = 402
+bingzhong = 403
 hp = 780
 mp = 32
 atk = 59
@@ -477,7 +486,7 @@ desc = 李典，字曼成，东汉末年名将。山阳郡钜野县（今山东�
 
 [3011]
 name = 于禁
-bingzhong = 402
+bingzhong = 403
 hp = 740
 mp = 38
 atk = 62
@@ -486,7 +495,7 @@ desc = 于禁，字文则，泰山钜平（今山东泰安南）人。三国时�
 
 [3012]
 name = 典韦
-bingzhong = 402
+bingzhong = 403
 hp = 760
 mp = 35
 atk = 65
@@ -495,7 +504,7 @@ desc = 典韦，陈留己吾（今河南商丘市宁陵县己吾城村）人。�
 
 [3013]
 name = 许褚
-bingzhong = 402
+bingzhong = 403
 hp = 650
 mp = 36
 atk = 66
@@ -504,7 +513,7 @@ desc = 许褚，字仲康，谯国谯人（今安徽亳州）。长八尺馀，�
 
 [3014]
 name = 郭嘉
-bingzhong = 403
+bingzhong = 404
 hp = 810
 mp = 85
 atk = 52
@@ -513,7 +522,7 @@ desc = 郭嘉，字奉孝，颍川阳翟（今河南禹州）人。东汉末年�
 
 [3015]
 name = 司马懿
-bingzhong = 403
+bingzhong = 404
 hp = 830
 mp = 83
 atk = 52
@@ -522,7 +531,7 @@ desc = 司马懿，字仲达，河内郡温县孝敬里（今河南省焦作市�
 
 [3016]
 name = 荀彧
-bingzhong = 403
+bingzhong = 404
 hp = 520
 mp = 74
 atk = 51
@@ -531,7 +540,7 @@ desc = 荀彧，字文若。颍川颍阴（今河南许昌）人。东汉末年�
 
 [3017]
 name = 荀攸
-bingzhong = 403
+bingzhong = 404
 hp = 730
 mp = 76
 atk = 54
@@ -540,7 +549,7 @@ desc = 荀攸，字公达，颍川颍阴（今河南许昌）人。荀彧之侄�
 
 [3018]
 name = 程昱
-bingzhong = 403
+bingzhong = 404
 hp = 700
 mp = 77
 atk = 50
@@ -549,7 +558,7 @@ desc = 程昱，字仲德，兖州东郡东阿（今山东东阿）人，东汉�
 
 [3019]
 name = 刘晔
-bingzhong = 403
+bingzhong = 404
 hp = 710
 mp = 72
 atk = 52
@@ -558,7 +567,7 @@ desc = 刘晔，字子扬，淮南成德人，是光武帝刘秀之子阜陵王�
 
 [3020]
 name = 满宠
-bingzhong = 403
+bingzhong = 404
 hp = 700
 mp = 71
 atk = 52
@@ -594,7 +603,7 @@ desc = 朱治，字君理。丹杨郡故鄣县（今浙江安吉）人。东汉�
 
 [4004]
 name = 程普
-bingzhong = 401
+bingzhong = 402
 hp = 740
 mp = 39
 atk = 79
@@ -603,7 +612,7 @@ desc = 程普，字德谋，右北平土垠（今河北丰润东）人。东汉�
 
 [4005]
 name = 韩当
-bingzhong = 401
+bingzhong = 402
 hp = 760
 mp = 35
 atk = 76
@@ -639,7 +648,7 @@ desc = 潘璋，字文珪，东郡发干（今山东冠县东）人。三国时�
 
 [4009]
 name = 凌操
-bingzhong = 402
+bingzhong = 403
 hp = 750
 mp = 31
 atk = 62
@@ -648,7 +657,7 @@ desc = 凌操，东汉末年将领，吴郡余杭（今浙江余杭）人，凌�
 
 [4010]
 name = 蒋钦
-bingzhong = 402
+bingzhong = 403
 hp = 720
 mp = 34
 atk = 61
@@ -657,7 +666,7 @@ desc = 蒋钦，字公奕，九江寿春（今安徽寿县）人。汉末东吴�
 
 [4011]
 name = 丁奉
-bingzhong = 402
+bingzhong = 403
 hp = 710
 mp = 30
 atk = 61
@@ -666,7 +675,7 @@ desc = 丁奉，字承渊，庐江安丰（今安徽霍邱，一说河南固始�
 
 [4012]
 name = 徐盛
-bingzhong = 402
+bingzhong = 403
 hp = 770
 mp = 31
 atk = 58
@@ -675,7 +684,7 @@ desc = 徐盛，字文向，琅邪莒县（今山东莒县）人，三国时吴�
 
 [4013]
 name = 太史慈
-bingzhong = 402
+bingzhong = 403
 hp = 720
 mp = 33
 atk = 66
@@ -684,7 +693,7 @@ desc = 太史慈，字子义，东莱黄县（今山东龙口东黄城集）人�
 
 [4014]
 name = 周瑜
-bingzhong = 403
+bingzhong = 404
 hp = 770
 mp = 81
 atk = 56
@@ -693,7 +702,7 @@ desc = 周瑜，字公瑾，庐江舒县（今安徽省合肥市舒县）人。�
 
 [4015]
 name = 吕范
-bingzhong = 403
+bingzhong = 404
 hp = 710
 mp = 82
 atk = 52
@@ -702,7 +711,7 @@ desc = 吕范，字子衡。汝南细阳（今安徽太和）人。汉末三国�
 
 [4016]
 name = 吕蒙
-bingzhong = 403
+bingzhong = 404
 hp = 710
 mp = 81
 atk = 49
@@ -711,7 +720,7 @@ desc = 吕蒙，字子明，东汉末年名将，汝南富陂人（今安徽阜�
 
 [4017]
 name = 孙静
-bingzhong = 403
+bingzhong = 404
 hp = 730
 mp = 73
 atk = 54
@@ -720,7 +729,7 @@ desc = 孙静，字幼台，吴郡富春（今浙江富阳）人，东汉末年�
 
 [4018]
 name = 张纮
-bingzhong = 403
+bingzhong = 404
 hp = 700
 mp = 80
 atk = 53
@@ -729,7 +738,7 @@ desc = 张纮，字子纲，广陵人。东汉末年谋士，和张昭一起合�
 
 [4019]
 name = 张昭
-bingzhong = 403
+bingzhong = 404
 hp = 730
 mp = 73
 atk = 54
@@ -738,7 +747,7 @@ desc = 张昭，字子布。徐州彭城（今江苏徐州）人。 三国时期
 
 [4020]
 name = 顾雍
-bingzhong = 403
+bingzhong = 404
 hp = 730
 mp = 78
 atk = 50
@@ -774,7 +783,7 @@ desc = 张飞，正史中字益德，幽州涿郡（今河北省保定市涿州�
 
 [5004]
 name = 赵云
-bingzhong = 401
+bingzhong = 402
 hp = 810
 mp = 36
 atk = 76
@@ -783,7 +792,7 @@ desc = 赵云，字子龙，常山真定（今河北省正定）人。身长八�
 
 [5005]
 name = 黄忠
-bingzhong = 401
+bingzhong = 402
 hp = 730
 mp = 33
 atk = 75
@@ -819,7 +828,7 @@ desc = 马岱，扶风茂陵（今陕西兴平）人。三国时期蜀汉将领�
 
 [5009]
 name = 糜竺
-bingzhong = 402
+bingzhong = 403
 hp = 730
 mp = 29
 atk = 57
@@ -828,7 +837,7 @@ desc = 麋竺（又作糜竺），字子仲。东海朐县（今江苏连云港�
 
 [5010]
 name = 糜芳
-bingzhong = 402
+bingzhong = 403
 hp = 740
 mp = 31
 atk = 62
@@ -837,7 +846,7 @@ desc = 麋芳，字子方，东海朐县（今江苏连云港）人。本为徐�
 
 [5011]
 name = 廖化
-bingzhong = 402
+bingzhong = 403
 hp = 730
 mp = 36
 atk = 64
@@ -846,7 +855,7 @@ desc = 廖化，本名淳，字元俭，荆州襄阳郡中卢县（今湖北省�
 
 [5012]
 name = 刘封
-bingzhong = 402
+bingzhong = 403
 hp = 720
 mp = 29
 atk = 64
@@ -855,7 +864,7 @@ desc = 刘封，东汉末年长沙（治今湖南湘阴）人，东汉末年将�
 
 [5013]
 name = 孟达
-bingzhong = 402
+bingzhong = 403
 hp = 710
 mp = 33
 atk = 64
@@ -864,7 +873,7 @@ desc = 孟达，字子度，本字子敬，因刘备的叔父名叫刘子敬，�
 
 [5014]
 name = 诸葛亮
-bingzhong = 403
+bingzhong = 404
 hp = 820
 mp = 88
 atk = 55
@@ -873,7 +882,7 @@ desc = 诸葛亮，字孔明，号卧龙，徐州琅琊阳都（今山东临沂�
 
 [5015]
 name = 庞统
-bingzhong = 403
+bingzhong = 404
 hp = 750
 mp = 84
 atk = 54
@@ -882,7 +891,7 @@ desc = 庞统，字士元，号凤雏，汉时荆州襄阳（治今湖北襄阳�
 
 [5016]
 name = 简雍
-bingzhong = 403
+bingzhong = 404
 hp = 700
 mp = 72
 atk = 54
@@ -891,7 +900,7 @@ desc = 简雍，字宪和。涿郡（今河北省涿州市）人。汉末三国�
 
 [5017]
 name = 孙乾
-bingzhong = 403
+bingzhong = 404
 hp = 700
 mp = 73
 atk = 48
@@ -900,7 +909,7 @@ desc = 孙乾，字公祐。北海郡（治今山东昌乐西）人。东汉末�
 
 [5018]
 name = 伊籍
-bingzhong = 403
+bingzhong = 404
 hp = 730
 mp = 74
 atk = 50
@@ -909,7 +918,7 @@ desc = 伊籍，字机伯，兖州山阳郡（今山东金乡县）人，三国�
 
 [5019]
 name = 马良
-bingzhong = 403
+bingzhong = 404
 hp = 710
 mp = 73
 atk = 50
@@ -918,7 +927,7 @@ desc = 马良，字季常，因眉毛中有白毛，人称白眉马良，襄阳�
 
 [5020]
 name = 法正
-bingzhong = 403
+bingzhong = 404
 hp = 720
 mp = 77
 atk = 54
@@ -1224,7 +1233,7 @@ desc = 文聘，字仲业，南阳宛人，三国时期曹魏名将。本来是�
 
 [8001]
 name = 段煨
-bingzhong = 402
+bingzhong = 403
 hp = 730
 mp = 34
 atk = 65
@@ -1233,7 +1242,7 @@ desc = 段煨，字忠明。武威姑臧（今甘肃武威）人。原为董卓�
 
 [8002]
 name = 牛辅
-bingzhong = 402
+bingzhong = 403
 hp = 780
 mp = 30
 atk = 61
@@ -1242,7 +1251,7 @@ desc = 牛辅，董卓的女婿，曾任中郎将，征讨白波军，不能取�
 
 [8003]
 name = 李堪
-bingzhong = 402
+bingzhong = 403
 hp = 780
 mp = 29
 atk = 63
@@ -1251,7 +1260,7 @@ desc = 李堪，河东人，东汉末年凉州军阀之一。
 
 [8004]
 name = 阎行
-bingzhong = 402
+bingzhong = 403
 hp = 720
 mp = 34
 atk = 61
@@ -1260,7 +1269,7 @@ desc = 阎行，字彦明，金城人（今甘肃省兰州市附近），是东�
 
 [8005]
 name = 赵弘
-bingzhong = 402
+bingzhong = 403
 hp = 760
 mp = 32
 atk = 58
@@ -1269,7 +1278,7 @@ desc = 赵弘，东汉末年黄巾之乱时南阳黄巾军第二任首领，与�
 
 [8006]
 name = 李大目
-bingzhong = 402
+bingzhong = 403
 hp = 750
 mp = 35
 atk = 61
@@ -1278,7 +1287,7 @@ desc = 李大目，男，是《三国志·魏书·张燕传》注引《典略》
 
 [8007]
 name = 白绕
-bingzhong = 402
+bingzhong = 403
 hp = 750
 mp = 32
 atk = 63
@@ -1287,7 +1296,7 @@ desc = 白绕，东汉末年黑山军首领之一。
 
 [8008]
 name = 于氐根
-bingzhong = 402
+bingzhong = 403
 hp = 750
 mp = 34
 atk = 56
@@ -1296,7 +1305,7 @@ desc = 于氐根，指汉末一支农民起义军首领的称号。“于羝根�
 
 [8009]
 name = 于扶罗
-bingzhong = 402
+bingzhong = 403
 hp = 750
 mp = 34
 atk = 61
@@ -1305,7 +1314,7 @@ desc = 栾提於夫罗，又名于扶罗，号持至尸逐侯单于，中国东�
 
 [8010]
 name = 邹丹
-bingzhong = 402
+bingzhong = 403
 hp = 710
 mp = 34
 atk = 64
@@ -1314,7 +1323,7 @@ desc = 邹丹，东汉末期人物。公孙瓒部下，曾被公孙瓒封为渔�
 
 [8011]
 name = 公孙续
-bingzhong = 402
+bingzhong = 403
 hp = 730
 mp = 38
 atk = 64
@@ -1323,7 +1332,7 @@ desc = 公孙续，辽西令支（今河北迁安）人。东汉末期人物，�
 
 [8012]
 name = 周昕
-bingzhong = 402
+bingzhong = 403
 hp = 750
 mp = 32
 atk = 62
@@ -1332,7 +1341,7 @@ desc = 周昕，字泰明。会稽（今浙江绍兴）人。袁绍部将、丹�
 
 [8013]
 name = 曹豹
-bingzhong = 402
+bingzhong = 403
 hp = 740
 mp = 29
 atk = 62
@@ -1341,7 +1350,7 @@ desc = 曹豹，东汉末年徐州牧陶谦的部将。其女曹氏为吕布次�
 
 [8014]
 name = 王楷
-bingzhong = 402
+bingzhong = 403
 hp = 730
 mp = 30
 atk = 56
@@ -1350,7 +1359,7 @@ desc = 王楷，东汉末年吕布部下谋士。与许汜一样，同是献计�
 
 [8015]
 name = 秦颉
-bingzhong = 402
+bingzhong = 403
 hp = 720
 mp = 33
 atk = 60
@@ -1359,7 +1368,7 @@ desc = 秦颉，字初起，荆州南郡鄀县人。中平元年三月，荆州�
 
 [8016]
 name = 郭石
-bingzhong = 402
+bingzhong = 403
 hp = 720
 mp = 35
 atk = 60
@@ -1368,7 +1377,7 @@ desc = 郭石，东汉末年人物，响应长沙区星的叛乱，联合周朝�
 
 [8017]
 name = 丘力居
-bingzhong = 402
+bingzhong = 403
 hp = 730
 mp = 31
 atk = 56
@@ -1377,7 +1386,7 @@ desc = 丘力居，东汉末年的辽西乌丸大人。拉拢中山太守张纯�
 
 [8018]
 name = 王睿
-bingzhong = 402
+bingzhong = 403
 hp = 740
 mp = 37
 atk = 56
@@ -1386,7 +1395,7 @@ desc = 王睿，字通曜，琅琊临沂（今山东临沂市）人。东汉大�
 
 [8019]
 name = 袁胤
-bingzhong = 402
+bingzhong = 403
 hp = 770
 mp = 34
 atk = 59
@@ -1395,7 +1404,7 @@ desc = 袁胤，东汉末袁术部将。汝南汝阳（今河南商水西南）�
 
 [8020]
 name = 曹性
-bingzhong = 402
+bingzhong = 403
 hp = 740
 mp = 34
 atk = 58
@@ -1404,7 +1413,7 @@ desc = 曹性，是东汉末年吕布的部将，史载他曾与身为自己上�
 
 [8021]
 name = 金旋
-bingzhong = 402
+bingzhong = 403
 hp = 720
 mp = 38
 atk = 63
@@ -1413,7 +1422,7 @@ desc = 金旋，字元机，东汉末年京兆人，或为西汉名臣金日磾�
 
 [8022]
 name = 赵范
-bingzhong = 402
+bingzhong = 403
 hp = 710
 mp = 44
 atk = 61
@@ -1431,7 +1440,7 @@ desc = 蔡瑁，字德珪，襄阳蔡州（今湖北襄阳）人。东汉末年�
 
 [9001]
 name = 陶谦
-bingzhong = 401
+bingzhong = 404
 hp = 710
 mp = 77
 atk = 63
@@ -1440,7 +1449,7 @@ desc = 陶谦，字恭祖。丹阳郡（治今安徽宣城）人，性格刚直�
 
 [9002]
 name = 刘表
-bingzhong = 401
+bingzhong = 404
 hp = 780
 mp = 71
 atk = 61
@@ -1449,7 +1458,7 @@ desc = 刘表，字景升，山阳郡高平县（今山东微山）人。东汉�
 
 [9003]
 name = 刘繇
-bingzhong = 401
+bingzhong = 404
 hp = 720
 mp = 67
 atk = 66
@@ -1458,7 +1467,7 @@ desc = 刘繇，字正礼。东莱牟平（今山东牟平）人。东汉末年�
 
 [9004]
 name = 韩玄
-bingzhong = 401
+bingzhong = 404
 hp = 720
 mp = 73
 atk = 47
@@ -1467,7 +1476,7 @@ desc = 韩玄，东汉末年至三国时期人，在汉末担任荆州的长沙�
 
 [9005]
 name = 陈宫
-bingzhong = 401
+bingzhong = 404
 hp = 680
 mp = 75
 atk = 49
@@ -1476,7 +1485,7 @@ desc = 陈宫，字公台，东汉末年吕布帐下首席谋士，东郡东武�
 
 [9051]
 name = 张宝
-bingzhong = 401
+bingzhong = 404
 hp = 730
 mp = 71
 atk = 51
@@ -1485,7 +1494,7 @@ desc = 张宝，钜鹿（治今河北平乡）人，东汉末黄巾起义首领�
 
 [9052]
 name = 张梁
-bingzhong = 401
+bingzhong = 404
 hp = 680
 mp = 70
 atk = 48
@@ -1494,7 +1503,7 @@ desc = 张梁，钜鹿（治今河北巨鹿）人，东汉末年黄巾起义首�
 
 [9053]
 name = 笮融
-bingzhong = 403
+bingzhong = 404
 hp = 700
 mp = 69
 atk = 48
@@ -1503,7 +1512,7 @@ desc = 笮融，东汉末豪强。丹阳（治今安徽宣城）人。初聚众�
 
 [9054]
 name = 蒯越
-bingzhong = 403
+bingzhong = 404
 hp = 690
 mp = 77
 atk = 49
@@ -1512,7 +1521,7 @@ desc = 蒯越，字异度，襄阳中庐（今湖北襄阳西南）人。刘表�
 
 [9055]
 name = 张邈
-bingzhong = 403
+bingzhong = 404
 hp = 720
 mp = 73
 atk = 50
@@ -1521,7 +1530,7 @@ desc = 张邈，字孟卓，东平寿张（今山东东平县）人。东汉末�
 
 [9056]
 name = 许贡
-bingzhong = 403
+bingzhong = 404
 hp = 740
 mp = 66
 atk = 54
@@ -1530,7 +1539,7 @@ desc = 许贡，东汉末官吏。先后任吴郡都尉、太守，欲送密信�
 
 [9057]
 name = 虞翻
-bingzhong = 403
+bingzhong = 404
 hp = 730
 mp = 76
 atk = 46
@@ -1539,7 +1548,7 @@ desc = 虞翻，字仲翔，会稽余姚（今浙江余姚）人。日南太守�
 
 [9058]
 name = 刘度
-bingzhong = 403
+bingzhong = 404
 hp = 730
 mp = 73
 atk = 51
@@ -1548,7 +1557,7 @@ desc = 刘度，东汉末年零陵太守。刘备征讨荆南四郡时，零陵�
 
 [9059]
 name = 陈登
-bingzhong = 403
+bingzhong = 404
 hp = 690
 mp = 74
 atk = 51
@@ -1557,7 +1566,7 @@ desc = 陈登，字元龙，下邳淮浦（今江苏涟水西）人。东汉末�
 
 [9060]
 name = 蒯良
-bingzhong = 403
+bingzhong = 404
 hp = 680
 mp = 73
 atk = 48

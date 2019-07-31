@@ -35,9 +35,9 @@ export default class Card extends cc.Component {
     shiqiLabel: cc.Label = null;   //士气
 
     @property(cc.Sprite)
-    bingSpr: cc.Sprite = null;   //兵种 401骑兵402步兵403弓兵
+    bingSpr: cc.Sprite = null;   //兵种 401骑兵402刀兵403枪兵404弓兵
     @property([cc.SpriteFrame])
-    bingSprFrames: cc.SpriteFrame[] = new Array(3);
+    bingSprFrames: cc.SpriteFrame[] = new Array(4);
 
     cardInfo: CardInfo = null;    //卡牌信息
 
