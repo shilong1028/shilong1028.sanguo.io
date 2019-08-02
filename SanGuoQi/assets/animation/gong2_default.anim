@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "gong2_default",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.7666666666666667,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "36190a59-0169-4252-8d59-8b14278c0d74"
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__uuid__": "78ee8c69-33b9-4547-8de2-22b093d3bb78"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "4d04255e-238d-41bd-836b-f6dbf57b8481"
+            }
+          },
+          {
+            "frame": 0.75,
+            "value": {
+              "__uuid__": "b123c892-aaf2-4659-a6b2-c88e4e43b478"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

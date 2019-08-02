@@ -1,0 +1,55 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "gong2_attack",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.85,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "143911fc-112d-4f4f-b628-30d07ccd3ab6"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "8c25a05b-9dfd-4954-afec-311de397bb84"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "4068e76c-b255-4022-828b-75ce49be716b"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "99bd7a2c-ac47-4440-a72b-47b46430ef41"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "4a22541f-9377-4949-8111-ad2d92f2b1af"
+            }
+          },
+          {
+            "frame": 0.8333333333333334,
+            "value": {
+              "__uuid__": "27bf74d6-445d-42d6-98b2-1b1c2eb019e3"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "fc6ac4f7-dc73-4253-8332-11d6005edac1",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "qibing2_default": {
+      "ver": "1.0.4",
+      "uuid": "a91bc3ab-3c7a-45e2-baf3-effd5558cb46",
+      "rawTextureUuid": "fc6ac4f7-dc73-4253-8332-11d6005edac1",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 206,
+      "height": 206,
+      "rawWidth": 206,
+      "rawHeight": 206,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "dao1_attack",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.85,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "22862f12-14d5-4968-9ae6-dd53b978abee"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "1c490f48-8899-4223-99a7-0fcf71f53848"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "332f6456-804d-4552-9ef4-65ffe28dd280"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "046aa8c3-97a0-4e67-b89a-2984871b2844"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "912b8b1a-776d-40fe-974c-eab44d185c1b"
+            }
+          },
+          {
+            "frame": 0.8333333333333334,
+            "value": {
+              "__uuid__": "117c4c10-cc04-45dd-ad40-362fa22f8893"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

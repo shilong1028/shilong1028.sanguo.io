@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "qiang2_default",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.7666666666666667,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "bcac331a-24d1-4d51-abd3-29c609634978"
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__uuid__": "07e27580-fc3c-49a8-be5a-cb7e312e74a5"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "4b2dbfed-f1d0-4782-ba21-cb55118f638f"
+            }
+          },
+          {
+            "frame": 0.75,
+            "value": {
+              "__uuid__": "9c818233-3a1b-4947-9f17-b921eaa69848"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "qibing1_default",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.7666666666666667,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "4a2653d1-5721-4c43-b245-53d7f4429a42"
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__uuid__": "30e60ac7-4798-4ec2-8fed-5e67d1161e89"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "0495cbc1-b9b2-424b-b475-6e8d9366487d"
+            }
+          },
+          {
+            "frame": 0.75,
+            "value": {
+              "__uuid__": "5d3a20e8-a744-4b8c-b0c9-029b14ca3014"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

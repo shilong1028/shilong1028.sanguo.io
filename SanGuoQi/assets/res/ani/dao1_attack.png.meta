@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "c97070a3-1c07-44ff-a8ae-dc4f42db973e",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "dao1_attack": {
+      "ver": "1.0.4",
+      "uuid": "3707b203-98d7-449f-8d5d-8aacc47b1b7f",
+      "rawTextureUuid": "c97070a3-1c07-44ff-a8ae-dc4f42db973e",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 248,
+      "height": 142,
+      "rawWidth": 248,
+      "rawHeight": 142,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

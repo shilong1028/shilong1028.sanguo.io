@@ -1,0 +1,49 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "dao2_default",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.0166666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "f3170716-ee5a-4d61-bdc2-525a96b934de"
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__uuid__": "efcba50d-b0ca-4fd8-a337-c21312c0de0c"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "8af248a5-a287-4230-b69d-3a3d571f19b2"
+            }
+          },
+          {
+            "frame": 0.75,
+            "value": {
+              "__uuid__": "7155002d-6277-44d2-a0ff-666c7476f256"
+            }
+          },
+          {
+            "frame": 1,
+            "value": {
+              "__uuid__": "37906b77-ea01-4375-99b8-79a284a18214"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
