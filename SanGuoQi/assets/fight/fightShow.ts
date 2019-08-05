@@ -4,6 +4,7 @@ import Card from "./card";
 import { CardInfo, SoliderType } from "../manager/Enum";
 import ShowLabel from "./showLabel";
 import BingAni from "../animation/bingAni";
+import { GameMgr } from "../manager/GameManager";
 
 //战斗或合成展示层
 const {ccclass, property} = cc._decorator;
@@ -566,7 +567,7 @@ export default class FightShow extends cc.Component {
                     newVal = Math.floor(newVal*1.2);
                     this.showTipsLable("兵种不同，合成新兵力为双方兵力折中后后的1.2倍！", cc.Color.BLUE);
                 }
-                let bingMax = this.leftCardInfo.generalInfo.generalLv * 1000;
+                let bingMax = GameMgr.getMaxBingCountByLv(this.leftCardInfo.generalInfo.generalLv);
                 if(newVal > bingMax){
                     newVal = bingMax;
                 }

@@ -3,6 +3,7 @@ import { MyUserMgr } from "../manager/MyUserData";
 import { CfgMgr } from "../manager/ConfigManager";
 import { FightMgr } from "../manager/FightManager";
 import { GeneralInfo } from "../manager/Enum";
+import { GameMgr } from "../manager/GameManager";
 
 //初始场景，用于初始化加载数据
 const {ccclass, property} = cc._decorator;
@@ -49,7 +50,7 @@ export default class StartScene extends cc.Component {
         for(let i=0; i<ids.length; ++i){
             let enemy = new GeneralInfo(ids[i]); 
             enemy.generalLv = lvs[i];
-            enemy.bingCount = enemy.generalLv * 1000;
+            enemy.bingCount = GameMgr.getMaxBingCountByLv(enemy.generalLv);
             fightArr.push(enemy.clone());
             enmeyArr.push(enemy);
         }

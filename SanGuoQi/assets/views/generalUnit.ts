@@ -126,7 +126,7 @@ export default class GeneralUnit extends cc.Component {
             }
         }
 
-        if(selGeneralInfo.bingCount >= selGeneralInfo.generalLv*1000){   //部曲满员
+        if(selGeneralInfo.bingCount >= GameMgr.getMaxBingCountByLv(selGeneralInfo.generalLv)){   //部曲满员
             this.bagBtn.interactable = false;
             this.buyBtn.interactable = false;
         }

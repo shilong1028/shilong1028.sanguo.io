@@ -215,6 +215,31 @@ class GameManager {
         }
     }
 
+    //由武将等级得到最大带兵数
+    getMaxBingCountByLv(generalLv:number){
+        if(generalLv == 1){
+            return 1000;
+        }else if(generalLv <= 3){
+            return 2000;
+        }else if(generalLv <= 8){
+            return 3000;
+        }else if(generalLv <= 15){
+            return 4000;
+        }else if(generalLv <= 30){
+            return 5000;
+        }else if(generalLv <= 50){
+            return 6000;
+        }else if(generalLv < 70){
+            return 7000;
+        }else if(generalLv < 85){
+            return 8000;
+        }else if(generalLv < 95){
+            return 9000;
+        }else{
+            return 10000;
+        }
+    }
+
 }
 export var GameMgr = new GameManager();
 

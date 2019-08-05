@@ -1,4 +1,5 @@
 import { st_general_info, st_item_info, CfgMgr, st_city_info } from "./ConfigManager";
+import { GameMgr } from "./GameManager";
 
 
 //常量或类定义
@@ -81,8 +82,11 @@ export class GeneralInfo{
         this.bingCount += num;
         if(this.bingCount < 0){
             this.bingCount = 0;
-        }else if(this.bingCount > this.generalLv*1000){
-            this.bingCount = this.generalLv*1000;
+        }else{
+            let maxCount = GameMgr.getMaxBingCountByLv(this.generalLv);
+            if(this.bingCount > maxCount){
+                this.bingCount = maxCount;
+            }
         }
     }
 }

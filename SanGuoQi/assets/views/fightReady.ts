@@ -5,6 +5,7 @@ import { GeneralInfo } from "../manager/Enum";
 import { CfgMgr } from "../manager/ConfigManager";
 import { ROOT_NODE } from "../common/rootNode";
 import { FightMgr } from "../manager/FightManager";
+import { GameMgr } from "../manager/GameManager";
 
 //武将出战
 const {ccclass, property} = cc._decorator;
@@ -67,7 +68,7 @@ export default class FightReady extends cc.Component {
             for(let i=0; i<battleConf.generals.length; ++i){
                 let enemy = new GeneralInfo(battleConf.generals[i].key);   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
                 enemy.generalLv = battleConf.generals[i].val;
-                enemy.bingCount = enemy.generalLv * 1000;
+                enemy.bingCount = GameMgr.getMaxBingCountByLv(enemy.generalLv);
                 this.enmeyArr.push(enemy);
             }
 
