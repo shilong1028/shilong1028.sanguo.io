@@ -215,7 +215,6 @@ export default class FightScene extends cc.Component {
                                     return block;
                                 }
                             }
-
                         }
                     }
                 }

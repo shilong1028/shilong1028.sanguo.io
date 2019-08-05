@@ -7,21 +7,18 @@ export default class BingAni extends cc.Component {
 
     @property(cc.Animation)
     bingAni: cc.Animation = null;
+    @property(cc.Sprite)
+    bingSpr: cc.Sprite = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     oldAniName: string = "";  //旧的动画名称
-    aniClips: any[] = null;   //AnimationClip[]
 
     onLoad () {
-        if(this.bingAni){
-            this.aniClips = this.bingAni.getClips();
-            this.oldAniName = "";  //小球旧的动画名称
-        }
+        this.oldAniName = "";  //小球旧的动画名称
     }
 
     start () {
-
     }
 
     // update (dt) {}
@@ -32,6 +29,7 @@ export default class BingAni extends cc.Component {
             this.bingAni.stop(this.oldAniName);
             this.oldAniName = "";  //小球旧的动画名称
         }
+        this.bingSpr.spriteFrame = null;
         let clipIdx = -1;
         if(posType == 1){   //站在左侧，面向右侧
             if(optType == 1){   //默认动画
@@ -48,7 +46,8 @@ export default class BingAni extends cc.Component {
         }
 
         if(clipIdx >= 0){
-            let clip = this.aniClips[clipIdx];
+            let aniClips = this.bingAni.getClips();  //AnimationClip[] 
+            let clip = aniClips[clipIdx];
             //clip.wrapMode = cc.WrapMode.Loop;
             
             this.oldAniName = clip.name;

@@ -1,9 +1,9 @@
 import Block from "./block";
 import { FightMgr } from "../manager/FightManager";
 import Card from "./card";
-import { CardInfo } from "../manager/Enum";
+import { CardInfo, SoliderType } from "../manager/Enum";
 import ShowLabel from "./showLabel";
-import { CfgMgr } from "../manager/ConfigManager";
+import BingAni from "../animation/bingAni";
 
 //战斗或合成展示层
 const {ccclass, property} = cc._decorator;
@@ -15,37 +15,38 @@ export default class FightShow extends cc.Component {
     leftName: cc.Label = null;
     @property(cc.Label)
     rightName: cc.Label = null;
-
     @property(cc.Label)
     leftHp: cc.Label = null;
     @property(cc.Label)
     rightHp: cc.Label = null;
-
     @property(cc.Label)
     leftMp: cc.Label = null;
     @property(cc.Label)
     rightMp: cc.Label = null;
-
     @property(cc.Label)
     leftAtk: cc.Label = null;
     @property(cc.Label)
     rightAtk: cc.Label = null;
-
     @property(cc.Label)
     leftDef: cc.Label = null;
     @property(cc.Label)
     rightDef: cc.Label = null;
-
     @property(cc.Node)
     leftHead: cc.Node = null;
     @property(cc.Node)
     rightHead: cc.Node = null;
 
+    @property(cc.Node)
+    leftGenNode: cc.Node = null;
+    @property(cc.Node)
+    rightGenNode: cc.Node = null;
+    @property(cc.Node)
+    soldiersNode: cc.Node = null;
+
     @property(cc.Sprite)
     fightIcon: cc.Sprite = null;
     @property(cc.Label)
     typeLabel: cc.Label = null;
-
     @property(cc.SpriteFrame)
     hechengIcon: cc.SpriteFrame = null;
 
@@ -56,15 +57,19 @@ export default class FightShow extends cc.Component {
 
     @property(cc.Prefab)
     pfCard: cc.Prefab = null;
-
     @property(cc.Prefab)
     pfTips: cc.Prefab = null;  //提示文本
+    @property([cc.Prefab])
+    pfBings: cc.Prefab[] = new Array(4);  //骑刀枪弓四种兵种节点
 
     nShowType: number = 0;   //1合成2战斗
     srcBlock: Block = null;  // 主动方
     destBlock: Block = null;   //被动方(被攻击者或被合成吸收者)
     leftCardInfo: CardInfo = null;
     rightCardInfo: CardInfo = null;
+
+    leftBingArr: BingAni[] = new Array();   //左侧士兵节点集合
+    rightBingArr: BingAni[] = new Array();   //右侧士兵节点集合
 
     tipsArr: any[] = new Array();
     tipTimes: number = 0;
@@ -129,10 +134,90 @@ export default class FightShow extends cc.Component {
         
         this.showLeftUI();
         this.showRightUI();
+        this.showAniUI();
 
         this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
             this.showEffectAni();
         }.bind(this))));
+    }
+
+    showAniUI(){
+        this.leftGenNode.getComponent(BingAni).changeAniByType(1, 1);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+        this.rightGenNode.getComponent(BingAni).changeAniByType(2, 1);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+
+        //每个士兵节点标识200兵
+        let leftBingCount = Math.ceil((this.leftCardInfo.generalInfo.bingCount-50)/200);
+        let rightBingCount = Math.ceil((this.rightCardInfo.generalInfo.bingCount-50)/200);
+        let maxCount = Math.max(leftBingCount, rightBingCount);
+
+        let leftOffPosX = 200/(Math.ceil(leftBingCount/3)+1);
+        let rightOffPosX = 200/(Math.ceil(rightBingCount/3)+1);
+        let posYArr = new Array(65, 0, -65);
+
+        let leftBingPf = this.pfBings[this.leftCardInfo.generalInfo.generalCfg.bingzhong-401];
+        let rightBingPf = this.pfBings[this.rightCardInfo.generalInfo.generalCfg.bingzhong-401];
+
+        let yIdx = 0;
+        let leftBeginX = -200 + leftOffPosX;
+        let rightBeginX = 200 - rightOffPosX;
+        for(let i=0; i<maxCount; ++i){
+            if(i < leftBingCount){
+                let leftBing = cc.instantiate(leftBingPf);
+                let leftBingAni = leftBing.getComponent(BingAni);
+                leftBingAni.changeAniByType(1, 1); 
+                this.leftBingArr.push(leftBingAni);
+                
+                leftBing.position = cc.v2(leftBeginX, posYArr[yIdx]);
+                this.soldiersNode.addChild(leftBing);
+            }
+            if(i < rightBingCount){
+                let rightBing = cc.instantiate(rightBingPf);
+                let rightBingAni = rightBing.getComponent(BingAni);
+                rightBingAni.changeAniByType(2, 1); 
+                this.rightBingArr.push(rightBingAni);
+
+                rightBing.position = cc.v2(rightBeginX, posYArr[yIdx]);
+                this.soldiersNode.addChild(rightBing);
+            }
+            yIdx++;
+            if(yIdx > 2){
+                yIdx = 0;
+                leftBeginX += leftOffPosX;
+                rightBeginX -= rightOffPosX;
+            }
+        }
+    }
+
+    showLeftAniUi(optType: number){
+        this.leftGenNode.getComponent(BingAni).changeAniByType(1, optType);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+        for(let i=0; i<this.leftBingArr.length; ++i){
+            let leftBingAni = this.leftBingArr[i];
+            leftBingAni.changeAniByType(1, optType); 
+        }
+    }
+
+    showRightAniUi(optType: number){
+        this.rightGenNode.getComponent(BingAni).changeAniByType(2, optType);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+        for(let i=0; i<this.rightBingArr.length; ++i){
+            let rightBingAni = this.rightBingArr[i];
+            rightBingAni.changeAniByType(2, optType); 
+        }
+    }
+
+    updateBingAniCount(posType: number){
+        if(posType == 1){  //1站在左侧，面向右侧
+            let leftBingCount = Math.ceil((this.leftCardInfo.generalInfo.bingCount-50)/200);
+            let off = this.leftBingArr.length - leftBingCount;
+            if(off > 0){
+                this.leftBingArr.splice(leftBingCount-1, off);
+            }
+        }else if(posType == 2){
+            let rightBingCount = Math.ceil((this.rightCardInfo.generalInfo.bingCount-50)/200);
+            let off = this.rightBingArr.length - rightBingCount;
+            if(off > 0){
+                this.rightBingArr.splice(rightBingCount-1, off);
+            }
+        }
     }
 
     showLeftUI(){
@@ -301,16 +386,20 @@ export default class FightShow extends cc.Component {
             this.node.runAction(cc.sequence(
                 cc.repeat(cc.sequence(cc.delayTime(stepDelay), cc.callFunc(function(){
                     //攻击方进攻
+                    this.showLeftAniUi(2);
+                    this.showRightAniUi(1);
                     let arr = this.showFightProgress(this.leftCardInfo, this.rightCardInfo, false);
                     this.leftCardInfo = arr[0];
                     this.rightCardInfo = arr[1];
                     this.showLeftUI();
                     this.showRightUI();
+                    this.updateBingAniCount(2);
                 }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
                     //防御方反击
+                    this.showLeftAniUi(1);
                     let bDefenderAtk: boolean = true;   //防御方反击
-                    if(this.leftCardInfo.generalInfo.generalCfg.bingzhong == 403){   //弓兵攻击两格
-                        if(this.rightCardInfo.generalInfo.generalCfg.bingzhong != 403){ 
+                    if(this.leftCardInfo.generalInfo.generalCfg.bingzhong == SoliderType.gongbing){   //弓兵攻击两格
+                        if(this.rightCardInfo.generalInfo.generalCfg.bingzhong != SoliderType.gongbing){ 
                             let defPos = this.srcBlock.node.position;
                             let atkPos = this.destBlock.node.position;
                             if(defPos.sub(atkPos).mag() >= 250 ){
@@ -319,14 +408,18 @@ export default class FightShow extends cc.Component {
                         }
                     }
                     if(bDefenderAtk == true){
+                        this.showRightAniUi(2);
                         let arr = this.showFightProgress(this.rightCardInfo, this.leftCardInfo, this.destBlock.bArrowTown);
                         this.rightCardInfo = arr[0];
                         this.leftCardInfo = arr[1];
                         this.showLeftUI();
                         this.showRightUI();
+                        this.updateBingAniCount(1);
                     }
                 }.bind(this))), 3), 
             cc.delayTime(stepDelay), cc.callFunc(function(){
+                this.showLeftAniUi(1);
+                this.showRightAniUi(1);
                 effNode.removeFromParent(true);
                 cc.log("fightEnd(), this.leftCardInfo = "+JSON.stringify(this.leftCardInfo));
                 cc.log("fightEnd(), this.rightCardInfo = "+JSON.stringify(this.rightCardInfo));
@@ -339,7 +432,7 @@ export default class FightShow extends cc.Component {
                         FightMgr.getFightScene().handelShiqiChangeByDead(false, this.srcBlock);  //当敌对方武将死亡时的士气变动
                     }
 
-                    if(leftCardCfg.bingzhong == 403){  //弓兵攻击后不移动位置
+                    if(leftCardCfg.bingzhong == SoliderType.gongbing){  //弓兵攻击后不移动位置
                         this.srcBlock.showBlockCard(this.leftCardInfo);  //设置地块上的卡牌模型
 
                         if(this.destBlock.cardInfo.campId == FightMgr.myCampId){
