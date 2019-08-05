@@ -16,13 +16,11 @@ export class st_battle_info{
     name;     //战斗名称
     tower;    //营寨数量，补充血量
     town;     //箭楼数量，提高攻击力
-    soliders;   //敌方士兵编队-千人数量  401-2;402-2;403-2
     generals;   //敌方部曲（武将ID-等级） 1004-1;6001-3
     
     transType(){
         this.tower = parseInt(this.tower);
         this.town = parseInt(this.town);
-        this.soliders = CfgMgr.getKeyValAry(this.soliders, ";");
         this.generals = CfgMgr.getKeyValAry(this.generals, ";");   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
     }
 }

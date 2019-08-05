@@ -71,16 +71,6 @@ export default class FightReady extends cc.Component {
                 this.enmeyArr.push(enemy);
             }
 
-            //敌兵
-            // for(let i=0; i<battleConf.soliders.length; ++i){
-            //     let enemy = new GeneralInfo(battleConf.soliders[i].key);   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
-            //     enemy.generalLv = 1;
-            //     enemy.bingCount = enemy.generalLv * 1000;
-            //     for(let j=0; j<battleConf.soliders[i].val; j++){
-            //         this.enmeyArr.push(enemy);
-            //     }
-            // }
-
             this.enemyTabelView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
             this.enemyTabelView.initTableView(this.enmeyArr.length, { array: this.enmeyArr, target: this, bClick: false}); 
 

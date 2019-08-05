@@ -255,7 +255,7 @@ export default class FightShow extends cc.Component {
     }
 
 
-    showFightProgress(attackCardInfo: CardInfo, defendCardInfo: CardInfo, bAtkArrowTown:boolean=false){
+    showFightProgress(attackCardInfo: CardInfo, defendCardInfo: CardInfo, atkArrowTown:number=0, defArrowTown:number=0){
         let atkCardCfg = attackCardInfo.generalInfo.generalCfg;
         let defCardCfg = defendCardInfo.generalInfo.generalCfg;
 
@@ -304,9 +304,14 @@ export default class FightShow extends cc.Component {
         }
 
         //攻击方在箭塔下
-        if(bAtkArrowTown == true){
+        if(atkArrowTown == 1){
             this.showTipsLable("箭塔辅助攻击，攻击方攻击力增加10%！", cc.Color.RED);
             attack += atkCardCfg.atk * 0.1;
+        }
+        //防御方在城池下
+        if(defArrowTown == 2){
+            this.showTipsLable("城池辅助防御，防御方防御力增加20%！", cc.Color.BLUE);
+            defend += defCardCfg.def * 0.2;
         }
 
         let atkSoliderCount = attackCardInfo.generalInfo.bingCount;
@@ -388,7 +393,7 @@ export default class FightShow extends cc.Component {
                     //攻击方进攻
                     this.showLeftAniUi(2);
                     this.showRightAniUi(1);
-                    let arr = this.showFightProgress(this.leftCardInfo, this.rightCardInfo, false);
+                    let arr = this.showFightProgress(this.leftCardInfo, this.rightCardInfo, this.srcBlock.ArrowOrTown, this.destBlock.ArrowOrTown);
                     this.leftCardInfo = arr[0];
                     this.rightCardInfo = arr[1];
                     this.showLeftUI();
@@ -409,7 +414,7 @@ export default class FightShow extends cc.Component {
                     }
                     if(bDefenderAtk == true){
                         this.showRightAniUi(2);
-                        let arr = this.showFightProgress(this.rightCardInfo, this.leftCardInfo, this.destBlock.bArrowTown);
+                        let arr = this.showFightProgress(this.rightCardInfo, this.leftCardInfo, this.srcBlock.ArrowOrTown, this.destBlock.ArrowOrTown);
                         this.rightCardInfo = arr[0];
                         this.leftCardInfo = arr[1];
                         this.showLeftUI();

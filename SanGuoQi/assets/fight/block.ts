@@ -13,10 +13,8 @@ export default class Block extends cc.Component {
 
     @property(cc.Sprite)
     blockSpr: cc.Sprite = null;
-    @property(cc.SpriteFrame)
-    openFrame: cc.SpriteFrame = null;  //开启后的背景
-    @property(cc.SpriteFrame)
-    arrowFrame: cc.SpriteFrame = null;   //箭楼纹理
+    @property([cc.SpriteFrame])
+    openFrames: cc.SpriteFrame[] = new Array(3);  //开启后的背景, 0默认，1箭楼，2城池
 
     @property(cc.Node)
     headNode: cc.Node = null;
@@ -38,7 +36,7 @@ export default class Block extends cc.Component {
     cardNode: cc.Node = null;
     cardInfo: CardInfo = null;   //注意，地块的cardInfo和卡牌的cardInfo是公用一块内存的。
 
-    bArrowTown: boolean = false;   //是否为箭楼  
+    ArrowOrTown: number = 0;   //箭楼或城池 0无，1箭楼，2城池
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -153,13 +151,17 @@ export default class Block extends cc.Component {
     randCardData(idx: number){
         this.blockId = idx;
         if(idx == 8 || idx == 11){
-            this.bArrowTown = true;    //箭楼
+            if(idx == 8){
+                this.ArrowOrTown = 1;  //箭楼或城池 0无，1箭楼，2城池
+            }else if(idx == 11){
+                this.ArrowOrTown = 2; 
+            }
             this.cardInfo = null;   //空卡
             this.isLock = false;
             this.showBlockCard(this.cardInfo);
             return;
         }else{
-            this.bArrowTown = false;
+            this.ArrowOrTown = 0;  //箭楼或城池 0无，1箭楼，2城池
         }
 
         //let cardInfo = FightMgr.getGeneralDataFromRandomArr(this.blockId);  //从随机数组中获取武将数据
@@ -250,11 +252,7 @@ export default class Block extends cc.Component {
                 this.cardNode.getComponent(Card).setCardData(info);
             }
 
-            if(this.bArrowTown == true){
-                this.blockSpr.spriteFrame = this.arrowFrame;
-            }else{
-                this.blockSpr.spriteFrame = this.openFrame;
-            }
+            this.blockSpr.spriteFrame = this.openFrames[this.ArrowOrTown];  //箭楼或城池 0无，1箭楼，2城池
         }
     }
 
