@@ -44,6 +44,21 @@ class StorageManager_class  {
         return val;
     }
 
+    /**解析字符串，获取整形数组 */
+	getItemIntAry(key: string, sp: string = "|"): Array<number> {
+        let ret: Array<number> = [];
+        let str = cc.sys.localStorage.getItem(key);
+        if(str && str.length > 0){
+            let sL = str.toString().split(sp);
+            for (let p of sL) {
+                if (p.length > 0) {
+                    ret.push(parseInt(p));
+                }
+            }
+        }
+		return ret;
+    }
+
     setItemBool(key:string, value: boolean){
         if(value == true){
             this.setItem(key, 1);
@@ -62,7 +77,7 @@ class StorageManager_class  {
     //检查一个string是否为Json并返回string或json对象
     getJsonItem(key: string) {
         let str = cc.sys.localStorage.getItem(key);
-        cc.log("getJsonItem(), str = "+str);
+        //cc.log("getJsonItem(), str = "+str);
         if(str == null || str == undefined || str == ""){
             return null;
         }
@@ -94,5 +109,7 @@ export const LDKey = {
     KEY_StoryData : "KEY_StoryData",  //当前进行的剧情故事  {key=id, val=state}  0未完成，1完成未领取，2已领取
     KEY_ItemList: "KEY_ItemList",     //背包道具列表
     KEY_GeneralList: "KEY_GeneralList",     //武将列表
+    KEY_MyCityIds: "KEY_MyCityIds",     //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
+    KEY_RuleCityIds: "KEY_RuleCityIds",     //己方统治下未被占领或叛乱的城池ID集合
 
 }

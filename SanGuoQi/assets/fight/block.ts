@@ -152,13 +152,18 @@ export default class Block extends cc.Component {
     /**随机卡牌数据 */
     randCardData(idx: number){
         this.blockId = idx;
-        if(idx == 4 || idx == 15){
+        if(idx == 8 || idx == 11){
             this.bArrowTown = true;    //箭楼
+            this.cardInfo = null;   //空卡
+            this.isLock = false;
+            this.showBlockCard(this.cardInfo);
+            return;
         }else{
             this.bArrowTown = false;
         }
 
-        let cardInfo = FightMgr.getGeneralDataFromRandomArr(this.blockId);  //从随机数组中获取武将数据
+        //let cardInfo = FightMgr.getGeneralDataFromRandomArr(this.blockId);  //从随机数组中获取武将数据
+        let cardInfo = FightMgr.getGeneralDataByBlockIdx(this.blockId);  //卡牌均开启并制定位置
         if(cardInfo.campId == 0 && cardInfo.generalInfo == null){
             this.cardInfo = null;   //空卡
             this.isLock = false;

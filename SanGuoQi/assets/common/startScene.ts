@@ -43,8 +43,8 @@ export default class StartScene extends cc.Component {
         let fightArr: GeneralInfo[] = new Array();
         let enmeyArr: GeneralInfo[] = new Array();
 
-        let ids = new Array(3001, 3006, 3014, 3009, 3018);   //骑兵，步兵，弓兵， 步兵，弓兵
-        let lvs = new Array(3, 2, 2, 1, 1);
+        let ids = new Array(3001, 3006, 3009, 3007, 3014);   //曹操骑兵，张辽刀兵，乐进枪兵，曹洪刀兵， 郭嘉弓兵
+        let lvs = new Array(3, 2, 2, 1, 2);
 
         for(let i=0; i<ids.length; ++i){
             let enemy = new GeneralInfo(ids[i]); 
@@ -55,8 +55,6 @@ export default class StartScene extends cc.Component {
         }
 
         FightMgr.clearAndInitFightData(enmeyArr, fightArr);   //清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组
-
-        cc.director.loadScene("fightScene");
     }
 
     /**加载配置数据完毕 */

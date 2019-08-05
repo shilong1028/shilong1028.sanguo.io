@@ -1,8 +1,9 @@
 
 import City from "./city";
 import { CfgMgr} from "../manager/ConfigManager";
-import { CityInfo } from "../manager/Enum";
+import { CityInfo, NoticeType } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
+import { NoticeMgr } from "../manager/NoticeManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -33,6 +34,8 @@ export default class Map extends cc.Component {
 
             city.getComponent(City).initCityConf(cityInfo);
         }
+
+        NoticeMgr.emit(NoticeType.CityFlagStory, 100);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知, 100我我方城池
     }
 
     // update (dt) {}

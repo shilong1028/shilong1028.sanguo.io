@@ -85,7 +85,7 @@ export default class GeneralUnit extends cc.Component {
 
     //单个武将数据更新
     handleUpdateGeneral(info: GeneralInfo){
-        cc.log("handleUpdateGeneral(), 单个武将数据更新, info = "+JSON.stringify(info));
+        //cc.log("handleUpdateGeneral(), 单个武将数据更新, info = "+JSON.stringify(info));
 
         this.selCellIdx = -1;
         this.selBingItem = null;
@@ -159,9 +159,9 @@ export default class GeneralUnit extends cc.Component {
 
     //更新武将部曲士兵数量
     updateGeneralBingCount(){
-        cc.log("updateGeneralBingCount(), this.selCellIdx = "+this.selCellIdx);
         let selGeneralInfo: GeneralInfo = MyUserData.GeneralList[this.selCellIdx];
         selGeneralInfo.updateBingCount(1000);
+        //cc.log("updateGeneralBingCount(), this.selCellIdx = "+this.selCellIdx+"; selGeneralInfo = "+JSON.stringify(selGeneralInfo));
         MyUserMgr.updateGeneralList(selGeneralInfo, true);   //修改用户武将列表
 
         if(GameMgr.curTaskConf.type == 4){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗

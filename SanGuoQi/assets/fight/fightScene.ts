@@ -102,7 +102,7 @@ export default class FightScene extends cc.Component {
         this.showRoundDesc();
 
         this.gridNode.removeAllChildren(true);
-        FightMgr.getAllRandomGenerals();   //获取全部随机武将数据
+        //FightMgr.getAllRandomGenerals();   //获取全部随机武将数据
 
         let totalCardCount = FightMgr.cardsCol*FightMgr.cardsRow;
         for(let i=0; i<totalCardCount;++i){

@@ -72,14 +72,14 @@ export default class FightReady extends cc.Component {
             }
 
             //敌兵
-            for(let i=0; i<battleConf.soliders.length; ++i){
-                let enemy = new GeneralInfo(battleConf.soliders[i].key);   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
-                enemy.generalLv = 1;
-                enemy.bingCount = enemy.generalLv * 1000;
-                for(let j=0; j<battleConf.soliders[i].val; j++){
-                    this.enmeyArr.push(enemy);
-                }
-            }
+            // for(let i=0; i<battleConf.soliders.length; ++i){
+            //     let enemy = new GeneralInfo(battleConf.soliders[i].key);   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
+            //     enemy.generalLv = 1;
+            //     enemy.bingCount = enemy.generalLv * 1000;
+            //     for(let j=0; j<battleConf.soliders[i].val; j++){
+            //         this.enmeyArr.push(enemy);
+            //     }
+            // }
 
             this.enemyTabelView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
             this.enemyTabelView.initTableView(this.enmeyArr.length, { array: this.enmeyArr, target: this, bClick: false}); 
@@ -130,6 +130,8 @@ export default class FightReady extends cc.Component {
             if(selGeneralInfo.bingCount <= 0){
                 ROOT_NODE.showTipsText("武将未领兵，不能出战!");
                 return;
+            }else if(this.fightArr.length > 5){
+                ROOT_NODE.showTipsText("出战名额（五个）已满!");
             }else{
                 this.generalArr[this.selCellIdx].bReadyFight = true;
                 this.generalArr[this.selCellIdx].killCount = 0;
@@ -151,8 +153,6 @@ export default class FightReady extends cc.Component {
             this.fightArr[i].bReadyFight = false;
         }
         FightMgr.clearAndInitFightData(this.enmeyArr, this.fightArr);   //清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组
-
-        cc.director.loadScene("fightScene");
     }
 
 }

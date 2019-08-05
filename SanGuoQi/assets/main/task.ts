@@ -59,7 +59,7 @@ export default class Task extends cc.Component {
     }
 
     onRewardBtn(){
-        cc.log("onRewardBtn(), this.taskConf = "+JSON.stringify(this.taskConf));
+        //cc.log("onRewardBtn(), this.taskConf = "+JSON.stringify(this.taskConf));
         if(this.taskConf.generals && this.taskConf.generals.length > 0){    //武将来投
             let layer = GameMgr.showLayer(this.pfGenJoin);
             layer.getComponent(GeneralJoin).initGeneralIds(this.taskConf.generals);
@@ -85,6 +85,12 @@ export default class Task extends cc.Component {
     initMainStory(){
         GameMgr.curTaskConf = null;  //当前任务配置
         if(MyUserData.TaskId > 0){
+            if(MyUserData.TaskId < 5){   //黄巾之乱
+                NoticeMgr.emit(NoticeType.CityFlagStory, 1);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
+            }else if(MyUserData.TaskId <=10){   //董卓之乱
+                NoticeMgr.emit(NoticeType.CityFlagStory, 2);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
+            }
+
             this.taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
             if(this.taskConf){
                 GameMgr.curTaskConf = this.taskConf;  //当前任务配置

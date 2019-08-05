@@ -28,7 +28,7 @@ export default class ResultLayer extends cc.Component {
 
         let fightGeneralList = FightMgr.getFightScene().myDeadCards;
         //注意，以下三个列表数据是同步的，即三个都正确记录了战斗之后的剩余兵力及杀敌数
-        cc.log("fightGeneralList = "+JSON.stringify(fightGeneralList));
+        //cc.log("fightGeneralList = "+JSON.stringify(fightGeneralList));
         // cc.log("list = "+JSON.stringify(FightMgr.battleGeneralArr));
         // cc.log("allList = "+JSON.stringify(MyUserData.GeneralList));
 

@@ -61,7 +61,6 @@ export class GeneralInfo{
 
         //不必写入本地存储的变量
         temp.timeId = 0;
-        temp.bingCount = 0;
         temp.generalCfg = null;
 
         return temp;
@@ -166,4 +165,6 @@ export const NoticeType = {
     SelBlockMove: "SelBlockMove",   //准备拖动砖块
 
     PerNextRound: "PerNextRound",   //下一个回合准备
+
+    CityFlagStory: "CityFlagStory",  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
 }

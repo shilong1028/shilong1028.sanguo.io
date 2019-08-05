@@ -15,6 +15,9 @@ export var MyUserData = {
     TaskId: 1,   //当前任务ID
     TaskState: 0,    //当前任务状态 0未完成，1完成未领取，2已领取
 
+    myCityIds: [],   //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
+    ruleCityIds: [],   //己方统治下未被占领或叛乱的城池ID集合
+
     ItemList: [],   //背包物品列表
     GeneralList:[],   //武将列表
     
@@ -35,6 +38,11 @@ class MyUserManager {
         MyUserData.TaskId = 1;   //当前任务ID
         MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
         LDMgr.setItem(LDKey.KEY_StoryData, "1-0");
+
+        MyUserData.myCityIds = new Array();  //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
+        LDMgr.setItem(LDKey.KEY_MyCityIds, "");
+        MyUserData.ruleCityIds = new Array();   //己方统治下未被占领或叛乱的城池ID集合
+        LDMgr.setItem(LDKey.KEY_RuleCityIds, "");
 
         MyUserData.ItemList = new Array();   //背包物品列表
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
@@ -60,10 +68,61 @@ class MyUserManager {
             MyUserData.TaskState = taskInfo.val;
         }
 
+        MyUserData.myCityIds = LDMgr.getItemIntAry(LDKey.KEY_MyCityIds);   //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
+        MyUserData.ruleCityIds = LDMgr.getItemIntAry(LDKey.KEY_RuleCityIds);   //己方统治下未被占领或叛乱的城池ID集合
+
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
         MyUserData.GeneralList = this.getGeneralListByLD();  //武将列表
 
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+    }
+
+    //更新我方占领的城池列表
+    updateMyCityIds(cityId: number, bAdd: boolean= true){
+        if(bAdd == true){
+            MyUserData.myCityIds.push(cityId);
+            LDMgr.setItem(LDKey.KEY_MyCityIds, this.getIdsToStr(MyUserData.myCityIds));
+
+            let bChangeRuleCitys = false;
+            for(let i=0; i<MyUserData.ruleCityIds.length; ++i){
+                if(cityId == MyUserData.ruleCityIds[i]){
+                    MyUserData.ruleCityIds.splice(i, 1);
+                    bChangeRuleCitys = true;
+                }
+            }
+            if(bChangeRuleCitys == true){
+                LDMgr.setItem(LDKey.KEY_RuleCityIds, this.getIdsToStr(MyUserData.ruleCityIds));
+            }
+        }else{
+            MyUserData.ruleCityIds.push(cityId);
+            LDMgr.setItem(LDKey.KEY_RuleCityIds, this.getIdsToStr(MyUserData.ruleCityIds));
+
+            for(let i=0; i<MyUserData.myCityIds.length; ++i){
+                if(cityId == MyUserData.myCityIds[i]){
+                    MyUserData.myCityIds.splice(i, 1);
+                    LDMgr.setItem(LDKey.KEY_MyCityIds, this.getIdsToStr(MyUserData.myCityIds));
+                    break;
+                }
+            }
+        }
+
+        NoticeMgr.emit(NoticeType.CityFlagStory, 100);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知, 100我我方城池
+    }
+
+    //新增我方治下但是未被占领的城池列表
+    addRuleCitys(ids: number[]){
+        for(let i=0; i<ids.length; ++i){
+            MyUserData.ruleCityIds.push(ids[i]);
+        }
+        LDMgr.setItem(LDKey.KEY_RuleCityIds, this.getIdsToStr(MyUserData.ruleCityIds));
+    }
+
+    getIdsToStr(ids: number[], sp: string = "|"){
+        let str = ""
+        for(let i=0; i<ids.length; ++i){
+            str += (ids.toString()+sp);
+        }
+        return str;
     }
 
     /**修改用户背包物品列表 */
@@ -154,7 +213,7 @@ class MyUserManager {
 
     /**修改用户武将列表 */
     updateGeneralList(general: GeneralInfo, bSave: boolean = true){
-        cc.log("updateGeneralList(), general = "+JSON.stringify(general));
+        //cc.log("updateGeneralList(), general = "+JSON.stringify(general));
         for(let i=0; i<MyUserData.GeneralList.length; ++i){
             let info: GeneralInfo = MyUserData.GeneralList[i];
             if(general.timeId == info.timeId){
@@ -199,7 +258,7 @@ class MyUserManager {
             let tempItem = MyUserData.GeneralList[i].cloneNoCfg();
             GeneralList.push(tempItem);
         }
-        cc.log("GeneralList = "+JSON.stringify(GeneralList));
+        //cc.log("GeneralList = "+JSON.stringify(GeneralList));
         LDMgr.setItem(LDKey.KEY_GeneralList, JSON.stringify(GeneralList));
     }
     /**从本地存储中获取武将列表 */

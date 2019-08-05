@@ -199,7 +199,7 @@ class GameManager {
         }
     }
 
-    /**任务宣读(第一阶段）完毕处理 */
+    /**任务第一阶段操作完毕处理 */
     handleStoryShowOver(storyConf: st_story_info){
         cc.log("handleStoryShowOver(), storyConf = "+JSON.stringify(storyConf));
         if(storyConf == null || storyConf == undefined){
@@ -207,6 +207,14 @@ class GameManager {
         }
         if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
+        }
+
+        if(MyUserData.TaskId == 9){   //东郡太守
+            MyUserMgr.updateMyCityIds(316, true);  
+        }else if(MyUserData.TaskId == 10){   //兖州牧
+            let ruleCitys = new Array(312, 313, 314, 9006, 9008);
+            MyUserMgr.addRuleCitys(ruleCitys);
+            MyUserMgr.updateMyCityIds(315, true); 
         }
     }
 

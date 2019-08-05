@@ -37,6 +37,10 @@ class FightManager {
 
         this.FightWin = false;  //战斗胜利或失败
         this.EnemyAutoAi = false;  //敌方自动AI
+
+        if(enemyArr.length > 0 && generalArr.length > 0){
+            cc.director.loadScene("fightScene");
+        }
     }
 
 
@@ -50,83 +54,58 @@ class FightManager {
         return fightScene;
     }
 
-    /**获取全部随机武将数据 */
-    getAllRandomGenerals(){
-        this.randomGeneralArr = new Array();  //随机散布的卡牌
-
-        if(this.battleEnemyArr && this.battleGeneralArr){
-            //我方
-            for(let i=0; i<this.battleGeneralArr.length; ++i){
-                let card = new CardInfo(1, this.battleGeneralArr[i]);
-                card.shiqi = 100;   //士气值
-                this.randomGeneralArr.push(card);
+    //卡牌均开启并制定位置
+    getGeneralDataByBlockIdx(blockIdx: number): CardInfo{
+        //敌方最多8个
+        if(blockIdx >= 0 && blockIdx <= 11){
+            if(blockIdx == 0 && this.battleEnemyArr[4]){
+                let card = new CardInfo(2, this.battleEnemyArr[4]);
+                return card.clone();
+            }else if(blockIdx == 1 && this.battleEnemyArr[3]){
+                let card = new CardInfo(2, this.battleEnemyArr[3]);
+                return card.clone();
+            }else if(blockIdx == 2 && this.battleEnemyArr[0]){
+                let card = new CardInfo(2, this.battleEnemyArr[0]);
+                return card.clone();
+            }else if(blockIdx == 3 && this.battleEnemyArr[2]){
+                let card = new CardInfo(2, this.battleEnemyArr[2]);
+                return card.clone();
+            }else if(blockIdx == 4 && this.battleEnemyArr[1]){
+                let card = new CardInfo(2, this.battleEnemyArr[1]);
+                return card.clone();
+            }else if(blockIdx == 5 && this.battleEnemyArr[5]){
+                let card = new CardInfo(2, this.battleEnemyArr[5]);
+                return card.clone();
+            }else if(blockIdx == 6 && this.battleEnemyArr[6]){
+                let card = new CardInfo(2, this.battleEnemyArr[6]);
+                return card.clone();
+            }else if(blockIdx == 7 && this.battleEnemyArr[7]){
+                let card = new CardInfo(2, this.battleEnemyArr[7]);
+                return card.clone();
+            }else{   //空
+                let card = new CardInfo(0);  
+                return card.clone();
             }
-            //敌方
-            for(let i=0; i<this.battleEnemyArr.length; ++i){
-                let card = new CardInfo(2, this.battleEnemyArr[i]);
-                card.shiqi = 100;   //士气值
-                this.randomGeneralArr.push(card);
+        }else{  //我方最多5个
+            if(blockIdx == 19 && this.battleGeneralArr[4]){
+                let card = new CardInfo(1, this.battleGeneralArr[4]);
+                return card.clone();
+            }else if(blockIdx == 18 && this.battleGeneralArr[3]){
+                let card = new CardInfo(1, this.battleGeneralArr[3]);
+                return card.clone();
+            }else if(blockIdx == 17 && this.battleGeneralArr[0]){
+                let card = new CardInfo(1, this.battleGeneralArr[0]);
+                return card.clone();
+            }else if(blockIdx == 16 && this.battleGeneralArr[2]){
+                let card = new CardInfo(1, this.battleGeneralArr[2]);
+                return card.clone();
+            }else if(blockIdx == 15 && this.battleGeneralArr[1]){
+                let card = new CardInfo(1, this.battleGeneralArr[1]);
+                return card.clone();
+            }else{   //空
+                let card = new CardInfo(0);  
+                return card.clone();
             }
-        }
-        //空
-        let totalCardCount = this.cardsCol*this.cardsRow - this.battleGeneralArr.length - this.battleEnemyArr.length;
-        for(let i=0; i<totalCardCount; ++i){
-            let card = new CardInfo(0);
-            this.randomGeneralArr.push(card);
-        }
-    }
-
-    /**从随机数组中获取武将数据 */
-    getGeneralDataFromRandomArr(blockIdx: number): CardInfo{
-        // let len = this.randomGeneralArr.length;
-        // let idx = Math.ceil(Math.random()*len);
-        // idx --;
-        // if(idx < 0){
-        //     idx = 0;
-        // }
-        // let cardInfo = this.randomGeneralArr[idx];
-        // this.randomGeneralArr.splice(idx, 1);
-
-        // return cardInfo.clone();
-
-        //demo中卡牌均开启并制定位置
-        //敌方
-        if(blockIdx == 0){
-            let card = new CardInfo(2, this.battleEnemyArr[4]);
-            return card.clone();
-        }else if(blockIdx == 1){
-            let card = new CardInfo(2, this.battleEnemyArr[0]);
-            return card.clone();
-        }else if(blockIdx == 2){
-            let card = new CardInfo(2, this.battleEnemyArr[2]);
-            return card.clone();
-        }else if(blockIdx == 5){
-            let card = new CardInfo(2, this.battleEnemyArr[1]);
-            return card.clone();
-        }else if(blockIdx == 7){
-            let card = new CardInfo(2, this.battleEnemyArr[3]);
-            return card.clone();
-        }
-        //我方
-        else if(blockIdx == 19){
-            let card = new CardInfo(1, this.battleGeneralArr[4]);
-            return card.clone();
-        }else if(blockIdx == 18){
-            let card = new CardInfo(1, this.battleGeneralArr[0]);
-            return card.clone();
-        }else if(blockIdx == 17){
-            let card = new CardInfo(1, this.battleGeneralArr[2]);
-            return card.clone();
-        }else if(blockIdx == 14){
-            let card = new CardInfo(1, this.battleGeneralArr[1]);
-            return card.clone();
-        }else if(blockIdx == 12){
-            let card = new CardInfo(1, this.battleGeneralArr[3]);
-            return card.clone();
-        }
-        else{   //空
-            let card = new CardInfo(0);  
-            return card.clone();
         }
     }
 
@@ -281,6 +260,45 @@ class FightManager {
         }
         return null;
     }
+
+    /******************  以下为暂时废弃的接口   ********** */
+    // /**获取全部随机武将数据 */
+    // getAllRandomGenerals(){
+    //     this.randomGeneralArr = new Array();  //随机散布的卡牌
+    //     if(this.battleEnemyArr && this.battleGeneralArr){
+    //         //我方
+    //         for(let i=0; i<this.battleGeneralArr.length; ++i){
+    //             let card = new CardInfo(1, this.battleGeneralArr[i]);
+    //             card.shiqi = 100;   //士气值
+    //             this.randomGeneralArr.push(card);
+    //         }
+    //         //敌方
+    //         for(let i=0; i<this.battleEnemyArr.length; ++i){
+    //             let card = new CardInfo(2, this.battleEnemyArr[i]);
+    //             card.shiqi = 100;   //士气值
+    //             this.randomGeneralArr.push(card);
+    //         }
+    //     }
+    //     //空
+    //     let totalCardCount = this.cardsCol*this.cardsRow - this.battleGeneralArr.length - this.battleEnemyArr.length;
+    //     for(let i=0; i<totalCardCount; ++i){
+    //         let card = new CardInfo(0);
+    //         this.randomGeneralArr.push(card);
+    //     }
+    // }
+    // /**从随机数组中获取武将数据 */
+    // getGeneralDataFromRandomArr(blockIdx: number): CardInfo{
+    //     let len = this.randomGeneralArr.length;
+    //     let idx = Math.ceil(Math.random()*len);
+    //     idx --;
+    //     if(idx < 0){
+    //         idx = 0;
+    //     }
+    //     let cardInfo = this.randomGeneralArr[idx];
+    //     this.randomGeneralArr.splice(idx, 1);
+
+    //     return cardInfo.clone();
+    // }
 
 }
 export var FightMgr = new FightManager();
