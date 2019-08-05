@@ -1,5 +1,4 @@
 import { st_story_info, CfgMgr, st_talk_info, st_city_info } from "../manager/ConfigManager";
-import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import { NoticeMgr } from "../manager/NoticeManager";
 import { NoticeType } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
@@ -9,12 +8,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class StoryLayer extends cc.Component {
-
-    @property(cc.Node)
-    tvNode: cc.Node = null;
-
-    @property(cc.VideoPlayer)
-    videoPlayer: cc.VideoPlayer = null;
 
     @property(cc.Label)
     talkLabel: cc.Label = null;
@@ -37,7 +30,6 @@ export default class StoryLayer extends cc.Component {
 
     onLoad () {
         this.talkLabel.string = "";
-        this.tvNode.active = false;
         this.skipNode.active = false;
     }
 
@@ -123,7 +115,7 @@ export default class StoryLayer extends cc.Component {
         //this.videoPlayer.resourceType = cc.VideoPlayer.ResourceType.LOCAL;
 
         //this.videoPlayer.clip = "mp4/"+videoName+".mp4";
-        this.videoPlayer.play();
+        //this.videoPlayer.play();
     }
 
     onSkipBtn(){

@@ -256,6 +256,7 @@ export default class Block extends cc.Component {
     /**显示战斗或合成 */
     showFightShow(nType: number, srcBlock: Block){
         let layer = FightMgr.showLayer(FightMgr.getFightScene().pfFightShow);
+        layer.y += 100;
         layer.getComponent(FightShow).initFightShowData(nType, srcBlock, this);
     }
 

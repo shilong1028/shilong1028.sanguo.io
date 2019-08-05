@@ -100,7 +100,7 @@ export default class FightShow extends cc.Component {
 
     createTips(tips: any){
         let tipNode = cc.instantiate(this.pfTips);
-        tipNode.getComponent(ShowLabel).showTips(tips.str, tips.col, cc.v2(0, 120));
+        tipNode.getComponent(ShowLabel).showTips(tips.str, tips.col, cc.v2(0, 80));
         this.node.addChild(tipNode, 100);
     }
 
