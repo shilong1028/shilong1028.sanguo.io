@@ -268,31 +268,31 @@ export default class FightShow extends cc.Component {
         let attack = atkCardCfg.atk;
         let defend = defCardCfg.def;
 
-        if(atkCardCfg.mp > defCardCfg.mp){   //攻击方智力越高，攻击越高
-            let multi = (atkCardCfg.mp-defCardCfg.mp)/100;
-            multi = parseFloat(multi.toFixed(2)); 
-            if(multi > 0.5){
-                multi = 0.5;
-            }
-            this.showTipsLable("攻击方智力值远高于防御方，攻击方攻击提升！", cc.Color.YELLOW);
-            attack += multi*atkCardCfg.atk;
-            atkCardCfg.mp -= 1;
-            if(atkCardCfg.mp < 0){
-                atkCardCfg.mp = 0;
-            }
-        }else if(defCardCfg.mp > atkCardCfg.mp){  //防御方智力越高，防御越高
-            let multi = (defCardCfg.mp-atkCardCfg.mp)/100*1.5;
-            multi = parseFloat(multi.toFixed(2)); 
-            if(multi > 0.5){
-                multi = 0.5;
-            }
-            this.showTipsLable("攻击方智力值远低于防御方，防御方防御力提升!", cc.Color.YELLOW);
-            defend += multi * defCardCfg.def;
-            defCardCfg.mp -= 1;
-            if(defCardCfg.mp < 0){
-                defCardCfg.mp = 0;
-            }
-        }
+        // if(atkCardCfg.mp > defCardCfg.mp){   //攻击方智力越高，攻击越高
+        //     let multi = (atkCardCfg.mp-defCardCfg.mp)/100;
+        //     multi = parseFloat(multi.toFixed(2)); 
+        //     if(multi > 0.5){
+        //         multi = 0.5;
+        //     }
+        //     this.showTipsLable("攻击方智力值远高于防御方，攻击方攻击提升！", cc.Color.YELLOW);
+        //     attack += multi*atkCardCfg.atk;
+        //     atkCardCfg.mp -= 1;
+        //     if(atkCardCfg.mp < 0){
+        //         atkCardCfg.mp = 0;
+        //     }
+        // }else if(defCardCfg.mp > atkCardCfg.mp){  //防御方智力越高，防御越高
+        //     let multi = (defCardCfg.mp-atkCardCfg.mp)/100*1.5;
+        //     multi = parseFloat(multi.toFixed(2)); 
+        //     if(multi > 0.5){
+        //         multi = 0.5;
+        //     }
+        //     this.showTipsLable("攻击方智力值远低于防御方，防御方防御力提升!", cc.Color.YELLOW);
+        //     defend += multi * defCardCfg.def;
+        //     defCardCfg.mp -= 1;
+        //     if(defCardCfg.mp < 0){
+        //         defCardCfg.mp = 0;
+        //     }
+        // }
 
         //兵种相克，401骑兵克制402刀兵， 402刀兵克制403枪兵，403枪兵克制401骑兵， 404弓兵为不克制兵种
         let restriction = FightMgr.checkBingRestriction(atkCardCfg.bingzhong, defCardCfg.bingzhong);
@@ -373,15 +373,12 @@ export default class FightShow extends cc.Component {
 
     showEffectAni(){
         let effectAtlas = null;
-        let scale = 1.0;
         if(this.nShowType == 1){   //合成
             effectAtlas = this.hechengAtlas;
         }else if(this.nShowType == 2){   //战斗
             effectAtlas = this.attackAtlas;
-            scale = 0.3;
         }
         let effNode = FightMgr.showFramesAniAndRemove(this.node, cc.v2(0, 0), effectAtlas, false);
-        effNode.scale = scale;
         let stepDelay = 0.5;
 
         let rightCardCfg = this.rightCardInfo.generalInfo.generalCfg;

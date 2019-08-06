@@ -185,6 +185,8 @@ class GameManager {
                     MyUserMgr.updateUserDiamond(itemInfo.count);
                 }else if(itemInfo.itemId == 6003){   //粮草
                     MyUserMgr.updateUserFood(itemInfo.count);
+                }else if(itemInfo.itemId == 6101){   //主角（武将）经验
+                    MyUserMgr.updateRoleExp(itemInfo.count);
                 }else{   //其他道具
                     bSaveList = true;
                     MyUserMgr.updateItemList(itemInfo, false);
@@ -237,6 +239,13 @@ class GameManager {
             return 9000;
         }else{
             return 10000;
+        }
+    }
+
+    //根据武将等级获得升级经验
+    getMaxGeneralExpByLv(lv: number){
+        if(lv <= 100){
+            return lv*100;
         }
     }
 

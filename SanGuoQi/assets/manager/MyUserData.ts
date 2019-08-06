@@ -88,7 +88,9 @@ class MyUserManager {
 
     //更新主角等级或官职
     updateRoleLvOrOffical(roleLv: number, offical: string=null){
+        let oldRoleLv = 0;
         if(roleLv > 0){
+            oldRoleLv = MyUserData.roleLv;
             MyUserData.roleLv = roleLv;  //主角等级
             LDMgr.setItem(LDKey.KEY_RoleLv, roleLv);
             
@@ -97,7 +99,7 @@ class MyUserManager {
             MyUserData.officalStr = offical;  //主角官职
             LDMgr.setItem(LDKey.KEY_Offical, offical);
         }
-        NoticeMgr.emit(NoticeType.UpdateRoleLvOffical, null);  //更新主角等级或官职
+        NoticeMgr.emit(NoticeType.UpdateRoleLvOffical, oldRoleLv);  //更新主角等级或官职
     }
 
     //更新我方占领的城池列表
@@ -281,13 +283,13 @@ class MyUserManager {
             let tempItem = MyUserData.GeneralList[i].cloneNoCfg();
             GeneralList.push(tempItem);
         }
-        //cc.log("GeneralList = "+JSON.stringify(GeneralList));
+        cc.log("GeneralList = "+JSON.stringify(GeneralList));
         LDMgr.setItem(LDKey.KEY_GeneralList, JSON.stringify(GeneralList));
     }
     /**从本地存储中获取武将列表 */
     getGeneralListByLD(){
         let GeneralList = LDMgr.getJsonItem(LDKey.KEY_GeneralList);  //武将列表
-        let tempList = new Array();
+        let tempList: GeneralInfo[] = new Array();
         let curTime = new Date().getTime();
         if(GeneralList){
             for(let i=0; i<GeneralList.length; ++i){
@@ -298,12 +300,30 @@ class MyUserManager {
         }
         if(tempList.length == 0){   //初始加入曹操，lv=3
             let caocao = new GeneralInfo(3001);
-            caocao.generalLv = 3;
             tempList.push(caocao);
 
-            this.updateRoleLvOrOffical(3, "议郎");
+            this.updateRoleLvOrOffical(1, "议郎");
         }
         return tempList;
+    }
+
+    //更新主角经验
+    updateRoleExp(exp:number){
+        for(let i=0; i<MyUserData.GeneralList.length; ++i){
+            let tempItem: GeneralInfo = MyUserData.GeneralList[i];
+            if(tempItem.generalId == 3001){   //曹操
+                tempItem.generalExp += exp;
+                let oldLv = tempItem.generalLv;
+                tempItem.updateLvByExp();
+                MyUserData.GeneralList[i] = tempItem;
+                this.saveGeneralList();
+
+                if(tempItem.generalLv > oldLv){
+                    this.updateRoleLvOrOffical(tempItem.generalLv);
+                }
+                return;
+            }
+        }
     }
 
     /**修改用户金币 */

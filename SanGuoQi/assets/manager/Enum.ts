@@ -36,17 +36,20 @@ export class GeneralInfo{
 
     //注意以下数据需要重新重新赋值
     generalLv: number = 1;   //武将等级
+    generalExp: number = 0;   //武将经验
     bingCount: number = 0;   //部曲士兵数量
 
-    killCount: number = 0;   //杀敌（士兵）数量
+    killCount: number = 0;   //杀敌（士兵）数量（战斗后会转换为经验）
 
-    constructor(generalId:number, info:any=null){
+    constructor(generalId:number, info:any=null){   //只有从本地存储读取数据是会传递info
         this.timeId = new Date().getTime();
         if(info){
             this.generalLv = info.generalLv;
+            this.generalExp = info.generalExp; 
             this.bingCount = info.bingCount;
         }else{
             this.generalLv = 1;
+            this.generalExp = 0;  
             this.bingCount = 0;
         }
         this.bReadyFight = false;
@@ -58,6 +61,7 @@ export class GeneralInfo{
     cloneNoCfg(){
         let temp = new GeneralInfo(this.generalId);
         temp.generalLv = this.generalLv;
+        temp.generalExp = this.generalExp; 
         temp.bingCount = this.bingCount;
 
         //不必写入本地存储的变量
@@ -71,6 +75,7 @@ export class GeneralInfo{
         let temp = new GeneralInfo(this.generalId);
         temp.timeId = this.timeId;
         temp.generalLv = this.generalLv;
+        temp.generalExp = this.generalExp; 
         temp.bingCount = this.bingCount;
         temp.bReadyFight = this.bReadyFight;
         temp.killCount = this.killCount;
@@ -78,6 +83,7 @@ export class GeneralInfo{
         return temp;
     }
 
+    //更新士兵数量
     updateBingCount(num: number){
         this.bingCount += num;
         if(this.bingCount < 0){
@@ -87,6 +93,16 @@ export class GeneralInfo{
             if(this.bingCount > maxCount){
                 this.bingCount = maxCount;
             }
+        }
+    }
+
+    //根据经验更新等级
+    updateLvByExp(){
+        let maxExp = GameMgr.getMaxGeneralExpByLv(this.generalLv);
+        while(this.generalExp >= maxExp){
+            this.generalLv ++;
+            this.generalExp -= maxExp;
+            maxExp = GameMgr.getMaxGeneralExpByLv(this.generalLv);
         }
     }
 }

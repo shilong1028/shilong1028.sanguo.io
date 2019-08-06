@@ -1,9 +1,11 @@
 import { NoticeMgr } from "../manager/NoticeManager";
 import { NoticeType } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
-import { MyUserData, MyUserMgr } from "../manager/MyUserData";
+import { MyUserData } from "../manager/MyUserData";
 import { st_story_info } from "../manager/ConfigManager";
 import FightReady from "../views/fightReady";
+import { ROOT_NODE } from "../common/rootNode";
+import { FightMgr } from "../manager/FightManager";
 
 //全国地图场景
 const {ccclass, property} = cc._decorator;
@@ -21,6 +23,8 @@ export default class MainScene extends cc.Component {
     lvLabel: cc.Label = null;
     @property(cc.Label)
     officalLabel: cc.Label = null;
+    @property(cc.Sprite)
+    headSpr: cc.Sprite = null;
 
     @property(cc.Sprite)
     handSpr: cc.Sprite = null;
@@ -48,6 +52,8 @@ export default class MainScene extends cc.Component {
 
     @property(cc.SpriteAtlas)
     cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
+    @property(cc.SpriteAtlas)
+    upgradeAtlas: cc.SpriteAtlas = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -94,9 +100,13 @@ export default class MainScene extends cc.Component {
         NoticeMgr.offAll(this);
     }
 
-    updateLvAndOffical(){
+    updateLvAndOffical(oldRoleLv: number=0){
         this.lvLabel.string = MyUserData.roleLv.toString();
         this.officalLabel.string = MyUserData.officalStr;
+        if(oldRoleLv > 0){   //主角等级提升
+            ROOT_NODE.showTipsText("主角等级提升!");
+            FightMgr.showFramesAniAndRemove(this.headSpr.node, cc.v2(0, 20), this.upgradeAtlas, true);
+        }
     }
 
     UpdateGoldCount(){
@@ -256,6 +266,10 @@ export default class MainScene extends cc.Component {
 
     onBagBtn(){
         GameMgr.showLayer(this.pfBag);
+    }
+
+    onSkillBtn(){
+        
     }
 
     onShopBtn(){

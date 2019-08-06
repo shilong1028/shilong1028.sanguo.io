@@ -102,21 +102,24 @@ export default class Task extends cc.Component {
                     this.detailNode.active = false;
                     this.rewardNode.active = true;
 
-                    GameMgr.getMainScene().showHandActions(cc.v2(320, -640));   //引导用的手指动画
+                    GameMgr.getMainScene().showHandActions(cc.v2(320, -640));   //隐藏
                 }else{
                     this.detailNode.active = true;
                     this.rewardNode.active = false;
 
                     ROOT_NODE.showTipsText("任务更新 "+this.taskConf.name);
 
-                    if(this.taskConf.type == 2){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
-                        GameMgr.getMainScene().showHandActions(cc.v2(350, 525));   //引导用的手指动画
+                    if(this.taskConf.type == 2){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能
+                        GameMgr.getMainScene().showHandActions(cc.v2(350, 530));   //引导主城   640+posY
                     }else if(this.taskConf.type == 3){
-                        GameMgr.getMainScene().showHandActions(cc.v2(350, 305));   //引导用的手指动画
+                        GameMgr.getMainScene().showHandActions(cc.v2(350, 420));   //引导招募
                     }else if(this.taskConf.type == 4){
-                        GameMgr.getMainScene().showHandActions(cc.v2(350, 195));   //引导用的手指动画
-                    }else{
-                        GameMgr.getMainScene().showHandActions(cc.v2(320, -640));   //引导用的手指动画
+                        GameMgr.getMainScene().showHandActions(cc.v2(350, 310));   //引导部曲
+                    }else if(this.taskConf.type == 6){
+                        GameMgr.getMainScene().showHandActions(cc.v2(-350, 310));   //引导技能
+                    }
+                    else{
+                        GameMgr.getMainScene().showHandActions(cc.v2(320, -640));   //隐藏
                     }
                 }
             }

@@ -91,7 +91,7 @@ export class st_item_info{
 
 //剧情配置数据
 export class st_story_info{
-    type;   //剧情类型 任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+    type;   //剧情类型 任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗  6学习技能
     targetCity;   //目标城池
     name;   //名称
     vedio;   //视频名称 
@@ -121,6 +121,27 @@ export class st_talk_info{
     transType(){
         this.city = parseInt(this.city);
         this.type = parseInt(this.type);
+    }
+}
+
+//对话配置数据
+export class st_skill_info{
+    name;  //技能名称
+    cost;  //技能消耗的钻石（金锭）
+    mp;  //技能消耗的智力值
+    hp;  //技能增加的生命值 0无作用 正值对己方作用 负值对敌方作用
+    atk;  //技能增加的攻击力 0无作用 正值对己方作用 负值对敌方作用
+    def;  //技能增加的防御力 0无作用 正值对己方作用 负值对敌方作用
+    shiqi;  //技能增加的士气值 0无作用 正值对己方作用 负值对敌方作用
+    desc;
+    
+    transType(){
+        this.cost = parseInt(this.cost);
+        this.mp = parseInt(this.mp);
+        this.hp = parseInt(this.hp);
+        this.atk = parseInt(this.atk);
+        this.def = parseInt(this.def);
+        this.shiqi = parseInt(this.shiqi);
     }
 }
 
@@ -158,6 +179,10 @@ class CfgManager_class {
     //对话配置表
     C_talk_info : Map<number, st_talk_info> = new Map<number, st_talk_info>();
     SC_talk_info = st_talk_info;
+
+    //技能配置表
+    C_skill_info : Map<number, st_skill_info> = new Map<number, st_skill_info>();
+    SC_skill_info = st_skill_info;
 
     //********************** 以下是一些配置接口 ***************** */
     

@@ -61,6 +61,7 @@ export default class ResultCell extends viewCell {
         this.killCount.string = "杀敌：" + this.cellData.generalInfo.killCount.toString();
         this.lvLabel.string = "等级：Lv" + this.cellData.generalInfo.generalLv.toString();
         let exp = Math.floor(this.cellData.generalInfo.killCount/10);
+        exp += data.target.balancedExp;   //均衡经验值（总杀敌数的一半用于每个武将均衡经验增加，武将杀敌的另一半用于自己经验增加）
         this.expLabel.string = "增加经验：" + exp.toString();
     }
 
