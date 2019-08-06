@@ -12,6 +12,9 @@ export var MyUserData = {
     DiamondCount: 0,   //用户钻石(金锭）数
     FoodCount: 0,  //用户粮食数量
 
+    roleLv: 1,  //主角等级
+    officalStr: "",  //主角官职
+
     TaskId: 1,   //当前任务ID
     TaskState: 0,    //当前任务状态 0未完成，1完成未领取，2已领取
 
@@ -34,6 +37,10 @@ class MyUserManager {
         LDMgr.setItem(LDKey.KEY_DiamondCount, 0);
         MyUserData.FoodCount = 0;   //用户粮食数量
         LDMgr.setItem(LDKey.KEY_FoodCount, 0);
+        MyUserData.roleLv = 1;  //主角等级
+        LDMgr.setItem(LDKey.KEY_RoleLv, 1);
+        MyUserData.officalStr = "";  //主角官职
+        LDMgr.setItem(LDKey.KEY_Offical, "");
 
         MyUserData.TaskId = 1;   //当前任务ID
         MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
@@ -58,6 +65,8 @@ class MyUserManager {
         MyUserData.GoldCount = LDMgr.getItemInt(LDKey.KEY_GoldCount);   //用户金币
         MyUserData.DiamondCount = LDMgr.getItemInt(LDKey.KEY_DiamondCount);   //用户钻石(金锭）数
         MyUserData.FoodCount = LDMgr.getItemInt(LDKey.KEY_FoodCount);   //用户粮食数量
+        MyUserData.roleLv = LDMgr.getItemInt(LDKey.KEY_RoleLv);   //主角等级
+        MyUserData.officalStr = LDMgr.getItem(LDKey.KEY_Offical);   //主角官职
 
         let taskInfo = LDMgr.getItemKeyVal(LDKey.KEY_StoryData);  //当前任务ID
         if(taskInfo == null){
@@ -75,6 +84,20 @@ class MyUserManager {
         MyUserData.GeneralList = this.getGeneralListByLD();  //武将列表
 
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+    }
+
+    //更新主角等级或官职
+    updateRoleLvOrOffical(roleLv: number, offical: string=null){
+        if(roleLv > 0){
+            MyUserData.roleLv = roleLv;  //主角等级
+            LDMgr.setItem(LDKey.KEY_RoleLv, roleLv);
+            
+        }
+        if(offical && offical.length > 0){
+            MyUserData.officalStr = offical;  //主角官职
+            LDMgr.setItem(LDKey.KEY_Offical, offical);
+        }
+        NoticeMgr.emit(NoticeType.UpdateRoleLvOffical, null);  //更新主角等级或官职
     }
 
     //更新我方占领的城池列表
@@ -277,6 +300,8 @@ class MyUserManager {
             let caocao = new GeneralInfo(3001);
             caocao.generalLv = 3;
             tempList.push(caocao);
+
+            this.updateRoleLvOrOffical(3, "议郎");
         }
         return tempList;
     }
@@ -320,6 +345,16 @@ class MyUserManager {
             MyUserData.TaskId ++;
             MyUserData.TaskState = 0;
             bSave = true;
+
+            if(MyUserData.TaskId == 2){
+                this.updateRoleLvOrOffical(0, "骑都尉");
+            }else if(MyUserData.TaskId == 8){
+                this.updateRoleLvOrOffical(0, "奋武将军");
+            }else if(MyUserData.TaskId == 9){
+                this.updateRoleLvOrOffical(0, "东郡太守");
+            }else if(MyUserData.TaskId == 10){
+                this.updateRoleLvOrOffical(0, "兖州牧");
+            }
         }
 
         if(bSave){

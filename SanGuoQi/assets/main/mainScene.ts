@@ -17,6 +17,10 @@ export default class MainScene extends cc.Component {
     diamondLabel: cc.Label = null;
     @property(cc.Label)
     foodLabel: cc.Label = null;
+    @property(cc.Label)
+    lvLabel: cc.Label = null;
+    @property(cc.Label)
+    officalLabel: cc.Label = null;
 
     @property(cc.Sprite)
     handSpr: cc.Sprite = null;
@@ -63,6 +67,7 @@ export default class MainScene extends cc.Component {
         NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this); 
         NoticeMgr.on(NoticeType.UpdateDiamond, this.UpdateDiamondCount, this); 
         NoticeMgr.on(NoticeType.UpdateFood, this.UpdateFoodCount, this); 
+        NoticeMgr.on(NoticeType.UpdateRoleLvOffical, this.updateLvAndOffical, this);  //更新主角等级或官职
         
         NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
 
@@ -75,6 +80,7 @@ export default class MainScene extends cc.Component {
         this.UpdateGoldCount();
         this.UpdateDiamondCount();
         this.UpdateFoodCount();
+        this.updateLvAndOffical();  //更新主角等级和官职
 
         this.showHandActions(null);   //引导用的手指动画（一定要放到任务之前初始，因为位置由任务决定）
 
@@ -86,6 +92,11 @@ export default class MainScene extends cc.Component {
     onDestroy(){
         this.node.targetOff(this);
         NoticeMgr.offAll(this);
+    }
+
+    updateLvAndOffical(){
+        this.lvLabel.string = MyUserData.roleLv.toString();
+        this.officalLabel.string = MyUserData.officalStr;
     }
 
     UpdateGoldCount(){
