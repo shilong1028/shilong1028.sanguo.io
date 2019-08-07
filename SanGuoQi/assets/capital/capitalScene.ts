@@ -1,3 +1,4 @@
+import { MyUserData } from "../manager/MyUserData";
 
 //主城
 const {ccclass, property} = cc._decorator;
@@ -7,6 +8,12 @@ export default class CapitalScene extends cc.Component {
 
     @property(cc.Node)
     mapNode: cc.Node = null;
+
+    @property(cc.Label)
+    lvLabel: cc.Label = null;
+
+    @property(cc.Prefab)
+    pfBuildHelp: cc.Prefab = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -18,7 +25,11 @@ export default class CapitalScene extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_MOVE, this.touchMove, this);
         this.node.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.touchEnd, this);
+
+        this.mapNode.position = cc.v2(-1100, -250);   //初始显示官府
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
+
+        this.lvLabel.string = "Lv"+MyUserData.capitalLv;
     }
 
     start () {

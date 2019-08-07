@@ -4,6 +4,7 @@ import { ItemInfo } from "./Enum";
 import { MyUserMgr, MyUserData } from "./MyUserData";
 import { st_story_info } from "./ConfigManager";
 import MainScene from "../main/mainScene";
+import CapitalScene from "../capital/capitalScene";
 
 
 //游戏菜单管理器
@@ -70,6 +71,16 @@ class GameManager {
             mainScene = layer.getComponent(MainScene);
         }
         return mainScene;
+    }
+
+    /**获取主城场景 */
+    getCapitalScene(): CapitalScene {
+        let capitalScene: CapitalScene = null;
+        let layer = cc.director.getScene().getChildByName("Canvas");
+        if (layer != null) {
+            capitalScene = layer.getComponent(CapitalScene);
+        }
+        return capitalScene;
     }
 
     /**显示子层 */
@@ -204,7 +215,7 @@ class GameManager {
         if(storyConf == null || storyConf == undefined){
             return;
         }
-        if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能
+        if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
         }
 

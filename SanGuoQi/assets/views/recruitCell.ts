@@ -83,7 +83,7 @@ export default class RecruitCell extends viewCell {
 
             ROOT_NODE.showTipsText("招募"+this.cellData.itemCfg.name +" x "+this.cellData.count);
 
-            if(GameMgr.curTaskConf.type == 3){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能
+            if(GameMgr.curTaskConf.type == 3){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
                 GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
             }
         }else{

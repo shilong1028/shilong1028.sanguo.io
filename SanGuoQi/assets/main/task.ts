@@ -111,7 +111,7 @@ export default class Task extends cc.Component {
 
                     ROOT_NODE.showTipsText("任务更新 "+this.taskConf.name);
 
-                    if(this.taskConf.type == 2){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能
+                    if(this.taskConf.type == 2){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
                         GameMgr.getMainScene().showHandActions(cc.v2(350, 530));   //引导主城   640+posY
                     }else if(this.taskConf.type == 3){
                         GameMgr.getMainScene().showHandActions(cc.v2(350, 420));   //引导招募

@@ -82,7 +82,11 @@ export default class MainScene extends cc.Component {
         NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
 
         this.mapNode.active = true;
-        this.mapNode.position = cc.v2(0, -900);   //初始显示洛阳  5768*5264   2884*2632
+        if(MyUserData.capitalLv > 0){
+            this.mapNode.position = cc.v2(-600, -900);   //主城开启后显示山阳郡昌邑
+        }else{
+            this.mapNode.position = cc.v2(0, -900);   //初始显示洛阳  5768*5264   2884*2632
+        }
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
 
         this.showHomeBtn();  //主城按钮
@@ -238,7 +242,7 @@ export default class MainScene extends cc.Component {
 
     /**任务战斗准备 */
     openFightByTask(taskConf: st_story_info){
-        if(taskConf.type == 5 && taskConf.battleId > 0){  //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能
+        if(taskConf.type == 5 && taskConf.battleId > 0){  //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
             let layer = GameMgr.showLayer(this.pfFightReady);
             layer.getComponent(FightReady).initBattleInfo(taskConf.battleId);
         }
