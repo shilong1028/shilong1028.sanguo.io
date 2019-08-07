@@ -1,4 +1,5 @@
 import TipsText from "./tipsText";
+import TipsDialog from "./tipsDialog";
 
 //游戏常驻节点
 const {ccclass, property} = cc._decorator;
@@ -8,18 +9,17 @@ export default class RootNode extends cc.Component {
 
     @property(cc.Prefab)
     pfItem: cc.Prefab = null;   //背包道具通用显示
-
     @property(cc.Prefab)
     pfCard: cc.Prefab =  null;   //武将卡牌
-
     @property(cc.Prefab)
     pfMoney: cc.Prefab = null;   //一级界面上的金币钻石粮草公用控件
 
     @property(cc.Prefab)
     pfReward: cc.Prefab = null;   //获取奖励通用提示框
-
     @property(cc.Prefab)
-    pfTipsDialog: cc.Prefab = null;   //提示文本
+    pfTipsText: cc.Prefab = null;   //提示文本
+    @property(cc.Prefab)
+    pfTipsDialog: cc.Prefab = null;  //提示框
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -64,7 +64,7 @@ export default class RootNode extends cc.Component {
         if (this.tipsPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             return this.tipsPool.get();
         } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
-            return cc.instantiate(this.pfTipsDialog);
+            return cc.instantiate(this.pfTipsText);
         }
     }
 
@@ -91,12 +91,21 @@ export default class RootNode extends cc.Component {
 
             let tipStr = this.tipsArr.shift();
 
-            let tips = cc.instantiate(this.pfTipsDialog);
+            let tips = cc.instantiate(this.pfTipsText);
             tips.y = 700;
             tips.x = cc.winSize.width/2;
             cc.director.getScene().addChild(tips);
             tips.getComponent(TipsText).initTipsText(tipStr);
         }
+    }
+
+    //通用提示框
+    showTipsDialog(tipStr: string, okCallback: any=null){
+        let tips = cc.instantiate(this.pfTipsDialog);
+        tips.y = cc.winSize.height/2;
+        tips.x = cc.winSize.width/2;
+        cc.director.getScene().addChild(tips);
+        tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback);
     }
 }
 

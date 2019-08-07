@@ -15,18 +15,20 @@ export default class FightReady extends cc.Component {
 
     @property(TableView)
     enemyTabelView: TableView = null;
-
     @property(TableView)
     myTabelView: TableView = null;
 
     @property(cc.Label)
+    titleLabel: cc.Label = null;  //标题
+    @property(cc.Label)
     descLabel: cc.Label = null;   //武将描述
-
     @property(cc.Label)
     zhenLabel: cc.Label = null;  //出战/下阵
-
     @property(cc.Button)
     fightBtn: cc.Button = null;
+
+    @property(cc.Prefab)
+    pfUnit: cc.Prefab = null;  //武将部曲界面
 
     // LIFE-CYCLE CALLBACKS:
     selCellIdx: number = -1;   //选中的Cell索引
@@ -36,9 +38,10 @@ export default class FightReady extends cc.Component {
     enmeyArr: GeneralInfo[] = new Array();
 
     onLoad () {
-        this.clearShowInfo();
-
+        this.titleLabel.string = "备战";
         this.fightBtn.interactable = false;
+
+        this.clearOptShowInfo();
     }
 
     onDestroy(){
@@ -55,15 +58,11 @@ export default class FightReady extends cc.Component {
         this.node.removeFromParent(true);
     }
 
-    clearShowInfo(){
-        this.descLabel.string = "";
-        this.zhenLabel.string = "";
-    }
-
     initBattleInfo(battleId: number){
         let battleConf = CfgMgr.getBattleConf(battleId);
         //cc.log("initBattleInfo(), battleConf = "+JSON.stringify(battleConf));
         if(battleConf){
+            this.titleLabel.string = battleConf.name;
             //敌将
             for(let i=0; i<battleConf.generals.length; ++i){
                 let enemy = new GeneralInfo(battleConf.generals[i].key);   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
@@ -98,7 +97,7 @@ export default class FightReady extends cc.Component {
             return;
         }
         this.selCellIdx = clickIdx;   //选中的Cell索引
-        this.clearShowInfo();
+        this.clearOptShowInfo();
 
         let selGeneralInfo: GeneralInfo = this.generalArr[this.selCellIdx];
         this.descLabel.string = selGeneralInfo.generalCfg.desc;
@@ -108,7 +107,11 @@ export default class FightReady extends cc.Component {
         }else{
             this.zhenLabel.string = "出战";
         }
+    }
 
+    clearOptShowInfo(){
+        this.descLabel.string = "";
+        this.zhenLabel.string = "";
     }
 
     onZhenBtn(){
@@ -123,7 +126,10 @@ export default class FightReady extends cc.Component {
             }
         }else{   //当前未出战
             if(selGeneralInfo.bingCount <= 0){
-                ROOT_NODE.showTipsText("武将未领兵，不能出战!");
+                ROOT_NODE.showTipsDialog("武将未领兵，不能出战！是否跳转部曲界面？", ()=>{
+                    GameMgr.showLayer(this.pfUnit);
+                    this.node.removeFromParent(true);
+                });
                 return;
             }else if(this.fightArr.length > 5){
                 ROOT_NODE.showTipsText("出战名额（五个）已满!");

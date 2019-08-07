@@ -18,19 +18,17 @@ export default class GeneralUnit extends cc.Component {
 
     @property(cc.Label)
     descLabel: cc.Label = null;   //武将描述
-
+    @property(cc.Label)
+    bingNumLabel: cc.Label = null;  //部曲剩余兵力
     @property(cc.Node)
     bagItemNode: cc.Node = null;
-
     @property(cc.Label)
     bagNumLabel: cc.Label = null;  //背包数量
-
     @property(cc.Label)
     buyNumLabel: cc.Label = null;   //钻石（金锭）数量
 
     @property(cc.Button)
     bagBtn: cc.Button = null;
-
     @property(cc.Button)
     buyBtn: cc.Button = null;
 
@@ -66,6 +64,7 @@ export default class GeneralUnit extends cc.Component {
     }
 
     clearShowInfo(){
+        this.bingNumLabel.string = "部曲兵力：";
         this.descLabel.string = "";
         this.bagNumLabel.string = "x0";
         this.buyNumLabel.string = "";
@@ -126,7 +125,9 @@ export default class GeneralUnit extends cc.Component {
             }
         }
 
-        if(selGeneralInfo.bingCount >= GameMgr.getMaxBingCountByLv(selGeneralInfo.generalLv)){   //部曲满员
+        let maxBingCount = GameMgr.getMaxBingCountByLv(selGeneralInfo.generalLv);
+        this.bingNumLabel.string = "部曲兵力："+selGeneralInfo.bingCount+"/"+maxBingCount;
+        if(selGeneralInfo.bingCount >= maxBingCount){   //部曲满员
             this.bagBtn.interactable = false;
             this.buyBtn.interactable = false;
         }
@@ -138,7 +139,7 @@ export default class GeneralUnit extends cc.Component {
         } 
 
         if(this.selBingItem.count > 0){  //选中武将对应的士兵道具信息
-            MyUserMgr.updateItemByCount(this.selBingItem.itemId, -1, true);  //修改用户背包物品列表
+            MyUserMgr.updateItemByCount(this.selBingItem.itemId, -1);  //修改用户背包物品列表
 
             this.updateGeneralBingCount();   //更新武将部曲士兵数量
         }
@@ -151,7 +152,7 @@ export default class GeneralUnit extends cc.Component {
 
         let cost = Math.ceil(this.selBingItem.itemCfg.cost*2/1000);
         if(MyUserData.DiamondCount >= cost){  //选中武将对应的士兵道具信息
-            MyUserMgr.updateUserDiamond(-cost, true);  //修改用户背包物品列表
+            MyUserMgr.updateUserDiamond(-cost);  //修改用户背包物品列表
 
             this.updateGeneralBingCount();   //更新武将部曲士兵数量
         }
@@ -162,9 +163,9 @@ export default class GeneralUnit extends cc.Component {
         let selGeneralInfo: GeneralInfo = MyUserData.GeneralList[this.selCellIdx];
         selGeneralInfo.updateBingCount(1000);
         //cc.log("updateGeneralBingCount(), this.selCellIdx = "+this.selCellIdx+"; selGeneralInfo = "+JSON.stringify(selGeneralInfo));
-        MyUserMgr.updateGeneralList(selGeneralInfo, true);   //修改用户武将列表
+        MyUserMgr.updateGeneralList(selGeneralInfo);   //修改用户武将列表
 
-        if(GameMgr.curTaskConf.type == 4){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+        if(GameMgr.curTaskConf.type == 4){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能
             GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
         }
     }

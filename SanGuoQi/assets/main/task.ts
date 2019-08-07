@@ -87,8 +87,10 @@ export default class Task extends cc.Component {
         if(MyUserData.TaskId > 0){
             if(MyUserData.TaskId < 5){   //黄巾之乱
                 NoticeMgr.emit(NoticeType.CityFlagStory, 1);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
-            }else if(MyUserData.TaskId <=10){   //董卓之乱
+            }else if(MyUserData.TaskId <=11){   //董卓之乱
                 NoticeMgr.emit(NoticeType.CityFlagStory, 2);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
+            }else if(MyUserData.TaskId == 12){  //开启主城
+                GameMgr.getMainScene().showHomeBtn(true);  //是否显示主城
             }
 
             this.taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
@@ -116,7 +118,7 @@ export default class Task extends cc.Component {
                     }else if(this.taskConf.type == 4){
                         GameMgr.getMainScene().showHandActions(cc.v2(350, 310));   //引导部曲
                     }else if(this.taskConf.type == 6){
-                        GameMgr.getMainScene().showHandActions(cc.v2(-350, 310));   //引导技能
+                        GameMgr.getMainScene().showHandActions(cc.v2(-300, 310));   //引导技能
                     }
                     else{
                         GameMgr.getMainScene().showHandActions(cc.v2(320, -640));   //隐藏

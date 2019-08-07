@@ -33,14 +33,16 @@ export default class MainScene extends cc.Component {
 
     @property(cc.Node)
     mapNode: cc.Node = null;   //地图总节点
+    @property(cc.Node)
+    capitalNode: cc.Node = null;  //主城按钮
 
     @property(cc.Node)
     taskNode: cc.Node = null;  //任务总节点
     @property(cc.Node)
     taskOptNode: cc.Node = null;  //任务伸缩按钮节点
+
     @property(cc.Prefab)
     pfTask: cc.Prefab = null;  
-
     @property(cc.Prefab)
     pfBag: cc.Prefab = null;   //背包界面
     @property(cc.Prefab)
@@ -82,6 +84,8 @@ export default class MainScene extends cc.Component {
         this.mapNode.active = true;
         this.mapNode.position = cc.v2(0, -900);   //初始显示洛阳  5768*5264   2884*2632
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
+
+        this.showHomeBtn();  //主城按钮
     }
 
     start () {
@@ -234,9 +238,18 @@ export default class MainScene extends cc.Component {
 
     /**任务战斗准备 */
     openFightByTask(taskConf: st_story_info){
-        if(taskConf.type == 5 && taskConf.battleId > 0){  //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+        if(taskConf.type == 5 && taskConf.battleId > 0){  //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能
             let layer = GameMgr.showLayer(this.pfFightReady);
             layer.getComponent(FightReady).initBattleInfo(taskConf.battleId);
+        }
+    }
+
+    //是否显示主城
+    showHomeBtn(bForceShow:boolean=false){
+        if(MyUserData.capitalLv > 0 || bForceShow == true){
+            this.capitalNode.active = true;  //主城按钮
+        }else{
+            this.capitalNode.active = false; 
         }
     }
 

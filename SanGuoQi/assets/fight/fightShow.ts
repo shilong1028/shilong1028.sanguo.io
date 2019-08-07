@@ -72,6 +72,9 @@ export default class FightShow extends cc.Component {
     leftCardInfo: CardInfo = null;
     rightCardInfo: CardInfo = null;
 
+    bLeftUsedSkill: boolean = false;    //一次对战只能使用一次技能
+    bRightUsedSkill: boolean = false;
+
     leftBingArr: BingAni[] = new Array();   //左侧士兵节点集合
     rightBingArr: BingAni[] = new Array();   //右侧士兵节点集合
 
@@ -303,23 +306,25 @@ export default class FightShow extends cc.Component {
         }
 
         let defSoldierCount = defendCardInfo.generalInfo.bingCount;
-        if(defSoldierCount > 200){
-            this.showTipsLable("防御方防御力随兵力变化！", cc.Color.RED);
-            defend = defend * ((defSoldierCount*0.8+200)/1000);
-            defend = parseFloat(defend.toFixed(2)); 
-        }else{
-            this.showTipsLable("防御方兵力严重不足，防御方防御力骤减！", cc.Color.RED);
-            defend *= 0.2;
-        }
+        // if(defSoldierCount > 200){
+        //     this.showTipsLable("防御方防御力随兵力变化！", cc.Color.RED);
+        //     defend = defend * ((defSoldierCount*0.8+200)/1000);
+        //     defend = parseFloat(defend.toFixed(2)); 
+        // }else{
+        //     this.showTipsLable("防御方兵力严重不足，防御方防御力骤减！", cc.Color.RED);
+        //     defend *= 0.2;
+        // }
 
         attack = attack * (attackCardInfo.shiqi/100);
         defend = defend * (defendCardInfo.shiqi/100);
         this.showTipsLable("攻击方士气"+attackCardInfo.shiqi+" 防御方士气"+defendCardInfo.shiqi, cc.Color.WHITE);
 
         let harm = Math.floor(attack - defend*0.7)*2;
-        if(harm <= 0){
-            harm = 1;
-            this.showTipsLable("攻击方太弱，防御方收到伤害：1", cc.Color.GREEN);
+        let minHarm = attack*0.1;
+        minHarm = parseFloat(minHarm.toFixed(2)); 
+        if(harm <= minHarm){
+            harm = minHarm;
+            this.showTipsLable("攻击方太弱，防御方收到伤害："+minHarm, cc.Color.GREEN);
         }else{
             this.showTipsLable("防御方收到伤害："+harm);
         }
@@ -348,151 +353,167 @@ export default class FightShow extends cc.Component {
         return [attackCardInfo, defendCardInfo];
     }
 
-    handleFightSkill(attackCardInfo: CardInfo, defendCardInfo: CardInfo, atkNode: cc.Node, defNode: cc.Node){
+    handleFightSkill(attackCardInfo: CardInfo, defendCardInfo: CardInfo, atkNode: cc.Node, defNode: cc.Node, bLeftIsAtk:boolean){
         let atkCardCfg = attackCardInfo.generalInfo.generalCfg;
         let defCardCfg = defendCardInfo.generalInfo.generalCfg;
 
-        let atkSkills = attackCardInfo.generalInfo.skills;
-        if(atkCardCfg.mp >= 20 && atkSkills.length > 0 && Math.random() > 0.7){   //攻击方随机释放技能
-            let randIdx = Math.floor(Math.random()*(atkSkills.length-0.01));
-            let randSkill: SkillInfo = atkSkills[randIdx];
-            if(randSkill && randSkill.skillCfg){
-                if(randSkill.skillCfg.atk > 0){
-                    atkCardCfg.atk += randSkill.skillCfg.atk;
-                    if(atkCardCfg.atk > 100){
-                        atkCardCfg.atk = 100;
-                    }
-                    FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[0], true);
-                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
-                }else if(randSkill.skillCfg.atk < 0){
-                    defCardCfg.atk += randSkill.skillCfg.atk;
-                    if(defCardCfg.atk < 0){
-                        atkCardCfg.atk = 0;
-                    }
-                    FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[1], true);
-                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+        if((bLeftIsAtk == true && this.bLeftUsedSkill == false) || (bLeftIsAtk == false && this.bRightUsedSkill == false)){   //攻击方未使用过技能
+            let atkSkills = attackCardInfo.generalInfo.skills;
+            if(atkCardCfg.mp >= 20 && atkSkills.length > 0 && Math.random() > 0.7){   //攻击方随机释放技能
+                if(bLeftIsAtk == true){
+                    this.bLeftUsedSkill = true;
+                }else{
+                    this.bRightUsedSkill = true;
                 }
-                else if(randSkill.skillCfg.def > 0){
-                    atkCardCfg.def += randSkill.skillCfg.def;
-                    if(atkCardCfg.def > 100){
-                        atkCardCfg.def = 100;
+
+                let randIdx = Math.floor(Math.random()*(atkSkills.length-0.01));
+                let randSkill: SkillInfo = atkSkills[randIdx];
+                if(randSkill && randSkill.skillCfg){
+                    if(randSkill.skillCfg.atk > 0){
+                        atkCardCfg.atk += randSkill.skillCfg.atk;
+                        if(atkCardCfg.atk > 100){
+                            atkCardCfg.atk = 100;
+                        }
+                        FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[0], true);
+                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                    }else if(randSkill.skillCfg.atk < 0){
+                        defCardCfg.atk += randSkill.skillCfg.atk;
+                        if(defCardCfg.atk < 0){
+                            atkCardCfg.atk = 0;
+                        }
+                        FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[1], true);
+                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
                     }
-                    FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[2], true);
-                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
-                }else if(randSkill.skillCfg.def < 0){
-                    defCardCfg.def += randSkill.skillCfg.def;
-                    if(defCardCfg.def < 0){
-                        atkCardCfg.def = 0;
+                    else if(randSkill.skillCfg.def > 0){
+                        atkCardCfg.def += randSkill.skillCfg.def;
+                        if(atkCardCfg.def > 100){
+                            atkCardCfg.def = 100;
+                        }
+                        FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[2], true);
+                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                    }else if(randSkill.skillCfg.def < 0){
+                        defCardCfg.def += randSkill.skillCfg.def;
+                        if(defCardCfg.def < 0){
+                            atkCardCfg.def = 0;
+                        }
+                        FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[3], true);
+                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
                     }
-                    FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[3], true);
-                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                    else if(randSkill.skillCfg.hp > 0){
+                        atkCardCfg.hp += randSkill.skillCfg.hp;
+                        if(atkCardCfg.hp > 1000){
+                            atkCardCfg.hp = 1000;
+                        }
+                        FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[4], true);
+                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                    }else if(randSkill.skillCfg.hp < 0){
+                        defCardCfg.hp += randSkill.skillCfg.hp;
+                        if(defCardCfg.hp < 0){
+                            atkCardCfg.hp = 0;
+                        }
+                        FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[5], true);
+                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                    }
+                    else if(randSkill.skillCfg.shiqi > 0){
+                        attackCardInfo.shiqi += randSkill.skillCfg.shiqi;
+                        if(attackCardInfo.shiqi> 100){
+                            attackCardInfo.shiqi = 100;
+                        }
+                        FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[6], true);
+                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                    }else if(randSkill.skillCfg.shiqi < 0){
+                        defendCardInfo.shiqi += randSkill.skillCfg.shiqi;
+                        if(defendCardInfo.shiqi < 0){
+                            defendCardInfo.shiqi = 0;
+                        }
+                        FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[7], true);
+                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                    }
                 }
-                else if(randSkill.skillCfg.hp > 0){
-                    atkCardCfg.hp += randSkill.skillCfg.hp;
-                    if(atkCardCfg.hp > 1000){
-                        atkCardCfg.hp = 1000;
-                    }
-                    FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[4], true);
-                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
-                }else if(randSkill.skillCfg.hp < 0){
-                    defCardCfg.hp += randSkill.skillCfg.hp;
-                    if(defCardCfg.hp < 0){
-                        atkCardCfg.hp = 0;
-                    }
-                    FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[5], true);
-                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                atkCardCfg.mp -= 20;
+                if(atkCardCfg.mp < 0){
+                    atkCardCfg.mp = 0;
                 }
-                else if(randSkill.skillCfg.shiqi > 0){
-                    attackCardInfo.shiqi += randSkill.skillCfg.shiqi;
-                    if(attackCardInfo.shiqi> 100){
-                        attackCardInfo.shiqi = 100;
-                    }
-                    FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[6], true);
-                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
-                }else if(randSkill.skillCfg.shiqi < 0){
-                    defendCardInfo.shiqi += randSkill.skillCfg.shiqi;
-                    if(defendCardInfo.shiqi < 0){
-                        defendCardInfo.shiqi = 0;
-                    }
-                    FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[7], true);
-                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
-                }
-            }
-            atkCardCfg.mp -= 20;
-            if(atkCardCfg.mp < 0){
-                atkCardCfg.mp = 0;
             }
         }
-        
-        let defSkills = defendCardInfo.generalInfo.skills;
-        if(defCardCfg.mp >= 20 && defSkills.length > 0 && Math.random() > 0.7){   //防御方随机释放技能
-            let randIdx = Math.floor(Math.random()*(defSkills.length-0.01));
-            let randSkill: SkillInfo = defSkills[randIdx];
-            if(randSkill && randSkill.skillCfg){
-                if(randSkill.skillCfg.atk > 0){
-                    defCardCfg.atk += randSkill.skillCfg.atk;
-                    if(defCardCfg.atk > 100){
-                        defCardCfg.atk = 100;
-                    }
-                    FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[0], true);
-                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
-                }else if(randSkill.skillCfg.atk < 0){
-                    atkCardCfg.atk += randSkill.skillCfg.atk;
-                    if(atkCardCfg.atk < 0){
-                        atkCardCfg.atk = 0;
-                    }
-                    FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[1], true);
-                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+
+        if((bLeftIsAtk == true && this.bRightUsedSkill == false) || (bLeftIsAtk == false && this.bLeftUsedSkill == false)){   //防御方未使用过技能
+            let defSkills = defendCardInfo.generalInfo.skills;
+            if(defCardCfg.mp >= 20 && defSkills.length > 0 && Math.random() > 0.7){   //防御方随机释放技能
+                if(bLeftIsAtk == true){
+                    this.bRightUsedSkill = true;
+                }else{
+                    this.bLeftUsedSkill = true;
                 }
-                else if(randSkill.skillCfg.def > 0){
-                    defCardCfg.def += randSkill.skillCfg.def;
-                    if(defCardCfg.def > 100){
-                        defCardCfg.def = 100;
+
+                let randIdx = Math.floor(Math.random()*(defSkills.length-0.01));
+                let randSkill: SkillInfo = defSkills[randIdx];
+                if(randSkill && randSkill.skillCfg){
+                    if(randSkill.skillCfg.atk > 0){
+                        defCardCfg.atk += randSkill.skillCfg.atk;
+                        if(defCardCfg.atk > 100){
+                            defCardCfg.atk = 100;
+                        }
+                        FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[0], true);
+                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                    }else if(randSkill.skillCfg.atk < 0){
+                        atkCardCfg.atk += randSkill.skillCfg.atk;
+                        if(atkCardCfg.atk < 0){
+                            atkCardCfg.atk = 0;
+                        }
+                        FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[1], true);
+                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
                     }
-                    FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[2], true);
-                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
-                }else if(randSkill.skillCfg.def < 0){
-                    atkCardCfg.def += randSkill.skillCfg.def;
-                    if(atkCardCfg.def < 0){
-                        atkCardCfg.def = 0;
+                    else if(randSkill.skillCfg.def > 0){
+                        defCardCfg.def += randSkill.skillCfg.def;
+                        if(defCardCfg.def > 100){
+                            defCardCfg.def = 100;
+                        }
+                        FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[2], true);
+                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                    }else if(randSkill.skillCfg.def < 0){
+                        atkCardCfg.def += randSkill.skillCfg.def;
+                        if(atkCardCfg.def < 0){
+                            atkCardCfg.def = 0;
+                        }
+                        FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[3], true);
+                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
                     }
-                    FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[3], true);
-                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                    else if(randSkill.skillCfg.hp > 0){
+                        defCardCfg.hp += randSkill.skillCfg.hp;
+                        if(defCardCfg.hp > 1000){
+                            defCardCfg.hp = 1000;
+                        }
+                        FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[4], true);
+                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                    }else if(randSkill.skillCfg.hp < 0){
+                        atkCardCfg.hp += randSkill.skillCfg.hp;
+                        if(atkCardCfg.hp < 0){
+                            atkCardCfg.hp = 0;
+                        }
+                        FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[5], true);
+                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                    }
+                    else if(randSkill.skillCfg.shiqi > 0){
+                        defendCardInfo.shiqi += randSkill.skillCfg.shiqi;
+                        if(defendCardInfo.shiqi < 0){
+                            defendCardInfo.shiqi = 0;
+                        }
+                        FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[6], true);
+                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                    }else if(randSkill.skillCfg.shiqi < 0){
+                        attackCardInfo.shiqi += randSkill.skillCfg.shiqi;
+                        if(attackCardInfo.shiqi < 0){
+                            attackCardInfo.shiqi = 0;
+                        }
+                        FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[7], true);
+                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                    }
                 }
-                else if(randSkill.skillCfg.hp > 0){
-                    defCardCfg.hp += randSkill.skillCfg.hp;
-                    if(defCardCfg.hp > 1000){
-                        defCardCfg.hp = 1000;
-                    }
-                    FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[4], true);
-                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
-                }else if(randSkill.skillCfg.hp < 0){
-                    atkCardCfg.hp += randSkill.skillCfg.hp;
-                    if(atkCardCfg.hp < 0){
-                        atkCardCfg.hp = 0;
-                    }
-                    FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[5], true);
-                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                defCardCfg.mp -= 20;
+                if(defCardCfg.mp < 0){
+                    defCardCfg.mp = 0;
                 }
-                else if(randSkill.skillCfg.shiqi > 0){
-                    defendCardInfo.shiqi += randSkill.skillCfg.shiqi;
-                    if(defendCardInfo.shiqi < 0){
-                        defendCardInfo.shiqi = 0;
-                    }
-                    FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[6], true);
-                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
-                }else if(randSkill.skillCfg.shiqi < 0){
-                    attackCardInfo.shiqi += randSkill.skillCfg.shiqi;
-                    if(attackCardInfo.shiqi < 0){
-                        attackCardInfo.shiqi = 0;
-                    }
-                    FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[7], true);
-                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
-                }
-            }
-            defCardCfg.mp -= 20;
-            if(defCardCfg.mp < 0){
-                defCardCfg.mp = 0;
             }
         }
 
@@ -517,7 +538,7 @@ export default class FightShow extends cc.Component {
             this.node.runAction(cc.sequence(
                 cc.repeat(cc.sequence(cc.delayTime(stepDelay), cc.callFunc(function(){
                     //攻击方技能进攻
-                    let skillAtt = this.handleFightSkill(this.leftCardInfo, this.rightCardInfo, this.leftGenNode, this.rightGenNode);
+                    let skillAtt = this.handleFightSkill(this.leftCardInfo, this.rightCardInfo, this.leftGenNode, this.rightGenNode, true);
                     this.leftCardInfo = skillAtt[0];
                     this.rightCardInfo = skillAtt[1];
                     //攻击方物理进攻
@@ -531,7 +552,7 @@ export default class FightShow extends cc.Component {
                     this.updateBingAniCount(2);
                 }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
                     //防御方技能反击
-                    let skillAtt = this.handleFightSkill(this.rightCardInfo, this.leftCardInfo, this.rightGenNode, this.leftGenNode);
+                    let skillAtt = this.handleFightSkill(this.rightCardInfo, this.leftCardInfo, this.rightGenNode, this.leftGenNode, false);
                     this.rightCardInfo = skillAtt[0];
                     this.leftCardInfo = skillAtt[1];
                     //防御方物理反击

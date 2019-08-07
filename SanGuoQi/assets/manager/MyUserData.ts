@@ -14,6 +14,7 @@ export var MyUserData = {
 
     roleLv: 1,  //主角等级
     officalStr: "",  //主角官职
+    capitalLv: 0,   //主城等级，0则未开启
 
     TaskId: 1,   //当前任务ID
     TaskState: 0,    //当前任务状态 0未完成，1完成未领取，2已领取
@@ -41,6 +42,8 @@ class MyUserManager {
         LDMgr.setItem(LDKey.KEY_RoleLv, 1);
         MyUserData.officalStr = "";  //主角官职
         LDMgr.setItem(LDKey.KEY_Offical, "");
+        MyUserData.capitalLv = 0;   //主城等级，0则未开启
+        LDMgr.setItem(LDKey.KEY_CapitalLv, 0);
 
         MyUserData.TaskId = 1;   //当前任务ID
         MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
@@ -67,6 +70,7 @@ class MyUserManager {
         MyUserData.FoodCount = LDMgr.getItemInt(LDKey.KEY_FoodCount);   //用户粮食数量
         MyUserData.roleLv = LDMgr.getItemInt(LDKey.KEY_RoleLv);   //主角等级
         MyUserData.officalStr = LDMgr.getItem(LDKey.KEY_Offical);   //主角官职
+        MyUserData.capitalLv = LDMgr.getItemInt(LDKey.KEY_CapitalLv);   //主城等级，0则未开启
 
         let taskInfo = LDMgr.getItemKeyVal(LDKey.KEY_StoryData);  //当前任务ID
         if(taskInfo == null){
@@ -86,6 +90,15 @@ class MyUserManager {
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
+    //更新主城等级
+    updateCapitalLv(capitalLv: number){
+        MyUserData.capitalLv = capitalLv;
+        if(MyUserData.capitalLv > 100){
+            MyUserData.capitalLv = 100;
+        }
+        LDMgr.setItem(LDKey.KEY_CapitalLv, MyUserData.capitalLv);   //主城等级，0则未开启
+    }
+
     //更新主角等级或官职
     updateRoleLvOrOffical(roleLv: number, offical: string=null){
         let oldRoleLv = 0;
@@ -100,6 +113,16 @@ class MyUserManager {
             LDMgr.setItem(LDKey.KEY_Offical, offical);
         }
         NoticeMgr.emit(NoticeType.UpdateRoleLvOffical, oldRoleLv);  //更新主角等级或官职
+    }
+
+    //根据城池ID判定是否为我方已占据的城池
+    isMyCityById(cityId: number){
+        for(let i=0; i<MyUserData.myCityIds.length; ++i){
+            if(cityId == MyUserData.myCityIds[i]){
+                return true;
+            }
+        }
+        return false;
     }
 
     //更新我方占领的城池列表
@@ -139,7 +162,7 @@ class MyUserManager {
         for(let i=0; i<ids.length; ++i){
             MyUserData.ruleCityIds.push(ids[i]);
         }
-        LDMgr.setItem(LDKey.KEY_RuleCityIds, this.getIdsToStr(MyUserData.ruleCityIds));
+        //LDMgr.setItem(LDKey.KEY_RuleCityIds, this.getIdsToStr(MyUserData.ruleCityIds));
     }
 
     getIdsToStr(ids: number[], sp: string = "|"){
@@ -151,7 +174,7 @@ class MyUserManager {
     }
 
     /**修改用户背包物品列表 */
-    updateItemByCount(itemId: number, val: number, bSave: boolean = true){
+    updateItemByCount(itemId: number, val: number){
         for(let i=0; i<MyUserData.ItemList.length; ++i){
             let bagItem: ItemInfo = MyUserData.ItemList[i];
             if(bagItem.itemId == itemId){
@@ -163,9 +186,7 @@ class MyUserManager {
                 if(MyUserData.ItemList[i].count <= 0){
                     MyUserData.ItemList.splice(i, 1);  //道具用完，从背包删除
                 }
-                if(bSave){
-                    this.saveItemList();
-                }
+                this.saveItemList();
                 return;
             }
         }
@@ -174,10 +195,7 @@ class MyUserManager {
             let item = new ItemInfo(itemId, val);
             MyUserData.ItemList.push(item);
             NoticeMgr.emit(NoticeType.UpdateBagItem, item);  //更新单个背包物品
-
-            if(bSave){
-                this.saveItemList();
-            }
+            this.saveItemList();
         }
     }
     
@@ -237,24 +255,19 @@ class MyUserManager {
     }
 
     /**修改用户武将列表 */
-    updateGeneralList(general: GeneralInfo, bSave: boolean = true){
-        //cc.log("updateGeneralList(), general = "+JSON.stringify(general));
+    updateGeneralList(general: GeneralInfo){
         for(let i=0; i<MyUserData.GeneralList.length; ++i){
             let info: GeneralInfo = MyUserData.GeneralList[i];
             if(general.timeId == info.timeId){
                 MyUserData.GeneralList[i] = general;
+                this.saveGeneralList();
                 NoticeMgr.emit(NoticeType.UpdateGeneral, general);  //更新单个武将
-
-                if(bSave){
-                    this.saveGeneralList();
-                }
                 return;
             }
         }
     }
     /**添加武将到列表 */
     addGeneralToList(general: GeneralInfo, bSave: boolean = true){
-        //cc.log("addGeneralToList(), general = "+JSON.stringify(general));
         let minTimeId = 0;
         let bConflictTimeId = false;
         for(let i=0; i<MyUserData.GeneralList.length; ++i){
@@ -283,7 +296,7 @@ class MyUserManager {
             let tempItem = MyUserData.GeneralList[i].cloneNoCfg();
             GeneralList.push(tempItem);
         }
-        cc.log("GeneralList = "+JSON.stringify(GeneralList));
+        //cc.log("GeneralList = "+JSON.stringify(GeneralList));
         LDMgr.setItem(LDKey.KEY_GeneralList, JSON.stringify(GeneralList));
     }
     /**从本地存储中获取武将列表 */
@@ -327,34 +340,28 @@ class MyUserManager {
     }
 
     /**修改用户金币 */
-    updateUserGold(val:number, bSave: boolean = true){
+    updateUserGold(val:number){
         MyUserData.GoldCount += val;
-        if(bSave){
-            LDMgr.setItem(LDKey.KEY_GoldCount, MyUserData.GoldCount);
-        }
+        LDMgr.setItem(LDKey.KEY_GoldCount, MyUserData.GoldCount);
         NoticeMgr.emit(NoticeType.UpdateGold, null);
     }
 
     /**修改用户钻石(金锭) */
-    updateUserDiamond(val:number, bSave: boolean = true){
+    updateUserDiamond(val:number){
         MyUserData.DiamondCount += val;
-        if(bSave){
-            LDMgr.setItem(LDKey.KEY_DiamondCount, MyUserData.DiamondCount);
-        }
+        LDMgr.setItem(LDKey.KEY_DiamondCount, MyUserData.DiamondCount);
         NoticeMgr.emit(NoticeType.UpdateDiamond, null);
     }
 
     /**修改用户粮食 */
-    updateUserFood(val:number, bSave: boolean = true){
+    updateUserFood(val:number){
         MyUserData.FoodCount += val;
-        if(bSave){
-            LDMgr.setItem(LDKey.KEY_FoodCount, MyUserData.FoodCount);
-        }
+        LDMgr.setItem(LDKey.KEY_FoodCount, MyUserData.FoodCount);
         NoticeMgr.emit(NoticeType.UpdateFood, null);
     }
 
     /**修改用户任务 0未完成，1完成未领取，2已领取 */
-    updateTaskState(taskId: number, state: number, bSave: boolean = true){
+    updateTaskState(taskId: number, state: number){
         if(MyUserData.TaskId == taskId && MyUserData.TaskState == state){
             return;
         }
@@ -364,23 +371,19 @@ class MyUserManager {
         if(state == 2){   //2已领取，下一个任务
             MyUserData.TaskId ++;
             MyUserData.TaskState = 0;
-            bSave = true;
 
             if(MyUserData.TaskId == 2){
                 this.updateRoleLvOrOffical(0, "骑都尉");
             }else if(MyUserData.TaskId == 8){
                 this.updateRoleLvOrOffical(0, "奋武将军");
-            }else if(MyUserData.TaskId == 9){
-                this.updateRoleLvOrOffical(0, "东郡太守");
             }else if(MyUserData.TaskId == 10){
+                this.updateRoleLvOrOffical(0, "东郡太守");
+            }else if(MyUserData.TaskId == 11){
                 this.updateRoleLvOrOffical(0, "兖州牧");
             }
         }
 
-        if(bSave){
-            LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString()+"-"+MyUserData.TaskState);
-        }
-
+        LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString()+"-"+MyUserData.TaskState);
         NoticeMgr.emit(NoticeType.UpdateTaskState, null);   //任务状态更新
     }
 

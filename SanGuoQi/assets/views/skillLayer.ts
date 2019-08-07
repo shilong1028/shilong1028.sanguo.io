@@ -70,21 +70,8 @@ export default class SkillLayer extends cc.Component {
     }
 
     handleSelGeneralCell(cellIdx: number){
-        cc.log("handleSelGeneralCell(), cellIdx = "+cellIdx);
+        //cc.log("handleSelGeneralCell(), cellIdx = "+cellIdx);
         this.selGeneralInfo = MyUserData.GeneralList[cellIdx];  //选中的武将数据
-    }
-
-    //添加或删除武将技能
-    handleChangeGeneralSkill(skillInfo: SkillInfo, bAdd:boolean){
-        cc.log("handleChangeGeneralSkill(), bAdd = "+bAdd);
-        if(this.selGeneralInfo){
-            if(bAdd == true){   //添加
-                this.selGeneralInfo.skills.push(skillInfo);
-            }else{    //删除
-    
-            }
-            MyUserMgr.saveGeneralList();
-        }
     }
 
     handleSelSkillCell(cellIdx: number){

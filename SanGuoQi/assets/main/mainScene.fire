@@ -139,8 +139,11 @@
     "pfReward": {
       "__uuid__": "f6ffd6aa-7d9b-437e-83ca-b0d9d3eaae6f"
     },
-    "pfTipsDialog": {
+    "pfTipsText": {
       "__uuid__": "ee21f53d-9a7a-45bf-b652-49b5af1bd227"
+    },
+    "pfTipsDialog": {
+      "__uuid__": "1ee5ac88-10ed-4572-9c88-582f9a8a5e33"
     },
     "_id": "c1AaS3gzNJ0J8HP17y21aS"
   },
@@ -7924,6 +7927,9 @@
     ],
     "mapNode": {
       "__id__": 7
+    },
+    "capitalNode": {
+      "__id__": 149
     },
     "taskNode": {
       "__id__": 163

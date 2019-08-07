@@ -48,7 +48,7 @@ export default class City extends cc.Component {
 
     onCityBtn(){
         let layer = GameMgr.showLayer(this.pfCityLayer);
-        layer.getComponent(CityLayer).initCityByConf(this.cityInfo);
+        layer.getComponent(CityLayer).initCityByConf(this.cityInfo, this.flagType);
     }
 
     initCityConf(cityInfo: CityInfo){

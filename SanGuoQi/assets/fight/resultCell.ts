@@ -3,6 +3,7 @@ import viewCell from "../tableView/viewCell";
 import { CardInfo } from "../manager/Enum";
 import Card from "./card";
 import { ROOT_NODE } from "../common/rootNode";
+import { GameMgr } from "../manager/GameManager";
 
 
 //用于tableView的itemCell
@@ -16,18 +17,16 @@ export default class ResultCell extends viewCell {
 
     @property(cc.Label)
     bingCount: cc.Label = null;
-
     @property(cc.Label)
     killCount: cc.Label = null;
-
     @property(cc.Label)
     lvLabel:cc.Label = null;
-
     @property(cc.Label)
     expLabel:cc.Label = null;
-
     @property(cc.Node)
     headNode: cc.Node = null;
+    @property(cc.Node)
+    lvUpNode: cc.Node = null;
 
     cellData : CardInfo = null;  
     cellIdx : number = -1;  
@@ -57,12 +56,29 @@ export default class ResultCell extends viewCell {
         }
         this.cardSc.showGeneralCard(this.cellData.generalInfo);
 
+        this.lvUpNode.active = false;
         this.bingCount.string = "兵力剩余：" + this.cellData.generalInfo.bingCount.toString();
         this.killCount.string = "杀敌：" + this.cellData.generalInfo.killCount.toString();
-        this.lvLabel.string = "等级：Lv" + this.cellData.generalInfo.generalLv.toString();
+
+        let generalLv = this.cellData.generalInfo.generalLv;
         let exp = Math.floor(this.cellData.generalInfo.killCount/10);
         exp += data.target.balancedExp;   //均衡经验值（总杀敌数的一半用于每个武将均衡经验增加，武将杀敌的另一半用于自己经验增加）
         this.expLabel.string = "增加经验：" + exp.toString();
+
+        if(generalLv < 100){
+            let maxExp = GameMgr.getMaxGeneralExpByLv(generalLv);
+            let generalExp = this.cellData.generalInfo.generalExp + exp;
+            let oldLv = generalLv;
+            while(generalExp >= maxExp){
+                generalLv ++;
+                generalExp -= maxExp;
+                maxExp = GameMgr.getMaxGeneralExpByLv(generalLv);
+            }
+            if(generalLv > oldLv){
+                this.lvUpNode.active = true;
+            }
+        }
+        this.lvLabel.string = "等级：Lv" + generalLv.toString();
     }
 
     onSelected(bSel:boolean){

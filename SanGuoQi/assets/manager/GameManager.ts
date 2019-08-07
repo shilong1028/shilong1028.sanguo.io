@@ -16,7 +16,7 @@ class GameManager {
 
     CityNearsMap : Map<number, number[]> = new Map<number, number[]>();  //邻近城池Map
 
-    //获取城池路径
+    //获取城池路径（最多途径10城规划出2条最短路径）
     getNearCitysLine(srcCityId: number, destCityId: number){
         cc.log("getNearCitysLine(), srcCityId = "+srcCityId+"; destCityId = "+destCityId);
 
@@ -204,14 +204,15 @@ class GameManager {
         if(storyConf == null || storyConf == undefined){
             return;
         }
-        if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+        if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
         }
 
         if(MyUserData.TaskId == 9){   //东郡太守
             MyUserMgr.updateMyCityIds(316, true);  
         }else if(MyUserData.TaskId == 10){   //兖州牧
-            let ruleCitys = new Array(312, 313, 314, 9006, 9008);
+            let ruleCitys = new Array();
+            ruleCitys = [312, 313, 314, 315, 9006, 9008]
             MyUserMgr.addRuleCitys(ruleCitys);
             MyUserMgr.updateMyCityIds(315, true); 
         }
@@ -248,6 +249,8 @@ class GameManager {
             return lv*100;
         }
     }
+
+
 
 }
 export var GameMgr = new GameManager();

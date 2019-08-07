@@ -62,7 +62,7 @@ export default class SkillLearnCell extends viewCell {
             let skillInfo = this.cellData.skills[i];
             let skillcard = cc.instantiate(this.pfSkillCard);
             this.skillsNode.addChild(skillcard);
-            skillcard.getComponent(SkillCard).initGeneralSkill(skillInfo, this.targetSc);
+            skillcard.getComponent(SkillCard).initGeneralSkill(skillInfo, this.targetSc, this.cellData);
         }
     }
 

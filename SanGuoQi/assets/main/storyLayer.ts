@@ -123,7 +123,7 @@ export default class StoryLayer extends cc.Component {
         if(this.curTalkConf && this.curTalkIdx < this.taskConf.talks.length-1){
             this.setTalkStr();   //设置话本内容
         }else{
-            if(this.taskConf.type == 1){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗
+            if(this.taskConf.type == 1){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能
                 GameMgr.handleStoryShowOver(this.taskConf);   //任务宣读(第一阶段）完毕处理
             }else if(this.taskConf.type == 5){
                 let mainScene = GameMgr.getMainScene();
