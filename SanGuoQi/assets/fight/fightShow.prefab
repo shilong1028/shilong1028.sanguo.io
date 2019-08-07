@@ -2400,6 +2400,32 @@
     "hechengAtlas": {
       "__uuid__": "7b7f9e99-9e96-4f8c-86d0-a2b171e5eb9c"
     },
+    "effectAtlas": [
+      {
+        "__uuid__": "098ffdf6-7e26-46ed-bf76-e66aba1f41c6"
+      },
+      {
+        "__uuid__": "007554a3-becc-48b3-a552-caa2b4c37605"
+      },
+      {
+        "__uuid__": "7e885f6d-3a39-4fad-8cb6-faf12ae56cf3"
+      },
+      {
+        "__uuid__": "c5e0bce6-4a70-4bb0-98cc-5600c02ad2ab"
+      },
+      {
+        "__uuid__": "7b7f9e99-9e96-4f8c-86d0-a2b171e5eb9c"
+      },
+      {
+        "__uuid__": "f3cea86b-0aa6-4367-b345-88c5cdd94abd"
+      },
+      {
+        "__uuid__": "4f248598-7b23-497a-b5fb-273b4d3925e0"
+      },
+      {
+        "__uuid__": "1040c5b4-ace5-4798-befc-876edcae0776"
+      }
+    ],
     "pfCard": {
       "__uuid__": "7945de08-b7f2-4a8b-af81-5e218970dadf"
     },
