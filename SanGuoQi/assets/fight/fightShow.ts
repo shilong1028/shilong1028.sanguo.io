@@ -1,7 +1,7 @@
 import Block from "./block";
 import { FightMgr } from "../manager/FightManager";
 import Card from "./card";
-import { CardInfo, SoliderType } from "../manager/Enum";
+import { CardInfo, SoliderType, SkillInfo } from "../manager/Enum";
 import ShowLabel from "./showLabel";
 import BingAni from "../animation/bingAni";
 import { GameMgr } from "../manager/GameManager";
@@ -268,32 +268,6 @@ export default class FightShow extends cc.Component {
         let attack = atkCardCfg.atk;
         let defend = defCardCfg.def;
 
-        // if(atkCardCfg.mp > defCardCfg.mp){   //攻击方智力越高，攻击越高
-        //     let multi = (atkCardCfg.mp-defCardCfg.mp)/100;
-        //     multi = parseFloat(multi.toFixed(2)); 
-        //     if(multi > 0.5){
-        //         multi = 0.5;
-        //     }
-        //     this.showTipsLable("攻击方智力值远高于防御方，攻击方攻击提升！", cc.Color.YELLOW);
-        //     attack += multi*atkCardCfg.atk;
-        //     atkCardCfg.mp -= 1;
-        //     if(atkCardCfg.mp < 0){
-        //         atkCardCfg.mp = 0;
-        //     }
-        // }else if(defCardCfg.mp > atkCardCfg.mp){  //防御方智力越高，防御越高
-        //     let multi = (defCardCfg.mp-atkCardCfg.mp)/100*1.5;
-        //     multi = parseFloat(multi.toFixed(2)); 
-        //     if(multi > 0.5){
-        //         multi = 0.5;
-        //     }
-        //     this.showTipsLable("攻击方智力值远低于防御方，防御方防御力提升!", cc.Color.YELLOW);
-        //     defend += multi * defCardCfg.def;
-        //     defCardCfg.mp -= 1;
-        //     if(defCardCfg.mp < 0){
-        //         defCardCfg.mp = 0;
-        //     }
-        // }
-
         //兵种相克，401骑兵克制402刀兵， 402刀兵克制403枪兵，403枪兵克制401骑兵， 404弓兵为不克制兵种
         let restriction = FightMgr.checkBingRestriction(atkCardCfg.bingzhong, defCardCfg.bingzhong);
         if(restriction == 1){
@@ -371,6 +345,141 @@ export default class FightShow extends cc.Component {
         return [attackCardInfo, defendCardInfo];
     }
 
+    handleFightSkill(attackCardInfo: CardInfo, defendCardInfo: CardInfo){
+        let atkCardCfg = attackCardInfo.generalInfo.generalCfg;
+        let defCardCfg = defendCardInfo.generalInfo.generalCfg;
+
+        let atkSkills = attackCardInfo.generalInfo.skills;
+        if(atkCardCfg.mp >= 20 && atkSkills.length > 0 && Math.random() > 0.7){   //攻击方随机释放技能
+            let randIdx = Math.floor(Math.random()*(atkSkills.length-0.01));
+            let randSkill: SkillInfo = atkSkills[randIdx];
+            if(randSkill && randSkill.skillCfg){
+                if(randSkill.skillCfg.atk > 0){
+                    atkCardCfg.atk += randSkill.skillCfg.atk;
+                    if(atkCardCfg.atk > 100){
+                        atkCardCfg.atk = 100;
+                    }
+                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                }else if(randSkill.skillCfg.atk < 0){
+                    defCardCfg.atk += randSkill.skillCfg.atk;
+                    if(defCardCfg.atk < 0){
+                        atkCardCfg.atk = 0;
+                    }
+                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                }
+                else if(randSkill.skillCfg.def > 0){
+                    atkCardCfg.def += randSkill.skillCfg.def;
+                    if(atkCardCfg.def > 100){
+                        atkCardCfg.def = 100;
+                    }
+                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                }else if(randSkill.skillCfg.def < 0){
+                    defCardCfg.def += randSkill.skillCfg.def;
+                    if(defCardCfg.def < 0){
+                        atkCardCfg.def = 0;
+                    }
+                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                }
+                else if(randSkill.skillCfg.hp > 0){
+                    atkCardCfg.hp += randSkill.skillCfg.hp;
+                    if(atkCardCfg.hp > 1000){
+                        atkCardCfg.hp = 1000;
+                    }
+                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                }else if(randSkill.skillCfg.hp < 0){
+                    defCardCfg.hp += randSkill.skillCfg.hp;
+                    if(defCardCfg.hp < 0){
+                        atkCardCfg.hp = 0;
+                    }
+                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                }
+                else if(randSkill.skillCfg.shiqi > 0){
+                    attackCardInfo.shiqi += randSkill.skillCfg.shiqi;
+                    if(attackCardInfo.shiqi> 100){
+                        attackCardInfo.shiqi = 100;
+                    }
+                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                }else if(randSkill.skillCfg.shiqi < 0){
+                    defendCardInfo.shiqi += randSkill.skillCfg.shiqi;
+                    if(defendCardInfo.shiqi < 0){
+                        defendCardInfo.shiqi = 0;
+                    }
+                    this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                }
+            }
+            atkCardCfg.mp -= 20;
+            if(atkCardCfg.mp < 0){
+                atkCardCfg.mp = 0;
+            }
+        }
+        
+        let defSkills = defendCardInfo.generalInfo.skills;
+        if(defCardCfg.mp >= 20 && defSkills.length > 0 && Math.random() > 0.7){   //防御方随机释放技能
+            let randIdx = Math.floor(Math.random()*(defSkills.length-0.01));
+            let randSkill: SkillInfo = defSkills[randIdx];
+            if(randSkill && randSkill.skillCfg){
+                if(randSkill.skillCfg.atk > 0){
+                    defCardCfg.atk += randSkill.skillCfg.atk;
+                    if(defCardCfg.atk > 100){
+                        defCardCfg.atk = 100;
+                    }
+                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                }else if(randSkill.skillCfg.atk < 0){
+                    atkCardCfg.atk += randSkill.skillCfg.atk;
+                    if(atkCardCfg.atk < 0){
+                        atkCardCfg.atk = 0;
+                    }
+                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                }
+                else if(randSkill.skillCfg.def > 0){
+                    defCardCfg.def += randSkill.skillCfg.def;
+                    if(defCardCfg.def > 100){
+                        defCardCfg.def = 100;
+                    }
+                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                }else if(randSkill.skillCfg.def < 0){
+                    atkCardCfg.def += randSkill.skillCfg.def;
+                    if(atkCardCfg.def < 0){
+                        atkCardCfg.def = 0;
+                    }
+                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                }
+                else if(randSkill.skillCfg.hp > 0){
+                    defCardCfg.hp += randSkill.skillCfg.hp;
+                    if(defCardCfg.hp > 1000){
+                        defCardCfg.hp = 1000;
+                    }
+                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                }else if(randSkill.skillCfg.hp < 0){
+                    atkCardCfg.hp += randSkill.skillCfg.hp;
+                    if(atkCardCfg.hp < 0){
+                        atkCardCfg.hp = 0;
+                    }
+                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                }
+                else if(randSkill.skillCfg.shiqi > 0){
+                    defendCardInfo.shiqi += randSkill.skillCfg.shiqi;
+                    if(defendCardInfo.shiqi < 0){
+                        defendCardInfo.shiqi = 0;
+                    }
+                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                }else if(randSkill.skillCfg.shiqi < 0){
+                    attackCardInfo.shiqi += randSkill.skillCfg.shiqi;
+                    if(attackCardInfo.shiqi < 0){
+                        attackCardInfo.shiqi = 0;
+                    }
+                    this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                }
+            }
+            defCardCfg.mp -= 20;
+            if(defCardCfg.mp < 0){
+                defCardCfg.mp = 0;
+            }
+        }
+
+        return [attackCardInfo, defendCardInfo];
+    }
+
     showEffectAni(){
         let effectAtlas = null;
         if(this.nShowType == 1){   //合成
@@ -388,7 +497,11 @@ export default class FightShow extends cc.Component {
         if(this.nShowType == 2){
             this.node.runAction(cc.sequence(
                 cc.repeat(cc.sequence(cc.delayTime(stepDelay), cc.callFunc(function(){
-                    //攻击方进攻
+                    //攻击方技能进攻
+                    let skillAtt = this.handleFightSkill(this.leftCardInfo, this.rightCardInfo);
+                    this.leftCardInfo = skillAtt[0];
+                    this.rightCardInfo = skillAtt[1];
+                    //攻击方物理进攻
                     this.showLeftAniUi(2);
                     this.showRightAniUi(1);
                     let arr = this.showFightProgress(this.leftCardInfo, this.rightCardInfo, this.srcBlock.ArrowOrTown, this.destBlock.ArrowOrTown);
@@ -398,7 +511,11 @@ export default class FightShow extends cc.Component {
                     this.showRightUI();
                     this.updateBingAniCount(2);
                 }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
-                    //防御方反击
+                    //防御方技能反击
+                    let skillAtt = this.handleFightSkill(this.rightCardInfo, this.leftCardInfo);
+                    this.rightCardInfo = skillAtt[0];
+                    this.leftCardInfo = skillAtt[1];
+                    //防御方物理反击
                     this.showLeftAniUi(1);
                     let bDefenderAtk: boolean = true;   //防御方反击
                     if(this.leftCardInfo.generalInfo.generalCfg.bingzhong == SoliderType.gongbing){   //弓兵攻击两格

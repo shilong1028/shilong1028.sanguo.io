@@ -7,7 +7,20 @@
             <key>101.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{68,68},{64,64}}</string>
+                <string>{{134,68},{64,64}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{64,64}}</string>
+                <key>sourceSize</key>
+                <string>{64,64}</string>
+            </dict>
+            <key>151.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{68,134},{64,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +33,20 @@
             <key>201.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{68,2},{64,64}}</string>
+                <string>{{68,68},{64,64}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{64,64}}</string>
+                <key>sourceSize</key>
+                <string>{64,64}</string>
+            </dict>
+            <key>251.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{134,2},{64,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +59,20 @@
             <key>301.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,68},{64,64}}</string>
+                <string>{{68,2},{64,64}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{64,64}}</string>
+                <key>sourceSize</key>
+                <string>{64,64}</string>
+            </dict>
+            <key>351.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,134},{64,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -44,6 +83,19 @@
                 <string>{64,64}</string>
             </dict>
             <key>401.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,68},{64,64}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{64,64}}</string>
+                <key>sourceSize</key>
+                <string>{64,64}</string>
+            </dict>
+            <key>451.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,2},{64,64}}</string>
@@ -64,9 +116,9 @@
             <key>realTextureFileName</key>
             <string>skill.png</string>
             <key>size</key>
-            <string>{134,134}</string>
+            <string>{200,200}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d08787310801cfb8466e75536a17232f:98a88425981b86aa39629f8ef4c4f121:de628d2eabb1e43115cf8c86336e45f6$</string>
+            <string>$TexturePacker:SmartUpdate:eb9df287b97ad92fceef27f0999250a2:42533cde0c012effbbe08f8e4b841d6c:de628d2eabb1e43115cf8c86336e45f6$</string>
             <key>textureFileName</key>
             <string>skill.png</string>
         </dict>

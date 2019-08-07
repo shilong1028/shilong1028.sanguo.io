@@ -51,6 +51,10 @@ export default class StartScene extends cc.Component {
             let enemy = new GeneralInfo(ids[i]); 
             enemy.generalLv = lvs[i];
             enemy.bingCount = GameMgr.getMaxBingCountByLv(enemy.generalLv);
+            for(let j=0; j<enemy.generalCfg.skillNum; ++j){
+                let randSkill = FightMgr.getRandomSkill();
+                enemy.skills.push(randSkill);
+            }
             fightArr.push(enemy.clone());
             enmeyArr.push(enemy);
         }

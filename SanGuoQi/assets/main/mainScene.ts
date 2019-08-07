@@ -49,6 +49,8 @@ export default class MainScene extends cc.Component {
     pfUnit: cc.Prefab = null;   //武将部曲界面
     @property(cc.Prefab)
     pfFightReady: cc.Prefab = null;   //武将出战界面
+    @property(cc.Prefab)
+    pfSkill: cc.Prefab = null;  //技能界面
 
     @property(cc.SpriteAtlas)
     cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
@@ -269,7 +271,7 @@ export default class MainScene extends cc.Component {
     }
 
     onSkillBtn(){
-        
+        GameMgr.showLayer(this.pfSkill);
     }
 
     onShopBtn(){

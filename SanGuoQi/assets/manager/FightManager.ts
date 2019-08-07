@@ -1,6 +1,7 @@
 import FightScene from "../fight/fightScene";
-import { CardInfo, GeneralInfo, NoticeType, SoliderType } from "./Enum";
+import { CardInfo, GeneralInfo, NoticeType, SoliderType, SkillInfo } from "./Enum";
 import { NoticeMgr } from "./NoticeManager";
+import { CfgMgr } from "./ConfigManager";
 
 //战斗管理器
 const {ccclass, property} = cc._decorator;
@@ -107,6 +108,14 @@ class FightManager {
                 return card.clone();
             }
         }
+    }
+
+    //从技能表中随机一个技能出来
+    getRandomSkill(): SkillInfo{
+        let keys = Object.getOwnPropertyNames(CfgMgr.C_skill_info);
+        let idx = Math.floor(Math.random()*(keys.length-0.01));
+        let skillId = parseInt(keys[idx]);
+        return new SkillInfo(skillId)
     }
 
     /**兵种相克 */

@@ -69,6 +69,10 @@ export default class FightReady extends cc.Component {
                 let enemy = new GeneralInfo(battleConf.generals[i].key);   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
                 enemy.generalLv = battleConf.generals[i].val;
                 enemy.bingCount = GameMgr.getMaxBingCountByLv(enemy.generalLv);
+                for(let j=0; j<enemy.generalCfg.skillNum; ++j){
+                    let randSkill = FightMgr.getRandomSkill();
+                    enemy.skills.push(randSkill);
+                }
                 this.enmeyArr.push(enemy);
             }
 

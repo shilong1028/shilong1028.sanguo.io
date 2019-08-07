@@ -1,4 +1,4 @@
-import { st_general_info, st_item_info, CfgMgr, st_city_info } from "./ConfigManager";
+import { st_general_info, st_item_info, CfgMgr, st_city_info, st_skill_info } from "./ConfigManager";
 import { GameMgr } from "./GameManager";
 
 
@@ -38,15 +38,24 @@ export class GeneralInfo{
     generalLv: number = 1;   //武将等级
     generalExp: number = 0;   //武将经验
     bingCount: number = 0;   //部曲士兵数量
+    skills: SkillInfo[] = new Array();
 
     killCount: number = 0;   //杀敌（士兵）数量（战斗后会转换为经验）
 
-    constructor(generalId:number, info:any=null){   //只有从本地存储读取数据是会传递info
+    constructor(generalId:number, info:any=null){   
         this.timeId = new Date().getTime();
-        if(info){
+        this.skills = new Array();
+        if(info){  //只有从本地存储读取数据是会传递info
             this.generalLv = info.generalLv;
             this.generalExp = info.generalExp; 
             this.bingCount = info.bingCount;
+
+            if(info.skills){
+                for(let i=0; i<info.skills.length; ++i){
+                    let tempSkill = new SkillInfo(info.skills[i].skillId, info.skills[i].skillLv);
+                    this.skills.push(tempSkill);
+                }
+            }
         }else{
             this.generalLv = 1;
             this.generalExp = 0;  
@@ -63,10 +72,15 @@ export class GeneralInfo{
         temp.generalLv = this.generalLv;
         temp.generalExp = this.generalExp; 
         temp.bingCount = this.bingCount;
+        temp.skills = new Array();
 
         //不必写入本地存储的变量
         temp.timeId = 0;
         temp.generalCfg = null;
+        for(let i=0; i<this.skills.length; ++i){
+            let tempSkill = this.skills[i].cloneNoCfg();
+            temp.skills.push(tempSkill);
+        }
 
         return temp;
     }
@@ -79,6 +93,7 @@ export class GeneralInfo{
         temp.bingCount = this.bingCount;
         temp.bReadyFight = this.bReadyFight;
         temp.killCount = this.killCount;
+        temp.skills = this.skills;
 
         return temp;
     }
@@ -98,11 +113,16 @@ export class GeneralInfo{
 
     //根据经验更新等级
     updateLvByExp(){
-        let maxExp = GameMgr.getMaxGeneralExpByLv(this.generalLv);
-        while(this.generalExp >= maxExp){
-            this.generalLv ++;
-            this.generalExp -= maxExp;
-            maxExp = GameMgr.getMaxGeneralExpByLv(this.generalLv);
+        if(this.generalLv >= 100){
+            this.generalLv = 100;
+            this.generalExp = 0;
+        }else{
+            let maxExp = GameMgr.getMaxGeneralExpByLv(this.generalLv);
+            while(this.generalExp >= maxExp){
+                this.generalLv ++;
+                this.generalExp -= maxExp;
+                maxExp = GameMgr.getMaxGeneralExpByLv(this.generalLv);
+            }
         }
     }
 }
@@ -159,6 +179,29 @@ export class CityInfo{
         return temp;
     }
 }
+
+//技能信息
+export class SkillInfo{
+    skillId: number = 0;   
+    skillLv: number = 1;   
+    skillCfg: st_skill_info = null;   //配置信息
+
+    constructor(skillId:number, skillLv:number=1){
+        this.skillId = skillId;
+        this.skillLv = skillLv;
+        this.skillCfg = CfgMgr.getSkillConf(skillId);
+    }
+
+    cloneNoCfg(){
+        let temp = new SkillInfo(this.skillId, this.skillLv);
+
+        //不必写入本地存储的变量
+        temp.skillCfg = null;
+
+        return temp;
+    }
+}
+
 
 /**士兵类型 */
 export const SoliderType = {

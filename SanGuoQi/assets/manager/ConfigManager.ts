@@ -54,6 +54,7 @@ export class st_general_info {
     mp;    //智力，最大100
     atk;  //攻击，最大100
     def;   //防御，最大100
+    skillNum;   //技能总数
     desc;
     
     transType(){
@@ -62,6 +63,7 @@ export class st_general_info {
         this.mp = parseInt(this.mp);
         this.atk = parseInt(this.atk);
         this.def = parseInt(this.def);
+        this.skillNum = parseInt(this.skillNum);
     }
 
     clone(){
@@ -72,6 +74,7 @@ export class st_general_info {
         temp.mp = this.mp;
         temp.atk = this.atk;
         temp.def = this.def;
+        temp.skillNum = this.skillNum;
         return temp;
     }
 }
@@ -214,6 +217,11 @@ class CfgManager_class {
     /**获取战场数据 */
     getBattleConf(battleId: number): st_battle_info{
         return this.C_battle_info[battleId];
+    }
+
+    /**获取技能数据 */
+    getSkillConf(skillId: number): st_skill_info{
+        return this.C_skill_info[skillId];
     }
 
     //*************************************  以下为读取配置接口 *********************************** */
