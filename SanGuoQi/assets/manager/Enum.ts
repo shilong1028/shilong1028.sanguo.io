@@ -222,6 +222,17 @@ export class BeautifulInfo{
     }
 }
 
+//特殊故事节点
+export const SpecialStory = {
+    huangjinover: 4,  //黄巾之乱结束
+    dongzhuoOver: 13,  //董卓之乱结束
+    qiweiOpen: 2,  //骑都尉
+    jiangjunOpen: 8,  //奋武将军
+    taishouOpen: 10,  //东郡太守
+    zhoumuOpen: 11,  //兖州牧
+    capitalOpen: 12,  //开启主城
+}
+
 
 /**士兵类型 */
 export const SoliderType = {

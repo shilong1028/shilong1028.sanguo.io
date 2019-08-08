@@ -734,7 +734,7 @@
         "__id__": 19
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 1,
     "_components": [],
     "_prefab": null,

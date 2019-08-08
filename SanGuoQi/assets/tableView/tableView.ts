@@ -1036,7 +1036,7 @@ export default class TableView extends cc.ScrollView {
     }
 
     getContentPos(){
-        return this.content.getPosition();
+        return this.content.position;
     }
 }
 

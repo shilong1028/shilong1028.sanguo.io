@@ -419,7 +419,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 171.11,
+      "width": 149.72,
       "height": 40
     },
     "_anchorPoint": {
@@ -464,7 +464,7 @@
     "_useOriginalSize": false,
     "_string": "战斗/合成",
     "_N$string": "战斗/合成",
-    "_fontSize": 40,
+    "_fontSize": 35,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -723,7 +723,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
+      "width": 70,
       "height": 40
     },
     "_anchorPoint": {
@@ -768,7 +768,7 @@
     "_useOriginalSize": false,
     "_string": "曹操",
     "_N$string": "曹操",
-    "_fontSize": 40,
+    "_fontSize": 35,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -821,7 +821,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
+      "width": 70,
       "height": 40
     },
     "_anchorPoint": {
@@ -866,7 +866,7 @@
     "_useOriginalSize": false,
     "_string": "刘备",
     "_N$string": "刘备",
-    "_fontSize": 40,
+    "_fontSize": 35,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -1703,7 +1703,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 105,
       "height": 40
     },
     "_anchorPoint": {
@@ -1748,7 +1748,7 @@
     "_useOriginalSize": false,
     "_string": "主动方",
     "_N$string": "主动方",
-    "_fontSize": 40,
+    "_fontSize": 35,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -1801,7 +1801,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 105,
       "height": 40
     },
     "_anchorPoint": {
@@ -1846,7 +1846,7 @@
     "_useOriginalSize": false,
     "_string": "被动方",
     "_N$string": "被动方",
-    "_fontSize": 40,
+    "_fontSize": 35,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,

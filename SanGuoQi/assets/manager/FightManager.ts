@@ -146,9 +146,10 @@ class FightManager {
 
     /**下回合处理 */
     nextRoundOpt(){
-        if(this.getFightScene().checkGameOver() == false){
+        cc.log("nextRoundOpt() 下回合处理");
+        if(this.getFightScene().checkGameOver(true) == false){
             this.fightRoundCount ++;   //战斗回合数
-            NoticeMgr.emit(NoticeType.PerNextRound, null);  //下一个回合准备
+            NoticeMgr.emit(NoticeType.PerNextRound, null);  //下一个回合准备(会处理回合士气变化)
             if(this.bMyRound == true){
                 this.handleEnemyRoundOpt();   //敌方回合处理
             }else{

@@ -155,6 +155,8 @@ export default class GeneralUnit extends cc.Component {
             MyUserMgr.updateUserDiamond(-cost);  //修改用户背包物品列表
 
             this.updateGeneralBingCount();   //更新武将部曲士兵数量
+        }else{
+            ROOT_NODE.showTipsText("金锭不足！");
         }
     }
 

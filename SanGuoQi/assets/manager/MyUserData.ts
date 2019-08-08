@@ -1,6 +1,6 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NoticeMgr } from "./NoticeManager";
-import { NoticeType, ItemInfo, GeneralInfo } from "./Enum";
+import { NoticeType, ItemInfo, GeneralInfo, SpecialStory } from "./Enum";
 
 
 //用户数据管理
@@ -127,6 +127,7 @@ class MyUserManager {
 
     //更新我方占领的城池列表
     updateMyCityIds(cityId: number, bAdd: boolean= true){
+        cc.log("updateMyCityIds(), cityId = "+cityId+"; bAdd = "+bAdd);
         if(bAdd == true){
             MyUserData.myCityIds.push(cityId);
             LDMgr.setItem(LDKey.KEY_MyCityIds, this.getIdsToStr(MyUserData.myCityIds));
@@ -372,13 +373,13 @@ class MyUserManager {
             MyUserData.TaskId ++;
             MyUserData.TaskState = 0;
 
-            if(MyUserData.TaskId == 2){
+            if(MyUserData.TaskId == SpecialStory.qiweiOpen){
                 this.updateRoleLvOrOffical(0, "骑都尉");
-            }else if(MyUserData.TaskId == 8){
+            }else if(MyUserData.TaskId == SpecialStory.jiangjunOpen){
                 this.updateRoleLvOrOffical(0, "奋武将军");
-            }else if(MyUserData.TaskId == 10){
+            }else if(MyUserData.TaskId == SpecialStory.taishouOpen){
                 this.updateRoleLvOrOffical(0, "东郡太守");
-            }else if(MyUserData.TaskId == 11){
+            }else if(MyUserData.TaskId == SpecialStory.zhoumuOpen){
                 this.updateRoleLvOrOffical(0, "兖州牧");
             }
         }

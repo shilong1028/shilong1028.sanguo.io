@@ -1,6 +1,6 @@
 import { ROOT_NODE } from "../common/rootNode";
 import RewardLayer from "../common/rewardLayer";
-import { ItemInfo } from "./Enum";
+import { ItemInfo, SpecialStory } from "./Enum";
 import { MyUserMgr, MyUserData } from "./MyUserData";
 import { st_story_info } from "./ConfigManager";
 import MainScene from "../main/mainScene";
@@ -219,9 +219,9 @@ class GameManager {
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
         }
 
-        if(MyUserData.TaskId == 9){   //东郡太守
+        if(MyUserData.TaskId == SpecialStory.taishouOpen){   //东郡太守
             MyUserMgr.updateMyCityIds(316, true);  
-        }else if(MyUserData.TaskId == 10){   //兖州牧
+        }else if(MyUserData.TaskId == SpecialStory.zhoumuOpen){   //兖州牧
             let ruleCitys = new Array();
             ruleCitys = [312, 313, 314, 315, 9006, 9008]
             MyUserMgr.addRuleCitys(ruleCitys);

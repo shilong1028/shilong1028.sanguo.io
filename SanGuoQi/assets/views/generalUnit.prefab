@@ -2423,7 +2423,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 530,
-      "height": 70
+      "height": 105
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2465,8 +2465,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "荀彧、荀攸、乐进、李典、于禁等将军前来投靠。",
-    "_N$string": "荀彧、荀攸、乐进、李典、于禁等将军前来投靠。",
+    "_string": "徐荣，辽东襄平人（今辽宁辽阳），东汉末年将领。曾经打败过曹操和孙坚，可谓是一位名动一时的猛人。",
+    "_N$string": "徐荣，辽东襄平人（今辽宁辽阳），东汉末年将领。曾经打败过曹操和孙坚，可谓是一位名动一时的猛人。",
     "_fontSize": 28,
     "_lineHeight": 35,
     "_enableWrapText": true,
@@ -2474,7 +2474,7 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
+    "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 3,

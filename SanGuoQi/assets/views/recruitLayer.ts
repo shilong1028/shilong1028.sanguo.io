@@ -35,7 +35,7 @@ export default class RecruitLayer extends cc.Component {
     onLoad () {
         this.updateSelItemInfo(null);  //显示底部选中道具信息
 
-        ROOT_NODE.showLayerMoney(this.node, cc.v2(0, 334));    //一级界面上的金币钻石粮草公用控件
+        ROOT_NODE.showLayerMoney(this.node, cc.v2(0, 360));    //一级界面上的金币钻石粮草公用控件
     }
 
     onDestroy(){

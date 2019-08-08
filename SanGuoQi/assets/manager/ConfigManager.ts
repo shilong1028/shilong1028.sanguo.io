@@ -32,6 +32,7 @@ export class st_city_info {
     pos_x;   //坐标
     pos_y;
     population;  //人口（户）
+    campId;   //割据后城池所属势力
     near_citys;  //相邻城池ID 102;5003;9001
     counties;   //所属县名称 昌黎;阳乐;令支
     desc;   //城池介绍
@@ -41,8 +42,19 @@ export class st_city_info {
         this.pos_x = parseInt(this.pos_x);
         this.pos_y = parseInt(this.pos_y);
         this.population = parseInt(this.population);
+        this.campId = parseInt(this.campId);
         this.near_citys = CfgMgr.getIntAry(this.near_citys, ";");
         this.counties = CfgMgr.getStringAry(this.counties, ";");
+    }
+}
+
+//割据势力配置数据
+export class st_camp_info {
+    name;   //势力名称
+    generals;   //势力武将ID集合
+    
+    transType(){
+        this.generals = CfgMgr.getIntAry(this.generals, ";");
     }
 }
 
@@ -175,6 +187,10 @@ class CfgManager_class {
     //城池配置表
     C_city_info : Map<number, st_city_info> = new Map<number, st_city_info>();
     SC_city_info = st_city_info;
+
+    //势力配置表
+    C_camp_info : Map<number, st_camp_info> = new Map<number, st_camp_info>();
+    SC_camp_info = st_camp_info;
 
     //武将配置表
     C_general_info : Map<number, st_general_info> = new Map<number, st_general_info>();

@@ -3,7 +3,7 @@ import { CfgMgr, st_story_info } from "../manager/ConfigManager";
 import { GameMgr } from "../manager/GameManager";
 import StoryLayer from "./storyLayer";
 import { NoticeMgr } from "../manager/NoticeManager";
-import { NoticeType, ItemInfo } from "../manager/Enum";
+import { NoticeType, ItemInfo, SpecialStory } from "../manager/Enum";
 import RewardLayer from "../common/rewardLayer";
 import { ROOT_NODE } from "../common/rootNode";
 import GeneralJoin from "../views/generalJoin";
@@ -85,11 +85,12 @@ export default class Task extends cc.Component {
     initMainStory(){
         GameMgr.curTaskConf = null;  //当前任务配置
         if(MyUserData.TaskId > 0){
-            if(MyUserData.TaskId < 5){   //黄巾之乱
+            if(MyUserData.TaskId <= SpecialStory.huangjinover){   //黄巾之乱结束
                 NoticeMgr.emit(NoticeType.CityFlagStory, 1);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
-            }else if(MyUserData.TaskId <=11){   //董卓之乱
+            }else if(MyUserData.TaskId <= SpecialStory.dongzhuoOver){   //董卓之乱结束
                 NoticeMgr.emit(NoticeType.CityFlagStory, 2);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
-            }else if(MyUserData.TaskId == 12){  //开启主城
+            }
+            if(MyUserData.TaskId == SpecialStory.capitalOpen){  //开启主城
                 GameMgr.getMainScene().showHomeBtn(true);  //是否显示主城
             }
 

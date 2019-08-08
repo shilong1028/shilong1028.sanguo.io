@@ -110,7 +110,7 @@ export default class City extends cc.Component {
                     return;
                 }
             }
-            if(this.flagType != 0){
+            if(this.flagType == 1 && this.cityConf.type != 5){
                 this.changeCityFlag(0);
             }
         }else if(flagStoryType == 100){   //我方占领或治下城池

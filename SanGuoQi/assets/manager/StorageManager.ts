@@ -35,7 +35,7 @@ class StorageManager_class  {
 
     getItemInt(key:string) : number{
         let val = cc.sys.localStorage.getItem(key);
-        if(isNaN(val) == true){  
+        if(isNaN(val) == true || val == null || val == undefined){  
             val = 0;
             this.setItem(key, 0);
         }else{

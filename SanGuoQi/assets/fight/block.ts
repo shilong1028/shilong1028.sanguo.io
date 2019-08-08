@@ -89,6 +89,7 @@ export default class Block extends cc.Component {
             }
 
             if(this.cardInfo.shiqi < 10){  //士气过低，逃离战场
+                cc.log("士气过低，逃离战场  this.cardInfo = "+JSON.stringify(this.cardInfo));
                 if(this.cardInfo.campId == FightMgr.myCampId){
                     FightMgr.getFightScene().addMyDeadCard(this.cardInfo);   //添加我方武将战死数据
                     FightMgr.getFightScene().setMyOpenBlock(false, this);   //设置我方已经开启的卡牌
@@ -97,6 +98,7 @@ export default class Block extends cc.Component {
                 }
 
                 this.onRemoveCardNode();   //将本地块上的卡牌移走了
+                FightMgr.getFightScene().checkGameOver(true);  //检查是否游戏结束 
             }
         }
     }
@@ -172,11 +174,10 @@ export default class Block extends cc.Component {
             this.showBlockCard(this.cardInfo);
         }else{
             this.cardInfo = cardInfo;
-            this.isLock = true;
-
-            //FightMgr.getFightScene().setLockBlock(true, this);   //设置地块开启或锁定
-            //demo中所有地块均开启
+            //this.isLock = true;   //demo中所有地块均开启
             this.isLock = false;
+
+            FightMgr.getFightScene().setLockBlock(this.isLock, this);   //设置地块开启或锁定
             this.showBlockCard(this.cardInfo);
         }
     }

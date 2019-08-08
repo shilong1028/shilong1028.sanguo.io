@@ -185,16 +185,16 @@ export default class FightScene extends cc.Component {
     /**根据位置找到对应的地块 */
     getBlockSlotIndex(touchPos: cc.Vec2): Block{
         let pos = this.gridNode.convertToNodeSpaceAR(touchPos);
-        let blocks = this.gridNode.children;
-        for(let i=0; i< blocks.length; i++){
-            let len = blocks[i].getPosition().sub(pos).mag();
+        let blockNodes = this.gridNode.children;
+        for(let i=0; i< blockNodes.length; i++){
+            let len = blockNodes[i].position.sub(pos).mag();
             if(len <= 100){
-                let block = blocks[i].getComponent(Block);
+                let block = blockNodes[i].getComponent(Block);
                 if(block && block.isLock == false){
-                    let offX = Math.abs(this.selectBlock.node.x - blocks[i].x);
-                    let offY = Math.abs(this.selectBlock.node.y - blocks[i].y);
+                    let offX = Math.abs(this.selectBlock.node.x - blockNodes[i].x);
+                    let offY = Math.abs(this.selectBlock.node.y - blockNodes[i].y);
                     if(offX < 20 || offY < 20){   //同行或同列
-                        let blockLen = blocks[i].getPosition().sub(this.selectBlock.node.position).mag();
+                        let blockLen = blockNodes[i].position.sub(this.selectBlock.node.position).mag();
                         if(block.cardInfo){   //攻击或合并
                             if(this.selectBlock.cardInfo.generalInfo.generalCfg.bingzhong == SoliderType.gongbing){   //弓兵攻击两格
                                 if(blockLen <= 400){
@@ -227,7 +227,7 @@ export default class FightScene extends cc.Component {
     /**检查是否游戏结束 
      * bCheckOver =true 做游戏检测， bCheckOver = false 返回敌方（包括未开启）卡牌数量
     */
-    checkGameOver(bCheckOver:boolean=true){
+    checkGameOver(bCheckOver:boolean){
         let myCampCount = 0;
         let enemyCampCount = 0;
         
@@ -284,14 +284,14 @@ export default class FightScene extends cc.Component {
             for(let i=0; i<this.lockBlocks.length; ++i){
                 if(this.lockBlocks[i].blockId == block.blockId){
                     this.lockBlocks.splice(i, 1);
-                    
-                    if(block.cardInfo.campId == FightMgr.myCampId){
-                        this.setMyOpenBlock(true, block);  //设置我方已经开启的卡牌
-                    }else{
-                        this.setEnemyOpenBlock(true, block);   //设置敌方已经开启的卡牌
-                    }
-                    return;
+                    break;
                 }
+            }
+            
+            if(block.cardInfo.campId == FightMgr.myCampId){
+                this.setMyOpenBlock(true, block);  //设置我方已经开启的卡牌
+            }else{
+                this.setEnemyOpenBlock(true, block);   //设置敌方已经开启的卡牌
             }
         }
     }
@@ -372,80 +372,84 @@ export default class FightScene extends cc.Component {
 
     /**敌方回合处理 */
     handleEnemyRoundOpt(){
+        cc.log("handleEnemyRoundOpt(), 敌方自动AI FightMgr.EnemyAutoAi = "+FightMgr.EnemyAutoAi);
         if(FightMgr.EnemyAutoAi == false){   //敌方自动AI
             return;
         }
         this.node.runAction(cc.sequence(cc.delayTime(0.5), cc.callFunc(function(){
-            //1、预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位;
-            // 同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作
+            //1、预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；
+            // 同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。
             let runAwayEnemy = null;    //敌方预逃走的单位
             let runAwayWeight = 0;   //逃走权重
             let hitEnemy = null;   //敌方预击杀的单位
             let hitMy = null;    //我方预被击杀的单位
             let hitWeight = 0;   //击杀权重
-
+            cc.log("1、预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。");
+            cc.log("敌方开启的卡牌数量 "+this.enemyOpenBlocks.length+"; 我方开启的卡牌数量 "+this.myOpenBlocks.length);
             for(let i=0; i<this.enemyOpenBlocks.length; ++i){
                 let enemyBlock = this.enemyOpenBlocks[i];
 
                 for(let j=0; j<this.myOpenBlocks.length; ++j){
                     let myBlock = this.myOpenBlocks[j];
 
-                    let enemyCardCfg = enemyBlock.cardInfo.generalInfo.generalCfg;
-                    let enemyNum = enemyCardCfg.atk + enemyCardCfg.def + enemyCardCfg.hp;
+                    let offX = Math.abs(enemyBlock.node.x - myBlock.node.x);
+                    let offY = Math.abs(enemyBlock.node.y - myBlock.node.y);
+                    if(offX < 20 || offY < 20){   //同行或同列
+                        let blockLen = enemyBlock.node.position.sub(myBlock.node.position).mag();
+                        let enemyCardCfg = enemyBlock.cardInfo.generalInfo.generalCfg;
+                        if(blockLen <= 200 || (enemyCardCfg.bingzhong == SoliderType.gongbing && blockLen <= 400)){   //弓兵攻击两格
+                            let enemyNum = enemyCardCfg.atk + enemyCardCfg.def + enemyCardCfg.hp;
 
-                    let myCardCfg = myBlock.cardInfo.generalInfo.generalCfg;
-                    let myNum = myCardCfg.atk + myCardCfg.def + myCardCfg.hp;
-
-                    let hartScale = enemyNum/myNum;
-                    if(enemyCardCfg.mp >= myCardCfg.mp){   //智力值越高，攻击加成越高
-                        if(hartScale >= 1.0){  //取胜概率极高
-                            if(hartScale > hitWeight){
-                                hitWeight = hartScale;
-                                hitEnemy = enemyBlock;
-                                hitMy = myBlock;
+                            let myCardCfg = myBlock.cardInfo.generalInfo.generalCfg;
+                            let myNum = myCardCfg.atk + myCardCfg.def + myCardCfg.hp;
+        
+                            let hartScale = enemyNum/myNum;
+                            if(hartScale >= 2.0){  //取胜概率极高
+                                if(hartScale > hitWeight){
+                                    hitWeight = hartScale;
+                                    hitEnemy = enemyBlock;
+                                    hitMy = myBlock;
+                                }
+                                runAwayWeight = 0;
+                            }else if(hartScale > 1.0){   //可能会取胜
+                                if(hartScale > hitWeight){
+                                    hitWeight = hartScale;
+                                    hitEnemy = enemyBlock;
+                                    hitMy = myBlock;
+                                    if(enemyCardCfg.bingzhong == SoliderType.gongbing && blockLen > 200){  //弓兵远距离权重增加
+                                        hitWeight += 0.5;
+                                    }
+                                }
                             }
-                        }else if(hartScale > 0.5){   //可能会取胜
-                            if(hitWeight < 0.5){
-                                hitWeight = 0.5;
-                                hitEnemy = enemyBlock;
-                                hitMy = myBlock;
+                            else{   //可能战斗失败
+                                if(hartScale > 0.5){  //可能战斗失败
+                                    if(runAwayWeight < 0.5){
+                                        runAwayWeight = 0.5;
+                                        runAwayEnemy = enemyBlock;
+                                    }
+                                }else if(hartScale > 0){
+                                    if(runAwayWeight < 0.3){
+                                        runAwayWeight = 0.3;
+                                        runAwayEnemy = enemyBlock;
+                                    }
+                                }
+                                else{  //要死了赶快逃
+                                    runAwayWeight = 1.0;
+                                    runAwayEnemy = enemyBlock;
+                                }
+        
+                                if(hitWeight == 0){  //为最后被迫战斗赋值
+                                    hitEnemy = enemyBlock;
+                                    hitMy = myBlock;
+                                }
                             }
-                        }else{   //可能战斗失败
-                            if(runAwayWeight < 0.3){
-                                runAwayWeight = 0.3;
-                                runAwayEnemy = enemyBlock;
-                            }
-                            if(hitWeight == 0){   //为最后被迫战斗赋值
-                                hitEnemy = enemyBlock;
-                                hitMy = myBlock;
-                            }
-                        }
-                    }else{
-                        if(hartScale >= 1.0){  //可能会取胜
-                            if(hitWeight < 0.3){
-                                hitWeight = 0.3;
-                                hitEnemy = enemyBlock;
-                                hitMy = myBlock;
-                            }
-                        }else if(hartScale > 0.5){  //可能战斗失败
-                            if(runAwayWeight < 0.5){
-                                runAwayWeight = 0.5;
-                                runAwayEnemy = enemyBlock;
-                            }
-                        }else{  //要死了赶快逃
-                            runAwayWeight = 1.0;
-                            runAwayEnemy = enemyBlock;
-                        }
-                        if(hitWeight == 0){  //为最后被迫战斗赋值
-                            hitEnemy = enemyBlock;
-                            hitMy = myBlock;
                         }
                     }
                 }
             }
 
             if(runAwayWeight == 1.0){   //有单位要死
-                if(hitWeight >= 1.1){  //必杀有希望
+                if(hitWeight >= 2.0){  //必杀有希望
                     cc.log("敌方选择战斗，必杀有希望");
                     hitMy.onCardDropBlock(hitEnemy);
                     return;
@@ -457,20 +461,24 @@ export default class FightScene extends cc.Component {
                         nearArr[randIdx].onCardDropBlock(runAwayEnemy);
                         return;
                     }else{  //无路可逃
-
+                        if(hitWeight > 1.3){  //可以搏一搏
+                            cc.log("敌方必死单位无路可逃，敌方有单位可以搏一搏");
+                            hitMy.onCardDropBlock(hitEnemy);
+                            return;
+                        }
                     }
                 }
             }else{  //没有必死的敌方单位
-                if(hitWeight >= 1.0){  //必杀有希望
+                if(hitWeight >= 1.5){  //必杀有希望
                     cc.log("敌方选择战斗，攻击可能赢");
                     hitMy.onCardDropBlock(hitEnemy);
                     return;
+                }if(hitWeight >= 1.0 && Math.random() > (1.9 - hitWeight)){  //搏一搏
+                    cc.log("敌方选择战斗，搏一搏, 可能赢");
+                    hitMy.onCardDropBlock(hitEnemy);
+                    return;
                 }else{
-                    if(hitWeight >= 0.5 && this.enemyOpenBlocks.length > this.myOpenBlocks.length+2){   //敌方开启卡牌数量比我方多
-                        cc.log("敌方选择战斗，敌方开启卡牌多");
-                        hitMy.onCardDropBlock(hitEnemy);
-                        return;
-                    }else if(runAwayWeight >= 0.5){   //有敌方卡牌可能会死
+                    if(runAwayWeight >= 0.5){   //有敌方卡牌可能会死
                         if(Math.random() >= 0.5){
                             let nearArr = this.getNearEmptyBlock(runAwayEnemy);   //获得相邻空地块数据
                             if(nearArr.length > 0){
@@ -479,85 +487,107 @@ export default class FightScene extends cc.Component {
                                 nearArr[randIdx].onCardDropBlock(runAwayEnemy);
                                 return;
                             }else{  //无路可逃
-        
-                            }
-                        }
-                    }
-                }
-            }
-
-            //2、敌方未战斗未逃走，随机武将合成（合成可以增加血量）
-            let heWeight = 0;  //合成权重
-            let heEnemy = null;   //预合成的敌方
-            let heNear = null;  //预合成的另一方
-            for(let i=0; i<this.enemyOpenBlocks.length; ++i){
-                let enemyBlock = this.enemyOpenBlocks[i];
-                if(enemyBlock.cardInfo.generalInfo.generalId >= 1000){   //武将
-                    if(enemyBlock.cardInfo.generalInfo.bingCount <= 500 || enemyBlock.cardInfo.generalInfo.hp <= 500){   //当武将兵力不足或血量不足时才合成
-                        let nearArr = this.getNearBlock(enemyBlock);   //获得相邻地块数据
-                        for(let j=0; j<nearArr.length; ++j){
-                            let nearBlock = nearArr[j];
-                            if(nearBlock && nearBlock.cardInfo){
-                                if(nearBlock.cardInfo && nearBlock.cardInfo.campId != FightMgr.myCampId){
-                                    if(enemyBlock.cardInfo.generalInfo.hp <= 300){  //血量不足，需要合成
-                                        if(nearBlock.cardInfo.generalInfo.hp >= 300){   //对方血量充足
-                                            let tempWeight = 1.0 + (nearBlock.cardInfo.generalInfo.hp - 300)/1000;
-                                            if(heWeight < tempWeight){
-                                                heWeight = tempWeight;
-                                                heEnemy = enemyBlock;
-                                                heNear = nearBlock;
-                                            }
-                                        }else{
-                                            if(heWeight < 0.5){
-                                                heWeight = 0.5;
-                                                heEnemy = enemyBlock;
-                                                heNear = nearBlock;
-                                            }
-                                        }
-                                    }else if(enemyBlock.cardInfo.generalInfo.hp <= 700){
-                                        if(heWeight < 0.3){
-                                            heWeight = 0.3;
-                                            heEnemy = enemyBlock;
-                                            heNear = nearBlock;
-                                        }
+                                if(hitWeight >= 0.5){   //敌方开启卡牌数量比我方多
+                                    if(this.enemyOpenBlocks.length >= this.myOpenBlocks.length+2){
+                                        cc.log("敌方选择战斗，敌方开启卡牌多");
+                                        hitMy.onCardDropBlock(hitEnemy);
+                                        return;
+                                    }else if(Math.random() > 0.8){
+                                        cc.log("敌方随机选择战斗");
+                                        hitMy.onCardDropBlock(hitEnemy);
+                                        return;
                                     }
                                 }
                             }
                         }
+                    }else{
+                        if(hitWeight >= 0.5){   //敌方开启卡牌数量比我方多
+                            if(this.enemyOpenBlocks.length >= this.myOpenBlocks.length+2){
+                                cc.log("敌方选择战斗，敌方开启卡牌多");
+                                hitMy.onCardDropBlock(hitEnemy);
+                                return;
+                            }else if(Math.random() > 0.8){
+                                cc.log("敌方随机选择战斗");
+                                hitMy.onCardDropBlock(hitEnemy);
+                                return;
+                            }
+                        }
                     }
                 }
             }
 
-            if(heWeight >= 1.0){
-                cc.log("敌方选择合成, 血量不足");
-                heNear.onCardDropBlock(heEnemy);
-                return;
-            }else if(heWeight >= 0.3){
-                if(Math.random() >= 1.0-heWeight){
-                    cc.log("敌方选择合成, 血量一般");
-                    heNear.onCardDropBlock(heEnemy);
-                    return;
-                }
-            }else{  //不需要合成
+            // //2、敌方未战斗未逃走，随机武将合成（合成可以增加血量）
+            // let heWeight = 0;  //合成权重
+            // let heEnemy = null;   //预合成的敌方
+            // let heNear = null;  //预合成的另一方
+            // for(let i=0; i<this.enemyOpenBlocks.length; ++i){
+            //     let enemyBlock = this.enemyOpenBlocks[i];
+            //     if(enemyBlock.cardInfo.generalInfo.generalId >= 1000){   //武将
+            //         if(enemyBlock.cardInfo.generalInfo.bingCount <= 500 || enemyBlock.cardInfo.generalInfo.hp <= 500){   //当武将兵力不足或血量不足时才合成
+            //             let nearArr = this.getNearBlock(enemyBlock);   //获得相邻地块数据
+            //             for(let j=0; j<nearArr.length; ++j){
+            //                 let nearBlock = nearArr[j];
+            //                 if(nearBlock && nearBlock.cardInfo){
+            //                     if(nearBlock.cardInfo && nearBlock.cardInfo.campId != FightMgr.myCampId){
+            //                         if(enemyBlock.cardInfo.generalInfo.hp <= 300){  //血量不足，需要合成
+            //                             if(nearBlock.cardInfo.generalInfo.hp >= 300){   //对方血量充足
+            //                                 let tempWeight = 1.0 + (nearBlock.cardInfo.generalInfo.hp - 300)/1000;
+            //                                 if(heWeight < tempWeight){
+            //                                     heWeight = tempWeight;
+            //                                     heEnemy = enemyBlock;
+            //                                     heNear = nearBlock;
+            //                                 }
+            //                             }else{
+            //                                 if(heWeight < 0.5){
+            //                                     heWeight = 0.5;
+            //                                     heEnemy = enemyBlock;
+            //                                     heNear = nearBlock;
+            //                                 }
+            //                             }
+            //                         }else if(enemyBlock.cardInfo.generalInfo.hp <= 700){
+            //                             if(heWeight < 0.3){
+            //                                 heWeight = 0.3;
+            //                                 heEnemy = enemyBlock;
+            //                                 heNear = nearBlock;
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
 
-            }
+            // if(heWeight >= 1.0){
+            //     cc.log("敌方选择合成, 血量不足");
+            //     heNear.onCardDropBlock(heEnemy);
+            //     return;
+            // }else if(heWeight >= 0.3){
+            //     if(Math.random() >= 1.0-heWeight){
+            //         cc.log("敌方选择合成, 血量一般");
+            //         heNear.onCardDropBlock(heEnemy);
+            //         return;
+            //     }
+            // }else{  //不需要合成
 
-            //3、敌方单位未选择战斗，也未选择逃跑，未合成。随机翻牌
-            if(this.lockBlocks.length > 0){
-                if(this.enemyOpenBlocks.length >= this.myOpenBlocks.length){   //敌方卡牌多
-                    if(Math.random() >= 0.5){
-                        cc.log("敌方选择随机翻牌");
-                        let randIdx = Math.floor(Math.random()*this.lockBlocks.length*0.99);
-                        this.lockBlocks[randIdx].handleOpenBlockCard();
-                        return;
-                    }
-                }else{
-                    cc.log("敌方选择翻牌");
-                    let randIdx = Math.floor(Math.random()*this.lockBlocks.length*0.99);
-                    this.lockBlocks[randIdx].handleOpenBlockCard();
-                    return;
-                }
-            }
+            // }
+
+            // //3、敌方单位未选择战斗，也未选择逃跑，未合成。随机翻牌
+            // if(this.lockBlocks.length > 0){
+            //     if(this.enemyOpenBlocks.length >= this.myOpenBlocks.length){   //敌方卡牌多
+            //         if(Math.random() >= 0.5){
+            //             cc.log("敌方选择随机翻牌");
+            //             let randIdx = Math.floor(Math.random()*this.lockBlocks.length*0.99);
+            //             this.lockBlocks[randIdx].handleOpenBlockCard();
+            //             return;
+            //         }
+            //     }else{
+            //         cc.log("敌方选择翻牌");
+            //         let randIdx = Math.floor(Math.random()*this.lockBlocks.length*0.99);
+            //         this.lockBlocks[randIdx].handleOpenBlockCard();
+            //         return;
+            //     }
+            // }
 
             //4、敌方未战斗未逃走未翻牌未合成，移动一格
             let randIdx = Math.floor(Math.random()*this.enemyOpenBlocks.length*0.99);
@@ -613,11 +643,11 @@ export default class FightScene extends cc.Component {
         let nearArr = new Array();
         if(srcBlock && srcBlock.cardInfo){
             let pos = srcBlock.node.position;
-            let blocks = this.gridNode.children;
-            for(let i=0; i< blocks.length; i++){
-                let len = blocks[i].getPosition().sub(pos).mag();
+            let blockNodes = this.gridNode.children;
+            for(let i=0; i< blockNodes.length; i++){
+                let len = blockNodes[i].position.sub(pos).mag();
                 if(len <= 200 && len > 50){
-                    let block = blocks[i].getComponent(Block);
+                    let block = blockNodes[i].getComponent(Block);
                     if(block && block.isLock == false && block.cardInfo == null){
                         nearArr.push(block);
                     }
@@ -632,11 +662,11 @@ export default class FightScene extends cc.Component {
         let nearArr = new Array();
         if(srcBlock && srcBlock.cardInfo){
             let pos = srcBlock.node.position;
-            let blocks = this.gridNode.children;
-            for(let i=0; i< blocks.length; i++){
-                let len = blocks[i].getPosition().sub(pos).mag();
+            let blockNodes = this.gridNode.children;
+            for(let i=0; i< blockNodes.length; i++){
+                let len = blockNodes[i].position.sub(pos).mag();
                 if(len <= 200 && len > 50){
-                    let block = blocks[i].getComponent(Block);
+                    let block = blockNodes[i].getComponent(Block);
                     if(block && block.isLock == false && block.cardInfo && block.cardInfo.campId != srcBlock.cardInfo.campId){
                         nearArr.push(block);
                     }
@@ -651,11 +681,11 @@ export default class FightScene extends cc.Component {
         let nearArr = new Array();
         if(srcBlock && srcBlock.cardInfo){
             let pos = srcBlock.node.position;
-            let blocks = this.gridNode.children;
-            for(let i=0; i< blocks.length; i++){
-                let len = blocks[i].getPosition().sub(pos).mag();
+            let blocknodes = this.gridNode.children;
+            for(let i=0; i< blocknodes.length; i++){
+                let len = blocknodes[i].position.sub(pos).mag();
                 if(len <= 200 && len > 50){
-                    let block = blocks[i].getComponent(Block);
+                    let block = blocknodes[i].getComponent(Block);
                     if(block && block.isLock == false){
                         nearArr.push(block);
                     }

@@ -98,6 +98,7 @@ export default class Card extends cc.Component {
 
         this.lvLabel.string = "Lv"+this.cardInfo.generalInfo.generalLv;
         this.bingNumLabel.string = "兵"+this.cardInfo.generalInfo.bingCount.toString();
+        this.shiqiLabel.string = "士气"+this.cardInfo.shiqi.toString(); 
 
         let cardCfg = this.cardInfo.generalInfo.generalCfg;
         if(cardCfg){

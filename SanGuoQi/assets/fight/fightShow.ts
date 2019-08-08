@@ -274,36 +274,41 @@ export default class FightShow extends cc.Component {
         let attack = atkCardCfg.atk;
         let defend = defCardCfg.def;
 
+        if(atkCardCfg.bingzhong == SoliderType.gongbing){   //弓兵攻击翻倍
+            this.showTipsLable("攻击方为弓兵抛射，攻击力翻倍！", cc.Color.RED);
+            attack += atkCardCfg.atk * 1.0;
+        }
+
         //兵种相克，401骑兵克制402刀兵， 402刀兵克制403枪兵，403枪兵克制401骑兵， 404弓兵为不克制兵种
         let restriction = FightMgr.checkBingRestriction(atkCardCfg.bingzhong, defCardCfg.bingzhong);
         if(restriction == 1){
-            this.showTipsLable("攻击方兵种克制防御方，攻击方攻击力增加20%！", cc.Color.RED);
-            attack += atkCardCfg.atk * 0.2;
+            this.showTipsLable("攻击方兵种克制防御方，攻击方攻击力增加30%！", cc.Color.RED);
+            attack += atkCardCfg.atk * 0.3;
         }else if(restriction == -1){
-            this.showTipsLable("攻击方兵种被防御方克制，防御方防御力增加20%！", cc.Color.BLUE);
-            defend += defCardCfg.def * 0.2;
+            this.showTipsLable("攻击方兵种被防御方克制，防御方防御力增加30%！", cc.Color.BLUE);
+            defend += defCardCfg.def * 0.3;
         }
 
         //攻击方在箭塔下
         if(atkArrowTown == 1){
-            this.showTipsLable("箭塔辅助攻击，攻击方攻击力增加10%！", cc.Color.RED);
-            attack += atkCardCfg.atk * 0.1;
+            this.showTipsLable("箭塔辅助攻击，攻击方攻击力增加20%！", cc.Color.RED);
+            attack += atkCardCfg.atk * 0.2;
         }
         //防御方在城池下
         if(defArrowTown == 2){
-            this.showTipsLable("城池辅助防御，防御方防御力增加20%！", cc.Color.BLUE);
-            defend += defCardCfg.def * 0.2;
+            this.showTipsLable("城池辅助防御，防御方防御力增加30%！", cc.Color.BLUE);
+            defend += defCardCfg.def * 0.3;
         }
 
         let atkSoliderCount = attackCardInfo.generalInfo.bingCount;
-        if(atkSoliderCount > 200){
-            this.showTipsLable("攻击方攻击力随兵力变化！", cc.Color.BLUE);
-            attack = attack * ((atkSoliderCount*0.8+200)/1000);
-            attack = parseFloat(attack.toFixed(2)); 
-        }else{
-            this.showTipsLable("攻击方兵力严重不足，攻击方攻击力骤减！", cc.Color.BLUE);
-            attack *= 0.2;
-        }
+        // if(atkSoliderCount > 200){
+        //     this.showTipsLable("攻击方攻击力随兵力变化！", cc.Color.BLUE);
+        //     attack = attack * ((atkSoliderCount*0.8+200)/1000);
+        //     attack = parseFloat(attack.toFixed(2)); 
+        // }else{
+        //     this.showTipsLable("攻击方兵力严重不足，攻击方攻击力骤减！", cc.Color.BLUE);
+        //     attack *= 0.2;
+        // }
 
         let defSoldierCount = defendCardInfo.generalInfo.bingCount;
         // if(defSoldierCount > 200){
@@ -314,12 +319,24 @@ export default class FightShow extends cc.Component {
         //     this.showTipsLable("防御方兵力严重不足，防御方防御力骤减！", cc.Color.RED);
         //     defend *= 0.2;
         // }
+        
+        let atkBingScale = atkSoliderCount/(defSoldierCount+1);
+        if(atkBingScale > 1.5){
+            this.showTipsLable("攻击方兵力远大于防御方，攻击方攻击力提升！", cc.Color.BLUE);
+            attack += attack*atkBingScale/2;
+        }
+
+        let defBingScale = defSoldierCount/(atkSoliderCount+1);
+        if(defBingScale > 1.5){
+            this.showTipsLable("防御方兵力远大于攻击方，防御方防御力提升！", cc.Color.RED);
+            defend += defend*defBingScale/3;
+        }
 
         attack = attack * (attackCardInfo.shiqi/100);
         defend = defend * (defendCardInfo.shiqi/100);
         this.showTipsLable("攻击方士气"+attackCardInfo.shiqi+" 防御方士气"+defendCardInfo.shiqi, cc.Color.WHITE);
 
-        let harm = Math.floor(attack - defend*0.7)*2;
+        let harm = Math.floor(attack - defend*0.5)*3;
         let minHarm = attack*0.1;
         minHarm = parseFloat(minHarm.toFixed(2)); 
         if(harm <= minHarm){
@@ -328,8 +345,9 @@ export default class FightShow extends cc.Component {
         }else{
             this.showTipsLable("防御方收到伤害："+harm);
         }
+        harm = Math.ceil(harm);   //伤害取整
 
-        let generalHarm = Math.floor(harm/2);
+        let generalHarm = Math.ceil(harm/2);
         let soldierHarm = harm - generalHarm;
         cc.log("攻击 "+attack+"; 防御 "+defend+"; 伤害 "+harm+"; 武将伤害 "+generalHarm+"; 士兵伤害 "+soldierHarm);
 

@@ -26,6 +26,10 @@ export default class FightReady extends cc.Component {
     zhenLabel: cc.Label = null;  //出战/下阵
     @property(cc.Button)
     fightBtn: cc.Button = null;
+    @property(cc.Sprite)
+    zhenBtnSpr: cc.Sprite = null;   //上下阵纹理
+    @property([cc.SpriteFrame])
+    zhenBtnFrames: cc.SpriteFrame[] = new Array(2);
 
     @property(cc.Prefab)
     pfUnit: cc.Prefab = null;  //武将部曲界面
@@ -55,6 +59,7 @@ export default class FightReady extends cc.Component {
     // update (dt) {}
 
     onCloseBtn(){
+        this.removeFightState();  //移除出战位标识
         this.node.removeFromParent(true);
     }
 
@@ -85,6 +90,9 @@ export default class FightReady extends cc.Component {
     //刷新武将列表
     initGeneralList(){
         this.generalArr = MyUserData.GeneralList;
+        for(let i=0; i<this.generalArr.length; ++i){
+            this.generalArr[i].bReadyFight = false;
+        }
 
         this.myTabelView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
         this.myTabelView.initTableView(this.generalArr.length, { array: this.generalArr, target: this, bClick: true}); 
@@ -104,14 +112,17 @@ export default class FightReady extends cc.Component {
 
         if(selGeneralInfo.bReadyFight == true){  //当前出战操作后下阵
             this.zhenLabel.string = "下阵";
+            this.zhenBtnSpr.spriteFrame = this.zhenBtnFrames[1];
         }else{
             this.zhenLabel.string = "出战";
+            this.zhenBtnSpr.spriteFrame = this.zhenBtnFrames[0];
         }
     }
 
     clearOptShowInfo(){
         this.descLabel.string = "";
         this.zhenLabel.string = "";
+        this.zhenBtnSpr.spriteFrame = this.zhenBtnFrames[0];
     }
 
     onZhenBtn(){
@@ -128,6 +139,7 @@ export default class FightReady extends cc.Component {
             if(selGeneralInfo.bingCount <= 0){
                 ROOT_NODE.showTipsDialog("武将未领兵，不能出战！是否跳转部曲界面？", ()=>{
                     GameMgr.showLayer(this.pfUnit);
+                    this.removeFightState();  //移除出战位标识
                     this.node.removeFromParent(true);
                 });
                 return;
@@ -148,12 +160,28 @@ export default class FightReady extends cc.Component {
     }
 
     onFightBtn(){
+        let maxCount = Math.min(MyUserData.GeneralList.length, 5);
+        if(this.fightArr.length < maxCount){
+            ROOT_NODE.showTipsDialog("出战名额未满，还可继续添加出战武将，确定要开始战斗？", ()=>{
+                this.handleFight();
+            });
+        }else{
+            this.handleFight();
+        }
+    }
+
+    handleFight(){
         this.fightBtn.interactable = false;
         cc.log("出战， this.enmeyArr = "+JSON.stringify(this.enmeyArr)+"; generalArr = "+JSON.stringify(this.fightArr));
+        this.removeFightState();  //移除出战位标识
+        FightMgr.clearAndInitFightData(this.enmeyArr, this.fightArr);   //清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组
+    }
+
+    //移除出战位标识
+    removeFightState(){
         for(let i=0; i<this.fightArr.length; ++i){
             this.fightArr[i].bReadyFight = false;
         }
-        FightMgr.clearAndInitFightData(this.enmeyArr, this.fightArr);   //清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组
     }
 
 }

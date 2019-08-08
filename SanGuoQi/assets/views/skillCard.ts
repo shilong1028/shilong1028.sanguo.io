@@ -1,6 +1,6 @@
 import { SkillInfo, GeneralInfo } from "../manager/Enum";
 import SkillLayer from "./skillLayer";
-import { MyUserMgr } from "../manager/MyUserData";
+import { MyUserMgr, MyUserData } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
 import { GameMgr } from "../manager/GameManager";
 
@@ -69,6 +69,13 @@ export default class SkillCard extends cc.Component {
     handleChangeGeneralSkill(skillInfo: SkillInfo, bAdd:boolean){
         if(this.generalInfo){
             if(bAdd == true && this.generalInfo.skills.length < 3){   //添加
+                for(let i=0; i<this.generalInfo.skills.length; ++i){
+                    if(skillInfo.skillId == this.generalInfo.skills[i].skillId){
+                        ROOT_NODE.showTipsText("该武将已经拥有技能"+skillInfo.skillCfg.name);
+                        return false;  
+                    }
+                }
+
                 MyUserMgr.updateUserDiamond(-skillInfo.skillCfg.cost);  //修改用户背包物品列表
                 this.generalInfo.skills.push(skillInfo);
             }else if(bAdd == false){    //删除
@@ -80,20 +87,28 @@ export default class SkillCard extends cc.Component {
                 }
             }
             MyUserMgr.saveGeneralList();
+            return true;
         }
+        return false;
     }
 
     onAddBtn(){
         let skillInfo = this.targetSc.selSkillInfo;
         if(skillInfo && skillInfo.skillCfg){
-            ROOT_NODE.showTipsDialog("是否花费"+skillInfo.skillCfg.cost+"金锭来学习技能"+skillInfo.skillCfg.name, ()=>{
-                this.handleChangeGeneralSkill(skillInfo, true);
-                this.initGeneralSkill(skillInfo, this.targetSc, this.generalInfo);
-
-                if(GameMgr.curTaskConf.type == 6){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
-                    GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
-                }
-            });
+            if(MyUserData.DiamondCount >= skillInfo.skillCfg.cost){
+                ROOT_NODE.showTipsDialog("是否花费"+skillInfo.skillCfg.cost+"金锭来学习技能"+skillInfo.skillCfg.name, ()=>{
+                    let optOK = this.handleChangeGeneralSkill(skillInfo, true);
+                    if(optOK == true){
+                        this.initGeneralSkill(skillInfo, this.targetSc, this.generalInfo);
+    
+                        if(GameMgr.curTaskConf.type == 6){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
+                            GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
+                        }
+                    }
+                });
+            }else{
+                ROOT_NODE.showTipsText("金锭不足！");
+            }
         }
     }
 

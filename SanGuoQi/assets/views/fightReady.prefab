@@ -2093,7 +2093,7 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
+    "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 3,
@@ -2218,6 +2218,20 @@
     },
     "fightBtn": {
       "__id__": 44
+    },
+    "zhenBtnSpr": {
+      "__id__": 51
+    },
+    "zhenBtnFrames": [
+      {
+        "__uuid__": "2b14e28f-165a-4527-970f-b99f2e70979e"
+      },
+      {
+        "__uuid__": "14c86712-0835-49e7-b572-0a8e1c208ffd"
+      }
+    ],
+    "pfUnit": {
+      "__uuid__": "d8b192ef-10e7-4929-984b-4557330cefd2"
     },
     "_id": ""
   },
