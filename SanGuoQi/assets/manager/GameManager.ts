@@ -21,42 +21,51 @@ class GameManager {
     getNearCitysLine(srcCityId: number, destCityId: number){
         cc.log("getNearCitysLine(), srcCityId = "+srcCityId+"; destCityId = "+destCityId);
 
-        let retArr = new Array();
+        let retpathArr = new Array();   //多条路径的集合
         let srcIdsArr = new Array();
-        srcIdsArr.push([srcCityId]);
+        srcIdsArr.push([srcCityId]);  //源头深度探索路径
 
         for(let t=0; t<10; t++){
             let tempSrcIds = new Array();
             for(let s=0; s<srcIdsArr.length; ++s){
-                let tempSrcArr = srcIdsArr[s];
+                let tempSrcArr = srcIdsArr[s];   //某一条源头深度探索路径
                 let lastSrcId = tempSrcArr[tempSrcArr.length-1];
 
                 if(lastSrcId == destCityId){  //源路径衔接上了目标路径
-                    retArr.push(tempSrcArr);
+                    retpathArr.push(tempSrcArr);  //多条路径的集合
                 }else{
-                    let srcNears = this.CityNearsMap[lastSrcId];
+                    let srcNears = this.CityNearsMap[lastSrcId];  //某一条源头深度探索最后一个城池的邻近城池，注意剔除已经在路径中的城池。
                     for(let i=0; i<srcNears.length; ++i){
-                        let tempArr = new Array();
-                        for(let j=0; j<tempSrcArr.length; ++j){
-                            tempArr.push(tempSrcArr[j]);
+                        let bInPath = false;
+                        for(let j=0; j<tempSrcArr.length; ++j){   //判定新的邻近城池是否已经在路径中了
+                            if(srcNears[i] == tempSrcArr[j]){
+                                bInPath = true;
+                                break;
+                            }
                         }
-                        tempArr.push(srcNears[i]);
-
-                        tempSrcIds.push(tempArr);  //新的源路径
+                        if(bInPath == false){
+                            let tempArr = new Array();
+                            for(let j=0; j<tempSrcArr.length; ++j){   //继续遍历某一条源头深度探索路径，从而增加深度城池
+                                tempArr.push(tempSrcArr[j]);
+                            }
+                            tempArr.push(srcNears[i]);
+    
+                            tempSrcIds.push(tempArr);  //新的源路径
+                        }
                     }
                 }
             }
 
             srcIdsArr = tempSrcIds;   //新的源路径
-            if(srcIdsArr.length == 0 || retArr.length >= 2){   //已经规划了两条路线了
+            if(srcIdsArr.length == 0 || retpathArr.length >= 2){   //已经规划了N条路线了
                 break;
             }
         }
 
-        if(retArr.length == 0){
+        if(retpathArr.length == 0){
             return null;   //两城相距太远
         }else{
-            return retArr;
+            return retpathArr;
         }
     }
 

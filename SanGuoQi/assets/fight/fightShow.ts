@@ -276,7 +276,7 @@ export default class FightShow extends cc.Component {
 
         if(atkCardCfg.bingzhong == SoliderType.gongbing){   //弓兵攻击翻倍
             this.showTipsLable("攻击方为弓兵抛射，攻击力翻倍！", cc.Color.RED);
-            attack += atkCardCfg.atk * 1.0;
+            attack += atkCardCfg.atk * 0.5;
         }
 
         //兵种相克，401骑兵克制402刀兵， 402刀兵克制403枪兵，403枪兵克制401骑兵， 404弓兵为不克制兵种

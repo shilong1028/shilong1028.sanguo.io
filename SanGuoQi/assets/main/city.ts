@@ -103,7 +103,7 @@ export default class City extends cc.Component {
                 this.changeCityFlag(0);
             }
         }else if(flagStoryType == 2){  //董卓之乱
-            let cityIds = new Array(402, 403, 404, 405, 406, 407, 504, 506, 507, 509, 9009, 9010, 9012, 9013, 9014, 9015, 9016, 9018, 9019);
+            let cityIds = new Array(402, 404, 405, 406, 407, 504, 506, 507, 509, 9009, 9012, 9013, 9014, 9015, 9016, 9018, 9019);
             for(let i=0; i<cityIds.length; ++i){
                 if(this.cityInfo.cityId == cityIds[i]){
                     this.changeCityFlag(1);

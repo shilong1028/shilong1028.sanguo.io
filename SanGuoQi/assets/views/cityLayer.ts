@@ -1,8 +1,9 @@
-import { st_city_info, CfgMgr } from "../manager/ConfigManager";
+import { st_city_info, CfgMgr, st_camp_info } from "../manager/ConfigManager";
 import { CityInfo } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserMgr } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
+import FightReady from "./fightReady";
 
 //城池介绍
 const {ccclass, property} = cc._decorator;
@@ -46,6 +47,7 @@ export default class CityLayer extends cc.Component {
     cityInfo: CityInfo = null;
     cityConf: st_city_info = null;  //城池配置表
     typeStr: string[] = new Array("大都市", "郡城", "小郡", "关隘渡口", "夷族部落");  //1大城市>15，2郡城，3小郡城<5，4关隘渡口，5部落，6县城
+    campCfg: st_camp_info = null;  //所属阵营配置
 
     onLoad () {
         this.nameLabel.string = "";
@@ -99,11 +101,20 @@ export default class CityLayer extends cc.Component {
                 }
             }
             this.nearLabel.string = "邻近城池："+str;
-            this.campLabel.string = "势力阵营："+"汉朝廷";
+
+            this.campCfg = CfgMgr.getCampConf(cityInfo.cityCfg.campId);
 
             if(flagType == 3){  //城池旗帜 0默认黄旗朝廷 1红旗对敌或部落（可以征伐）2蓝旗己方已占领 3绿旗管辖内叛乱的城池
+                this.campLabel.string = "势力阵营：我军未占领的属城";
+                this.fightBtn.interactable = true;
+            }else if(flagType == 2){
+                this.campLabel.string = "势力阵营：我军已占领";
+                this.fightBtn.interactable = false;
+            }else if(flagType == 1){
+                this.campLabel.string = "势力阵营："+this.campCfg.name+"（敌对可攻击）";
                 this.fightBtn.interactable = true;
             }else{
+                this.campLabel.string = "势力阵营："+this.campCfg.name+"（中立不可攻击）";
                 this.fightBtn.interactable = false;
             }
         }
@@ -111,16 +122,16 @@ export default class CityLayer extends cc.Component {
 
     //从首府到此城池的路径
     handleCityPath(){
-        let nearArr = GameMgr.getNearCitysLine(315, this.cityInfo.cityId);   //山阳郡昌邑到此的路径（最多途径10城规划出2条最短路径）
-        cc.log("nearArr = "+JSON.stringify(nearArr));
+        let nearPathArr = GameMgr.getNearCitysLine(315, this.cityInfo.cityId);   //山阳郡昌邑到此的路径（最多途径10城规划出2条最短路径）
+        cc.log("nearPathArr = "+JSON.stringify(nearPathArr));
         let str = "山阳郡昌邑到此城距离太遥远！"
         let reachPath = null;   //可达路径索引（最近的一条）
-        if(nearArr){
+        if(nearPathArr){
             str = "";
-            for(let k=0; k<nearArr.length; ++k){
+            for(let k=0; k<nearPathArr.length; ++k){
                 let bReach: boolean = true;   //是否可达
                 str += "\n路径"+(k+1)+"：";
-                let cityIds = nearArr[k];
+                let cityIds = nearPathArr[k];
                 for(let i=0; i<cityIds.length; ++i){
                     let cityId = cityIds[i];
                     let cityCfg = CfgMgr.getCityConf(cityId);
@@ -159,7 +170,9 @@ export default class CityLayer extends cc.Component {
         if(reachPath == null){
             ROOT_NODE.showTipsText("此城池与我方城池不相邻，请先攻克其他城池!");
         }else{
-            GameMgr.showLayer(this.pfFightReady);
+            let layer = GameMgr.showLayer(this.pfFightReady);
+            layer.getComponent(FightReady).initCityFight(this.cityInfo, this.campCfg);
+
             this.node.removeFromParent(true);
         }
     }

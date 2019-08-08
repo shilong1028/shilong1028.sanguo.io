@@ -1,5 +1,5 @@
 import FightScene from "../fight/fightScene";
-import { CardInfo, GeneralInfo, NoticeType, SoliderType, SkillInfo } from "./Enum";
+import { CardInfo, GeneralInfo, NoticeType, SoliderType, SkillInfo, CityInfo } from "./Enum";
 import { NoticeMgr } from "./NoticeManager";
 import { CfgMgr } from "./ConfigManager";
 
@@ -13,6 +13,8 @@ class FightManager {
     battleEnemyArr: GeneralInfo[] = null;   //出战敌方部曲（和士兵）
     battleGeneralArr: GeneralInfo[] = null;   //出战我方部曲
 
+    fightCityInfo: CityInfo = null;   //攻占的城池信息
+
     cardsCol: number = 4;    //行 Row 列 Column
     cardsRow: number = 5;
 
@@ -25,11 +27,12 @@ class FightManager {
     EnemyAutoAi: boolean = false;  //敌方是否自动AI
 
     /**清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组 */
-    clearAndInitFightData(enemyArr:GeneralInfo[], generalArr: GeneralInfo[]){
+    clearAndInitFightData(enemyArr:GeneralInfo[], generalArr: GeneralInfo[], fightCityInfo: CityInfo=null){
         this.randomGeneralArr = new Array();  //随机散布的卡牌
 
         this.battleEnemyArr = enemyArr;   //出战敌方部曲（和士兵）
         this.battleGeneralArr = generalArr;   //出战我方部曲
+        this.fightCityInfo = fightCityInfo;   //攻占的城池信息
     
         this.myCampId = 1;   //阵营，0默认，1蓝方，2红方
         this.bStopTouch = false;   //是否停止触摸反应
@@ -43,7 +46,6 @@ class FightManager {
             cc.director.loadScene("fightScene");
         }
     }
-
 
     /**获取战斗场景 */
     getFightScene(): FightScene {

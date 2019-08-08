@@ -169,7 +169,7 @@ class MyUserManager {
     getIdsToStr(ids: number[], sp: string = "|"){
         let str = ""
         for(let i=0; i<ids.length; ++i){
-            str += (ids.toString()+sp);
+            str += (ids[i].toString()+sp);
         }
         return str;
     }

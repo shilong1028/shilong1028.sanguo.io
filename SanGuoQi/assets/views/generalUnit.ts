@@ -78,7 +78,7 @@ export default class GeneralUnit extends cc.Component {
     //刷新武将列表
     initGeneralList(){
         this.tableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
-        this.tableView.initTableView(MyUserData.GeneralList.length, { array: MyUserData.GeneralList, target: this, bClick: true}); 
+        this.tableView.initTableView(MyUserData.GeneralList.length, { array: MyUserData.GeneralList, target: this, bEnemy: false}); 
         this.handleGeneralCellClick(0);   //点击武将
     }
 
@@ -97,6 +97,7 @@ export default class GeneralUnit extends cc.Component {
 
     /**点击武将 */
     handleGeneralCellClick(clickIdx: number, bUpdate:boolean=false){
+        //cc.log("handleGeneralCellClick(), clickIdx = "+clickIdx+"; bUpdate = "+bUpdate)
         if(bUpdate == false && this.selCellIdx == clickIdx){
             return;
         }

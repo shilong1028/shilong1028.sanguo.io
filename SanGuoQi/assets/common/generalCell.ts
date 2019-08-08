@@ -18,12 +18,12 @@ export default class GeneralCell extends viewCell {
     cellIdx : number = -1;  
 
     targetSc: any = null;
-    bClick: boolean = false;
+    bEnemy: boolean = false;   //是否敌军
 
 
     //加载需要初始化数据时调用
     init (index, data, reload, group) {
-        if (index >= data.array.length) {   //{ array: list, target: x.js , bClick: true}
+        if (index >= data.array.length) {   //{ array: list, target: x.js , bEnemy: false}
             //不显示
             this.cellData = null;  
             this.node.active = false;
@@ -36,7 +36,7 @@ export default class GeneralCell extends viewCell {
 
         //if(reload){
             this.targetSc = data.target;
-            this.bClick = data.bClick;
+            this.bEnemy = data.bEnemy;  //是否敌军
             
             this.cellIdx = index;  
             this.cellData = data.array[this.cellIdx];
@@ -52,12 +52,15 @@ export default class GeneralCell extends viewCell {
     }
 
     onSelected(bSel){
-        if(this.bClick == true && this.selBg){
+        if(this.selBg){
             if(bSel){
                 this.selBg.active = true;
-
-                if(this.targetSc && this.targetSc.handleGeneralCellClick){
-                    this.targetSc.handleGeneralCellClick(this.cellIdx);   //点击选中回调
+                if(this.targetSc){
+                    if(this.bEnemy == false && this.targetSc.handleGeneralCellClick){
+                        this.targetSc.handleGeneralCellClick(this.cellIdx);   //点击选中回调
+                    }else if(this.bEnemy == true && this.targetSc.handleEnemyCellClick){
+                        this.targetSc.handleEnemyCellClick(this.cellIdx);   //点击选中回调
+                    }
                 }
             }else{
                 this.selBg.active = false;

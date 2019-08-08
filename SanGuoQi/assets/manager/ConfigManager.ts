@@ -233,6 +233,11 @@ class CfgManager_class {
         return this.C_city_info[cityId];
     }
 
+    /**获取势力阵营配置数据 */
+    getCampConf(campId: number): st_camp_info{
+        return this.C_camp_info[campId];
+    }
+
     /**获取道具配置数据 */
     getItemConf(itemId: number): st_item_info{
         return this.C_item_info[itemId];

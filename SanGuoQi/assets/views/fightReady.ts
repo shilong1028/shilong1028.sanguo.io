@@ -1,8 +1,8 @@
 
 import TableView from "../tableView/tableView";
 import { MyUserData } from "../manager/MyUserData";
-import { GeneralInfo } from "../manager/Enum";
-import { CfgMgr } from "../manager/ConfigManager";
+import { GeneralInfo, CityInfo } from "../manager/Enum";
+import { CfgMgr, st_camp_info } from "../manager/ConfigManager";
 import { ROOT_NODE } from "../common/rootNode";
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
@@ -41,6 +41,10 @@ export default class FightReady extends cc.Component {
     generalArr: GeneralInfo[] = new Array();
     enmeyArr: GeneralInfo[] = new Array();
 
+    maxGeneralLv: number = 1;
+    minGeneralLv: number = 100;
+    fightCityInfo: CityInfo = null;
+
     onLoad () {
         this.titleLabel.string = "备战";
         this.fightBtn.interactable = false;
@@ -63,6 +67,7 @@ export default class FightReady extends cc.Component {
         this.node.removeFromParent(true);
     }
 
+    //故事剧情战斗入口
     initBattleInfo(battleId: number){
         let battleConf = CfgMgr.getBattleConf(battleId);
         //cc.log("initBattleInfo(), battleConf = "+JSON.stringify(battleConf));
@@ -80,11 +85,71 @@ export default class FightReady extends cc.Component {
                 this.enmeyArr.push(enemy);
             }
 
-            this.enemyTabelView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
-            this.enemyTabelView.initTableView(this.enmeyArr.length, { array: this.enmeyArr, target: this, bClick: false}); 
+            this.enemyTabelView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
+            this.enemyTabelView.initTableView(this.enmeyArr.length, { array: this.enmeyArr, target: this, bEnemy: true}); 
 
             this.initGeneralList();
         }
+    }
+
+    //点中敌将
+    handleEnemyCellClick(clickIdx: number){
+        let enemyInfo: GeneralInfo = this.enmeyArr[clickIdx];
+        this.descLabel.string = "敌将 " + enemyInfo.generalCfg.desc;
+    }
+
+    //攻占城池入口
+    initCityFight(cityInfo: CityInfo, cityCampCfg: st_camp_info){
+        cc.log("initCityFight(), cityCampCfg = "+JSON.stringify(cityCampCfg));
+        this.fightCityInfo = cityInfo;
+        this.initGeneralList();
+
+        let campGeneralIds = cityCampCfg.generals;
+        let count = Math.min(5, campGeneralIds.length);
+        let offset = campGeneralIds.length - count;
+        if(offset > 0){
+            count += Math.floor(Math.random()*(offset - 0.1));
+        }
+        if(count > 6){
+            count = 6;
+        }
+
+        if(this.maxGeneralLv < this.minGeneralLv){
+            this.minGeneralLv = this.maxGeneralLv;
+        }
+        let offsetLv = (this.maxGeneralLv - this.minGeneralLv)*1.0;
+
+        this.enmeyArr = new Array();
+        let selIdxs = new Array();
+        while(count > 0){
+            let randIdx = Math.floor(Math.random()*(campGeneralIds.length - 0.1));
+            let bCreateCard = true;
+            for(let i=0; i<selIdxs.length; ++i){
+                if(randIdx == selIdxs[i]){
+                    bCreateCard = false;
+                    break;
+                }
+            }
+            if(bCreateCard == true){
+                count --;
+                selIdxs.push(randIdx);
+                let randGeneralId = campGeneralIds[randIdx];
+                let enemy = new GeneralInfo(randGeneralId);   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
+                enemy.generalLv = this.maxGeneralLv - Math.floor(Math.random()*offsetLv) - 1;
+                if(enemy.generalLv < 1){
+                    enemy.generalLv = 1;
+                }
+                enemy.bingCount = GameMgr.getMaxBingCountByLv(enemy.generalLv);
+                for(let j=0; j<enemy.generalCfg.skillNum/2; ++j){
+                    let randSkill = FightMgr.getRandomSkill();
+                    enemy.skills.push(randSkill);
+                }
+                this.enmeyArr.push(enemy);
+            }
+        }
+
+        this.enemyTabelView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
+        this.enemyTabelView.initTableView(this.enmeyArr.length, { array: this.enmeyArr, target: this, bEnemy: true}); 
     }
 
     //刷新武将列表
@@ -92,10 +157,16 @@ export default class FightReady extends cc.Component {
         this.generalArr = MyUserData.GeneralList;
         for(let i=0; i<this.generalArr.length; ++i){
             this.generalArr[i].bReadyFight = false;
+            if(this.generalArr[i].generalLv > this.maxGeneralLv){
+                this.maxGeneralLv = this.generalArr[i].generalLv;
+            }
+            if(this.generalArr[i].generalLv < this.minGeneralLv){
+                this.minGeneralLv = this.generalArr[i].generalLv;
+            }
         }
 
         this.myTabelView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
-        this.myTabelView.initTableView(this.generalArr.length, { array: this.generalArr, target: this, bClick: true}); 
+        this.myTabelView.initTableView(this.generalArr.length, { array: this.generalArr, target: this, bEnemy: false}); 
         this.handleGeneralCellClick(0);   //点击武将
     }
 
@@ -136,14 +207,14 @@ export default class FightReady extends cc.Component {
                 }
             }
         }else{   //当前未出战
-            if(selGeneralInfo.bingCount <= 0){
-                ROOT_NODE.showTipsDialog("武将未领兵，不能出战！是否跳转部曲界面？", ()=>{
+            if(selGeneralInfo.bingCount <= 200){
+                ROOT_NODE.showTipsDialog("武将领兵太少，不能出战！是否跳转部曲界面？", ()=>{
                     GameMgr.showLayer(this.pfUnit);
                     this.removeFightState();  //移除出战位标识
                     this.node.removeFromParent(true);
                 });
                 return;
-            }else if(this.fightArr.length > 5){
+            }else if(this.fightArr.length >= 5){
                 ROOT_NODE.showTipsText("出战名额（五个）已满!");
             }else{
                 this.generalArr[this.selCellIdx].bReadyFight = true;
@@ -174,7 +245,7 @@ export default class FightReady extends cc.Component {
         this.fightBtn.interactable = false;
         cc.log("出战， this.enmeyArr = "+JSON.stringify(this.enmeyArr)+"; generalArr = "+JSON.stringify(this.fightArr));
         this.removeFightState();  //移除出战位标识
-        FightMgr.clearAndInitFightData(this.enmeyArr, this.fightArr);   //清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组
+        FightMgr.clearAndInitFightData(this.enmeyArr, this.fightArr, this.fightCityInfo);   //清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组
     }
 
     //移除出战位标识
