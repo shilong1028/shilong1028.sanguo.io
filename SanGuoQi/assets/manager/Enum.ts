@@ -1,4 +1,4 @@
-import { st_general_info, st_item_info, CfgMgr, st_city_info, st_skill_info } from "./ConfigManager";
+import { st_general_info, st_item_info, CfgMgr, st_city_info, st_skill_info, st_beautiful_info } from "./ConfigManager";
 import { GameMgr } from "./GameManager";
 
 
@@ -197,6 +197,26 @@ export class SkillInfo{
 
         //不必写入本地存储的变量
         temp.skillCfg = null;
+
+        return temp;
+    }
+}
+
+//后宫信息
+export class BeautifulInfo{
+    nvId: number = 0;   
+    nvCfg: st_beautiful_info = null;   //配置信息
+
+    constructor(nvId:number){
+        this.nvId = nvId;
+        this.nvCfg = CfgMgr.getBeautifulConf(nvId);
+    }
+
+    cloneNoCfg(){
+        let temp = new BeautifulInfo(this.nvId);
+
+        //不必写入本地存储的变量
+        temp.nvCfg = null;
 
         return temp;
     }

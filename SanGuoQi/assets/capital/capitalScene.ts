@@ -14,6 +14,8 @@ export default class CapitalScene extends cc.Component {
 
     @property(cc.Prefab)
     pfBuildHelp: cc.Prefab = null;
+    @property(cc.Prefab)
+    pfBeautiful: cc.Prefab = null;
 
     // LIFE-CYCLE CALLBACKS:
 

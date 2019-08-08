@@ -10,6 +10,8 @@ export default class BuildQiPao extends cc.Component {
 
     @property(cc.Label)
     lvLabel: cc.Label = null;
+    @property(cc.Label)
+    nameLabel: cc.Label = null;
 
     @property(cc.Node)
     bgNode: cc.Node = null;
@@ -36,7 +38,12 @@ export default class BuildQiPao extends cc.Component {
                     GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
                 }
             }
-            GameMgr.showLayer(capitalScene.pfBuildHelp);
+
+            if(this.nameLabel.string == "后宅"){
+                GameMgr.showLayer(capitalScene.pfBeautiful);
+            }else{
+                GameMgr.showLayer(capitalScene.pfBuildHelp);
+            }
         }
     }
 }

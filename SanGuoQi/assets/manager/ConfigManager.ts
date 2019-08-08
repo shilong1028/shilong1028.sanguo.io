@@ -148,6 +148,15 @@ export class st_skill_info{
     }
 }
 
+//后宫配置数据
+export class st_beautiful_info{
+    name;
+    desc;
+    
+    transType(){
+    }
+}
+
 
 //*********************  以下为接口类定义 *********************************** */
 
@@ -187,6 +196,10 @@ class CfgManager_class {
     C_skill_info : Map<number, st_skill_info> = new Map<number, st_skill_info>();
     SC_skill_info = st_skill_info;
 
+    //后宫配置表
+    C_beautiful_info : Map<number, st_beautiful_info> = new Map<number, st_beautiful_info>();
+    SC_beautiful_info = st_beautiful_info;
+
     //********************** 以下是一些配置接口 ***************** */
     
     /**获取任务配置数据 */
@@ -222,6 +235,11 @@ class CfgManager_class {
     /**获取技能数据 */
     getSkillConf(skillId: number): st_skill_info{
         return this.C_skill_info[skillId];
+    }
+
+    /**获取后宫数据 */
+    getBeautifulConf(nvId: number): st_beautiful_info{
+        return this.C_beautiful_info[nvId];
     }
 
     //*************************************  以下为读取配置接口 *********************************** */
