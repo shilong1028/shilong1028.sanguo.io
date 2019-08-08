@@ -123,15 +123,7 @@ export default class StoryLayer extends cc.Component {
         if(this.curTalkConf && this.curTalkIdx < this.taskConf.talks.length-1){   //跳过
             this.setTalkStr();   //设置话本内容
         }else{  //结束
-            if(this.taskConf.type == 2){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
-                GameMgr.getMainScene().showHandActions(cc.v2(350, 530));   //引导主城   640+posY
-            }else if(this.taskConf.type == 3){
-                GameMgr.getMainScene().showHandActions(cc.v2(350, 420));   //引导招募
-            }else if(this.taskConf.type == 4){
-                GameMgr.getMainScene().showHandActions(cc.v2(350, 310));   //引导部曲
-            }else if(this.taskConf.type == 6){
-                GameMgr.getMainScene().showHandActions(cc.v2(-300, 310));   //引导技能
-            }
+            GameMgr.getMainScene().showHandActions(this.taskConf.type);   //引导手位置
 
             if(this.taskConf.type == 1){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
                 GameMgr.handleStoryShowOver(this.taskConf);   //任务宣读(第一阶段）完毕处理

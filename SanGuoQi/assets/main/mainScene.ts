@@ -37,6 +37,15 @@ export default class MainScene extends cc.Component {
     capitalNode: cc.Node = null;  //主城按钮
 
     @property(cc.Node)
+    topNode: cc.Node = null;
+    @property(cc.Node)
+    bottomNode: cc.Node = null;
+    @property(cc.Node)
+    leftNode: cc.Node = null;
+    @property(cc.Node)
+    rightNode: cc.Node = null;
+
+    @property(cc.Node)
     taskNode: cc.Node = null;  //任务总节点
     @property(cc.Node)
     taskOptNode: cc.Node = null;  //任务伸缩按钮节点
@@ -81,6 +90,11 @@ export default class MainScene extends cc.Component {
         
         NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
 
+        this.topNode.y = cc.winSize.height/2;
+        this.bottomNode.y = -cc.winSize.height/2;
+        this.leftNode.position = cc.v2(-cc.winSize.width/2, cc.winSize.height/2);
+        this.rightNode.position = cc.v2(cc.winSize.width/2, cc.winSize.height/2);
+
         this.mapNode.active = true;
         if(MyUserData.capitalLv > 0){
             this.mapNode.position = cc.v2(-600, -900);   //主城开启后显示山阳郡昌邑
@@ -98,7 +112,7 @@ export default class MainScene extends cc.Component {
         this.UpdateFoodCount();
         this.updateLvAndOffical();  //更新主角等级和官职
 
-        this.showHandActions(null);   //引导用的手指动画（一定要放到任务之前初始，因为位置由任务决定）
+        this.showHandActions(-1);   //引导用的手指动画（一定要放到任务之前初始，因为位置由任务决定）
 
         this.setTaskInfo();   //初始化任务
     }
@@ -179,8 +193,9 @@ export default class MainScene extends cc.Component {
     }
 
     /**引导用的手指动画 */
-    showHandActions(pos: cc.Vec2){
-        if(pos == null){   //初始
+    showHandActions(showTaskType: number){
+        //cc.log("showHandActions(), showTaskType = "+showTaskType);
+        if(showTaskType == -1){   //初始
             this.handSpr.node.opacity = 0;
 
             this.handSpr.node.runAction(cc.repeatForever(cc.sequence(
@@ -191,6 +206,19 @@ export default class MainScene extends cc.Component {
                 }.bind(this))
             )));
         }else{
+            let pos = cc.v2(320, -cc.winSize.height/2 + 30);  //默认位置（任务详情或奖励） cc.v2(320, -640)
+            if(showTaskType == 2){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
+                pos = cc.v2(cc.winSize.width/2 - 30, cc.winSize.height/2 - 140);   //引导主城   640+posY cc.v2(350, 530)
+            }else if(showTaskType == 3){
+                pos = cc.v2(cc.winSize.width/2 - 30, cc.winSize.height/2 - 250);  //引导招募  cc.v2(350, 420)
+            }else if(showTaskType == 4){
+                pos = cc.v2(cc.winSize.width/2 - 30, cc.winSize.height/2 - 360);  //引导部曲  cc.v2(350, 310)
+            }else if(showTaskType == 6){
+                pos = cc.v2(-cc.winSize.width/2 + 70, cc.winSize.height/2 - 360);    //引导技能  cc.v2(-300, 310)
+            }else if(showTaskType == 0){   //默认位置（任务详情或奖励）
+
+            }
+
             this.handSpr.node.position = pos;
 
             if(pos.y < 0){

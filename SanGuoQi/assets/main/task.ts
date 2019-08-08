@@ -101,7 +101,7 @@ export default class Task extends cc.Component {
                 this.taskTitle.string = this.taskConf.name;
                 this.taskDesc.string = this.taskConf.desc;
 
-                GameMgr.getMainScene().showHandActions(cc.v2(320, -640));   //引导任务详情或奖励
+                GameMgr.getMainScene().showHandActions(0);   //引导任务详情或奖励
 
                 if(MyUserData.TaskState == 1){   //已完成未领取
                     this.detailNode.active = false;
