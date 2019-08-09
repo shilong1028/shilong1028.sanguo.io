@@ -106,14 +106,21 @@ export default class FightShow extends cc.Component {
     }
 
     createTips(tips: any){
+        let pos = cc.v2(0, 80);
+        if(tips.posType < 0){  //posType=0 中间位置 -1为左侧将军位置 1为右侧将军位置
+            pos = cc.v2(this.leftGenNode.x, -100);
+        }else if(tips.posType > 0){
+            pos = cc.v2(this.rightGenNode.x, -100);
+        }
+
         let tipNode = cc.instantiate(this.pfTips);
-        tipNode.getComponent(ShowLabel).showTips(tips.str, tips.col, cc.v2(0, 80));
+        tipNode.getComponent(ShowLabel).showTips(tips.str, tips.col, pos);
         this.node.addChild(tipNode, 100);
     }
 
-    showTipsLable(str: string, col: cc.Color = cc.Color.WHITE){
+    showTipsLable(str: string, col: cc.Color = cc.Color.WHITE, posType: number = 0){
         cc.log("showTipsLable(), str = "+str);
-        this.tipsArr.push({"str":str, "col":col});
+        this.tipsArr.push({"str":str, "col":col, "posType":posType});   //posType=0 中间位置 -1为左侧将军位置 1为右侧将军位置
     }
 
     /**显示战斗或合成 
@@ -137,7 +144,7 @@ export default class FightShow extends cc.Component {
             FightMgr.showFramesAniAndRemove(this.node, cc.v2(0, 0), this.hechengAtlas, false);
         }else if(this.nShowType == 2){   //战斗
             this.typeLabel.string = "战斗";
-            this.showTipsLable("开始战斗", cc.Color.RED);
+            this.showTipsLable("开始战斗", cc.Color.GREEN);
             FightMgr.showFramesAniAndRemove(this.node, cc.v2(0, 0), this.attackAtlas, false);
         }
         
@@ -200,24 +207,24 @@ export default class FightShow extends cc.Component {
         let rightUnitDead = false;
 
         if(leftGeneral.tempFightInfo.fightHp <= 0){
-            this.showTipsLable("主动方(左侧)"+leftGeneral.generalCfg.name+"武将阵亡！", cc.Color.WHITE);
+            this.showTipsLable("主动方(左侧)"+leftGeneral.generalCfg.name+"武将阵亡！", cc.Color.GREEN, -1);
             leftUnitDead = true;
         }else if(rightGeneral.tempFightInfo.fightHp <= 0){
-            this.showTipsLable("被动方（右侧）"+rightGeneral.generalCfg.name+"武将阵亡！", cc.Color.WHITE);
+            this.showTipsLable("被动方（右侧）"+rightGeneral.generalCfg.name+"武将阵亡！", cc.Color.GREEN, 1);
             rightUnitDead = true;
         }
         else if(leftGeneral.bingCount <= 0){
-            this.showTipsLable("主动方(左侧)"+leftGeneral.generalCfg.name+"部曲已无士兵，部曲解散！", cc.Color.WHITE);
+            this.showTipsLable("主动方(左侧)"+leftGeneral.generalCfg.name+"部曲已无士兵，部曲解散！", cc.Color.GREEN, -1);
             leftUnitDead = true;
         }else if(rightGeneral.bingCount <= 0){
-            this.showTipsLable("被动方（右侧）"+rightGeneral.generalCfg.name+"部曲已无士兵，部曲解散！", cc.Color.WHITE);
+            this.showTipsLable("被动方（右侧）"+rightGeneral.generalCfg.name+"部曲已无士兵，部曲解散！", cc.Color.GREEN, 1);
             rightUnitDead = true;
         }
         else if(this.leftCardInfo.shiqi <= 0){
-            this.showTipsLable("主动方(左侧)"+leftGeneral.generalCfg.name+"部曲士气用尽，部曲溃逃！", cc.Color.WHITE);
+            this.showTipsLable("主动方(左侧)"+leftGeneral.generalCfg.name+"部曲士气用尽，部曲溃逃！", cc.Color.GREEN, -1);
             leftUnitDead = true;
         }else if(this.rightCardInfo.shiqi <= 0){
-            this.showTipsLable("被动方（右侧）"+rightGeneral.generalCfg.name+"部曲士气用尽，部曲溃逃！", cc.Color.WHITE);
+            this.showTipsLable("被动方（右侧）"+rightGeneral.generalCfg.name+"部曲士气用尽，部曲溃逃！", cc.Color.GREEN, 1);
             rightUnitDead = true;
         }
 
@@ -317,10 +324,17 @@ export default class FightShow extends cc.Component {
 
     //战斗过程
     showFightProgress(attackCardInfo: CardInfo, defendCardInfo: CardInfo, atkArrowTown:number=0, defArrowTown:number=0){
+        let bLeftIsAtk = true;
+        if(attackCardInfo.generalInfo.timeId == this.leftCardInfo.generalInfo.timeId){   //攻击方是左侧
+            bLeftIsAtk = true;
+        }else{
+            bLeftIsAtk = false;
+        }
+
         let atkCardCfg = attackCardInfo.generalInfo.generalCfg;
         let defCardCfg = defendCardInfo.generalInfo.generalCfg;
 
-        this.showTipsLable("开始攻击，攻击方："+atkCardCfg.name+"; 防御方： "+defCardCfg.name);
+        cc.log("开始攻击，攻击方："+atkCardCfg.name+"; 防御方： "+defCardCfg.name);
         let basicAtk = atkCardCfg.atk;
         let basicDef = defCardCfg.def;
         //技能进攻
@@ -337,39 +351,41 @@ export default class FightShow extends cc.Component {
 
         //攻击方在箭塔下
         if(atkArrowTown == 1){
-            this.showTipsLable("箭塔辅助攻击，攻击方攻击力增加20%！", cc.Color.RED);
+            this.showTipsLable("箭塔辅助，攻击力增加20%！", cc.Color.RED, (bLeftIsAtk == true ? -1 : 1));
             attack += basicAtk * 0.2;
         }
         //防御方在城池下
         if(defArrowTown == 2){
-            this.showTipsLable("城池辅助防御，防御方防御力增加30%！", cc.Color.BLUE);
+            this.showTipsLable("城池辅助，防御力增加30%！", cc.Color.BLUE, (bLeftIsAtk == true ? 1 : -1));
             defend += basicDef * 0.3;
         }
 
         if(atkCardCfg.bingzhong == SoliderType.gongbing){   //弓兵攻击翻倍
-            this.showTipsLable("攻击方为弓兵抛射，攻击力增加50%！", cc.Color.RED);
+            this.showTipsLable("弓兵抛射，攻击力增加50%！", cc.Color.RED, (bLeftIsAtk == true ? -1 : 1));
             attack += basicAtk * 0.5;
         }else{
             //兵种相克，401骑兵克制402刀兵， 402刀兵克制403枪兵，403枪兵克制401骑兵， 404弓兵为不克制兵种
             let restriction = FightMgr.checkBingRestriction(atkCardCfg.bingzhong, defCardCfg.bingzhong);
             if(restriction == 1){
-                this.showTipsLable("攻击方兵种克制防御方，攻击方攻击力增加30%！", cc.Color.RED);
+                this.showTipsLable("兵种克制对方，攻击力增加30%！", cc.Color.RED, (bLeftIsAtk == true ? -1 : 1));
                 attack += basicAtk * 0.3;
             }else if(restriction == -1){
-                this.showTipsLable("攻击方兵种被防御方克制，攻击方攻击力降低30%！", cc.Color.BLUE);
+                this.showTipsLable("兵种被对方克制，攻击力降低30%！", cc.Color.GREEN, (bLeftIsAtk == true ? -1 : 1));
                 attack -= basicAtk * 0.3;
             }
         }
 
         attack = attack * (attackCardInfo.shiqi/100);
+        this.showTipsLable("士气加成攻击！", cc.Color.GREEN, (bLeftIsAtk == true ? -1 : 1));
         defend = defend * (defendCardInfo.shiqi/100);
-        this.showTipsLable("攻击方士气"+attackCardInfo.shiqi+" 防御方士气"+defendCardInfo.shiqi, cc.Color.WHITE);
+        this.showTipsLable("士气加成防御！", cc.Color.GREEN, (bLeftIsAtk == true ? 1 : -1));
 
         let atkBingScale = attackCardInfo.generalInfo.bingCount/GameMgr.getMaxBingCountByLv(attackCardInfo.generalInfo.generalLv);
-        atkBingScale.toFixed(2)
+        atkBingScale.toFixed(2);
+        this.showTipsLable("士兵满编率加成攻击！", cc.Color.GREEN, (bLeftIsAtk == true ? -1 : 1));
         let defBingScale = defendCardInfo.generalInfo.bingCount/GameMgr.getMaxBingCountByLv(defendCardInfo.generalInfo.generalLv);
-        defBingScale.toFixed(2)
-        this.showTipsLable("攻击方部曲士兵满编率"+atkBingScale+" 防御方部曲士兵满编率"+defBingScale, cc.Color.WHITE);
+        defBingScale.toFixed(2);
+        this.showTipsLable("士兵满编率加成防御！", cc.Color.GREEN, (bLeftIsAtk == true ? 1 : -1));
         attack = attack * atkBingScale;
         defend = defend * defBingScale;
 
@@ -379,10 +395,10 @@ export default class FightShow extends cc.Component {
             harm = minHarm;
         }
         harm = Math.ceil(harm);   //伤害取整
-        this.showTipsLable("防御方收到伤害："+harm);
-
         let generalHarm = Math.ceil(harm/(defendCardInfo.generalInfo.generalLv+1));
+        this.showTipsLable("武将受到伤害"+generalHarm, cc.Color.GREEN, (bLeftIsAtk == true ? 1 : -1));
         let soldierHarm = harm - generalHarm;
+        this.showTipsLable("士兵受到伤害"+generalHarm, cc.Color.GREEN, (bLeftIsAtk == true ? 1 : -1));
         cc.log("攻击 "+attack+"; 防御 "+defend+"; 伤害 "+harm+"; 武将伤害 "+generalHarm+"; 士兵伤害 "+soldierHarm+"; minHarm = "+minHarm);
 
         let blood = defendCardInfo.generalInfo.tempFightInfo.fightHp - generalHarm;
@@ -434,33 +450,32 @@ export default class FightShow extends cc.Component {
                         this.handleAtkUseSkill(bLeftIsAtk);  //使用技能减少Mp值
                         basicAtk += randSkill.skillCfg.atk;
                         FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[0], true);
-                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                        this.showTipsLable("使用技能"+randSkill.skillCfg.name+"，提升攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW), (bLeftIsAtk == true ? -1 : 1);
                     }else if(randSkill.skillCfg.def < 0){
                         this.handleAtkUseSkill(bLeftIsAtk);  //使用技能减少Mp值
                         basicDef += randSkill.skillCfg.def;
                         FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[3], true);
-                        this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                        this.showTipsLable("受到技能"+randSkill.skillCfg.name+"，降低防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW, (bLeftIsAtk == true ? 1 : -1));
                     }else if(randSkill.skillCfg.hp != 0){
                         this.handleAtkUseSkill(bLeftIsAtk, randSkill.skillCfg.hp);  //使用技能减少Mp值
                         if(randSkill.skillCfg.hp > 0){
                             FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[4], true);
-                            this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                            this.showTipsLable("使用技能"+randSkill.skillCfg.name+"，生命值增加"+randSkill.skillCfg.hp, cc.Color.YELLOW, (bLeftIsAtk == true ? -1 : 1));
                         }else if(randSkill.skillCfg.hp < 0){
                             FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[5], true);
-                            this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                            this.showTipsLable("受到技能"+randSkill.skillCfg.name+"，生命值降低"+randSkill.skillCfg.hp, cc.Color.YELLOW, (bLeftIsAtk == true ? 1 : -1));
                         }
                     }else if(randSkill.skillCfg.shiqi != 0){
                         this.handleAtkUseSkill(bLeftIsAtk, 0, randSkill.skillCfg.shiqi);  //使用技能减少Mp值
                         if(randSkill.skillCfg.shiqi > 0){
                             FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[6], true);
-                            this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，攻击方提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                            this.showTipsLable("使用技能"+randSkill.skillCfg.name+"，提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW, (bLeftIsAtk == true ? -1 : 1));
                         }else if(randSkill.skillCfg.shiqi < 0){
                             FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[7], true);
-                            this.showTipsLable("攻击方使用技能"+randSkill.skillCfg.name+"，防御方降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                            this.showTipsLable("受到技能"+randSkill.skillCfg.name+"，降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW, (bLeftIsAtk == true ? -1 : 1));
                         }
                     }
                 }
-
             }
         }
 
@@ -476,32 +491,32 @@ export default class FightShow extends cc.Component {
                         this.handleAtkUseSkill(!bLeftIsAtk);  //使用技能减少Mp值
                         basicAtk += randSkill.skillCfg.atk;
                         FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[1], true);
-                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                        this.showTipsLable("受到技能"+randSkill.skillCfg.name+"，降低攻击力"+randSkill.skillCfg.atk, cc.Color.YELLOW), (bLeftIsAtk == true ? -1 : 1);
                     }
                     else if(randSkill.skillCfg.def > 0){
                         this.handleAtkUseSkill(!bLeftIsAtk);  //使用技能减少Mp值
                         basicDef += randSkill.skillCfg.def;
                         FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[2], true);
-                        this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW);
+                        this.showTipsLable("使用技能"+randSkill.skillCfg.name+"，提升防御力"+randSkill.skillCfg.atk, cc.Color.YELLOW, (bLeftIsAtk == true ? 1 : -1));
                     }
                     else if(randSkill.skillCfg.hp != 0){
                         this.handleAtkUseSkill(!bLeftIsAtk, randSkill.skillCfg.hp);  //使用技能减少Mp值
                         if(randSkill.skillCfg.hp > 0){
                             FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[4], true);
-                            this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                            this.showTipsLable("使用技能"+randSkill.skillCfg.name+"，生命值增加"+randSkill.skillCfg.hp, cc.Color.YELLOW, (bLeftIsAtk == true ? 1 : -1));
                         }else if(randSkill.skillCfg.hp < 0){
                             FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[5], true);
-                            this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低生命值"+randSkill.skillCfg.hp, cc.Color.YELLOW);
+                            this.showTipsLable("受到技能"+randSkill.skillCfg.name+"，生命值降低"+randSkill.skillCfg.hp, cc.Color.YELLOW, (bLeftIsAtk == true ? -1 : 1));
                         }
                     }
                     else if(randSkill.skillCfg.shiqi != 0){
                         this.handleAtkUseSkill(!bLeftIsAtk, 0, randSkill.skillCfg.shiqi);  //使用技能减少Mp值
                         if(randSkill.skillCfg.shiqi > 0){
                             FightMgr.showFramesAniAndRemove(defNode, cc.v2(0, 0), this.effectAtlas[6], true);
-                            this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，防御方提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                            this.showTipsLable("使用技能"+randSkill.skillCfg.name+"，提升士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW, (bLeftIsAtk == true ? 1 : -1));
                         }else if(randSkill.skillCfg.shiqi < 0){
                             FightMgr.showFramesAniAndRemove(atkNode, cc.v2(0, 0), this.effectAtlas[7], true);
-                            this.showTipsLable("防御方使用技能"+randSkill.skillCfg.name+"，攻击方降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW);
+                            this.showTipsLable("受到技能"+randSkill.skillCfg.name+"，降低士气"+randSkill.skillCfg.shiqi, cc.Color.YELLOW, (bLeftIsAtk == true ? -1 : 1));
                         }
                     }
                 }

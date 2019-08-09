@@ -68,7 +68,17 @@ export default class ResultLayer extends cc.Component {
     initRewardList(){  
         //cc.log("showRewardList(), rewards = "+JSON.stringify(rewards));
         let items = new Array();
-        items.push({"key":6001, "val":1000});
+        items.push({"key":6001, "val":500});   //金币
+        items.push({"key":6003, "val":500});   //粮草
+        /**
+         * 游戏中，每千名士兵每月（自然日24h）消耗300石粮300金币（30000斤粮草30000贯钱），即每人每月消耗30斤粮30贯钱。
+            游戏中，每个游戏月（自然日24h）金币、粮草的税率分别为每万人100金币、每万人100石、即每人每月需要向官府缴纳1贯钱、1斤粮。
+         */
+        if(FightMgr.fightCityInfo){   //攻城
+            let tempVal = Math.floor(FightMgr.fightCityInfo.cityCfg.population/5000)+1;
+            items[0].val = tempVal*50;
+            items[1].val = tempVal*20;
+        }
 
         let rewards: ItemInfo[] = GameMgr.getItemArrByKeyVal(items);   //通过配置keyVal数据砖块道具列表
         this.rewardTableView.initTableView(rewards.length, { array: rewards, target: this }); 
