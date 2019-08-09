@@ -40,7 +40,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 540,
+      "width": 550,
       "height": 160
     },
     "_anchorPoint": {
@@ -121,7 +121,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 540,
+      "width": 550,
       "height": 150
     },
     "_anchorPoint": {
@@ -714,7 +714,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "selBg",
+    "_name": "cellbg",
     "_objFlags": 0,
     "_parent": {
       "__id__": 18
@@ -740,8 +740,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
-      "height": 200
+      "width": 180,
+      "height": 180
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -785,7 +785,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "2813f967-e417-4de4-90a1-ace0b741d6db"
+      "__uuid__": "71332d49-8d42-4b7d-a2bd-90d07a9e933b"
     },
     "_type": 1,
     "_sizeMode": 0,

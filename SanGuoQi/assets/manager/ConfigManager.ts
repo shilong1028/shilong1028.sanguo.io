@@ -23,6 +23,17 @@ export class st_battle_info{
         this.town = parseInt(this.town);
         this.generals = CfgMgr.getKeyValAry(this.generals, ";");   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
     }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_battle_info();
+        temp.name = this.name;
+        temp.tower = this.tower;
+        temp.town = this.town;
+        temp.generals = this.generals;
+        return temp;
+    }
 }
 
 //城池配置数据
@@ -46,6 +57,22 @@ export class st_city_info {
         this.near_citys = CfgMgr.getIntAry(this.near_citys, ";");
         this.counties = CfgMgr.getStringAry(this.counties, ";");
     }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_city_info();
+        temp.name = this.name;
+        temp.type = this.type;
+        temp.pos_x = this.pos_x;
+        temp.pos_y = this.pos_y;
+        temp.population = this.population;
+        temp.campId = this.campId;
+        temp.near_citys = this.near_citys;
+        temp.counties = this.counties;
+        temp.desc = this.desc;
+        return temp;
+    }
 }
 
 //割据势力配置数据
@@ -55,6 +82,15 @@ export class st_camp_info {
     
     transType(){
         this.generals = CfgMgr.getIntAry(this.generals, ";");
+    }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_camp_info();
+        temp.name = this.name;
+        temp.generals = this.generals;
+        return temp;
     }
 }
 
@@ -78,6 +114,8 @@ export class st_general_info {
         this.skillNum = parseInt(this.skillNum);
     }
 
+    constructor(){
+    }
     clone(){
         let temp = new st_general_info();
         temp.name = this.name;
@@ -87,6 +125,7 @@ export class st_general_info {
         temp.atk = this.atk;
         temp.def = this.def;
         temp.skillNum = this.skillNum;
+        temp.desc = this.desc;
         return temp;
     }
 }
@@ -101,6 +140,17 @@ export class st_item_info{
     transType(){
         this.type = parseInt(this.type);
         this.cost = parseInt(this.cost);
+    }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_item_info();
+        temp.name = this.name;
+        temp.type = this.type;
+        temp.cost = this.cost;
+        temp.desc = this.desc;
+        return temp;
     }
 }
 
@@ -124,6 +174,22 @@ export class st_story_info{
         this.generals = CfgMgr.getIntAry(this.generals, ";");
         this.talks = CfgMgr.getIntAry(this.talks, ";");
     }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_story_info();
+        temp.type = this.type;
+        temp.targetCity = this.targetCity;
+        temp.name = this.name;
+        temp.vedio = this.vedio;
+        temp.battleId = this.battleId;
+        temp.rewards = this.rewards;
+        temp.generals = this.generals;
+        temp.talks = this.talks;
+        temp.desc = this.desc;
+        return temp;
+    }
 }
 
 //对话配置数据
@@ -132,10 +198,19 @@ export class st_talk_info{
     city;   //目标城池
     type;   //对话类型 type 故事类型，0默认（摇旗）1起义暴乱（火） 2 战斗（双刀）
     
-    
     transType(){
         this.city = parseInt(this.city);
         this.type = parseInt(this.type);
+    }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_talk_info();
+        temp.type = this.type;
+        temp.city = this.city;
+        temp.desc = this.desc;
+        return temp;
     }
 }
 
@@ -158,6 +233,21 @@ export class st_skill_info{
         this.def = parseInt(this.def);
         this.shiqi = parseInt(this.shiqi);
     }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_skill_info();
+        temp.name = this.name;
+        temp.cost = this.cost;
+        temp.mp = this.mp;
+        temp.hp = this.hp;
+        temp.atk = this.atk;
+        temp.def = this.def;
+        temp.shiqi = this.shiqi;
+        temp.desc = this.desc;
+        return temp;
+    }
 }
 
 //后宫配置数据
@@ -166,6 +256,15 @@ export class st_beautiful_info{
     desc;
     
     transType(){
+    }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_beautiful_info();
+        temp.name = this.name;
+        temp.desc = this.desc;
+        return temp;
     }
 }
 
@@ -220,56 +319,95 @@ class CfgManager_class {
     
     /**获取任务配置数据 */
     getTaskConf(taskId: number): st_story_info{
-        return this.C_story_info[taskId];
+        let obj = this.C_story_info[taskId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
     }
 
     /**获取话本配置数据 */
     getTalkConf(talkId: number): st_talk_info{
-        return this.C_talk_info[talkId];
+        let obj = this.C_talk_info[talkId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
     }
 
     /**获取城池配置数据 */
     getCityConf(cityId: number): st_city_info{
-        return this.C_city_info[cityId];
+        let obj = this.C_city_info[cityId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
     }
 
     /**获取势力阵营配置数据 */
     getCampConf(campId: number): st_camp_info{
-        return this.C_camp_info[campId];
+        let obj = this.C_camp_info[campId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
     }
 
     /**获取道具配置数据 */
     getItemConf(itemId: number): st_item_info{
-        return this.C_item_info[itemId];
+        let obj = this.C_item_info[itemId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
     }
 
     /**获取武将配置数据 */
     getGeneralConf(generalId: number): st_general_info{
-        return this.C_general_info[generalId];
+        let obj = this.C_general_info[generalId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
     }
 
     /**获取战场数据 */
     getBattleConf(battleId: number): st_battle_info{
-        return this.C_battle_info[battleId];
+        let obj = this.C_battle_info[battleId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
     }
 
     /**获取技能数据 */
     getSkillConf(skillId: number): st_skill_info{
-        return this.C_skill_info[skillId];
+        let obj = this.C_skill_info[skillId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
     }
 
     /**获取后宫数据 */
     getBeautifulConf(nvId: number): st_beautiful_info{
-        return this.C_beautiful_info[nvId];
+        let obj = this.C_beautiful_info[nvId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
     }
 
     //*************************************  以下为读取配置接口 *********************************** */
-
-    /*** 加载指定配置 */
-    loadConfig() {
-        //  加载关卡配置
-        this.getConfigInfo("C_general_info", "config/general_info", this);
-    }
 
     /*** 加载所有配置 */
     loadAllConfig(){

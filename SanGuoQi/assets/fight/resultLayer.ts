@@ -39,16 +39,24 @@ export default class ResultLayer extends cc.Component {
             this.initRewardList();
         }
 
-        let fightGeneralList = FightMgr.getFightScene().myDeadCards;
-        //注意，以下三个列表数据是同步的，即三个都正确记录了战斗之后的剩余兵力及杀敌数
-        //cc.log("fightGeneralList = "+JSON.stringify(fightGeneralList));
-        // cc.log("list = "+JSON.stringify(FightMgr.battleGeneralArr));
-        // cc.log("allList = "+JSON.stringify(MyUserData.GeneralList));
+        let fightGeneralList = FightMgr.battleGeneralArr;
+        cc.log("fightGeneralList = "+JSON.stringify(fightGeneralList));
         this.totalKillCount = 0;
         for(let i=0; i<fightGeneralList.length; ++i){
-            this.totalKillCount += fightGeneralList[i].generalInfo.killCount;
+            this.totalKillCount += fightGeneralList[i].tempFightInfo.killCount;
         }
         this.balancedExp = Math.ceil(this.totalKillCount/10/fightGeneralList.length);   //均衡经验值（总杀敌数的一半用于每个武将均衡经验增加，武将杀敌的另一半用于自己经验增加）
+
+        for(let i=0; i<fightGeneralList.length; ++i){
+            let general = fightGeneralList[i].clone();
+            let exp = Math.floor(general.tempFightInfo.killCount/10);
+            exp += this.balancedExp;   //均衡经验值（总杀敌数的一半用于每个武将均衡经验增加，武将杀敌的另一半用于自己经验增加）
+            general.generalExp += exp;
+            general.updateLvByExp();
+            general.tempFightInfo = null;
+            MyUserMgr.updateGeneralList(general, false);
+        }
+        MyUserMgr.saveGeneralList();
 
         this.fightTableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
         this.fightTableView.initTableView(fightGeneralList.length, { array: fightGeneralList, target: this });
@@ -72,18 +80,6 @@ export default class ResultLayer extends cc.Component {
         if(GameMgr.curTaskConf.type == 5){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
             GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
         }
-
-        let fightGeneralList = FightMgr.getFightScene().myDeadCards;
-        for(let i=0; i<fightGeneralList.length; ++i){
-            let exp = Math.floor(fightGeneralList[i].generalInfo.killCount/10);
-            exp += this.balancedExp;   //均衡经验值（总杀敌数的一半用于每个武将均衡经验增加，武将杀敌的另一半用于自己经验增加）
-            fightGeneralList[i].generalInfo.generalExp += exp;
-            fightGeneralList[i].generalInfo.updateLvByExp();
-
-            fightGeneralList[i].generalInfo.killCount = 0;
-        }
-        MyUserMgr.saveGeneralList();
-
         cc.director.loadScene("mainScene");
     }
 }

@@ -1,9 +1,9 @@
 
 import viewCell from "../tableView/viewCell";
-import { CardInfo } from "../manager/Enum";
 import Card from "./card";
 import { ROOT_NODE } from "../common/rootNode";
 import { GameMgr } from "../manager/GameManager";
+import { GeneralInfo } from "../manager/Enum";
 
 
 //用于tableView的itemCell
@@ -28,7 +28,7 @@ export default class ResultCell extends viewCell {
     @property(cc.Node)
     lvUpNode: cc.Node = null;
 
-    cellData : CardInfo = null;  
+    cellData : GeneralInfo = null;  
     cellIdx : number = -1;  
 
     cardSc: Card = null;
@@ -54,20 +54,20 @@ export default class ResultCell extends viewCell {
             this.headNode.addChild(itemNode, 10);
             this.cardSc = itemNode.getComponent(Card);
         }
-        this.cardSc.showGeneralCard(this.cellData.generalInfo);
+        this.cardSc.showGeneralCard(this.cellData);
 
         this.lvUpNode.active = false;
-        this.bingCount.string = "兵力剩余：" + this.cellData.generalInfo.bingCount.toString();
-        this.killCount.string = "杀敌：" + this.cellData.generalInfo.killCount.toString();
+        this.bingCount.string = "兵力剩余：" + this.cellData.bingCount.toString();
+        this.killCount.string = "杀敌：" + this.cellData.tempFightInfo.killCount.toString();
 
-        let generalLv = this.cellData.generalInfo.generalLv;
-        let exp = Math.floor(this.cellData.generalInfo.killCount/10);
+        let generalLv = this.cellData.generalLv;
+        let exp = Math.floor(this.cellData.tempFightInfo.killCount/10);
         exp += data.target.balancedExp;   //均衡经验值（总杀敌数的一半用于每个武将均衡经验增加，武将杀敌的另一半用于自己经验增加）
         this.expLabel.string = "增加经验：" + exp.toString();
 
         if(generalLv < 100){
             let maxExp = GameMgr.getMaxGeneralExpByLv(generalLv);
-            let generalExp = this.cellData.generalInfo.generalExp + exp;
+            let generalExp = this.cellData.generalExp + exp;
             let oldLv = generalLv;
             while(generalExp >= maxExp){
                 generalLv ++;

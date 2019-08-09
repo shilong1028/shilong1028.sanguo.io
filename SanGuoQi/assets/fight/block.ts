@@ -19,11 +19,11 @@ export default class Block extends cc.Component {
     @property(cc.Node)
     headNode: cc.Node = null;
     @property(cc.Node)
-    runBg: cc.Node = null;
+    runBg: cc.Node = null;   //路径范围显示图片
     @property(cc.Node)
-    atkBg: cc.Node = null;
+    atkBg: cc.Node = null;   //攻击范围显示图片
     @property(cc.Node)
-    effNode: cc.Node = null;
+    effNode: cc.Node = null;  //特效总节点
 
     @property(cc.SpriteAtlas)
     qiupAtlas: cc.SpriteAtlas = null;  //士气增加的特效
@@ -45,8 +45,8 @@ export default class Block extends cc.Component {
         NoticeMgr.on(NoticeType.SelBlockMove, this.handleSelBlockMove, this);  //准备拖动砖块
         NoticeMgr.on(NoticeType.PerNextRound, this.handlePerNextRound, this);  //下一个回合准备
 
-        this.runBg.active = false;
-        this.atkBg.active = false;
+        this.runBg.active = false;    //路径范围显示图片
+        this.atkBg.active = false;   //攻击范围显示图片
     }
 
     onDestroy(){
@@ -74,7 +74,7 @@ export default class Block extends cc.Component {
             if(this.cardInfo.shiqi < 0){
                 this.cardInfo.shiqi = 0;
             }
-            this.cardNode.getComponent(Card).handleShiqiChange(val);
+            this.cardNode.getComponent(Card).showCardShiqiLabel();   //显示士气值
 
             if(bShowAni){
                 let effNode = null;
@@ -88,10 +88,9 @@ export default class Block extends cc.Component {
                 }
             }
 
-            if(this.cardInfo.shiqi < 10){  //士气过低，逃离战场
+            if(this.cardInfo.shiqi <= 0){  //士气过低，逃离战场
                 cc.log("士气过低，逃离战场  this.cardInfo = "+JSON.stringify(this.cardInfo));
                 if(this.cardInfo.campId == FightMgr.myCampId){
-                    FightMgr.getFightScene().addMyDeadCard(this.cardInfo);   //添加我方武将战死数据
                     FightMgr.getFightScene().setMyOpenBlock(false, this);   //设置我方已经开启的卡牌
                 }else{
                     FightMgr.getFightScene().setEnemyOpenBlock(false, this);   //设置敌方已经开启的卡牌
@@ -108,9 +107,8 @@ export default class Block extends cc.Component {
         if(this.isLock == true){   //未解锁
             return;
         }
-
-        this.runBg.active = false;
-        this.atkBg.active = false;
+        this.runBg.active = false;    //路径范围显示图片
+        this.atkBg.active = false;   //攻击范围显示图片
 
         if(selBlock && selBlock.blockId != this.blockId){
             let offX = Math.abs(this.node.x - selBlock.node.x);
@@ -150,7 +148,7 @@ export default class Block extends cc.Component {
     }
 
     /**随机卡牌数据 */
-    randCardData(idx: number){
+    initBlockData(idx: number){
         this.blockId = idx;
         if(idx == 8 || idx == 11){
             if(idx == 8){
@@ -179,6 +177,26 @@ export default class Block extends cc.Component {
 
             FightMgr.getFightScene().setLockBlock(this.isLock, this);   //设置地块开启或锁定
             this.showBlockCard(this.cardInfo);
+        }
+    }
+
+    /**显示地块上卡牌 */
+    showBlockCard(info: CardInfo){
+        //cc.log("showBlockCard(), this.blockId = "+this.blockId+"; this.isLock = "+this.isLock+"; info = "+JSON.stringify(info));
+        if(this.isLock == false){   //地块未锁定
+            if(info){
+                this.cardInfo = info;
+    
+                if(this.cardNode == null){
+                    let cardNode = cc.instantiate(FightMgr.getFightScene().pfCard);
+                    this.headNode.addChild(cardNode);
+                    this.cardNode = cardNode;
+                }
+                this.cardNode.opacity = 255; 
+                this.cardNode.getComponent(Card).setCardData(info);
+            }
+
+            this.blockSpr.spriteFrame = this.openFrames[this.ArrowOrTown];  //箭楼或城池 0无，1箭楼，2城池
         }
     }
 
@@ -228,32 +246,6 @@ export default class Block extends cc.Component {
             }else{
                 this.cardNode.opacity = 255;
             }
-        }
-    }
-
-    /**初始化地块数据 */
-    initBlockData(id: number, info: CardInfo){
-        this.blockId = id;
-        this.cardInfo = info;
-    }
-
-    /**显示地块上卡牌 */
-    showBlockCard(info: CardInfo){
-        //cc.log("showBlockCard(), this.blockId = "+this.blockId+"; this.isLock = "+this.isLock+"; info = "+JSON.stringify(info));
-        if(this.isLock == false){   //地块未锁定
-            if(info){
-                this.cardInfo = info;
-    
-                if(this.cardNode == null){
-                    let cardNode = cc.instantiate(FightMgr.getFightScene().pfCard);
-                    this.headNode.addChild(cardNode);
-                    this.cardNode = cardNode;
-                }
-                this.cardNode.opacity = 255; 
-                this.cardNode.getComponent(Card).setCardData(info);
-            }
-
-            this.blockSpr.spriteFrame = this.openFrames[this.ArrowOrTown];  //箭楼或城池 0无，1箭楼，2城池
         }
     }
 

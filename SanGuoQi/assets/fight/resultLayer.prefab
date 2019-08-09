@@ -449,8 +449,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -210,
-      "y": 270,
+      "x": -200,
+      "y": 230,
       "z": 0
     },
     "_scale": {
@@ -1038,8 +1038,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 400,
-      "height": 200
+      "width": 380,
+      "height": 180
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1049,7 +1049,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 84,
-      "y": 228,
+      "y": 200,
       "z": 0
     },
     "_scale": {
@@ -1104,8 +1104,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 400,
-      "height": 200
+      "width": 380,
+      "height": 180
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1162,8 +1162,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 400,
-      "height": 200
+      "width": 380,
+      "height": 180
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1173,7 +1173,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 100,
+      "y": 90,
       "z": 0
     },
     "_scale": {
@@ -1334,18 +1334,18 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 200,
       "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -205,
-      "y": 155,
+      "x": -110,
+      "y": 320,
       "z": 0
     },
     "_scale": {
@@ -1377,8 +1377,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "奖励：",
-    "_N$string": "奖励：",
+    "_string": "攻城所得：",
+    "_N$string": "攻城所得：",
     "_fontSize": 40,
     "_lineHeight": 50,
     "_enableWrapText": true,

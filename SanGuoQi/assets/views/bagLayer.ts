@@ -15,13 +15,10 @@ export default class BagLayer extends cc.Component {
 
     @property(cc.Sprite)
     iconSpr: cc.Sprite = null;
-
     @property(cc.Label)
     nameLabel: cc.Label = null;
-
     @property(cc.Label)
     numLabel: cc.Label = null;
-
     @property(cc.Label)
     descLabel: cc.Label = null;
 
@@ -51,7 +48,7 @@ export default class BagLayer extends cc.Component {
         this.grid.removeAllChildren();
         let defaultSelItem = null;
         for(let i=0; i<MyUserData.ItemList.length && i<9; ++i){
-            let bagItem: ItemInfo = MyUserData.ItemList[i];
+            let bagItem: ItemInfo = MyUserData.ItemList[i].clone();
 
             let itemNode = cc.instantiate(ROOT_NODE.pfItem);
             this.grid.addChild(itemNode, 10);

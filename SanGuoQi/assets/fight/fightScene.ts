@@ -16,11 +16,11 @@ export default class FightScene extends cc.Component {
     @property(cc.Node)
     gridNode: cc.Node = null;   //棋盘网格节点
     @property(cc.Label)
-    roundDesc: cc.Label = null;
+    roundDesc: cc.Label = null;  //敌方回合/我方回合
     @property(cc.Toggle)
     autoToggle: cc.Toggle = null;
     @property(cc.Node)
-    toggleNode: cc.Node = null;
+    toggleNode: cc.Node = null;  //敌方AI，只能在游戏开始时选择
 
     @property(cc.Prefab)
     pfBlock: cc.Prefab = null;   //棋盘格对象
@@ -29,9 +29,9 @@ export default class FightScene extends cc.Component {
     @property(cc.Prefab)
     pfFightShow: cc.Prefab = null;  //战斗或合成展示层
     @property(cc.Prefab)
-    pfHelp: cc.Prefab = null;
+    pfHelp: cc.Prefab = null;    //战斗帮助
     @property(cc.Prefab)
-    pfResult: cc.Prefab = null;
+    pfResult: cc.Prefab = null;   //战斗结果
 
     selectBlock: Block = null;    //选中的将要移动的卡牌地块
     selCardNode: cc.Node = null;   //选中的卡牌对象（新创建）
@@ -39,8 +39,6 @@ export default class FightScene extends cc.Component {
     myOpenBlocks: Block[] = new Array();   //我方已经开启的卡牌集合
     enemyOpenBlocks: Block[] = new Array();   //敌方已经开启的卡牌集合
     lockBlocks: Block[] = new Array();   //未开启的地块集合
-
-    myDeadCards: CardInfo[] = new Array();   //已经战死的卡牌数据，用于战斗结算显示（战斗后的士兵及杀敌数）
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -108,7 +106,7 @@ export default class FightScene extends cc.Component {
         for(let i=0; i<totalCardCount;++i){
             let block = cc.instantiate(this.pfBlock);
             this.gridNode.addChild(block);
-            block.getComponent(Block).randCardData(i);   //随机产生卡牌
+            block.getComponent(Block).initBlockData(i);   //随机产生卡牌
         }
     }
 
@@ -257,16 +255,10 @@ export default class FightScene extends cc.Component {
         if(bCheckOver == true){
             if(myCampCount == 0){   //失败
                 FightMgr.FightWin = false;  //战斗胜利或失败
-                for(let i=0; i<this.myOpenBlocks.length; ++i){
-                    this.addMyDeadCard(this.myOpenBlocks[i].cardInfo)
-                }
                 FightMgr.showLayer(this.pfResult);
                 return true;
             }else if(enemyCampCount == 0){   //胜利
                 FightMgr.FightWin = true;  //战斗胜利或失败
-                for(let i=0; i<this.myOpenBlocks.length; ++i){
-                    this.addMyDeadCard(this.myOpenBlocks[i].cardInfo)
-                }
                 FightMgr.showLayer(this.pfResult);
                 return true;
             }
@@ -308,11 +300,6 @@ export default class FightScene extends cc.Component {
                 }
             }
         }
-    }
-
-    /**添加我方武将战死数据 */
-    addMyDeadCard(info: CardInfo){
-        this.myDeadCards.push(info);  //已经战死的卡牌数据，用于战斗结算显示（战斗后的士兵及杀敌数）
     }
 
     /**设置敌方已经开启的卡牌 */

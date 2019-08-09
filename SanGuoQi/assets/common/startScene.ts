@@ -4,6 +4,8 @@ import { CfgMgr } from "../manager/ConfigManager";
 import { FightMgr } from "../manager/FightManager";
 import { GeneralInfo } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
+import { ROOT_NODE } from "./rootNode";
+import TipsDialog from "./tipsDialog";
 
 //初始场景，用于初始化加载数据
 const {ccclass, property} = cc._decorator;
@@ -12,6 +14,9 @@ const {ccclass, property} = cc._decorator;
 export default class StartScene extends cc.Component {
     @property(cc.Node)
     btnNode: cc.Node = null;
+
+    @property(cc.Prefab)
+    pfTipsDialog: cc.Prefab = null;  //提示框
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -33,9 +38,12 @@ export default class StartScene extends cc.Component {
     }
 
     onResetGame(){
-        this.btnNode.active = false;
-        MyUserMgr.clearUserData();   //清除所有用户数据
-        cc.director.loadScene("mainScene");
+        let layer = GameMgr.showLayer(this.pfTipsDialog);
+        layer.getComponent(TipsDialog).setTipStr("是否清除所有游戏重新开始？", ()=>{
+            this.btnNode.active = false;
+            MyUserMgr.clearUserData();   //清除所有用户数据
+            cc.director.loadScene("mainScene");
+        });
     }
 
     onDemoBtn(){

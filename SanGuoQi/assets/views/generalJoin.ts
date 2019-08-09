@@ -54,7 +54,7 @@ export default class GeneralJoin extends cc.Component {
         nameStr +="武将来投";
         this.descLabel.string = nameStr;
 
-        this.tableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
-        this.tableView.initTableView(this.cellArr.length, { array: this.cellArr, target: this }); 
+        this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
+        this.tableView.initTableView(this.cellArr.length, { array: this.cellArr, target: this, bShowSel: false}); 
     }
 }

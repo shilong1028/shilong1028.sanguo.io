@@ -27,11 +27,11 @@
     "_level": 1,
     "_components": [
       {
-        "__id__": 63
+        "__id__": 66
       }
     ],
     "_prefab": {
-      "__id__": 64
+      "__id__": 67
     },
     "_opacity": 255,
     "_color": {
@@ -218,24 +218,27 @@
         "__id__": 30
       },
       {
-        "__id__": 39
+        "__id__": 33
       },
       {
-        "__id__": 47
+        "__id__": 42
       },
       {
-        "__id__": 55
+        "__id__": 50
+      },
+      {
+        "__id__": 58
       }
     ],
     "_active": true,
     "_level": 2,
     "_components": [
       {
-        "__id__": 61
+        "__id__": 64
       }
     ],
     "_prefab": {
-      "__id__": 62
+      "__id__": 65
     },
     "_opacity": 255,
     "_color": {
@@ -598,12 +601,12 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -150,
+      "x": -270,
       "y": 350,
       "z": 0
     },
@@ -765,7 +768,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 550,
-      "height": 200
+      "height": 190
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -823,7 +826,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 550,
-      "height": 200
+      "height": 190
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -833,7 +836,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 100,
+      "y": 95,
       "z": 0
     },
     "_scale": {
@@ -996,17 +999,17 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
+      "width": 280,
       "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -180,
+      "x": -270,
       "y": 85,
       "z": 0
     },
@@ -1039,8 +1042,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "武将列表",
-    "_N$string": "武将列表",
+    "_string": "选择出战的武将",
+    "_N$string": "选择出战的武将",
     "_fontSize": 40,
     "_lineHeight": 50,
     "_enableWrapText": true,
@@ -1068,6 +1071,104 @@
   },
   {
     "__type__": "cc.Node",
+    "_name": "fightNum",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 6
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 3,
+    "_components": [
+      {
+        "__id__": 31
+      }
+    ],
+    "_prefab": {
+      "__id__": 32
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 0,
+      "g": 255,
+      "b": 0,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 222.25,
+      "height": 50
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 40,
+      "y": 85,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "groupIndex": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 30
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_string": "出战数量：3",
+    "_N$string": "出战数量：3",
+    "_fontSize": 40,
+    "_lineHeight": 50,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0,
+    "_N$cacheMode": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "7d5818b5-4ded-4b5b-b0a5-893c5dd59fa2"
+    },
+    "fileId": "236ZB8QwpO3ZweP63WNbYt",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
     "_name": "generalList",
     "_objFlags": 0,
     "_parent": {
@@ -1075,21 +1176,21 @@
     },
     "_children": [
       {
-        "__id__": 31
+        "__id__": 34
       }
     ],
     "_active": true,
     "_level": 3,
     "_components": [
       {
-        "__id__": 36
+        "__id__": 39
       },
       {
-        "__id__": 37
+        "__id__": 40
       }
     ],
     "_prefab": {
-      "__id__": 38
+      "__id__": 41
     },
     "_opacity": 255,
     "_color": {
@@ -1140,22 +1241,22 @@
     "_name": "view",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 30
+      "__id__": 33
     },
     "_children": [
       {
-        "__id__": 32
+        "__id__": 35
       }
     ],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 34
+        "__id__": 37
       }
     ],
     "_prefab": {
-      "__id__": 35
+      "__id__": 38
     },
     "_opacity": 255,
     "_color": {
@@ -1168,7 +1269,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 550,
-      "height": 200
+      "height": 190
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1206,14 +1307,14 @@
     "_name": "content",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 31
+      "__id__": 34
     },
     "_children": [],
     "_active": true,
     "_level": 0,
     "_components": [],
     "_prefab": {
-      "__id__": 33
+      "__id__": 36
     },
     "_opacity": 255,
     "_color": {
@@ -1226,7 +1327,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 550,
-      "height": 200
+      "height": 190
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1236,7 +1337,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 100,
+      "y": 95,
       "z": 0
     },
     "_scale": {
@@ -1275,7 +1376,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 31
+      "__id__": 34
     },
     "_enabled": true,
     "_spriteFrame": null,
@@ -1301,7 +1402,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 30
+      "__id__": 33
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -1331,7 +1432,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 30
+      "__id__": 33
     },
     "_enabled": true,
     "horizontal": true,
@@ -1343,10 +1444,10 @@
     "scrollEvents": [],
     "cancelInnerEvents": true,
     "_N$content": {
-      "__id__": 32
+      "__id__": 35
     },
     "content": {
-      "__id__": 32
+      "__id__": 35
     },
     "_N$verticalScrollBar": null,
     "isCellSelEffect": false,
@@ -1380,21 +1481,21 @@
     },
     "_children": [
       {
-        "__id__": 40
+        "__id__": 43
       }
     ],
     "_active": true,
     "_level": 3,
     "_components": [
       {
-        "__id__": 43
+        "__id__": 46
       },
       {
-        "__id__": 44
+        "__id__": 47
       }
     ],
     "_prefab": {
-      "__id__": 46
+      "__id__": 49
     },
     "_opacity": 255,
     "_color": {
@@ -1445,18 +1546,18 @@
     "_name": "New Label",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 39
+      "__id__": 42
     },
     "_children": [],
     "_active": true,
     "_level": 5,
     "_components": [
       {
-        "__id__": 41
+        "__id__": 44
       }
     ],
     "_prefab": {
-      "__id__": 42
+      "__id__": 45
     },
     "_opacity": 255,
     "_color": {
@@ -1469,7 +1570,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 160,
-      "height": 40
+      "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1507,14 +1608,14 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 40
+      "__id__": 43
     },
     "_enabled": true,
     "_useOriginalSize": false,
     "_string": "开始战斗",
     "_N$string": "开始战斗",
     "_fontSize": 40,
-    "_lineHeight": 40,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -1543,13 +1644,13 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 39
+      "__id__": 42
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "14c86712-0835-49e7-b572-0a8e1c208ffd"
+      "__uuid__": "2b14e28f-165a-4527-970f-b99f2e70979e"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1573,14 +1674,14 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 39
+      "__id__": 42
     },
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
       {
-        "__id__": 45
+        "__id__": 48
       }
     ],
     "_N$interactable": true,
@@ -1668,21 +1769,21 @@
     },
     "_children": [
       {
-        "__id__": 48
+        "__id__": 51
       }
     ],
     "_active": true,
     "_level": 3,
     "_components": [
       {
-        "__id__": 51
+        "__id__": 54
       },
       {
-        "__id__": 52
+        "__id__": 55
       }
     ],
     "_prefab": {
-      "__id__": 54
+      "__id__": 57
     },
     "_opacity": 255,
     "_color": {
@@ -1733,18 +1834,18 @@
     "_name": "zhenLabel",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 47
+      "__id__": 50
     },
     "_children": [],
     "_active": true,
     "_level": 5,
     "_components": [
       {
-        "__id__": 49
+        "__id__": 52
       }
     ],
     "_prefab": {
-      "__id__": 50
+      "__id__": 53
     },
     "_opacity": 255,
     "_color": {
@@ -1795,7 +1896,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 48
+      "__id__": 51
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -1831,7 +1932,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 47
+      "__id__": 50
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -1861,14 +1962,14 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 47
+      "__id__": 50
     },
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
       {
-        "__id__": 53
+        "__id__": 56
       }
     ],
     "_N$interactable": true,
@@ -1956,18 +2057,18 @@
     },
     "_children": [
       {
-        "__id__": 56
+        "__id__": 59
       }
     ],
     "_active": true,
     "_level": 3,
     "_components": [
       {
-        "__id__": 59
+        "__id__": 62
       }
     ],
     "_prefab": {
-      "__id__": 60
+      "__id__": 63
     },
     "_opacity": 255,
     "_color": {
@@ -1980,7 +2081,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 550,
-      "height": 170
+      "height": 160
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2018,18 +2119,18 @@
     "_name": "descLabel",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 55
+      "__id__": 58
     },
     "_children": [],
     "_active": true,
     "_level": 4,
     "_components": [
       {
-        "__id__": 57
+        "__id__": 60
       }
     ],
     "_prefab": {
-      "__id__": 58
+      "__id__": 61
     },
     "_opacity": 255,
     "_color": {
@@ -2042,7 +2143,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 530,
-      "height": 70
+      "height": 60
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2080,14 +2181,14 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 56
+      "__id__": 59
     },
     "_enabled": true,
     "_useOriginalSize": false,
     "_string": "荀彧、荀攸、乐进、李典、于禁等将军前来投靠。",
     "_N$string": "荀彧、荀攸、乐进、李典、于禁等将军前来投靠。",
-    "_fontSize": 28,
-    "_lineHeight": 35,
+    "_fontSize": 25,
+    "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -2116,7 +2217,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 55
+      "__id__": 58
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -2205,22 +2306,25 @@
       "__id__": 25
     },
     "myTabelView": {
-      "__id__": 37
+      "__id__": 40
     },
     "titleLabel": {
       "__id__": 8
     },
     "descLabel": {
-      "__id__": 57
+      "__id__": 60
     },
     "zhenLabel": {
-      "__id__": 49
+      "__id__": 52
+    },
+    "numLabel": {
+      "__id__": 31
     },
     "fightBtn": {
-      "__id__": 44
+      "__id__": 47
     },
     "zhenBtnSpr": {
-      "__id__": 51
+      "__id__": 54
     },
     "zhenBtnFrames": [
       {

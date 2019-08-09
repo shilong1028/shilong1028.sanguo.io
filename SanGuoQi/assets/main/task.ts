@@ -90,9 +90,8 @@ export default class Task extends cc.Component {
             }else if(MyUserData.TaskId <= SpecialStory.dongzhuoOver){   //董卓之乱结束
                 NoticeMgr.emit(NoticeType.CityFlagStory, 2);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
             }
-            if(MyUserData.TaskId == SpecialStory.capitalOpen){  //开启主城
-                GameMgr.getMainScene().showHomeBtn(true);  //是否显示主城
-            }
+
+            GameMgr.getMainScene().showMenuBtnByTask(MyUserData.TaskId);   //根据任务进度是否显示募兵、部曲、技能、主城等按钮
 
             this.taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
             if(this.taskConf){

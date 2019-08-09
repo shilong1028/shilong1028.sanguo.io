@@ -24,26 +24,46 @@ export class ItemInfo{
 
         return temp;
     }
+
+    clone(){
+        let temp = new ItemInfo(this.itemId, this.count);
+        return temp;
+    }
+}
+
+//武将战斗临时数据类
+export class TempFightInfo{
+    bReadyFight: boolean = false;   //准备出战（临时数据不用保存）
+    killCount: number = 0;   //杀敌（士兵）数量（战斗后会转换为经验）
+    fightHp: number = 0;   //战斗时血量计算(战后复原)
+    fightMp: number = 0;   //战斗时智力计算(战后复原)
+
+    constructor(generalCfg: st_general_info){
+        this.bReadyFight = false;
+        this.killCount = 0;
+        this.fightHp = generalCfg.hp;
+        this.fightMp = generalCfg.mp;
+    }
 }
 
 //武将信息
 export class GeneralInfo{
     timeId: number = 0;   //武将的时间ID，玩家武将唯一编号
     generalId: number = 0;  
-    generalCfg: st_general_info = null;   //卡牌配置信息
 
-    bReadyFight: boolean = false;   //准备出战（临时数据不用保存）
-
-    //注意以下数据需要重新重新赋值
     generalLv: number = 1;   //武将等级
     generalExp: number = 0;   //武将经验
     bingCount: number = 0;   //部曲士兵数量
-    skills: SkillInfo[] = new Array();
 
-    killCount: number = 0;   //杀敌（士兵）数量（战斗后会转换为经验）
+    tempFightInfo: TempFightInfo = null;  //武将战斗临时数据类
+
+    skills: SkillInfo[] = new Array();
+    generalCfg: st_general_info = null;   //卡牌配置信息
 
     constructor(generalId:number, info:any=null){   
         this.timeId = new Date().getTime();
+        this.generalId = generalId;
+
         this.skills = new Array();
         if(info){  //只有从本地存储读取数据是会传递info
             this.generalLv = info.generalLv;
@@ -61,9 +81,8 @@ export class GeneralInfo{
             this.generalExp = 0;  
             this.bingCount = 0;
         }
-        this.bReadyFight = false;
-        this.killCount = 0;
-        this.generalId = generalId;
+        this.tempFightInfo = null;
+
         this.generalCfg = CfgMgr.getGeneralConf(generalId);
     }
 
@@ -91,10 +110,9 @@ export class GeneralInfo{
         temp.generalLv = this.generalLv;
         temp.generalExp = this.generalExp; 
         temp.bingCount = this.bingCount;
-        temp.bReadyFight = this.bReadyFight;
-        temp.killCount = this.killCount;
+        temp.tempFightInfo = this.tempFightInfo;
         temp.skills = this.skills;
-
+        
         return temp;
     }
 
@@ -131,28 +149,17 @@ export class GeneralInfo{
 export class CardInfo{
     campId: number = 0;   //阵营，0默认，1蓝方，2红方
     shiqi: number = 100;   //士气值
-    maxHp: number = 0;   //最大血量
-    maxMp: number = 0;   //最大智力
     generalInfo: GeneralInfo = null;   //武将信息
 
     constructor(campId: number, generalInfo: GeneralInfo=null){
         this.campId = campId;
         this.shiqi = 100;
         this.generalInfo = generalInfo;
-        if(generalInfo){
-            this.maxHp = this.generalInfo.generalCfg.hp;
-            this.maxMp = this.generalInfo.generalCfg.mp;
-        }else{
-            this.maxHp = 0;
-            this.maxMp = 0;
-        }
     }
 
     clone(){
         let temp = new CardInfo(this.campId, this.generalInfo);
         temp.shiqi = this.shiqi;
-        temp.maxMp = this.maxMp;
-        temp.maxHp = this.maxHp;
 
         return temp;
     }
@@ -224,12 +231,13 @@ export class BeautifulInfo{
 
 //特殊故事节点
 export const SpecialStory = {
-    huangjinover: 4,  //黄巾之乱结束
-    dongzhuoOver: 13,  //董卓之乱结束
-    qiweiOpen: 2,  //骑都尉
-    jiangjunOpen: 8,  //奋武将军
-    taishouOpen: 10,  //东郡太守
-    zhoumuOpen: 11,  //兖州牧
+    huangjinover: 4,  //黄巾之乱结束(黄巾叛军占据城池旗帜复原)
+    dongzhuoOver: 13,  //董卓之乱结束(董卓叛军占据城池旗帜复原)
+    taishouOpen: 10,  //东郡太守（占据东郡）
+    zhoumuOpen: 11,  //兖州牧（占据山阳昌邑，治下兖州）
+    mubingOpen: 2,  //开启募兵
+    unitOpen: 3,   //开启部曲
+    skillOpen: 9,   //开启技能
     capitalOpen: 12,  //开启主城
 }
 

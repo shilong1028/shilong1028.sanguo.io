@@ -11,6 +11,10 @@ export default class GeneralCell extends viewCell {
 
     @property(cc.Node)
     selBg: cc.Node = null;
+    @property(cc.Node)
+    cellBg: cc.Node = null;
+    @property(cc.Node)
+    fightState: cc.Node = null;   //出战中...
 
     cardSc: Card = null;
 
@@ -18,49 +22,65 @@ export default class GeneralCell extends viewCell {
     cellIdx : number = -1;  
 
     targetSc: any = null;
-    bEnemy: boolean = false;   //是否敌军
+    bShowSel: boolean = false;   //是否响应选中
 
 
     //加载需要初始化数据时调用
     init (index, data, reload, group) {
-        if (index >= data.array.length) {   //{ array: list, target: x.js , bEnemy: false}
+        if (index >= data.array.length) {   //{ array: list, target: x.js , bShowSel: false}
             //不显示
             this.cellData = null;  
             this.node.active = false;
             return;
         }
-
+        this.fightState.active = false;   //出战中...
+        
         this.selBg.active = false;
-
-        this.onSelected(this._selectState);
-
         //if(reload){
             this.targetSc = data.target;
-            this.bEnemy = data.bEnemy;  //是否敌军
+            this.bShowSel = data.bShowSel;  //是否响应选中
             
             this.cellIdx = index;  
             this.cellData = data.array[this.cellIdx];
             this.node.active = true;
         //}
+        this.onSelected(this._selectState);
 
+        this.showGenralUI();
+    }
+
+    showGenralUI(){
+        //cc.log("showGenralUI(), this.cellIdx = "+this.cellIdx);
         if(this.cardSc == null){
             let itemNode = cc.instantiate(ROOT_NODE.pfCard);
-            this.node.addChild(itemNode, 10);
+            this.cellBg.addChild(itemNode, 10);
             this.cardSc = itemNode.getComponent(Card);
         }
         this.cardSc.showGeneralCard(this.cellData);
+
+        if(this.cellData.tempFightInfo){
+            if(this.cellData.tempFightInfo.bReadyFight == true){
+                this.fightState.active = true;
+            }else{
+                this.fightState.active = false;
+            }
+        }
+    }
+
+    handelUpdateGeneral(generalInfo: GeneralInfo){
+        //cc.log("handelUpdateGeneral(), this.cellIdx = "+this.cellIdx);
+        if(this.cellData && this.cellData.timeId == generalInfo.timeId){
+            this.cellData = generalInfo;
+            this.showGenralUI();
+        }
     }
 
     onSelected(bSel){
-        if(this.selBg){
-            if(bSel){
+        if(this.selBg && this.selBg.active != bSel){
+            if(bSel && this.bShowSel){
                 this.selBg.active = true;
-                if(this.targetSc){
-                    if(this.bEnemy == false && this.targetSc.handleGeneralCellClick){
-                        this.targetSc.handleGeneralCellClick(this.cellIdx);   //点击选中回调
-                    }else if(this.bEnemy == true && this.targetSc.handleEnemyCellClick){
-                        this.targetSc.handleEnemyCellClick(this.cellIdx);   //点击选中回调
-                    }
+                if(this.targetSc && this.targetSc.handleGeneralCellClick){
+                    this.targetSc.handleGeneralCellClick(this.cellIdx, this);   //点击选中回调
                 }
             }else{
                 this.selBg.active = false;

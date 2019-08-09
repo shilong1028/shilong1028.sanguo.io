@@ -47,6 +47,7 @@ export default class SkillCard extends cc.Component {
 
     // update (dt) {}
 
+    //武将技能
     initGeneralSkill(skillInfo: SkillInfo, targetSc: SkillLayer, generalInfo: GeneralInfo){
         this.skillInfo = skillInfo;
         this.targetSc = targetSc;
@@ -86,7 +87,7 @@ export default class SkillCard extends cc.Component {
                     }
                 }
             }
-            MyUserMgr.saveGeneralList();
+            MyUserMgr.updateGeneralList(this.generalInfo);
             return true;
         }
         return false;

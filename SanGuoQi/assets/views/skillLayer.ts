@@ -35,7 +35,8 @@ export default class SkillLayer extends cc.Component {
 
     cellArr: SkillInfo[] = new Array();
     selSkillInfo: SkillInfo = null;   //当前选中的技能数据
-    selGeneralInfo: GeneralInfo = null;  //选中的武将数据
+
+    generalArr: GeneralInfo[] = new Array();
 
     onLoad () {
         this.updateSelItemInfo(null);  //显示底部选中道具信息
@@ -57,21 +58,17 @@ export default class SkillLayer extends cc.Component {
         this.skillTableView.initTableView(this.cellArr.length, { array: this.cellArr, target: this }); 
         this.updateSelItemInfo(0);  //显示底部选中道具信息
 
-        this.initGeneralList();
+        //刷新武将列表
+        this.generalArr = MyUserMgr.getGeneralListClone();  //获取武将列表克隆
+
+        this.generalTableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
+        this.generalTableView.initTableView(this.generalArr.length, { array: this.generalArr, target: this}); 
     }
 
     // update (dt) {}
 
-    //刷新武将列表
-    initGeneralList(){
-        this.generalTableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
-        this.generalTableView.initTableView(MyUserData.GeneralList.length, { array: MyUserData.GeneralList, target: this}); 
-        this.selGeneralInfo = MyUserData.GeneralList[0];  //选中的武将数据
-    }
-
     handleSelGeneralCell(cellIdx: number){
         //cc.log("handleSelGeneralCell(), cellIdx = "+cellIdx);
-        this.selGeneralInfo = MyUserData.GeneralList[cellIdx];  //选中的武将数据
     }
 
     handleSelSkillCell(cellIdx: number){

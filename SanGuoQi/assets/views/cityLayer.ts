@@ -1,7 +1,7 @@
 import { st_city_info, CfgMgr, st_camp_info } from "../manager/ConfigManager";
 import { CityInfo } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
-import { MyUserMgr } from "../manager/MyUserData";
+import { MyUserMgr, MyUserData } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
 import FightReady from "./fightReady";
 
@@ -112,7 +112,11 @@ export default class CityLayer extends cc.Component {
                 this.fightBtn.interactable = false;
             }else if(flagType == 1){
                 this.campLabel.string = "势力阵营："+this.campCfg.name+"（敌对可攻击）";
-                this.fightBtn.interactable = true;
+                if(MyUserData.capitalLv > 0){
+                    this.fightBtn.interactable = true;
+                }else{
+                    this.fightBtn.interactable = false;
+                }
             }else{
                 this.campLabel.string = "势力阵营："+this.campCfg.name+"（中立不可攻击）";
                 this.fightBtn.interactable = false;

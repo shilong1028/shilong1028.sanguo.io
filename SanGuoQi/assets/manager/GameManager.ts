@@ -220,7 +220,7 @@ class GameManager {
 
     /**任务第一阶段操作完毕处理 */
     handleStoryShowOver(storyConf: st_story_info){
-        cc.log("handleStoryShowOver(), storyConf = "+JSON.stringify(storyConf));
+        //cc.log("handleStoryShowOver(), storyConf = "+JSON.stringify(storyConf));
         if(storyConf == null || storyConf == undefined){
             return;
         }

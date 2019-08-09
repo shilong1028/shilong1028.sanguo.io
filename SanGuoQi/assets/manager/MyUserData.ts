@@ -1,6 +1,6 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NoticeMgr } from "./NoticeManager";
-import { NoticeType, ItemInfo, GeneralInfo, SpecialStory } from "./Enum";
+import { NoticeType, ItemInfo, GeneralInfo } from "./Enum";
 
 
 //用户数据管理
@@ -12,8 +12,9 @@ export var MyUserData = {
     DiamondCount: 0,   //用户钻石(金锭）数
     FoodCount: 0,  //用户粮食数量
 
+    totalLineTime: 0,   //总的在线时长（每100s更新记录一次）
+
     roleLv: 1,  //主角等级
-    officalStr: "",  //主角官职
     capitalLv: 0,   //主城等级，0则未开启
 
     TaskId: 1,   //当前任务ID
@@ -38,10 +39,12 @@ class MyUserManager {
         LDMgr.setItem(LDKey.KEY_DiamondCount, 0);
         MyUserData.FoodCount = 0;   //用户粮食数量
         LDMgr.setItem(LDKey.KEY_FoodCount, 0);
+
+        MyUserData.totalLineTime = 0;  //总的在线时长（每100s更新记录一次）
+        LDMgr.setItem(LDKey.KEY_TotalLineTime, 0);
+
         MyUserData.roleLv = 1;  //主角等级
         LDMgr.setItem(LDKey.KEY_RoleLv, 1);
-        MyUserData.officalStr = "";  //主角官职
-        LDMgr.setItem(LDKey.KEY_Offical, "");
         MyUserData.capitalLv = 0;   //主城等级，0则未开启
         LDMgr.setItem(LDKey.KEY_CapitalLv, 0);
 
@@ -68,8 +71,10 @@ class MyUserManager {
         MyUserData.GoldCount = LDMgr.getItemInt(LDKey.KEY_GoldCount);   //用户金币
         MyUserData.DiamondCount = LDMgr.getItemInt(LDKey.KEY_DiamondCount);   //用户钻石(金锭）数
         MyUserData.FoodCount = LDMgr.getItemInt(LDKey.KEY_FoodCount);   //用户粮食数量
+
+        MyUserData.totalLineTime = LDMgr.getItemInt(LDKey.KEY_TotalLineTime);   //总的在线时长（每500s更新记录一次）
+
         MyUserData.roleLv = LDMgr.getItemInt(LDKey.KEY_RoleLv);   //主角等级
-        MyUserData.officalStr = LDMgr.getItem(LDKey.KEY_Offical);   //主角官职
         MyUserData.capitalLv = LDMgr.getItemInt(LDKey.KEY_CapitalLv);   //主城等级，0则未开启
 
         let taskInfo = LDMgr.getItemKeyVal(LDKey.KEY_StoryData);  //当前任务ID
@@ -90,6 +95,16 @@ class MyUserManager {
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
+    //更新在线总时长
+    updateLineTime(dt:number){
+        MyUserData.totalLineTime += dt;   //总的在线时长（每100s更新记录一次）
+
+        let intTime = Math.floor(MyUserData.totalLineTime);
+        if(intTime%100 == 0){
+            LDMgr.setItem(LDKey.KEY_TotalLineTime, intTime);
+        }
+    }
+
     //更新主城等级
     updateCapitalLv(capitalLv: number){
         MyUserData.capitalLv = capitalLv;
@@ -99,18 +114,14 @@ class MyUserManager {
         LDMgr.setItem(LDKey.KEY_CapitalLv, MyUserData.capitalLv);   //主城等级，0则未开启
     }
 
-    //更新主角等级或官职
-    updateRoleLvOrOffical(roleLv: number, offical: string=null){
+    //更新主角等级
+    updateRoleLv(roleLv: number){
         let oldRoleLv = 0;
         if(roleLv > 0){
             oldRoleLv = MyUserData.roleLv;
             MyUserData.roleLv = roleLv;  //主角等级
             LDMgr.setItem(LDKey.KEY_RoleLv, roleLv);
             
-        }
-        if(offical && offical.length > 0){
-            MyUserData.officalStr = offical;  //主角官职
-            LDMgr.setItem(LDKey.KEY_Offical, offical);
         }
         NoticeMgr.emit(NoticeType.UpdateRoleLvOffical, oldRoleLv);  //更新主角等级或官职
     }
@@ -255,14 +266,27 @@ class MyUserManager {
         return tempList;
     }
 
+    //获取武将列表克隆
+    getGeneralListClone(){
+        let tempArr = new Array();
+        for(let i=0; i<MyUserData.GeneralList.length; ++i){
+            let info: GeneralInfo = MyUserData.GeneralList[i].clone();
+            tempArr.push(info);
+        }
+        return tempArr;
+    }
+
     /**修改用户武将列表 */
-    updateGeneralList(general: GeneralInfo){
+    updateGeneralList(general: GeneralInfo, bSave:boolean=true){
         for(let i=0; i<MyUserData.GeneralList.length; ++i){
             let info: GeneralInfo = MyUserData.GeneralList[i];
             if(general.timeId == info.timeId){
                 MyUserData.GeneralList[i] = general;
-                this.saveGeneralList();
+                MyUserData.GeneralList[i].tempFightInfo = null;
                 NoticeMgr.emit(NoticeType.UpdateGeneral, general);  //更新单个武将
+                if(bSave){
+                    this.saveGeneralList();
+                }
                 return;
             }
         }
@@ -312,11 +336,11 @@ class MyUserManager {
                 tempList.push(tempItem);
             }
         }
-        if(tempList.length == 0){   //初始加入曹操，lv=3
+        if(tempList.length == 0){   //初始加入曹操
             let caocao = new GeneralInfo(3001);
             tempList.push(caocao);
 
-            this.updateRoleLvOrOffical(1, "议郎");
+            this.updateRoleLv(1);  //更新主角等级
         }
         return tempList;
     }
@@ -333,7 +357,7 @@ class MyUserManager {
                 this.saveGeneralList();
 
                 if(tempItem.generalLv > oldLv){
-                    this.updateRoleLvOrOffical(tempItem.generalLv);
+                    this.updateRoleLv(tempItem.generalLv);
                 }
                 return;
             }
@@ -372,16 +396,6 @@ class MyUserManager {
         if(state == 2){   //2已领取，下一个任务
             MyUserData.TaskId ++;
             MyUserData.TaskState = 0;
-
-            if(MyUserData.TaskId == SpecialStory.qiweiOpen){
-                this.updateRoleLvOrOffical(0, "骑都尉");
-            }else if(MyUserData.TaskId == SpecialStory.jiangjunOpen){
-                this.updateRoleLvOrOffical(0, "奋武将军");
-            }else if(MyUserData.TaskId == SpecialStory.taishouOpen){
-                this.updateRoleLvOrOffical(0, "东郡太守");
-            }else if(MyUserData.TaskId == SpecialStory.zhoumuOpen){
-                this.updateRoleLvOrOffical(0, "兖州牧");
-            }
         }
 
         LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString()+"-"+MyUserData.TaskState);

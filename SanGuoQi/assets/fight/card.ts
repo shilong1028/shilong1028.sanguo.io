@@ -10,7 +10,7 @@ export default class Card extends cc.Component {
     @property(cc.Sprite)
     cardSpr: cc.Sprite = null;
     @property(cc.Sprite)
-    campSpr: cc.Sprite = null;
+    campSpr: cc.Sprite = null;   //蓝方（我方）敌方（红方）
     @property(cc.SpriteAtlas)
     cardAtlas: cc.SpriteAtlas = null;
     @property([cc.SpriteFrame])
@@ -56,7 +56,7 @@ export default class Card extends cc.Component {
         this.nameLable.string = "";
         this.lvLabel.string = "Lv1";
         this.bingNumLabel.string = "兵";
-        this.shiqiLabel.string = "士气100";  
+        this.shiqiLabel.string = "";  
     }
 
     onDestroy(){
@@ -69,18 +69,14 @@ export default class Card extends cc.Component {
 
     // update (dt) {}
 
-    //士气变动
-    handleShiqiChange(val: number){
+    //显示士气值
+    showCardShiqiLabel(){
         if(this.cardInfo){
-            // this.cardInfo.shiqi += val;
-            // if(this.cardInfo.shiqi < 0){
-            //     this.cardInfo.shiqi = 0;
-            // }
             this.shiqiLabel.string = "士气"+this.cardInfo.shiqi.toString(); 
         }
     }
 
-    /**设置卡牌数据 */
+    /**设置卡牌数据(战斗) */
     setCardData(info: CardInfo){
         this.cardInfo = info;
         //cc.log("setCardData(), info = "+JSON.stringify(info));
@@ -98,7 +94,7 @@ export default class Card extends cc.Component {
 
         this.lvLabel.string = "Lv"+this.cardInfo.generalInfo.generalLv;
         this.bingNumLabel.string = "兵"+this.cardInfo.generalInfo.bingCount.toString();
-        this.shiqiLabel.string = "士气"+this.cardInfo.shiqi.toString(); 
+        this.showCardShiqiLabel();  //显示士气值
 
         let cardCfg = this.cardInfo.generalInfo.generalCfg;
         if(cardCfg){
@@ -111,10 +107,16 @@ export default class Card extends cc.Component {
             this.bingSpr.spriteFrame = this.bingSprFrames[nType-1];
             this.bingSpr.node.opacity = 255;
     
-            this.hpProgressBar.progress = cardCfg.hp/1000;
-            this.mpProgressBar.progress = cardCfg.mp/100;
             this.atkProgressBar.progress = cardCfg.atk/100;
             this.defProgressBar.progress = cardCfg.def/100;
+
+            if(this.cardInfo.generalInfo.tempFightInfo){  //战斗中
+                this.hpProgressBar.progress = this.cardInfo.generalInfo.tempFightInfo.fightHp/1000;
+                this.mpProgressBar.progress = this.cardInfo.generalInfo.tempFightInfo.fightMp/100;
+            }else{
+                this.hpProgressBar.progress = cardCfg.hp/1000;
+                this.mpProgressBar.progress = cardCfg.mp/100;
+            }
         }
     }
 
@@ -123,6 +125,7 @@ export default class Card extends cc.Component {
         //cc.log("showGeneralCard(), info = "+JSON.stringify(info));
         this.nameLable.node.color = cc.color(255, 0, 255);
         this.nameLable.string = info.generalCfg.name;
+        this.campSpr.node.opacity = 255;
 
         this.cardSpr.spriteFrame = this.cardAtlas.getSpriteFrame(info.generalId.toString());
         this.cardSpr.node.opacity = 255;

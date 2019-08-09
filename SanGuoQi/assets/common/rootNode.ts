@@ -1,5 +1,6 @@
 import TipsText from "./tipsText";
 import TipsDialog from "./tipsDialog";
+import { MyUserMgr } from "../manager/MyUserData";
 
 //游戏常驻节点
 const {ccclass, property} = cc._decorator;
@@ -43,6 +44,8 @@ export default class RootNode extends cc.Component {
     }
 
     update (dt) {
+        MyUserMgr.updateLineTime(dt);  //总的在线时长（每500s更新记录一次）
+
         if(this.tipsStep > 0){
             this.tipsStep --;
             if(this.tipsStep <= 0){

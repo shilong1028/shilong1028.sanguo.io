@@ -1,5 +1,5 @@
 import { NoticeMgr } from "../manager/NoticeManager";
-import { NoticeType } from "../manager/Enum";
+import { NoticeType, SpecialStory } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserData } from "../manager/MyUserData";
 import { st_story_info } from "../manager/ConfigManager";
@@ -14,27 +14,33 @@ const {ccclass, property} = cc._decorator;
 export default class MainScene extends cc.Component {
 
     @property(cc.Label)
-    goldLabel: cc.Label = null;
+    goldLabel: cc.Label = null;   //金币
     @property(cc.Label)
-    diamondLabel: cc.Label = null;
+    diamondLabel: cc.Label = null;   //钻石（金锭）
     @property(cc.Label)
-    foodLabel: cc.Label = null;
+    foodLabel: cc.Label = null;   //粮草
     @property(cc.Label)
-    lvLabel: cc.Label = null;
+    lvLabel: cc.Label = null;   //主角等级
     @property(cc.Label)
-    officalLabel: cc.Label = null;
+    lineTimeLabel: cc.Label = null;   //在线时长
     @property(cc.Sprite)
-    headSpr: cc.Sprite = null;
+    headSpr: cc.Sprite = null;   //主角头像
 
     @property(cc.Sprite)
-    handSpr: cc.Sprite = null;
+    handSpr: cc.Sprite = null;   //引导手指
     @property([cc.SpriteFrame])
     handFrames: cc.SpriteFrame[] = new Array(2);
 
     @property(cc.Node)
     mapNode: cc.Node = null;   //地图总节点
     @property(cc.Node)
-    capitalNode: cc.Node = null;  //主城按钮
+    homeBtnNode: cc.Node = null;  //主城按钮
+    @property(cc.Node)
+    skillBtnNode: cc.Node = null;  //技能按钮
+    @property(cc.Node)
+    unitBtnNode: cc.Node = null;  //部曲按钮
+    @property(cc.Node)
+    mubingBtnNode: cc.Node = null;  //募兵按钮
 
     @property(cc.Node)
     topNode: cc.Node = null;
@@ -51,7 +57,7 @@ export default class MainScene extends cc.Component {
     taskOptNode: cc.Node = null;  //任务伸缩按钮节点
 
     @property(cc.Prefab)
-    pfTask: cc.Prefab = null;  
+    pfTask: cc.Prefab = null;  //任务界面
     @property(cc.Prefab)
     pfBag: cc.Prefab = null;   //背包界面
     @property(cc.Prefab)
@@ -66,7 +72,7 @@ export default class MainScene extends cc.Component {
     @property(cc.SpriteAtlas)
     cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
     @property(cc.SpriteAtlas)
-    upgradeAtlas: cc.SpriteAtlas = null;
+    upgradeAtlas: cc.SpriteAtlas = null;   //主角升级序列帧
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -86,7 +92,7 @@ export default class MainScene extends cc.Component {
         NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this); 
         NoticeMgr.on(NoticeType.UpdateDiamond, this.UpdateDiamondCount, this); 
         NoticeMgr.on(NoticeType.UpdateFood, this.UpdateFoodCount, this); 
-        NoticeMgr.on(NoticeType.UpdateRoleLvOffical, this.updateLvAndOffical, this);  //更新主角等级或官职
+        NoticeMgr.on(NoticeType.UpdateRoleLvOffical, this.updateRoleLvLabel, this);  //更新主角等级
         
         NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
 
@@ -103,30 +109,45 @@ export default class MainScene extends cc.Component {
         }
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
 
-        this.showHomeBtn();  //主城按钮
+        this.showMenuBtnByTask();  //根据任务进度是否显示募兵、部曲、技能、主城等按钮
     }
 
     start () {
         this.UpdateGoldCount();
         this.UpdateDiamondCount();
         this.UpdateFoodCount();
-        this.updateLvAndOffical();  //更新主角等级和官职
+        this.updateRoleLvLabel();  //更新主角等级
 
         this.showHandActions(-1);   //引导用的手指动画（一定要放到任务之前初始，因为位置由任务决定）
 
-        this.setTaskInfo();   //初始化任务
+        this.initTaskInfo();   //初始化任务
+        this.showLineTime();   //显示在线时长
     }
 
-    // update (dt) {}
+    update (dt) {
+        this.showLineTime();   //显示在线时长
+    }
 
     onDestroy(){
         this.node.targetOff(this);
         NoticeMgr.offAll(this);
     }
 
-    updateLvAndOffical(oldRoleLv: number=0){
+    //显示在线时长
+    showLineTime(){
+        let hour = Math.floor(MyUserData.totalLineTime/60/60);
+        let min = Math.floor(MyUserData.totalLineTime/60);
+        let sec = Math.floor(MyUserData.totalLineTime%60);
+        if(hour > 0){
+            this.lineTimeLabel.string = hour + ":" + min + ":" + sec;
+        }else{
+            this.lineTimeLabel.string = min + ":" + sec;
+        }
+    }
+
+    //更新主角等级
+    updateRoleLvLabel(oldRoleLv: number=0){
         this.lvLabel.string = MyUserData.roleLv.toString();
-        this.officalLabel.string = MyUserData.officalStr;
         if(oldRoleLv > 0){   //主角等级提升
             ROOT_NODE.showTipsText("主角等级提升!");
             FightMgr.showFramesAniAndRemove(this.headSpr.node, cc.v2(0, 20), this.upgradeAtlas, true);
@@ -145,7 +166,8 @@ export default class MainScene extends cc.Component {
         this.foodLabel.string = MyUserData.FoodCount.toString();
     }
 
-    setTaskInfo(){
+    //初始化任务
+    initTaskInfo(){
         let task = cc.instantiate(this.pfTask)
         task.name = "TaskInfo";
         task.y = -95;
@@ -276,19 +298,37 @@ export default class MainScene extends cc.Component {
         }
     }
 
-    //是否显示主城
-    showHomeBtn(bForceShow:boolean=false){
-        if(MyUserData.capitalLv > 0 || bForceShow == true){
-            this.capitalNode.active = true;  //主城按钮
+    //根据任务进度是否显示募兵、部曲、技能、主城等按钮
+    showMenuBtnByTask(){
+        if(MyUserData.TaskId >= SpecialStory.mubingOpen){  //开启募兵
+            this.mubingBtnNode.active = true; 
+            if(MyUserData.TaskId >= SpecialStory.unitOpen){  //开启部曲
+                this.unitBtnNode.active = true; 
+                if(MyUserData.TaskId >= SpecialStory.skillOpen){  //开启技能
+                    this.skillBtnNode.active = true; 
+                    if(MyUserData.TaskId >= SpecialStory.capitalOpen){  //开启主城
+                        this.homeBtnNode.active = true; 
+                    }else{
+                        this.homeBtnNode.active = false;
+                    }
+                }else{
+                    this.skillBtnNode.active = false;
+                    this.homeBtnNode.active = false;
+                }
+            }else{
+                this.unitBtnNode.active = false;
+                this.skillBtnNode.active = false;
+                this.homeBtnNode.active = false;
+            }
         }else{
-            this.capitalNode.active = false; 
+            this.mubingBtnNode.active = false;
+            this.unitBtnNode.active = false;
+            this.skillBtnNode.active = false;
+            this.homeBtnNode.active = false;
         }
     }
 
-    onHomeBtn(){
-        cc.director.loadScene("capitalScene");
-    }
-
+    //任务栏伸缩操作
     onTaskOptBtn(){
         this.taskNode.stopAllActions();
         this.bTaskUp = !this.bTaskUp;
@@ -311,12 +351,25 @@ export default class MainScene extends cc.Component {
         }
     }
 
+    onHomeBtn(){
+        cc.director.loadScene("capitalScene");  //点击主城
+    }
     onBagBtn(){
-        GameMgr.showLayer(this.pfBag);
+        GameMgr.showLayer(this.pfBag);  //背包（武库）界面
+    }
+    onSkillBtn(){
+        GameMgr.showLayer(this.pfSkill);  //技能界面
+    }    
+    onSoldierBtn(){
+        GameMgr.showLayer(this.pfRecruit);   //招募界面
     }
 
-    onSkillBtn(){
-        GameMgr.showLayer(this.pfSkill);
+    onGeneralBtn(){
+        GameMgr.showLayer(this.pfUnit);   //武将部曲
+    }
+
+    onRoleBtn(){
+        
     }
 
     onShopBtn(){
@@ -339,12 +392,6 @@ export default class MainScene extends cc.Component {
 
     }
 
-    onSoldierBtn(){
-        GameMgr.showLayer(this.pfRecruit);   //招募界面
-    }
 
-    onGeneralBtn(){
-        GameMgr.showLayer(this.pfUnit);   //武将部曲
-    }
 
 }
