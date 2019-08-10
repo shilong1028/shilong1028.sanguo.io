@@ -2,7 +2,7 @@
 import TableView from "../tableView/tableView";
 import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import { GeneralInfo, CityInfo, TempFightInfo } from "../manager/Enum";
-import { CfgMgr, st_camp_info } from "../manager/ConfigManager";
+import { CfgMgr, st_camp_info, st_city_info } from "../manager/ConfigManager";
 import { ROOT_NODE } from "../common/rootNode";
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
@@ -102,22 +102,48 @@ export default class FightReady extends cc.Component {
         this.fightCityInfo = cityInfo;
         this.initGeneralList();
 
-        let campGeneralIds = cityCampCfg.generals;
-        let count = Math.min(5, campGeneralIds.length);
-        let offset = campGeneralIds.length - count;
-        if(offset > 0){
-            count += Math.floor(Math.random()*(offset - 0.1));
-        }
-        if(count > 6){
-            count = 6;
-        }
-
         if(this.maxGeneralLv < this.minGeneralLv){
             this.minGeneralLv = this.maxGeneralLv;
         }
         let offsetLv = (this.maxGeneralLv - this.minGeneralLv)*1.0;
 
         this.enmeyArr = new Array();
+
+        let cityGeneralIds = cityInfo.cityCfg.generals;
+        for(let i=0; i<cityGeneralIds.length; ++i){
+            let enemy = new GeneralInfo(cityGeneralIds[i]);  
+            enemy.tempFightInfo = new TempFightInfo(enemy.generalCfg);  //武将战斗临时数据类
+            enemy.generalLv = this.maxGeneralLv - Math.floor(Math.random()*offsetLv) - 1;
+            if(enemy.generalLv < 1){
+                enemy.generalLv = 1;
+            }
+            enemy.bingCount = GameMgr.getMaxBingCountByLv(enemy.generalLv);
+            for(let j=0; j<enemy.generalCfg.skillNum/2; ++j){
+                let randSkill = FightMgr.getRandomSkill();
+                enemy.skills.push(randSkill);
+            }
+            this.enmeyArr.push(enemy);
+        }
+
+        let campGeneralIds = new Array();
+        let campCitys = cityCampCfg.citys;
+        for(let i=0; i<campCitys.length; ++i){
+            if(cityInfo.cityId != campCitys[i]){
+                let cityCfg: st_city_info = CfgMgr.getCityConf(campCitys[i]);
+                for(let k=0; k<cityCfg.generals.length; ++k){
+                    campGeneralIds.push(cityCfg.generals[k]);
+                }
+            }
+        }
+
+        let count = Math.floor(Math.random()*2.999);   //随机增加3-7个
+        if(MyUserData.roleLv < 10){
+            count += 3;
+        }else if(MyUserData.roleLv < 50){
+            count += 4;
+        }else{
+            count += 5;
+        }
         let selIdxs = new Array();
         while(count > 0){
             let randIdx = Math.floor(Math.random()*(campGeneralIds.length - 0.1));
