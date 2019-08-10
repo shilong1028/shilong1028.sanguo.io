@@ -13,7 +13,7 @@ export default class CapitalScene extends cc.Component {
     lvLabel: cc.Label = null;
 
     @property(cc.Prefab)
-    pfBuildHelp: cc.Prefab = null;
+    pfBuild: cc.Prefab = null;
     @property(cc.Prefab)
     pfBeautiful: cc.Prefab = null;
 

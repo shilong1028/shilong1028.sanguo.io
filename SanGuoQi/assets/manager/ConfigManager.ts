@@ -274,6 +274,27 @@ export class st_beautiful_info{
     }
 }
 
+//建筑配置数据
+export class st_build_info{
+    name;
+    cost;
+    desc;
+    
+    transType(){
+        this.cost = parseInt(this.cost);
+    }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_build_info();
+        temp.name = this.name;
+        temp.cost = this.cost;
+        temp.desc = this.desc;
+        return temp;
+    }
+}
+
 
 //*********************  以下为接口类定义 *********************************** */
 
@@ -320,6 +341,10 @@ class CfgManager_class {
     //后宫配置表
     C_beautiful_info : Map<number, st_beautiful_info> = new Map<number, st_beautiful_info>();
     SC_beautiful_info = st_beautiful_info;
+
+    //建筑配置表
+    C_build_info : Map<number, st_build_info> = new Map<number, st_build_info>();
+    SC_build_info  = st_build_info;
 
     //********************** 以下是一些配置接口 ***************** */
     
@@ -406,6 +431,16 @@ class CfgManager_class {
     /**获取后宫数据 */
     getBeautifulConf(nvId: number): st_beautiful_info{
         let obj = this.C_beautiful_info[nvId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+
+    /**获取建筑数据 */
+    getBuildConf(buildId: number): st_build_info{
+        let obj = this.C_build_info[buildId];
         if(obj){
             return obj.clone();
         }else{

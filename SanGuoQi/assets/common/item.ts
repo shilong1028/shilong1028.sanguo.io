@@ -9,13 +9,13 @@ export default class Item extends cc.Component {
 
     @property(cc.Node)
     selImg: cc.Node = null;
+    @property(cc.Button)
+    selBtn: cc.Button = null;
 
     @property(cc.Sprite)
     iconSpr: cc.Sprite = null;
-
     @property(cc.Label)
     nameLabel: cc.Label = null;
-
     @property(cc.Label)
     numLabel: cc.Label = null;
 
@@ -31,6 +31,8 @@ export default class Item extends cc.Component {
 
     onLoad () {
         this.selImg.active = false;
+        this.selBtn.enabled = false;   //默认物品不可点击，待背包等回调传来时再启用点击
+
         this.iconSpr.spriteFrame = null;
         this.nameLabel.string = "";
         this.numLabel.string = "";
@@ -71,6 +73,10 @@ export default class Item extends cc.Component {
                 this.nameLabel.string = itemConf.name;
                 this.iconSpr.spriteFrame = this.iconAtlas.getSpriteFrame(info.itemId.toString());
             }
+        }
+
+        if(selCallBack && selCallTarget){
+            this.selBtn.enabled = true;   //默认物品不可点击，待背包等回调传来时再启用点击
         }
     }
 }

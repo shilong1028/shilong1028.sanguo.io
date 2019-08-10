@@ -450,7 +450,7 @@
     "component": "",
     "_componentId": "4d7bcFfnD5CIaQ7fs4g+/iF",
     "handler": "onBtn",
-    "customEventData": ""
+    "customEventData": "0"
   },
   {
     "__type__": "cc.PrefabInfo",
