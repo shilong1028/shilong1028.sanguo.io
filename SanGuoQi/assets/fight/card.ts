@@ -139,8 +139,13 @@ export default class Card extends cc.Component {
         this.atkProgressBar.progress = info.generalCfg.atk/100;
         this.defProgressBar.progress = info.generalCfg.def/100;
 
-        this.lvLabel.string = "Lv"+info.generalLv;
-        this.bingNumLabel.string = "兵"+info.bingCount.toString();
+        if(info.generalLv > 0){
+            this.lvLabel.string = "Lv"+info.generalLv;
+            this.bingNumLabel.string = "兵"+info.bingCount.toString();
+        }else{
+            this.lvLabel.string = "Lv??";   //0会显示Lv?，具体攻城时赋值
+            this.bingNumLabel.string = "兵???";
+        }
     }
 
 

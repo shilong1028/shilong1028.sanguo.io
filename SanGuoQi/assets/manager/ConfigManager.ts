@@ -44,6 +44,7 @@ export class st_city_info {
     pos_y;
     population;  //人口（户）
     campId;   //割据后城池所属势力
+    generals;   //驻守武将
     near_citys;  //相邻城池ID 102;5003;9001
     counties;   //所属县名称 昌黎;阳乐;令支
     desc;   //城池介绍
@@ -54,6 +55,7 @@ export class st_city_info {
         this.pos_y = parseInt(this.pos_y);
         this.population = parseInt(this.population);
         this.campId = parseInt(this.campId);
+        this.generals = CfgMgr.getIntAry(this.generals, ";");
         this.near_citys = CfgMgr.getIntAry(this.near_citys, ";");
         this.counties = CfgMgr.getStringAry(this.counties, ";");
     }
@@ -68,6 +70,7 @@ export class st_city_info {
         temp.pos_y = this.pos_y;
         temp.population = this.population;
         temp.campId = this.campId;
+        temp.generals = this.generals
         temp.near_citys = this.near_citys;
         temp.counties = this.counties;
         temp.desc = this.desc;
@@ -78,10 +81,12 @@ export class st_city_info {
 //割据势力配置数据
 export class st_camp_info {
     name;   //势力名称
-    generals;   //势力武将ID集合
+    mainCity;  //核心城池ID
+    citys;  //所属城池ID集合
     
     transType(){
-        this.generals = CfgMgr.getIntAry(this.generals, ";");
+        this.mainCity = parseInt(this.mainCity);
+        this.citys = CfgMgr.getIntAry(this.citys, ";");
     }
 
     constructor(){
@@ -89,7 +94,8 @@ export class st_camp_info {
     clone(){
         let temp = new st_camp_info();
         temp.name = this.name;
-        temp.generals = this.generals;
+        temp.mainCity = this.mainCity;
+        temp.citys = this.citys;
         return temp;
     }
 }
@@ -268,6 +274,27 @@ export class st_beautiful_info{
     }
 }
 
+//建筑配置数据
+export class st_build_info{
+    name;
+    cost;
+    desc;
+    
+    transType(){
+        this.cost = parseInt(this.cost);
+    }
+
+    constructor(){
+    }
+    clone(){
+        let temp = new st_build_info();
+        temp.name = this.name;
+        temp.cost = this.cost;
+        temp.desc = this.desc;
+        return temp;
+    }
+}
+
 
 //*********************  以下为接口类定义 *********************************** */
 
@@ -314,6 +341,10 @@ class CfgManager_class {
     //后宫配置表
     C_beautiful_info : Map<number, st_beautiful_info> = new Map<number, st_beautiful_info>();
     SC_beautiful_info = st_beautiful_info;
+
+    //建筑配置表
+    C_build_info : Map<number, st_build_info> = new Map<number, st_build_info>();
+    SC_build_info  = st_build_info;
 
     //********************** 以下是一些配置接口 ***************** */
     
@@ -400,6 +431,16 @@ class CfgManager_class {
     /**获取后宫数据 */
     getBeautifulConf(nvId: number): st_beautiful_info{
         let obj = this.C_beautiful_info[nvId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+
+    /**获取建筑数据 */
+    getBuildConf(buildId: number): st_build_info{
+        let obj = this.C_build_info[buildId];
         if(obj){
             return obj.clone();
         }else{

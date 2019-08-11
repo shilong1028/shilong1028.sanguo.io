@@ -1,9 +1,10 @@
 import { st_city_info, CfgMgr, st_camp_info } from "../manager/ConfigManager";
-import { CityInfo } from "../manager/Enum";
+import { CityInfo, GeneralInfo } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserMgr, MyUserData } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
 import FightReady from "./fightReady";
+import TableView from "../tableView/tableView";
 
 //城池介绍
 const {ccclass, property} = cc._decorator;
@@ -12,22 +13,22 @@ const {ccclass, property} = cc._decorator;
 export default class CityLayer extends cc.Component {
 
     @property(cc.Label)
-    nameLabel: cc.Label = null;
+    nameLabel: cc.Label = null;    //城池名称
     @property(cc.Label)
-    typeLabel: cc.Label = null;
+    typeLabel: cc.Label = null;   //城池类型
     @property(cc.Label)
-    descLabel: cc.Label = null;
+    descLabel: cc.Label = null;   //城池描述
     @property(cc.Label)
-    peopleLabel: cc.Label = null;
+    peopleLabel: cc.Label = null;  //城池人口
     @property(cc.Label)
-    countyLabel: cc.Label = null;
+    nearLabel: cc.Label = null;   //邻近城池
     @property(cc.Label)
-    nearLabel: cc.Label = null;
-    @property(cc.Label)
-    campLabel: cc.Label = null;
+    campLabel: cc.Label = null;   //城池阵营
 
     @property(cc.Label)
-    otherLabel: cc.Label = null;
+    pathLabel: cc.Label = null;   //路径规划(不显示)
+    @property(TableView)
+    tableView: TableView = null;   //驻守武将
 
     @property(cc.Button)
     buyBtn: cc.Button = null;
@@ -54,7 +55,6 @@ export default class CityLayer extends cc.Component {
         this.typeLabel.string = "类型：";
         this.descLabel.string = "";
         this.peopleLabel.string = "人口（户）：";
-        this.countyLabel.string = "下属县：";
         this.nearLabel.string = "邻近城池：";
         this.campLabel.string = "势力阵营：";
 
@@ -81,16 +81,6 @@ export default class CityLayer extends cc.Component {
             this.descLabel.string = this.cityConf.desc;
             this.peopleLabel.string = "人口（户）："+this.cityConf.population;
             let str = "";
-            for(let i=0; i<this.cityConf.counties.length; ++i){
-                str += this.cityConf.counties[i];
-                if(i == this.cityConf.counties.length-1){
-                    str +="等";
-                }else{
-                    str +="、"
-                }
-            }
-            this.countyLabel.string = "下属县："+str;
-            str = "";
             for(let i=0; i<this.cityConf.near_citys.length; ++i){
                 let cityId = this.cityConf.near_citys[i];
                 let cityCfg = CfgMgr.getCityConf(cityId);
@@ -121,7 +111,28 @@ export default class CityLayer extends cc.Component {
                 this.campLabel.string = "势力阵营："+this.campCfg.name+"（中立不可攻击）";
                 this.fightBtn.interactable = false;
             }
+
+            this.initCityGeneralList();  //驻守武将列表
         }
+    }
+
+    //驻守武将列表
+    initCityGeneralList(){
+        let generalArr = new Array();
+        let cityGeneralIds = this.cityInfo.cityCfg.generals;
+        for(let i=0; i<cityGeneralIds.length; ++i){
+            let enemy = new GeneralInfo(cityGeneralIds[i]);  
+            enemy.generalLv = 0;   //0会显示Lv?，具体攻城时赋值
+            generalArr.push(enemy);
+        }
+        for(let i=0; i<4; i++){
+            let enemy = new GeneralInfo(401+i);  
+            enemy.generalLv = 0;   //0会显示Lv?，具体攻城时赋值
+            generalArr.push(enemy);
+        }
+
+        this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
+        this.tableView.initTableView(generalArr.length, { array: generalArr, target: this, bShowSel: false}); 
     }
 
     //从首府到此城池的路径
@@ -156,7 +167,7 @@ export default class CityLayer extends cc.Component {
             }
         }
 
-        this.otherLabel.string = "路径规划："+str;
+        this.pathLabel.string = "路径规划："+str;
         return reachPath;
     }
 

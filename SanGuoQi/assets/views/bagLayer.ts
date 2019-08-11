@@ -30,7 +30,7 @@ export default class BagLayer extends cc.Component {
     onLoad () {
         this.updateSelItemInfo(null);  //显示底部选中道具信息
         this.initBagGrid();
-        ROOT_NODE.showLayerMoney(this.node, cc.v2(0, 355));    //一级界面上的金币钻石粮草公用控件
+        ROOT_NODE.showLayerMoney(this.node, cc.v2(0, 380));    //一级界面上的金币钻石粮草公用控件
     }
 
     onDestroy(){

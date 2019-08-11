@@ -1,6 +1,7 @@
 
 import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
+import BuildLayer from "./buildLayer";
 
 
 const {ccclass, property} = cc._decorator;
@@ -27,7 +28,8 @@ export default class BuildQiPao extends cc.Component {
 
     // update (dt) {}
 
-    onBtn(){
+    onBtn(sender:any, customData:any){
+        //cc.log("onBtn(), customData = "+customData);
         let capitalScene = GameMgr.getCapitalScene();
         if(capitalScene){
             if(MyUserData.capitalLv == 0){
@@ -39,10 +41,12 @@ export default class BuildQiPao extends cc.Component {
                 }
             }
 
-            if(this.nameLabel.string == "后宅"){
+            let buildId = parseInt(customData);
+            if(buildId == 102){   //后宅
                 GameMgr.showLayer(capitalScene.pfBeautiful);
             }else{
-                GameMgr.showLayer(capitalScene.pfBuildHelp);
+                let layer = GameMgr.showLayer(capitalScene.pfBuild);
+                layer.getComponent(BuildLayer).initBulidInfo(buildId);
             }
         }
     }
