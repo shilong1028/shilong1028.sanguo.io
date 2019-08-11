@@ -108,9 +108,9 @@ export default class FightShow extends cc.Component {
     createTips(tips: any){
         let pos = cc.v2(0, 80);
         if(tips.posType < 0){  //posType=0 中间位置 -1为左侧将军位置 1为右侧将军位置
-            pos = cc.v2(this.leftGenNode.x, -100);
+            pos = cc.v2(this.leftGenNode.x + 100, -180);
         }else if(tips.posType > 0){
-            pos = cc.v2(this.rightGenNode.x, -100);
+            pos = cc.v2(this.rightGenNode.x - 100, -180);
         }
 
         let tipNode = cc.instantiate(this.pfTips);

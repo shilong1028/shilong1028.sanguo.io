@@ -1,4 +1,6 @@
 import { MyUserData } from "../manager/MyUserData";
+import { GameMgr } from "../manager/GameManager";
+import { ROOT_NODE } from "../common/rootNode";
 
 //主城
 const {ccclass, property} = cc._decorator;
@@ -27,6 +29,8 @@ export default class CapitalScene extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_MOVE, this.touchMove, this);
         this.node.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.touchEnd, this);
+
+        ROOT_NODE.showLayerMoney(this.node, cc.v2(0, cc.winSize.height/2));    //一级界面上的金币钻石粮草公用控件
 
         this.mapNode.position = cc.v2(-1100, -250);   //初始显示官府
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
@@ -70,6 +74,6 @@ export default class CapitalScene extends cc.Component {
     }
 
     onMapBtn(){
-        cc.director.loadScene("mainScene");
+        GameMgr.gotoMainScene();   //进入主场景
     }
 }

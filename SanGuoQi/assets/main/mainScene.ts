@@ -134,14 +134,22 @@ export default class MainScene extends cc.Component {
     }
 
     //显示在线时长
-    showLineTime(){
-        let hour = Math.floor(MyUserData.totalLineTime/60/60);
-        let min = Math.floor(MyUserData.totalLineTime/60);
+    showLineTime(){ 
         let sec = Math.floor(MyUserData.totalLineTime%60);
-        if(hour > 0){
-            this.lineTimeLabel.string = hour + ":" + min + ":" + sec;
+        let tempTime = Math.floor(MyUserData.totalLineTime/60);
+        let min = Math.floor(tempTime%60);
+        tempTime = Math.floor(tempTime/60);
+        let hour = Math.floor(tempTime%60);
+        tempTime = Math.floor(tempTime/24);
+        let day = Math.floor(tempTime%24);
+        if(day > 0){
+            this.lineTimeLabel.string = day + ":" + hour + ":" + min + ":" + sec;
         }else{
-            this.lineTimeLabel.string = min + ":" + sec;
+            if(hour > 0){
+                this.lineTimeLabel.string = hour + ":" + min + ":" + sec;
+            }else{
+                this.lineTimeLabel.string = min + ":" + sec;
+            }
         }
     }
 
@@ -352,7 +360,7 @@ export default class MainScene extends cc.Component {
     }
 
     onHomeBtn(){
-        cc.director.loadScene("capitalScene");  //点击主城
+        GameMgr.goToSceneWithLoading("capitalScene");  //点击主城
     }
     onBagBtn(){
         GameMgr.showLayer(this.pfBag);  //背包（武库）界面

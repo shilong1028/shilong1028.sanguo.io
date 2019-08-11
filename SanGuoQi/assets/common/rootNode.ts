@@ -21,6 +21,8 @@ export default class RootNode extends cc.Component {
     pfTipsText: cc.Prefab = null;   //提示文本
     @property(cc.Prefab)
     pfTipsDialog: cc.Prefab = null;  //提示框
+    @property(cc.Prefab)
+    pfLoading: cc.Prefab = null;  //加载进度层
 
     // LIFE-CYCLE CALLBACKS:
 

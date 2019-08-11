@@ -107,6 +107,7 @@ export const LDKey = {
     KEY_DiamondCount: "KEY_DiamondCount",//钻石（金锭）数量
     KEY_FoodCount: "KEY_FoodCount",   //粮食数量
     KEY_TotalLineTime: "KEY_TotalLineTime",   //总的在线时长（每500s更新记录一次）
+    KEY_LastGoldTaxTime: "KEY_LastGoldTaxTime",   //上一次收税金时间
     KEY_RoleLv: "KEY_RoleLv",   //主角等级
     KEY_CapitalLv: "KEY_CapitalLv",  //主城等级
     KEY_StoryData : "KEY_StoryData",  //当前进行的剧情故事  {key=id, val=state}  0未完成，1完成未领取，2已领取

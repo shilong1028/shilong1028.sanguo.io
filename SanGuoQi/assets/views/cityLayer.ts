@@ -102,13 +102,14 @@ export default class CityLayer extends cc.Component {
                 this.fightBtn.interactable = false;
             }else if(flagType == 1){
                 this.campLabel.string = "势力阵营："+this.campCfg.name+"（敌对可攻击）";
-                if(MyUserData.capitalLv > 0){
-                    this.fightBtn.interactable = true;
-                }else{
-                    this.fightBtn.interactable = false;
-                }
             }else{
                 this.campLabel.string = "势力阵营："+this.campCfg.name+"（中立不可攻击）";
+                this.fightBtn.interactable = false;
+            }
+
+            if(MyUserData.capitalLv > 0){
+                this.fightBtn.interactable = true;
+            }else{
                 this.fightBtn.interactable = false;
             }
 

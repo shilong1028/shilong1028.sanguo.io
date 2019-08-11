@@ -2,6 +2,7 @@ import FightScene from "../fight/fightScene";
 import { CardInfo, GeneralInfo, NoticeType, SoliderType, SkillInfo, CityInfo } from "./Enum";
 import { NoticeMgr } from "./NoticeManager";
 import { CfgMgr } from "./ConfigManager";
+import { GameMgr } from "./GameManager";
 
 //战斗管理器
 const {ccclass, property} = cc._decorator;
@@ -43,7 +44,7 @@ class FightManager {
         this.EnemyAutoAi = false;  //敌方自动AI
 
         if(enemyArr.length > 0 && generalArr.length > 0){
-            cc.director.loadScene("fightScene");
+            GameMgr.goToSceneWithLoading("fightScene");
         }
     }
 

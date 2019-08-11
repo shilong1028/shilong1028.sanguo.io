@@ -55,6 +55,7 @@ export default class FightScene extends cc.Component {
     }
 
     start () {
+        this.onHelpBtn();
         this.createDefaultCards();
     }
 

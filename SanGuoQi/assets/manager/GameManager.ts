@@ -5,6 +5,7 @@ import { MyUserMgr, MyUserData } from "./MyUserData";
 import { st_story_info } from "./ConfigManager";
 import MainScene from "../main/mainScene";
 import CapitalScene from "../capital/capitalScene";
+import LoadingLayer from "../common/LoadingLayer";
 
 
 //游戏菜单管理器
@@ -71,6 +72,31 @@ class GameManager {
 
 
     /************************  以下为UI接口  ************** */
+
+    goToSceneWithLoading(sceneName:string, bShowLoading: boolean = true){
+        cc.log("goToSceneWithLoading(), sceneName = "+sceneName);
+        if(bShowLoading){
+            let layer = this.showLayer(ROOT_NODE.pfLoading);
+            layer.zIndex = cc.macro.MAX_ZINDEX - 10;
+            layer.opacity = 255;
+            var loading = layer.getComponent(LoadingLayer);
+            loading.goToScene(sceneName);
+    
+            cc.director.preloadScene(sceneName, (count, total, item)=>{
+                loading.onProgress(count, total, item);
+            }, 
+            (err, asset)=>{   //加载完成的回调
+                loading.loadFinish(err,asset);
+            });
+        }else{
+            cc.director.loadScene(sceneName);
+        }
+    }
+
+    //切换到主场景
+    gotoMainScene(){	
+        this.goToSceneWithLoading("mainScene", true);
+    } 
 
     /**获取主场景 */
     getMainScene(): MainScene {

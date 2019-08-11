@@ -13,6 +13,7 @@ export var MyUserData = {
     FoodCount: 0,  //用户粮食数量
 
     totalLineTime: 0,   //总的在线时长（每100s更新记录一次）
+    lastGoldTaxTime: 0,   //上一次收税金时间
 
     roleLv: 1,  //主角等级
     capitalLv: 0,   //主城等级，0则未开启
@@ -42,6 +43,8 @@ class MyUserManager {
 
         MyUserData.totalLineTime = 0;  //总的在线时长（每100s更新记录一次）
         LDMgr.setItem(LDKey.KEY_TotalLineTime, 0);
+        MyUserData.lastGoldTaxTime = 0;   //上一次收税金时间
+        LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, 0);
 
         MyUserData.roleLv = 1;  //主角等级
         LDMgr.setItem(LDKey.KEY_RoleLv, 1);
@@ -73,6 +76,7 @@ class MyUserManager {
         MyUserData.FoodCount = LDMgr.getItemInt(LDKey.KEY_FoodCount);   //用户粮食数量
 
         MyUserData.totalLineTime = LDMgr.getItemInt(LDKey.KEY_TotalLineTime);   //总的在线时长（每500s更新记录一次）
+        MyUserData.lastGoldTaxTime = LDMgr.getItemInt(LDKey.KEY_LastGoldTaxTime);   //上一次收税金时间
 
         MyUserData.roleLv = LDMgr.getItemInt(LDKey.KEY_RoleLv);   //主角等级
         MyUserData.capitalLv = LDMgr.getItemInt(LDKey.KEY_CapitalLv);   //主城等级，0则未开启
@@ -103,6 +107,15 @@ class MyUserManager {
         if(intTime%100 == 0){
             LDMgr.setItem(LDKey.KEY_TotalLineTime, intTime);
         }
+    }
+
+    //更新收税金时间
+    updateGoldTaxTime(){
+        let intTime = Math.floor(MyUserData.totalLineTime);
+
+        MyUserData.lastGoldTaxTime = intTime;  //上一次收税金时间
+        LDMgr.setItem(LDKey.KEY_TotalLineTime, intTime);   //总的在线时长
+        LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, MyUserData.lastGoldTaxTime);
     }
 
     //更新主城等级

@@ -33,6 +33,8 @@ export default class BuildQiPao extends cc.Component {
         let capitalScene = GameMgr.getCapitalScene();
         if(capitalScene){
             if(MyUserData.capitalLv == 0){
+                MyUserMgr.updateGoldTaxTime();  //更新收税金时间，开始收税了
+                
                 MyUserMgr.updateCapitalLv(1);
                 capitalScene.lvLabel.string = "Lv1";
 
