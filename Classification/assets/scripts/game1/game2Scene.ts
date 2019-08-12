@@ -54,7 +54,7 @@ export default class Game2Scene extends cc.Component {
     rubbishCreateStep: number = 50;   //垃圾产出帧数间隔
 
     totalCount: number = 50;  //垃圾总数
-    rubbishSpeed: number = 350;  //垃圾下落速度
+    rubbishSpeed: number = 300;  //垃圾下落速度
     rubbishKeys: string[] = new Array();  //配置中的垃圾ID集合
 
     bStopTouch: boolean = false;   //是否停止触摸反应
@@ -101,22 +101,22 @@ export default class Game2Scene extends cc.Component {
         if(this.fightRubbishType == 1){
             this.targetText.string = "有害垃圾";
             this.targetText.node.color = cc.color(233, 47, 35);
-            this.countLabel.node.color = cc.color(233, 47, 35);
+            //this.countLabel.node.color = cc.color(233, 47, 35);
             this.totalLabel.node.color = cc.color(233, 47, 35);  //剩余数量
         }else if(this.fightRubbishType == 2){
             this.targetText.string = "可回收垃圾";
             this.targetText.node.color = cc.color(16, 71, 131);
-            this.countLabel.node.color = cc.color(16, 71, 131);
+            //this.countLabel.node.color = cc.color(16, 71, 131);
             this.totalLabel.node.color = cc.color(16, 71, 131);  //剩余数量
         }else if(this.fightRubbishType == 3){
             this.targetText.string = "湿(餐厨)垃圾";
             this.targetText.node.color = cc.color(105, 65, 55);
-            this.countLabel.node.color = cc.color(105, 65, 55);
+            //this.countLabel.node.color = cc.color(105, 65, 55);
             this.totalLabel.node.color = cc.color(105, 65, 55);  //剩余数量
         }else if(this.fightRubbishType == 4){
             this.targetText.string = "干(其他)垃圾";
             this.targetText.node.color = cc.color(44, 43, 41);
-            this.countLabel.node.color = cc.color(44, 43, 41);
+            //this.countLabel.node.color = cc.color(44, 43, 41);
             this.totalLabel.node.color = cc.color(44, 43, 41);  //剩余数量
         }
         this.countLabel.string = "0";
@@ -179,7 +179,7 @@ export default class Game2Scene extends cc.Component {
         
                 let rubbishNode = this.createRubbishFromPool();
                 if(rubbishNode){
-                    rubbishNode.scale = 1.5;
+                    rubbishNode.scale = 1.3;
                     let randPosX = (Math.random()-0.5)*(this.qipanNode.width/2 - 50);
                     rubbishNode.position = cc.v2(randPosX, this.qipanNode.height/2);
                     this.qipanNode.addChild(rubbishNode, 10);

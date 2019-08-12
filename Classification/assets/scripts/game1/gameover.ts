@@ -60,7 +60,7 @@ export default class GameOver extends cc.Component {
         this.rewardsCount = rewardCount;   //奖励积分数量
 
         let timeStr = Math.floor(gameTime/60)+"分"+(gameTime/60).toFixed(2);
-        this.descLabel.string = "恭喜你，在"+timeStr+"秒的时间内成功回收/分拣"+collectNum+"件垃圾。我代表居委会和广大业主感谢你的贡献。";
+        this.descLabel.string = "恭喜你，在"+timeStr+"秒的时间内成功回收/分拣"+collectNum+"件垃圾，获得"+this.rewardsCount+"个积分。";
     }
 
 }

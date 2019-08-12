@@ -224,7 +224,7 @@ export default class SearchScene extends cc.Component {
         )));
 
         this.handSpr.node.runAction(cc.repeatForever(cc.sequence(
-            cc.moveTo(3.0, cc.v2(250, -100)), cc.moveTo(3.0, cc.v2(40, -100))
+            cc.moveTo(5.0, cc.v2(250, -100)), cc.moveTo(5.0, cc.v2(-100, -100))
         )));
     }
 
