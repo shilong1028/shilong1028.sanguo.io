@@ -4,6 +4,7 @@ import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
 import { CardInfo, NoticeType, SoliderType } from "../manager/Enum";
 import { NoticeMgr } from "../manager/NoticeManager";
+import { MyUserData } from "../manager/MyUserData";
 
 //战斗场景
 const {ccclass, property} = cc._decorator;
@@ -55,7 +56,10 @@ export default class FightScene extends cc.Component {
     }
 
     start () {
-        this.onHelpBtn();
+        if(MyUserData.roleLv <= 3){   //主角小于三级开启战斗帮助说明
+            this.onHelpBtn();
+        }
+
         this.createDefaultCards();
     }
 
