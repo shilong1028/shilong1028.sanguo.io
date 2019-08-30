@@ -1,11 +1,12 @@
 import { NoticeMgr } from "../manager/NoticeManager";
-import { NoticeType, SpecialStory } from "../manager/Enum";
+import { NoticeType, SpecialStory, ItemInfo } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserData } from "../manager/MyUserData";
 import { st_story_info } from "../manager/ConfigManager";
 import FightReady from "../views/fightReady";
 import { ROOT_NODE } from "../common/rootNode";
 import { FightMgr } from "../manager/FightManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 //全国地图场景
 const {ccclass, property} = cc._decorator;
@@ -33,6 +34,8 @@ export default class MainScene extends cc.Component {
 
     @property(cc.Node)
     mapNode: cc.Node = null;   //地图总节点
+    @property(cc.Node)
+    gridNode: cc.Node = null;
     @property(cc.Node)
     homeBtnNode: cc.Node = null;  //主城按钮
     @property(cc.Node)
@@ -79,6 +82,7 @@ export default class MainScene extends cc.Component {
     MapLimitPos: cc.Vec2 = cc.v2(2884, 2632);  //地图位置限制
     touchBeginPos: cc.Vec2 = null;  //触摸起点
     bTaskUp: boolean = false;  //任务是否拉伸出来了
+    curShowGridChildIdx: number = 0;
 
     onLoad () {
         this.node.on(cc.Node.EventType.TOUCH_START, this.touchStart, this);
@@ -101,7 +105,6 @@ export default class MainScene extends cc.Component {
         this.leftNode.position = cc.v2(-cc.winSize.width/2, cc.winSize.height/2);
         this.rightNode.position = cc.v2(cc.winSize.width/2, cc.winSize.height/2);
 
-        this.mapNode.active = true;
         if(MyUserData.capitalLv > 0){
             this.mapNode.position = cc.v2(-600, -900);   //主城开启后显示山阳郡昌邑
         }else{
@@ -113,6 +116,8 @@ export default class MainScene extends cc.Component {
     }
 
     start () {
+        this.curShowGridChildIdx = 4;
+
         this.UpdateGoldCount();
         this.UpdateDiamondCount();
         this.UpdateFoodCount();
@@ -126,6 +131,45 @@ export default class MainScene extends cc.Component {
 
     update (dt) {
         this.showLineTime();   //显示在线时长
+
+        if(this.gridNode && this.curShowGridChildIdx > 0){
+            this.curShowGridChildIdx --;
+            this.showGirdChildByUpdate();
+        }
+    }
+
+    showGirdChildByUpdate(){
+        if(this.curShowGridChildIdx == 3){
+            this.gridNode.getChildByName("SanGuoMap_09").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_10").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_15").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_16").getComponent(cc.Sprite).enabled = true;
+        }else if(this.curShowGridChildIdx == 2){
+            this.gridNode.getChildByName("SanGuoMap_08").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_11").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_14").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_17").getComponent(cc.Sprite).enabled = true;
+            for(let i=0; i<4; ++i){
+                this.gridNode.getChildByName("SanGuoMap_0"+(2+i)).getComponent(cc.Sprite).enabled = true;
+                this.gridNode.getChildByName("SanGuoMap_2"+(0+i)).getComponent(cc.Sprite).enabled = true;
+            }
+        }else if(this.curShowGridChildIdx == 1){
+            this.gridNode.getChildByName("SanGuoMap_01").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_06").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_07").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_12").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_13").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_18").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_19").getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("SanGuoMap_24").getComponent(cc.Sprite).enabled = true;
+            for(let i=0; i<6; ++i){
+                this.gridNode.getChildByName("SanGuoMap_"+(25+i)).getComponent(cc.Sprite).enabled = true;
+            }
+        }else if(this.curShowGridChildIdx == 0){
+            for(let i=0; i<6; ++i){
+                this.gridNode.getChildByName("SanGuoMap_"+(31+i)).getComponent(cc.Sprite).enabled = true;
+            }
+        }
     }
 
     onDestroy(){
@@ -357,6 +401,19 @@ export default class MainScene extends cc.Component {
                 this.handSpr.node.opacity = 0;
             }
         }
+    }
+
+    onShareBtn(){
+        SDKMgr.shareGame("快来和我一起参与垃圾分类吧！", (succ:boolean)=>{
+            console.log("分享 succ = "+succ);
+            if(succ == true){
+                let items = new Array();
+                items.push({"key":6001, "val":1000});   //金币
+                items.push({"key":6003, "val":500});   //粮草
+                let rewards: ItemInfo[] = GameMgr.getItemArrByKeyVal(items);   //通过配置keyVal数据砖块道具列表
+                GameMgr.receiveRewards(rewards);   //领取奖励
+            }
+        }, this);
     }
 
     onHomeBtn(){

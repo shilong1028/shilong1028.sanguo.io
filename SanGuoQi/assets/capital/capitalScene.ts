@@ -10,6 +10,8 @@ export default class CapitalScene extends cc.Component {
 
     @property(cc.Node)
     mapNode: cc.Node = null;
+    @property(cc.Node)
+    gridNode: cc.Node = null;
 
     @property(cc.Label)
     lvLabel: cc.Label = null;
@@ -23,6 +25,7 @@ export default class CapitalScene extends cc.Component {
 
     touchBeginPos: cc.Vec2 = null;  //触摸起点
     MapLimitPos: cc.Vec2 = cc.v2(3390/2, 1920/2);
+    curShowGridChildIdx: number = 0;
 
     onLoad () {
         this.node.on(cc.Node.EventType.TOUCH_START, this.touchStart, this);
@@ -39,10 +42,22 @@ export default class CapitalScene extends cc.Component {
     }
 
     start () {
-
+        this.curShowGridChildIdx = 4;
     }
 
-    // update (dt) {}
+    update (dt) {
+        if(this.gridNode && this.curShowGridChildIdx > 1){
+            this.curShowGridChildIdx --;
+            this.showGirdChildByUpdate();
+        }
+    }
+
+    showGirdChildByUpdate(){
+        if(this.curShowGridChildIdx >= 0){
+            this.gridNode.getChildByName("bg_capital_0"+this.curShowGridChildIdx).getComponent(cc.Sprite).enabled = true;
+            this.gridNode.getChildByName("bg_capital_0"+(this.curShowGridChildIdx+3)).getComponent(cc.Sprite).enabled = true;
+        }
+    }
 
     touchStart(event: cc.Touch){
         this.touchBeginPos = event.getLocation();
