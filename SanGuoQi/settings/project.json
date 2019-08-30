@@ -16,7 +16,10 @@
     "RichText",
     "MotionStreak",
     "Physics",
-    "StudioComponent"
+    "StudioComponent",
+    "Geom Utils",
+    "3D",
+    "3D Primitive"
   ],
   "facebook": {
     "appID": "",
