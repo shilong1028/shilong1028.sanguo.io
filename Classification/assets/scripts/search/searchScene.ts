@@ -3,6 +3,7 @@ import { NoticeMgr, NoticeType } from "../manager/NoticeManager";
 import { GameMgr } from "../manager/GameManager";
 import CostWarn from "./costWarn";
 import TableView from "../tableView/tableView";
+import { SDKMgr } from "../manager/SDKManager";
 
 
 //垃圾分类主界面
@@ -103,7 +104,7 @@ export default class SearchScene extends cc.Component {
         let keyStr = this.editText.string;
         if(keyStr && keyStr.length > 0){
             let layer = GameMgr.showLayer(this.pfCost);
-            layer.getComponent(CostWarn).initCostData(50, ()=>{
+            layer.getComponent(CostWarn).initCostData(0, ()=>{
                 this.handleSearch();
             });
         }
@@ -180,15 +181,15 @@ export default class SearchScene extends cc.Component {
     showResultNode(bShow:boolean){
         this.resultNode.stopAllActions();
         if(bShow == true){
-            this.gameNode.opacity = 0;
-            this.resultNode.opacity = 255;
+            this.gameNode.active = false;
+            this.resultNode.active = true;
 
             // this.resultNode.runAction(cc.sequence(cc.delayTime(5.0), cc.callFunc(function(){
             //     this.showResultNode(false);
             // }.bind(this))));
         }else{
-            this.resultNode.opacity = 0;
-            this.gameNode.opacity = 255;
+            this.resultNode.active = false;
+            this.gameNode.active = true;
         }
     }
 
@@ -202,16 +203,25 @@ export default class SearchScene extends cc.Component {
 
     onGame1Btn(){
         let layer = GameMgr.showLayer(this.pfCost);
-        layer.getComponent(CostWarn).initCostData(10, ()=>{
+        layer.getComponent(CostWarn).initCostData(1, ()=>{
             cc.director.loadScene("game1Scene");
         });
     }
 
     onGame2Btn(){
         let layer = GameMgr.showLayer(this.pfCost);
-        layer.getComponent(CostWarn).initCostData(10, ()=>{
+        layer.getComponent(CostWarn).initCostData(2, ()=>{
             cc.director.loadScene("game2Scene");
         });
+    }
+
+    onShareBtn(){
+        SDKMgr.shareGame("快来和我一起参与垃圾分类吧！", (succ:boolean)=>{
+            console.log("分享 succ = "+succ);
+            if(succ == true){
+                GameMgr.updateUserGold(100, true);
+            }
+        }, this);
     }
 
     gameHandActions(){

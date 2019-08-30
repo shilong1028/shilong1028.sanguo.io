@@ -464,7 +464,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 550,
-      "height": 210
+      "height": 70
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -506,8 +506,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "分享可以获取100积分，观看视频可以获取300积分！",
-    "_N$string": "分享可以获取100积分，观看视频可以获取300积分！",
+    "_string": "分享可以获取100积分！",
+    "_N$string": "分享可以获取100积分！",
     "_fontSize": 50,
     "_lineHeight": 70,
     "_enableWrapText": true,
@@ -622,7 +622,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -120,
+      "x": 0,
       "y": -260,
       "z": 0
     },
@@ -983,7 +983,7 @@
         "__id__": 31
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 3,
     "_components": [
       {

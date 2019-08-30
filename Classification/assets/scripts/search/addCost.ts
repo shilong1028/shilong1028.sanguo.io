@@ -30,7 +30,8 @@ export default class AddCost extends cc.Component {
     }
 
     start () {
-        this.descLabel.string = "分享可以获取"+this.shareCost+"积分，观看视频可以获取"+this.videoCost+"积分!";
+        //"分享可以获取"+this.shareCost+"积分，观看视频可以获取"+this.videoCost+"积分!";
+        this.descLabel.string = "获取"+this.shareCost+"积分!";
     }
 
     // update (dt) {}
@@ -48,8 +49,7 @@ export default class AddCost extends cc.Component {
     }
 
     onShareBtn(){
-        SDKMgr.shareGame("分享！", (succ:boolean)=>{
-            console.log("turntable 分享 succ = "+succ);
+        SDKMgr.shareGame("快来和我一起参与垃圾分类吧！", (succ:boolean)=>{
             if(succ == true){
                 GameMgr.updateUserGold(this.shareCost);
             }

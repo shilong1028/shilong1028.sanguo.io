@@ -41,8 +41,7 @@ export default class GameOver extends cc.Component {
     }
 
     onShareBtn(){
-        SDKMgr.shareGame("分享！", (succ:boolean)=>{
-            console.log("turntable 分享 succ = "+succ);
+        SDKMgr.shareGame("快来和我一起参与垃圾分类吧！", (succ:boolean)=>{
             if(succ == true){
                 GameMgr.updateUserGold(this.rewardsCount, true);
                 cc.director.loadScene("searchScene");

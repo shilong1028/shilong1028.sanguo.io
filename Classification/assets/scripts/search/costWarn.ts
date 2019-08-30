@@ -65,12 +65,24 @@ export default class CostWarn extends cc.Component {
         this.node.removeFromParent(true);
     }
 
-    initCostData(cost: number, callback: any){
-        this.costNum = cost;
-        this.descLabel.string = "是否要花费"+cost+"积分用于查询/游戏?";
+    //costType查询分类，0查询 1，2小游戏
+    initCostData(costType: number, callback: any){
+        this.costNum = 0;
+        let costStr = "";
+        if(costType == 0){
+            this.costNum = 50;
+            costStr = "是否要花费"+this.costNum+"积分用于查询垃圾种类?";
+        }else if(costType == 1){
+            this.costNum = 10;
+            costStr = "是否要花费"+this.costNum+"积分用于开始垃圾分类游戏?";
+        }else if(costType == 2){
+            this.costNum = 10;
+            costStr = "是否要花费"+this.costNum+"积分用于开始垃圾识别游戏?";
+        }
+        this.descLabel.string = costStr;
         this.callback = callback;
 
-        if(GameMgr.GoldCount < cost){
+        if(GameMgr.GoldCount < this.costNum){
             this.tipsNode.active = true;
             this.okBtn.interactable = false;
         }

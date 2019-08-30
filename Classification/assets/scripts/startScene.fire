@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.4227886056971514,
-      "y": 0.4227886056971514,
+      "x": 0.4992964078230284,
+      "y": 0.4992964078230284,
       "z": 1
     },
     "_quat": {
@@ -1634,7 +1634,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 730,
-      "height": 120
+      "height": 90
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1644,7 +1644,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -330,
+      "y": -320,
       "z": 0
     },
     "_scale": {
@@ -1676,8 +1676,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "健康游戏忠告\n\n抵制不良游戏，拒绝盗版游戏；注意自我保护，谨防受骗上当 。\n适度游戏益脑，沉迷游戏伤身；合理安排时间，享受健康生活。",
-    "_N$string": "健康游戏忠告\n\n抵制不良游戏，拒绝盗版游戏；注意自我保护，谨防受骗上当 。\n适度游戏益脑，沉迷游戏伤身；合理安排时间，享受健康生活。",
+    "_string": "健康游戏忠告\n抵制不良游戏，拒绝盗版游戏；注意自我保护，谨防受骗上当 。\n适度游戏益脑，沉迷游戏伤身；合理安排时间，享受健康生活。",
+    "_N$string": "健康游戏忠告\n抵制不良游戏，拒绝盗版游戏；注意自我保护，谨防受骗上当 。\n适度游戏益脑，沉迷游戏伤身；合理安排时间，享受健康生活。",
     "_fontSize": 25,
     "_lineHeight": 30,
     "_enableWrapText": true,
@@ -1700,7 +1700,7 @@
       "__id__": 2
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_level": 1,
     "_components": [
       {
@@ -1711,15 +1711,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 99,
-      "g": 120,
-      "b": 29,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 730,
-      "height": 90
+      "height": 30
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1729,7 +1729,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -480,
+      "y": -400,
       "z": 0
     },
     "_scale": {
@@ -1761,8 +1761,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "版权信息\n著作权人：上海炫讯科技有限公司\n软件登记号：2019SR0481714",
-    "_N$string": "版权信息\n著作权人：上海炫讯科技有限公司\n软件登记号：2019SR0481714",
+    "_string": "软件登记号：2019SR0862673",
+    "_N$string": "软件登记号：2019SR0862673",
     "_fontSize": 25,
     "_lineHeight": 30,
     "_enableWrapText": true,
