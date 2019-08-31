@@ -1,5 +1,5 @@
 
-import { CardInfo, NoticeType, SoliderType } from "../manager/Enum";
+import { CardInfo, NoticeType, SoliderType, EnemyAIResult } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
 import Card from "./card";
 import FightShow from "./fightShow";
@@ -44,6 +44,7 @@ export default class Block extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
         NoticeMgr.on(NoticeType.SelBlockMove, this.handleSelBlockMove, this);  //准备拖动砖块
         NoticeMgr.on(NoticeType.PerNextRound, this.handlePerNextRound, this);  //下一个回合准备
+        NoticeMgr.on(NoticeType.EnemyRoundOptAI, this.handleEnemyRoundOptAI, this);  //敌方自动AI
 
         this.runBg.active = false;    //路径范围显示图片
         this.atkBg.active = false;   //攻击范围显示图片
@@ -228,12 +229,7 @@ export default class Block extends cc.Component {
             this.showBlockCard(this.cardInfo);
 
             FightMgr.getFightScene().setLockBlock(false, this);   //设置地块开启或锁定
-    
-            if(FightMgr.bMyRound == true){
-                FightMgr.handleEnemyRoundOpt();   //敌方回合处理
-            }else{
-                FightMgr.handleMyRoundOpt();   //我方回合处理
-            }
+            FightMgr.nextRoundOpt();
         }.bind(this))));
     }
 
@@ -304,5 +300,67 @@ export default class Block extends cc.Component {
             this.cardNode = null;
         }
     }
+
+    /**敌方回合AI处理 */
+    handleEnemyRoundOptAI(){
+        cc.log("handleEnemyRoundOptAI(), 敌方自动AI FightMgr.EnemyAutoAi = "+FightMgr.EnemyAutoAi);
+        if(this.isLock == true || this.cardInfo == null || this.cardNode == null || FightMgr.EnemyAutoAi == false || this.cardInfo.campId == FightMgr.myCampId){   //敌方自动AI
+            return;
+        }
+
+        //1、预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；
+        // 同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。
+        let runAwayEnemy = null;    //敌方预逃走的单位
+        let runAwayWeight = 0;   //逃走权重
+        let hitEnemy = null;   //敌方出手的单位
+        let hitMy = null;    //我方预被击杀的单位
+        let hitWeight = 0;   //击杀权重
+
+        cc.log("预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。");
+        let myOpenBlocks = FightMgr.getFightScene().myOpenBlocks;
+
+        for(let j=0; j<myOpenBlocks.length; ++j){
+            let myBlock = myOpenBlocks[j];
+
+            let offX = Math.abs(this.node.x - myBlock.node.x);
+            let offY = Math.abs(this.node.y - myBlock.node.y);
+            if(offX < 20 || offY < 20){   //同行或同列
+                let blockLen = this.node.position.sub(myBlock.node.position).mag();
+                let enemyCardCfg = this.cardInfo.generalInfo.generalCfg;
+                if(blockLen <= 200 || (enemyCardCfg.bingzhong == SoliderType.gongbing && blockLen <= 400)){   //弓兵攻击两格
+                    let enemyNum = enemyCardCfg.atk + enemyCardCfg.def + enemyCardCfg.hp;
+
+                    let myCardCfg = myBlock.cardInfo.generalInfo.generalCfg;
+                    let myNum = myCardCfg.atk + myCardCfg.def + myCardCfg.hp;
+
+                    let hartScale = enemyNum/myNum;
+                    if(enemyCardCfg.bingzhong == SoliderType.gongbing && blockLen > 200){  //弓兵远距离权重增加
+                        hitWeight += 0.3;
+                    }
+
+                    if(hartScale >= 0.8){   //可能会取胜
+                        if(hartScale > hitWeight){
+                            hitWeight = hartScale;
+                            hitEnemy = this;
+                            hitMy = myBlock;
+                        }
+                    }
+                    else{   //可能战斗失败
+                        let runScale = myNum/enemyNum - 0.3;
+                        if(runScale >= 1.0){  //可能战斗失败
+                            if(runScale > runAwayWeight){
+                                runAwayWeight = runScale;
+                                runAwayEnemy = this;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        let AiResult: EnemyAIResult = new EnemyAIResult(runAwayEnemy, runAwayWeight, hitEnemy, hitMy, hitWeight);
+        FightMgr.handelEnemyAIResult(AiResult);
+    }
+
 
 }

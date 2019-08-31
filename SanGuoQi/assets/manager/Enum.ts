@@ -229,6 +229,23 @@ export class BeautifulInfo{
     }
 }
 
+//敌方AI处理结果
+export class EnemyAIResult{
+    runAwayEnemy = null;    //敌方预逃走的单位
+    runAwayWeight = 0;   //逃走权重
+    hitEnemy = null;   //敌方出手的单位
+    hitMy = null;    //我方预被击杀的单位
+    hitWeight = 0;   //击杀权重
+
+    constructor(runAwayEnemy, runAwayWeight, hitEnemy, hitMy, hitWeight){
+        this.runAwayEnemy = runAwayEnemy;  
+        this.runAwayWeight = runAwayWeight;   
+        this.hitEnemy = hitEnemy;  
+        this.hitMy = hitMy;  
+        this.hitWeight = hitWeight;   
+    }
+}
+
 //特殊故事节点
 export const SpecialStory = {
     huangjinover: 4,  //黄巾之乱结束(黄巾叛军占据城池旗帜复原)
@@ -268,6 +285,7 @@ export const NoticeType = {
     SelBlockMove: "SelBlockMove",   //准备拖动砖块
 
     PerNextRound: "PerNextRound",   //下一个回合准备
+    EnemyRoundOptAI: "EnemyRoundOptAI",   //敌方自动AI
 
     CityFlagStory: "CityFlagStory",  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
 }

@@ -1,6 +1,7 @@
 
 import { CfgMgr } from "../manager/ConfigManager";
 import { GameMgr } from "../manager/GameManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 //初始场景，用于初始化加载数据
 const {ccclass, property} = cc._decorator;
@@ -23,6 +24,8 @@ export default class StartScene extends cc.Component {
     }
 
     start () {
+        SDKMgr.initSDK();   //初始化SDK平台数据
+
         CfgMgr.setOverCallback(this.handleLoadConfigOver, this);  //设置加载配置完毕回调
 
         CfgMgr.loadAllConfig();   //加载配置

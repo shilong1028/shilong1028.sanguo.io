@@ -209,21 +209,24 @@ export default class FightShow extends cc.Component {
         if(leftGeneral.tempFightInfo.fightHp <= 0){
             this.showTipsLable("主动方(左侧)"+leftGeneral.generalCfg.name+"武将阵亡！", cc.Color.GREEN, -1);
             leftUnitDead = true;
-        }else if(rightGeneral.tempFightInfo.fightHp <= 0){
+        }
+        if(rightGeneral.tempFightInfo.fightHp <= 0){
             this.showTipsLable("被动方（右侧）"+rightGeneral.generalCfg.name+"武将阵亡！", cc.Color.GREEN, 1);
             rightUnitDead = true;
         }
-        else if(leftGeneral.bingCount <= 0){
+        if(leftGeneral.bingCount <= 0){
             this.showTipsLable("主动方(左侧)"+leftGeneral.generalCfg.name+"部曲已无士兵，部曲解散！", cc.Color.GREEN, -1);
             leftUnitDead = true;
-        }else if(rightGeneral.bingCount <= 0){
+        }
+        if(rightGeneral.bingCount <= 0){
             this.showTipsLable("被动方（右侧）"+rightGeneral.generalCfg.name+"部曲已无士兵，部曲解散！", cc.Color.GREEN, 1);
             rightUnitDead = true;
         }
-        else if(this.leftCardInfo.shiqi <= 0){
+        if(this.leftCardInfo.shiqi <= 0){
             this.showTipsLable("主动方(左侧)"+leftGeneral.generalCfg.name+"部曲士气用尽，部曲溃逃！", cc.Color.GREEN, -1);
             leftUnitDead = true;
-        }else if(this.rightCardInfo.shiqi <= 0){
+        }
+        if(this.rightCardInfo.shiqi <= 0){
             this.showTipsLable("被动方（右侧）"+rightGeneral.generalCfg.name+"部曲士气用尽，部曲溃逃！", cc.Color.GREEN, 1);
             rightUnitDead = true;
         }

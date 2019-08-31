@@ -5,6 +5,7 @@ import { GameMgr } from "../manager/GameManager";
 import { CardInfo, NoticeType, SoliderType } from "../manager/Enum";
 import { NoticeMgr } from "../manager/NoticeManager";
 import { MyUserData } from "../manager/MyUserData";
+import { ROOT_NODE } from "../common/rootNode";
 
 //战斗场景
 const {ccclass, property} = cc._decorator;
@@ -78,7 +79,7 @@ export default class FightScene extends cc.Component {
             this.roundDesc.string = "我方回合"
             this.roundDesc.node.color = cc.color(255, 255, 255);
         }else if(FightMgr.myCampId == 1){
-            if(FightMgr.bMyRound){
+            if(FightMgr.bMyRound == true){
                 this.roundDesc.string = "我方回合"
                 this.roundDesc.node.color = cc.color(0, 0, 255);
             }else{
@@ -86,7 +87,7 @@ export default class FightScene extends cc.Component {
                 this.roundDesc.node.color = cc.color(255, 0, 0);
             }
         }else if(FightMgr.myCampId == 2){
-            if(FightMgr.bMyRound){
+            if(FightMgr.bMyRound == true){
                 this.roundDesc.string = "我方回合"
                 this.roundDesc.node.color = cc.color(255, 0, 0);
             }else{
@@ -255,7 +256,7 @@ export default class FightScene extends cc.Component {
                 }
             }
         }
-        //cc.log("checkGameOver(), myCampCount = "+myCampCount+"; enemyCampCount = "+enemyCampCount);
+        cc.log("checkGameOver(), myCampCount = "+myCampCount+"; enemyCampCount = "+enemyCampCount);
 
         if(bCheckOver == true){
             if(myCampCount == 0){   //失败
@@ -324,7 +325,7 @@ export default class FightScene extends cc.Component {
     //处理回合开始士气变化
     handelShiqiChangeByRound(){
         let checkBlocks = null;
-        if(FightMgr.bMyRound){
+        if(FightMgr.bMyRound == true){
             checkBlocks = this.enemyOpenBlocks;
         }else{
             checkBlocks = this.myOpenBlocks;
@@ -362,9 +363,107 @@ export default class FightScene extends cc.Component {
         }
     }
 
-    /**敌方回合处理 */
-    handleEnemyRoundOpt(){
-        cc.log("handleEnemyRoundOpt(), 敌方自动AI FightMgr.EnemyAutoAi = "+FightMgr.EnemyAutoAi);
+    /**根据AI结果处理敌方操作 */
+    handleEnemyAIResultOpt(){
+        cc.log("handleEnemyAIResultOpt() 根据AI结果处理敌方操作 FightMgr.bMyRound = "+FightMgr.bMyRound);
+        if(FightMgr.EnemyAutoAi == false || FightMgr.bMyRound == true){   //敌方自动AI
+            return;
+        }
+
+        this.node.runAction(cc.sequence(cc.delayTime(0.3), cc.callFunc(function(){
+            cc.log("敌方AI延迟 FightMgr.bMyRound = "+FightMgr.bMyRound);
+            if(FightMgr.bMyRound == false){
+                if(FightMgr.EnemyAIResult && (FightMgr.EnemyAIResult.hitWeight > 0 || FightMgr.EnemyAIResult.runAwayWeight > 0)){   //有结果
+                    if(FightMgr.EnemyAIResult.hitWeight >= 1.5){  //必杀有希望
+                        cc.log("敌方选择战斗，攻击可能赢");
+                        FightMgr.EnemyAIResult.hitMy.onCardDropBlock(FightMgr.EnemyAIResult.hitEnemy);
+                    }else if(FightMgr.EnemyAIResult.runAwayWeight >= 1.5){   //逃走
+                        let nearArr = this.getNearEmptyBlock(FightMgr.EnemyAIResult.runAwayEnemy);   //获得相邻空地块数据
+                        if(nearArr.length > 0){
+                            cc.log("敌方选择逃走，敌方要死");
+                            let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
+                            nearArr[randIdx].onCardDropBlock(FightMgr.EnemyAIResult.runAwayEnemy);
+                        }
+                    }else{
+                        if(FightMgr.EnemyAIResult.hitWeight >= 1.0 && Math.random() > (1.6 - FightMgr.EnemyAIResult.hitWeight)){  //搏一搏
+                            cc.log("敌方选择战斗，搏一搏, 可能赢");
+                            FightMgr.EnemyAIResult.hitMy.onCardDropBlock(FightMgr.EnemyAIResult.hitEnemy);
+                        }else if(FightMgr.EnemyAIResult.runAwayEnemy >= 1.0 && Math.random() > (1.9 - FightMgr.EnemyAIResult.runAwayEnemy)){  //随机逃走
+                            let nearArr = this.getNearEmptyBlock(FightMgr.EnemyAIResult.runAwayEnemy);  
+                            if(nearArr.length > 0){
+                                cc.log("敌方选择随机逃走");
+                                let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
+                                nearArr[randIdx].onCardDropBlock(FightMgr.EnemyAIResult.runAwayEnemy);
+                            }
+                        }else{
+                            cc.log("敌方未根据AI结果选择战斗或逃走，继续AI分析");
+                            if(FightMgr.EnemyAIResult.hitEnemy && FightMgr.EnemyAIResult.hitMy){
+                                if(this.enemyOpenBlocks.length == 1 || this.enemyOpenBlocks.length > this.myOpenBlocks.length){   
+                                    cc.log("敌方选择战斗，敌方仅剩一个或数量比我方多");
+                                    FightMgr.EnemyAIResult.hitMy.onCardDropBlock(FightMgr.EnemyAIResult.hitEnemy);
+                                }else if(Math.random() > 0.6){
+                                    cc.log("敌方随机选择战斗");
+                                    FightMgr.EnemyAIResult.hitMy.onCardDropBlock(FightMgr.EnemyAIResult.hitEnemy);
+                                }else{
+                                    cc.log("敌方AI无结果，自动随机移动3");
+                                    this.handleEnemyRandomAIMove();   //敌方AI无结果时，自动随机移动
+                                }
+                            }else{
+                                cc.log("敌方AI无结果，自动随机移动2");
+                                this.handleEnemyRandomAIMove();   //敌方AI无结果时，自动随机移动
+                            }
+                        }
+                    }
+                }else{
+                    cc.log("敌方AI无结果，自动随机移动1");
+                    this.handleEnemyRandomAIMove();   //敌方AI无结果时，自动随机移动
+                }
+            }
+        }.bind(this))));
+    }
+
+    /**敌方AI无结果时，自动随机移动 */
+    handleEnemyRandomAIMove(){
+        cc.log("handleEnemyRandomAIMove() 敌方AI无结果，自动随机移动 FightMgr.bMyRound = "+FightMgr.bMyRound);
+        if(FightMgr.EnemyAutoAi == false || FightMgr.bMyRound == true){   //敌方自动AI
+            return;
+        }
+        let count = 50;
+        while(count > 0){
+            cc.log("count = "+count);
+            let randIdx = Math.floor(Math.random()*this.enemyOpenBlocks.length*0.99);
+            let runAwayEnemy = this.enemyOpenBlocks[randIdx];
+            let nearArr = this.getNearEmptyBlock(runAwayEnemy);   //获得相邻空地块数据
+            if(nearArr.length > 0){
+                cc.log("敌方选择移动");
+                let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
+                nearArr[randIdx].onCardDropBlock(runAwayEnemy);
+                return;
+            }else{  //无路可逃
+                if(this.enemyOpenBlocks.length == 1){   
+                    cc.log("敌方仅剩一个且无路可逃，被迫随机战斗");
+                    let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
+                    nearArr[randIdx].onCardDropBlock(runAwayEnemy);
+                    return;
+                }else{
+                    cc.log("无路可逃");
+                }
+            }
+            count --;
+        }
+
+        if(count == 0){
+            cc.warn("敌方AI异常 没有任何操作! ");
+            ROOT_NODE.showTipsText("敌方放弃操作，0.5秒后我方回合开始！");
+            this.node.runAction(cc.sequence(cc.delayTime(0.5), cc.callFunc(function(){
+                FightMgr.nextRoundOpt();  //下回合处理
+            }.bind(this))));
+        }
+    }
+
+    /**敌方回合处理(每个block自己决定权重后由FightManager.handelEnemyAIResult处理) */
+    oldEnemyRoundOptAI(){
+        cc.log("***********oldEnemyRoundOptAI(), 敌方自动AI FightMgr.EnemyAutoAi = "+FightMgr.EnemyAutoAi);
         if(FightMgr.EnemyAutoAi == false){   //敌方自动AI
             return;
         }
@@ -465,7 +564,7 @@ export default class FightScene extends cc.Component {
                     cc.log("敌方选择战斗，攻击可能赢");
                     hitMy.onCardDropBlock(hitEnemy);
                     return;
-                }if(hitWeight >= 1.0 && Math.random() > (1.9 - hitWeight)){  //搏一搏
+                }else if(hitWeight >= 1.0 && Math.random() > (1.9 - hitWeight)){  //搏一搏
                     cc.log("敌方选择战斗，搏一搏, 可能赢");
                     hitMy.onCardDropBlock(hitEnemy);
                     return;

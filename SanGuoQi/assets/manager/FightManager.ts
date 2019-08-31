@@ -1,5 +1,5 @@
 import FightScene from "../fight/fightScene";
-import { CardInfo, GeneralInfo, NoticeType, SoliderType, SkillInfo, CityInfo } from "./Enum";
+import { CardInfo, GeneralInfo, NoticeType, SoliderType, SkillInfo, CityInfo, EnemyAIResult } from "./Enum";
 import { NoticeMgr } from "./NoticeManager";
 import { CfgMgr } from "./ConfigManager";
 import { GameMgr } from "./GameManager";
@@ -25,7 +25,9 @@ class FightManager {
     fightRoundCount: number = 0;   //战斗回合数
 
     FightWin: boolean = false;  //战斗胜利或失败
-    EnemyAutoAi: boolean = false;  //敌方是否自动AI
+    EnemyAutoAi: boolean = true;  //敌方是否自动AI
+    EnemyAutoAiCount: number = 0;   //敌方AI计数
+    EnemyAIResult: EnemyAIResult = null;   //敌方AI返回结果
 
     /**清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组 */
     clearAndInitFightData(enemyArr:GeneralInfo[], generalArr: GeneralInfo[], fightCityInfo: CityInfo=null){
@@ -41,7 +43,9 @@ class FightManager {
         this.fightRoundCount = 0;   //战斗回合数
 
         this.FightWin = false;  //战斗胜利或失败
-        this.EnemyAutoAi = false;  //敌方自动AI
+        this.EnemyAutoAi = true;  //敌方自动AI
+        this.EnemyAutoAiCount = 0;   //敌方AI计数
+        this.EnemyAIResult = null;   //敌方AI返回结果
 
         if(enemyArr.length > 0 && generalArr.length > 0){
             GameMgr.goToSceneWithLoading("fightScene");
@@ -149,7 +153,7 @@ class FightManager {
 
     /**下回合处理 */
     nextRoundOpt(){
-        cc.log("nextRoundOpt() 下回合处理");
+        cc.log("nextRoundOpt() 下回合处理, this.bMyRound = "+this.bMyRound);
         if(this.getFightScene().checkGameOver(true) == false){
             this.fightRoundCount ++;   //战斗回合数
             NoticeMgr.emit(NoticeType.PerNextRound, null);  //下一个回合准备(会处理回合士气变化)
@@ -163,6 +167,7 @@ class FightManager {
 
     /**我方回合处理 */
     handleMyRoundOpt(){
+        cc.log("handleMyRoundOpt()");
         this.bMyRound = true;
         this.bStopTouch = false;  //是否停止触摸反应
         this.getFightScene().showRoundDesc();
@@ -170,13 +175,54 @@ class FightManager {
 
     /**敌方回合处理 */
     handleEnemyRoundOpt(){
+        cc.log("handleEnemyRoundOpt()");
         this.bMyRound = false;
         this.getFightScene().showRoundDesc();
         if(this.EnemyAutoAi == true){
             this.bStopTouch = true;  //是否停止触摸反应
-            this.getFightScene().handleEnemyRoundOpt();
+            if(FightMgr.EnemyAutoAi == true){   //敌方自动AI
+                this.EnemyAIResult = null;   //敌方AI返回结果
+                this.EnemyAutoAiCount = this.getFightScene().enemyOpenBlocks.length;   //敌方AI计数
+                cc.log("this.EnemyAutoAiCount = "+this.EnemyAutoAiCount);
+                NoticeMgr.emit(NoticeType.EnemyRoundOptAI, null);
+            }
         }else{
             this.bStopTouch = false;  //是否停止触摸反应
+        }
+    }
+
+    /**敌方AI处理结果 */
+    handelEnemyAIResult(AiResult: EnemyAIResult){
+        this.EnemyAutoAiCount --;  //敌方AI计数
+        if(AiResult){
+            if(this.EnemyAIResult == null || (this.EnemyAIResult.hitWeight == 0 && this.EnemyAIResult.runAwayWeight == 0)){
+                this.EnemyAIResult = AiResult;
+            }else{
+                if(this.EnemyAIResult.hitWeight >= 1.0){  //当前结果必杀有希望
+                    if(AiResult.hitWeight > this.EnemyAIResult.hitWeight){
+                        this.EnemyAIResult = AiResult;
+                    }
+                }else if(this.EnemyAIResult.runAwayWeight >= 1.0){   //当前结果要死
+                    if(AiResult.hitWeight >= 1.0){  //必杀有希望
+                        this.EnemyAIResult = AiResult;
+                    }
+                }else{  
+                    //两个结果均是一般般
+                    if(this.EnemyAIResult.hitWeight >= 0.8){  //当前结果有希望攻击
+                        if(AiResult.runAwayWeight > this.EnemyAIResult.hitWeight){
+                            this.EnemyAIResult = AiResult;
+                        }
+                    }else{
+                        if(AiResult.runAwayWeight >= 1.0){
+                            this.EnemyAIResult = AiResult;
+                        }
+                    }
+                }
+            }
+        }
+        cc.log("handelEnemyAIResult(), this.EnemyAutoAiCount = "+this.EnemyAutoAiCount);
+        if(this.EnemyAutoAiCount == 0){   //每个敌方均AI完毕
+            this.getFightScene().handleEnemyAIResultOpt();    //根据AI结果处理敌方操作
         }
     }
 

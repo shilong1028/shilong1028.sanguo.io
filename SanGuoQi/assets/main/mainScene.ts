@@ -404,7 +404,7 @@ export default class MainScene extends cc.Component {
     }
 
     onShareBtn(){
-        SDKMgr.shareGame("快来和我一起参与垃圾分类吧！", (succ:boolean)=>{
+        SDKMgr.shareGame("快来和我一起征战三国，一统天下吧！", (succ:boolean)=>{
             console.log("分享 succ = "+succ);
             if(succ == true){
                 let items = new Array();
