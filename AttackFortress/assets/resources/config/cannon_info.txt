@@ -1,0 +1,209 @@
+[1]
+name = 土炮弹1
+attack = 1
+baoji = 0
+cost = 10
+sell = 5
+
+[2]
+name = 土炮弹2
+attack = 2
+baoji = 2
+cost = 30
+sell = 10
+
+[3]
+name = 土炮弹3
+attack = 3
+baoji = 5
+cost = 50
+sell = 20
+
+[4]
+name = 土炮弹4
+attack = 5
+baoji = 10
+cost = 100
+sell = 30
+
+[5]
+name = 土炮弹5
+attack = 8
+baoji = 15
+cost = 200
+sell = 50
+
+[6]
+name = 土炮弹6
+attack = 11
+baoji = 20
+cost = 500
+sell = 100
+
+[7]
+name = 土炮弹7
+attack = 16
+baoji = 25
+cost = 1000
+sell = 300
+
+[8]
+name = 土炮弹8
+attack = 25
+baoji = 30
+cost = 2000
+sell = 500
+
+[9]
+name = 土炮弹9
+attack = 35
+baoji = 40
+cost = 5000
+sell = 1000
+
+[10]
+name = 土炮弹10
+attack = 60
+baoji = 50
+cost = 10000
+sell = 3000
+
+[11]
+name = 迫击炮弹1
+attack = 1
+baoji = 0
+cost = 10
+sell = 5
+
+[12]
+name = 迫击炮弹2
+attack = 2
+baoji = 2
+cost = 30
+sell = 10
+
+[13]
+name = 迫击炮弹3
+attack = 3
+baoji = 5
+cost = 50
+sell = 20
+
+[14]
+name = 迫击炮弹4
+attack = 5
+baoji = 10
+cost = 100
+sell = 30
+
+[15]
+name = 迫击炮弹5
+attack = 8
+baoji = 15
+cost = 200
+sell = 50
+
+[16]
+name = 迫击炮弹6
+attack = 11
+baoji = 20
+cost = 500
+sell = 100
+
+[17]
+name = 迫击炮弹7
+attack = 16
+baoji = 25
+cost = 1000
+sell = 300
+
+[18]
+name = 迫击炮弹8
+attack = 25
+baoji = 30
+cost = 2000
+sell = 500
+
+[19]
+name = 迫击炮弹9
+attack = 35
+baoji = 40
+cost = 5000
+sell = 1000
+
+[20]
+name = 迫击炮弹10
+attack = 60
+baoji = 50
+cost = 10000
+sell = 3000
+
+[21]
+name = 山炮弹1
+attack = 1
+baoji = 0
+cost = 10
+sell = 5
+
+[22]
+name = 山炮弹2
+attack = 2
+baoji = 2
+cost = 30
+sell = 10
+
+[23]
+name = 山炮弹3
+attack = 3
+baoji = 5
+cost = 50
+sell = 20
+
+[24]
+name = 山炮弹4
+attack = 5
+baoji = 10
+cost = 100
+sell = 30
+
+[25]
+name = 山炮弹5
+attack = 8
+baoji = 15
+cost = 200
+sell = 50
+
+[26]
+name = 山炮弹6
+attack = 11
+baoji = 20
+cost = 500
+sell = 100
+
+[27]
+name = 山炮弹7
+attack = 16
+baoji = 25
+cost = 1000
+sell = 300
+
+[28]
+name = 山炮弹8
+attack = 25
+baoji = 30
+cost = 2000
+sell = 500
+
+[29]
+name = 山炮弹9
+attack = 35
+baoji = 40
+cost = 5000
+sell = 1000
+
+[30]
+name = 山炮弹10
+attack = 60
+baoji = 50
+cost = 10000
+sell = 3000

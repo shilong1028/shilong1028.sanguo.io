@@ -1,0 +1,302 @@
+import { BallInfo, NoticeType, TipsStrDef } from "../manager/Enum";
+import { NotificationMy } from "../manager/NoticeManager";
+import Stuff from "./Stuff";
+import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
+import { GameMgr } from "../manager/GameManager";
+import { ROOT_NODE } from "../common/rootNode";
+import { AudioMgr } from "../manager/AudioMgr";
+
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class Block extends cc.Component {
+
+    @property(cc.Node)
+    addNode : cc.Node = null;  //添加按钮节点
+    @property(cc.Node)
+    lockNode: cc.Node = null;  //锁
+    @property(cc.Node)
+    shadeNode: cc.Node = null;   //影子节点
+    @property(cc.Sprite)
+    goundSpr: cc.Sprite = null;   //地块精灵
+    @property(cc.Sprite)
+    selSpr: cc.Sprite = null;   //选择框精灵
+    @property(cc.SpriteFrame)
+    selNorFrame: cc.SpriteFrame = null;  //选中后，其他非同等级地块小球光圈显示（白色）
+    @property(cc.SpriteFrame)
+    selLightFrame: cc.SpriteFrame = null;   //选中后，其他同等级地块小球光圈显示（黄色)
+
+    nStuff: cc.Node = null;   //小球模型节点
+    stuffPosY: number = 20;
+    index : number = 0;   //网格位置索引
+    ballInfo: BallInfo = null;  //地块上小球数据
+    isLock : boolean = true;   //砖块是否锁定
+
+    // LIFE-CYCLE CALLBACKS:
+    
+    onLoad () {
+        this.addNode.active = false;
+        this.lockNode.active = false;
+        this.shadeNode.active = false;   //影子节点
+        this.goundSpr.node.active = false;   //地块精灵
+        this.selSpr.node.active = false;  //光圈
+
+        this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+
+        NotificationMy.on(NoticeType.BlockBallSel, this.handleBlockBallSel, this);   //地块上小球被选择，相同等级的小球地块要显示光圈
+    }
+
+    onDestroy(){
+        this.node.targetOff(this);
+        NotificationMy.offAll(this);
+    }
+
+    /**游戏暂停，停止小球和砖块的动作，但动画特效不受影响 */
+    handleGamePause(){
+        this.node.pauseAllActions();
+    }
+    /**继续游戏 */
+    handleGameResume(){
+        this.node.resumeAllActions();
+    }
+
+    start () {
+    }
+
+    update (dt) {
+    }
+
+    /**初始化地块数据 */
+    initBlockData(index: number, ballInfo: BallInfo){
+        this.index = index+1;
+        this.ballInfo = ballInfo;
+
+        this.setBlockShow();   //根据开启情形来显示地块外观
+        this.setBallStuff(ballInfo);  //设置地块上的小球模型
+    }
+
+    /**根据开启情形来显示地块外观 */
+    setBlockShow(){
+        this.addNode.active = false;
+        this.lockNode.active = false;
+        this.selSpr.node.active = false;  //光圈
+        this.goundSpr.node.active = false;   //地块精灵
+        this.shadeNode.active = false;   //影子节点
+
+        if(this.index <= MyUserData.blockCount){   //已开启
+            this.isLock = false;   //砖块是否锁定
+            if(this.ballInfo == null){
+                this.goundSpr.node.active = true;   //地块精灵
+                this.addNode.active = true;
+            }
+        }else{
+            this.goundSpr.node.active = true;   //地块精灵
+            this.isLock = true;   //砖块是否锁定
+            this.lockNode.active = true;
+        }
+    }
+
+    /**点击添加小球*/
+    onAddBtn(){
+
+    }
+
+    /**设置地块上的小球模型 */
+    setBallStuff(ballInfo: BallInfo, bShow: boolean = true){
+        this.shadeNode.active = false;   //影子节点
+        this.ballInfo = ballInfo;
+        if(this.nStuff && (ballInfo == null || this.index >= MyUserData.blockCount)){
+            this.nStuff.removeFromParent(true);
+            this.nStuff = null;
+        }
+        if(ballInfo && this.index <= MyUserData.blockCount){   //已开启
+            if(this.nStuff == null){
+                this.nStuff = cc.instantiate(GameMgr.getMainScene().pfStuff);
+                this.nStuff.y = this.stuffPosY;
+                this.node.addChild(this.nStuff, 100);
+            }
+            this.nStuff.opacity = 0;
+            this.nStuff.getComponent(Stuff).setStuffData(ballInfo);  //设置地块小球模型数据
+        }
+
+        if(bShow && this.nStuff){  
+            this.shadeNode.active = true;   //影子节点
+            this.nStuff.opacity = 255;
+            this.shadeNode.opacity = 255;
+        }
+    }
+
+    /**显示招募特效 */
+    showZhaoMuAni(){
+        if(this.nStuff){  
+            this.shadeNode.active = true;   //影子节点
+            this.nStuff.opacity = 255;
+            this.shadeNode.opacity = 255;
+        }
+
+        // let effNode = new cc.Node;
+        // effNode.addComponent(cc.Sprite);
+        // this.node.addChild(effNode, 110, "zhaomuAniNode");
+        // effNode.scale = 2.0;
+        // let zhaomuAtlas = CombineMgr.getCombineScene().zhaomuAtlas;
+        // let animation:cc.Animation = UIHelper.showAltasAnimationONE(effNode, zhaomuAtlas, "zhaomu", cc.Vec2.ZERO, 0, 12, true, false, cc.WrapMode.Default);
+        // animation.on("stop", function () {
+        //     effNode.removeFromParent(true);
+        // }.bind(this));
+    }
+
+    onTouchStart(event: cc.Event.EventTouch) {
+        if( this.isLock || this.ballInfo == null || this.nStuff == null){
+            return;
+        }
+        if(GameMgr.getMainScene().bPlayZhaoMuAni == false){  //是否在显示招募移动动画，如果是则不能拖动小球合成
+            this.handleTouchSelStuff();   //处理选中并拖动
+        }
+    }
+
+    /**处理选中并拖动 */
+    handleTouchSelStuff(bSel: boolean = true){
+        if(bSel){
+            this.nStuff.opacity = 120;   //被移动地块上小球变成半透明
+            this.shadeNode.opacity = 120;
+            GameMgr.getMainScene().setSelectStuff(this);   //拖动更新选中的小球模型的位置
+
+            NotificationMy.emit(NoticeType.BlockBallSel, this.ballInfo);   //地块上小球被选择，相同等级的小球地块要显示光圈
+        }else{
+            this.nStuff.opacity = 255;
+            this.shadeNode.opacity = 255;
+        }
+    }
+
+    /**地块上小球被选择，相同等级的小球地块要显示光圈 */
+    handleBlockBallSel(ballInfo: BallInfo){
+        if(this.isLock == false){
+            if(ballInfo){
+                this.goundSpr.node.stopAllActions();
+                this.goundSpr.node.active = false;   //地块精灵
+
+                this.selSpr.node.active = true;  //光圈
+                if(this.ballInfo && this.ballInfo.cannonId == ballInfo.cannonId && this.ballInfo.timeId != ballInfo.timeId){
+                    this.selSpr.spriteFrame = this.selLightFrame;
+                }else{
+                    this.selSpr.spriteFrame = this.selNorFrame;
+                }
+            }else{
+                this.selSpr.node.active = false;  //光圈
+            }
+        }else{
+            this.selSpr.node.active = false;  //光圈
+        }
+    }
+
+    /**将本地块上的小球卖掉 */
+    onSellBall(){
+        if(this.ballInfo){
+            let sellNum = this.ballInfo.cannonCfg.sell;
+            MyUserDataMgr.sellBallFromBallList(this.ballInfo);  
+            this.onBallRemoveBlock();
+
+            return sellNum;
+        }
+        return 0;
+    }
+
+    /**将本地块上的小球移走了 */
+    onBallRemoveBlock(){
+        if( this.isLock || this.ballInfo == null || this.nStuff == null){
+            return;
+        }
+        this.nStuff.removeFromParent(true);
+        this.ballInfo = null;
+        this.nStuff = null;
+        
+        this.setBlockShow();   //根据开启情形来显示地块外观
+    }
+
+    /**交换小球 */
+    onSwapBallBlock(ballInfo: BallInfo){
+        this.setBallStuff(ballInfo);  //设置地块上的小球模型
+    }
+
+    /**将一个地块上的小球放置到本地块上 */
+    onBallDropBlock(dropBlock: Block){
+        if(dropBlock.index == this.index){
+            this.nStuff.opacity = 255;   //自己的小球又移动回来或者没有位置放置复原了
+            this.shadeNode.opacity = 255;
+            return;
+        }
+
+        if(this.isLock == true){
+            dropBlock.onBallDropBlock(dropBlock);   //将一个地块上的小球放置到本地块上
+            return;
+        }
+
+        let ballInfo: BallInfo = dropBlock.ballInfo;
+
+        if(this.ballInfo){
+            if(this.ballInfo.cannonId == ballInfo.cannonId){   //升级
+                if(this.ballInfo.cannonId >= GameMgr.ballMaxLv){   //最大等级小球不可合成
+                    this.setBallStuff(this.ballInfo);  //设置地块上的小球模型
+                    dropBlock.setBallStuff(ballInfo);  //设置地块上的小球模型
+                    ROOT_NODE.showTipsText(TipsStrDef.KEY_HeChengTip3);  //"最高等级士兵无法继续合成。"
+                }else{
+                    let cannonId = this.ballInfo.cannonId + 1;
+                    this.ballInfo.updateCannon(cannonId); 
+                    this.setBallStuff(this.ballInfo);  //设置地块上的小球模型
+                    this.nStuff.opacity = 0;
+  
+                    dropBlock.onBallRemoveBlock();   //将本地块上的小球移走了
+                    this.showUpdateBallEffect();  //显示升级小球特效
+
+                    MyUserDataMgr.updateBallInBallList(this.ballInfo);    //更新未出战小球 
+                }
+            }else{    //交换
+                dropBlock.onSwapBallBlock(this.ballInfo);
+                this.onSwapBallBlock(ballInfo);
+            }
+        }else{  //放置
+            this.setBallStuff(ballInfo);  //设置地块上的小球模型
+            dropBlock.onBallRemoveBlock();   //将本地块上的小球移走了
+        }
+    }
+
+    /**显示升级小球特效 */
+    showUpdateBallEffect(){
+        let oldInfo: BallInfo = new BallInfo(this.ballInfo.cannonId - 1);
+
+        let aniStuff = cc.instantiate(GameMgr.getMainScene().pfStuff);
+        aniStuff.y = this.stuffPosY;
+        this.node.addChild(aniStuff, 90);
+        aniStuff.getComponent(Stuff).setStuffData(oldInfo);  //设置地块小球模型数据
+
+        let aniStuff2 = cc.instantiate(GameMgr.getMainScene().pfStuff);
+        aniStuff2.y = this.stuffPosY;
+        this.node.addChild(aniStuff2, 90);
+        aniStuff2.getComponent(Stuff).setStuffData(oldInfo);  //设置地块小球模型数据
+
+        AudioMgr.playEffect("effect/hecheng/compound");
+        
+        aniStuff.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(-100, 0)), cc.moveBy(0.1, cc.v2(100, 0)), cc.hide(), cc.removeSelf(true)));
+        aniStuff2.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(100, 0)), cc.moveBy(0.1, cc.v2(-100, 0)), cc.hide(), cc.callFunc(function(){
+            this.showUpdateAni();
+        }.bind(this), cc.removeSelf(true))));
+    }
+
+    /**显示升级动画 */
+    showUpdateAni(){
+        if(this.nStuff){
+            this.nStuff.opacity = 255;
+        }
+
+        let effNode = new cc.Node;
+        effNode.scale = 2.0;
+        let effectSpr = effNode.addComponent(cc.Sprite);
+        effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+        effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+
+        this.node.addChild(effNode, 110, "hechengAniNode");
+        GameMgr.showAltasAnimationONE(effNode, GameMgr.getMainScene().stuffUpAtlas, "hecheng", 12, cc.WrapMode.Default);
+    }
+
+}

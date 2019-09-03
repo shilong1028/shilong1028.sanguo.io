@@ -39,7 +39,7 @@
   "title": "SanGuoQi",
   "webOrientation": "auto",
   "wechatgame": {
-    "REMOTE_SERVER_ROOT": "",
+    "REMOTE_SERVER_ROOT": "https://fsjs.dshine.com/game/hcddb/tanzhu2/",
     "appid": "wx9c8ea6c3fbb8b5a1",
     "orientation": "portrait",
     "separate_engine": false,
