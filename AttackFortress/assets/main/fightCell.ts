@@ -53,7 +53,7 @@ export default class FightCell extends viewCell {
             if(bSel){
                 this.selBg.active = true;
                 if(this.targetSc && this.targetSc.handleSelCell){
-                    this.targetSc.handleSelCell(this.cellIdx);
+                    this.targetSc.handleSelCell(this.cellIdx, this.cellData);
                 }
             }else{
                 this.selBg.active = false;

@@ -8,7 +8,9 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 class GameManager {
-    ballMaxLv: number = 10;  //每一种炮炮弹配置中的最大等级
+    ballMaxLv: number = 20;  //炮弹配置中的最大等级
+    blockOpenLevel: number[] = new Array(0,0,0,1,5, 10,20,30,45,60, 75,90);
+    fightCount: number[] = new Array(0,0,0,3,5, 10,20,30,50,80);
 
 
     /************************  以下为UI接口  ************** */

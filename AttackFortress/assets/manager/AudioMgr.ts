@@ -94,7 +94,7 @@ class AudioMgr_class {
                 this.bgmAudio.stop();
             }
         }else{
-            AudioMgr.stopBGM();
+            cc.audioEngine.stopMusic();
         }
     }
 

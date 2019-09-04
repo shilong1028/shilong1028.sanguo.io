@@ -1,5 +1,5 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, TipsStrDef, BallInfo } from "../manager/Enum";
+import { NoticeType, TipsStrDef, BallInfo, PlayerInfo } from "../manager/Enum";
 import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
@@ -10,7 +10,6 @@ import Stuff from "./Stuff";
 import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
 import GainGoldNode from "./gainNode";
 import TableView from "../tableView/tableView";
-import FightCell from "./fightCell";
 
 const {ccclass, property} = cc._decorator;
 
@@ -20,6 +19,11 @@ export default class MainScene extends cc.Component {
     @property(cc.Node)
     nSlots: cc.Node = null;   //网格节点
     @property(cc.Node)
+    bottomNode: cc.Node = null;
+    @property(cc.Node)
+    topNode: cc.Node = null;
+
+    @property(cc.Node)
     delNode: cc.Node = null;   //删除节点
     @property(cc.Node)
     shareBtn: cc.Node = null;  //分享
@@ -28,11 +32,19 @@ export default class MainScene extends cc.Component {
     @property(cc.Label)
     labGold: cc.Label = null;   //玩家金币数
     @property(cc.Node)
-    goldIcon: cc.Node = null;
+    goldIcon: cc.Node = null;   //金币图标
+
+    @property(cc.Sprite)
+    playerSpr: cc.Sprite = null;   //炮台图标
+    @property(cc.Label)
+    playerDesc: cc.Label = null;  //炮台介绍
+
     @property(cc.Node)
-    bottomNode: cc.Node = null;
-    @property(cc.Node)
-    topNode: cc.Node = null;
+    tableNode: cc.Node = null;
+    @property(cc.Label)
+    fightTip: cc.Label = null;
+    @property(cc.Label)
+    fightNum: cc.Label = null;
     @property(TableView)
     tableView: TableView = null;  //出战列表
 
@@ -44,21 +56,27 @@ export default class MainScene extends cc.Component {
     pfGainGold: cc.Prefab = null;   //金币增益预制体
     @property(cc.Prefab)
     pfIconEffect: cc.Prefab = null;   //金币飘动预制体
+    @property(cc.Prefab)
+    pfShop: cc.Prefab = null;  //小球商店
+    @property(cc.Prefab)
+    pfPlayer: cc.Prefab = null;  //炮台更换
 
     @property(cc.SpriteAtlas)
     hechengAtlas: cc.SpriteAtlas = null;
     @property(cc.SpriteAtlas)
     stuffUpAtlas: cc.SpriteAtlas = null;
+    @property(cc.SpriteAtlas)
+    playerAtlas: cc.SpriteAtlas = null;
 
     tipsPool: cc.NodePool =  null;   //缓存池
 
     bLoadRoleDataFinish: boolean = false;   //是否已经加载完毕用户数据
-    bPlayZhaoMuAni: boolean = false;   //是否在显示招募移动动画，如果是则不能拖动小球合成
 
     nSelectStuff: cc.Node = null;   //拖动选择的小球模型
     selectBlock: Block = null;   //拖动的地块数据
 
     fightList: BallInfo[] = new Array();   //出战列表
+    selFightBall: BallInfo = null;  //选中的出战小球
 
     onLoad(){
         this.bLoadRoleDataFinish = false;  //是否已经加载完毕用户数据
@@ -120,6 +138,7 @@ export default class MainScene extends cc.Component {
             }
     
             this.UpdateGold();   //更新金币数量
+            this.UpdatePlayer();  //显示炮台信息
             this.initFightList();  //刷新出战列表
             this.loadBlocksGrid();   //加载小球地块网格
         }
@@ -137,17 +156,35 @@ export default class MainScene extends cc.Component {
         this.labGold.node.runAction(cc.sequence(cc.scaleTo(0.1, 1.3), cc.scaleTo(0.1, 1.0)));
     }
 
+    /**显示炮台信息 */
+    UpdatePlayer(){
+        this.playerSpr.spriteFrame = null;
+        this.playerDesc.string = "";
+        let playerInfo: PlayerInfo = MyUserData.playerList[MyUserData.curPlayerIdx];
+        if(playerInfo){
+            this.playerSpr.spriteFrame = this.playerAtlas.getSpriteFrame("player_"+playerInfo.playerId);
+            this.playerDesc.string = playerInfo.playerCfg.desc;
+        }
+    }
+
     //刷新出战列表
     initFightList(){
         this.fightList = MyUserDataMgr.getFightListClone();
+        this.fightNum.string = "出战数量："+this.fightList.length+"/"+MyUserData.fightCount;
+
+        if(this.fightList.length > 0){
+            this.fightTip.string = "";
+        }else{
+            this.fightTip.string = "拖入此处加入战斗！";
+        }
 
         this.tableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
         this.tableView.initTableView(this.fightList.length, { array: this.fightList, target: this, bShowSel: true}); 
     }
 
-    /**点击武将 */
-    handleGeneralCellClick(clickIdx: number, cellSc: FightCell){
-
+    /**选中出战Cell */
+    handleSelCell(cellIdx:number, cellData:BallInfo){
+        this.selFightBall = cellData;  //选中的出战小球
     }
 
     /**加载小球地块网格 */
@@ -168,6 +205,126 @@ export default class MainScene extends cc.Component {
         }
     }
 
+    //显示金币或钻石飘动动画
+    showIconEffectAni(startPos: cc.Vec2, type: number){
+        let layer = GameMgr.showLayer(this.pfIconEffect);
+        let layerSc = layer.getComponent(IconEffect); 
+        if(layerSc){
+            let destPos = this.goldIcon.convertToWorldSpaceAR(cc.Vec2.ZERO)
+            layerSc.initIconEffectAni(startPos, destPos, type);
+        }
+    }
+
+    onTouchStart(event: cc.Event.EventTouch) {  
+        if(this.selectBlock){
+            this.delNode.active= true;  //小球解雇和升级节点
+            this.updateSelectStuff(event.getLocation());   //拖动更新选中的小球模型的位置
+        }
+    }
+
+    onTouchMove(event: cc.Event.EventTouch) {
+        if(this.nSelectStuff && this.selectBlock){ 
+            this.updateSelectStuff(event.getLocation());   //拖动更新选中的小球模型的位置
+        }
+    }
+
+    ontTouchEnd(event: cc.Event.EventTouch) {
+        if(this.nSelectStuff && this.selectBlock){  
+            this.fightTip.string = "";
+            this.placeSelectStuff(event.getLocation());   //放置选中的小球模型
+            NotificationMy.emit(NoticeType.BlockBallSel, null);   //地块上小球被选择，相同等级的小球地块要显示光圈
+        }
+    }
+
+    /**设置选中的将要移动的小球地块 */
+    setSelectStuff(block: Block){
+        this.fightTip.string = "拖入此处加入战斗！";
+        this.selectBlock = block;   //拖动的地块数据
+    }
+
+    /**拖动更新选中的小球模型的位置 */
+    updateSelectStuff(touchPos: cc.Vec2){
+        if(this.selectBlock){
+            touchPos = GameMgr.adaptTouchPos(touchPos, this.node.position);  //校正因适配而产生的触摸偏差
+            if(this.nSelectStuff == null){
+                this.nSelectStuff = cc.instantiate(this.pfStuff);
+                this.nSelectStuff.setPosition(-3000, -3000);
+                this.node.addChild(this.nSelectStuff, 100);
+            }
+            let stuff = this.nSelectStuff.getComponent(Stuff);
+            stuff.setStuffData(this.selectBlock.ballInfo);   //设置地块小球模型数据 
+    
+            let pos = this.node.convertToNodeSpaceAR(touchPos);
+            this.nSelectStuff.setPosition(pos);
+        }
+    }
+
+    /**放置选中的小球模型 */
+    placeSelectStuff(touchPos : cc.Vec2){
+        if(this.selectBlock && this.selectBlock){
+            touchPos = GameMgr.adaptTouchPos(touchPos, this.node.position);  //校正因适配而产生的触摸偏差
+            let pos = this.delNode.convertToNodeSpace(touchPos);   //删除节点
+            let rect = cc.rect(0, 0, this.delNode.width, this.delNode.height);
+            if(rect.contains(pos)){  //删除士兵
+                if(MyUserData.ballList.length == 1){   //最后一个小球不可删除
+                    ROOT_NODE.showTipsText(TipsStrDef.KEY_FireTip);
+    
+                    let worldPos = this.selectBlock.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+                    let destPos = this.node.convertToNodeSpaceAR(worldPos);
+                    this.nSelectStuff.runAction(cc.sequence(cc.spawn(cc.fadeIn(0.12), cc.moveTo(0.12, destPos)), cc.callFunc(function(){
+                        this.selectBlock.onBallDropBlock(this.selectBlock);   //将一个地块上的小球放置到本地块上
+                        this.selectBlock = null;   //拖动的地块数据
+                        this.nSelectStuff.setPosition(-3000, -3000);
+                    }.bind(this))))
+                }else{
+                    this.nSelectStuff.setPosition(-3000, -3000);
+    
+                    let sellGold = this.selectBlock.onSellBall();  
+                    this.showDelBallGainAni(sellGold);   //显示售卖士兵收益 
+                }
+            }else{
+                let pos = this.tableNode.convertToNodeSpace(touchPos);   //删除节点
+                let rect = cc.rect(0, 0, this.tableNode.width, this.tableNode.height);
+                if(rect.contains(pos)){    //出战
+                    if(this.fightList.length >= MyUserData.fightCount){
+                        ROOT_NODE.showTipsText("出战列表已满额！");
+                        ROOT_NODE.showTipsText("闯关可以解锁新的出战位！");
+                    }else{
+                        MyUserDataMgr.addBallToFightList(this.selectBlock.ballInfo);
+                        this.selectBlock.onBallRemoveBlock();
+                        this.initFightList();  //刷新出战列表
+                    }
+                }else{
+                    let dropBlock: cc.Node = this.getBlockSlotIndex(touchPos);   //根据位置找到对应的地块
+                    if(dropBlock == null){   //未找到合适的地块
+                        this.selectBlock.onBallDropBlock(this.selectBlock);   //将一个地块上的小球放置到本地块上
+                    }else{
+                        dropBlock.getComponent(Block).onBallDropBlock(this.selectBlock);   //将一个地块上的小球放置到选中的地块上
+                    }
+                }
+            }
+            this.selectBlock = null;   //拖动的地块数据
+            this.nSelectStuff.setPosition(-3000, -3000);
+            this.delNode.active= false;  //小球解雇和升级节点
+        }
+    }
+
+    /**根据位置找到对应的地块 */
+    getBlockSlotIndex(touchPos: cc.Vec2): cc.Node{
+        let pos = this.nSlots.convertToNodeSpaceAR(touchPos);
+        let blocks = this.nSlots.children;
+        for(let i=0; i< blocks.length; i++){
+            let len = blocks[i].getPosition().sub(pos).mag();
+            if(len <= 100){
+                if(blocks[i].getComponent(Block).isLock == false){
+                    return blocks[i];
+                }
+                break;
+            }
+        }
+        return null;
+    }
+
     /**显示售卖士兵收益 */
     showDelBallGainAni(sellGold: number){
         if(sellGold >= 0){
@@ -185,67 +342,70 @@ export default class MainScene extends cc.Component {
         }
     }
 
-    //显示金币或钻石飘动动画
-    showIconEffectAni(startPos: cc.Vec2, type: number){
-        let layer = GameMgr.showLayer(this.pfIconEffect);
-        let layerSc = layer.getComponent(IconEffect); 
-        if(layerSc){
-            let destPos = this.goldIcon.convertToWorldSpaceAR(cc.Vec2.ZERO)
-            layerSc.initIconEffectAni(startPos, destPos, type);
+    //购买炮台
+    handleBuyPlayer(playerInfo: PlayerInfo){
+        if(playerInfo){
+            if(MyUserData.GoldCount >= playerInfo.playerCfg.cost){
+                MyUserDataMgr.updateUserGold(-playerInfo.playerCfg.cost);
+                MyUserDataMgr.addPlayerToPlayerList(playerInfo);   //添加新炮台到拥有的炮列表
+                NotificationMy.emit(NoticeType.UpdatePlayer, null);  //更新炮台显示
+            }else{
+                ROOT_NODE.showTipsDialog("金币不足，是否？", ()=>{
+                });
+            }
+        }
+    }
+
+    //换装炮台
+    handleChangePlayer(curIdx: number){
+        if(curIdx >= 0){
+            MyUserDataMgr.updateCurPlayerIdx(curIdx);
+            this.UpdatePlayer();  //显示炮台信息
+            NotificationMy.emit(NoticeType.UpdatePlayer, null);  //更新炮台显示
         }
     }
 
     /**购买小球 */
-    handleBuyStuff(ballLv: number, cost: number, bGold: boolean = true){
-        if(MyUserData.ballList.length >= MyUserData.blockCount){
-            ROOT_NODE.showTipsText(TipsStrDef.KEY_HeChengTip2);
-        }else{
-            let posIdx = this.addBallToOneBlock(null, ballLv, false);   //添加（下阵或招募）一个小球到地块
-            if(posIdx > 0 && cost != 0){
-                return posIdx;
+    handleBuyStuff(ballInfo: BallInfo){
+        if(ballInfo){
+            if(MyUserData.GoldCount >= ballInfo.cannonCfg.cost){
+                if(MyUserData.ballList.length >= MyUserData.blockCount){
+                    ROOT_NODE.showTipsText("合成网格中可用地块已满，无法购买！请解雇无用的对象后重新购买。");
+                }else{
+                    this.addBallToOneBlock(ballInfo);
+                }
+            }else{
+                ROOT_NODE.showTipsDialog("金币不足，是否？", ()=>{
+                });
             }
         }
-        return 0;
     }
 
-    /**添加（下阵或招募）一个小球到地块 */
-    addBallToOneBlock(ballInfo: BallInfo = null, ballLv: number=1, bSave: boolean = true){
-        let blocks = this.nSlots.children;
-        let addPos = 0;
-        for(let i=0; i<blocks.length; i++){
-            let block: Block = blocks[i].getComponent(Block);
-            if(block.isLock == false && block.ballInfo == null){
-                if(ballInfo == null){   //招募
-                    //ballInfo = MyUserDataMgr.addBalltoBallList(ballLv, i+1, bSave);   //添加小球到列表中
-                    if(ballInfo){
-                        this.showAddBallAni(block, ballInfo);   //显示招募小球的动画特效
+    /**添加一个小球到地块 */
+    addBallToOneBlock(ballInfo: BallInfo, bBuyBall:boolean=true){
+        if(ballInfo){
+            let blocks = this.nSlots.children;
+            for(let i=0; i<blocks.length; i++){
+                let block: Block = blocks[i].getComponent(Block);
+                if(block.isLock == false && block.ballInfo == null){
+                    if(bBuyBall == true){
+                        MyUserDataMgr.updateUserGold(-ballInfo.cannonCfg.cost);
+                        this.showBuyBallAni(block, ballInfo);   //显示招募小球的动画特效
                     }else{
-                        cc.log("warning, addBall failed! ballLv = "+ballLv+"; posIdx = "+(i+1));
+                        block.initBlockByBallInfo(ballInfo);
                     }
-                    addPos = i+1;
-                }else{  //下阵
-                    block.setBallStuff(ballInfo);  //出战位置或所在地块编号
+                    break;
                 }
-                break;
             }
-        }
-        if(addPos == 0){
-            ROOT_NODE.showTipsText(TipsStrDef.KEY_HeChengTip2);
-            return addPos;
-        }else{
-            return addPos;
         }
     }
 
     /**显示招募小球的动画特效 */
-    showAddBallAni(block: Block, ballInfo: BallInfo){
-        this.bPlayZhaoMuAni = true;   //是否在显示招募移动动画，如果是则不能拖动小球合成
-        block.setBallStuff(ballInfo, false);  //出战位置或所在地块编
-
+    showBuyBallAni(block: Block, ballInfo: BallInfo){
         let worldPos = block.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
         let destPos = this.node.convertToNodeSpaceAR(worldPos);
 
-        let worldPos2 = cc.Vec2.ZERO //this.buyBtnNode.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        let worldPos2 = this.delNode.convertToWorldSpaceAR(cc.Vec2.ZERO);
         let btnPos = this.node.convertToNodeSpaceAR(worldPos2);
 
         let dir: cc.Vec2 = btnPos.sub(destPos).normalize();
@@ -258,116 +418,25 @@ export default class MainScene extends cc.Component {
         tempStuff.getComponent(Stuff).setStuffData(ballInfo);   //设置地块小球模型数据 
 
         tempStuff.runAction(cc.sequence(cc.spawn(cc.fadeIn(0.12), cc.moveTo(0.12, destPos)), cc.callFunc(function(){
-            this.bPlayZhaoMuAni = false;   //是否在显示招募移动动画，如果是则不能拖动小球合成
-            block.showZhaoMuAni();
+            block.initBlockByBallInfo(ballInfo);
             tempStuff.removeFromParent(true);
         }.bind(this))))
     }
 
-    onTouchStart(event: cc.Event.EventTouch) {  
-        if(this.bPlayZhaoMuAni == true){  //是否在显示招募移动动画，如果是则不能拖动小球合成
-            return;
-        }
-        if(this.selectBlock){
-            this.updateSelectStuff(event.getLocation());   //拖动更新选中的小球模型的位置
-        }
-    }
-
-    onTouchMove(event: cc.Event.EventTouch) {
-        if(this.nSelectStuff && this.selectBlock){
-            this.updateSelectStuff(event.getLocation());   //拖动更新选中的小球模型的位置
-        }
-    }
-
-    ontTouchEnd(event: cc.Event.EventTouch) {
-        if(this.nSelectStuff && this.selectBlock){
-            this.placeSelectStuff(event.getLocation());   //放置选中的小球模型
-            NotificationMy.emit(NoticeType.BlockBallSel, null);   //地块上小球被选择，相同等级的小球地块要显示光圈
-        }
-    }
-
-    /**设置选中的将要移动的小球地块 */
-    setSelectStuff(block: Block){
-        this.selectBlock = block;   //拖动的地块数据
-    }
-
-    /**拖动更新选中的小球模型的位置 */
-    updateSelectStuff(touchPos: cc.Vec2){
-        if(this.selectBlock == null){
-            return;
-        }
-
-        touchPos = GameMgr.adaptTouchPos(touchPos, this.node.position);  //校正因适配而产生的触摸偏差
-
-        if(this.nSelectStuff == null){
-            this.nSelectStuff = cc.instantiate(this.pfStuff);
-            this.nSelectStuff.setPosition(-3000, -3000);
-            this.node.addChild(this.nSelectStuff, 100);
-        }
-        let stuff = this.nSelectStuff.getComponent(Stuff);
-        stuff.setStuffData(this.selectBlock.ballInfo);   //设置地块小球模型数据 
-
-        let pos = this.node.convertToNodeSpaceAR(touchPos);
-        this.nSelectStuff.setPosition(pos);
-    }
-
-    /**放置选中的小球模型 */
-    placeSelectStuff(touchPos : cc.Vec2){
-        if(this.nSelectStuff == null || this.selectBlock == null){
-            return;
-        }
-
-        touchPos = GameMgr.adaptTouchPos(touchPos, this.node.position);  //校正因适配而产生的触摸偏差
-
-        let dropBlock: cc.Node = this.getBlockSlotIndex(touchPos);   //根据位置找到对应的地块
-        if(dropBlock == null){   //未找到合适的地块
-            let pos = this.delNode.convertToNodeSpace(touchPos);   //删除节点
-            let rect = cc.rect(0, 0, this.delNode.width, this.delNode.height);
-            if(rect.contains(pos)){  //删除士兵
-                if(MyUserData.ballList.length == 1){   //最后一个小球不可删除
-                    ROOT_NODE.showTipsText(TipsStrDef.KEY_FireTip);
-
-                    let worldPos = this.selectBlock.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
-                    let destPos = this.node.convertToNodeSpaceAR(worldPos);
-                    this.nSelectStuff.runAction(cc.sequence(cc.spawn(cc.fadeIn(0.12), cc.moveTo(0.12, destPos)), cc.callFunc(function(){
-                        this.selectBlock.onBallDropBlock(this.selectBlock);   //将一个地块上的小球放置到本地块上
-                        this.selectBlock = null;   //拖动的地块数据
-                        this.nSelectStuff.setPosition(-3000, -3000);
-                    }.bind(this))))
-                    this.delNode.active= false;  //小球解雇和升级节点
-                    return;
-                }else{
-                    this.nSelectStuff.setPosition(-3000, -3000);
-
-                    let sellGold = this.selectBlock.onSellBall();  
-                    this.showDelBallGainAni(sellGold);   //显示售卖士兵收益 
-                }
+    /**下阵出战小球 */
+    onCancelFightBtn(){
+        if(this.selFightBall){  //选中的出战小球
+            if(MyUserData.ballList.length >= MyUserData.blockCount){
+                ROOT_NODE.showTipsText("合成网格中可用地块已满，出战对象无法下阵！");
             }else{
-                this.selectBlock.onBallDropBlock(this.selectBlock);   //将一个地块上的小球放置到本地块上
+                ROOT_NODE.showTipsDialog("是否将选中的对象从出战列表移除到下方网格中？", ()=>{
+                    let ballInfo = this.selFightBall.clone();
+                    MyUserDataMgr.removeBallFromFightList(this.selFightBall);
+                    this.addBallToOneBlock(ballInfo, false);
+                    this.initFightList();  //刷新出战列表
+                });
             }
-        }else{
-            dropBlock.getComponent(Block).onBallDropBlock(this.selectBlock);   //将一个地块上的小球放置到选中的地块上
-        }
-
-        this.selectBlock = null;   //拖动的地块数据
-        this.nSelectStuff.setPosition(-3000, -3000);
-        this.delNode.active= false;  //小球解雇和升级节点
-    }
-
-    /**根据位置找到对应的地块 */
-    getBlockSlotIndex(touchPos: cc.Vec2): cc.Node{
-        let pos = this.nSlots.convertToNodeSpaceAR(touchPos);
-        let blocks = this.nSlots.children;
-        for(let i=0; i< blocks.length; i++){
-            let len = blocks[i].getPosition().sub(pos).mag();
-            if(len <= 100){
-                if(blocks[i].getComponent(Block).isLock == false){
-                    return blocks[i];
-                }
-                break;
-            }
-        }
-        return null;
+        } 
     }
 
     /**点击售卖按钮 */
@@ -387,9 +456,10 @@ export default class MainScene extends cc.Component {
         }, this);
     }
 
-    //强化界面
-    onUpdateBtn(){
+    //换炮界面
+    onPlayerBtn(){
         AudioMgr.playEffect("effect/hecheng/ui_click");
+        GameMgr.showLayer(this.pfPlayer);
     }
 
     /**出战按钮 */
@@ -404,12 +474,12 @@ export default class MainScene extends cc.Component {
         let keyVal = AudioMgr.getMusicOnOffState();   //获取音效总开关状态
         if(keyVal == 1){   //关闭
             keyVal = 0;
+            this.musicSpr.spriteFrame = this.hechengAtlas.getSpriteFrame("hecheng_YinLiang") 
             AudioMgr.playEffect("effect/hecheng/ui_click");
-            this.musicSpr.spriteFrame = this.hechengAtlas.getSpriteFrame("hecheng_YinLiang")
         }else{  //现在为开启状态，按钮显示开启图标
             keyVal = 1;
-            AudioMgr.stopBGM();
             this.musicSpr.spriteFrame = this.hechengAtlas.getSpriteFrame("hecheng_YinLiangGuan")
+            AudioMgr.stopBGM();
         }
         AudioMgr.setMusicOnOffState(keyVal);
     }

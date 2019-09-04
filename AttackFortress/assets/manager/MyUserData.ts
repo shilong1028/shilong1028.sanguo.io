@@ -1,6 +1,6 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NotificationMy } from "./NoticeManager";
-import { NoticeType, BallInfo } from "./Enum";
+import { NoticeType, BallInfo, PlayerInfo } from "./Enum";
 
 
 //用户数据管理
@@ -16,8 +16,11 @@ export var MyUserData = {
     blockCount: 3,   //开启的合成地块数量
     ballList: [],   //未出战小球列表 
     
-    
+    fightCount: 3,  //解锁的可战斗数量
     fightList: [],   //出战小球列表
+
+    curPlayerIdx: 0,  //当前使用的炮索引
+    playerList: [],   //拥有的炮列表
 };
 
 @ccclass
@@ -34,14 +37,17 @@ class MyUserManager {
         MyUserData.lastGoldTaxTime = 0;   //上一次收税金时间
         LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, 0);
 
-        MyUserData.blockCount = 3;  //开启的合成地块数量
-        LDMgr.setItem(LDKey.KEY_BlockCount, 0);
-
+        this.updateBlockCount(3);  //开启的合成地块数量
         MyUserData.ballList = new Array();  //未出战小球列表 
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
+        this.updateFightCount(3);  //解锁的可战斗数量
         MyUserData.fightList = new Array();  //出战小球列表
         LDMgr.setItem(LDKey.KEY_FightList, JSON.stringify(MyUserData.fightList));
+
+        this.updateCurPlayerIdx(0);  //当前使用的炮索引
+        MyUserData.playerList = new Array(); //拥有的炮列表
+        LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
 
         this.initUserData();
     }
@@ -54,9 +60,12 @@ class MyUserManager {
         MyUserData.lastGoldTaxTime = LDMgr.getItemInt(LDKey.KEY_LastGoldTaxTime);   //上一次收税金时间
 
         MyUserData.blockCount = LDMgr.getItemInt(LDKey.KEY_BlockCount, 3);  //开启的合成地块数量
-
         MyUserData.ballList = this.getBallListByLD();    //未出战小球列表 
+
+        MyUserData.fightCount = LDMgr.getItemInt(LDKey.KEY_FightCount, 3);  //解锁的可战斗数量
         MyUserData.fightList = this.getFightListByLD();  //出战小球列表 
+
+        MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表
 
         if(MyUserData.GoldCount == 0 && MyUserData.blockCount == 3 && MyUserData.ballList.length == 0 && MyUserData.fightList.length == 0){
             //新用户
@@ -64,9 +73,63 @@ class MyUserManager {
                 let ballInfo = new BallInfo(1);
                 this.addBallToBallList(ballInfo, false);
             }
+            LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
+
+            this.updateUserGold(5000);
+
+            MyUserData.playerList.push(new PlayerInfo(1));    //拥有的炮列表
+            LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
+            this.updateCurPlayerIdx(0);  //当前使用的炮索引
         }
 
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+    }
+
+    /**更新地块开启数量 */
+    updateBlockCount(openNum:number){
+        MyUserData.blockCount = openNum;  //开启的合成地块数量
+        LDMgr.setItem(LDKey.KEY_BlockCount, openNum);
+    }
+
+    /**更新地块开启数量 */
+    updateFightCount(openNum:number){
+        MyUserData.fightCount = openNum;  //解锁的可战斗数量
+        LDMgr.setItem(LDKey.KEY_FightCount, openNum);
+    }
+
+    /**更新当前使用炮索引 */
+    updateCurPlayerIdx(usedIdx:number){
+        MyUserData.curPlayerIdx = usedIdx;  //更新当前使用炮索引
+        LDMgr.setItem(LDKey.KEY_CurPlayerIdx, usedIdx);
+    }
+
+    /**从本地存储中获取拥有的炮列表 */
+    getPlayerListByLD(){
+        let PalyerList = LDMgr.getJsonItem(LDKey.KEY_PlayerList);  
+        let tempList: PlayerInfo[] = new Array();
+        if(PalyerList){
+            for(let i=0; i<PalyerList.length; ++i){
+                let tempItem = new PlayerInfo(PalyerList[i].playerId);
+                tempItem.level = PalyerList[i].level;   
+                tempItem.itemIds = PalyerList[i].itemIds;  
+                tempList.push(tempItem);
+            }
+        }
+        return tempList;
+    }
+    /**保存拥有的炮列表 */
+    savePlayerList(){
+        let PlayerList = new Array();
+        for(let i=0; i<MyUserData.playerList.length; ++i){
+            let tempItem = MyUserData.playerList[i].cloneNoCfg();
+            PlayerList.push(tempItem);
+        }
+        LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(PlayerList));
+    }
+    /**添加新炮台到拥有的炮列表 */
+    addPlayerToPlayerList(playerInfo: PlayerInfo){
+        MyUserData.playerList.push(playerInfo);
+        this.savePlayerList();
     }
 
     /**从本地存储中获取未出战小球列表 */
@@ -105,7 +168,6 @@ class MyUserManager {
             let tempItem = MyUserData.ballList[i].cloneNoCfg();
             BallList.push(tempItem);
         }
-        //cc.log("BallList = "+JSON.stringify(BallList));
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(BallList));
     }
     /**保存出战小球列表 */
@@ -115,7 +177,6 @@ class MyUserManager {
             let tempItem = MyUserData.fightList[i].cloneNoCfg();
             BallList.push(tempItem);
         }
-        //cc.log("BallList = "+JSON.stringify(BallList));
         LDMgr.setItem(LDKey.KEY_FightList, JSON.stringify(BallList));
     }
     /**添加小球到未出战列表 */
@@ -143,8 +204,6 @@ class MyUserManager {
     }
     /**销售未出战小球 */
     sellBallFromBallList(ballInfo: BallInfo){
-        this.updateUserGold(ballInfo.cannonCfg.sell);    //销售获得
-
         for(let i=0; i<MyUserData.ballList.length; ++i){
             if(ballInfo.timeId == MyUserData.ballList[i].timeId){
                 MyUserData.ballList.splice(i, 1);
@@ -155,7 +214,7 @@ class MyUserManager {
     }
     /**添加小球到出战列表 */
     addBallToFightList(ballInfo: BallInfo){
-        MyUserData.fightList.push(ballInfo);
+        MyUserData.fightList.unshift(ballInfo.clone());
 
         for(let i=0; i<MyUserData.ballList.length; ++i){
             if(ballInfo.timeId == MyUserData.ballList[i].timeId){
@@ -168,7 +227,7 @@ class MyUserManager {
     }
     /**移除出战小球 */
     removeBallFromFightList(ballInfo: BallInfo){
-        MyUserData.ballList.push(ballInfo);
+        MyUserData.ballList.push(ballInfo.clone());
 
         for(let i=0; i<MyUserData.fightList.length; ++i){
             if(ballInfo.timeId == MyUserData.fightList[i].timeId){

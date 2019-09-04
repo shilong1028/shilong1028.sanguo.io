@@ -125,6 +125,9 @@ export const LDKey = {
     KEY_LastGoldTaxTime: "KEY_LastGoldTaxTime",   //上一次收税金时间
     KEY_BlockCount: "KEY_BlockCount",    //开启的合成地块数量
     KEY_BallList: "KEY_BallList",  //未出战小球列表
-    KEY_FightList: "KEY_FightList",   //出战小球列表
+    KEY_FightCount: "KEY_FightCount",    //开启的合成地块数量
+    KEY_FightList: "KEY_FightList",   //解锁的可战斗数量
+    KEY_CurPlayerIdx: "KEY_CurPlayerIdx",    //当前使用炮索引
+    KEY_PlayerList: "KEY_PlayerList",   //拥有的炮列表
 
 }

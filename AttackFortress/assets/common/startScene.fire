@@ -351,7 +351,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 650,
+      "width": 520,
       "height": 252
     },
     "_anchorPoint": {
@@ -399,8 +399,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "弹珠新游戏",
-    "_N$string": "弹珠新游戏",
+    "_string": "炮轰鬼子",
+    "_N$string": "炮轰鬼子",
     "_fontSize": 130,
     "_lineHeight": 200,
     "_enableWrapText": true,

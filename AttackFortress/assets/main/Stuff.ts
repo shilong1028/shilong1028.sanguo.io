@@ -38,7 +38,7 @@ export default class Stuff extends cc.Component {
         this.levelLabel.string = (ballInfo.cannonId%10).toString();
 
         if(bActive == true){
-            this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("dog"+ballInfo.cannonId+"_normal");
+            this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("dog"+(ballInfo.cannonId-1)+"_normal");
         }
     }
 

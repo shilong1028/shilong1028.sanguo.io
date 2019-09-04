@@ -1,209 +1,139 @@
 [1]
-name = 土炮弹1
+name = 炮弹1
 attack = 1
 baoji = 0
 cost = 10
-sell = 5
+sell = 10
 
 [2]
-name = 土炮弹2
+name = 炮弹2
 attack = 2
-baoji = 2
-cost = 30
-sell = 10
+baoji = 5
+cost = 20
+sell = 15
 
 [3]
-name = 土炮弹3
+name = 炮弹3
 attack = 3
-baoji = 5
-cost = 50
-sell = 20
+baoji = 10
+cost = 40
+sell = 25
 
 [4]
-name = 土炮弹4
+name = 炮弹4
 attack = 5
-baoji = 10
-cost = 100
-sell = 30
+baoji = 15
+cost = 80
+sell = 50
 
 [5]
-name = 土炮弹5
+name = 炮弹5
 attack = 8
-baoji = 15
-cost = 200
-sell = 50
+baoji = 20
+cost = 160
+sell = 120
 
 [6]
-name = 土炮弹6
-attack = 11
-baoji = 20
-cost = 500
-sell = 100
+name = 炮弹6
+attack = 12
+baoji = 25
+cost = 320
+sell = 250
 
 [7]
-name = 土炮弹7
-attack = 16
+name = 炮弹7
+attack = 18
 baoji = 25
-cost = 1000
-sell = 300
+cost = 640
+sell = 500
 
 [8]
-name = 土炮弹8
-attack = 25
-baoji = 30
-cost = 2000
-sell = 500
+name = 炮弹8
+attack = 27
+baoji = 25
+cost = 1300
+sell = 1000
 
 [9]
-name = 土炮弹9
-attack = 35
-baoji = 40
-cost = 5000
-sell = 1000
+name = 炮弹9
+attack = 40
+baoji = 30
+cost = 2600
+sell = 2000
 
 [10]
-name = 土炮弹10
+name = 炮弹10
 attack = 60
-baoji = 50
-cost = 10000
-sell = 3000
+baoji = 30
+cost = 5200
+sell = 4000
 
 [11]
-name = 迫击炮弹1
-attack = 1
-baoji = 0
-cost = 10
-sell = 5
+name = 炮弹11
+attack = 90
+baoji = 30
+cost = 10300
+sell = 8000
 
 [12]
-name = 迫击炮弹2
-attack = 2
-baoji = 2
-cost = 30
-sell = 10
+name = 炮弹12
+attack = 130
+baoji = 35
+cost = 20500
+sell = 15000
 
 [13]
-name = 迫击炮弹3
-attack = 3
-baoji = 5
-cost = 50
-sell = 20
+name = 炮弹13
+attack = 190
+baoji = 35
+cost = 41000
+sell = 30000
 
 [14]
-name = 迫击炮弹4
-attack = 5
-baoji = 10
-cost = 100
-sell = 30
+name = 炮弹14
+attack = 280
+baoji = 35
+cost = 82000
+sell = 60000
 
 [15]
-name = 迫击炮弹5
-attack = 8
-baoji = 15
-cost = 200
-sell = 50
+name = 炮弹15
+attack = 420
+baoji = 40
+cost = 164000
+sell = 120000
 
 [16]
-name = 迫击炮弹6
-attack = 11
-baoji = 20
-cost = 500
-sell = 100
+name = 炮弹16
+attack = 600
+baoji = 40
+cost = 328000
+sell = 250000
 
 [17]
-name = 迫击炮弹7
-attack = 16
-baoji = 25
-cost = 1000
-sell = 300
+name = 炮弹17
+attack = 850
+baoji = 40
+cost = 655000
+sell = 500000
 
 [18]
-name = 迫击炮弹8
-attack = 25
-baoji = 30
-cost = 2000
-sell = 500
+name = 炮弹18
+attack = 1200
+baoji = 45
+cost = 1310000
+sell = 1000000
 
 [19]
-name = 迫击炮弹9
-attack = 35
-baoji = 40
-cost = 5000
-sell = 1000
+name = 炮弹19
+attack = 1700
+baoji = 45
+cost = 2620000
+sell = 2000000
 
 [20]
-name = 迫击炮弹10
-attack = 60
+name = 炮弹20
+attack = 2400
 baoji = 50
-cost = 10000
-sell = 3000
-
-[21]
-name = 山炮弹1
-attack = 1
-baoji = 0
-cost = 10
-sell = 5
-
-[22]
-name = 山炮弹2
-attack = 2
-baoji = 2
-cost = 30
-sell = 10
-
-[23]
-name = 山炮弹3
-attack = 3
-baoji = 5
-cost = 50
-sell = 20
-
-[24]
-name = 山炮弹4
-attack = 5
-baoji = 10
-cost = 100
-sell = 30
-
-[25]
-name = 山炮弹5
-attack = 8
-baoji = 15
-cost = 200
-sell = 50
-
-[26]
-name = 山炮弹6
-attack = 11
-baoji = 20
-cost = 500
-sell = 100
-
-[27]
-name = 山炮弹7
-attack = 16
-baoji = 25
-cost = 1000
-sell = 300
-
-[28]
-name = 山炮弹8
-attack = 25
-baoji = 30
-cost = 2000
-sell = 500
-
-[29]
-name = 山炮弹9
-attack = 35
-baoji = 40
-cost = 5000
-sell = 1000
-
-[30]
-name = 山炮弹10
-attack = 60
-baoji = 50
-cost = 10000
-sell = 3000
+cost = 5250000
+sell = 3000000

@@ -13,7 +13,7 @@ type float = number;
 
 //炮弹配置数据
 export class st_cannon_info{
-    name;     //战斗名称
+    name;     //名称
     attack;    //攻击力
     baoji;     //暴击率（/100)
     cost;   //购买花费
@@ -40,6 +40,40 @@ export class st_cannon_info{
     }
 }
 
+//炮弹配置数据
+export class st_player_info{
+    name;     //名称
+    cost;   //购买花费
+    cannon;   //炮弹范围 5;15
+    attack_up;    //攻击力提升幅度（/100)
+    baoji_up;     //暴击率提升幅度（/100)
+    itemCount;    //道具孔位
+    desc;    
+
+    transType(){
+        this.cost = parseInt(this.cost);
+        this.cannon = CfgMgr.getIntAry(this.cannon, ";");
+        this.attack_up = parseInt(this.attack_up)/100;
+        this.baoji_up = parseInt(this.baoji_up)/100;
+        this.itemCount = parseInt(this.itemCount);
+    }
+
+    constructor(){
+    }
+
+    clone(){
+        let temp = new st_player_info();
+        temp.name = this.name;
+        temp.cost = this.cost;
+        temp.cannon = this.cannon;
+        temp.attack_up = this.attack_up;
+        temp.baoji_up = this.baoji_up;
+        temp.itemCount = this.itemCount;
+        temp.desc = this.desc;
+        return temp;
+    }
+}
+
 
 //*********************  以下为接口类定义 *********************************** */
 
@@ -51,9 +85,13 @@ class CfgManager_class {
     overCallBack: any = null;   //加载完毕后回调
     overTarget: any = null;   //加载完毕回调注册者
 
-    //战斗配置表
+    //炮弹配置表
     C_cannon_info : Map<number, st_cannon_info> = new Map<number, st_cannon_info>();
     SC_cannon_info = st_cannon_info;
+
+    //炮配置表
+    C_player_info : Map<number, st_player_info> = new Map<number, st_player_info>();
+    SC_player_info = st_player_info;
 
 
     //********************** 以下是一些配置接口 ***************** */
@@ -61,6 +99,16 @@ class CfgManager_class {
     /**获取炮弹配置数据 */
     getCannonConf(cannonId: number): st_cannon_info{
         let obj = this.C_cannon_info[cannonId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+
+    /**获取炮配置数据 */
+    getPlayerConf(playerId: number): st_player_info{
+        let obj = this.C_player_info[playerId];
         if(obj){
             return obj.clone();
         }else{

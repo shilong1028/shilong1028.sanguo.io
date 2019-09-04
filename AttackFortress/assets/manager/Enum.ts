@@ -1,7 +1,8 @@
-import { st_cannon_info, CfgMgr } from "./ConfigManager";
+import { st_cannon_info, CfgMgr, st_player_info } from "./ConfigManager";
 
 
 //常量或类定义
+
 /**小球属性类 */
 export class BallInfo{
     timeId: number = 0;   //小球ID唯一编号，使用创建时的系统时间为ID
@@ -33,6 +34,39 @@ export class BallInfo{
     }
 }
 
+/**炮数据 */
+export class PlayerInfo{
+    playerId: number = 0;   //炮配置ID
+    level: number = 1;   //炮等级
+    useState: number = 0;  //使用状态，0未拥有，1已拥有，2使用中
+    itemIds: number[] = new Array();  //道具孔位信息
+    playerCfg: st_player_info = null;
+
+    constructor(playerId: number){
+        this.playerId = playerId;
+        this.playerCfg = CfgMgr.getPlayerConf(playerId);
+    };
+
+    cloneNoCfg(){
+        let temp = new PlayerInfo(this.playerId);
+        temp.level = this.level;   
+        temp.useState = this.useState; 
+        temp.itemIds = this.itemIds;  
+
+        //不必写入本地存储的变量s
+        temp.playerCfg = null;
+        return temp;
+    }
+
+    clone(){
+        let temp = new PlayerInfo(this.playerId);
+        temp.level = this.level;   
+        temp.useState = this.useState;
+        temp.itemIds = this.itemIds;  
+        return temp;
+    };
+}
+
 
 /**提示文本集合 */
 export const TipsStrDef = {
@@ -53,5 +87,6 @@ export const NoticeType = {
 
     UpdateGold: "UpdateGold",   //更新金币显示
     BlockBallSel: "BlockBallSel",   //地块上小球被选择，相同等级的小球地块要显示光圈
+    UpdatePlayer: "UpdatePlayer",   //更新炮台
 
 }

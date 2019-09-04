@@ -17,7 +17,7 @@
         "__id__": 2
       },
       {
-        "__id__": 26
+        "__id__": 28
       }
     ],
     "_active": true,
@@ -81,16 +81,19 @@
       },
       {
         "__id__": 11
+      },
+      {
+        "__id__": 24
       }
     ],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 24
+        "__id__": 26
       },
       {
-        "__id__": 25
+        "__id__": 27
       }
     ],
     "_prefab": null,
@@ -351,7 +354,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 650,
+      "width": 520,
       "height": 252
     },
     "_anchorPoint": {
@@ -399,8 +402,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "弹珠新游戏",
-    "_N$string": "弹珠新游戏",
+    "_string": "炮轰鬼子",
+    "_N$string": "炮轰鬼子",
     "_fontSize": 130,
     "_lineHeight": 200,
     "_enableWrapText": true,
@@ -1111,6 +1114,96 @@
     "customEventData": ""
   },
   {
+    "__type__": "cc.Node",
+    "_name": "descLabel",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 1,
+    "_components": [
+      {
+        "__id__": 25
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 600,
+      "height": 210.39999999999998
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_id": "eaI5gSPNdC/aDhJ3MjlU1o"
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 24
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_useOriginalSize": true,
+    "_string": "       反对法西斯，珍爱和平。鉴于日本右翼势力鼓吹复活军国主义、法西斯主义，否认侵略战争，美化侵略历史。本人制作此款休闲抗日小游戏，希望玩家们能够铭记抗日战争史，时刻警惕法西斯主义复活。",
+    "_N$string": "       反对法西斯，珍爱和平。鉴于日本右翼势力鼓吹复活军国主义、法西斯主义，否认侵略战争，美化侵略历史。本人制作此款休闲抗日小游戏，希望玩家们能够铭记抗日战争史，时刻警惕法西斯主义复活。",
+    "_fontSize": 30,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_N$horizontalAlign": 0,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Microsoft YaHei",
+    "_N$overflow": 3,
+    "_N$cacheMode": 0,
+    "_id": "081uk7RG1MYIb20HvtbcgP"
+  },
+  {
     "__type__": "cc.Canvas",
     "_name": "",
     "_objFlags": 0,
@@ -1138,6 +1231,9 @@
     "btnNode": {
       "__id__": 11
     },
+    "descLabel": {
+      "__id__": 25
+    },
     "_id": "e6dLjn/8RMJ60koav6RyuX"
   },
   {
@@ -1152,7 +1248,7 @@
     "_level": 1,
     "_components": [
       {
-        "__id__": 27
+        "__id__": 29
       }
     ],
     "_prefab": null,
@@ -1205,7 +1301,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 26
+      "__id__": 28
     },
     "_enabled": true,
     "pfTipsText": {

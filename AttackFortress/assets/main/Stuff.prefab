@@ -120,7 +120,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 0,
+      "y": 10,
       "z": 0
     },
     "_scale": {
@@ -230,8 +230,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -68.4,
-      "y": -9.6,
+      "x": -60,
+      "y": 0,
       "z": 0
     },
     "_scale": {
@@ -282,8 +282,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 27.81,
-      "height": 37.8
+      "width": 24.47,
+      "height": 31.5
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -332,8 +332,8 @@
     "_useOriginalSize": false,
     "_string": "10",
     "_N$string": "10",
-    "_fontSize": 25,
-    "_lineHeight": 30,
+    "_fontSize": 22,
+    "_lineHeight": 25,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -376,7 +376,7 @@
       "__uuid__": "2e2fbde4-bbab-48d0-ba3b-2ce148d3cbbb"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -424,14 +424,14 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 179,
-      "g": 109,
-      "b": 89,
+      "g": 255,
+      "b": 77,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 54,
-      "height": 25.2
+      "width": 75,
+      "height": 37.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -441,7 +441,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -70,
+      "y": -60,
       "z": 0
     },
     "_scale": {
@@ -480,8 +480,8 @@
     "_useOriginalSize": false,
     "_string": "角斗士",
     "_N$string": "角斗士",
-    "_fontSize": 18,
-    "_lineHeight": 20,
+    "_fontSize": 25,
+    "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
