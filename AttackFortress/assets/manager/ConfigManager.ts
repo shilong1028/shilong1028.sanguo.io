@@ -74,6 +74,78 @@ export class st_player_info{
     }
 }
 
+//砖块配置数据
+export class st_monster_info{
+    name;     //名称
+    hp;   //默认血量
+    event;   //事件 0无 1-间隔回合无敌 2-回合第一次盾牌 3-重生。当砖块死亡时，原地复活一个y移动砖块（Id=7)
+    ai;    //行为 0无 1：左右往复移动 2：间隔吸附 3.坠落两行
+    desc;    
+
+    transType(){
+        this.hp = parseInt(this.hp);
+        this.event = parseInt(this.event);
+        this.ai = parseInt(this.ai);
+    }
+
+    constructor(){
+    }
+
+    clone(){
+        let temp = new st_monster_info();
+        temp.name = this.name;
+        temp.hp = this.hp;
+        temp.event = this.event;
+        temp.ai = this.ai;
+        temp.desc = this.desc;
+        return temp;
+    }
+}
+
+//关卡配置数据
+export class st_level_info{
+    gold;     //通关奖励（2星），1星为75%，3星为150%
+    cost;   //关卡消耗
+    enemy_count;   //炮弹数量
+    enemy_ids;    //炮弹id集合 1|1
+    total_lines;     //总行数
+    init_lines;    //初始显示行数
+    name;  //关卡名称
+    resId;   //关卡图标资源id
+    itemids;    //通关道具奖励 101;102
+    probability;   //通关道具掉落概率（1星）2星*2 3星*3
+    
+    transType(){
+        this.gold = parseInt(this.gold);
+        this.cost = parseInt(this.cost);
+        this.enemy_count = parseInt(this.enemy_count);
+        this.enemy_ids = CfgMgr.getIntAry(this.enemy_ids, "|");
+        this.total_lines = parseInt(this.total_lines);
+        this.init_lines = parseInt(this.init_lines);
+        this.resId = parseInt(this.resId);
+        this.itemids = CfgMgr.getIntAry(this.itemids, ";");
+        this.probability = parseInt(this.probability)/100;
+    }
+
+    constructor(){
+    }
+
+    clone(){
+        let temp = new st_level_info();
+        temp.gold = this.gold;
+        temp.cost = this.cost;
+        temp.enemy_count = this.enemy_count;
+        temp.enemy_ids = this.enemy_ids;
+        temp.total_lines = this.total_lines;
+        temp.init_lines = this.init_lines;
+        temp.name = this.name;
+        temp.resId = this.resId;
+        temp.itemids = this.itemids;
+        temp.probability = this.probability;
+        return temp;
+    }
+}
+
 
 //*********************  以下为接口类定义 *********************************** */
 
@@ -93,6 +165,14 @@ class CfgManager_class {
     C_player_info : Map<number, st_player_info> = new Map<number, st_player_info>();
     SC_player_info = st_player_info;
 
+    //关卡配置表
+    C_level_info : Map<number, st_level_info> = new Map<number, st_level_info>();
+    SC_level_info = st_level_info;
+
+    //砖块配置表
+    C_monster_info : Map<number, st_monster_info> = new Map<number, st_monster_info>();
+    SC_monster_info = st_monster_info;
+
 
     //********************** 以下是一些配置接口 ***************** */
     
@@ -109,6 +189,26 @@ class CfgManager_class {
     /**获取炮配置数据 */
     getPlayerConf(playerId: number): st_player_info{
         let obj = this.C_player_info[playerId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+
+    /**获取关卡配置数据 */
+    getLevelConf(levelId: number): st_level_info{
+        let obj = this.C_level_info[levelId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+
+    /**获取砖块配置数据 */
+    getMonsterConf(monsterId: number): st_monster_info{
+        let obj = this.C_monster_info[monsterId];
         if(obj){
             return obj.clone();
         }else{

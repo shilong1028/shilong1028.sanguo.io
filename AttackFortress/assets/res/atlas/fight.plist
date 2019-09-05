@@ -7,11 +7,11 @@
             <key>fight_Boom.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{406,2},{45,49}}</string>
+                <string>{{107,297},{45,49}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{45,49}}</string>
                 <key>sourceSize</key>
@@ -20,11 +20,11 @@
             <key>fight_Boom2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{347,2},{57,53}}</string>
+                <string>{{52,297},{57,53}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{57,53}}</string>
                 <key>sourceSize</key>
@@ -33,7 +33,7 @@
             <key>fight_JiJiangKuang.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{266,126},{114,114}}</string>
+                <string>{{2,357},{114,114}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,7 +46,7 @@
             <key>fight_JiaSu.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{382,126},{58,48}}</string>
+                <string>{{2,297},{58,48}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -59,7 +59,7 @@
             <key>fight_JiaSudi.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{109,155},{155,71}}</string>
+                <string>{{2,224},{155,71}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -85,7 +85,7 @@
             <key>fight_ShiBingX1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{260,57},{162,67}}</string>
+                <string>{{2,155},{162,67}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,11 +98,11 @@
             <key>fight_X1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{424,53},{41,33}}</string>
+                <string>{{2,473},{41,33}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{41,33}}</string>
                 <key>sourceSize</key>
@@ -111,11 +111,11 @@
             <key>fight_X2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{418,186},{49,34}}</string>
+                <string>{{154,357},{49,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{49,34}}</string>
                 <key>sourceSize</key>
@@ -124,7 +124,7 @@
             <key>fight_X3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{382,186},{49,34}}</string>
+                <string>{{118,344},{49,34}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -137,7 +137,7 @@
             <key>fight_arrowImg.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{109,228},{18,25}}</string>
+                <string>{{232,345},{18,25}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -150,7 +150,7 @@
             <key>fight_dotImg.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{424,96},{10,10}}</string>
+                <string>{{347,2},{10,10}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -163,15 +163,93 @@
             <key>fight_shield.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,155},{98,105}}</string>
+                <string>{{256,257},{98,98}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{98,98}}</string>
+                <key>sourceSize</key>
+                <string>{98,98}</string>
+            </dict>
+            <key>fight_star_gray.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{232,372},{112,111}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{112,111}}</string>
+                <key>sourceSize</key>
+                <string>{112,111}</string>
+            </dict>
+            <key>fight_star_light.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{118,395},{112,111}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{112,111}}</string>
+                <key>sourceSize</key>
+                <string>{112,111}</string>
+            </dict>
+            <key>monster_bg1.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{258,157},{98,98}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{98,98}}</string>
+                <key>sourceSize</key>
+                <string>{98,98}</string>
+            </dict>
+            <key>monster_bg2.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{260,57},{98,98}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{98,98}}</string>
+                <key>sourceSize</key>
+                <string>{98,98}</string>
+            </dict>
+            <key>text_Di.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{166,155},{90,97}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{90,97}}</string>
+                <key>sourceSize</key>
+                <string>{90,97}</string>
+            </dict>
+            <key>text_Guan.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{159,254},{89,95}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{98,105}}</string>
+                <string>{{0,0},{89,95}}</string>
                 <key>sourceSize</key>
-                <string>{98,105}</string>
+                <string>{89,95}</string>
             </dict>
             <key>text_TuoRuXiaFang.png</key>
             <dict>
@@ -194,9 +272,9 @@
             <key>realTextureFileName</key>
             <string>fight.png</string>
             <key>size</key>
-            <string>{459,255}</string>
+            <string>{360,508}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:4ccf2c505499eed5d7d4d9cd8bd17583:bda8d1a9ef25c0bc5d4e7fd1b36d8baf:61dd7437dcad0349b25f7fe12580d28d$</string>
+            <string>$TexturePacker:SmartUpdate:f4cf87554f0c212faac8aeb394bf4547:fd21b1fa4052ef8e54e02a3a41d2f045:61dd7437dcad0349b25f7fe12580d28d$</string>
             <key>textureFileName</key>
             <string>fight.png</string>
         </dict>

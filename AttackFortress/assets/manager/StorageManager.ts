@@ -129,5 +129,7 @@ export const LDKey = {
     KEY_FightList: "KEY_FightList",   //解锁的可战斗数量
     KEY_CurPlayerIdx: "KEY_CurPlayerIdx",    //当前使用炮索引
     KEY_PlayerList: "KEY_PlayerList",   //拥有的炮列表
+    KEY_CurLevelId: "KEY_CurLevelId",   //当前通关的最大id
+    KEY_LevelList: "KEY_LevelList",   //通关列表
 
 }

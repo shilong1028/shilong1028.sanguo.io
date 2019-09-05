@@ -68,8 +68,6 @@ export default class MainScene extends cc.Component {
     @property(cc.SpriteAtlas)
     playerAtlas: cc.SpriteAtlas = null;
 
-    tipsPool: cc.NodePool =  null;   //缓存池
-
     bLoadRoleDataFinish: boolean = false;   //是否已经加载完毕用户数据
 
     nSelectStuff: cc.Node = null;   //拖动选择的小球模型
@@ -100,8 +98,6 @@ export default class MainScene extends cc.Component {
     }
 
     onDestroy(){
-        this.tipsPool.clear();
-
         NotificationMy.offAll(this);
         this.node.targetOff(this);
     }
@@ -465,6 +461,7 @@ export default class MainScene extends cc.Component {
     /**出战按钮 */
     onFightBtn(){
         AudioMgr.playEffect("effect/hecheng/ui_click");
+        GameMgr.goToSceneWithLoading("chapterScene");
     }
 
     /**音乐开关 */

@@ -1,6 +1,6 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NotificationMy } from "./NoticeManager";
-import { NoticeType, BallInfo, PlayerInfo } from "./Enum";
+import { NoticeType, BallInfo, PlayerInfo, LevelInfo } from "./Enum";
 
 
 //用户数据管理
@@ -21,6 +21,9 @@ export var MyUserData = {
 
     curPlayerIdx: 0,  //当前使用的炮索引
     playerList: [],   //拥有的炮列表
+
+    curLevelId: 0,  //当前通关的最大id
+    levelList: [],   //通关列表
 };
 
 @ccclass
@@ -49,6 +52,10 @@ class MyUserManager {
         MyUserData.playerList = new Array(); //拥有的炮列表
         LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
 
+        this.updateCurLevelId(0);  //当前通关的最大id
+        MyUserData.levelList = new Array(); //通关列表
+        LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(MyUserData.levelList));
+
         this.initUserData();
     }
 
@@ -66,6 +73,7 @@ class MyUserManager {
         MyUserData.fightList = this.getFightListByLD();  //出战小球列表 
 
         MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表
+        MyUserData.levelList = this.getLevelListByLD();  //通关列表
 
         if(MyUserData.GoldCount == 0 && MyUserData.blockCount == 3 && MyUserData.ballList.length == 0 && MyUserData.fightList.length == 0){
             //新用户
@@ -75,11 +83,13 @@ class MyUserManager {
             }
             LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
-            this.updateUserGold(5000);
+            this.updateUserGold(100);
 
             MyUserData.playerList.push(new PlayerInfo(1));    //拥有的炮列表
             LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
+
             this.updateCurPlayerIdx(0);  //当前使用的炮索引
+            this.updateCurLevelId(0);  //当前通关的最大id
         }
 
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
@@ -95,6 +105,48 @@ class MyUserManager {
     updateFightCount(openNum:number){
         MyUserData.fightCount = openNum;  //解锁的可战斗数量
         LDMgr.setItem(LDKey.KEY_FightCount, openNum);
+    }
+
+    //当前通关的最大id
+    updateCurLevelId(levelId: number){
+        MyUserData.curLevelId = levelId; 
+        LDMgr.setItem(LDKey.KEY_CurLevelId, levelId);
+    }
+    /**从本地存储中获取通关列表 */
+    getLevelListByLD(){
+        let LevelList = LDMgr.getJsonItem(LDKey.KEY_LevelList);  
+        let tempList: LevelInfo[] = new Array();
+        if(LevelList){
+            for(let i=0; i<LevelList.length; ++i){
+                let tempItem = new LevelInfo(LevelList[i].levelId, LevelList[i].starNum); 
+                tempList.push(tempItem);
+            }
+        }
+        return tempList;
+    }
+    /**保存拥有的炮列表 */
+    saveLevelList(){
+        let LevelList = new Array();
+        for(let i=0; i<MyUserData.levelList.length; ++i){
+            let tempItem = MyUserData.levelList[i].cloneNoCfg();
+            LevelList.push(tempItem);
+        }
+        LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(LevelList));
+    }
+    /**获取已经通关的关卡数据 */
+    getLevelInfoFromList(levelId: number){
+        if(levelId <= MyUserData.curLevelId){
+            let levelInfo = MyUserData.levelList[levelId-1];
+            return levelInfo.clone();
+        }
+        return null;
+    }
+    /**更新已经通关的关卡数据 */
+    updateLevelInfoFromList(levelId: number, levelInfo: LevelInfo){
+        if(levelId <= MyUserData.curLevelId){
+            MyUserData.levelList[levelId-1] = levelInfo;
+            this.saveLevelList();
+        }
     }
 
     /**更新当前使用炮索引 */

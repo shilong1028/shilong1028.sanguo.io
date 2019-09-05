@@ -152,7 +152,44 @@ class GameManager {
      * @param num 要转换的数字
      * @param fixNum 小数点有效位数
     */
-    num2e(num: number, fixNum: number = 2) {
+    num2e(num: number, fixNum: number = 4) {
+        if (num <= 1000000) {
+            return num.toString();
+        } else {
+            //将数值用parseFloat(num).Fixed(8)保留固定位数，但有个缺点，就是如果数值小于8位的，则会多出余数0，如:0.00000010
+            //E是指数的意思，比如7.823E5=782300 这里E5表示10的5次方
+            var p = Math.floor(Math.log(num) / Math.LN10);   //p是10的几次方
+            var n = num * Math.pow(10, -p);   //n为最终显示的小数
+            //return n + 'e' + p;
+            //cc.log("num = "+num +"; p = "+p+"; n = "+n);
+
+            let factor = Math.pow(10, fixNum);
+            if (p < 6) {
+                return num.toString(); 
+            } else if (p < 9) {
+                n = n * Math.pow(10, (p - 6));
+                let nStr = (Math.floor(n * factor) / factor).toFixed(fixNum);
+                return nStr + "万";
+             } else if (p < 12) {
+                n = n * Math.pow(10, (p - 9));
+                let nStr = (Math.floor(n * factor) / factor).toFixed(fixNum);
+                return nStr + "十万";
+            } else if (p < 15) {
+                n = n * Math.pow(10, (p - 12));
+                let nStr = (Math.floor(n * factor) / factor).toFixed(fixNum);
+                return nStr + "百万";
+            } else if (p < 18) {
+                n = n * Math.pow(10, (p - 15));
+                let nStr = (Math.floor(n * factor) / factor).toFixed(fixNum);
+                return nStr + "千万";
+            } else{
+                n = n * Math.pow(10, (p - 18));
+                let nStr = (Math.floor(n * factor) / factor).toFixed(fixNum);
+                return nStr + "亿";
+            }
+        }
+    }
+    num2e2(num: number, fixNum: number = 2) {
         if (num <= 1000) {
             return num.toString();
         } else {

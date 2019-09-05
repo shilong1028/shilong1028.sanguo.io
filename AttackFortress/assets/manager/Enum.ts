@@ -1,4 +1,4 @@
-import { st_cannon_info, CfgMgr, st_player_info } from "./ConfigManager";
+import { st_cannon_info, CfgMgr, st_player_info, st_level_info, st_monster_info } from "./ConfigManager";
 
 
 //常量或类定义
@@ -63,6 +63,58 @@ export class PlayerInfo{
         temp.level = this.level;   
         temp.useState = this.useState;
         temp.itemIds = this.itemIds;  
+        return temp;
+    };
+}
+
+/**关卡数据 */
+export class LevelInfo{
+    levelId: number = 0;   //配置ID
+    starNum: number = 0;   //星级
+    levelCfg: st_level_info = null;
+
+    constructor(levelId: number, starNum:number=0){
+        this.levelId = levelId;
+        this.starNum = starNum;
+        this.levelCfg = CfgMgr.getLevelConf(levelId);
+    };
+
+    cloneNoCfg(){
+        let temp = new LevelInfo(this.levelId, this.starNum);
+  
+        //不必写入本地存储的变量s
+        temp.levelCfg = null;
+        return temp;
+    }
+
+    clone(){
+        let temp = new LevelInfo(this.levelId, this.starNum); 
+        return temp;
+    };
+}
+
+/**道具数据 */
+export class ItemInfo{
+    itemId: number = 0;   //配置ID
+    itemNum: number = 0;   
+    itemCfg: st_monster_info = null;
+
+    constructor(itemId: number, itemNum:number=0){
+        this.itemId = itemId;
+        this.itemNum = itemNum;
+        this.itemCfg = CfgMgr.getMonsterConf(itemId);
+    };
+
+    cloneNoCfg(){
+        let temp = new LevelInfo(this.itemId, this.itemNum);
+  
+        //不必写入本地存储的变量s
+        temp.levelCfg = null;
+        return temp;
+    }
+
+    clone(){
+        let temp = new LevelInfo(this.itemId, this.itemNum); 
         return temp;
     };
 }
