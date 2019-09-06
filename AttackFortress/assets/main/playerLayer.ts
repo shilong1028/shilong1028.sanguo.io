@@ -56,7 +56,7 @@ export default class PlayerLayer extends cc.Component {
     }
 
     onCloseBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
         this.node.removeFromParent(true);
     }
 }

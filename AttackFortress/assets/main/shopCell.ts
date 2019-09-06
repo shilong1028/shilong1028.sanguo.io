@@ -84,7 +84,7 @@ export default class ShopCell extends viewCell {
     }
 
     onGoldBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_buy");
+        AudioMgr.playEffect("effect/ui_buy");
         GameMgr.getMainScene().handleBuyStuff(this.cellData);   //购买小球
     }
 }

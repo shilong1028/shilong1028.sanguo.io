@@ -156,7 +156,7 @@ export default class MainScene extends cc.Component {
     UpdatePlayer(){
         this.playerSpr.spriteFrame = null;
         this.playerDesc.string = "";
-        let playerInfo: PlayerInfo = MyUserData.playerList[MyUserData.curPlayerIdx];
+        let playerInfo: PlayerInfo = MyUserDataMgr.getCurPlayerInfo();
         if(playerInfo){
             this.playerSpr.spriteFrame = this.playerAtlas.getSpriteFrame("player_"+playerInfo.playerId);
             this.playerDesc.string = playerInfo.playerCfg.desc;
@@ -325,7 +325,7 @@ export default class MainScene extends cc.Component {
     showDelBallGainAni(sellGold: number){
         if(sellGold >= 0){
             MyUserDataMgr.updateUserGold(sellGold);   //修改用户金币 
-            AudioMgr.playEffect("effect/hecheng/gold_gain");
+            AudioMgr.playEffect("effect/gold_gain");
 
             let pos = this.bottomNode.convertToWorldSpaceAR(cc.Vec2.ZERO);
             this.showIconEffectAni(cc.v2(pos.x, pos.y + 60), 0);
@@ -437,13 +437,13 @@ export default class MainScene extends cc.Component {
 
     /**点击售卖按钮 */
     onSellBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
 
         ROOT_NODE.showTipsText(TipsStrDef.KEY_RecoverTip);
     }
 
     onShareBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
 
         SDKMgr.shareGame("分享快乐", (succ:boolean)=>{
             console.log("loginScene 分享 succ = "+succ);
@@ -454,29 +454,28 @@ export default class MainScene extends cc.Component {
 
     //换炮界面
     onPlayerBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
         GameMgr.showLayer(this.pfPlayer);
     }
 
     /**出战按钮 */
     onFightBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
         GameMgr.goToSceneWithLoading("chapterScene");
     }
 
     /**音乐开关 */
     onMusicBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
 
         let keyVal = AudioMgr.getMusicOnOffState();   //获取音效总开关状态
         if(keyVal == 1){   //关闭
             keyVal = 0;
             this.musicSpr.spriteFrame = this.hechengAtlas.getSpriteFrame("hecheng_YinLiang") 
-            AudioMgr.playEffect("effect/hecheng/ui_click");
+            AudioMgr.playEffect("effect/ui_click");
         }else{  //现在为开启状态，按钮显示开启图标
             keyVal = 1;
             this.musicSpr.spriteFrame = this.hechengAtlas.getSpriteFrame("hecheng_YinLiangGuan")
-            AudioMgr.stopBGM();
         }
         AudioMgr.setMusicOnOffState(keyVal);
     }

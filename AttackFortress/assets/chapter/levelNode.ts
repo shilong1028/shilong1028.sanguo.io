@@ -58,7 +58,7 @@ export default class LevelNode extends cc.Component {
     }
 
     onClickLevel(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
         if(this.targetScene){
             this.targetScene.onSelectLeve(this.levelInfo);
         }

@@ -1,5 +1,4 @@
-import { AudioMgr } from "../../Script/myManager/AudioMgr";
-
+import { AudioMgr } from "../manager/AudioMgr";
 
 //特效
 const {ccclass, property} = cc._decorator;
@@ -21,7 +20,7 @@ export default class WenZi extends cc.Component {
     // onLoad () {}
 
     start () {
-        AudioMgr.playEffect("effect/fight/cheer");
+        AudioMgr.playEffect("effect/cheer");
     }
 
     // update (dt) {}

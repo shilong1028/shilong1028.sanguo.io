@@ -154,6 +154,14 @@ class MyUserManager {
         MyUserData.curPlayerIdx = usedIdx;  //更新当前使用炮索引
         LDMgr.setItem(LDKey.KEY_CurPlayerIdx, usedIdx);
     }
+    /**获取当前使用炮信息 */
+    getCurPlayerInfo(){
+        let obj = MyUserData.playerList[MyUserData.curPlayerIdx];
+        if(obj){
+            return obj.clone();
+        }
+        return null;
+    }
 
     /**从本地存储中获取拥有的炮列表 */
     getPlayerListByLD(){

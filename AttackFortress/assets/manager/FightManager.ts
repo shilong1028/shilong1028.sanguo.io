@@ -1,17 +1,25 @@
+import QiPanSc from "../fight/QiPanSc";
+import { IntersectRay, LevelInfo, BrickInfo, NoticeType, IntersectData, TempIntersectData } from "./Enum";
+import { MyUserData } from "./MyUserData";
+import { NotificationMy } from "./NoticeManager";
+import FightScene from "../fight/FightScene";
+import Brick from "../fight/Brick";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 class FightManager {
-    bReNewLevel: boolean = false;   //是否重新开始游戏
+    bReNewLevel: boolean = false;   //是否重新开始游戏(看视频)
+
     level_id: number = 0;    //当前关卡ID
-    level_info: st_level_info = null;  //关卡数据信息
-    bricksCfg:Map<number, Array<BrickCfg>> = null;   //初始关卡信息 number：某行 Array<Brick>某行对应的砖块,下标从(0,0)开始，左下角第一个为(0,0)
-    tileHeight: number = 100;   //数据信息中瓦片的宽、高度 通常是正方形瓦片
-    tileWidth: number = 100;
+    level_info: LevelInfo = null;  //关卡数据信息
+    bricksCfg: Map<number, Array<BrickInfo>> = null;    //关卡每个砖块位置等信息
 
     gBrickId: number = 0;   //用于生成唯一的砖块ID
     gBallId: number = 0;   //用于生成唯一的小球ID
+
+    tileHeight: number = 100;   //数据信息中瓦片的宽、高度 通常是正方形瓦片
+    tileWidth: number = 100;
     gameBordersRect: cc.Rect = cc.rect(0, 0, 700, 900);   //边界框矩形, 中心点+宽高
     gameBottomPosY: number = -450;   //棋盘底部坐标
     emissionPointX: number = 0;  //小球发射位置（和大猫）的X轴坐标
@@ -29,22 +37,15 @@ class FightManager {
     roundPathArr: IntersectRay[] = new Array();   //每回合射线路径数据集合，用于路径复用
     bFirstHitGround: boolean = false;    //第一个回落到地面的球设置此值
     ballDropedCount: number = 0;   //小球发射后，已经落地的数量
-    fightBallCount: number = 0;   //本次战斗小球数量
     roundBallCount: number = 0;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
-    roundAddBallNum: number = 0;  //回合内增加的小球
-    fightBallInfo: BallInfo = null;   //本次战斗小球数据(当旧版本使用最大等级小球时才使用此数据)
-    fightBallConf: st_cannon_info =  null;  //本次战斗小球配置数据
 
     ballOffPosX: number = 50;   //小球排序之间的X轴间隔
-    ballLine: number = 0;   //小球排序的行数
-    ballPosIdx: number = 0;  //当前已经排序的小球索引数
-    ballLineIdx: number = 0;  //当前当前行已经排序的小球索引数
-    ballTotalIdx: number = 0;  //已经排序的小球数量，用于小球排序发射索引的设定
+    ballSortIdx: number = 0;  //当前已经排序的小球索引数，用于小球排序发射索引的设定
 
     rayCount: number = 0;   //需要绘制的射线段数
     curBrickNodes: cc.Node[] = new Array();   //当前绘制有效的砖块集合
     tempItemNodes: cc.Node[] = new Array();   //射线规划时，临时存储某条射线经过的道具集合
-    defaultRayCount: number = 2;   //默认的绘制指示线的射线段数
+    defaultRayCount: number = 1;   //默认的绘制指示线的射线段数
     rayLineMaxLen: number = 1200;   //射线最大长度
     ballRadiusConf: number = 15;   //点（小球）碰撞检测半径
     radConf: number = 10;   //砖块转角范围配置。
@@ -52,20 +53,12 @@ class FightManager {
      * 外扩后还可以避免两个相邻砖块转角的判定。如果相邻两块砖块距离太近，则认为相邻的转角位边框镜面反射，而非弧度反射。
      */
 
-    bRoundRevive: boolean = false;   //该回合是否已经复制一个了
-    bricksAlignSign: number = 0;   //回合结束下移前砖块对齐方式，-1左对齐，0无，1右对齐
-    lineWeightArr: number[] = new Array(1,1,1,1,1,1,1);   //行位置随机关卡位置权重
-
-    bFightBeginEffect: boolean = true;  //开局特效时间
-    bWaitingBeginEffect: boolean = false;  //是否在等待开局特效
-
-    bGameChaPingPause: boolean = false;   //是否插屏暂停
-
     /**加载关卡前 清空之前可能余留的信息 */
     clearFightMgrData(){
+        this.bReNewLevel = false;   //是否重新开始游戏(看视频)
         this.level_id = 0;
         this.level_info = null;   //关卡数据信息
-        this.bricksCfg = null;   //初始关卡信息 number：某行 Array<BrickCfg>某行对应的砖块
+        this.bricksCfg = new Map<number, Array<BrickInfo>>(); 
 
         this.gBrickId = 0;   //用于生成唯一的砖块ID
         this.gBallId = 0;
@@ -82,76 +75,22 @@ class FightManager {
         this.roundPathArr = new Array();   //每回合射线路径数据集合，用于路径复用
         this.bFirstHitGround = false;   //第一个回落到地面的球设置此值
         this.ballDropedCount = 0;   //小球发射后，已经落地的数量
-        this.fightBallCount = 0;   //本次战斗小球数量
         this.roundBallCount = 0;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
-        this.roundAddBallNum = 0;  //回合内增加的小球
-        this.fightBallInfo = null;   //本次战斗小球数据
-        this.fightBallConf =  null;  //本次战斗小球配置数据
-
-        this.ballLine = 0;   //小球排序的行数
-        this.ballPosIdx = 0;  //当前已经排序的小球索引数
-        this.ballLineIdx = 0;  //当前当前行已经排序的小球索引数
-        this.ballTotalIdx = 0;  //已经排序的小球数量，用于小球排序发射索引的设定
+        this.ballSortIdx = 0;  //当前当前行已经排序的小球索引数，用于小球排序发射索引的设定
 
         this.rayCount = 0;   //需要绘制的射线段数
         this.curBrickNodes = new Array();   //当前绘制有效的砖块集合
         this.tempItemNodes = new Array();   //射线规划时，临时存储某条射线经过的道具集合
-        this.defaultRayCount = 2;   //默认的绘制指示线的射线段数
-        this.bRoundRevive = false;   //该回合是否已经复制一个了
-        this.bricksAlignSign = 0;   //回合结束下移前砖块对齐方式，-1左对齐，0无，1右对齐
-        this.lineWeightArr = new Array(1,1,1,1,1,1,1);   //行位置随机关卡位置权重
-
-        this.bWaitingBeginEffect = false;  //是否在等待开局特效
-        this.bGameChaPingPause = false;   //是否插屏暂停
-    }
-
-    /**清除开局奖励特效状态 */
-    resetFightBeginEffectState(){
-        FightMgr.bFightBeginEffect = false;
-        if(FightMgr.bWaitingBeginEffect == true){   //等待开局特效
-            FightMgr.bWaitingBeginEffect = false;
-            FightMgr.qipanSc.bricksMoveOverAndCheckAttr();  //砖块下落完毕并检查属性
-        }
-    }
-
-    /**随机播放组内音效 */
-    playEffectByRandom(arrIdx: number, bOverlap: boolean=false){
-        //cc.log("playEffectByRandom(), arrIdx = "+arrIdx);
-        if(arrIdx > 0){
-            let arr: st_sound_group = MyCfg.C_sound_group[arrIdx]
-            //cc.log("arr = "+JSON.stringify(arr));
-            if(arr && arr.name && arr.name.length >=1){
-                if(arr.name.length == 1){
-                    AudioMgr.playEffect("effect/fight/"+arr.name[0]);
-                }else if(arr.name.length > 1){
-                    let rand = Math.ceil(Math.random()*arr.name.length)-1;
-                    if(rand < 0){
-                        rand = 0;
-                    }
-                    AudioMgr.playEffect("effect/fight/"+arr.name[rand]);
-                }
-            }
-        }
-    }
-
-    //进入战斗
-    enterFight(){
-        FightMgr.level_id = MyUserData.passMaxLevelId+1;   //直接进入历史最大关卡
-
-        // if(SDKMgr.WeiChat){
-        //     sdkWechat.removeBanner();   //移除广告
-        // }
-
-        UIHelper.goToSceneWithLoading("FightScene");
+        this.defaultRayCount = 1;   //默认的绘制指示线的射线段数
     }
 
     /**
      * 加载关卡配置
-     * @param id 关卡id
+     * @param levelId 关卡id
      * @param bReNew 重新开始
      * (第一次进入战斗或者以后从结算界面继续战斗，都是由FightMgr.loadLevel触发战斗的，故需要清空并初始化战斗场景数据)
      */
-    loadLevel(id:number, bReNew: boolean = false){
+    loadLevel(levelId:number, bReNew: boolean = false){
         this.bReNewLevel = bReNew;   //是否重新开始游戏
         if(bReNew == false){
             this.bUserReset = false;  //本次是否使用了复活（每关限一次，重新开始不重置）
@@ -159,50 +98,21 @@ class FightManager {
         this.getFightScene().clearSceneData();   //初始化一些关键的战斗场景数据
         this.clearFightMgrData();   //加载关卡前 清空之前可能余留的信息
 
-        this.level_id = id;
-        this.level_info = MyCfg.C_level_info[id];
-        if(this.level_info == null){
-            console.log("warning, 加载关系配置数据错误, level_id = "+id);
-        }
+        this.level_id = levelId;
+        this.level_info = new LevelInfo(levelId);
 
         if(this.level_id <= 10){
-            this.defaultRayCount = 3;   //默认的绘制指示线的射线段数
+            this.defaultRayCount = 2;   //默认的绘制指示线的射线段数
         }
 
-        this.fightBallCount = 0;   //本次战斗小球数量
-        if(MyUserData.ballMaxInfo){
-            let info: st_cannon_info = MyCfg.C_cannon_info[MyUserData.ballMaxInfo.level];
-            if(info && info.ball){
-                this.fightBallConf = info;  //本次战斗小球配置数据
-                //this.fightBallCount = info.ball;   //本次战斗小球数量
-                this.fightBallInfo = MyUserData.ballMaxInfo;   //本次战斗小球数据
-            }
-        }
-
-        this.fightBallCount = MyUserData.ballList.length;   //本次战斗小球数量
-
-        this.roundBallCount = this.fightBallCount;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
-        this.roundAddBallNum = 0;  //回合内增加的小球
-        
-        if(this.level_info.lvjson){
-            if(SDKMgr.isSDK == false && Cfg.bRemoteCfg == true){
-                //远程加载
-                Cfg.getRemoteJsonConfigInfo("levelConfig/"+this.level_info.lvjson+".json", this.setBricks, this);
-            }else{
-                 //本地加载关卡配置并回调
-                Cfg.getJsonConfigInfo("levelConfig/"+this.level_info.lvjson, this.setBricks, this);  
-            }
-        }else{
-            console.log("warning, 加载json配置数据错误, this.level_info = "+JSON.stringify(this.level_info));
-        }
-
+        this.roundBallCount = MyUserData.fightList.length;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
     }
 
     /**关卡配置加载完毕后的回调 */
     setBricks(jsonInfo:any){
         //cc.log("setBricks(), jsonInfo = "+jsonInfo);
         // 每次加载清空之前的bricks
-        this.bricksCfg = new Map<number, Array<BrickCfg>>();   //初始关卡信息 number：某行 Array<BrickCfg>某行对应的砖块 ,下标从(0,0)开始，左下角第一个为(0,0)
+        this.bricksCfg = new Map<number, Array<BrickInfo>>();   //初始关卡信息 number：某行 Array<BrickCfg>某行对应的砖块 ,下标从(0,0)开始，左下角第一个为(0,0)
         // 列数可以从jsonInfo的width确定，但实际的height要从具体关卡的objects数据中确定
 
         this.tileHeight = jsonInfo.tileheight;  //数据信息中瓦片的宽、高度 通常是正方形瓦片
@@ -288,70 +198,20 @@ class FightManager {
 
             this.emissionSign = this.getBricksAndCatSign(posX);  //小球在猫的左（sign=-1)右(1)两侧
         }
-        //cc.log("this.ballDropedCount = "+this.ballDropedCount+"; this.roundBallCount = "+this.roundBallCount+"; this.fightBallCount = "+this.fightBallCount)
+
+        let fightBallCount = MyUserData.fightList.length;
+        //cc.log("this.ballDropedCount = "+this.ballDropedCount+"; this.roundBallCount = "+this.roundBallCount+"; fightBallCount = "+fightBallCount)
         if(this.ballDropedCount >= this.roundBallCount){ 
-            if(this.fightBallCount > this.roundBallCount){
-                this.roundBallCount = this.fightBallCount;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
+            if(fightBallCount > this.roundBallCount){
+                this.roundBallCount = fightBallCount;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
                 NotificationMy.emit(NoticeType.BallAdsorbEvent, -1);   //砖块吸附小球
             }
-            else if(this.ballDropedCount >= this.fightBallCount){   //本次战斗小球数量 
+            else if(this.ballDropedCount >= fightBallCount){   //本次战斗小球数量 
                 this.tempCastRayArr = new Array();   //每回合正在规划的临时射线数据集合（仅保存起始点和方向等射线数据）
                 this.roundPathArr = new Array();   //每回合射线路径数据集合，用于路径复用
-                this.roundAddBallNum = 0;  //回合内增加的小球
                 this.getFightScene().handleBallsDropOver();  //处理所有小球都下落完毕，之后小球排序，检查回合结束 
             }
         }
-    }
-
-    /**在指定序列中[min, max)产生count个随机数 */
-    getRandomNumsByCount(count: number, max: number, min: number=0){
-        let list: number[] = new Array();
-        let offLen = max - min;
-        if(offLen <= count){
-            for(let i=min; i<=max; i++){
-                list.push(i);
-            }
-        }else{
-            while(list.length < count){
-                let rand = Math.random();
-                let num = Math.floor(rand*offLen*0.99 + min);
-                let bHave = false;
-                for(let j=0; j<list.length; ++j){
-                    if(list[j] == num){
-                        bHave = true;
-                        break;
-                    }
-                }
-                if(bHave == false){
-                    list.push(num);
-                }
-            }
-        }
-        return list;
-    }
-
-    /**先左1右2随机，后上3下4随机 */
-    getRandomAdjacent(){
-        let list: number[] = new Array();
-        let randomFun = function(num1, num2){
-            if(Math.random() < 0.5){
-                list.push(num1);
-                list.push(num2);
-            }else{
-                list.push(num2);
-                list.push(num1);
-            }
-        }
-        
-        if(Math.random() < 0.5){
-            randomFun(1,2);
-            randomFun(3,4);
-        }else{
-            randomFun(3,4);
-            randomFun(1,2);
-        }
-
-        return list;
     }
 
     /**校正砖块坐标，防止因下移而产生的最终位置偏移 */
@@ -399,7 +259,6 @@ class FightManager {
         return this.gameBottomPosY + 50;  //小球中心的Y轴与棋盘底部坐标的偏移，以及指示线起点Y轴坐标
     }
 
-
     /**
      * 从(1,0)到dir的角度，顺时针为正，逆时针为负
      */
@@ -409,7 +268,6 @@ class FightManager {
         let angle = cc.misc.radiansToDegrees(sa);
         return angle;
     }
-
     getVector(angle:number){
         let v = cc.v2(0,0);
         let rad = cc.misc.degreesToRadians(angle);
@@ -436,49 +294,6 @@ class FightManager {
         return this.gBallId;
     }
 
-    /**动态添加砖块后，改变通过目标数量 
-     * bChangeType 是否传染或平等而改变砖块类型
-    */
-    changeBrickAimCount(mosterCamp: number, monsterType:number, addNum: number=1, oldType: number=0, bChangeType:boolean=false){
-        if(this.level_info.goal_type == 0){  // 消灭全部敌人
-            if(mosterCamp == 1 && bChangeType == false){
-                this.brickBreakAim += addNum;
-            }
-        }else{
-            if(oldType == this.level_info.value[0]){
-                this.brickBreakAim -= addNum;
-            }else if(monsterType == this.level_info.value[0]){    // goal_type == 1表示指定消灭
-                this.brickBreakAim += addNum;
-            }
-        }
-    }
-
-    /**
-     * 消灭敌人进度
-     * @param type 砖块类型
-     */
-    addKillEnemyBrickNum(type: number){
-        if(this.level_info.goal_type == 0){   //表示全部消灭
-            let brick_info: st_monster_info = MyCfg.C_monster_info[type.toString()];
-            if(brick_info.moster_camp == 1){
-                this.brickBreakNum++;
-            }
-        }else{
-            if(type == this.level_info.value[0]){    // goal_type == 1表示指定消灭
-                this.brickBreakNum++;
-            }
-        }
-        this.getFightScene().setKillEnemyProgress();   //击杀过程中更新砖块进度
-    }
-
-    /**清除小球排序数据 */
-    clearBallLineDate(){
-        this.ballLine = 0;   //小球排序的行数
-        this.ballPosIdx = 0;  //当前已经排序的小球索引数
-        this.ballLineIdx = 0;  //当前当前行已经排序的小球索引数
-        this.ballTotalIdx = 0;  //已经排序的小球数量，用于小球排序发射索引的设定
-    }
-
     /** *获取小球在猫的偏向侧, 根据猫的位置来设定球的初始位置
      *  优先放置到猫距离边框大的一侧，如果两侧相等则随机一侧。
      */
@@ -496,60 +311,28 @@ class FightManager {
 
     /**获取单个小球的每回合默认位置*/
     getBallNodeDefaultPos(): cc.Vec3{
-        if(this.ballTotalIdx >= this.fightBallCount){  //所有球已经排完
-            this.clearBallLineDate();
+        let fightBallCount = MyUserData.fightList.length;
+        if(this.ballSortIdx >= fightBallCount){  //所有球已经排完
+            this.ballSortIdx = 0;
             return null;
         }
 
-        let offY = 0;  //行Y偏移
-        if(this.ballLine > 0 && this.ballLine%2 == 0){
-            offY = -10;
-        }else if(this.ballLine%2 == 1){
-            offY = 0;
-        }
-
-        let index = this.ballLineIdx;  //这一行已经放置的小球数量
         let catWidth = this.qipanSc.getCatWidth();
         let ballInitY = this.getBallPosY();
 
-        let ballOffX = this.ballLine*5 + catWidth/2 + 0;   ///每一行都会比上一行缩短35
-        let len = this.gameBordersRect.width/2 + Math.abs(this.emissionPointX) - ballOffX + 20;
-        let ballCount = this.fightBallCount - this.ballPosIdx;   //上一行放置玩后剩余小球数量
-        let offsetX = len/ballCount;  //新行将全部剩余小球放置的小球间距
-        let count = len/this.ballOffPosX;   //一行可以放置的小球数量(最多放置10个)
-        let destPos: cc.Vec3 = null;
-        if(count > 10 || offsetX < this.ballOffPosX){   //一行放不下所有剩余的小球，或者放置小球数量>10
-            count = Math.min(count, 10);
+        let len = this.gameBordersRect.width/2 + Math.abs(this.emissionPointX) - catWidth/2 + 20;
+        let offsetX = Math.min(len/fightBallCount, this.ballOffPosX);  
 
-            if(this.ballLineIdx >= count){   //这一行已经放置满，需要另起一行放置
-                this.ballLine ++;   //小球排序的行数
-                this.ballPosIdx += Math.floor(count);  //当前已经排序的小球索引数
-                this.ballLineIdx = 0;  //当前当前行已经排序的小球索引数
+        this.ballSortIdx ++;  //已经排序的小球数量，用于小球排序发射索引的设定
+        let destPos: cc.Vec3 = new cc.Vec3(this.emissionPointX + this.emissionSign*offsetX*this.ballSortIdx, ballInitY, this.ballSortIdx-1);
 
-                return this.getBallNodeDefaultPos();
-            }else{
-                destPos = new cc.Vec3(this.emissionPointX + this.emissionSign*ballOffX + this.emissionSign*index*this.ballOffPosX, ballInitY + offY, this.ballTotalIdx);
-            }
-        }else{
-            if(this.ballLine > 0){
-                destPos = new cc.Vec3(this.emissionPointX + this.emissionSign*ballOffX + this.emissionSign*index*offsetX, ballInitY + offY, this.ballTotalIdx);
-            }else{
-                destPos = new cc.Vec3(this.emissionPointX + this.emissionSign*ballOffX+ this.emissionSign*index*this.ballOffPosX, ballInitY, this.ballTotalIdx);
-            }
-        }
-
-        this.ballTotalIdx ++;  //已经排序的小球数量，用于小球排序发射索引的设定
-        this.ballLineIdx ++;
-
-        if(this.ballTotalIdx >= this.fightBallCount){  //所有球已经排完
-            this.clearBallLineDate();
+        if(this.ballSortIdx >= fightBallCount){  //所有球已经排完
+            this.ballSortIdx = 0;
         }
         return destPos;
     }
 
-
     //*****************************  射线部分   ***************************** */
-
     /**关闭射线 */
     offRay(){
         this.rayCount = 0;  //需要绘制的射线段数
@@ -774,22 +557,22 @@ class FightManager {
         intersectRayData.oldDir = dir.clone();
         intersectRayData.hitType = hitType;   //0碰撞，1无碰撞, 2偏转，3穿透, 4砖块死亡通知
 
-        for(let k=0; k<this.tempItemNodes.length; ++k){
-            let node = this.tempItemNodes[k];
-            if(node){   //砖块
-                let brick = node.getComponent(Brick);
-                if(brick && brick.brick_info && brick.brick_info.moster_camp == 0){ 
-                    intersectRayData.itemNodes.push(node);  //道具节点集合
-                }
-            }
-        }
+        // for(let k=0; k<this.tempItemNodes.length; ++k){
+        //     let node = this.tempItemNodes[k];
+        //     if(node){   //砖块
+        //         let brick = node.getComponent(Brick);
+        //         if(brick && brick.brick_info && brick.brick_info.moster_camp == 0){ 
+        //             intersectRayData.itemNodes.push(node);  //道具节点集合
+        //         }
+        //     }
+        // }
 
         let addRayDataFunc = function(interData: IntersectData){
             let node = interData.node;
             if(node){   //砖块
                 let brick = node.getComponent(Brick);
                 if(brick && brick.isMoveBrick() == false){   //非移动砖块
-                    if(brick.brick_info && brick.brick_info.moster_camp == 1){
+                    if(brick.brick_info ){  //&& brick.brick_info.moster_camp == 1
                         intersectRayData.nodeIds.push(brick.brickId);  //普通砖块ID
                     }
                 }
@@ -867,7 +650,7 @@ class FightManager {
             intersectRayData.point = rayEndPoint.clone();
             
             if(hitType != 6){   //非6移动反弹
-                let maxCount = Math.max(5, this.fightBallCount);
+                let maxCount = Math.max(5, MyUserData.fightList.length);
                 if(this.roundPathArr.length >= maxCount){
                     this.roundPathArr.shift();
                 }
@@ -1135,7 +918,7 @@ class FightManager {
         if(brick && brick.brick_info){
             //主要检测矩形四个角、直线和边的交点，并找到最近的一个点, 检测射线和砖块的扩充边界（边界相交还是四角相交）是否相交，并找出距线段起点最近的相交点返回
             let radOffLen = this.radConf+this.ballRadiusConf;   //为转角弧度反射的偏移距离（半径），改距离内按照转角碰撞处理而非边镜面发射处理
-            if(hitType == 3 || brick.brick_info.moster_camp == 0){
+            if(hitType == 3 ){  //|| brick.brick_info.moster_camp == 0
                 radOffLen = 0;   //穿透时 或道具，不用计算弧度反射
             }
             let tempData: TempIntersectData = this.checkBrickInterectByDir(startPos, endPos, brick, radOffLen); 
@@ -1171,20 +954,21 @@ class FightManager {
         let sprSize = brick.node.getContentSize();
         let nodePos = brick.node.position.clone();
         let tempData: TempIntersectData = null;
-        if(brick.brickType >= 1001 && brick.brickType <= 1004){   //分裂三角砖块
-            if(brick.brickType == 1001){   //分裂小怪左
+        let brickType = brick.brick_info.monsterId;
+        if(brickType >= 1001 && brickType <= 1004){   //分裂三角砖块
+            if(brickType == 1001){   //分裂小怪左
                 borders.push(cc.v2(nodePos.x, nodePos.y));
                 borders.push(cc.v2(-sprSize.width/2 + nodePos.x, -sprSize.height/2 + nodePos.y));
                 borders.push(cc.v2(-sprSize.width/2 + nodePos.x, sprSize.height/2 + nodePos.y));  
-            }else if(brick.brickType == 1002){   //分裂小怪右
+            }else if(brickType == 1002){   //分裂小怪右
                 borders.push(cc.v2(nodePos.x, nodePos.y));
                 borders.push(cc.v2(sprSize.width/2 + nodePos.x, sprSize.height/2 + nodePos.y));
                 borders.push(cc.v2(sprSize.width/2 + nodePos.x, -sprSize.height/2 + nodePos.y));
-            }else if(brick.brickType == 1003){  //分裂小怪上
+            }else if(brickType == 1003){  //分裂小怪上
                 borders.push(cc.v2(nodePos.x, nodePos.y));
                 borders.push(cc.v2(-sprSize.width/2 + nodePos.x, sprSize.height/2 + nodePos.y));
                 borders.push(cc.v2(sprSize.width/2 + nodePos.x, sprSize.height/2 + nodePos.y));
-            }else if(brick.brickType == 1004){  //分裂小怪下
+            }else if(brickType == 1004){  //分裂小怪下
                 borders.push(cc.v2(nodePos.x, nodePos.y));
                 borders.push(cc.v2(sprSize.width/2 + nodePos.x, -sprSize.height/2 + nodePos.y));
                 borders.push(cc.v2(-sprSize.width/2 + nodePos.x, -sprSize.height/2 + nodePos.y));
@@ -1268,12 +1052,12 @@ class FightManager {
             borders = this.getBorder(nodePos, sprSize.width, sprSize.height, this.ballRadiusConf);  //获得扩充边界
             tempData = this.lineRectPoint(startPos, endPos, borders, radOffLen);  
 
-            if(brick.brick_info.moster_camp == 0){    //砖块阵营   1敌方，0右方（道具）用于判断通关目标，友方不计入通关条件；友方怪物达到底层要消失，关卡不会失败；友方不计算关卡分数,血量照扣，友方砖块不反弹
-                if(this.tempItemNodes && tempData && tempData.intersectPoint){   //射线与砖块扩充边界有交点（镜面反射）
-                    this.tempItemNodes.push(brick.node);   //射线规划时，临时存储某条射线经过的道具集合
-                }
-                return null;
-            }else{
+            // if(brick.brick_info.moster_camp == 0){    //砖块阵营   1敌方，0右方（道具）用于判断通关目标，友方不计入通关条件；友方怪物达到底层要消失，关卡不会失败；友方不计算关卡分数,血量照扣，友方砖块不反弹
+            //     if(this.tempItemNodes && tempData && tempData.intersectPoint){   //射线与砖块扩充边界有交点（镜面反射）
+            //         this.tempItemNodes.push(brick.node);   //射线规划时，临时存储某条射线经过的道具集合
+            //     }
+            //     return null;
+            // }else{
                 if(tempData && tempData.intersectPoint){   //射线与砖块扩充边界有交点（镜面反射）
                     tempData.bIntersected = true;
                     tempData.bIntersectBorder = true; 
@@ -1327,7 +1111,7 @@ class FightManager {
                         }
                     }
                 }
-            }
+            //}
         }
         if(tempData && tempData.intersectPoint){
             tempData.borders = borders;

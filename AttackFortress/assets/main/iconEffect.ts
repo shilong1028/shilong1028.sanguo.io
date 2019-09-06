@@ -43,7 +43,7 @@ export default class IconEffect extends cc.Component {
     }
 
     createEffectAniNode(pos: cc.Vec2){
-        AudioMgr.playEffect("effect/hecheng/gold_fly");
+        AudioMgr.playEffect("effect/gold_fly");
 
         let effNode = new cc.Node;
         let effectSpr = effNode.addComponent(cc.Sprite);

@@ -53,7 +53,7 @@ export default class ChapterScene extends cc.Component {
 
     //返回
     onBackBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
 
         GameMgr.gotoMainScene();
     }

@@ -99,12 +99,12 @@ export default class PlayerCell extends viewCell {
     }
 
     onGoldBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_buy");
+        AudioMgr.playEffect("effect/ui_buy");
         GameMgr.getMainScene().handleBuyPlayer(this.cellData);   //购买炮台
     }
 
     onChangeBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_buy");
+        AudioMgr.playEffect("effect/ui_click");
         GameMgr.getMainScene().handleChangePlayer(this.cellIdx);   //换装炮台
     }
 }

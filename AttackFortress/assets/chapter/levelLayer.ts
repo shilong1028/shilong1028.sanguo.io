@@ -2,6 +2,8 @@ import { AudioMgr } from "../manager/AudioMgr";
 import { LevelInfo } from "../manager/Enum";
 import { MyUserData } from "../manager/MyUserData";
 import Item from "../common/item";
+import { FightMgr } from "../manager/FightManager";
+import { GameMgr } from "../manager/GameManager";
 
 //关卡描述
 const {ccclass, property} = cc._decorator;
@@ -60,17 +62,17 @@ export default class LevelLayer extends cc.Component {
     // update (dt) {}
 
     onCloseBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
         this.node.removeFromParent(true);
     }
 
     onStartBtn(){
-        AudioMgr.playEffect("effect/hecheng/ui_click");
+        AudioMgr.playEffect("effect/ui_click");
 
-        // if(this.levelInfo.levelId > 0){
-        //     FightMgr.level_id = this.levelInfo.levelId;
-        //     GameMgr.goToSceneWithLoading("FightScene");
-        // }
+        if(this.levelInfo.levelId > 0){
+            FightMgr.level_id = this.levelInfo.levelId;
+            GameMgr.goToSceneWithLoading("FightScene");
+        }
     }
 
     /**初始化关卡信息 */
