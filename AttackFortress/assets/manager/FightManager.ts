@@ -125,18 +125,24 @@ class FightManager {
             for(let i=levelCfg.enemy_ids[0]; i<= levelCfg.enemy_ids[1]; i++){
                 enemyIds.push(i);
             }
+            //cc.log("enemyCount = "+enemyCount+"; enemyLines = "+enemyLines+"; enemyIds = "+JSON.stringify(enemyIds));
 
             for(let i=0; i<levelCfg.total_lines; i++){
                 enemyLines -= i;   //砖块还剩余行数
-                let count = enemyCount/enemyLines;
-                if(Math.random() > 0.5){
-                    count = Math.floor(count);
-                }else{
-                    count = Math.ceil(count);
+                let count = enemyCount;
+                if(enemyLines > 0){
+                    count = enemyCount/enemyLines;
+                    if(Math.random() > 0.5){
+                        count = Math.floor(count);
+                    }else{
+                        count = Math.ceil(count);
+                    }
                 }
                 count = Math.min(count, 7);
+                enemyCount -= count;
 
                 let columnArr = this.getRandomNumsByCount(count, 7, 0);   //在指定序列中[min, max)产生count个随机数
+                //cc.log("enemyCount = "+enemyCount+"; enemyLines = "+enemyLines+"; count = "+count+"; columnArr = "+JSON.stringify(columnArr));
                 let linebricks: BrickInfo[] = new Array();
                 for(let j=0; j<count; ++j){
                     let randomIdx = Math.floor(Math.random()*(enemyIds.length-0.0001));
@@ -148,7 +154,7 @@ class FightManager {
                 }
                 this.bricksCfg[i] = linebricks;
             }
-            cc.log("setBricks(), this.bricksCfg = "+JSON.stringify(this.bricksCfg));
+            //cc.log("setBricks(), this.bricksCfg = "+JSON.stringify(this.bricksCfg));
             // 获取完毕，初始化战斗场景
             this.getFightScene().handleSetBricksFinish();   //加载关卡陪住完毕
         }else{

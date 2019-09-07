@@ -515,7 +515,6 @@ export default class Brick extends cc.Component {
     /**球撞击砖块 */
     hit(harm: number, ball: Ball){
         if(this.isBrickDead() == false && ball){
-            cc.log("hit, harm = "+harm);
             AudioMgr.playEffect("effect/pengzhuang");    //砖块碰撞音效
 
             let hitPos = this.node.position.clone();  //(反弹的砖块特效在受击点，穿过的砖块特效播放在中心点)
@@ -680,7 +679,7 @@ export default class Brick extends cc.Component {
 
     /**处理砖块无敌/盾牌 */
     handleBrickInvincible(){
-        cc.log("brick.handleBrickInvincible()");
+        //cc.log("brick.handleBrickInvincible()");
         if(this.isBrickDead() == false){
             let brickEventType = this.brick_info.monsterCfg.event;  //事件 0无 1-间隔回合无敌 2-回合第一次盾牌 3-重生。当砖块死亡时，原地复活一个y移动砖块（Id=7)
             if(brickEventType == 1){

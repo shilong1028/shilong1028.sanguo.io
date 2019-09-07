@@ -1831,7 +1831,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": -325,
-      "y": -67.5,
+      "y": -60,
       "z": 0
     },
     "_scale": {
@@ -2131,7 +2131,7 @@
         "__id__": 50
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 3,
     "_components": [
       {
@@ -2600,7 +2600,7 @@
         "__id__": 56
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 3,
     "_components": [
       {
@@ -3258,10 +3258,15 @@
         "__uuid__": "a4b83ffa-867d-4e04-b7b6-295d0002aa49"
       }
     ],
-    "pfFightWin": null,
-    "pfFightFail": null,
-    "pfPauseInfo": null,
-    "pfContinue": null,
+    "pfFightResult": {
+      "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
+    },
+    "pfPauseInfo": {
+      "__uuid__": "07fa2cd6-bb8a-41a0-8fdd-a883492fc6cb"
+    },
+    "pfContinue": {
+      "__uuid__": "548223a0-3c90-4984-bbc2-22befeb69417"
+    },
     "pfWenziAni": {
       "__uuid__": "6e454659-4cbb-444d-a7bb-96fbe9c1408b"
     },

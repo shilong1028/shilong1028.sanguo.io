@@ -4,7 +4,6 @@ import { AudioMgr } from "../manager/AudioMgr";
 import { FightMgr } from "../manager/FightManager";
 import QiPanSc from "./QiPanSc";
 import { GameMgr } from "../manager/GameManager";
-import { MyUserDataMgr } from "../manager/MyUserData";
 import WenZi from "../effectAni/Wenzi";
 import Brick from "./Brick";
 
@@ -37,9 +36,7 @@ export default class FightScene extends cc.Component {
     speedFrames: cc.SpriteFrame[] = new Array(3);
 
     @property(cc.Prefab)
-    pfFightWin: cc.Prefab = null;
-    @property(cc.Prefab)
-    pfFightFail: cc.Prefab = null;
+    pfFightResult: cc.Prefab = null;
     @property(cc.Prefab)
     pfPauseInfo: cc.Prefab = null;  //暂停设置界面
     @property(cc.Prefab)
@@ -348,15 +345,7 @@ export default class FightScene extends cc.Component {
 
     /**显示战斗结算界面 */
     showFightOverInfo(){
-        let atkScore = FightMgr.atkScore;
-        FightMgr.atkScore = 0;
-        if(FightMgr.win == true){
-            GameMgr.showLayer(this.pfFightWin);  //首次通关奖励或失败
-        }else{
-            atkScore = 0;
-            GameMgr.showLayer(this.pfFightFail);  //首次通关奖励或失败
-        }
-        MyUserDataMgr.saveLevelFightInfo(FightMgr.level_id, FightMgr.win, 2);
+        GameMgr.showLayer(this.pfFightResult);  //首次通关奖励或失败 
     }
 
     //显示停滞冰冻图片

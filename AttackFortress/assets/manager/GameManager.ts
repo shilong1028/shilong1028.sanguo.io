@@ -39,6 +39,10 @@ class GameManager {
     gotoMainScene(){	
         this.goToSceneWithLoading("mainScene", true);
     } 
+    //切换到章节场景
+    gotoChapterScene(){
+        this.goToSceneWithLoading("chapterScene");
+    }
 
     /**获取主场景 */
     getMainScene(): MainScene {

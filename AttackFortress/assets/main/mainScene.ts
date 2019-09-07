@@ -27,8 +27,6 @@ export default class MainScene extends cc.Component {
     delNode: cc.Node = null;   //删除节点
     @property(cc.Node)
     shareBtn: cc.Node = null;  //分享
-    @property(cc.Sprite)
-    musicSpr: cc.Sprite = null;   //背景音乐控制按钮图标
     @property(cc.Label)
     labGold: cc.Label = null;   //玩家金币数
     @property(cc.Node)
@@ -48,6 +46,13 @@ export default class MainScene extends cc.Component {
     @property(TableView)
     tableView: TableView = null;  //出战列表
 
+    @property(cc.Sprite)
+    musicSpr: cc.Sprite = null;   //背景音乐控制按钮图标
+    @property(cc.SpriteFrame)
+    musicCloseFrame: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    musicOpenFrame: cc.SpriteFrame = null;
+
     @property(cc.Prefab)
     pfBlock: cc.Prefab = null;   //地块预制体
     @property(cc.Prefab)
@@ -61,8 +66,6 @@ export default class MainScene extends cc.Component {
     @property(cc.Prefab)
     pfPlayer: cc.Prefab = null;  //炮台更换
 
-    @property(cc.SpriteAtlas)
-    hechengAtlas: cc.SpriteAtlas = null;
     @property(cc.SpriteAtlas)
     stuffUpAtlas: cc.SpriteAtlas = null;
     @property(cc.SpriteAtlas)
@@ -124,20 +127,12 @@ export default class MainScene extends cc.Component {
     /**初始化数据 */
     initCombineData () {
         this.bLoadRoleDataFinish = true;  //是否已经加载完毕用户数据
+        this.showMusicSpr();
 
-        if(this.hechengAtlas){
-            let keyVal = AudioMgr.getMusicOnOffState();   //获取音效总开关状态
-            if(keyVal == 0){     //现在为开启状态，按钮显示开启图标
-                this.musicSpr.spriteFrame = this.hechengAtlas.getSpriteFrame("hecheng_YinLiang")
-            }else{ 
-                this.musicSpr.spriteFrame = this.hechengAtlas.getSpriteFrame("hecheng_YinLiangGuan")
-            }
-    
-            this.UpdateGold();   //更新金币数量
-            this.UpdatePlayer();  //显示炮台信息
-            this.initFightList();  //刷新出战列表
-            this.loadBlocksGrid();   //加载小球地块网格
-        }
+        this.UpdateGold();   //更新金币数量
+        this.UpdatePlayer();  //显示炮台信息
+        this.initFightList();  //刷新出战列表
+        this.loadBlocksGrid();   //加载小球地块网格
     }
 
     // update (dt) {
@@ -262,22 +257,15 @@ export default class MainScene extends cc.Component {
             let pos = this.delNode.convertToNodeSpace(touchPos);   //删除节点
             let rect = cc.rect(0, 0, this.delNode.width, this.delNode.height);
             if(rect.contains(pos)){  //删除士兵
-                if(MyUserData.ballList.length == 1){   //最后一个小球不可删除
+                if(MyUserData.ballList.length == 1 && MyUserData.fightList.length == 0){   //最后一个小球不可删除
                     ROOT_NODE.showTipsText(TipsStrDef.KEY_FireTip);
-    
-                    let worldPos = this.selectBlock.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
-                    let destPos = this.node.convertToNodeSpaceAR(worldPos);
-                    this.nSelectStuff.runAction(cc.sequence(cc.spawn(cc.fadeIn(0.12), cc.moveTo(0.12, destPos)), cc.callFunc(function(){
-                        this.selectBlock.onBallDropBlock(this.selectBlock);   //将一个地块上的小球放置到本地块上
-                        this.selectBlock = null;   //拖动的地块数据
-                        this.nSelectStuff.setPosition(-3000, -3000);
-                    }.bind(this))))
+                    this.selectBlock.onBallDropBlock(this.selectBlock);   //将一个地块上的小球放置到本地块上
+                    this.selectBlock = null;   //拖动的地块数据
                 }else{
-                    this.nSelectStuff.setPosition(-3000, -3000);
-    
                     let sellGold = this.selectBlock.onSellBall();  
                     this.showDelBallGainAni(sellGold);   //显示售卖士兵收益 
                 }
+                this.nSelectStuff.setPosition(-3000, -3000);
             }else{
                 let pos = this.tableNode.convertToNodeSpace(touchPos);   //删除节点
                 let rect = cc.rect(0, 0, this.tableNode.width, this.tableNode.height);
@@ -285,6 +273,7 @@ export default class MainScene extends cc.Component {
                     if(this.fightList.length >= MyUserData.fightCount){
                         ROOT_NODE.showTipsText("出战列表已满额！");
                         ROOT_NODE.showTipsText("闯关可以解锁新的出战位！");
+                        this.selectBlock.onBallDropBlock(this.selectBlock);   //将一个地块上的小球放置到本地块上
                     }else{
                         MyUserDataMgr.addBallToFightList(this.selectBlock.ballInfo);
                         this.selectBlock.onBallRemoveBlock();
@@ -346,8 +335,7 @@ export default class MainScene extends cc.Component {
                 MyUserDataMgr.addPlayerToPlayerList(playerInfo);   //添加新炮台到拥有的炮列表
                 NotificationMy.emit(NoticeType.UpdatePlayer, null);  //更新炮台显示
             }else{
-                ROOT_NODE.showTipsDialog("金币不足，是否？", ()=>{
-                });
+                ROOT_NODE.showGoldAddDialog();  //获取金币提示框
             }
         }
     }
@@ -364,21 +352,22 @@ export default class MainScene extends cc.Component {
     /**购买小球 */
     handleBuyStuff(ballInfo: BallInfo){
         if(ballInfo){
+            cc.log("MyUserData.ballList = "+JSON.stringify(MyUserData.ballList));
             if(MyUserData.GoldCount >= ballInfo.cannonCfg.cost){
                 if(MyUserData.ballList.length >= MyUserData.blockCount){
                     ROOT_NODE.showTipsText("合成网格中可用地块已满，无法购买！请解雇无用的对象后重新购买。");
                 }else{
-                    this.addBallToOneBlock(ballInfo);
+                    this.addBallToOneBlock(ballInfo, true);
                 }
             }else{
-                ROOT_NODE.showTipsDialog("金币不足，是否？", ()=>{
-                });
+                ROOT_NODE.showGoldAddDialog();  //获取金币提示框
             }
         }
     }
 
     /**添加一个小球到地块 */
-    addBallToOneBlock(ballInfo: BallInfo, bBuyBall:boolean=true){
+    addBallToOneBlock(ballInfo: BallInfo, bBuyBall:boolean){
+        cc.log("addBallToOneBlock(), ballInfo = "+JSON.stringify(ballInfo));
         if(ballInfo){
             let blocks = this.nSlots.children;
             for(let i=0; i<blocks.length; i++){
@@ -386,7 +375,10 @@ export default class MainScene extends cc.Component {
                 if(block.isLock == false && block.ballInfo == null){
                     if(bBuyBall == true){
                         MyUserDataMgr.updateUserGold(-ballInfo.cannonCfg.cost);
-                        this.showBuyBallAni(block, ballInfo);   //显示招募小球的动画特效
+                        MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);
+
+                        block.initBlockByBallInfo(ballInfo);
+                        //this.showBuyBallAni(block, ballInfo);   //显示招募小球的动画特效
                     }else{
                         block.initBlockByBallInfo(ballInfo);
                     }
@@ -422,6 +414,7 @@ export default class MainScene extends cc.Component {
     /**下阵出战小球 */
     onCancelFightBtn(){
         if(this.selFightBall){  //选中的出战小球
+            //cc.log("MyUserData.blockCount = "+MyUserData.blockCount+"; MyUserData.ballList = "+JSON.stringify(MyUserData.ballList));
             if(MyUserData.ballList.length >= MyUserData.blockCount){
                 ROOT_NODE.showTipsText("合成网格中可用地块已满，出战对象无法下阵！");
             }else{
@@ -461,7 +454,7 @@ export default class MainScene extends cc.Component {
     /**出战按钮 */
     onFightBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        GameMgr.goToSceneWithLoading("chapterScene");
+        GameMgr.gotoChapterScene();
     }
 
     /**音乐开关 */
@@ -469,15 +462,18 @@ export default class MainScene extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
 
         let keyVal = AudioMgr.getMusicOnOffState();   //获取音效总开关状态
-        if(keyVal == 1){   //关闭
-            keyVal = 0;
-            this.musicSpr.spriteFrame = this.hechengAtlas.getSpriteFrame("hecheng_YinLiang") 
-            AudioMgr.playEffect("effect/ui_click");
-        }else{  //现在为开启状态，按钮显示开启图标
-            keyVal = 1;
-            this.musicSpr.spriteFrame = this.hechengAtlas.getSpriteFrame("hecheng_YinLiangGuan")
-        }
+        keyVal = 1- keyVal;
         AudioMgr.setMusicOnOffState(keyVal);
+        this.showMusicSpr();
+    }
+
+    showMusicSpr(){
+        let keyVal = AudioMgr.getMusicOnOffState();   //获取音效总开关状态
+        if(keyVal == 0){     //现在为开启状态，按钮显示开启图标
+            this.musicSpr.spriteFrame = this.musicOpenFrame;
+        }else{ 
+            this.musicSpr.spriteFrame = this.musicCloseFrame;
+        }
     }
 
 }

@@ -14,6 +14,8 @@ export default class RootNode extends cc.Component {
     pfTipsDialog: cc.Prefab = null;  //提示框
     @property(cc.Prefab)
     pfLoading: cc.Prefab = null;  //加载进度层
+    @property(cc.Prefab)
+    pfGoldAdd: cc.Prefab = null;  //获取金币提示框
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -95,6 +97,14 @@ export default class RootNode extends cc.Component {
         tips.x = cc.winSize.width/2;
         cc.director.getScene().addChild(tips);
         tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback);
+    }
+
+    //获取金币提示框
+    showGoldAddDialog(){
+        let tips = cc.instantiate(this.pfGoldAdd);
+        tips.y = cc.winSize.height/2;
+        tips.x = cc.winSize.width/2;
+        cc.director.getScene().addChild(tips);
     }
 }
 

@@ -72,7 +72,10 @@ class MyUserManager {
         MyUserData.fightCount = LDMgr.getItemInt(LDKey.KEY_FightCount, 3);  //解锁的可战斗数量
         MyUserData.fightList = this.getFightListByLD();  //出战小球列表 
 
+        MyUserData.curPlayerIdx = LDMgr.getItemInt(LDKey.KEY_CurPlayerIdx, 0);  //当前使用的炮索引
         MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表
+
+        MyUserData.curLevelId = LDMgr.getItemInt(LDKey.KEY_CurLevelId, 0);  //当前通关的最大id
         MyUserData.levelList = this.getLevelListByLD();  //通关列表
 
         if(MyUserData.GoldCount == 0 && MyUserData.blockCount == 3 && MyUserData.ballList.length == 0 && MyUserData.fightList.length == 0){
@@ -151,10 +154,10 @@ class MyUserManager {
                 return;
             }else{
                 let info = new LevelInfo(levelId, stars);
-                MyUserData.levelList.push(info);
-
                 if(MyUserData.curLevelId+1 == levelId){
                     this.updateCurLevelId(levelId);
+
+                    MyUserData.levelList.push(info);
                     this.saveLevelList();
                 }else{  //已通关关卡重打
                     MyUserData.levelList[levelId-1] = info;
@@ -268,14 +271,29 @@ class MyUserManager {
         }
     }
     /**更新未出战小球 */
-    updateBallInBallList(ballInfo: BallInfo){
+    updateBallInBallList(ballInfo: BallInfo, delBallInfo: BallInfo=null){
+        let optCount = 1;
+        if(delBallInfo){
+            optCount = 2;
+        }
+        let delIdx = -1;
         for(let i=0; i<MyUserData.ballList.length; ++i){
-            if(ballInfo.timeId == MyUserData.ballList[i].timeId){
+            let curTimeId = MyUserData.ballList[i].timeId;
+            if(ballInfo.timeId == curTimeId){
                 MyUserData.ballList[i] = ballInfo;
-                this.saveBallList();
+                optCount --;
+            }else if(delBallInfo && delBallInfo.timeId == curTimeId){
+                delIdx = i;
+                optCount --;
+            }
+            if(optCount <= 0){
                 break;
             }
         }
+        if(delIdx >= 0){
+            MyUserData.ballList.splice(delIdx, 1);
+        }
+        this.saveBallList();
     }
     /**销售未出战小球 */
     sellBallFromBallList(ballInfo: BallInfo){

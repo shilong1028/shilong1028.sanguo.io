@@ -226,11 +226,11 @@ export default class Block extends cc.Component {
                     this.ballInfo.updateCannon(cannonId); 
                     this.setBallStuff(this.ballInfo);  //设置地块上的小球模型
                     this.nStuff.opacity = 0;
+
+                    MyUserDataMgr.updateBallInBallList(this.ballInfo, dropBlock.ballInfo.clone());    //更新未出战小球 
   
                     dropBlock.onBallRemoveBlock();   //将本地块上的小球移走了
-                    this.showUpdateBallEffect();  //显示升级小球特效
-
-                    MyUserDataMgr.updateBallInBallList(this.ballInfo);    //更新未出战小球 
+                    this.showUpdateBallEffect();  //显示升级小球特效     
                 }
             }else{    //交换
                 dropBlock.onSwapBallBlock(this.ballInfo);

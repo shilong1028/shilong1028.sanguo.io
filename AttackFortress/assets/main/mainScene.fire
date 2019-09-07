@@ -755,7 +755,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "3df9f372-7b9b-42af-8fe6-c9500f5345d3"
+      "__uuid__": "3323a7a3-6bf7-4433-a96c-f7465f7fdb25"
     },
     "_type": 0,
     "_sizeMode": 2,
@@ -769,7 +769,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": false,
     "_atlas": {
-      "__uuid__": "83e9bfb7-ede7-4e2b-9ed7-2895f53a952e"
+      "__uuid__": "1b4796e3-b0b1-4cdd-bcbc-b683b8c0dbb0"
     },
     "_id": "22l4HtHqdPIqbDLOMUMgID"
   },
@@ -12605,9 +12605,6 @@
     "shareBtn": {
       "__id__": 18
     },
-    "musicSpr": {
-      "__id__": 15
-    },
     "labGold": {
       "__id__": 10
     },
@@ -12632,6 +12629,15 @@
     "tableView": {
       "__id__": 46
     },
+    "musicSpr": {
+      "__id__": 15
+    },
+    "musicCloseFrame": {
+      "__uuid__": "146ed902-183a-4ddf-90e7-023b0ec5f8fa"
+    },
+    "musicOpenFrame": {
+      "__uuid__": "3323a7a3-6bf7-4433-a96c-f7465f7fdb25"
+    },
     "pfBlock": {
       "__uuid__": "224ff531-7e17-4581-af6b-26223ee67148"
     },
@@ -12649,9 +12655,6 @@
     },
     "pfPlayer": {
       "__uuid__": "652041cc-83c2-4aa1-b636-1d888e52882a"
-    },
-    "hechengAtlas": {
-      "__uuid__": "83e9bfb7-ede7-4e2b-9ed7-2895f53a952e"
     },
     "stuffUpAtlas": {
       "__uuid__": "9fbc2e96-1427-4ec2-a7be-9aaf8ef8318f"

@@ -1,9 +1,10 @@
 import { AudioMgr } from "../manager/AudioMgr";
 import { LevelInfo } from "../manager/Enum";
-import { MyUserData } from "../manager/MyUserData";
+import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import Item from "../common/item";
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
+import { ROOT_NODE } from "../common/rootNode";
 
 //关卡描述
 const {ccclass, property} = cc._decorator;
@@ -70,8 +71,13 @@ export default class LevelLayer extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
 
         if(this.levelInfo.levelId > 0){
-            FightMgr.level_id = this.levelInfo.levelId;
-            GameMgr.goToSceneWithLoading("FightScene");
+            if(MyUserData.GoldCount >= this.levelInfo.levelCfg.cost){
+                MyUserDataMgr.updateUserGold(-this.levelInfo.levelCfg.cost);
+                FightMgr.level_id = this.levelInfo.levelId;
+                GameMgr.goToSceneWithLoading("FightScene");
+            }else{
+                ROOT_NODE.showGoldAddDialog();  //获取金币提示框
+            }
         }
     }
 

@@ -3,7 +3,6 @@ import { BallInfo } from "../manager/Enum";
 import Stuff from "./Stuff";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
-import { MyUserData } from "../manager/MyUserData";
 
 const {ccclass, property} = cc._decorator;
 
@@ -50,12 +49,6 @@ export default class ShopCell extends viewCell {
             this.cellData = this.data.array[this.cellIdx];
             this.node.active = true;
         //}
-
-        this.goldBtn.interactable = false;
-        this.goldLabel.string = "";
-        this.atkLabel.string = "攻击力：";
-        this.baojiLabel.string = "暴击率：";
-        this.sellLabel.string = "回收价："
 
         if(this.nStuff == null){
             let stuff = cc.instantiate(GameMgr.getMainScene().pfStuff);
