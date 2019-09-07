@@ -255,7 +255,6 @@ export const NoticeType = {
     UpdatePlayer: "UpdatePlayer",   //更新炮台
 
     BrickDeadEvent: "BrickDeadEvent",   //砖块消失（死亡）
-    BrickPreMoveDown: "BrickPreMoveDown",   //砖块准备下移
     BrickMoveDownAction: "BrickMoveDownAction",   //砖块下移通知
     BrickDownMultiLine: "BrickDownMultiLine",   //砖块多行下移
     BrickInvincible: "BrickInvincible",  //砖块无敌/盾牌

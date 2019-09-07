@@ -884,39 +884,6 @@
     "nEffect": {
       "__id__": 16
     },
-    "pfBrick": {
-      "__uuid__": "6651b0eb-470b-47b2-8d7e-46f739127e9b"
-    },
-    "pfBall": {
-      "__uuid__": "f3d67610-720a-45ae-984b-5c182ce2e447"
-    },
-    "pfharmHp": {
-      "__uuid__": "ac8474d1-cfb5-4906-9d58-2f14ec723267"
-    },
-    "pfDot": {
-      "__uuid__": "f1fba36e-6b32-4b5e-af99-1464af7c96e7"
-    },
-    "fightAtlas": {
-      "__uuid__": "a76fc68e-b0f2-40d4-803a-cf587c8e658a"
-    },
-    "deadAtlas": {
-      "__uuid__": "4b34fe68-71c5-4ff1-9915-ae008eea14d6"
-    },
-    "bumpAtlas": {
-      "__uuid__": "0bc54cf1-fc6b-4c8d-bedd-ec1d378f5f33"
-    },
-    "shuyeAtlas": {
-      "__uuid__": "196b7b2c-a56e-4ccf-855e-fc63c4368beb"
-    },
-    "brickWudiAtlas": {
-      "__uuid__": "ddbd6ec5-0425-40f7-a9dd-f73947125d73"
-    },
-    "ballChongnengAtlas": {
-      "__uuid__": "64a5edcc-05b8-4936-97d0-5d6c7f3ad6f3"
-    },
-    "ballFantanAtlas": {
-      "__uuid__": "7747314a-6736-44cd-8cc6-d1e7cbe5bf42"
-    },
     "_id": "84Qm3DOlZG1ra3nuXvhDbJ"
   },
   {
@@ -3256,8 +3223,14 @@
     "topNode": {
       "__id__": 20
     },
-    "qipanNode": {
-      "__id__": 7
+    "labProgress": {
+      "__id__": 26
+    },
+    "pbRoundBar": {
+      "__id__": 28
+    },
+    "levelLabel": {
+      "__id__": 33
     },
     "stagnationImg": {
       "__id__": 18
@@ -3268,14 +3241,8 @@
     "tempBottomNode": {
       "__id__": 61
     },
-    "labProgress": {
-      "__id__": 26
-    },
-    "pbRoundBar": {
-      "__id__": 28
-    },
-    "levelLabel": {
-      "__id__": 33
+    "qipanNode": {
+      "__id__": 7
     },
     "SpeedSpr": {
       "__id__": 57
@@ -3297,6 +3264,36 @@
     "pfContinue": null,
     "pfWenziAni": {
       "__uuid__": "6e454659-4cbb-444d-a7bb-96fbe9c1408b"
+    },
+    "pfBrick": {
+      "__uuid__": "6651b0eb-470b-47b2-8d7e-46f739127e9b"
+    },
+    "pfBall": {
+      "__uuid__": "f3d67610-720a-45ae-984b-5c182ce2e447"
+    },
+    "pfharmHp": {
+      "__uuid__": "ac8474d1-cfb5-4906-9d58-2f14ec723267"
+    },
+    "pfDot": {
+      "__uuid__": "f1fba36e-6b32-4b5e-af99-1464af7c96e7"
+    },
+    "deadAtlas": {
+      "__uuid__": "4b34fe68-71c5-4ff1-9915-ae008eea14d6"
+    },
+    "bumpAtlas": {
+      "__uuid__": "0bc54cf1-fc6b-4c8d-bedd-ec1d378f5f33"
+    },
+    "shuyeAtlas": {
+      "__uuid__": "196b7b2c-a56e-4ccf-855e-fc63c4368beb"
+    },
+    "brickWudiAtlas": {
+      "__uuid__": "ddbd6ec5-0425-40f7-a9dd-f73947125d73"
+    },
+    "ballChongnengAtlas": {
+      "__uuid__": "64a5edcc-05b8-4936-97d0-5d6c7f3ad6f3"
+    },
+    "ballFantanAtlas": {
+      "__uuid__": "7747314a-6736-44cd-8cc6-d1e7cbe5bf42"
     },
     "_id": "3aFYlqKvFCb5FKcS6lgTuQ"
   }

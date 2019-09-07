@@ -73,7 +73,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "groupIndex": 2,
+    "groupIndex": 4,
     "_rotationX": 0,
     "_rotationY": 0,
     "_id": ""
@@ -960,6 +960,9 @@
     },
     "hpNode": {
       "__id__": 12
+    },
+    "shieldFrame": {
+      "__uuid__": "5affa164-68a9-4e93-93df-4ebe38394fd9"
     },
     "collider": {
       "__id__": 25

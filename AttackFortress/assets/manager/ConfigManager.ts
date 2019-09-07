@@ -106,8 +106,8 @@ export class st_monster_info{
 export class st_level_info{
     gold;     //通关奖励（2星），1星为75%，3星为150%
     cost;   //关卡消耗
-    enemy_count;   //炮弹数量
-    enemy_ids;    //炮弹id集合 1|1
+    enemy_count;   //砖块数量
+    enemy_ids;    //砖块id集合 1|1
     total_lines;     //总行数
     init_lines;    //初始显示行数
     name;  //关卡名称

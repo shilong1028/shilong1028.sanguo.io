@@ -2,7 +2,32 @@
   "assets-sort-type": "name",
   "collision-matrix": [
     [
+      false
+    ],
+    [
+      false,
+      false,
+      null,
       true
+    ],
+    [
+      false,
+      false,
+      false,
+      true
+    ],
+    [
+      false,
+      true,
+      true,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 1334,
@@ -31,7 +56,11 @@
   "fit-height": false,
   "fit-width": true,
   "group-list": [
-    "default"
+    "default",
+    "Dot",
+    "Ball",
+    "MoveBrick",
+    "Brick"
   ],
   "last-module-event-record-time": 0,
   "simulator-orientation": false,

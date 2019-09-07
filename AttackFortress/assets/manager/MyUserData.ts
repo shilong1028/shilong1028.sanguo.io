@@ -141,11 +141,26 @@ class MyUserManager {
         }
         return null;
     }
-    /**更新已经通关的关卡数据 */
-    updateLevelInfoFromList(levelId: number, levelInfo: LevelInfo){
-        if(levelId <= MyUserData.curLevelId){
-            MyUserData.levelList[levelId-1] = levelInfo;
-            this.saveLevelList();
+    /**更新通关的关卡数据 */
+    saveLevelFightInfo(levelId: number, win: boolean, stars: number){
+        if(win == false){
+            return;
+        }else{
+            if(MyUserData.curLevelId+1 > levelId){
+                //cc.log("跳关不保存");
+                return;
+            }else{
+                let info = new LevelInfo(levelId, stars);
+                MyUserData.levelList.push(info);
+
+                if(MyUserData.curLevelId+1 == levelId){
+                    this.updateCurLevelId(levelId);
+                    this.saveLevelList();
+                }else{  //已通关关卡重打
+                    MyUserData.levelList[levelId-1] = info;
+                    this.saveLevelList();
+                }
+            }
         }
     }
 

@@ -47,8 +47,8 @@ export default class IconEffect extends cc.Component {
 
         let effNode = new cc.Node;
         let effectSpr = effNode.addComponent(cc.Sprite);
-        effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
-        effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+        // effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+        // effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
         effNode.scale = 2.0;
         effNode.setPosition(pos);
         this.node.addChild(effNode, 100);

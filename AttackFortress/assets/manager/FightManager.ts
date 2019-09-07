@@ -91,6 +91,7 @@ class FightManager {
      * (第一次进入战斗或者以后从结算界面继续战斗，都是由FightMgr.loadLevel触发战斗的，故需要清空并初始化战斗场景数据)
      */
     loadLevel(levelId:number, bReNew: boolean = false){
+        cc.log("FightMgr:loadLevel(), levelId = "+levelId+"; bReNew = "+bReNew);
         this.bReNewLevel = bReNew;   //是否重新开始游戏
         if(bReNew == false){
             this.bUserReset = false;  //本次是否使用了复活（每关限一次，重新开始不重置）
@@ -106,73 +107,81 @@ class FightManager {
         }
 
         this.roundBallCount = MyUserData.fightList.length;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
+
+        this.setBricks();
     }
 
     /**关卡配置加载完毕后的回调 */
-    setBricks(jsonInfo:any){
-        //cc.log("setBricks(), jsonInfo = "+jsonInfo);
+    setBricks(){
         // 每次加载清空之前的bricks
         this.bricksCfg = new Map<number, Array<BrickInfo>>();   //初始关卡信息 number：某行 Array<BrickCfg>某行对应的砖块 ,下标从(0,0)开始，左下角第一个为(0,0)
         // 列数可以从jsonInfo的width确定，但实际的height要从具体关卡的objects数据中确定
-
-        this.tileHeight = jsonInfo.tileheight;  //数据信息中瓦片的宽、高度 通常是正方形瓦片
-        this.tileWidth = jsonInfo.tilewidth;
-        let levelInfo = jsonInfo.layers[0];
-        let roundLineCount = 0;   //关卡砖块行数
-        if(levelInfo && levelInfo.objects){
-            for(let i=0; i<levelInfo.objects.length; i++){
-                let obj = levelInfo.objects[i];
-                let col:number = Math.round(obj.x/this.tileWidth);
-                // jsonInfo中总行数远多于配置的行数
-                let row:number = jsonInfo.height - Math.round(obj.y/this.tileHeight);
-                if(row < this.level_info.lvrow){
-                    // 配置中用type字段表示砖块血量
-                    let HP = parseInt(obj.type);
-                    if(HP == null || HP == undefined){
-                        console.warn("砖块配置错误，HP = null, obj = "+JSON.stringify(obj));
-                    }
-                    // 配置中用name字段表示不同种类的砖块
-                    let type = parseInt(obj.name);
-                    //行位置随机关卡中某砖块是否位置随机
-                    let posRand = 0;
-                    if(obj.properties){
-                        for(let k=0; k<obj.properties.length; ++k){
-                            if(obj.properties[k].name == "random_monster" && obj.properties[k].value){
-                                posRand = parseInt(obj.properties[k].value);
-                                break;
-                            }
-                        }
-                    }
-                    
-                    let brickCfg = new BrickCfg(type, HP, row, col, posRand);
-                    if(this.bricksCfg[row] == null || this.bricksCfg[row] == undefined){
-                        this.bricksCfg[row] = new Array();
-                        roundLineCount ++;   //关卡砖块行数
-                    }
-                    this.bricksCfg[row].push(brickCfg);
-
-                    // 初始化关卡的怪物消灭进度目标
-                    if(this.level_info.goal_type == 0){  // 消灭全部敌人
-                        let brick_info: st_monster_info = MyCfg.C_monster_info[brickCfg.type.toString()];
-                        if(brick_info == null){
-                            console.warn("砖块配置错误，没有找到配置信息 obj = "+JSON.stringify(obj)+"; brickCfg = "+JSON.stringify(brickCfg));
-                        }else if(brick_info.moster_camp == 1 || brick_info.moster_camp == 3){
-                            this.brickBreakAim++;
-                        }
-                    }else{
-                        this.brickBreakAim = this.level_info.value[1];   //本场目标块数
-                    }
-                }else{
-                    cc.log("砖块超出了配置行数限制，row = "+row+"; obj = "+JSON.stringify(obj)+"; this.level_info.lvrow = "+this.level_info.lvrow);
-                }
+        if(this.level_info && this.level_info.levelCfg){
+            let levelCfg = this.level_info.levelCfg;
+            cc.log("FightMgr:setBricks(), levelCfg = "+JSON.stringify(levelCfg));
+            let enemyCount = levelCfg.enemy_count;   //砖块还剩余总数
+            let enemyLines = levelCfg.total_lines;  
+            let enemyIds:number[] = new Array();
+            for(let i=levelCfg.enemy_ids[0]; i<= levelCfg.enemy_ids[1]; i++){
+                enemyIds.push(i);
             }
-            //cc.log("setBricks(), this.bricksCfg = "+JSON.stringify(this.bricksCfg));
+
+            for(let i=0; i<levelCfg.total_lines; i++){
+                enemyLines -= i;   //砖块还剩余行数
+                let count = enemyCount/enemyLines;
+                if(Math.random() > 0.5){
+                    count = Math.floor(count);
+                }else{
+                    count = Math.ceil(count);
+                }
+                count = Math.min(count, 7);
+
+                let columnArr = this.getRandomNumsByCount(count, 7, 0);   //在指定序列中[min, max)产生count个随机数
+                let linebricks: BrickInfo[] = new Array();
+                for(let j=0; j<count; ++j){
+                    let randomIdx = Math.floor(Math.random()*(enemyIds.length-0.0001));
+                    let enemyId = enemyIds[randomIdx];
+                    let brickInfo = new BrickInfo(enemyId);
+                    brickInfo.column = columnArr[j];
+                    brickInfo.row = i;
+                    linebricks.push(brickInfo);
+                }
+                this.bricksCfg[i] = linebricks;
+            }
+            cc.log("setBricks(), this.bricksCfg = "+JSON.stringify(this.bricksCfg));
             // 获取完毕，初始化战斗场景
-            this.getFightScene().handleSetBricksFinish(roundLineCount);   //加载关卡陪住完毕
+            this.getFightScene().handleSetBricksFinish();   //加载关卡陪住完毕
         }else{
             this.bReNewLevel = false;   //是否重新开始游戏
             cc.warn("warning, get level bricks is null, level = "+this.level_id);
         }
+    }
+
+    /**在指定序列中[min, max)产生count个随机数 */
+    getRandomNumsByCount(count: number, max: number, min: number=0){
+        let list: number[] = new Array();
+        let offLen = max - min;
+        if(offLen <= count){
+            for(let i=min; i<=max; i++){
+                list.push(i);
+            }
+        }else{
+            while(list.length < count){
+                let rand = Math.random();
+                let num = Math.floor(rand*offLen*0.99 + min);
+                let bHave = false;
+                for(let j=0; j<list.length; ++j){
+                    if(list[j] == num){
+                        bHave = true;
+                        break;
+                    }
+                }
+                if(bHave == false){
+                    list.push(num);
+                }
+            }
+        }
+        return list;
     }
 
     /**处理小球重新落地，检查回合是否结束 */
@@ -478,6 +487,7 @@ class FightManager {
 
     /**射出射线（多条折线），并返回第一条折线的末点坐标 */
     castMultiRay(startPos: cc.Vec2, dir: cc.Vec2, rayCount: number): IntersectRay{
+        //cc.log("castMultiRay(), startPos = "+startPos+"; dir = "+dir+"; rayCount = "+rayCount);
         this.roundPathArr = new Array();   //每回合射线路径数据集合，用于路径复用
         this.rayCount = rayCount;  //需要绘制的射线段数
         this.curBrickNodes = this.qipanSc.nBricks.children;   //当前绘制有效的砖块集合
@@ -545,7 +555,7 @@ class FightManager {
         }
         intersectArr = this.checkIntersectionWithGameBroders(intersectArr, startPos, endPos, dir);
         if(intersectArr == null || intersectArr.length == 0){
-            console.log("warning, 没有相交的砖块或边界 startPos: " + startPos + ", dir: " + dir+"; endPos = "+endPos);
+            //console.log("warning, 没有相交的砖块或边界 startPos: " + startPos + ", dir: " + dir+"; endPos = "+endPos);
             return null;
         }
 

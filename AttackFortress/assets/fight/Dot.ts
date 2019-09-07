@@ -1,4 +1,3 @@
-
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -48,7 +47,7 @@ export default class Dot extends cc.Component {
 
     /**变点位箭头图片 */
     changeDotToArrow(bArrow: boolean = true){
-        if(bArrow){
+        if(bArrow == true){
             this.iconSpr.spriteFrame = this.arrowFrame;
             this.collider.radius = 20;   //便于移动砖块和射线的碰撞检测
         }else{

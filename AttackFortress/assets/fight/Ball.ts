@@ -69,7 +69,7 @@ export default class Ball extends cc.Component {
 
         this.node.stopAllActions();
         this.node.scale = 1.0;
-        this.node.rotation = 0;
+        this.node.angle = 0;
 
         this.ballFlyDir = null;   //发射方向
         this.launchPos = null;   //发射点
@@ -122,7 +122,7 @@ export default class Ball extends cc.Component {
     //重新开始游戏
     handleGameReStart(){
         this.node.scale = 1.0;
-        this.node.rotation = 0;
+        this.node.angle = 0;
         this.node.stopAllActions();
         this.node.removeFromParent(true);
     }
@@ -304,19 +304,19 @@ export default class Ball extends cc.Component {
     setBallRotation(){
         if(this.ballFlyDir){  
             if(Math.abs(this.ballFlyDir.x) <= 0.0001 && (1-Math.abs(this.ballFlyDir.y)) <= 0.0001){
-                this.node.rotation = 0;
+                this.node.angle = 0;
                 //cc.log("setBallRotation(), 设置小球角度 射线垂直向上， this.ballFlyDir = "+this.ballFlyDir);
             }else{
                 let rad = this.ballFlyDir.signAngle(cc.v2(0,1));
                 let angle = cc.misc.radiansToDegrees(rad);
-                this.node.rotation = angle;
+                this.node.angle = -angle;   //cc.Node.rotation` is deprecated since v2.1.0, please set `-angle` instead. (`this.node.rotation = x` -> `this.node.angle = -x`)
             }
         }else{
-            this.node.rotation = 0;
+            this.node.angle = 0;
         }
         let effAni = this.effectNode.getChildByName("chongneng_effect_1");
         if(effAni){
-            effAni.rotation = this.node.rotation;
+            effAni.angle = this.node.angle;
         }
     }
 
@@ -334,14 +334,12 @@ export default class Ball extends cc.Component {
             let playerInfo: PlayerInfo = MyUserDataMgr.getCurPlayerInfo();
             if(playerInfo){
                 attack = attack * (1.0 + playerInfo.playerCfg.attack_up);
-                attack = baoji * (1.0 + playerInfo.playerCfg.baoji_up);
+                baoji = baoji * (1.0 + playerInfo.playerCfg.baoji_up);
             }
-
             if(bAddRoundAtk == true){
                 attack += this.roundAttack;   //小球在每回合增加的攻击力（吃相关道具，当前回合有效）
             }
             attack = Math.floor(attack);
-
             if(Math.random() <= baoji){
                 attack *= 2;
             }
@@ -367,7 +365,7 @@ export default class Ball extends cc.Component {
 
         let effAni = this.effectNode.getChildByName("chongneng_effect_1");
         if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.qipanSc.ballChongnengAtlas, true, 18, cc.WrapMode.Loop);
+            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().ballChongnengAtlas, true, 18, cc.WrapMode.Loop);
             if(effAni){
                 effAni.name = "chongneng_effect_1";
                 this.effectNode.addChild(effAni, 100);
@@ -381,7 +379,7 @@ export default class Ball extends cc.Component {
 
         let effAni = this.effectNode.getChildByName("fantan_effect_1");
         if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.qipanSc.ballFantanAtlas, true, 18, cc.WrapMode.Loop);
+            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().ballFantanAtlas, true, 18, cc.WrapMode.Loop);
             if(effAni){
                 effAni.name = "fantan_effect_1";
                 this.effectNode.addChild(effAni, 100);
@@ -682,7 +680,7 @@ export default class Ball extends cc.Component {
             this.BallStreak.enabled = false;   //拖尾
         }
         this.node.scale = 1.0;
-        this.node.rotation = 0;
+        this.node.angle = 0;
 
         this.node.stopActionByTag(this.DropRotateActionTag);   //小球垂直下落旋转
         let rotateAction = cc.repeatForever(cc.rotateBy(1.0, 360));
@@ -693,7 +691,7 @@ export default class Ball extends cc.Component {
         let len = Math.abs(this.node.y - destY);
         let moveAction = cc.sequence(cc.moveTo(len/450, cc.v2(this.node.x, destY)), cc.callFunc(function(){
             this.node.stopActionByTag(this.DropRotateActionTag);   //小球垂直下落旋转
-            this.node.rotation = 0;
+            this.node.angle = 0;
             this.handleFirstDropBall(this.node.x, false, bAddBall);  //处理落地的球
         }.bind(this)));
         this.node.runAction(moveAction);

@@ -6,6 +6,7 @@ import QiPanSc from "./QiPanSc";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserDataMgr } from "../manager/MyUserData";
 import WenZi from "../effectAni/Wenzi";
+import Brick from "./Brick";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,8 +15,12 @@ export default class FightScene extends cc.Component {
 
     @property(cc.Node)
     topNode: cc.Node = null;    //顶部栏
-    @property(cc.Node)
-    qipanNode: cc.Node = null;   //棋盘节点
+    @property(cc.Label)
+    labProgress: cc.Label = null;   //回合进度标签
+    @property(cc.ProgressBar)
+    pbRoundBar:cc.ProgressBar = null;   //回合进度条
+    @property(cc.Label)
+    levelLabel: cc.Label = null;  //第几关
     @property(cc.Node)
     stagnationImg: cc.Node = null;   //停滞冰冻图片
     @property(cc.Node)
@@ -23,13 +28,9 @@ export default class FightScene extends cc.Component {
     @property(cc.Node)
     tempBottomNode: cc.Node = null;  //底部拖动取消提示
 
-    @property(cc.Label)
-    labProgress: cc.Label = null;   //回合进度标签
-    @property(cc.ProgressBar)
-    pbRoundBar:cc.ProgressBar = null;   //回合进度条
+    @property(cc.Node)
+    qipanNode: cc.Node = null;   //棋盘节点
 
-    @property(cc.Label)
-    levelLabel: cc.Label = null;  //第几关
     @property(cc.Sprite)
     SpeedSpr: cc.Sprite = null;  //加速
     @property([cc.SpriteFrame])
@@ -46,6 +47,30 @@ export default class FightScene extends cc.Component {
     @property(cc.Prefab)
     pfWenziAni: cc.Prefab = null;   //帅特效预制体
 
+    @property(cc.Prefab)
+    pfBrick: cc.Prefab = null;   //砖块预制体
+    @property(cc.Prefab)
+    pfBall: cc.Prefab = null;   //小球预制体
+    @property(cc.Prefab)
+    pfharmHp: cc.Prefab = null;   //飘血预制体
+    @property(cc.Prefab)
+    pfDot: cc.Prefab = null;   //指示点预制体  
+
+    @property(cc.SpriteAtlas)
+    deadAtlas: cc.SpriteAtlas = null;   //砖块死亡烟雾特效
+    @property(cc.SpriteAtlas)
+    bumpAtlas: cc.SpriteAtlas = null;   //砖块受击特效
+    @property(cc.SpriteAtlas)
+    shuyeAtlas: cc.SpriteAtlas = null;   //吸附特效
+    @property(cc.SpriteAtlas)
+    brickWudiAtlas: cc.SpriteAtlas = null;  //砖块无敌特效
+    @property(cc.SpriteAtlas)
+    ballChongnengAtlas: cc.SpriteAtlas = null;  //小球充能特效
+    @property(cc.SpriteAtlas)
+    ballFantanAtlas: cc.SpriteAtlas = null;  //小球反弹特效
+
+    brickPool: cc.NodePool =  null;   //砖块缓存池
+
     GameHideShowDelayActionTag: 2222;   //后台切回延迟动作Tag
     
     bBallSpeedDropState: boolean = false;   //小球是否已经处于抛物下落加速
@@ -59,6 +84,7 @@ export default class FightScene extends cc.Component {
 
     /**初始化一些关键的战斗场景数据 */
     clearSceneData(bInit:boolean = false){
+        cc.log("clearSceneData")
         this.bBallSpeedDropState = false;   //小球是否已经处于抛物下落加速
         this.bTouched = false;   //用户当前是否触屏
         this.fingerPos = null;   //手指触摸位置，用于移动砖块等处的指示线绘制
@@ -95,18 +121,20 @@ export default class FightScene extends cc.Component {
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
 
-        this.clearSceneData(true);
-
-        FightMgr.qipanSc = this.qipanNode.getComponent(QiPanSc);   //棋盘
-
-        FightMgr.loadLevel(FightMgr.level_id, false);      // 根据选择的关卡传值     
-
         // if(SDKMgr.isSDK == true && SDKMgr.WeiChat){
         //     sdkWechat.createBannerWithWidth("adunit-7c748fc257f96483");
         // }
     }
 
     start () {
+        this.clearSceneData(true);
+
+        this.brickPool = new cc.NodePool(Brick);   //砖块缓存池
+        //只有在new cc.NodePool(Dot)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
+
+        FightMgr.qipanSc = this.qipanNode.getComponent(QiPanSc);   //棋盘
+
+        FightMgr.loadLevel(FightMgr.level_id, false);      // 根据选择的关卡传值     
     }
 
     onDestroy(){
@@ -115,7 +143,26 @@ export default class FightScene extends cc.Component {
         this.node.targetOff(this);
         NotificationMy.offAll(this);
 
+        this.brickPool.clear();
+
         FightMgr.clearFightMgrData();
+    }
+
+    /**从缓存池中获取或创建砖块 */
+    createBrickFromPool(): cc.Node{
+        if(this.brickPool == null){
+            this.brickPool = new cc.NodePool(Brick);   //砖块缓存池
+        }
+        if (this.brickPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
+            return this.brickPool.get();
+        } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
+            return cc.instantiate(this.pfBrick);
+        }
+    }
+
+    /**将砖块回收到缓存池 */
+    removeBrickToPool(brick: cc.Node){
+        this.brickPool.put(brick); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
     }
 
     /**后台切回前台 */
@@ -151,18 +198,19 @@ export default class FightScene extends cc.Component {
     /**处理加载关卡陪住完毕 
      *  (第一次进入战斗或者以后从结算界面继续战斗，都是由FightMgr.loadLevel触发战斗的，故需要在handleSetBricksFinish以后清空并初始化战斗场景数据)
     */
-    handleSetBricksFinish(roundLineCount: number){
+    handleSetBricksFinish(){
+        cc.log("handleSetBricksFinish");
         this.levelLabel.string = FightMgr.level_id.toString();  //第几关
 
         this.showSpeedUpBtn();   //关闭小球加速按钮
 
         this.curRoundProgress = 0;   //当前关卡回合进度
-        this.totalRoundCount = Math.min(roundLineCount, FightMgr.level_info.levelCfg.total_lines);
+        this.totalRoundCount = FightMgr.level_info.levelCfg.total_lines;
         this.showRoundProgerss();  //显示关卡回合进度
 
         FightMgr.bReNewLevel = false;   //是否重新开始游戏
 
-        FightMgr.qipanSc.initQiPanObjs();   //初始化棋盘对象
+        FightMgr.qipanSc.initQiPanObjs(this);   //初始化棋盘对象
 
         //this.checkGuideStep();   //检索引导步骤
     }
@@ -308,7 +356,7 @@ export default class FightScene extends cc.Component {
             atkScore = 0;
             GameMgr.showLayer(this.pfFightFail);  //首次通关奖励或失败
         }
-        MyUserDataMgr.saveLevelInfo(FightMgr.level_id, atkScore, FightMgr.win);
+        MyUserDataMgr.saveLevelFightInfo(FightMgr.level_id, FightMgr.win, 2);
     }
 
     //显示停滞冰冻图片

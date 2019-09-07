@@ -271,8 +271,8 @@ export default class Block extends cc.Component {
         let effNode = new cc.Node;
         effNode.scale = 2.0;
         let effectSpr = effNode.addComponent(cc.Sprite);
-        effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
-        effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+        // effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+        // effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
 
         this.node.addChild(effNode, 110, "hechengAniNode");
         GameMgr.showAltasAnimationONE(effNode, GameMgr.getMainScene().stuffUpAtlas, "hecheng", 12, cc.WrapMode.Default);

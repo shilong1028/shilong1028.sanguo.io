@@ -8,6 +8,7 @@ import { MyUserDataMgr } from "../manager/MyUserData";
 import { AudioMgr } from "../manager/AudioMgr";
 import Dot from "./Dot";
 import { GameMgr } from "../manager/GameManager";
+import FightScene from "./FightScene";
 
 //棋盘
 const {ccclass, property} = cc._decorator;
@@ -28,36 +29,9 @@ export default class QiPanSc extends cc.Component {
     @property(cc.Node)
     nEffect: cc.Node = null;   //特效节点
 
-    @property(cc.Prefab)
-    pfBrick: cc.Prefab = null;   //砖块预制体
-    @property(cc.Prefab)
-    pfBall: cc.Prefab = null;   //小球预制体
-    @property(cc.Prefab)
-    pfharmHp: cc.Prefab = null;   //飘血预制体
-    @property(cc.Prefab)
-    pfDot: cc.Prefab = null;   //指示点预制体
-
-    @property(cc.SpriteAtlas)
-    fightAtlas: cc.SpriteAtlas = null;   
-
-    @property(cc.SpriteAtlas)
-    deadAtlas: cc.SpriteAtlas = null;   //砖块死亡烟雾特效
-    @property(cc.SpriteAtlas)
-    bumpAtlas: cc.SpriteAtlas = null;   //砖块受击特效
-    @property(cc.SpriteAtlas)
-    shuyeAtlas: cc.SpriteAtlas = null;   //吸附特效
-    @property(cc.SpriteAtlas)
-    brickWudiAtlas: cc.SpriteAtlas = null;  //砖块无敌特效
-    @property(cc.SpriteAtlas)
-    ballChongnengAtlas: cc.SpriteAtlas = null;  //小球充能特效
-    @property(cc.SpriteAtlas)
-    ballFantanAtlas: cc.SpriteAtlas = null;  //小球反弹特效
-
-    brickPool: cc.NodePool =  null;   //砖块缓存池
-    dotPool: cc.NodePool = null;   //指示点缓存池
+    fightScene: FightScene = null;
 
     drawGraphics: cc.Graphics = null;   //测试，画出相交线
-
     dotInterval: number = 30;   //射线点间距
 
     DeadDelayActionTag: 1100;   //砖块死亡延迟动作Tag
@@ -81,7 +55,6 @@ export default class QiPanSc extends cc.Component {
     bStagnation: boolean = false;   //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
 
     roundDownBrickCount: number = 0;   //当前回合下移的砖块总量
-    bPreMoveDownOver: boolean = false;  //预下移处理是否完毕
 
     topPosType = new Array(0, 0, 0);
     roundBrickDeadCount: number = 0;   //回合砖块死亡数量
@@ -91,6 +64,8 @@ export default class QiPanSc extends cc.Component {
 
     bShowFixGuideDot: boolean = false;   //是否显示第一关固定指示线
     fixGuideStep:number = 0;  //第一关固定指示线（移动步数）
+    fixGuideOffDir: number = 1;  //第一关固定指示线当前偏移(方向)
+    fixGuideLen: number = -350;  //第一关固定指示线偏移
 
     levelInitLineNum: number = 0;  //初始显示的行数
 
@@ -118,7 +93,6 @@ export default class QiPanSc extends cc.Component {
         this.bStagnation = false;   //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
 
         this.roundDownBrickCount = 0;   //当前回合下移的砖块总量
-        this.bPreMoveDownOver = false;  //预下移处理是否完毕
 
         this.topPosType = new Array(0, 0, 0);
         this.roundBrickDeadCount = 0;   //回合砖块死亡数量
@@ -127,6 +101,8 @@ export default class QiPanSc extends cc.Component {
         this.unLuanchBallCount = 0;   //未发射的小球数量
         this.bShowFixGuideDot = false;   //是否显示第一关固定指示线
         this.fixGuideStep = 0;  //第一关固定指示线（移动步数）
+        this.fixGuideOffDir = 1;  //第一关固定指示线当前偏移(方向)
+        this.fixGuideLen = -350;  //第一关固定指示线偏移
 
         this.levelInitLineNum = 0;  //初始显示的行数
     }
@@ -145,20 +121,13 @@ export default class QiPanSc extends cc.Component {
     onDestroy(){
         this.node.stopAllActions();
         NotificationMy.offAll(this);
-
-        this.brickPool.clear();
-        this.dotPool.clear();
     }
 
     start () {
-        this.brickPool =  new cc.NodePool(Brick);   //砖块缓存池
-        //只有在new cc.NodePool(Dot)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
-        this.dotPool = new cc.NodePool();  //指示点缓存池
-        //只有在new cc.NodePool(Dot)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
     }
 
     update (dt) {
-        if(this.fixGuideStep > 0){  //第一关固定指示线（移动步数）
+        if(this.bShowFixGuideDot == true && this.fixGuideStep > 0){  //第一关固定指示线（移动步数）
             this.fixGuideStep --;
             this.handleFixGuideStepUpdate();
         } 
@@ -174,34 +143,6 @@ export default class QiPanSc extends cc.Component {
                 NotificationMy.emit(NoticeType.BallSpeedUpDrop, launchPos);   //小球抛物加速下落
             }
         }
-    }
-
-    /**从缓存池中获取或创建砖块 */
-    createBrickFromPool(): cc.Node{
-        if (this.brickPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
-            return this.brickPool.get();
-        } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
-            return cc.instantiate(this.pfBrick);
-        }
-    }
-
-    /**将砖块回收到缓存池 */
-    removeBrickToPool(brick: cc.Node){
-        this.brickPool.put(brick); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
-    }
-
-    /**从缓存池中获取或创建指示点 */
-    createDotFromPool(dotPf: cc.Prefab): cc.Node{
-        if (this.dotPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
-            return this.dotPool.get();
-        } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
-            return cc.instantiate(dotPf);
-        }
-    }
-
-    /**将指示点回收到缓存池 */
-    removeDotToPool(dot: cc.Node){
-        this.dotPool.put(dot); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
     }
 
     /** 第一个球落地后，设置角色位置*/
@@ -221,7 +162,6 @@ export default class QiPanSc extends cc.Component {
             node.getComponent(Ball).handleBallAimState(false);
         })
 
-        this.nCat.rotation = 0;
         this.nCat.getComponent(Cat).showCatLaunchAnimation(false);  //停止猫发射动画
 
         this.offIndicator();  //关闭指示线
@@ -230,10 +170,10 @@ export default class QiPanSc extends cc.Component {
     /**处理触摸 */
     handleTouchPos(pos: cc.Vec2){
         if(this.canTouchIndicator() == true){  //砖块加载完或下落完毕
+            this.bShowFixGuideDot = false;   //是否显示第一关固定指示线
+
             this.firstEmissionEnd = null;
             this.showIndicator(pos);  //显示指示线
-
-            //this.nCat.rotation = -20;
 
             //小球瞄准
             this.nBalls.children.forEach((node, index)=>{
@@ -289,18 +229,20 @@ export default class QiPanSc extends cc.Component {
     }
   
     /**初始化棋盘对象 */
-    initQiPanObjs(){
+    initQiPanObjs(fightScene: FightScene){
         cc.log("initQiPanObjs(), 初始化棋盘对象")
+        this.fightScene = fightScene;
         this.levelInitLineNum = FightMgr.level_info.levelCfg.init_lines;  //初始显示的行数
 
         this.setPlayerPos();   //设置角色位置
-        this.initBricks();    //初始展示关卡砖块行数
         this.initBalls();   //初始化小球
+        this.initBricks();    //初始展示关卡砖块行数
     }
 
     /********************************** 以下部分为小球处理  **************************************** */
     /**初始化小球 */
     initBalls(){
+        cc.log("qipan: initBalls()");
         this.nBalls.removeAllChildren(true);
         let fightBallList = MyUserDataMgr.getFightListClone();
         for(let i=0; i<fightBallList.length; ++i){
@@ -314,57 +256,16 @@ export default class QiPanSc extends cc.Component {
 
     /**添加小球到攻击列表中 */
     addBallToList(idx: number, ballInfo: BallInfo){
-        let BallNode: cc.Node = cc.instantiate(this.pfBall);   //创建小球 
+        let BallNode: cc.Node = cc.instantiate(this.fightScene.pfBall);   //创建小球 
         this.nBalls.addChild(BallNode);
         let ball = BallNode.getComponent(Ball);
         ball.setBallId(idx, ballInfo);
         return ball;
     }
 
-    //第一关引导指示线移动
-    handleFixGuideStepUpdate(){
-        if(this.fixGuideStep <= 0){
-            this.fixGuideStep = 0;
-            this.offIndicator();
-        }else{
-            let launchPos = cc.v2(FightMgr.emissionPointX, FightMgr.getBallPosY());
-            let fixPos = cc.v2(350, 0);   //第一关的引导固定射线点
-            let aimPos = cc.v2(fixPos.x - this.node.width/2, this.node.height/2 - fixPos.y);
-            
-            let dir1 = aimPos.sub(launchPos).normalize();
-            let dir = this.firstEmissionEnd.point.sub(launchPos);
-            let dir2 = dir.normalize();
-            let rad = dir1.signAngle(dir2);
-            if( rad < 0){
-                dir.rotateSelf(0.1);
-            }else{
-                dir.rotateSelf(-0.1);
-            }
-
-            let endPos = launchPos.add(dir);
-            this.showIndicator(endPos);
-        }
-    }
-
     /**发射小球 */
     launchBalls(){
         let launchPos = cc.v2(FightMgr.emissionPointX, FightMgr.getBallPosY());
-
-        if(FightMgr.level_id == 1 && this.launchCount == 0){   //第一关前两个回合强制引导线  //本次战斗发射次数 
-            let fixPos = cc.v2(350, 0);   //第一关的引导固定射线点
-            let aimPos = cc.v2(fixPos.x - this.node.width/2, this.node.height/2 - fixPos.y);
-            
-            let dir1 = aimPos.sub(launchPos).normalize();
-            let dir2 = this.firstEmissionEnd.point.sub(launchPos).normalize();
-            let rad = dir1.signAngle(dir2);
-
-            if(!(Math.abs(rad) <= 0.06)){
-                this.fixGuideStep = Math.ceil((Math.abs(rad) - 0.06)/0.1);  //第一关固定指示线（移动步数）
-                return;
-            }
-        }
-
-        this.nFixIndicator.removeAllChildren(true);   //第一关固定指示线使用
         this.nCat.getComponent(Cat).showCatLaunchAnimation(true);  //停止猫发射动画
 
         this.launchCount ++;   //本次战斗发射次数
@@ -402,14 +303,48 @@ export default class QiPanSc extends cc.Component {
     /**************以上为小球处理--------------------------------- */
 
     /********************************* 以下部分为指示线  ******************************* */
+    //射线教程
+    showIndicatorTeach(){
+        if(FightMgr.level_id == 1 && this.launchCount == 0){   //第一关前两个回合强制引导线  //本次战斗发射次数
+            this.fixGuideStep = 0;  //第一关固定指示线（移动步数）
+            this.fixGuideOffDir = 1;  //第一关固定指示线当前偏移(方向)
+            this.fixGuideLen = -350;  //第一关固定指示线偏移
+            this.bShowFixGuideDot = true;   //是否显示第一关固定指示线
+            this.handleFixGuideStepUpdate(); 
+        }
+    }
+
+    //第一关引导指示线移动
+    handleFixGuideStepUpdate(){
+        if(this.bShowFixGuideDot == true && this.fixGuideStep <= 0){
+            this.fixGuideStep = 5;
+
+            this.offIndicator();
+
+            let fixPosX = this.fixGuideLen;   //第一关的引导固定射线点
+            this.fixGuideLen += this.fixGuideOffDir*10;
+            if(this.fixGuideLen >= 350){
+                this.fixGuideLen = 350;
+                this.fixGuideOffDir = -1;
+            }else if(this.fixGuideLen <= -350){
+                this.fixGuideLen = -350;
+                this.fixGuideOffDir = 1;
+            }
+
+            let aimPos = cc.v2(fixPosX, this.node.height/2);
+            this.showIndicator(aimPos);
+        }
+    }
+
     /**关闭指示线 */
     offIndicator(){
         FightMgr.offRay();
         this.nIndicator.removeAllChildren(true); 
+        this.nFixIndicator.removeAllChildren(true);   //第一关固定指示线使用
     }
 
     /**显示指示线 */
-    showIndicator(fingerPos: cc.Vec2, bFixGuide:boolean=false){
+    showIndicator(fingerPos: cc.Vec2){
         if(fingerPos){
             this.offIndicator();  //关闭指示线
 
@@ -426,8 +361,6 @@ export default class QiPanSc extends cc.Component {
             }
             
             let newDir = FightMgr.getVector(angle);
-
-            this.bShowFixGuideDot = bFixGuide;   //是否显示第一关固定指示线
 
             //射出射线（多条折线）
             if(this.drawGraphics){
@@ -452,24 +385,25 @@ export default class QiPanSc extends cc.Component {
 
         let lastDotPos: cc.Vec2 = startPos;
         for(let i=1; i<=num; i++){
-            let dot = this.createDotFromPool(this.pfDot);   //从缓存池中获取或创建小球
+            let dot = cc.instantiate(this.fightScene.pfDot);   //从缓存池中获取或创建小球
+            if(this.bShowFixGuideDot == true){  //是否显示第一关固定指示线
+                this.nFixIndicator.addChild(dot);  //第一关固定指示线使用
+            }else{
+                this.nIndicator.addChild(dot);
+            }
+
             let dotSc = dot.getComponent(Dot);
             dotSc.setDotRay(startPos, endPos, dir);   //设置点所在的射线起始点和终点
-
+            
             if(i == num){
                 dotSc.changeDotToArrow(true);  //变点位箭头图片
-                dot.rotation = FightMgr.getAngle(dir);   //从(1,0)到dir的角度，顺时针为正，逆时针为负
+                dot.angle = -FightMgr.getAngle(dir);   //从(1,0)到dir的角度，顺时针为正，逆时针为负
+                //cc.Node.rotation` is deprecated since v2.1.0, please set `-angle` instead. (`this.node.rotation = x` -> `this.node.angle = -x`)
                 dot.setPosition(endPos);
             }else{
                 dotSc.changeDotToArrow(false);  //变点位箭头图片
                 lastDotPos = lastDotPos.add(addDir);    //interval*i
                 dot.setPosition(lastDotPos);
-            }
-
-            if(FightMgr.level_id == 1 && this.launchCount < 2 && this.bShowFixGuideDot == true){   //第一关前两个回合强制引导线  //本次战斗发射次数   //是否显示第一关固定指示线
-                this.nFixIndicator.addChild(dot);  //第一关固定指示线使用
-            }else{
-                this.nIndicator.addChild(dot);
             }
         }
     }
@@ -499,6 +433,7 @@ export default class QiPanSc extends cc.Component {
 
     /**初始展示关卡砖块行数 FightMgr中setBricks加载完关卡信息后，调用*/
     initBricks(){
+        cc.log("qipan: initBricks()");
         this.nBricks.destroyAllChildren();  //遍历孩子加载到缓存池的方法会造成砖块没有完全消失的怪状
 
         this.bCreateNextRound = false;  //是否在检查完回合事件后进行新行砖块创建并下移
@@ -512,60 +447,60 @@ export default class QiPanSc extends cc.Component {
 
     /**根据行属性（是否随机）产生一行砖块 */
     createBrickNodesOneLine(bFightInit:boolean = false){
+        //cc.log("createBrickNodesOneLine(), bFightInit = "+bFightInit+"; this.curRow = "+this.curRow);
         let bricksCfg = FightMgr.bricksCfg;  //初始关卡信息Map<number, Array<BrickCfg> number：某行 Array<BrickCfg>某行对应的砖块 ,下标从(0,0)开始，左下角第一个为(0,0)
-        let objs = bricksCfg[this.curRow-1];
+        let objs: BrickInfo[] = bricksCfg[this.curRow-1];
         if(objs == null || objs == undefined){
-            //cc.warn("objs == null || objs == undefined, bricksCfg = "+JSON.stringify(bricksCfg));
+            //cc.warn("objs == null || objs == undefined, this.curRow = "+this.curRow+"; bricksCfg = "+JSON.stringify(bricksCfg));
         }else{
             FightMgr.getFightScene().updateRoundProgress();   //更新关卡回合显示
 
             if(this.curRow > FightMgr.level_info.levelCfg.total_lines){
-                console.log("新行已经超出了配置最大行数限制，故不再显示");
+                //console.log("新行已经超出了配置最大行数限制，故不再显示");
                 return;
             }
 
             //cc.log("objs = "+JSON.stringify(objs));
             for(let j=0; j<objs.length; j++){
-                let brickNode: cc.Node = this.createBrickFromPool();   //从缓存池中获取或创建砖块
+                let brickNode: cc.Node = this.fightScene.createBrickFromPool();   //从缓存池中获取或创建砖块
                 this.nBricks.addChild(brickNode, -this.curRow);
- 
+                brickNode.getComponent(Brick).initBrickInfo(objs[j]); 
+
                 if(bFightInit == true){   //初始下移的砖块直接显示，不再有下移过程
                     brickNode.y = this.node.height/2 - FightMgr.tileHeight*(this.levelInitLineNum - this.curRow + 1.5);  //棋盘边界矩形（中心点+宽高）
-                }
-                brickNode.getComponent(Brick).setMoveLineBricks();   //设置移动砖块的行砖块集合
+                } 
             }
         }
     }
 
     /**创建新的一行砖块*/
     createNewRoundLineBricks(bFightInit:boolean = false){
+        //cc.log("createNewRoundLineBricks(), FightMgr.bGameOver = "+FightMgr.bGameOver+"; bFightInit = "+bFightInit);
         if(FightMgr.bGameOver == true){
-            cc.log("createNewRoundLineBricks(), 游戏已经结束， FightMgr.bGameOver = "+FightMgr.bGameOver+"win = "+FightMgr.win);
             return;
         }
         
         this.curRow ++;
         this.bCreateNextRound = false;  //是否在检查完回合事件后进行新行砖块创建并下移
         this.bBricksDownOver = false;  //砖块加载完或下落完毕
-        this.nextTotal --;  //下一回合需要下降的总行数（默认为1，当视图中无敌人砖块时，下降三行）
-        if(this.bMultiLineMove == true){  //是否战斗初始化层最后一层
-            if(this.curRow == this.levelInitLineNum){
-                this.bMultiLineMove = false;   //多行下移（初始或无敌块）
-            }else if(this.curRow > this.levelInitLineNum && this.nextTotal == 0){
-                this.bMultiLineMove = false;   //多行下移（初始或无敌块）
+
+        if(this.curRow <= FightMgr.level_info.levelCfg.total_lines){
+            this.nextTotal --;  //下一回合需要下降的总行数（默认为1，当视图中无敌人砖块时，下降三行）
+            if(this.bMultiLineMove == true){  //是否战斗初始化层最后一层
+                if(this.curRow == this.levelInitLineNum){
+                    this.bMultiLineMove = false;   //多行下移（初始或无敌块）
+                }else if(this.curRow > this.levelInitLineNum && this.nextTotal == 0){
+                    this.bMultiLineMove = false;   //多行下移（初始或无敌块）
+                }
             }
-        }
-        if(this.nextTotal <= 0){
-            this.nextTotal = 1;
+            if(this.nextTotal <= 0){
+                this.nextTotal = 1;
+            }
+    
+            this.createBrickNodesOneLine(bFightInit);   //根据行属性（是否随机）产生一行砖块
         }
 
-        this.createBrickNodesOneLine(bFightInit);   //根据行属性（是否随机）产生一行砖块
-
-        if(bFightInit == true){  //初始下移的砖块直接显示，不再有下移过程
-            this.handleBricksPreMoveDown(false);   //砖块准备下移
-        }else{
-            this.handleBricksPreMoveDown(true);   //砖块准备下移
-        }
+        this.NotifyBricksMoveDown(!bFightInit);   //砖块下移  //初始下移的砖块直接显示，不再有下移过程
     }
 
     //是否初始的多行下移
@@ -574,21 +509,6 @@ export default class QiPanSc extends cc.Component {
             return true;
         }else{
             return false;
-        }
-    }
-
-    /**砖块准备下移, 停滞状态不下移 */
-    handleBricksPreMoveDown(bMove:boolean){
-        //cc.log("handleBricksPreMoveDown() 发送砖块准备下移消息, ballsLen = "+this.nBricks.children.length+"; this.roundDelayTime = "+this.roundDelayTime+"; bMove = "+bMove);
-        this.roundDownBrickCount = 0;   //当前回合下移的砖块总量
-        this.bBricksDownOver = false;    //砖块加载完或下落完毕
-
-        if(this.nBricks.children.length == 0){
-            this.handleBricksLineRoundOver();   //砖块下落后回合事件处理完毕
-        }else{
-            //注意，如果下移操作中某些砖块会死亡，则不能使用forEach（会少遍历一些砖块）而用异步消息
-            this.bPreMoveDownOver = false;  //预下移处理是否完毕
-            NotificationMy.emit(NoticeType.BrickPreMoveDown, bMove);    //砖块准备下移
         }
     }
 
@@ -632,7 +552,7 @@ export default class QiPanSc extends cc.Component {
                     break;
                 }
             }
-            cc.log("没有敌人, this.nextTotal = "+this.nextTotal+"; this.bBallsDropOver = "+this.bBallsDropOver);
+            //cc.log("没有敌人, this.nextTotal = "+this.nextTotal+"; this.bBallsDropOver = "+this.bBallsDropOver);
             if(this.nextTotal == 0){   //没有敌人且没有后续砖块，游戏结束
                 if(this.bBallsDropOver == true){
                     this.hanldeGameOver(true);
@@ -819,7 +739,7 @@ export default class QiPanSc extends cc.Component {
                             }
 
                             if(this.checkHasBrickByPos(revivePos, pos) == false){   //检测指定坐标位置是否已经有砖块了
-                                let brickNode: cc.Node = this.createBrickFromPool();   //从缓存池中获取或创建砖块
+                                let brickNode: cc.Node = this.fightScene.createBrickFromPool();   //从缓存池中获取或创建砖块
                                 brickNode.opacity = 0;  //注意不要用active，因为重置为true后一些脚本属性会消失
                                 brickNode.setPosition(revivePos);
                                 this.nBricks.addChild(brickNode);
@@ -902,7 +822,7 @@ export default class QiPanSc extends cc.Component {
 
     /** 砖块下落后回合事件处理完毕*/
     handleBricksLineRoundOver(){
-        //cc.log("handleBricksLineRoundOver(), 砖块下落后回合事件处理完毕 bGameOver = "+FightMgr.bGameOver+"; this.bMultiLineMove = "+this.bMultiLineMove+");
+        //cc.log("handleBricksLineRoundOver(), 砖块下落后回合事件处理完毕 bGameOver = "+FightMgr.bGameOver+"; this.bMultiLineMove = "+this.bMultiLineMove);
         this.nBricks.stopActionByTag(this.BricksLineDelayActionTag);  //砖块下移完毕新回合开始延迟
         if(FightMgr.bGameOver == false){  //该局游戏是否结束
             if(this.bMultiLineMove == true){   //多行下移过程中
@@ -913,16 +833,9 @@ export default class QiPanSc extends cc.Component {
             }else{
                 if(this.bCreateNextRound == false){  //是否在检查完回合事件后进行新行砖块创建并下移
                     //多行下移的最后一行不再创建新层
-                    cc.log("不再创建新层")
-                    if(FightMgr.level_id == 1 && this.launchCount < 2){   //第一关前两个回合强制引导线  //本次战斗发射次数
-                        let fixPos = cc.v2(350, 0);   //第一关的引导固定射线点
-                        let aimPos = cc.v2(fixPos.x - this.node.width/2, this.node.height/2 - fixPos.y);
-                        if(aimPos){
-                            this.showIndicator(aimPos, true);  //显示指示线
-                        } 
-                    }else{
-                        this.bBricksDownOver = true;    //砖块加载完或下落完毕
-                    }
+                    //cc.log("不再创建新层")
+                    this.bBricksDownOver = true;    //砖块加载完或下落完毕
+                    this.showIndicatorTeach();   //射线教程
                 }else{
                     if(this.nBricks.children.length == 0 || this.checkHasEnemyCurView() == false){   //当前视图内没有敌人了
                         this.handleBrickDeadAndCheckEnemy(false);   //砖块消失检查是否还有敌方砖块
@@ -931,7 +844,7 @@ export default class QiPanSc extends cc.Component {
                         if(this.bStagnation == true){  //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
                             this.bStagnation = false;
                             this.bCreateNextRound = false;  //是否在检查完回合事件后进行新行砖块创建并下移
-                            this.handleBricksPreMoveDown(false);   //砖块预下移
+                            this.NotifyBricksMoveDown(false);   //砖块下移
 
                             FightMgr.getFightScene().showStagnationImg(true);   //显示停滞冰冻图片
                         }else{
@@ -943,32 +856,26 @@ export default class QiPanSc extends cc.Component {
         }
     }  
 
-    /**处理砖块回合预下移操作 */
-    handleBrickPreMoveDown(bMove:boolean){
-        if(this.bPreMoveDownOver == true){  //预下移处理是否完毕
-            return;
-        }; 
-        this.roundDownBrickCount ++;   //当前回合下移的砖块总量
-        let count = this.nBricks.children.length;
-        //cc.log("handleBrickPreMoveDown(), this.roundDownBrickCount = "+this.roundDownBrickCount+"; count = "+count);
-        if(this.roundDownBrickCount >= count){
-            this.roundDownBrickCount = 0;   //当前回合下移的砖块总量
-            this.bPreMoveDownOver = true;  //预下移处理是否完毕
+    /**砖块准备下移, 停滞状态不下移 */
+    NotifyBricksMoveDown(bMove:boolean){
+        //cc.log("NotifyBricksMoveDown() 发送砖块下移消息, ballsLen = "+this.nBricks.children.length+"; bMove = "+bMove);
+        this.roundDownBrickCount = 0;   //当前回合下移的砖块总量
+        this.bBricksDownOver = false;    //砖块加载完或下落完毕
 
-            //this.node.stopActionByTag(this.BricksMoveDelayActionTag);   //砖块下移延迟动作
-            let moveDelay = cc.sequence(cc.delayTime(0.5), cc.callFunc(function(){
-                AudioMgr.playEffect("effect/down");
-                NotificationMy.emit(NoticeType.BrickMoveDownAction, {"bMultiLineMove":this.bMultiLineMove, "bMove":bMove});    //砖块下移通知
-            }.bind(this)));
-            //moveDelay.setTag(this.BricksMoveDelayActionTag);
-            this.node.runAction(moveDelay);
+        if(this.nBricks.children.length == 0){
+            this.handleBricksLineRoundOver();   //砖块下落后回合事件处理完毕
+        }else{
+            //注意，如果下移操作中某些砖块会死亡，则不能使用forEach（会少遍历一些砖块）而用异步消息
+            AudioMgr.playEffect("effect/down");
+            NotificationMy.emit(NoticeType.BrickMoveDownAction, {"bMultiLineMove":this.bMultiLineMove, "bMove":bMove});    //砖块下移通知
         }
     }
 
     /**处理砖块回合下落完毕(未检查事件) */
-    handleBrickMoveDown(){
+    handleBrickMoveDownOver(){
         this.roundDownBrickCount ++;   //当前回合下移的砖块总量
         let count = this.nBricks.children.length;
+        //cc.log("handleBrickMoveDownOver() num = "+this.roundDownBrickCount+"; count = "+count);
         if(this.roundDownBrickCount >= count){
             this.roundDownBrickCount = 0;   //当前回合下移的砖块总量
             this.bricksMoveOverAndCheckAttr();   //砖块下落完毕并检查属性
@@ -989,7 +896,7 @@ export default class QiPanSc extends cc.Component {
 
     /**砖块下落完毕并检查属性 */
     bricksMoveOverAndCheckAttr(){
-        //cc.log("bricksMoveOverAndCheckAttr(), 砖块下落完毕并检查属性 this.roundDelayTime = "+this.roundDelayTime);
+        //cc.log("bricksMoveOverAndCheckAttr(), 砖块下落完毕并检查属性");
         //回合下移前，砖块事件的优先级是砖块对齐、砖块传染、砖块吞噬、砖块复制
         this.nBricks.stopActionByTag(this.BricksRoundDelayActionTag);  //回合结束砖块下移前回合事件处理动作
 
@@ -1006,7 +913,7 @@ export default class QiPanSc extends cc.Component {
     /*******************************以下为特效处理************************************* */
     /**显示飘血动画 */
     showHpAction(harm: number, pos: cc.Vec2, bWhite=false){
-        let harmNode = cc.instantiate(this.pfharmHp);
+        let harmNode = cc.instantiate(this.fightScene.pfharmHp);
         if(bWhite == true){
             harmNode.color = cc.color(255, 255, 255);
         }else{
@@ -1035,7 +942,7 @@ export default class QiPanSc extends cc.Component {
         effNode.setPosition(pos);
         this.nEffect.addChild(effNode, 80);
 
-        GameMgr.showAltasAnimationONE(effNode, this.deadAtlas, "dead_effect", 18, cc.WrapMode.Default);
+        GameMgr.showAltasAnimationONE(effNode, this.fightScene.deadAtlas, "dead_effect", 18, cc.WrapMode.Default);
     }
 
     /**砖块受击特效 */
@@ -1046,7 +953,7 @@ export default class QiPanSc extends cc.Component {
         effNode.setPosition(pos);
         this.nEffect.addChild(effNode, 110);
 
-        GameMgr.showAltasAnimationONE(effNode, this.bumpAtlas, "bump_effect", 18, cc.WrapMode.Default);
+        GameMgr.showAltasAnimationONE(effNode, this.fightScene.bumpAtlas, "bump_effect", 18, cc.WrapMode.Default);
     }
 
     /**砖块吸附特效 */
@@ -1057,10 +964,10 @@ export default class QiPanSc extends cc.Component {
         effNode.setPosition(pos);
         this.nEffect.addChild(effNode, 100);
 
-        effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
-        effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+        // effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+        // effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
 
-        GameMgr.showAltasAnimationONE(effNode, this.shuyeAtlas, "shuye_effect", 18, cc.WrapMode.Default);
+        GameMgr.showAltasAnimationONE(effNode, this.fightScene.shuyeAtlas, "shuye_effect", 18, cc.WrapMode.Default);
     }
 
     /**通过图集创建序列帧动画 */
@@ -1068,10 +975,10 @@ export default class QiPanSc extends cc.Component {
         if(atlas){
             let effNode = new cc.Node;
             let effectSpr = effNode.addComponent(cc.Sprite);
-            if(bBlend == true){
-                effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
-                effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
-            }
+            // if(bBlend == true){
+            //     effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+            //     effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+            // }
             effNode.scale = 2.0;
             GameMgr.showAltasAnimationONE(effNode, atlas, "effectAni", sample, warpMode);
             return effNode;
