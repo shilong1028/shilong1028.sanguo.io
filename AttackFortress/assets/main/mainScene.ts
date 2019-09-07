@@ -454,7 +454,11 @@ export default class MainScene extends cc.Component {
     /**出战按钮 */
     onFightBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        GameMgr.gotoChapterScene();
+        if(MyUserData.fightList.length == 0){
+            ROOT_NODE.showTipsText("出战列表为空，请拖入炮弹！");
+        }else{
+            GameMgr.gotoChapterScene();
+        }
     }
 
     /**音乐开关 */

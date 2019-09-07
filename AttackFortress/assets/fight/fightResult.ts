@@ -1,7 +1,7 @@
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
-import { MyUserDataMgr } from "../manager/MyUserData";
+import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
 import { SDKMgr } from "../manager/SDKManager";
 import { TipsStrDef } from "../manager/Enum";
 import { sdkWechat } from "../manager/SDK_Wechat";
@@ -67,13 +67,19 @@ export default class FightResult extends cc.Component {
             let levelCfg = FightMgr.level_info.levelCfg;
 
             this.rewardGold = Math.ceil(levelCfg.gold * 0.5 * stars); //1星为75%，3星为150%
-
+            let probability = levelCfg.probability*stars;
+            if(MyUserData.curLevelId < 3 && MyUserData.curLevelId == FightMgr.level_id-1){
+                probability *= 10;
+            }
             for(let i=0; i<levelCfg.itemids.length; ++i){
                 let itemId = levelCfg.itemids[i];
-                if(Math.random() < levelCfg.probability*stars){
+
+                if(Math.random() < probability){
                     let item = cc.instantiate(this.pfItem);
                     this.itemLayout.addChild(item);
                     item.getComponent(Item).initItemById(itemId);
+
+                    MyUserDataMgr.updateItemByCount(itemId, 1);   //添加道具
                 }
             }
         }else{

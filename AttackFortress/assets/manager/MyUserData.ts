@@ -1,6 +1,6 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NotificationMy } from "./NoticeManager";
-import { NoticeType, BallInfo, PlayerInfo, LevelInfo } from "./Enum";
+import { NoticeType, BallInfo, PlayerInfo, LevelInfo, ItemInfo } from "./Enum";
 
 
 //用户数据管理
@@ -24,6 +24,8 @@ export var MyUserData = {
 
     curLevelId: 0,  //当前通关的最大id
     levelList: [],   //通关列表
+
+    ItemList: [],   //背包物品列表
 };
 
 @ccclass
@@ -56,6 +58,9 @@ class MyUserManager {
         MyUserData.levelList = new Array(); //通关列表
         LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(MyUserData.levelList));
 
+        MyUserData.ItemList = new Array();   //背包物品列表
+        LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
+
         this.initUserData();
     }
 
@@ -77,6 +82,8 @@ class MyUserManager {
 
         MyUserData.curLevelId = LDMgr.getItemInt(LDKey.KEY_CurLevelId, 0);  //当前通关的最大id
         MyUserData.levelList = this.getLevelListByLD();  //通关列表
+
+        MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
 
         if(MyUserData.GoldCount == 0 && MyUserData.blockCount == 3 && MyUserData.ballList.length == 0 && MyUserData.fightList.length == 0){
             //新用户
@@ -108,6 +115,70 @@ class MyUserManager {
     updateFightCount(openNum:number){
         MyUserData.fightCount = openNum;  //解锁的可战斗数量
         LDMgr.setItem(LDKey.KEY_FightCount, openNum);
+    }
+
+    //获取背包中物品数据
+    getItemFromList(itemId: number):ItemInfo{
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            if(MyUserData.ItemList[i].itemId == itemId){
+                return MyUserData.ItemList[i].clone();
+            }
+        }
+        return new ItemInfo(itemId, 0);
+    }
+    //获取背包列表克隆
+    getItemListClone(){
+        let tempArr = new Array();
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let info: ItemInfo = MyUserData.ItemList[i].clone();
+            tempArr.push(info);
+        }
+        return tempArr;
+    }
+    /**修改用户背包物品列表 */
+    updateItemByCount(itemId: number, val: number){
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let bagItem: ItemInfo = MyUserData.ItemList[i];
+            if(bagItem.itemId == itemId){
+                MyUserData.ItemList[i].itemNum += val;
+                if(MyUserData.ItemList[i].itemNum <= 0){
+                    MyUserData.ItemList[i].itemNum = 0;
+                }
+                if(MyUserData.ItemList[i].itemNum <= 0){
+                    MyUserData.ItemList.splice(i, 1);  //道具用完，从背包删除
+                }
+                this.saveItemList();
+                return;
+            }
+        }
+
+        if(val > 0){   //增加的新道具
+            let item = new ItemInfo(itemId, val);
+            MyUserData.ItemList.push(item);
+            this.saveItemList();
+        }
+    }
+    /**从本地存储中获取物品列表 */
+    getItemListByLD(){
+        let ItemList = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表
+        let tempList = new Array();
+        if(ItemList){
+            for(let i=0; i<ItemList.length; ++i){
+                let tempItem = new ItemInfo(ItemList[i].itemId, ItemList[i].itemNum);
+                tempList.push(tempItem);
+            }
+        }
+        return tempList;
+    }
+    /**保存背包物品列表 */
+    saveItemList(){
+        let tempList = new Array();
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let tempItem = MyUserData.ItemList[i].cloneNoCfg();
+            tempList.push(tempItem);
+        }
+
+        LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(tempList));
     }
 
     //当前通关的最大id

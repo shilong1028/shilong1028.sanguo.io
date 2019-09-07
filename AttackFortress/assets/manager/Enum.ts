@@ -123,15 +123,15 @@ export class ItemInfo{
     };
 
     cloneNoCfg(){
-        let temp = new LevelInfo(this.itemId, this.itemNum);
+        let temp = new ItemInfo(this.itemId, this.itemNum);
   
         //不必写入本地存储的变量s
-        temp.levelCfg = null;
+        temp.itemCfg = null;
         return temp;
     }
 
     clone(){
-        let temp = new LevelInfo(this.itemId, this.itemNum); 
+        let temp = new ItemInfo(this.itemId, this.itemNum); 
         return temp;
     };
 }

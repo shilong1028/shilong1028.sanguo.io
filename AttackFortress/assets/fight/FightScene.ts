@@ -1,11 +1,13 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType } from "../manager/Enum";
+import { NoticeType, ItemInfo } from "../manager/Enum";
 import { AudioMgr } from "../manager/AudioMgr";
 import { FightMgr } from "../manager/FightManager";
 import QiPanSc from "./QiPanSc";
 import { GameMgr } from "../manager/GameManager";
 import WenZi from "../effectAni/Wenzi";
 import Brick from "./Brick";
+import { MyUserData } from "../manager/MyUserData";
+import Item from "../common/item";
 
 const {ccclass, property} = cc._decorator;
 
@@ -20,6 +22,7 @@ export default class FightScene extends cc.Component {
     pbRoundBar:cc.ProgressBar = null;   //回合进度条
     @property(cc.Label)
     levelLabel: cc.Label = null;  //第几关
+
     @property(cc.Node)
     stagnationImg: cc.Node = null;   //停滞冰冻图片
     @property(cc.Node)
@@ -30,11 +33,18 @@ export default class FightScene extends cc.Component {
     @property(cc.Node)
     qipanNode: cc.Node = null;   //棋盘节点
 
+    @property(cc.Prefab)
+    pfItem: cc.Prefab = null;
+    @property([cc.Node])
+    itemNodes: cc.Node[] = new Array(3);
+
     @property(cc.Sprite)
     SpeedSpr: cc.Sprite = null;  //加速
     @property([cc.SpriteFrame])
     speedFrames: cc.SpriteFrame[] = new Array(3);
 
+    @property(cc.Prefab)
+    pfPalyerItem: cc.Prefab = null;  //炮台道具预制体
     @property(cc.Prefab)
     pfFightResult: cc.Prefab = null;
     @property(cc.Prefab)
@@ -76,6 +86,7 @@ export default class FightScene extends cc.Component {
 
     curRoundProgress: number = 0;   //当前关卡回合进度
     totalRoundCount: number = 0;
+    equipItemList: ItemInfo[] = new Array(3);
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -121,6 +132,10 @@ export default class FightScene extends cc.Component {
         // if(SDKMgr.isSDK == true && SDKMgr.WeiChat){
         //     sdkWechat.createBannerWithWidth("adunit-7c748fc257f96483");
         // }
+
+        for(let i=0; i<3; ++i){
+            this.itemNodes[i].active = false;
+        }
     }
 
     start () {
@@ -131,7 +146,12 @@ export default class FightScene extends cc.Component {
 
         FightMgr.qipanSc = this.qipanNode.getComponent(QiPanSc);   //棋盘
 
-        FightMgr.loadLevel(FightMgr.level_id, false);      // 根据选择的关卡传值     
+        FightMgr.loadLevel(FightMgr.level_id, false);      // 根据选择的关卡传值    
+        
+        cc.log("MyUserData.ItemList = "+JSON.stringify(MyUserData.ItemList));
+        if(MyUserData.ItemList.length > 0){
+            GameMgr.showLayer(this.pfPalyerItem);  //炮台道具预制体
+        }
     }
 
     onDestroy(){
@@ -181,6 +201,18 @@ export default class FightScene extends cc.Component {
     }
 
     update (dt) {
+    }
+
+    //炮台道具列表
+    setPlayerItems(equipItemList: ItemInfo[]){
+        this.equipItemList = equipItemList;
+        for(let i=0; i<this.equipItemList.length; ++i){
+            this.itemNodes[i].active = true;
+
+            let itemNode = cc.instantiate(this.pfItem);
+            this.itemNodes[i].addChild(itemNode, 10);
+            itemNode.getComponent(Item).initItemByData(this.equipItemList[i], false); 
+        }
     }
 
     /**返回按钮 */
