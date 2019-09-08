@@ -4,19 +4,6 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>rebound_00.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{158,54},{50,50}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{50,50}}</string>
-                <key>sourceSize</key>
-                <string>{50,50}</string>
-            </dict>
             <key>rebound_01.png</key>
             <dict>
                 <key>frame</key>
@@ -33,7 +20,7 @@
             <key>rebound_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{106,54},{50,50}}</string>
+                <string>{{106,2},{50,50}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,32 +33,6 @@
             <key>rebound_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{106,2},{50,50}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{50,50}}</string>
-                <key>sourceSize</key>
-                <string>{50,50}</string>
-            </dict>
-            <key>rebound_04.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{54,54},{50,50}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{50,50}}</string>
-                <key>sourceSize</key>
-                <string>{50,50}</string>
-            </dict>
-            <key>rebound_05.png</key>
-            <dict>
-                <key>frame</key>
                 <string>{{54,2},{50,50}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
@@ -82,20 +43,7 @@
                 <key>sourceSize</key>
                 <string>{50,50}</string>
             </dict>
-            <key>rebound_06.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,54},{50,50}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{50,50}}</string>
-                <key>sourceSize</key>
-                <string>{50,50}</string>
-            </dict>
-            <key>rebound_07.png</key>
+            <key>rebound_04.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,2},{50,50}}</string>
@@ -116,9 +64,9 @@
             <key>realTextureFileName</key>
             <string>fantan_effect_1.png</string>
             <key>size</key>
-            <string>{210,106}</string>
+            <string>{210,54}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:3c940f1f60cee3fef29efa284cd36f2c:b0c88d1ef82be3d2405cd7b4cc3e579c:a912a5ff32da297a48a7576a8e6e7af0$</string>
+            <string>$TexturePacker:SmartUpdate:90c43be8988e8e6a5327786770cba020:004a960e4c981234a1c453f360fed743:a912a5ff32da297a48a7576a8e6e7af0$</string>
             <key>textureFileName</key>
             <string>fantan_effect_1.png</string>
         </dict>

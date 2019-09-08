@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "itemCell",
+    "_name": "fightCell",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -106,8 +106,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
-      "height": 160
+      "width": 140,
+      "height": 140
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -156,7 +156,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "238c1716-9340-4904-bfce-3b629e8a4fb4"
+      "__uuid__": "4e6e6914-aebc-4212-8768-aa67b258f023"
     },
     "_type": 1,
     "_sizeMode": 0,

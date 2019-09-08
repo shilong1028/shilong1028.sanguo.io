@@ -43,7 +43,6 @@ export default class QiPanSc extends cc.Component {
     
     bCreateNextRound: boolean = false;  //是否在检查完回合事件后进行新行砖块创建并下移
     bMultiLineMove: boolean = false;   //多行下移（初始或无敌块）
-    bMultiLineStagnation: boolean = false;  //是否多行下移后下一回合停滞
     bBricksDownOver: boolean = false;    //砖块加载完或下落完毕
     bBallsDropOver: boolean = false;   //小球是否全部落地
     firstEmissionEnd: IntersectRay = null;   //第一段射线的末点
@@ -52,7 +51,6 @@ export default class QiPanSc extends cc.Component {
     noEnemyTime: number = -100;  //小球发射后，当前视图内没有敌人后2.0秒弧度加速回落
 
     nextTotal: number = 1;  //下一回合需要下降的总行数（默认为1，当视图中无敌人砖块时，下降三行）
-    bStagnation: boolean = false;   //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
 
     roundDownBrickCount: number = 0;   //当前回合下移的砖块总量
 
@@ -81,7 +79,6 @@ export default class QiPanSc extends cc.Component {
         
         this.bCreateNextRound = false;  //是否在检查完回合事件后进行新行砖块创建并下移
         this.bMultiLineMove = false;   //多行下移（初始或无敌块）
-        this.bMultiLineStagnation = false;  //是否多行下移后下一回合停滞
         this.bBricksDownOver = false;    //砖块加载完或下落完毕
         this.bBallsDropOver = false;   //小球是否全部落地
         this.firstEmissionEnd = null;    //第一段射线的末点
@@ -90,8 +87,6 @@ export default class QiPanSc extends cc.Component {
         this.noEnemyTime = -100;  //小球发射后，当前视图内没有敌人后2.0秒弧度加速回落 
 
         this.nextTotal = 1;  //下一回合需要下降的总行数（默认为1，当视图中无敌人砖块时，下降三行）
-        this.bStagnation = false;   //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
-
         this.roundDownBrickCount = 0;   //当前回合下移的砖块总量
 
         this.topPosType = new Array(0, 0, 0);
@@ -200,7 +195,6 @@ export default class QiPanSc extends cc.Component {
         this.bBricksDownOver = true;  //砖块下落完毕
         this.bBallsDropOver = true;   //小球是否全部落地
         this.bMultiLineMove = false;   //多行下移
-        this.bMultiLineStagnation = false;  //是否多行下移后下一回合停滞
         this.bCreateNextRound = false; //是否在检查完回合事件后进行新行砖块创建并下移
 
         this.handleBricksLineRoundOver();  //砖块下落后回合事件处理完毕
@@ -438,7 +432,6 @@ export default class QiPanSc extends cc.Component {
 
         this.bCreateNextRound = false;  //是否在检查完回合事件后进行新行砖块创建并下移
         this.bMultiLineMove = true;   //多行下移（初始或无敌块）
-        this.bMultiLineStagnation = false;  //是否多行下移后下一回合停滞
         this.curRow = 0;
         for(let i=0; i<this.levelInitLineNum; ++i){ //初始显示的行数
             this.createNewRoundLineBricks(true);   //创建新的一行砖块
@@ -826,9 +819,6 @@ export default class QiPanSc extends cc.Component {
         this.nBricks.stopActionByTag(this.BricksLineDelayActionTag);  //砖块下移完毕新回合开始延迟
         if(FightMgr.bGameOver == false){  //该局游戏是否结束
             if(this.bMultiLineMove == true){   //多行下移过程中
-                if(this.bStagnation == true){
-                    this.bMultiLineStagnation = true;  //是否多行下移后下一回合停滞
-                }
                 this.createNewRoundLineBricks();  
             }else{
                 if(this.bCreateNextRound == false){  //是否在检查完回合事件后进行新行砖块创建并下移
@@ -841,12 +831,12 @@ export default class QiPanSc extends cc.Component {
                         this.handleBrickDeadAndCheckEnemy(false);   //砖块消失检查是否还有敌方砖块
                         this.createNewRoundLineBricks();
                     }else{
-                        if(this.bStagnation == true){  //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
-                            this.bStagnation = false;
+                        let probability = FightMgr.getFightScene().getItemActionById(101);  //冰冻
+                        if(Math.random() <= probability){  //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
                             this.bCreateNextRound = false;  //是否在检查完回合事件后进行新行砖块创建并下移
                             this.NotifyBricksMoveDown(false);   //砖块下移
 
-                            FightMgr.getFightScene().showStagnationImg(true);   //显示停滞冰冻图片
+                            FightMgr.getFightScene().showStagnationImg(true, this.curRow);   //显示停滞冰冻图片
                         }else{
                             this.createNewRoundLineBricks();
                         }
@@ -912,13 +902,10 @@ export default class QiPanSc extends cc.Component {
 
     /*******************************以下为特效处理************************************* */
     /**显示飘血动画 */
-    showHpAction(harm: number, pos: cc.Vec2, bWhite=false){
+    showHpAction(harm: number, pos: cc.Vec2){
         let harmNode = cc.instantiate(this.fightScene.pfharmHp);
-        if(bWhite == true){
-            harmNode.color = cc.color(255, 255, 255);
-        }else{
-            harmNode.color = cc.color(253, 255, 45);
-        }
+        harmNode.color = cc.color(253, 255, 45);
+
         let harmLabel = harmNode.getComponent(cc.Label);
         harmLabel.string = harm.toString();
         harmNode.setPosition(pos);
@@ -984,6 +971,18 @@ export default class QiPanSc extends cc.Component {
             return effNode;
         }
         return null;
+    }
+
+    /**创建炸弹特效图片 */
+    createBoomEffectImg(pos: cc.Vec2){
+        let img = new cc.Node();
+        img.name = "BrickBoomImg";
+        let imgSpr = img.addComponent(cc.Sprite);
+        imgSpr.spriteFrame = FightMgr.getFightScene().boomFrame;
+        img.position = pos;
+        img.opacity = 0;
+        this.nEffect.addChild(img, 100);
+        return img;
     }
 
     /************  以上为特效处理 ------------------ */

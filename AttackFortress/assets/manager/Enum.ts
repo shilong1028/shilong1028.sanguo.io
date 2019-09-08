@@ -259,6 +259,7 @@ export const NoticeType = {
     BrickDownMultiLine: "BrickDownMultiLine",   //砖块多行下移
     BrickInvincible: "BrickInvincible",  //砖块无敌/盾牌
     BrickAddEvent: "BrickAddEvent",   //添加新砖块，用于移动砖块检测
+    BrickDiffuseHit: "BrickDiffuseHit",  //砖块受击散播
 
     BallAdsorbEvent: "BallAdsorbEvent",   //砖块吸附小球
     BallSpeedUp: "BallSpeedUp",   //小球加速

@@ -2549,9 +2549,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "a88b05b5-f824-4b05-9583-b78d22b930b5"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,
@@ -3590,6 +3588,9 @@
     "pfDot": {
       "__uuid__": "f1fba36e-6b32-4b5e-af99-1464af7c96e7"
     },
+    "boomFrame": {
+      "__uuid__": "0924bd8c-f580-49d0-9f65-2fa4417c0708"
+    },
     "deadAtlas": {
       "__uuid__": "4b34fe68-71c5-4ff1-9915-ae008eea14d6"
     },
@@ -3607,6 +3608,9 @@
     },
     "ballFantanAtlas": {
       "__uuid__": "7747314a-6736-44cd-8cc6-d1e7cbe5bf42"
+    },
+    "multiHitAtlas": {
+      "__uuid__": "77d0d8ae-8e4d-4d31-bf25-bc59d9da8aab"
     },
     "_id": "3aFYlqKvFCb5FKcS6lgTuQ"
   }

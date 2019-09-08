@@ -7,7 +7,7 @@
             <key>display_pao_aimat_0_00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,84},{76,80}}</string>
+                <string>{{2,2},{76,80}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,20 +20,7 @@
             <key>display_pao_aimat_0_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{76,80}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{76,80}}</string>
-                <key>sourceSize</key>
-                <string>{76,80}</string>
-            </dict>
-            <key>display_pao_aimat_0_02.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{80,82},{74,78}}</string>
+                <string>{{80,2},{74,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -43,23 +30,10 @@
                 <key>sourceSize</key>
                 <string>{74,78}</string>
             </dict>
-            <key>display_pao_aimat_0_03.png</key>
+            <key>display_pao_aimat_0_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{156,82},{72,78}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{72,78}}</string>
-                <key>sourceSize</key>
-                <string>{72,78}</string>
-            </dict>
-            <key>display_pao_aimat_0_04.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,166},{78,78}}</string>
+                <string>{{2,84},{78,78}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -69,23 +43,10 @@
                 <key>sourceSize</key>
                 <string>{78,78}</string>
             </dict>
-            <key>display_pao_aimat_0_05.png</key>
+            <key>display_pao_aimat_0_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{80,2},{78,76}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{78,76}}</string>
-                <key>sourceSize</key>
-                <string>{78,76}</string>
-            </dict>
-            <key>display_pao_aimat_0_06.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{82,162},{78,74}}</string>
+                <string>{{2,164},{78,74}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -94,19 +55,6 @@
                 <string>{{0,0},{78,74}}</string>
                 <key>sourceSize</key>
                 <string>{78,74}</string>
-            </dict>
-            <key>display_pao_aimat_0_07.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{158,2},{76,74}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{76,74}}</string>
-                <key>sourceSize</key>
-                <string>{76,74}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -118,7 +66,7 @@
             <key>size</key>
             <string>{256,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:418e79fecacf0b5c0fe0a94633bb3289:641bbdb5477bfacaedcbd66d4fd92134:c8995fa6cb8242346e0efa701995bfc4$</string>
+            <string>$TexturePacker:SmartUpdate:95115354e85c1214954952906fe858c0:ecfc54f08224fcfd4943012d7b84d0dd:c8995fa6cb8242346e0efa701995bfc4$</string>
             <key>textureFileName</key>
             <string>circle.png</string>
         </dict>

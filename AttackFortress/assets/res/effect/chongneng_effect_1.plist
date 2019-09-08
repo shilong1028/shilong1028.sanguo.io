@@ -7,7 +7,7 @@
             <key>charged_00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{116,116},{55,55}}</string>
+                <string>{{116,2},{55,55}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>charged_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{116,59},{55,55}}</string>
+                <string>{{59,59},{55,55}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>charged_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{173,2},{55,55}}</string>
+                <string>{{59,2},{55,55}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,71 +46,6 @@
             <key>charged_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{116,2},{55,55}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{55,55}}</string>
-                <key>sourceSize</key>
-                <string>{55,55}</string>
-            </dict>
-            <key>charged_04.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{59,116},{55,55}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{55,55}}</string>
-                <key>sourceSize</key>
-                <string>{55,55}</string>
-            </dict>
-            <key>charged_05.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{59,59},{55,55}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{55,55}}</string>
-                <key>sourceSize</key>
-                <string>{55,55}</string>
-            </dict>
-            <key>charged_06.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{59,2},{55,55}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{55,55}}</string>
-                <key>sourceSize</key>
-                <string>{55,55}</string>
-            </dict>
-            <key>charged_07.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,116},{55,55}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{55,55}}</string>
-                <key>sourceSize</key>
-                <string>{55,55}</string>
-            </dict>
-            <key>charged_08.png</key>
-            <dict>
-                <key>frame</key>
                 <string>{{2,59},{55,55}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
@@ -121,7 +56,7 @@
                 <key>sourceSize</key>
                 <string>{55,55}</string>
             </dict>
-            <key>charged_09.png</key>
+            <key>charged_04.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,2},{55,55}}</string>
@@ -142,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>chongneng_effect_1.png</string>
             <key>size</key>
-            <string>{230,173}</string>
+            <string>{173,116}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:5542f6c6775e589f7eb0fa75b1944146:1669a7973acfa9249691ed8cf62753d6:9c6e9dc0acea6ffb2630bf449daa1539$</string>
+            <string>$TexturePacker:SmartUpdate:fbfa913d1fe346f63759fe3b483be410:6ec111b57eb1187fd0d99fe19e115590:9c6e9dc0acea6ffb2630bf449daa1539$</string>
             <key>textureFileName</key>
             <string>chongneng_effect_1.png</string>
         </dict>

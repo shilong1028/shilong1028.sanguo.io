@@ -63,6 +63,9 @@ export default class FightScene extends cc.Component {
     @property(cc.Prefab)
     pfDot: cc.Prefab = null;   //指示点预制体  
 
+    @property(cc.SpriteFrame)
+    boomFrame: cc.SpriteFrame = null;  //炸弹图片
+
     @property(cc.SpriteAtlas)
     deadAtlas: cc.SpriteAtlas = null;   //砖块死亡烟雾特效
     @property(cc.SpriteAtlas)
@@ -75,6 +78,8 @@ export default class FightScene extends cc.Component {
     ballChongnengAtlas: cc.SpriteAtlas = null;  //小球充能特效
     @property(cc.SpriteAtlas)
     ballFantanAtlas: cc.SpriteAtlas = null;  //小球反弹特效
+    @property(cc.SpriteAtlas)
+    multiHitAtlas: cc.SpriteAtlas = null;  //小球连体覆盖打击特效
 
     brickPool: cc.NodePool =  null;   //砖块缓存池
 
@@ -87,6 +92,7 @@ export default class FightScene extends cc.Component {
     curRoundProgress: number = 0;   //当前关卡回合进度
     totalRoundCount: number = 0;
     equipItemList: ItemInfo[] = new Array(3);
+    stagnationRow: number = -1;  //显示冰冻的回合
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -103,6 +109,7 @@ export default class FightScene extends cc.Component {
         this.levelLabel.string = "";  //第几关
         this.tempBottomNode.opacity = 0;  //底部拖动取消提示
         this.stagnationImg.opacity = 0;   //停滞冰冻图片
+        this.stagnationRow = -1;  //显示冰冻的回合
         
         if(bInit == false){
             NotificationMy.emit(NoticeType.GameReStart, null);  //重新开始游戏
@@ -213,6 +220,16 @@ export default class FightScene extends cc.Component {
             this.itemNodes[i].addChild(itemNode, 10);
             itemNode.getComponent(Item).initItemByData(this.equipItemList[i], false); 
         }
+    }
+
+    /**通过道具ID获取炮台道具作用的概率 */
+    getItemActionById(itemId: number){
+        for(let i=0; i<this.equipItemList.length; ++i){
+            if(this.equipItemList[i].itemId == itemId){
+                return 0.5;
+            }
+        }
+        return 0;
     }
 
     /**返回按钮 */
@@ -359,7 +376,9 @@ export default class FightScene extends cc.Component {
     handleBallsDropOver(){
         FightMgr.qipanSc.handleBallsDropOver();
 
-        this.showStagnationImg(false);   //停滞冰冻图片
+        if(this.stagnationRow != FightMgr.qipanSc.curRow){  //显示冰冻的回合
+            this.showStagnationImg(false);   //停滞冰冻图片
+        } 
     }
 
     /**游戏结束 */
@@ -381,13 +400,15 @@ export default class FightScene extends cc.Component {
     }
 
     //显示停滞冰冻图片
-    showStagnationImg(bShow:boolean){
+    showStagnationImg(bShow:boolean, showRow: number=-1){
         this.stagnationImg.stopAllActions();
         if(bShow == true){
+            this.stagnationRow = showRow;  //显示冰冻的回合
             //this.stagnationImg.opacity = 0;   //停滞冰冻图片
             this.stagnationImg.runAction(cc.fadeIn(1.0));
             AudioMgr.playEffect("effect/bingdong");
         }else{
+            this.stagnationRow = -1;  //显示冰冻的回合
             this.stagnationImg.runAction(cc.fadeOut(1.0));
         }
     }

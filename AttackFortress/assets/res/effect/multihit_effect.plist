@@ -4,70 +4,70 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>blast_01.png</key>
+            <key>laser1_00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{109,109},{105,105}}</string>
+                <string>{{122,2},{58,58}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{105,105}}</string>
+                <string>{{0,0},{58,58}}</string>
                 <key>sourceSize</key>
-                <string>{105,105}</string>
+                <string>{58,58}</string>
             </dict>
-            <key>blast_02.png</key>
+            <key>laser1_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,216},{105,105}}</string>
+                <string>{{62,62},{58,58}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{105,105}}</string>
+                <string>{{0,0},{58,58}}</string>
                 <key>sourceSize</key>
-                <string>{105,105}</string>
+                <string>{58,58}</string>
             </dict>
-            <key>blast_03.png</key>
+            <key>laser1_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,109},{105,105}}</string>
+                <string>{{62,2},{58,58}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{105,105}}</string>
+                <string>{{0,0},{58,58}}</string>
                 <key>sourceSize</key>
-                <string>{105,105}</string>
+                <string>{58,58}</string>
             </dict>
-            <key>blast_04.png</key>
+            <key>laser1_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{109,2},{105,105}}</string>
+                <string>{{2,62},{58,58}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{105,105}}</string>
+                <string>{{0,0},{58,58}}</string>
                 <key>sourceSize</key>
-                <string>{105,105}</string>
+                <string>{58,58}</string>
             </dict>
-            <key>blast_05.png</key>
+            <key>laser1_04.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{105,105}}</string>
+                <string>{{2,2},{58,58}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{105,105}}</string>
+                <string>{{0,0},{58,58}}</string>
                 <key>sourceSize</key>
-                <string>{105,105}</string>
+                <string>{58,58}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -75,13 +75,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>dead_effect_1.png</string>
+            <string>multihit_effect.png</string>
             <key>size</key>
-            <string>{216,323}</string>
+            <string>{182,122}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e089f9035be5e2e35c00c796fcd07489:88b6fe74508e6f2fb70be61f9ff58575:121aa39092e2c7d3353f41a27fe1ece3$</string>
+            <string>$TexturePacker:SmartUpdate:55f898b96cb5a402693c1063432a5c7d:b2d00fdf091a0d06f80ef5205537a9fe:53327605fe22544f3d6ce00840ba7b56$</string>
             <key>textureFileName</key>
-            <string>dead_effect_1.png</string>
+            <string>multihit_effect.png</string>
         </dict>
     </dict>
 </plist>

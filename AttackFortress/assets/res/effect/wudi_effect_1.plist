@@ -7,7 +7,7 @@
             <key>shield_00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{387,79},{75,75}}</string>
+                <string>{{310,2},{75,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>shield_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{310,156},{75,75}}</string>
+                <string>{{233,2},{75,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>shield_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{310,79},{75,75}}</string>
+                <string>{{156,2},{75,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,136 +46,6 @@
             <key>shield_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{387,2},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_04.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{310,2},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_05.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{233,156},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_06.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{233,79},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_07.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{233,2},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_08.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{156,156},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_09.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{156,79},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_10.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{156,2},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_11.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{79,156},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_12.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{79,79},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_13.png</key>
-            <dict>
-                <key>frame</key>
                 <string>{{79,2},{75,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
@@ -186,33 +56,7 @@
                 <key>sourceSize</key>
                 <string>{75,75}</string>
             </dict>
-            <key>shield_14.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,156},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_15.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,79},{75,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{75,75}}</string>
-                <key>sourceSize</key>
-                <string>{75,75}</string>
-            </dict>
-            <key>shield_16.png</key>
+            <key>shield_04.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,2},{75,75}}</string>
@@ -233,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>wudi_effect_1.png</string>
             <key>size</key>
-            <string>{464,233}</string>
+            <string>{387,79}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:ebd8a10e482cad1fb199ed69633116a7:2e7e6928c796c9f437dc601e26ce9068:1ddc0615b1fb4be9645d9555b121b5b4$</string>
+            <string>$TexturePacker:SmartUpdate:dc0eae6068b0ce622c72073c96fa951b:81d415c9085e38e7201a1fe49b210958:1ddc0615b1fb4be9645d9555b121b5b4$</string>
             <key>textureFileName</key>
             <string>wudi_effect_1.png</string>
         </dict>

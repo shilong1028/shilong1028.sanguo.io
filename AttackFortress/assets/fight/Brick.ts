@@ -97,6 +97,7 @@ export default class Brick extends cc.Component {
         NotificationMy.on(NoticeType.BrickAddEvent, this.handleBrickAddEvent, this);    //添加新砖块，用于移动砖块检测
         
         NotificationMy.on(NoticeType.BallHitBrick, this.handleBallHitBrick, this);  //小球攻击砖块
+        NotificationMy.on(NoticeType.BrickDiffuseHit, this.hanldeBrickDiffuseHit, this);  //砖块受击散播
 
         this.brickSpr.node.zIndex = 1;
         this.hpNode.zIndex = 2;
@@ -500,7 +501,7 @@ export default class Brick extends cc.Component {
         if(this.isBrickDead() == false){ 
             let offsetY = this.node.y - FightMgr.gameBottomPosY;   //砖块距棋盘底部的距离
             if(offsetY < FightMgr.tileHeight*3){  
-                this.hitDamage(this.brick_info.curHp, null, false, false);
+                this.hitDamage(this.brick_info.curHp, null, false);
             }
         }
     } 
@@ -540,7 +541,12 @@ export default class Brick extends cc.Component {
                     this.setBrickInvincibleSpr();   //根据无敌状态设置砖块纹理
                 } 
             }  
-            this.hitDamage(harm, ball, true, true);   //处理砖块收到伤害, 注意，伤害一定要放在bump_event之后，因为受击后砖块可能死亡
+            this.hitDamage(harm, ball, true);   //处理砖块收到伤害, 注意，伤害一定要放在bump_event之后，因为受击后砖块可能死亡
+
+            if(ball.bMultiHit){    //小球有连体覆盖打击效果
+                let curPos = this.node.position.clone();
+                NotificationMy.emit(NoticeType.BrickDiffuseHit, new cc.Vec3(curPos.x, curPos.y, 1000000+harm));   //砖块受击散播
+            }
             
             if(this.brick_info.monsterCfg.ai == 2){  //行为 0无 1：左右往复移动 2：间隔吸附 3.坠落两行
                 if(this.bAdsorb == true){
@@ -582,16 +588,11 @@ export default class Brick extends cc.Component {
     /**处理砖块收到伤害
      * @param harm 伤害值
      * @param ball 撞击的小球
-     * @param bForceHit 是否复活导致的死亡或其他无视防御的死亡，复活消除有些效果不需要处理
      * @param bDeadEvent 是否相应死亡事件
-     * @param bspread 砖块伤害事件是否散播出去
     */
-    hitDamage(harm:number, ball: Ball, bDeadEvent:boolean, bWhite:boolean){
+    hitDamage(harm:number, ball: Ball, bDeadEvent:boolean){
         if(this.isBrickDead() == false){
-            if(ball && ball.roundAttack > 0){
-                bWhite = false;
-            }
-            FightMgr.qipanSc.showHpAction(harm, cc.v2(this.node.x, this.node.y + this.node.height/2), bWhite); //显示受击飘血效果
+            FightMgr.qipanSc.showHpAction(harm, cc.v2(this.node.x, this.node.y + this.node.height/2)); //显示受击飘血效果
 
             harm = Math.floor(harm);
             if(harm > 0){
@@ -604,6 +605,45 @@ export default class Brick extends cc.Component {
                 this.setBrickHpLabel();
                 if(harm > 0){  
                     FightMgr.atkScore += harm;
+                }
+            }
+        }
+    }
+
+    /**砖块受击激光散播 */
+    hanldeBrickDiffuseHit(hitPos: cc.Vec3){
+        if(this.isBrickDead() == false){
+            let offsetX = Math.abs(this.node.x - hitPos.x);
+            let offsetY = Math.abs(this.node.y - hitPos.y);
+            let harm = Math.abs(hitPos.z);
+            let bHarmed = false;
+            if(harm >= 1000000){  //连体覆盖打击 每次受到攻击，对一圈敌方阵营造成同等伤害
+                harm -= 1000000;
+                let len = this.node.position.sub(cc.v2(hitPos.x, hitPos.y)).mag();
+                if(len > 10 && len <= 150){
+                    bHarmed = true;
+                }
+            }else{
+                if(hitPos.z < 0){  //每次碰撞，均会对该行所有敌方阵营进行攻击
+                    if(offsetX > 10 && offsetY < 50){
+                        bHarmed = true;
+                    }
+                }else if(hitPos.z > 0){  //每次碰撞，均会对该列所有敌方阵营进行攻击
+                    if(offsetY > 10 && offsetX < 50){
+                        bHarmed = true;
+                    }
+                }
+            }
+
+            if(bHarmed == true){
+                let img = FightMgr.qipanSc.createBoomEffectImg(cc.v2(hitPos.x, hitPos.y))
+                if(img){
+                    img.scale = 0.8;
+                    img.opacity = 255;
+                    img.runAction(cc.sequence(cc.spawn(cc.moveTo(0.1, this.node.position), cc.sequence(cc.scaleTo(0.05, 1.5), cc.scaleTo(0.05, 0.8))), cc.callFunc(function(){
+                        this.hitDamage(harm, null, true);
+                        img.removeFromParent(true);
+                    }.bind(this))));
                 }
             }
         }

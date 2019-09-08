@@ -49,6 +49,7 @@ export default class Ball extends cc.Component {
 
     bGroundBounce: boolean = false;  //是否触底不结束而重新弹起
     adsorBrickId: number = -1;   //小球被吸附的砖块ID
+    bMultiHit: boolean = false;   //是否覆盖连体打击
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -82,6 +83,7 @@ export default class Ball extends cc.Component {
 
         this.bGroundBounce = false;  //是否触底不结束而重新弹起
         this.adsorBrickId = -1;   //小球被吸附的砖块ID
+        this.bMultiHit = false;   //是否覆盖连体打击
     }
 
     onLoad(){
@@ -217,12 +219,69 @@ export default class Ball extends cc.Component {
         }
     }
 
+    /**增加回合攻击力(充能) */
+    addRoundAttack(){
+        this.roundAttack = Math.ceil(this.getBallAttack(false) * 1.0);   //小球在每回合增加的攻击力（吃相关道具，当前回合有效）
+        cc.log("addRoundAttack() 增加回合攻击力 this.roundAttack = "+this.roundAttack);
+        let effAni = this.effectNode.getChildByName("chongneng_effect_1");
+        if(effAni == null){
+            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().ballChongnengAtlas, true, 18, cc.WrapMode.Loop);
+            if(effAni){
+                effAni.name = "chongneng_effect_1";
+                this.effectNode.addChild(effAni, 100);
+            }
+        }
+    }
+
+    /**反弹特性 */
+    openGroundBounce(){
+        this.bGroundBounce = true;
+        cc.log("openGroundBounce(), 反弹特性");
+        let effAni = this.effectNode.getChildByName("fantan_effect_1");
+        if(effAni == null){
+            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().ballFantanAtlas, true, 18, cc.WrapMode.Loop);
+            if(effAni){
+                effAni.name = "fantan_effect_1";
+                this.effectNode.addChild(effAni, 100);
+            }
+        }
+    }
+
+    /**连体覆盖特性 */
+    openMultiHit(){
+        this.bMultiHit = true;
+        cc.log("openMultiHit(), 连体覆盖特性");
+        let effAni = this.effectNode.getChildByName("multihit_effect");
+        if(effAni == null){
+            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().multiHitAtlas, true, 18, cc.WrapMode.Loop);
+            if(effAni){
+                effAni.name = "multihit_effect";
+                this.effectNode.addChild(effAni, 100);
+            }
+        }
+    }
+
     /** 发射弹珠
      * @param pos 发射点
      * @param angle 发射角度，degree
      */
     launch(pos: cc.Vec2, endData: IntersectRay){
         this.changeBallWithState(BallState.moveLaunch);
+
+        let probability = FightMgr.getFightScene().getItemActionById(102);  //充能强化
+        if(Math.random() <= probability){ 
+            this.addRoundAttack();   //增加回合攻击力(充能) 
+        }
+
+        let probability2 = FightMgr.getFightScene().getItemActionById(104);  //反弹
+        if(Math.random() <= probability2){ 
+            this.openGroundBounce();   //反弹特性
+        }
+
+        let probability3 = FightMgr.getFightScene().getItemActionById(105);  //连体攻击
+        if(Math.random() <= probability3){ 
+            this.openMultiHit();   //是否覆盖连体打击
+        }
 
         this.launchPos = pos.clone();
         this.launchEndData = endData;   //折线末点 
@@ -356,34 +415,6 @@ export default class Ball extends cc.Component {
         }else if(itemBrick){ 
             //cc.log("球碰道具， this.ballId = "+this.ballId+"; itemId = "+itemBrick.brickId);
             itemBrick.hit(this.getBallAttack(), this);
-        }
-    }
-
-    /**增加回合攻击力(充能) */
-    addRoundAttack(){
-        this.roundAttack += Math.ceil(this.getBallAttack(false) * 1.0);   //小球在每回合增加的攻击力（吃相关道具，当前回合有效）
-
-        let effAni = this.effectNode.getChildByName("chongneng_effect_1");
-        if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().ballChongnengAtlas, true, 18, cc.WrapMode.Loop);
-            if(effAni){
-                effAni.name = "chongneng_effect_1";
-                this.effectNode.addChild(effAni, 100);
-            }
-        }
-    }
-
-    /**反弹特性 */
-    openGroundBounce(){
-        this.bGroundBounce = true;
-
-        let effAni = this.effectNode.getChildByName("fantan_effect_1");
-        if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().ballFantanAtlas, true, 18, cc.WrapMode.Loop);
-            if(effAni){
-                effAni.name = "fantan_effect_1";
-                this.effectNode.addChild(effAni, 100);
-            }
         }
     }
 
