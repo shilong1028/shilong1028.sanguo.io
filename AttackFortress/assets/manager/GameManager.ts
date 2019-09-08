@@ -99,29 +99,6 @@ class GameManager {
         return null;
     }
 
-
-    showAltasAnimationONE(effNode: cc.Node, atlas: cc.SpriteAtlas, aniName: string, sample: number = 18, wrapMode: cc.WrapMode=cc.WrapMode.Default){
-        if(effNode && atlas){
-            cc.log("atlas = "+atlas)
-            let animation: cc.Animation = effNode.addComponent(cc.Animation);
-            var clip = cc.AnimationClip.createWithSpriteFrames(atlas.getSpriteFrames(), sample);
-            clip.name = aniName;
-            clip.wrapMode = cc.WrapMode.Loop;
-            animation.addClip(clip);
-
-            // if (wrapMode == cc.WrapMode.Default) {
-            //     animation.on("stop", function () {
-            //         effNode.removeFromParent(true);
-            //     });
-            // }
-
-            animation.play(atlas.name);
-
-            return animation;
-        }
-        return null;
-    }
-
     /**通过加载图集资源创建序列帧动画 */
 	createAniByLoadRes(res:string, sample: number = 18, wrapMode: cc.WrapMode=cc.WrapMode.Default) {
         let effNode = new cc.Node;

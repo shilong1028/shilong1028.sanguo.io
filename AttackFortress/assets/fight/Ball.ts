@@ -225,7 +225,7 @@ export default class Ball extends cc.Component {
         cc.log("addRoundAttack() 增加回合攻击力 this.roundAttack = "+this.roundAttack);
         let effAni = this.effectNode.getChildByName("chongneng_effect_1");
         if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().ballChongnengAtlas, true, 18, cc.WrapMode.Loop);
+            effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().ballChongnengAtlas);
             if(effAni){
                 effAni.name = "chongneng_effect_1";
                 this.effectNode.addChild(effAni, 100);
@@ -239,7 +239,7 @@ export default class Ball extends cc.Component {
         cc.log("openGroundBounce(), 反弹特性");
         let effAni = this.effectNode.getChildByName("fantan_effect_1");
         if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().ballFantanAtlas, true, 18, cc.WrapMode.Loop);
+            effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().ballFantanAtlas);
             if(effAni){
                 effAni.name = "fantan_effect_1";
                 this.effectNode.addChild(effAni, 100);
@@ -253,7 +253,7 @@ export default class Ball extends cc.Component {
         cc.log("openMultiHit(), 连体覆盖特性");
         let effAni = this.effectNode.getChildByName("multihit_effect");
         if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().multiHitAtlas, true, 18, cc.WrapMode.Loop);
+            effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().multiHitAtlas);
             if(effAni){
                 effAni.name = "multihit_effect";
                 this.effectNode.addChild(effAni, 100);
@@ -308,6 +308,11 @@ export default class Ball extends cc.Component {
                         this.handleFirstDropBall(this.node.x);   //小球还未发射出去
                     }else{
                         AudioMgr.playEffect("effect/launch");  //小球弹射音效
+
+                        let probability = FightMgr.getFightScene().getItemActionById(103);  //分裂
+                        if(Math.random() <= probability){ 
+                            FightMgr.qipanSc.handleBallSplit(this);
+                        }
                         
                         this.changeBallWithState(BallState.fly);
                         this.ballFlying();   //执行小球飞行动作

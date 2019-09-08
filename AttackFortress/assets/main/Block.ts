@@ -268,14 +268,15 @@ export default class Block extends cc.Component {
     showUpdateAni(){
         this.setStuffOpacity(255);
 
-        let effNode = new cc.Node;
-        effNode.scale = 2.0;
-        let effectSpr = effNode.addComponent(cc.Sprite);
-        // effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
-        // effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+        let aniNode = GameMgr.createAtlasAniNode(GameMgr.getMainScene().stuffUpAtlas, 12, cc.WrapMode.Default);
+        aniNode.scale = 2.0;
+        this.node.addChild(aniNode, 110, "hechengAniNode");
 
-        this.node.addChild(effNode, 110, "hechengAniNode");
-        GameMgr.showAltasAnimationONE(effNode, GameMgr.getMainScene().stuffUpAtlas, "hecheng", 12, cc.WrapMode.Default);
+        // let effectSpr = aniNode.getComponent(cc.Sprite);
+        // if(effectSpr){
+        //     effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+        //     effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+        // }
     }
 
 }

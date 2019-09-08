@@ -45,15 +45,16 @@ export default class IconEffect extends cc.Component {
     createEffectAniNode(pos: cc.Vec2){
         AudioMgr.playEffect("effect/gold_fly");
 
-        let effNode = new cc.Node;
-        let effectSpr = effNode.addComponent(cc.Sprite);
-        // effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
-        // effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
-        effNode.scale = 2.0;
-        effNode.setPosition(pos);
-        this.node.addChild(effNode, 100);
+        let aniNode = GameMgr.createAtlasAniNode(this.effectAtlas, 12, cc.WrapMode.Default);
+        aniNode.scale = 2.0;
+        aniNode.setPosition(pos);
+        this.node.addChild(aniNode, 100);
 
-        GameMgr.showAltasAnimationONE(effNode, this.effectAtlas, "effectAtlas", 18, cc.WrapMode.Default);
+        // let effectSpr = aniNode.getComponent(cc.Sprite);
+        // if(effectSpr){
+        //     effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+        //     effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+        // }
     }
 
 

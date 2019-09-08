@@ -296,7 +296,7 @@ export default class Brick extends cc.Component {
             }else if(brickEventType == 1){
                 let effNode = this.brickSpr.node.getChildByName("BrickSprEffectChild");
                 if(effNode == null){
-                    effNode = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().brickWudiAtlas, true, 18, cc.WrapMode.Loop);
+                    effNode = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().brickWudiAtlas, true, 12, cc.WrapMode.Loop);
                     effNode.name = "BrickSprEffectChild";
                     this.brickSpr.node.addChild(effNode, 50);
                 }

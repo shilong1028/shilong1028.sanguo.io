@@ -257,6 +257,11 @@ export default class QiPanSc extends cc.Component {
         return ball;
     }
 
+    //小球分裂攻击
+    handleBallSplit(ball: Ball){
+        cc.log("handleBallSplit()");
+    }
+
     /**发射小球 */
     launchBalls(){
         let launchPos = cc.v2(FightMgr.emissionPointX, FightMgr.getBallPosY());
@@ -922,52 +927,45 @@ export default class QiPanSc extends cc.Component {
 
     /**砖块死亡特效 */
     showBrickDeadAni(pos: cc.Vec2){
-        let effNode = new cc.Node;
-        let effectSpr = effNode.addComponent(cc.Sprite);
-        effNode.scale = 2.0;
-        effNode.setPosition(pos);
-        this.nEffect.addChild(effNode, 80);
-
-        GameMgr.showAltasAnimationONE(effNode, this.fightScene.deadAtlas, "dead_effect", 6, cc.WrapMode.Default);
+        let aniNode = GameMgr.createAtlasAniNode(this.fightScene.deadAtlas, 12, cc.WrapMode.Default);
+        aniNode.scale = 2.0;
+        aniNode.setPosition(pos);
+        this.nEffect.addChild(aniNode, 80);
     }
 
     /**砖块受击特效 */
     showBrickHitAni(pos: cc.Vec2){
-        let effNode = new cc.Node;
-        let effectSpr = effNode.addComponent(cc.Sprite);
-        effNode.scale = 2.0;
-        effNode.setPosition(pos);
-        this.nEffect.addChild(effNode, 110);
-
-        GameMgr.showAltasAnimationONE(effNode, this.fightScene.bumpAtlas, "bump_effect", 6, cc.WrapMode.Default);
+        let aniNode = GameMgr.createAtlasAniNode(this.fightScene.bumpAtlas, 12, cc.WrapMode.Default);
+        aniNode.scale = 2.0;
+        aniNode.setPosition(pos);
+        this.nEffect.addChild(aniNode, 110);
     }
 
     /**砖块吸附特效 */
     showBrickAdsorbEffect(pos: cc.Vec2){
-        let effNode = new cc.Node;
-        let effectSpr = effNode.addComponent(cc.Sprite);
-        effNode.scale = 2.0;
-        effNode.setPosition(pos);
-        this.nEffect.addChild(effNode, 100);
+        let aniNode = GameMgr.createAtlasAniNode(this.fightScene.shuyeAtlas, 12, cc.WrapMode.Default);
+        aniNode.scale = 2.0;
+        aniNode.setPosition(pos);
+        this.nEffect.addChild(aniNode, 100);
 
-        // effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
-        // effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
-
-        GameMgr.showAltasAnimationONE(effNode, this.fightScene.shuyeAtlas, "shuye_effect", 18, cc.WrapMode.Default);
+        // let effectSpr = aniNode.getComponent(cc.Sprite);
+        // if(effectSpr){
+        //     effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+        //     effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+        // }
     }
 
     /**通过图集创建序列帧动画 */
-    createEffectAniNode(atlas: cc.SpriteAtlas, bBlend: boolean=false, sample:number= 18, warpMode: cc.WrapMode=cc.WrapMode.Default){
+    createEffectLoopAniNode(atlas: cc.SpriteAtlas){
         if(atlas){
-            let effNode = new cc.Node;
-            let effectSpr = effNode.addComponent(cc.Sprite);
-            if(bBlend == true){
-                // effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
-                // effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
-            }
-            effNode.scale = 2.0;
-            GameMgr.showAltasAnimationONE(effNode, atlas, "effectAni", sample, warpMode);
-            return effNode;
+            let aniNode = GameMgr.createAtlasAniNode(atlas, 12, cc.WrapMode.Loop);
+            aniNode.scale = 2.0;
+            // let effectSpr = aniNode.getComponent(cc.Sprite);
+            // if(effectSpr){
+            //     effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+            //     effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+            // }
+            return aniNode;
         }
         return null;
     }
