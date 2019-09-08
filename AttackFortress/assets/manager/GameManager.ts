@@ -102,17 +102,18 @@ class GameManager {
 
     showAltasAnimationONE(effNode: cc.Node, atlas: cc.SpriteAtlas, aniName: string, sample: number = 18, wrapMode: cc.WrapMode=cc.WrapMode.Default){
         if(effNode && atlas){
+            cc.log("atlas = "+atlas)
             let animation: cc.Animation = effNode.addComponent(cc.Animation);
             var clip = cc.AnimationClip.createWithSpriteFrames(atlas.getSpriteFrames(), sample);
             clip.name = aniName;
-            clip.wrapMode = wrapMode;
+            clip.wrapMode = cc.WrapMode.Loop;
             animation.addClip(clip);
 
-            if (wrapMode == cc.WrapMode.Default) {
-                animation.on("stop", function () {
-                    effNode.removeFromParent(true);
-                });
-            }
+            // if (wrapMode == cc.WrapMode.Default) {
+            //     animation.on("stop", function () {
+            //         effNode.removeFromParent(true);
+            //     });
+            // }
 
             animation.play(atlas.name);
 

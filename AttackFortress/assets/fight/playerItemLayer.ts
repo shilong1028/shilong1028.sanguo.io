@@ -82,7 +82,7 @@ export default class playerItemLayer extends cc.Component {
 
     initTableData(){
         let itemList = MyUserDataMgr.getItemListClone();
-        this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
+        this.tableView.openListCellSelEffect(true);   //是否开启Cell选中状态变换
         this.tableView.initTableView(itemList.length, { array: itemList, target: this }); 
     }
 
@@ -95,9 +95,16 @@ export default class playerItemLayer extends cc.Component {
     onCloseBtn(){
         AudioMgr.playEffect("effect/ui_click");
         cc.log("this.equipItemList = "+JSON.stringify(this.equipItemList));
-        FightMgr.getFightScene().setPlayerItems(this.equipItemList);
-
-        this.node.removeFromParent(true);
+        
+        if(this.equipItemList == null || this.equipItemList.length == 0){
+            ROOT_NODE.showTipsDialog("确定炮台不装备任何道具出战？", ()=>{
+                FightMgr.getFightScene().setPlayerItems(this.equipItemList);
+                this.node.removeFromParent(true);
+            });
+        }else{
+            FightMgr.getFightScene().setPlayerItems(this.equipItemList);
+            this.node.removeFromParent(true);
+        }
     }
 
     onItemCloseBtn(sender: any, customData: string){
@@ -123,6 +130,11 @@ export default class playerItemLayer extends cc.Component {
 
     onEquipBtn(){
         AudioMgr.playEffect("effect/ui_click");
+
+        if(this.selItemInfo == null){
+            ROOT_NODE.showTipsText("请选择需要装备的道具！");
+            return;
+        }
 
         for(let i=0; i<this.equipItemList.length; ++i){
             if(this.equipItemList[i].itemId == this.selItemInfo.itemId){

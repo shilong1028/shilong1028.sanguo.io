@@ -212,8 +212,9 @@ export default class FightScene extends cc.Component {
 
     //炮台道具列表
     setPlayerItems(equipItemList: ItemInfo[]){
-        this.equipItemList = equipItemList;
-        for(let i=0; i<this.equipItemList.length; ++i){
+        this.equipItemList = new Array();
+        for(let i=0; i<equipItemList.length; ++i){
+            this.equipItemList.push(equipItemList[i].clone());
             this.itemNodes[i].active = true;
 
             let itemNode = cc.instantiate(this.pfItem);
@@ -225,7 +226,7 @@ export default class FightScene extends cc.Component {
     /**通过道具ID获取炮台道具作用的概率 */
     getItemActionById(itemId: number){
         for(let i=0; i<this.equipItemList.length; ++i){
-            if(this.equipItemList[i].itemId == itemId){
+            if(this.equipItemList[i] && this.equipItemList[i].itemId == itemId){
                 return 0.5;
             }
         }

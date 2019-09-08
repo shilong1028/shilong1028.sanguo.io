@@ -4,7 +4,7 @@ import Brick from "./Brick";
 import { FightMgr } from "../manager/FightManager";
 import Cat from "./Cat";
 import Ball from "./Ball";
-import { MyUserDataMgr } from "../manager/MyUserData";
+import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
 import { AudioMgr } from "../manager/AudioMgr";
 import Dot from "./Dot";
 import { GameMgr } from "../manager/GameManager";
@@ -299,7 +299,7 @@ export default class QiPanSc extends cc.Component {
     /********************************* 以下部分为指示线  ******************************* */
     //射线教程
     showIndicatorTeach(){
-        if(FightMgr.level_id == 1 && this.launchCount == 0){   //第一关前两个回合强制引导线  //本次战斗发射次数
+        if(FightMgr.level_id == 1 && MyUserData.curLevelId == 0 && this.launchCount == 0){   //第一关前两个回合强制引导线  //本次战斗发射次数
             this.fixGuideStep = 0;  //第一关固定指示线（移动步数）
             this.fixGuideOffDir = 1;  //第一关固定指示线当前偏移(方向)
             this.fixGuideLen = -350;  //第一关固定指示线偏移
@@ -909,7 +909,6 @@ export default class QiPanSc extends cc.Component {
         let harmLabel = harmNode.getComponent(cc.Label);
         harmLabel.string = harm.toString();
         harmNode.setPosition(pos);
-        harmNode.scale = 0.25;
         this.nEffect.addChild(harmNode, 100);
 
         let a = Math.random()*60 - 30;
@@ -929,7 +928,7 @@ export default class QiPanSc extends cc.Component {
         effNode.setPosition(pos);
         this.nEffect.addChild(effNode, 80);
 
-        GameMgr.showAltasAnimationONE(effNode, this.fightScene.deadAtlas, "dead_effect", 18, cc.WrapMode.Default);
+        GameMgr.showAltasAnimationONE(effNode, this.fightScene.deadAtlas, "dead_effect", 6, cc.WrapMode.Default);
     }
 
     /**砖块受击特效 */
@@ -940,7 +939,7 @@ export default class QiPanSc extends cc.Component {
         effNode.setPosition(pos);
         this.nEffect.addChild(effNode, 110);
 
-        GameMgr.showAltasAnimationONE(effNode, this.fightScene.bumpAtlas, "bump_effect", 18, cc.WrapMode.Default);
+        GameMgr.showAltasAnimationONE(effNode, this.fightScene.bumpAtlas, "bump_effect", 6, cc.WrapMode.Default);
     }
 
     /**砖块吸附特效 */
@@ -962,10 +961,10 @@ export default class QiPanSc extends cc.Component {
         if(atlas){
             let effNode = new cc.Node;
             let effectSpr = effNode.addComponent(cc.Sprite);
-            // if(bBlend == true){
-            //     effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
-            //     effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
-            // }
+            if(bBlend == true){
+                // effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
+                // effectSpr.dstBlendFactor = cc.macro.BlendFactor.ONE;
+            }
             effNode.scale = 2.0;
             GameMgr.showAltasAnimationONE(effNode, atlas, "effectAni", sample, warpMode);
             return effNode;
