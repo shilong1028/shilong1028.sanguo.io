@@ -67,7 +67,7 @@ export default class FightResult extends cc.Component {
             let levelCfg = FightMgr.level_info.levelCfg;
 
             this.rewardGold = Math.ceil(levelCfg.gold * 0.5 * stars); //1星为75%，3星为150%
-            let probability = levelCfg.probability*stars;
+            let probability = levelCfg.probability*stars * 3;
             if(MyUserData.curLevelId < 3 && MyUserData.curLevelId == FightMgr.level_id-1){
                 probability *= 10;
             }

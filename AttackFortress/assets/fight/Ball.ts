@@ -11,13 +11,10 @@ const {ccclass, property} = cc._decorator;
 export default class Ball extends cc.Component {
     @property(cc.Sprite)
     ballSpr: cc.Sprite = null;
-
     @property(cc.Node)
     effectNode: cc.Node = null;
-
     @property(cc.SpriteAtlas)
     cannonAtlas: cc.SpriteAtlas = null;
-
     @property(cc.MotionStreak)
     BallStreak: cc.MotionStreak = null;    //拖尾
 
@@ -35,7 +32,7 @@ export default class Ball extends cc.Component {
     ballId: number = -1;   //小球唯一索引
     ballSortIdx: number = 0;   //小球排序索引（用于发送时间计算）
     lastBallState: BallState = BallState.init;   //上一个动画状态
-
+    
     ballFlyDir: cc.Vec2 = null;   //发射方向
     launchPos: cc.Vec2 = null;   //发射点
     launchEndData: IntersectRay = null;   //折线末点
@@ -139,7 +136,9 @@ export default class Ball extends cc.Component {
     }
 
     changeBallSkin(){
-        if(this.ballInfo){
+        if(this.ballId > 1000){   //分裂产生的小球
+            this.ballSpr.spriteFrame = FightMgr.getFightScene().boomFrame;
+        }else if(this.ballInfo){
             this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("dog"+this.ballInfo.cannonId+"_normal");
         }
     }
@@ -294,6 +293,32 @@ export default class Ball extends cc.Component {
         this.moveAndReadyFly();   //小球移动并准备发射
     }
 
+    //分裂产生的小球飞行
+    handleBallSplitLaunch(ball: Ball){
+        this.launchEndData = ball.launchEndData;
+        this.ballFlyDir = ball.ballFlyDir;
+        this.changeBallWithState(BallState.fly);
+        this.RandomRotateDir();
+    }
+
+    /**分裂的小球的偏转飞行方向 */
+    RandomRotateDir(){
+        let randRad = 0; 
+        if(Math.random() <= 0.5){ 
+            randRad = 0.5 + Math.random() * 0.5;
+        }else{   
+            randRad = 0.3 + Math.random() * 0.7;
+        }
+        if(Math.random() > 0.5){
+            randRad = -randRad;
+        }
+
+        let newDir = this.ballFlyDir.rotate(randRad);
+        cc.log("randomRotateDir(), 小球偏转， this.ballId = "+this.ballId+"; oldDir = "+this.ballFlyDir+"; newDir = "+newDir);
+        this.resetBallFlyDir(newDir);  //重新设定飞行方向
+        this.resetLaunchEndData([], 2);  //重新设定弹射方向和目标点 //0碰撞，1无碰撞, 2偏转，3穿透, 4砖块死亡通知, 5地面反弹， 6移动反弹
+    }
+
     /**小球移动并准备发射 */
     moveAndReadyFly(){
         if(this.launchEndData && this.launchEndData.point){
@@ -346,7 +371,7 @@ export default class Ball extends cc.Component {
             let endPos: cc.Vec2 = this.launchEndData.point;
             let len = endPos.sub(this.node.position).mag();
 
-            let speedUpRatio = 1;  //战斗加速倍数，0-2分别表示1-3倍加速
+            let speedUpRatio = FightMgr.speedUpRatio;  //战斗加速倍数，0-2分别表示1-3倍加速
             //cc.log("球加速飞行, this.ballId = "+this.ballId+"; this.lastBallState = "+this.lastBallState+"; speedUpRatio = "+speedUpRatio);
             let moveTime = len/(this.MoveSpeed_Const * speedUpRatio);
             let moveSeq = cc.sequence(cc.moveTo(moveTime, endPos), cc.callFunc(function(){
@@ -783,15 +808,19 @@ export default class Ball extends cc.Component {
 
     /**处理落地的球 */
     handleFirstDropBall(posX: number, bResetCat: boolean= true, bAddBall:boolean=false){
-        this.setBallOpacity(255);
-        this.initBallStateData();  //清除球的状态信息，初始化或发射前会调用
-        this.changeBallWithState(BallState.readySort);   //等待重新排序状态
-        FightMgr.hanldeBallDropOver(posX, bResetCat);   //处理小球重新落地，检查回合是否结束
-        if(bAddBall == true){
-            //FightMgr.getFightScene().showAddBallEffect(posX);   //添加小球落地特效
-        }
-        if(this.effectNode){
-            this.effectNode.removeAllChildren(true);
+        if(this.ballId > 1000){  //分裂产生的小球
+            this.node.removeFromParent(true);
+        }else{
+            this.setBallOpacity(255);
+            this.initBallStateData();  //清除球的状态信息，初始化或发射前会调用
+            this.changeBallWithState(BallState.readySort);   //等待重新排序状态
+            FightMgr.hanldeBallDropOver(posX, bResetCat);   //处理小球重新落地，检查回合是否结束
+            if(bAddBall == true){
+                //FightMgr.getFightScene().showAddBallEffect(posX);   //添加小球落地特效
+            }
+            if(this.effectNode){
+                this.effectNode.removeAllChildren(true);
+            }
         }
     }
 

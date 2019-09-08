@@ -259,7 +259,12 @@ export default class QiPanSc extends cc.Component {
 
     //小球分裂攻击
     handleBallSplit(ball: Ball){
-        cc.log("handleBallSplit()");
+        let ball1: Ball = this.addBallToList(1001, ball.ballInfo.clone());   //添加小球到攻击列表中
+        ball1.node.position = ball.node.position.clone();
+        ball1.getComponent(Ball).handleBallSplitLaunch(ball);
+        let ball2: Ball = this.addBallToList(1002, ball.ballInfo.clone());   //添加小球到攻击列表中
+        ball2.node.position = ball.node.position.clone();
+        ball2.getComponent(Ball).handleBallSplitLaunch(ball);
     }
 
     /**发射小球 */

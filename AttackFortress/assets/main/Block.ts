@@ -269,7 +269,6 @@ export default class Block extends cc.Component {
         this.setStuffOpacity(255);
 
         let aniNode = GameMgr.createAtlasAniNode(GameMgr.getMainScene().stuffUpAtlas, 12, cc.WrapMode.Default);
-        aniNode.scale = 2.0;
         this.node.addChild(aniNode, 110, "hechengAniNode");
 
         // let effectSpr = aniNode.getComponent(cc.Sprite);

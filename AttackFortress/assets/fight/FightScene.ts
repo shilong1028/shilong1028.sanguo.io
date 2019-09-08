@@ -249,8 +249,6 @@ export default class FightScene extends cc.Component {
         cc.log("handleSetBricksFinish");
         this.levelLabel.string = FightMgr.level_id.toString();  //第几关
 
-        this.showSpeedUpBtn();   //关闭小球加速按钮
-
         this.curRoundProgress = 0;   //当前关卡回合进度
         this.totalRoundCount = FightMgr.level_info.levelCfg.total_lines;
         this.showRoundProgerss();  //显示关卡回合进度
@@ -351,7 +349,12 @@ export default class FightScene extends cc.Component {
 
     /**小球加速按钮出现 */
     showSpeedUpBtn(){
-        this.SpeedSpr.spriteFrame = this.speedFrames[0];
+        FightMgr.speedUpRatio ++;  //战斗加速倍数，0-2分别表示1-3倍加速
+        if(FightMgr.speedUpRatio > 3){
+            FightMgr.speedUpRatio = 1;
+        }
+
+        this.SpeedSpr.spriteFrame = this.speedFrames[FightMgr.speedUpRatio - 1];
     }
 
     /**点击加速 */

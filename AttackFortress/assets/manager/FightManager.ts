@@ -52,6 +52,7 @@ class FightManager {
     /**因为小球是有半径的，因此不能使用线和边框的交点作为转点，要让边框向四周扩充radConf后再测交点。
      * 外扩后还可以避免两个相邻砖块转角的判定。如果相邻两块砖块距离太近，则认为相邻的转角位边框镜面反射，而非弧度反射。
      */
+    speedUpRatio: number =  1;  //战斗加速倍数，0-2分别表示1-3倍加速
 
     /**加载关卡前 清空之前可能余留的信息 */
     clearFightMgrData(){
@@ -82,6 +83,8 @@ class FightManager {
         this.curBrickNodes = new Array();   //当前绘制有效的砖块集合
         this.tempItemNodes = new Array();   //射线规划时，临时存储某条射线经过的道具集合
         this.defaultRayCount = 1;   //默认的绘制指示线的射线段数
+
+        this.speedUpRatio =  1;  //战斗加速倍数，0-2分别表示1-3倍加速
     }
 
     /**
