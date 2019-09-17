@@ -1,0 +1,26 @@
+[1]
+name = 默认炮
+cost = 0
+cannon = 1;10
+attack_up = 10
+baoji_up = 10
+itemCount = 1
+desc = 普通炮，可以发射1-10级炮弹，小额提升攻击力和暴击力，拥有辅助道具孔位1个。
+
+[2]
+name = 特殊炮
+cost = 1000
+cannon = 5;15
+attack_up = 30
+baoji_up = 30
+itemCount = 2
+desc = 特殊炮，可以发射5-15级炮弹，适量提升攻击力和暴击力，拥有辅助道具孔位2个。
+
+[3]
+name = 视频炮
+cost = 1000000
+cannon = 10;20
+attack_up = 50
+baoji_up = 50
+itemCount = 3
+desc = 视频炮，可以发射10-20级炮弹，大幅度提升攻击力和暴击力，拥有辅助道具孔位3个。
