@@ -7,6 +7,7 @@ total_lines = 1
 init_lines = 1
 name = 初识汉奸
 resId = 1
+chapterId = 1
 itemids = 101
 probability = 10
 
@@ -19,6 +20,7 @@ total_lines = 2
 init_lines = 2
 name = 赶跑汉奸
 resId = 1
+chapterId = 1
 itemids = 102
 probability = 10
 
@@ -31,6 +33,7 @@ total_lines = 3
 init_lines = 3
 name = 打败汉奸
 resId = 1
+chapterId = 1
 itemids = 103
 probability = 10
 
@@ -43,6 +46,7 @@ total_lines = 4
 init_lines = 2
 name = 活捉汉奸
 resId = 1
+chapterId = 1
 itemids = 104
 probability = 10
 
@@ -55,6 +59,7 @@ total_lines = 5
 init_lines = 2
 name = 击毙汉奸
 resId = 1
+chapterId = 1
 itemids = 105
 probability = 10
 
@@ -67,6 +72,7 @@ total_lines = 6
 init_lines = 3
 name = 初识大头兵
 resId = 2
+chapterId = 1
 itemids = 101;102
 probability = 15
 
@@ -79,6 +85,7 @@ total_lines = 7
 init_lines = 3
 name = 赶跑大头兵
 resId = 2
+chapterId = 1
 itemids = 102;103
 probability = 15
 
@@ -91,6 +98,7 @@ total_lines = 8
 init_lines = 3
 name = 打败大头兵
 resId = 2
+chapterId = 1
 itemids = 103;104
 probability = 15
 
@@ -103,6 +111,7 @@ total_lines = 9
 init_lines = 3
 name = 活捉大头兵
 resId = 2
+chapterId = 1
 itemids = 104;105
 probability = 15
 
@@ -115,6 +124,7 @@ total_lines = 10
 init_lines = 3
 name = 击毙大头兵
 resId = 2
+chapterId = 1
 itemids = 101;103
 probability = 15
 
@@ -127,6 +137,7 @@ total_lines = 12
 init_lines = 3
 name = 初识三等兵
 resId = 3
+chapterId = 2
 itemids = 102;104
 probability = 15
 
@@ -139,6 +150,7 @@ total_lines = 12
 init_lines = 3
 name = 赶跑三等兵
 resId = 3
+chapterId = 2
 itemids = 101;103
 probability = 15
 
@@ -151,6 +163,7 @@ total_lines = 12
 init_lines = 3
 name = 打败三等兵
 resId = 3
+chapterId = 2
 itemids = 102;105
 probability = 15
 
@@ -163,6 +176,7 @@ total_lines = 12
 init_lines = 3
 name = 活捉三等兵
 resId = 3
+chapterId = 2
 itemids = 103;105
 probability = 15
 
@@ -175,6 +189,7 @@ total_lines = 12
 init_lines = 3
 name = 击毙三等兵
 resId = 3
+chapterId = 2
 itemids = 101;102;103
 probability = 20
 
@@ -187,6 +202,7 @@ total_lines = 12
 init_lines = 3
 name = 初识二等兵
 resId = 4
+chapterId = 2
 itemids = 102;103;104
 probability = 20
 
@@ -199,6 +215,7 @@ total_lines = 12
 init_lines = 3
 name = 赶跑二等兵
 resId = 4
+chapterId = 2
 itemids = 103;104;105
 probability = 20
 
@@ -211,6 +228,7 @@ total_lines = 12
 init_lines = 3
 name = 打败二等兵
 resId = 4
+chapterId = 2
 itemids = 101;103;105
 probability = 20
 
@@ -223,6 +241,7 @@ total_lines = 12
 init_lines = 3
 name = 活捉二等兵
 resId = 4
+chapterId = 2
 itemids = 102;104;105
 probability = 20
 
@@ -235,6 +254,7 @@ total_lines = 12
 init_lines = 3
 name = 击毙二等兵
 resId = 4
+chapterId = 2
 itemids = 101;104;105
 probability = 20
 
@@ -247,6 +267,7 @@ total_lines = 13
 init_lines = 3
 name = 初识一等兵
 resId = 5
+chapterId = 3
 itemids = 101;102;103;104
 probability = 20
 
@@ -259,6 +280,7 @@ total_lines = 13
 init_lines = 3
 name = 赶跑一等兵
 resId = 5
+chapterId = 3
 itemids = 102;103;104;105
 probability = 20
 
@@ -271,6 +293,7 @@ total_lines = 13
 init_lines = 3
 name = 打败一等兵
 resId = 5
+chapterId = 3
 itemids = 101;103;104;105
 probability = 20
 
@@ -283,6 +306,7 @@ total_lines = 13
 init_lines = 3
 name = 活捉一等兵
 resId = 5
+chapterId = 3
 itemids = 101;102;104;105
 probability = 20
 
@@ -295,6 +319,7 @@ total_lines = 13
 init_lines = 3
 name = 击毙一等兵
 resId = 5
+chapterId = 3
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -307,6 +332,7 @@ total_lines = 13
 init_lines = 3
 name = 初识上等兵
 resId = 6
+chapterId = 3
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -319,6 +345,7 @@ total_lines = 13
 init_lines = 3
 name = 赶跑上等兵
 resId = 6
+chapterId = 3
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -331,6 +358,7 @@ total_lines = 13
 init_lines = 3
 name = 打败上等兵
 resId = 6
+chapterId = 3
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -343,6 +371,7 @@ total_lines = 13
 init_lines = 3
 name = 活捉上等兵
 resId = 6
+chapterId = 3
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -355,6 +384,7 @@ total_lines = 13
 init_lines = 3
 name = 击毙上等兵
 resId = 6
+chapterId = 3
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -367,6 +397,7 @@ total_lines = 14
 init_lines = 3
 name = 初识伍长
 resId = 7
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -379,6 +410,7 @@ total_lines = 14
 init_lines = 3
 name = 赶跑伍长
 resId = 7
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -391,6 +423,7 @@ total_lines = 14
 init_lines = 3
 name = 打败伍长
 resId = 7
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -403,6 +436,7 @@ total_lines = 14
 init_lines = 3
 name = 活捉伍长
 resId = 7
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -415,6 +449,7 @@ total_lines = 14
 init_lines = 3
 name = 击毙伍长
 resId = 7
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -427,6 +462,7 @@ total_lines = 14
 init_lines = 3
 name = 初识军曹
 resId = 8
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -439,6 +475,7 @@ total_lines = 14
 init_lines = 3
 name = 赶跑军曹
 resId = 8
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -451,6 +488,7 @@ total_lines = 14
 init_lines = 3
 name = 打败军曹
 resId = 8
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -463,6 +501,7 @@ total_lines = 14
 init_lines = 3
 name = 活捉军曹
 resId = 8
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -475,6 +514,7 @@ total_lines = 14
 init_lines = 3
 name = 击毙军曹
 resId = 8
+chapterId = 4
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -487,6 +527,7 @@ total_lines = 15
 init_lines = 3
 name = 初识曹长
 resId = 9
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -499,6 +540,7 @@ total_lines = 15
 init_lines = 3
 name = 赶跑曹长
 resId = 9
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -511,6 +553,7 @@ total_lines = 15
 init_lines = 3
 name = 打败曹长
 resId = 9
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -523,6 +566,7 @@ total_lines = 15
 init_lines = 3
 name = 活捉曹长
 resId = 9
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -535,6 +579,7 @@ total_lines = 15
 init_lines = 3
 name = 击毙曹长
 resId = 9
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -547,6 +592,7 @@ total_lines = 15
 init_lines = 3
 name = 初识准尉
 resId = 10
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -559,6 +605,7 @@ total_lines = 15
 init_lines = 3
 name = 赶跑准尉
 resId = 10
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -571,6 +618,7 @@ total_lines = 15
 init_lines = 3
 name = 打败准尉
 resId = 10
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -583,6 +631,7 @@ total_lines = 15
 init_lines = 3
 name = 活捉准尉
 resId = 10
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -595,6 +644,7 @@ total_lines = 15
 init_lines = 3
 name = 击毙准尉
 resId = 10
+chapterId = 5
 itemids = 101;102;103;104;105
 probability = 25
 
@@ -607,6 +657,7 @@ total_lines = 16
 init_lines = 3
 name = 初识少尉
 resId = 11
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -619,6 +670,7 @@ total_lines = 16
 init_lines = 3
 name = 赶跑少尉
 resId = 11
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -631,6 +683,7 @@ total_lines = 16
 init_lines = 3
 name = 打败少尉
 resId = 11
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -643,6 +696,7 @@ total_lines = 16
 init_lines = 3
 name = 活捉少尉
 resId = 11
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -655,6 +709,7 @@ total_lines = 16
 init_lines = 3
 name = 击毙少尉
 resId = 11
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -667,6 +722,7 @@ total_lines = 16
 init_lines = 3
 name = 初识中尉
 resId = 12
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -679,6 +735,7 @@ total_lines = 16
 init_lines = 3
 name = 赶跑中尉
 resId = 12
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -691,6 +748,7 @@ total_lines = 16
 init_lines = 3
 name = 打败中尉
 resId = 12
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -703,6 +761,7 @@ total_lines = 16
 init_lines = 3
 name = 活捉中尉
 resId = 12
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -715,6 +774,7 @@ total_lines = 16
 init_lines = 3
 name = 击毙中尉
 resId = 12
+chapterId = 6
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -727,6 +787,7 @@ total_lines = 17
 init_lines = 3
 name = 初识大尉
 resId = 13
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -739,6 +800,7 @@ total_lines = 17
 init_lines = 3
 name = 赶跑大尉
 resId = 13
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -751,6 +813,7 @@ total_lines = 17
 init_lines = 3
 name = 打败大尉
 resId = 13
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -763,6 +826,7 @@ total_lines = 17
 init_lines = 3
 name = 活捉大尉
 resId = 13
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -775,6 +839,7 @@ total_lines = 17
 init_lines = 3
 name = 击毙大尉
 resId = 13
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -787,6 +852,7 @@ total_lines = 17
 init_lines = 3
 name = 初识少佐
 resId = 14
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -799,6 +865,7 @@ total_lines = 17
 init_lines = 3
 name = 赶跑少佐
 resId = 14
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -811,6 +878,7 @@ total_lines = 17
 init_lines = 3
 name = 打败少佐
 resId = 14
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -823,6 +891,7 @@ total_lines = 17
 init_lines = 3
 name = 活捉少佐
 resId = 14
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -835,6 +904,7 @@ total_lines = 17
 init_lines = 3
 name = 击毙少佐
 resId = 14
+chapterId = 7
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -847,6 +917,7 @@ total_lines = 18
 init_lines = 3
 name = 初识中佐
 resId = 15
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -859,6 +930,7 @@ total_lines = 18
 init_lines = 3
 name = 赶跑中佐
 resId = 15
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -871,6 +943,7 @@ total_lines = 18
 init_lines = 3
 name = 打败中佐
 resId = 15
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -883,6 +956,7 @@ total_lines = 18
 init_lines = 3
 name = 活捉中佐
 resId = 15
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -895,6 +969,7 @@ total_lines = 18
 init_lines = 3
 name = 击毙中佐
 resId = 15
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 30
 
@@ -907,6 +982,7 @@ total_lines = 18
 init_lines = 3
 name = 初识大佐
 resId = 16
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -919,6 +995,7 @@ total_lines = 18
 init_lines = 3
 name = 赶跑大佐
 resId = 16
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -931,6 +1008,7 @@ total_lines = 18
 init_lines = 3
 name = 打败大佐
 resId = 16
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -943,6 +1021,7 @@ total_lines = 18
 init_lines = 3
 name = 活捉大佐
 resId = 16
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -955,6 +1034,7 @@ total_lines = 18
 init_lines = 3
 name = 击毙大佐
 resId = 16
+chapterId = 8
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -967,6 +1047,7 @@ total_lines = 19
 init_lines = 3
 name = 初识少将
 resId = 17
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -979,6 +1060,7 @@ total_lines = 19
 init_lines = 3
 name = 赶跑少将
 resId = 17
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -991,6 +1073,7 @@ total_lines = 19
 init_lines = 3
 name = 打败少将
 resId = 17
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -1003,6 +1086,7 @@ total_lines = 19
 init_lines = 3
 name = 活捉少将
 resId = 17
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -1015,6 +1099,7 @@ total_lines = 19
 init_lines = 3
 name = 击毙少将
 resId = 17
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -1027,6 +1112,7 @@ total_lines = 19
 init_lines = 3
 name = 初识中将
 resId = 18
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -1039,6 +1125,7 @@ total_lines = 19
 init_lines = 3
 name = 赶跑中将
 resId = 18
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -1051,6 +1138,7 @@ total_lines = 19
 init_lines = 3
 name = 打败中将
 resId = 18
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -1063,6 +1151,7 @@ total_lines = 19
 init_lines = 3
 name = 活捉中将
 resId = 18
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -1075,6 +1164,7 @@ total_lines = 19
 init_lines = 3
 name = 击毙中将
 resId = 18
+chapterId = 9
 itemids = 101;102;103;104;105
 probability = 35
 
@@ -1087,6 +1177,7 @@ total_lines = 20
 init_lines = 3
 name = 初识大将
 resId = 19
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40
 
@@ -1099,6 +1190,7 @@ total_lines = 20
 init_lines = 3
 name = 赶跑大将
 resId = 19
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40
 
@@ -1111,6 +1203,7 @@ total_lines = 20
 init_lines = 3
 name = 打败大将
 resId = 19
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40
 
@@ -1123,6 +1216,7 @@ total_lines = 20
 init_lines = 3
 name = 活捉大将
 resId = 19
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40
 
@@ -1135,6 +1229,7 @@ total_lines = 20
 init_lines = 3
 name = 击毙大将
 resId = 19
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40
 
@@ -1147,6 +1242,7 @@ total_lines = 20
 init_lines = 3
 name = 初识元帅
 resId = 20
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40
 
@@ -1159,6 +1255,7 @@ total_lines = 20
 init_lines = 3
 name = 赶跑元帅
 resId = 20
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40
 
@@ -1171,6 +1268,7 @@ total_lines = 20
 init_lines = 3
 name = 打败元帅
 resId = 20
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40
 
@@ -1183,6 +1281,7 @@ total_lines = 20
 init_lines = 3
 name = 活捉元帅
 resId = 20
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40
 
@@ -1195,5 +1294,6 @@ total_lines = 20
 init_lines = 3
 name = 击毙元帅
 resId = 20
+chapterId = 10
 itemids = 101;102;103;104;105
 probability = 40

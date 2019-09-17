@@ -1,4 +1,4 @@
-import { st_cannon_info, CfgMgr, st_player_info, st_level_info, st_monster_info } from "./ConfigManager";
+import { st_cannon_info, CfgMgr, st_player_info, st_level_info, st_monster_info, st_chapter_info } from "./ConfigManager";
 
 
 //常量或类定义
@@ -90,6 +90,17 @@ export class LevelInfo{
     clone(){
         let temp = new LevelInfo(this.levelId, this.starNum); 
         return temp;
+    };
+}
+
+//章节数据
+export class ChapterInfo{
+    chapterId: number = 0;   //配置ID
+    chapterCfg: st_chapter_info = null;
+
+    constructor(chapterId: number){
+        this.chapterId = chapterId;
+        this.chapterCfg = CfgMgr.getChapterConf(chapterId);
     };
 }
 

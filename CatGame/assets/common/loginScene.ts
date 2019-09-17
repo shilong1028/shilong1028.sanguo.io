@@ -13,7 +13,7 @@ export default class LoginScene extends cc.Component {
     @property(cc.Label)
     descLabel: cc.Label = null;
 
-    descStr: string = "      反对法西斯，珍爱和平。鉴于日本右翼势力鼓吹复活军国主义、法西斯主义，否认侵略战争，美化侵略历史。本人制作此款休闲抗日小游戏，希望玩家们能够铭记抗日战争史，时刻警惕法西斯主义复活。"
+    descStr: string = "游戏定位是一款休闲弹射类小游戏。\n本身其实很容易上手，且能够吸引用户短时间游玩。";
     curDescStrIdx: number = 0;
     bUpdateStr: boolean = false;
 

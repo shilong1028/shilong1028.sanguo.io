@@ -102,6 +102,38 @@ export class st_monster_info{
     }
 }
 
+//章节配置信息
+export class st_chapter_info{
+    name;  //名称
+    res;   //图标资源id
+    levels;  //关卡 1|10
+    diamond;  //奖励钻石数
+    itemids;    //通关道具奖励 101;102
+    probability;   //通关道具掉落概率（1星）2星*2 3星*3
+
+    transType(){
+        this.res = parseInt(this.res);
+        this.levels = CfgMgr.getIntAry(this.levels, "|");
+        this.diamond = parseInt(this.diamond);
+        this.itemids = CfgMgr.getIntAry(this.itemids, ";");
+        this.probability = parseInt(this.probability)/100;
+    }
+
+    constructor(){
+    }
+
+    clone(){
+        let temp = new st_chapter_info();
+        temp.name = this.name;
+        temp.res = this.res;
+        temp.levels = this.levels;
+        temp.diamond = this.diamond;
+        temp.itemids = this.itemids;
+        temp.probability = this.probability;
+        return temp;
+    }
+}
+
 //关卡配置数据
 export class st_level_info{
     gold;     //通关奖励（2星），1星为75%，3星为150%
@@ -112,6 +144,7 @@ export class st_level_info{
     init_lines;    //初始显示行数
     name;  //关卡名称
     resId;   //关卡图标资源id
+    chapterId;   //章节ID
     itemids;    //通关道具奖励 101;102
     probability;   //通关道具掉落概率（1星）2星*2 3星*3
     
@@ -123,6 +156,7 @@ export class st_level_info{
         this.total_lines = parseInt(this.total_lines);
         this.init_lines = parseInt(this.init_lines);
         this.resId = parseInt(this.resId);
+        this.chapterId = parseInt(this.chapterId);
         this.itemids = CfgMgr.getIntAry(this.itemids, ";");
         this.probability = parseInt(this.probability)/100;
     }
@@ -140,6 +174,7 @@ export class st_level_info{
         temp.init_lines = this.init_lines;
         temp.name = this.name;
         temp.resId = this.resId;
+        temp.chapterId = this.chapterId;
         temp.itemids = this.itemids;
         temp.probability = this.probability;
         return temp;
@@ -168,6 +203,10 @@ class CfgManager_class {
     //关卡配置表
     C_level_info : Map<number, st_level_info> = new Map<number, st_level_info>();
     SC_level_info = st_level_info;
+
+    //章节配置表
+    C_chapter_info : Map<number, st_chapter_info> = new Map<number, st_chapter_info>();
+    SC_chapter_info = st_chapter_info;
 
     //砖块配置表
     C_monster_info : Map<number, st_monster_info> = new Map<number, st_monster_info>();
@@ -199,6 +238,16 @@ class CfgManager_class {
     /**获取关卡配置数据 */
     getLevelConf(levelId: number): st_level_info{
         let obj = this.C_level_info[levelId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+
+    /**获取章节配置 */
+    getChapterConf(chapterId: number): st_chapter_info{
+        let obj = this.C_chapter_info[chapterId];
         if(obj){
             return obj.clone();
         }else{
