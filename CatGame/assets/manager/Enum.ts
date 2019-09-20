@@ -38,8 +38,10 @@ export class BallInfo{
 export class PlayerInfo{
     playerId: number = 0;   //炮配置ID
     level: number = 1;   //炮等级
-    useState: number = 0;  //使用状态，0未拥有，1已拥有，2使用中
-    itemIds: number[] = new Array();  //道具孔位信息
+    useState: number = 0;  //使用状态，0未拥有，1已拥有
+    ballId: number = 0;   //装备小球ID
+    itemId: number = 0;    //饰品道具Id
+    skillId: number = 0;  //技能id
     playerCfg: st_player_info = null;
 
     constructor(playerId: number){
@@ -51,7 +53,9 @@ export class PlayerInfo{
         let temp = new PlayerInfo(this.playerId);
         temp.level = this.level;   
         temp.useState = this.useState; 
-        temp.itemIds = this.itemIds;  
+        temp.ballId = this.ballId;   
+        temp.itemId = this.itemId; 
+        temp.skillId = this.skillId;  
 
         //不必写入本地存储的变量s
         temp.playerCfg = null;
@@ -62,7 +66,9 @@ export class PlayerInfo{
         let temp = new PlayerInfo(this.playerId);
         temp.level = this.level;   
         temp.useState = this.useState;
-        temp.itemIds = this.itemIds;  
+        temp.ballId = this.ballId;   
+        temp.itemId = this.itemId;
+        temp.skillId = this.skillId;  
         return temp;
     };
 }
@@ -262,6 +268,7 @@ export const NoticeType = {
     GameReStart: "GameReStart",  //重新开始游戏
 
     UpdateGold: "UpdateGold",   //更新金币显示
+    BuyAddBall: "BuyAddBall",   //购买小球
     BlockBallSel: "BlockBallSel",   //地块上小球被选择，相同等级的小球地块要显示光圈
     UpdatePlayer: "UpdatePlayer",   //更新炮台
 

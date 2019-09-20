@@ -1,11 +1,10 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, PlayerInfo} from "../manager/Enum";
+import { NoticeType } from "../manager/Enum";
 import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
-import { ROOT_NODE } from "../common/rootNode";
-import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
 import ChapterPage from "./chapterPage";
+import { MyUserData } from "../manager/MyUserData";
 
 const {ccclass, property} = cc._decorator;
 
@@ -39,6 +38,8 @@ export default class MainScene extends cc.Component {
     pfShop: cc.Prefab = null;  //小球商店
     @property(cc.Prefab)
     pfPage: cc.Prefab = null;    //章节页签
+    @property(cc.Prefab)
+    pfBag: cc.Prefab = null;  //主角和背包
 
     bLoadRoleDataFinish: boolean = false;   //是否已经加载完毕用户数据
     curChapterIdx: number = 0;   //当前章节索引
@@ -101,19 +102,6 @@ export default class MainScene extends cc.Component {
         this.labGold.node.runAction(cc.sequence(cc.scaleTo(0.1, 1.3), cc.scaleTo(0.1, 1.0)));
     }
 
-    //购买炮台
-    handleBuyPlayer(playerInfo: PlayerInfo){
-        if(playerInfo){
-            if(MyUserData.GoldCount >= playerInfo.playerCfg.cost){
-                MyUserDataMgr.updateUserGold(-playerInfo.playerCfg.cost);
-                MyUserDataMgr.addPlayerToPlayerList(playerInfo);   //添加新炮台到拥有的炮列表
-                NotificationMy.emit(NoticeType.UpdatePlayer, null);  //更新炮台显示
-            }else{
-                ROOT_NODE.showGoldAddDialog();  //获取金币提示框
-            }
-        }
-    }
-
     initPageView(){
         for(let i=0; i<10; ++i){
             let page = cc.instantiate(this.pfPage);
@@ -131,7 +119,7 @@ export default class MainScene extends cc.Component {
         if (eventType !== cc.PageView.EventType.PAGE_TURNING) {
             return;
         }
-        console.log("当前所在的页面索引:" + sender.getCurrentPageIndex());
+        //console.log("当前所在的页面索引:" + sender.getCurrentPageIndex());
         this.curChapterIdx = sender.getCurrentPageIndex();   //当前章节索引
         this.handleMovePage();
     }
@@ -172,7 +160,7 @@ export default class MainScene extends cc.Component {
 
     onBagBtn(){
         AudioMgr.playEffect("effect/ui_click");
-
+        GameMgr.showLayer(this.pfBag);
     }
 
     /**出战按钮 */

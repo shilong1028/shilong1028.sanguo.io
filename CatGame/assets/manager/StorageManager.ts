@@ -116,6 +116,7 @@ class StorageManager_class  {
 export  const LDMgr = new StorageManager_class();
 
 export const LDKey = {
+    KEY_NewUser: "KEY_NewUser",   //是否新用户
     KEY_Music_onOff: "KEY_Music_onOff",  //音乐或音效开关(开启)
     KEY_Music_Volume: "KEY_Music_Volume",     //本地音乐音量
     KEY_Sound_Volume: "KEY_Sound_Volume",   //本地音效音量
@@ -125,9 +126,7 @@ export const LDKey = {
     KEY_LastGoldTaxTime: "KEY_LastGoldTaxTime",   //上一次收税金时间
     KEY_BlockCount: "KEY_BlockCount",    //开启的合成地块数量
     KEY_BallList: "KEY_BallList",  //未出战小球列表
-    KEY_FightCount: "KEY_FightCount",    //开启的合成地块数量
-    KEY_FightList: "KEY_FightList",   //解锁的可战斗数量
-    KEY_CurPlayerIdx: "KEY_CurPlayerIdx",    //当前使用炮索引
+    KEY_CurPlayerId: "KEY_CurPlayerId",    //当前使用炮索引
     KEY_PlayerList: "KEY_PlayerList",   //拥有的炮列表
     KEY_CurLevelId: "KEY_CurLevelId",   //当前通关的最大id
     KEY_LevelList: "KEY_LevelList",   //通关列表

@@ -1,13 +1,17 @@
 import viewCell from "../tableView/viewCell";
-import { BallInfo } from "../manager/Enum";
+import { BallInfo, NoticeType } from "../manager/Enum";
 import Stuff from "./Stuff";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
+import BallShopLayer from "./ballShopLayer";
+import { MyUserData } from "../manager/MyUserData";
+import { ROOT_NODE } from "../common/rootNode";
+import { NotificationMy } from "../manager/NoticeManager";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class ShopCell extends viewCell {
+export default class BallShopCell extends viewCell {
 
     @property(cc.Button)
     goldBtn: cc.Button = null;
@@ -29,6 +33,9 @@ export default class ShopCell extends viewCell {
     data : any = null;
     cellData : BallInfo = null;  
     cellIdx : number = -1;  
+
+    targetSc: BallShopLayer = null;
+
     
     // LIFE-CYCLE CALLBACKS:
 
@@ -41,17 +48,18 @@ export default class ShopCell extends viewCell {
             return;
         }
 
-        this.onSelected(this._selectState);
-
         //if(reload){
             this.data = data;   //{ array: list, target: x.js }
+            this.targetSc = this.data.target;
             this.cellIdx = index; 
             this.cellData = this.data.array[this.cellIdx];
             this.node.active = true;
         //}
 
+        this.onSelected(this._selectState);
+
         if(this.nStuff == null){
-            let stuff = cc.instantiate(GameMgr.getMainScene().pfStuff);
+            let stuff = cc.instantiate(this.targetSc.pfStuff);
             this.stuffNode.addChild(stuff);
             this.nStuff = stuff.getComponent(Stuff);
         }
@@ -78,6 +86,17 @@ export default class ShopCell extends viewCell {
 
     onGoldBtn(){
         AudioMgr.playEffect("effect/ui_buy");
-        GameMgr.getMainScene().handleBuyStuff(this.cellData);   //购买小球
+        let ballInfo = this.cellData;
+        if(ballInfo){
+            if(MyUserData.GoldCount >= ballInfo.cannonCfg.cost){
+                if(MyUserData.ballList.length >= MyUserData.blockCount){
+                    ROOT_NODE.showTipsText("合成网格中可用地块已满，无法购买！请解雇无用的对象后重新购买。");
+                }else{
+                    NotificationMy.emit(NoticeType.BuyAddBall, ballInfo);   //购买小球
+                }
+            }else{
+                ROOT_NODE.showGoldAddDialog();  //获取金币提示框
+            }
+        }
     }
 }

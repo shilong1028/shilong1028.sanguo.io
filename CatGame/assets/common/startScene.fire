@@ -351,7 +351,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 520,
+      "width": 650,
       "height": 252
     },
     "_anchorPoint": {
@@ -399,8 +399,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "趣味逗猫",
-    "_N$string": "趣味逗猫",
+    "_string": "萌猫大作战",
+    "_N$string": "萌猫大作战",
     "_fontSize": 130,
     "_lineHeight": 200,
     "_enableWrapText": true,

@@ -3785,11 +3785,12 @@
     "rightArrowNode": {
       "__id__": 48
     },
-    "pfShop": {
-      "__uuid__": "5590b04c-dabb-464e-8f62-79e9ab835e10"
-    },
+    "pfShop": null,
     "pfPage": {
       "__uuid__": "ecf321a2-7400-4109-921e-3712afbf4145"
+    },
+    "pfBag": {
+      "__uuid__": "652041cc-83c2-4aa1-b636-1d888e52882a"
     },
     "_id": "62oOYlgPtOaK3fyuBqERcF"
   }

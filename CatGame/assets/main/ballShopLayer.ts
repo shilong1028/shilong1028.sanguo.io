@@ -7,10 +7,13 @@ import { BallInfo } from "../manager/Enum";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class ShopLayer extends cc.Component {
+export default class BallShopLayer extends cc.Component {
 
     @property(TableView)
     tableView: TableView = null;
+
+    @property(cc.Prefab)
+    pfStuff: cc.Prefab = null;
 
     // LIFE-CYCLE CALLBACKS:
 

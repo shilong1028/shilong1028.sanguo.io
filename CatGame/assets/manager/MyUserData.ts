@@ -16,10 +16,7 @@ export var MyUserData = {
     blockCount: 3,   //开启的合成地块数量
     ballList: [],   //未出战小球列表 
     
-    fightCount: 3,  //解锁的可战斗数量
-    fightList: [],   //出战小球列表
-
-    curPlayerIdx: 0,  //当前使用的炮索引
+    curPlayerId: 1,  //当前使用的炮Id
     playerList: [],   //拥有的炮列表
 
     curLevelId: 0,  //当前通关的最大id
@@ -34,6 +31,8 @@ class MyUserManager {
 
     /**清除所有用户数据 */
     clearUserData(){
+        LDMgr.setItem(LDKey.KEY_NewUser, 0);  //是否新用户
+
         MyUserData.GoldCount = 0;   //用户金币
         LDMgr.setItem(LDKey.KEY_GoldCount, 0);
 
@@ -46,11 +45,7 @@ class MyUserManager {
         MyUserData.ballList = new Array();  //未出战小球列表 
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
-        this.updateFightCount(3);  //解锁的可战斗数量
-        MyUserData.fightList = new Array();  //出战小球列表
-        LDMgr.setItem(LDKey.KEY_FightList, JSON.stringify(MyUserData.fightList));
-
-        this.updateCurPlayerIdx(0);  //当前使用的炮索引
+        this.updateCurPlayerById(0);  //当前使用的炮
         MyUserData.playerList = new Array(); //拥有的炮列表
         LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
 
@@ -74,10 +69,7 @@ class MyUserManager {
         MyUserData.blockCount = LDMgr.getItemInt(LDKey.KEY_BlockCount, 3);  //开启的合成地块数量
         MyUserData.ballList = this.getBallListByLD();    //未出战小球列表 
 
-        MyUserData.fightCount = LDMgr.getItemInt(LDKey.KEY_FightCount, 3);  //解锁的可战斗数量
-        MyUserData.fightList = this.getFightListByLD();  //出战小球列表 
-
-        MyUserData.curPlayerIdx = LDMgr.getItemInt(LDKey.KEY_CurPlayerIdx, 0);  //当前使用的炮索引
+        MyUserData.curPlayerId = LDMgr.getItemInt(LDKey.KEY_CurPlayerId, 0);  //当前使用的炮索引
         MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表
 
         MyUserData.curLevelId = LDMgr.getItemInt(LDKey.KEY_CurLevelId, 0);  //当前通关的最大id
@@ -85,21 +77,24 @@ class MyUserManager {
 
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
 
-        if(MyUserData.GoldCount == 0 && MyUserData.blockCount == 3 && MyUserData.ballList.length == 0 && MyUserData.fightList.length == 0){
-            //新用户
+        if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户
             for(let i=0; i<3; ++i){
                 let ballInfo = new BallInfo(1);
+                ballInfo.timeId = this.lastBallTime - i;   //防止一起读取时多个武将timeId一致
                 this.addBallToBallList(ballInfo, false);
             }
             LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
             this.updateUserGold(100);
 
-            MyUserData.playerList.push(new PlayerInfo(1));    //拥有的炮列表
-            LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
+            let playerInfo = new PlayerInfo(1);
+            playerInfo.useState = 1;  //使用状态，0未拥有，1已拥有
+            this.updateCurPlayerById(1);  
+            this.updatePlayerFromList(playerInfo);   //拥有的炮列表
 
-            this.updateCurPlayerIdx(0);  //当前使用的炮索引
             this.updateCurLevelId(0);  //当前通关的最大id
+
+            LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
         }
 
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
@@ -109,12 +104,6 @@ class MyUserManager {
     updateBlockCount(openNum:number){
         MyUserData.blockCount = openNum;  //开启的合成地块数量
         LDMgr.setItem(LDKey.KEY_BlockCount, openNum);
-    }
-
-    /**更新地块开启数量 */
-    updateFightCount(openNum:number){
-        MyUserData.fightCount = openNum;  //解锁的可战斗数量
-        LDMgr.setItem(LDKey.KEY_FightCount, openNum);
     }
 
     //获取背包中物品数据
@@ -238,30 +227,47 @@ class MyUserManager {
         }
     }
 
-    /**更新当前使用炮索引 */
-    updateCurPlayerIdx(usedIdx:number){
-        MyUserData.curPlayerIdx = usedIdx;  //更新当前使用炮索引
-        LDMgr.setItem(LDKey.KEY_CurPlayerIdx, usedIdx);
+    /**更新当前使用炮ID */
+    updateCurPlayerById(playerId: number){
+        MyUserData.curPlayerId = playerId;
+        LDMgr.setItem(LDKey.KEY_CurPlayerId, playerId);  //更新当前使用炮
     }
     /**获取当前使用炮信息 */
     getCurPlayerInfo(){
-        let obj = MyUserData.playerList[MyUserData.curPlayerIdx];
-        if(obj){
-            return obj.clone();
+        for(let i=0; i<MyUserData.playerList.length; ++i){
+            if(MyUserData.playerList[i].playerId == MyUserData.curPlayerId){
+                return MyUserData.playerList[i].clone();
+            }
         }
         return null;
     }
-
+    /**获取指定索引的炮信息 */
+    getPlayerInfoByIdx(idx: number){
+        let playerInfo = MyUserData.playerList[idx];
+        if(playerInfo){
+            return playerInfo.clone();
+        }else{
+            return null;
+        }
+    }
     /**从本地存储中获取拥有的炮列表 */
     getPlayerListByLD(){
         let PalyerList = LDMgr.getJsonItem(LDKey.KEY_PlayerList);  
         let tempList: PlayerInfo[] = new Array();
         if(PalyerList){
-            for(let i=0; i<PalyerList.length; ++i){
-                let tempItem = new PlayerInfo(PalyerList[i].playerId);
-                tempItem.level = PalyerList[i].level;   
-                tempItem.itemIds = PalyerList[i].itemIds;  
-                tempList.push(tempItem);
+            for(let k=1; k<= 3; ++k){
+                let playerInfo = new PlayerInfo(k);
+                for(let i=0; i<PalyerList.length; ++i){
+                    if(k == PalyerList[i].playerId){
+                        playerInfo.level = PalyerList[i].level;   
+                        playerInfo.useState = 1;  //PalyerList[i].useState;
+                        playerInfo.ballId = PalyerList[i].ballId;   
+                        playerInfo.itemId = PalyerList[i].itemId;
+                        playerInfo.skillId = PalyerList[i].skillId;  
+                        break;
+                    }
+                }
+                tempList.push(playerInfo);
             }
         }
         return tempList;
@@ -270,41 +276,35 @@ class MyUserManager {
     savePlayerList(){
         let PlayerList = new Array();
         for(let i=0; i<MyUserData.playerList.length; ++i){
-            let tempItem = MyUserData.playerList[i].cloneNoCfg();
-            PlayerList.push(tempItem);
+            if(MyUserData.playerList[i].useState == 1){
+                let tempItem = MyUserData.playerList[i].cloneNoCfg();
+                PlayerList.push(tempItem);
+            }
         }
         LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(PlayerList));
     }
-    /**添加新炮台到拥有的炮列表 */
-    addPlayerToPlayerList(playerInfo: PlayerInfo){
-        MyUserData.playerList.push(playerInfo);
-        this.savePlayerList();
+    /**更新炮台到拥有的炮列表 */
+    updatePlayerFromList(playerInfo: PlayerInfo){
+        for(let i=0; i<MyUserData.playerList.length; ++i){
+            if(MyUserData.playerList[i].playerId == playerInfo.playerId){
+                MyUserData.playerList[i] = playerInfo;
+                break;
+            }
+        }
+        if(playerInfo.useState == 1){
+            this.savePlayerList();
+        }
     }
-
+    
     /**从本地存储中获取未出战小球列表 */
     getBallListByLD(){
         let BallList = LDMgr.getJsonItem(LDKey.KEY_BallList);  
         let tempList: BallInfo[] = new Array();
-        let curTime = new Date().getTime();
-        this.lastBallTime = curTime;   //最后一个添加未出战小球的时间（如果新小球的timeId《=lastTime，则timeId++);
+        this.lastBallTime = new Date().getTime()-1;   //最后一个添加未出战小球的时间（如果新小球的timeId《=lastTime，则timeId++);
         if(BallList){
             for(let i=0; i<BallList.length; ++i){
                 let tempItem = new BallInfo(BallList[i].cannonId);
-                tempItem.timeId = curTime - i;   //防止一起读取时多个武将timeId一致
-                tempList.push(tempItem);
-            }
-        }
-        return tempList;
-    }
-    /**从本地存储中获取出战小球列表 */
-    getFightListByLD(){
-        let BallList = LDMgr.getJsonItem(LDKey.KEY_FightList);  
-        let tempList: BallInfo[] = new Array();
-        let curTime = new Date().getTime()-100;   //防止和未出战小球时间重合
-        if(BallList){
-            for(let i=0; i<BallList.length; ++i){
-                let tempItem = new BallInfo(BallList[i].cannonId);
-                tempItem.timeId = curTime - i;   //防止一起读取时多个武将timeId一致
+                tempItem.timeId = this.lastBallTime - i;   //防止一起读取时多个武将timeId一致
                 tempList.push(tempItem);
             }
         }
@@ -319,21 +319,14 @@ class MyUserManager {
         }
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(BallList));
     }
-    /**保存出战小球列表 */
-    saveFightList(){
-        let BallList = new Array();
-        for(let i=0; i<MyUserData.fightList.length; ++i){
-            let tempItem = MyUserData.fightList[i].cloneNoCfg();
-            BallList.push(tempItem);
-        }
-        LDMgr.setItem(LDKey.KEY_FightList, JSON.stringify(BallList));
-    }
     /**添加小球到未出战列表 */
     addBallToBallList(ballInfo: BallInfo, bSave: boolean = true){
-        if(ballInfo.timeId <= this.lastBallTime){
-            ballInfo.timeId += 1;
+        if(bSave == true){
+            if(ballInfo.timeId <= this.lastBallTime){   //重复timeId的小球
+                ballInfo.timeId = this.lastBallTime + 1;
+            }
+            this.lastBallTime = ballInfo.timeId;   //最后一个添加未出战小球的时间（如果新小球的timeId《=lastTime，则timeId++);
         }
-        this.lastBallTime = ballInfo.timeId;   //最后一个添加未出战小球的时间（如果新小球的timeId《=lastTime，则timeId++);
 
         MyUserData.ballList.push(ballInfo);
 
@@ -341,21 +334,35 @@ class MyUserManager {
             this.saveBallList();
         }
     }
+    /**添加小球到炮台道具 */
+    equipBallFromBallList(ballInfo: BallInfo, equipBall: BallInfo=null){
+        for(let i=0; i<MyUserData.ballList.length; ++i){
+            let curTimeId = MyUserData.ballList[i].timeId;
+            if(ballInfo.timeId == curTimeId){
+                MyUserData.ballList.splice(i, 1);
+                break;
+            }
+        }
+        if(equipBall){
+            MyUserData.ballList.push(equipBall);
+        }
+        this.saveBallList();
+    }
     /**更新未出战小球 */
     updateBallInBallList(ballInfo: BallInfo, delBallInfo: BallInfo=null){
         let optCount = 1;
-        if(delBallInfo){
+        if(delBallInfo != null){
             optCount = 2;
         }
         let delIdx = -1;
         for(let i=0; i<MyUserData.ballList.length; ++i){
             let curTimeId = MyUserData.ballList[i].timeId;
             if(ballInfo.timeId == curTimeId){
-                MyUserData.ballList[i] = ballInfo;
+                MyUserData.ballList[i] = ballInfo;    //更新的小球
                 optCount --;
             }else if(delBallInfo && delBallInfo.timeId == curTimeId){
-                delIdx = i;
-                optCount --;
+                delIdx = i;  //删除的小球索引
+                optCount --;   
             }
             if(optCount <= 0){
                 break;
@@ -376,46 +383,11 @@ class MyUserManager {
             }
         }
     }
-    /**添加小球到出战列表 */
-    addBallToFightList(ballInfo: BallInfo){
-        MyUserData.fightList.unshift(ballInfo.clone());
-
-        for(let i=0; i<MyUserData.ballList.length; ++i){
-            if(ballInfo.timeId == MyUserData.ballList[i].timeId){
-                MyUserData.ballList.splice(i, 1);
-                this.saveBallList();
-                break;
-            }
-        }
-        this.saveFightList();
-    }
-    /**移除出战小球 */
-    removeBallFromFightList(ballInfo: BallInfo){
-        MyUserData.ballList.push(ballInfo.clone());
-
-        for(let i=0; i<MyUserData.fightList.length; ++i){
-            if(ballInfo.timeId == MyUserData.fightList[i].timeId){
-                MyUserData.fightList.splice(i, 1);
-                this.saveFightList();
-                break;
-            }
-        }
-        this.saveBallList();
-    }
     //获取未出战列表克隆
     getBallListClone(){
         let tempArr = new Array();
         for(let i=0; i<MyUserData.ballList.length; ++i){
             let info: BallInfo = MyUserData.ballList[i].clone();
-            tempArr.push(info);
-        }
-        return tempArr;
-    }
-    //获取出战列表克隆
-    getFightListClone(){
-        let tempArr = new Array();
-        for(let i=0; i<MyUserData.fightList.length; ++i){
-            let info: BallInfo = MyUserData.fightList[i].clone();
             tempArr.push(info);
         }
         return tempArr;
