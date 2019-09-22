@@ -31,13 +31,13 @@ export default class Item extends cc.Component {
 
     // update (dt) {}
 
-    initItemById(itemId: number){
-        this.initItemByData(new ItemInfo(itemId), true);
+    initItemById(itemId: number, bshowNum: boolean){
+        this.initItemByData(new ItemInfo(itemId), bshowNum);
     }
 
     initItemByData(itemInfo: ItemInfo, bshowNum: boolean){
         this.itemInfo = itemInfo;
-        this.iconSpr.spriteFrame = this.iconAtlas.getSpriteFrame("monster_"+itemInfo.itemId);
+        this.iconSpr.spriteFrame = this.iconAtlas.getSpriteFrame(itemInfo.itemId.toString());
         this.nameLabel.string = itemInfo.itemCfg.name;
         if(bshowNum){
             this.numLabel.string = itemInfo.itemNum.toString();

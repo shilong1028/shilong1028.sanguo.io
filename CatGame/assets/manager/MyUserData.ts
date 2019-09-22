@@ -1,6 +1,7 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NotificationMy } from "./NoticeManager";
 import { NoticeType, BallInfo, PlayerInfo, LevelInfo, ItemInfo } from "./Enum";
+import { GameMgr } from "./GameManager";
 
 
 //用户数据管理
@@ -82,6 +83,8 @@ class MyUserManager {
                 let ballInfo = new BallInfo(1);
                 ballInfo.timeId = this.lastBallTime - i;   //防止一起读取时多个武将timeId一致
                 this.addBallToBallList(ballInfo, false);
+
+                this.updateItemByCount(i+1, 10);   //测试道具
             }
             LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
@@ -255,7 +258,7 @@ class MyUserManager {
         let PalyerList = LDMgr.getJsonItem(LDKey.KEY_PlayerList);  
         let tempList: PlayerInfo[] = new Array();
         if(PalyerList){
-            for(let k=1; k<= 3; ++k){
+            for(let k=1; k<= GameMgr.playerCount; ++k){
                 let playerInfo = new PlayerInfo(k);
                 for(let i=0; i<PalyerList.length; ++i){
                     if(k == PalyerList[i].playerId){

@@ -1,26 +1,53 @@
 [1]
-name = 默认炮
+name = 土炮
 cost = 0
-cannon = 1;10
-attack_up = 10
-baoji_up = 10
-itemCount = 1
-desc = 普通炮，可以发射1-10级炮弹，小额提升攻击力和暴击力，拥有辅助道具孔位1个。
+cannon = 1;5
+attack_up = 0
+baoji_up = 0
+skillId = 0
+desc = 土炮，可以发射1-5级炮弹，不会提升攻击力和暴击率，没有默认技能。
 
 [2]
-name = 特殊炮
+name = 铁炮
 cost = 1000
-cannon = 5;15
-attack_up = 30
-baoji_up = 30
-itemCount = 2
-desc = 特殊炮，可以发射5-15级炮弹，适量提升攻击力和暴击力，拥有辅助道具孔位2个。
+cannon = 3;8
+attack_up = 10
+baoji_up = 5
+skillId = 1
+desc = 铁炮，可以发射3-8级炮弹，稍微提升攻击力和暴击率，拥有默认冰冻技能。
 
 [3]
-name = 视频炮
+name = 铜炮
+cost = 10000
+cannon = 5;10
+attack_up = 20
+baoji_up = 10
+skillId = 2
+desc = 铜炮，可以发射5-10级炮弹，较少提升攻击力和暴击率，拥有默认强化技能。
+
+[4]
+name = 山炮
+cost = 100000
+cannon = 8;13
+attack_up = 30
+baoji_up = 15
+skillId = 3
+desc = 山炮，可以发射8-13级炮弹，较高提升攻击力和暴击率，拥有默认分裂技能。
+
+[5]
+name = 轻坦克
 cost = 1000000
-cannon = 10;20
+cannon = 10;15
+attack_up = 40
+baoji_up = 20
+skillId = 4
+desc = 轻坦克，可以发射10-15级炮弹，小幅度提升攻击力和暴击率，拥有默认反弹技能。
+
+[6]
+name = 重坦克
+cost = 10000000
+cannon = 13;20
 attack_up = 50
-baoji_up = 50
-itemCount = 3
-desc = 视频炮，可以发射10-20级炮弹，大幅度提升攻击力和暴击力，拥有辅助道具孔位3个。
+baoji_up = 25
+skillId = 5
+desc = 重坦克，可以发射13-20级炮弹，大幅度提升攻击力和暴击率，拥有默认连体技能。

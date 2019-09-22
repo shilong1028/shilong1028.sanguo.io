@@ -1,6 +1,6 @@
 
 import { AudioMgr } from "../manager/AudioMgr";
-import { NoticeType, TipsStrDef, BallInfo, PlayerInfo } from "../manager/Enum";
+import { NoticeType, TipsStrDef, BallInfo, PlayerInfo, ItemInfo } from "../manager/Enum";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { NotificationMy } from "../manager/NoticeManager";
 import PlayerCell from "./playerCell";
@@ -8,6 +8,7 @@ import Block from "./Block";
 import { GameMgr } from "../manager/GameManager";
 import Stuff from "./Stuff";
 import { ROOT_NODE } from "../common/rootNode";
+import Item from "../common/item";
 
 
 const {ccclass, property} = cc._decorator;
@@ -38,6 +39,10 @@ export default class BagLayer extends cc.Component {
     pfStuff: cc.Prefab = null;
     @property(cc.Prefab)
     pfBallShop: cc.Prefab = null;
+    @property(cc.Prefab)
+    pfItem: cc.Prefab = null;
+    @property(cc.Prefab)
+    pfSkill: cc.Prefab = null;
 
     @property(cc.SpriteAtlas)
     stuffUpAtlas: cc.SpriteAtlas = null;
@@ -61,6 +66,7 @@ export default class BagLayer extends cc.Component {
         NotificationMy.on(NoticeType.BuyAddBall, this.addBallToOneBlock, this);   //购买小球
 
         this.delNode.active= false;  //回收站
+        this.gridLabel.string = "";
     }
 
     onDestroy(){
@@ -70,7 +76,7 @@ export default class BagLayer extends cc.Component {
 
     start () {
         this.initPageView();
-        this.initGirdInfo(0);
+        this.initGirdInfo(0);  //0装备小球，1饰品道具，2技能
     }
 
     // update (dt) {}
@@ -115,9 +121,9 @@ export default class BagLayer extends cc.Component {
     //装备炮弹
     showPlayerEquip(ballId: number){
         this.equipNode.removeAllChildren(true);
-
         if(ballId > 0){
             let stuffNode = cc.instantiate(this.pfStuff);
+            stuffNode.name = "stuffNode";
             this.equipNode.addChild(stuffNode);
             stuffNode.getComponent(Stuff).setStuffData(new BallInfo(ballId));  //设置地块小球模型数据
         }
@@ -126,6 +132,12 @@ export default class BagLayer extends cc.Component {
     //饰品道具
     showPlayerItem(itemId: number){
         this.itemNode.removeAllChildren(true);
+        if(itemId > 0){
+            let itemModel = cc.instantiate(this.pfItem);
+            itemModel.name = "itemModel";
+            this.itemNode.addChild(itemModel);
+            itemModel.getComponent(Item).initItemById(itemId, false);  //设置地块道具模型数据
+        }
     }
 
     //炮台技能
@@ -140,14 +152,17 @@ export default class BagLayer extends cc.Component {
 
     onEquipBtn(){
         AudioMgr.playEffect("effect/ui_click");
+        this.initGirdInfo(0);  //0装备小球，1饰品道具，2技能
     }
 
     onItemBtn(){
         AudioMgr.playEffect("effect/ui_click");
+        this.initGirdInfo(1);  //0装备小球，1饰品道具，2技能
     }
 
     onSkillBtn(){
         AudioMgr.playEffect("effect/ui_click");
+        this.initGirdInfo(2);  //0装备小球，1饰品道具，2技能
     }
 
     onTouchStart(event: cc.Event.EventTouch) {  
@@ -179,8 +194,22 @@ export default class BagLayer extends cc.Component {
         this.curGirdType = gridType;   //0装备小球，1饰品道具，2技能
 
         this.gridNode.removeAllChildren();
+        if(this.nSelectModel){
+            this.nSelectModel.removeFromParent(true);
+        }
+        this.nSelectModel = null;
 
         if(this.curGirdType == 0){   //0装备小球
+            this.gridLabel.string = "请选择武器装备！";
+            let stuffNode = this.equipNode.getChildByName("stuffNode");
+            if(stuffNode){
+                let ballInfo = stuffNode.getComponent(Stuff).ballInfo;   //地块小球模型数据
+                if(ballInfo){
+                    let cfg = ballInfo.cannonCfg;
+                    this.gridLabel.string = cfg.name+", 攻击"+cfg.attack+", 暴击"+cfg.baoji+", 回收价"+cfg.sell;
+                }
+            }
+
             let ballList = MyUserDataMgr.getBallListClone();
 
             for(let i=0; i<8; ++i){
@@ -195,9 +224,30 @@ export default class BagLayer extends cc.Component {
                 block.initBlockByBall(i, ballInfo, this);
             }
         }else if(this.curGirdType == 1){   //1饰品道具
+            this.gridLabel.string = "请选择饰品道具！";
+            let itemModel = this.itemNode.getChildByName("itemModel");
+            if(itemModel){
+                let itemInfo = itemModel.getComponent(Item).itemInfo;   //地块小球模型数据
+                if(itemInfo){
+                    this.gridLabel.string = itemInfo.itemCfg.name + ": "+itemInfo.itemCfg.desc;
+                }
+            }
 
+            let itemList = MyUserDataMgr.getItemListClone();
+
+            for(let i=0; i<8; ++i){
+                let itemInfo: ItemInfo = null;
+                if(i < itemList.length){
+                    itemInfo = itemList[i];
+                }
+    
+                let node = cc.instantiate(this.pfBlock);
+                this.gridNode.addChild(node);
+                let block = node.getComponent(Block);
+                block.initBlockByItem(i, itemInfo, this);
+            }
         }else if(this.curGirdType == 2){   //2技能
-
+            this.gridLabel.string = "请选择萌宠技能！";
         }
     }
 
@@ -210,7 +260,7 @@ export default class BagLayer extends cc.Component {
     updateSelectBlock(touchPos: cc.Vec2){
         if(this.selectBlock){
             touchPos = GameMgr.adaptTouchPos(touchPos, this.node.position);  //校正因适配而产生的触摸偏差
-            if(this.curGirdType == 0){   //0装备小球，1饰品道具，2技能
+            if(this.curGirdType == 0){   //0装备小球
                 if(this.nSelectModel == null){
                     this.nSelectModel = cc.instantiate(this.pfStuff);
                     this.nSelectModel.setPosition(-3000, -3000);
@@ -218,6 +268,16 @@ export default class BagLayer extends cc.Component {
                 }
                 let stuff = this.nSelectModel.getComponent(Stuff);
                 stuff.setStuffData(this.selectBlock.ballInfo);   //设置地块小球模型数据 
+            }else if(this.curGirdType == 1){   //1饰品道具
+                if(this.nSelectModel == null){
+                    this.nSelectModel = cc.instantiate(this.pfItem);
+                    this.nSelectModel.setPosition(-3000, -3000);
+                    this.node.addChild(this.nSelectModel, 100);
+                }
+                let item = this.nSelectModel.getComponent(Item);
+                item.initItemByData(this.selectBlock.itemInfo, false);   //设置地块道具模型数据 
+            }else if(this.curGirdType == 2){   //2技能
+
             }
 
             let pos = this.node.convertToNodeSpaceAR(touchPos);
@@ -284,7 +344,24 @@ export default class BagLayer extends cc.Component {
                     }
                 }
             }else if(this.curGirdType == 1){   //1饰品道具
+                let pos2 = this.itemNode.convertToNodeSpace(touchPos);   //道具
+                let rect2 = cc.rect(0, 0, this.itemNode.width, this.itemNode.height);
+                if(rect2.contains(pos2)){    //新饰品道具
+                    let curPageInfo: PlayerInfo = MyUserDataMgr.getPlayerInfoByIdx(this.curPageIdx);
+                    if(curPageInfo && curPageInfo.useState == 1){   //已经拥有的炮台
+                        curPageInfo.itemId = this.selectBlock.itemInfo.itemId;
 
+                        this.showPlayerItem(curPageInfo.itemId);
+                        NotificationMy.emit(NoticeType.UpdatePlayer, curPageInfo);   //更新炮台
+
+                        MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
+                        //炮台道具的消耗为每场战斗消耗一个（为零则清除炮台道具设定），故在此处切换道具时不做任何处理
+                    }else{
+                        this.selectBlock.onRecoverSelf();   //复原本地块模型
+                    }
+                }else{
+                    this.selectBlock.onRecoverSelf();   //复原本地块模型
+                }
             }else if(this.curGirdType == 2){   //2技能
 
             }
@@ -321,8 +398,7 @@ export default class BagLayer extends cc.Component {
                     MyUserDataMgr.updateUserGold(-ballInfo.cannonCfg.cost);
                     MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);
 
-                    block.initBlockByBallInfo(ballInfo);
-                    //this.showBuyBallAni(block, ballInfo);   //显示招募小球的动画特效
+                    block.setBallStuff(ballInfo);
                     break;
                 }
             }

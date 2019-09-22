@@ -1,4 +1,4 @@
-import { BallInfo, NoticeType, TipsStrDef } from "../manager/Enum";
+import { BallInfo, NoticeType, TipsStrDef, ItemInfo } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
 import Stuff from "./Stuff";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
@@ -6,6 +6,7 @@ import { GameMgr } from "../manager/GameManager";
 import { ROOT_NODE } from "../common/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
 import BagLayer from "./bagLayer";
+import Item from "../common/item";
 
 
 const {ccclass, property} = cc._decorator;
@@ -26,8 +27,12 @@ export default class Block extends cc.Component {
     @property(cc.SpriteFrame)
     selLightFrame: cc.SpriteFrame = null;   //选中后，其他同等级地块小球光圈显示（黄色)
 
+    @property([cc.SpriteFrame])
+    groundSprFrames: cc.SpriteFrame[] = new Array(3);
+
     nModel: cc.Node = null;   //模型节点   //小球装备、饰品道具、技能图标
     ballInfo: BallInfo = null;  //地块上小球数据
+    itemInfo: ItemInfo = null;   //地块上道具数据
 
     blockIdx : number = 0;   //网格位置索引
     isLock : boolean = true;   //砖块是否锁定
@@ -76,6 +81,8 @@ export default class Block extends cc.Component {
             if(this.curGirdType == 0){
                 this.isLock = true;   //砖块是否锁定
                 this.lockNode.active = true;
+            }else{
+                this.isLock = false;   //砖块是否锁定
             }
             this.goundSpr.node.active = true;   //地块精灵       
         }
@@ -89,14 +96,33 @@ export default class Block extends cc.Component {
     }
 
     onTouchStart(event: cc.Event.EventTouch) {
+        if(this.bagLayer){
+            if(this.curGirdType == 0){   //0装备小球
+                if(this.ballInfo){
+                    let cfg = this.ballInfo.cannonCfg;
+                    this.bagLayer.gridLabel.string = cfg.name+", 攻击"+cfg.attack+", 暴击"+cfg.baoji+", 回收价"+cfg.sell;
+                }else{
+                    this.bagLayer.gridLabel.string = "请选择武器装备！";
+                }    
+            }else if(this.curGirdType == 1){   //1饰品道具
+                if(this.itemInfo){
+                    this.bagLayer.gridLabel.string = this.itemInfo.itemCfg.name + ": "+this.itemInfo.itemCfg.desc;
+                }else{
+                    this.bagLayer.gridLabel.string = "请选择饰品道具！";
+                }
+            }else  if(this.curGirdType == 2){   //2技能
+                this.bagLayer.gridLabel.string = "请选择萌宠技能！";
+            }
+        }
+
         if( this.isLock || this.nModel == null){
             return;
         }
-        this.handleTouchSelStuff();   //处理选中并拖动
+        this.handleTouchSelModel();   //处理选中并拖动
     }
 
     /**处理选中并拖动 */
-    handleTouchSelStuff(bSel: boolean = true){
+    handleTouchSelModel(bSel: boolean = true){
         if(bSel){
             this.setModelOpacity(120);  //被移动地块上小球变成半透明
             this.bagLayer.setSelectBlock(this);   //拖动更新选中的小球模型的位置
@@ -124,6 +150,9 @@ export default class Block extends cc.Component {
         if(this.curGirdType == 0){
             this.setBallStuff(null);
         }
+
+        this.ballInfo = null;  //地块上小球数据
+        this.itemInfo = null;   //地块上道具数据
     }
 
     /**将一个地块上的模型放置到本地块上 */
@@ -142,17 +171,55 @@ export default class Block extends cc.Component {
         }
     }
 
+    //**********  以下为地块道具接口 ********** */
+
+    /**初始化地块数据 */
+    initBlockByItem(idx: number, itemInfo: ItemInfo, bagLayer: BagLayer){
+        this.blockIdx = idx+1;
+        this.curGirdType = 1;   //0装备小球，1饰品道具，2技能
+        this.bagLayer = bagLayer;
+        this.goundSpr.spriteFrame = this.groundSprFrames[1];
+
+        this.setItemModel(itemInfo);  //设置地块上的道具模型
+    }
+
+    /**设置地块上的小球模型 */
+    setItemModel(itemInfo: ItemInfo){
+        let bshowUI = true;
+        if(this.itemInfo && itemInfo){
+            bshowUI = false;
+        }
+        this.itemInfo = itemInfo;
+        if(bshowUI == true){
+            this.setBlockShow();   //根据开启情形来显示地块外观
+        }
+
+        if(itemInfo == null || this.blockIdx > MyUserData.ItemList.length){
+            if(this.nModel){
+                this.nModel.removeFromParent(true);
+                this.nModel = null;
+            }
+            this.ballInfo = null;
+        }else{
+            if(this.nModel == null){
+                this.nModel = cc.instantiate(this.bagLayer.pfItem);
+                this.node.addChild(this.nModel, 100);
+            }
+            this.nModel.getComponent(Item).initItemByData(itemInfo, true);  //设置地块道具模型数据
+            this.setModelOpacity(255);
+        }
+    }
+
+
+    //////////////  以下为地块小球接口  /////////////////////////////
+
     /**初始化地块数据 */
     initBlockByBall(idx: number, ballInfo: BallInfo, bagLayer: BagLayer){
         this.blockIdx = idx+1;
         this.curGirdType = 0;   //0装备小球，1饰品道具，2技能
         this.bagLayer = bagLayer;
+        this.goundSpr.spriteFrame = this.groundSprFrames[0];
 
-        this.setBallStuff(ballInfo);  //设置地块上的小球模型
-    }
-
-    /**招募或下阵初始化地块数据 */
-    initBlockByBallInfo(ballInfo: BallInfo){
         this.setBallStuff(ballInfo);  //设置地块上的小球模型
     }
 

@@ -137,38 +137,3 @@ hp = 5000
 event = 2
 ai = 0
 desc = 第一次伤害无效
-
-[101]
-name = 冰冻
-hp = 0
-event = 0
-ai = 0
-desc = 百分之十概率使得某回合暂停下移
-
-[102]
-name = 强化
-hp = 0
-event = 0
-ai = 0
-desc = 百分之十概率使得炮弹攻击力翻倍
-
-[103]
-name = 分裂
-hp = 0
-event = 0
-ai = 0
-desc = 百分之十概率使得炮弹分裂为三个子弹
-
-[104]
-name = 反弹
-hp = 0
-event = 0
-ai = 0
-desc = 百分之十概率使得炮弹落地后重新反弹
-
-[105]
-name = 连体
-hp = 0
-event = 0
-ai = 0
-desc = 百分之十概率使得炮弹覆盖打击多个砖块

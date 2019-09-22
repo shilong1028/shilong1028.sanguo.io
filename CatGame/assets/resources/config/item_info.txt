@@ -1,0 +1,69 @@
+[1]
+name = 精准
+attack_up = 10
+baoji_up = 0
+probability = 0
+desc = 提升炮弹攻击力10%
+
+[2]
+name = 突暴
+attack_up = 0
+baoji_up = 10
+probability = 0
+desc = 提升炮弹暴击率10%
+
+[3]
+name = 幸运
+attack_up = 0
+baoji_up = 0
+probability = 10
+desc = 提升炮台技能概率10%
+
+[4]
+name = 强化
+attack_up = 20
+baoji_up = 0
+probability = 0
+desc = 提升炮弹攻击力20%
+
+[5]
+name = 连暴
+attack_up = 0
+baoji_up = 20
+probability = 0
+desc = 提升炮弹暴击率20%
+
+[6]
+name = 大运
+attack_up = 0
+baoji_up = 0
+probability = 20
+desc = 提升炮台技能概率20%
+
+[7]
+name = 利刃
+attack_up = 50
+baoji_up = 0
+probability = 0
+desc = 提升炮弹攻击力50%
+
+[8]
+name = 天暴
+attack_up = 0
+baoji_up = 50
+probability = 0
+desc = 提升炮弹暴击率50%
+
+[9]
+name = 鸿运
+attack_up = 0
+baoji_up = 0
+probability = 50
+desc = 提升炮台技能概率50%
+
+[10]
+name = 天书
+attack_up = 30
+baoji_up = 30
+probability = 30
+desc = 提升攻击、暴击、概率各30%

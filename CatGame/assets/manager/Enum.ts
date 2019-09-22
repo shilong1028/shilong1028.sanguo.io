@@ -1,4 +1,4 @@
-import { st_cannon_info, CfgMgr, st_player_info, st_level_info, st_monster_info, st_chapter_info } from "./ConfigManager";
+import { st_cannon_info, CfgMgr, st_player_info, st_level_info, st_monster_info, st_chapter_info, st_item_info } from "./ConfigManager";
 
 
 //常量或类定义
@@ -131,12 +131,12 @@ export class BrickInfo{
 export class ItemInfo{
     itemId: number = 0;   //配置ID
     itemNum: number = 0;   
-    itemCfg: st_monster_info = null;
+    itemCfg: st_item_info = null;
 
     constructor(itemId: number, itemNum:number=0){
         this.itemId = itemId;
         this.itemNum = itemNum;
-        this.itemCfg = CfgMgr.getMonsterConf(itemId);
+        this.itemCfg = CfgMgr.getItemConf(itemId);
     };
 
     cloneNoCfg(){

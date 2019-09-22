@@ -8,9 +8,13 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 class GameManager {
+    /**
+     * 游戏中，目前有萌猫6种（炮台），毛球20种（炮弹），敌人20种，关卡100关（10章），主角等级20级（每过5关升一级）
+     */
+
+    playerCount: number = 6;   //炮台萌猫数量
     ballMaxLv: number = 20;  //炮弹配置中的最大等级
     blockOpenLevel: number[] = new Array(0,0,0,1,5, 10,20,30,45,60, 75,90);
-    fightCount: number[] = new Array(0,0,0,3,5, 10,20,30,50,80);
 
 
     /************************  以下为UI接口  ************** */

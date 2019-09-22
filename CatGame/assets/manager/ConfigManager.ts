@@ -47,7 +47,7 @@ export class st_player_info{
     cannon;   //炮弹范围 5;15
     attack_up;    //攻击力提升幅度（/100)
     baoji_up;     //暴击率提升幅度（/100)
-    itemCount;    //道具孔位
+    skillId;    //默认技能ID
     desc;    
 
     transType(){
@@ -55,7 +55,7 @@ export class st_player_info{
         this.cannon = CfgMgr.getIntAry(this.cannon, ";");
         this.attack_up = parseInt(this.attack_up)/100;
         this.baoji_up = parseInt(this.baoji_up)/100;
-        this.itemCount = parseInt(this.itemCount);
+        this.skillId = parseInt(this.skillId);
     }
 
     constructor(){
@@ -68,7 +68,7 @@ export class st_player_info{
         temp.cannon = this.cannon;
         temp.attack_up = this.attack_up;
         temp.baoji_up = this.baoji_up;
-        temp.itemCount = this.itemCount;
+        temp.skillId = this.skillId;
         temp.desc = this.desc;
         return temp;
     }
@@ -108,15 +108,13 @@ export class st_chapter_info{
     res;   //图标资源id
     levels;  //关卡 1|10
     diamond;  //奖励钻石数
-    itemids;    //通关道具奖励 101;102
-    probability;   //通关道具掉落概率（1星）2星*2 3星*3
+    skillIds;    //通关技能随机开启
 
     transType(){
         this.res = parseInt(this.res);
         this.levels = CfgMgr.getIntAry(this.levels, "|");
         this.diamond = parseInt(this.diamond);
-        this.itemids = CfgMgr.getIntAry(this.itemids, ";");
-        this.probability = parseInt(this.probability)/100;
+        this.skillIds = CfgMgr.getIntAry(this.skillIds, ";");
     }
 
     constructor(){
@@ -128,8 +126,7 @@ export class st_chapter_info{
         temp.res = this.res;
         temp.levels = this.levels;
         temp.diamond = this.diamond;
-        temp.itemids = this.itemids;
-        temp.probability = this.probability;
+        temp.skillIds = this.skillIds;
         return temp;
     }
 }
@@ -145,7 +142,7 @@ export class st_level_info{
     name;  //关卡名称
     resId;   //关卡图标资源id
     chapterId;   //章节ID
-    itemids;    //通关道具奖励 101;102
+    itemIds;    //通关道具奖励
     probability;   //通关道具掉落概率（1星）2星*2 3星*3
     
     transType(){
@@ -157,7 +154,7 @@ export class st_level_info{
         this.init_lines = parseInt(this.init_lines);
         this.resId = parseInt(this.resId);
         this.chapterId = parseInt(this.chapterId);
-        this.itemids = CfgMgr.getIntAry(this.itemids, ";");
+        this.itemIds = CfgMgr.getIntAry(this.itemIds, ";");
         this.probability = parseInt(this.probability)/100;
     }
 
@@ -175,8 +172,64 @@ export class st_level_info{
         temp.name = this.name;
         temp.resId = this.resId;
         temp.chapterId = this.chapterId;
-        temp.itemids = this.itemids;
+        temp.itemIds = this.itemIds;
         temp.probability = this.probability;
+        return temp;
+    }
+}
+
+//道具配置信息
+export class st_item_info{
+    name;  //名称
+    attack_up;    //攻击力提升幅度（/100)
+    baoji_up;     //暴击率提升幅度（/100)
+    probability;  //提升炮台技能概率（/100)
+    desc;    //描述
+
+    transType(){
+        this.attack_up = parseInt(this.attack_up)/100;
+        this.baoji_up = parseInt(this.baoji_up)/100;
+        this.probability = parseInt(this.probability)/100;
+    }
+
+    constructor(){
+    }
+
+    clone(){
+        let temp = new st_item_info();
+        temp.name = this.name;
+        temp.attack_up = this.attack_up;
+        temp.baoji_up = this.baoji_up;
+        temp.probability = this.probability;
+        temp.desc = this.desc;
+        return temp;
+    }
+}
+
+//技能配置信息
+export class st_skill_info{
+    name;  //名称
+    res;   //图标资源id
+    probability;  //技能释放概率
+    diamond;  //技能重启花费
+    desc;    //描述
+
+    transType(){
+        this.res = parseInt(this.res);
+        this.probability = parseInt(this.probability)/100;
+        this.diamond = parseInt(this.diamond);
+    }
+
+    constructor(){
+    }
+
+    clone(){
+        let temp = new st_skill_info();
+        temp.name = this.name;
+        temp.res = this.res;
+        temp.probability = this.probability;
+        temp.diamond = this.diamond;
+        temp.desc = this.desc;
         return temp;
     }
 }
@@ -211,6 +264,14 @@ class CfgManager_class {
     //砖块配置表
     C_monster_info : Map<number, st_monster_info> = new Map<number, st_monster_info>();
     SC_monster_info = st_monster_info;
+
+    //道具配置表
+    C_item_info : Map<number, st_item_info> = new Map<number, st_item_info>();
+    SC_item_info = st_item_info;
+
+    //技能配置表
+    C_skill_info : Map<number, st_skill_info> = new Map<number, st_skill_info>();
+    SC_skill_info = st_skill_info;
 
 
     //********************** 以下是一些配置接口 ***************** */
@@ -265,6 +326,25 @@ class CfgManager_class {
         }
     }
 
+    /**获取道具配置数据 */
+    getItemConf(itemId: number): st_item_info{
+        let obj = this.C_item_info[itemId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+
+    /**获取技能配置数据 */
+    getSkillConf(skillId: number): st_skill_info{
+        let obj = this.C_skill_info[skillId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
 
     //*************************************  以下为读取配置接口 *********************************** */
 

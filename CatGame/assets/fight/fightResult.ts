@@ -71,13 +71,13 @@ export default class FightResult extends cc.Component {
             if(MyUserData.curLevelId < 3 && MyUserData.curLevelId == FightMgr.level_id-1){
                 probability *= 10;
             }
-            for(let i=0; i<levelCfg.itemids.length; ++i){
-                let itemId = levelCfg.itemids[i];
+            for(let i=0; i<levelCfg.itemIds.length; ++i){
+                let itemId = levelCfg.itemIds[i];
 
                 if(Math.random() < probability){
                     let item = cc.instantiate(this.pfItem);
                     this.itemLayout.addChild(item);
-                    item.getComponent(Item).initItemById(itemId);
+                    item.getComponent(Item).initItemById(itemId, true);
 
                     MyUserDataMgr.updateItemByCount(itemId, 1);   //添加道具
                 }

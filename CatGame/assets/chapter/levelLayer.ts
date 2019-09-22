@@ -109,11 +109,11 @@ export default class LevelLayer extends cc.Component {
             }
         }
 
-        for(let i=0; i<levelCfg.itemids.length; ++i){
-            let itemId = levelCfg.itemids[i];
+        for(let i=0; i<levelCfg.itemIds.length; ++i){
+            let itemId = levelCfg.itemIds[i];
             let item = cc.instantiate(this.pfItem);
             this.itemLayout.addChild(item);
-            item.getComponent(Item).initItemById(itemId);
+            item.getComponent(Item).initItemById(itemId, true);
         }
     }
 }

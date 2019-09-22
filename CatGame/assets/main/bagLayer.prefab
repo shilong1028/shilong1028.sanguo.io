@@ -2406,6 +2406,12 @@
     "pfBallShop": {
       "__uuid__": "2ca798a3-c733-475a-bca4-c0f443fd1e8b"
     },
+    "pfItem": {
+      "__uuid__": "870f3bdf-34a2-43f8-924d-94c2b9f4c007"
+    },
+    "pfSkill": {
+      "__uuid__": "db8316af-ec51-495c-8677-6a47a70b7247"
+    },
     "stuffUpAtlas": {
       "__uuid__": "9fbc2e96-1427-4ec2-a7be-9aaf8ef8318f"
     },
