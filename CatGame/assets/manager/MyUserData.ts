@@ -1,6 +1,6 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NotificationMy } from "./NoticeManager";
-import { NoticeType, BallInfo, PlayerInfo, LevelInfo, ItemInfo } from "./Enum";
+import { NoticeType, BallInfo, PlayerInfo, LevelInfo, ItemInfo, SkillInfo } from "./Enum";
 import { GameMgr } from "./GameManager";
 
 
@@ -24,6 +24,7 @@ export var MyUserData = {
     levelList: [],   //通关列表
 
     ItemList: [],   //背包物品列表
+    SkillList: [],   //技能列表
 };
 
 @ccclass
@@ -57,6 +58,9 @@ class MyUserManager {
         MyUserData.ItemList = new Array();   //背包物品列表
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
 
+        MyUserData.SkillList = new Array();   //技能列表
+        LDMgr.setItem(LDKey.KEY_SkillList, JSON.stringify(MyUserData.SkillList));
+
         this.initUserData();
     }
 
@@ -78,6 +82,8 @@ class MyUserManager {
 
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
 
+        MyUserData.SkillList = this.getSkillListByLD();  //技能列表
+
         if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户
             for(let i=0; i<3; ++i){
                 let ballInfo = new BallInfo(1);
@@ -85,6 +91,9 @@ class MyUserManager {
                 this.addBallToBallList(ballInfo, false);
 
                 this.updateItemByCount(i+1, 10);   //测试道具
+                let skill = new SkillInfo(i+1);
+                skill.skillLv = 1;
+                this.updateSkillByData(skill);   //测试技能
             }
             LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
@@ -171,6 +180,73 @@ class MyUserManager {
         }
 
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(tempList));
+    }
+
+    /**修改用户技能列表 */
+    handleEquipSkill(skillInfo: SkillInfo, removeId: number){
+        if(removeId > 0){
+            MyUserData.SkillList[removeId-1].skillPlayerId = 0;   //移除指定技能的绑定炮台
+        }
+
+        for(let i=0; i<MyUserData.SkillList.length; ++i){
+            let skill: SkillInfo = MyUserData.SkillList[i];
+            if(skill.skillId == skillInfo.skillId){
+                MyUserData.SkillList[i] = skillInfo;
+                break;
+            }
+        }
+        this.saveSkillList();
+    }
+    /**更新技能 */
+    updateSkillByData(skillInfo: SkillInfo){
+        for(let i=0; i<MyUserData.SkillList.length; ++i){
+            let skill: SkillInfo = MyUserData.SkillList[i];
+            if(skill.skillId == skillInfo.skillId){
+                MyUserData.SkillList[i] = skillInfo;
+                this.saveSkillList();
+                return;
+            }
+        }
+    }
+    /**从本地存储中获取技能列表 */
+    getSkillListByLD(){
+        let SkillList = LDMgr.getJsonItem(LDKey.KEY_SkillList);   //技能列表 
+        let tempList: SkillInfo[] = new Array();
+        if(SkillList){
+            for(let k=1; k<= GameMgr.skillCount; ++k){
+                let temp = new SkillInfo(k);
+                for(let i=0; i<SkillList.length; ++i){
+                    if(k == SkillList[i].skillId){
+                        temp.skillLv = SkillList[i].skillLv;
+                        temp.skillPlayerId = SkillList[i].skillPlayerId; 
+                        break;
+                    }
+                }
+                tempList.push(temp);
+            }
+        }
+        return tempList;
+    }
+    /**保存技能列表 */
+    saveSkillList(){
+        let tempList = new Array();
+        for(let i=0; i<MyUserData.SkillList.length; ++i){
+            if(MyUserData.SkillList[i].skillLv > 0){
+                let tempItem = MyUserData.SkillList[i].cloneNoCfg();
+                tempList.push(tempItem);
+            }
+        }
+
+        LDMgr.setItem(LDKey.KEY_SkillList, JSON.stringify(tempList));
+    }
+    //获取技能列表克隆
+    getSkillListClone(){
+        let tempArr = new Array();
+        for(let i=0; i<MyUserData.SkillList.length; ++i){
+            let info: SkillInfo = MyUserData.SkillList[i].clone();
+            tempArr.push(info);
+        }
+        return tempArr;
     }
 
     //当前通关的最大id

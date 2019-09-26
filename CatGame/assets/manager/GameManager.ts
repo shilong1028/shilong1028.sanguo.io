@@ -13,6 +13,7 @@ class GameManager {
      */
 
     playerCount: number = 6;   //炮台萌猫数量
+    skillCount: number = 8;  //技能最大ID
     ballMaxLv: number = 20;  //炮弹配置中的最大等级
     blockOpenLevel: number[] = new Array(0,0,0,1,5, 10,20,30,45,60, 75,90);
 

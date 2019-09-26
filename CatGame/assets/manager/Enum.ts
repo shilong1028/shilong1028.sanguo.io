@@ -1,4 +1,4 @@
-import { st_cannon_info, CfgMgr, st_player_info, st_level_info, st_monster_info, st_chapter_info, st_item_info } from "./ConfigManager";
+import { st_cannon_info, CfgMgr, st_player_info, st_level_info, st_monster_info, st_chapter_info, st_item_info, st_skill_info } from "./ConfigManager";
 
 
 //常量或类定义
@@ -153,6 +153,38 @@ export class ItemInfo{
     };
 }
 
+/**技能数据 */
+export class SkillInfo{
+    skillId: number = 0;   //配置ID
+    skillLv: number = 0;   //技能等级, 0表示未拥有， >0表示已拥有
+    skillPlayerId: number = 0;   //技能绑定的炮台ID， >0表示已经装配到某炮台
+    skillCfg: st_skill_info = null;
+
+    constructor(skillId: number){
+        this.skillId = skillId;
+        this.skillLv = 0;
+        this.skillPlayerId = 0;
+        this.skillCfg = CfgMgr.getSkillConf(skillId);
+    };
+
+    cloneNoCfg(){
+        let temp = new SkillInfo(this.skillId);
+        temp.skillLv = this.skillLv;
+        temp.skillPlayerId = this.skillPlayerId;
+  
+        //不必写入本地存储的变量s
+        temp.skillCfg = null;
+        return temp;
+    }
+
+    clone(){
+        let temp = new SkillInfo(this.skillId); 
+        temp.skillLv = this.skillLv;
+        temp.skillPlayerId = this.skillPlayerId;
+        return temp;
+    };
+}
+
 /**小球射线路径数据 */
 export class IntersectRay{
     srcPos: cc.Vec2 = null;   //射线起点
@@ -271,6 +303,7 @@ export const NoticeType = {
     BuyAddBall: "BuyAddBall",   //购买小球
     BlockBallSel: "BlockBallSel",   //地块上小球被选择，相同等级的小球地块要显示光圈
     UpdatePlayer: "UpdatePlayer",   //更新炮台
+    UnEquipSkill: "UnEquipSkill",   //卸载炮台技能
 
     BrickDeadEvent: "BrickDeadEvent",   //砖块消失（死亡）
     BrickMoveDownAction: "BrickMoveDownAction",   //砖块下移通知

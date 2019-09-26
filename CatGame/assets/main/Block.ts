@@ -1,4 +1,4 @@
-import { BallInfo, NoticeType, TipsStrDef, ItemInfo } from "../manager/Enum";
+import { BallInfo, NoticeType, TipsStrDef, ItemInfo, SkillInfo } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
 import Stuff from "./Stuff";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
@@ -7,6 +7,7 @@ import { ROOT_NODE } from "../common/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
 import BagLayer from "./bagLayer";
 import Item from "../common/item";
+import Skill from "../common/skill";
 
 
 const {ccclass, property} = cc._decorator;
@@ -33,6 +34,7 @@ export default class Block extends cc.Component {
     nModel: cc.Node = null;   //模型节点   //小球装备、饰品道具、技能图标
     ballInfo: BallInfo = null;  //地块上小球数据
     itemInfo: ItemInfo = null;   //地块上道具数据
+    skillInfo: SkillInfo = null;   //地块上的技能数据
 
     blockIdx : number = 0;   //网格位置索引
     isLock : boolean = true;   //砖块是否锁定
@@ -51,6 +53,7 @@ export default class Block extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
 
         NotificationMy.on(NoticeType.BlockBallSel, this.handleBlockBallSel, this);   //地块上小球被选择，相同等级的小球地块要显示光圈
+        NotificationMy.on(NoticeType.UnEquipSkill, this.handleUnEquipSkill, this);   //卸载炮台技能
     }
 
     onDestroy(){
@@ -71,21 +74,36 @@ export default class Block extends cc.Component {
         this.selSpr.node.active = false;  //光圈
         this.goundSpr.node.active = false;   //地块精灵
 
-        if(this.curGirdType == 0 && this.blockIdx <= MyUserData.blockCount){   //已开启
-            this.isLock = false;   //砖块是否锁定
-            if(this.ballInfo == null){
-                this.goundSpr.node.active = true;   //地块精灵
-                this.addNode.active = true;
-            }
-        }else{
-            if(this.curGirdType == 0){
+        if(this.curGirdType == 0){  //0装备小球
+            if(this.curGirdType == 0 && this.blockIdx <= MyUserData.blockCount){   //已开启
+                this.isLock = false;   //砖块是否锁定
+                if(this.ballInfo == null){
+                    this.goundSpr.node.active = true;   //地块精灵
+                    this.addNode.active = true;
+                }
+            }else{
                 this.isLock = true;   //砖块是否锁定
                 this.lockNode.active = true;
-            }else{
-                this.isLock = false;   //砖块是否锁定
             }
-            this.goundSpr.node.active = true;   //地块精灵       
-        }
+        }else if(this.curGirdType == 1){ //1饰品道具
+            if(this.itemInfo){
+                this.isLock = false;   
+            }else{
+                this.isLock = true;  
+            }
+            this.goundSpr.node.active = true;   //地块精灵
+        }else if(this.curGirdType == 2){  //2技能
+            this.isLock = false;   //砖块是否锁定
+            this.goundSpr.node.active = true;   //地块精灵
+            if(this.skillInfo){
+                if(this.skillInfo.skillLv == 0){   //未拥有
+                    this.isLock = true;   
+                    this.lockNode.active = true;
+                }else if(this.skillInfo.skillPlayerId > 0){   //炮台已经装备
+                    this.isLock = true; 
+                }
+            }
+        } 
     }
 
     /**设置小球模型透明度 */
@@ -171,6 +189,47 @@ export default class Block extends cc.Component {
         }
     }
 
+    //-------------------  以下为地块及鞥能接口 --------------------
+
+    /**初始化地块数据 */
+    initBlockBySkill(idx: number, skillInfo: SkillInfo, bagLayer: BagLayer){
+        this.blockIdx = idx+1;
+        this.curGirdType = 2;   //0装备小球，1饰品道具，2技能
+        this.bagLayer = bagLayer;
+        this.goundSpr.spriteFrame = this.groundSprFrames[2];
+
+        this.setSkillModel(skillInfo);  //设置地块上的技能模型
+    }
+
+    //卸载炮台技能
+    handleUnEquipSkill(skillId: number){
+        if(this.skillInfo && this.skillInfo.skillId == skillId){
+            this.skillInfo.skillPlayerId = 0;
+            this.setSkillModel(this.skillInfo);   //根据开启情形来显示地块外观
+        }
+    }
+
+    /**设置地块上的技能模型 */
+    setSkillModel(skillInfo: SkillInfo){
+        this.skillInfo = skillInfo;
+        this.setBlockShow();   //根据开启情形来显示地块外观
+
+        if(skillInfo == null){
+            if(this.nModel){
+                this.nModel.removeFromParent(true);
+                this.nModel = null;
+            }
+            this.skillInfo = null;
+        }else{
+            if(this.nModel == null){
+                this.nModel = cc.instantiate(this.bagLayer.pfSkill);
+                this.node.addChild(this.nModel, 100);
+            }
+            this.nModel.getComponent(Skill).initSkillByData(skillInfo);  //设置地块技能模型数据
+            this.setModelOpacity(255);
+        }
+    }
+
     //**********  以下为地块道具接口 ********** */
 
     /**初始化地块数据 */
@@ -183,23 +242,17 @@ export default class Block extends cc.Component {
         this.setItemModel(itemInfo);  //设置地块上的道具模型
     }
 
-    /**设置地块上的小球模型 */
+    /**设置地块上的道具模型 */
     setItemModel(itemInfo: ItemInfo){
-        let bshowUI = true;
-        if(this.itemInfo && itemInfo){
-            bshowUI = false;
-        }
         this.itemInfo = itemInfo;
-        if(bshowUI == true){
-            this.setBlockShow();   //根据开启情形来显示地块外观
-        }
+        this.setBlockShow();   //根据开启情形来显示地块外观
 
         if(itemInfo == null || this.blockIdx > MyUserData.ItemList.length){
             if(this.nModel){
                 this.nModel.removeFromParent(true);
                 this.nModel = null;
             }
-            this.ballInfo = null;
+            this.itemInfo = null;
         }else{
             if(this.nModel == null){
                 this.nModel = cc.instantiate(this.bagLayer.pfItem);
@@ -209,7 +262,6 @@ export default class Block extends cc.Component {
             this.setModelOpacity(255);
         }
     }
-
 
     //////////////  以下为地块小球接口  /////////////////////////////
 

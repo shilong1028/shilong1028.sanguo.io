@@ -1,6 +1,6 @@
 
 import { AudioMgr } from "../manager/AudioMgr";
-import { NoticeType, TipsStrDef, BallInfo, PlayerInfo, ItemInfo } from "../manager/Enum";
+import { NoticeType, TipsStrDef, BallInfo, PlayerInfo, ItemInfo, SkillInfo } from "../manager/Enum";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { NotificationMy } from "../manager/NoticeManager";
 import PlayerCell from "./playerCell";
@@ -9,6 +9,7 @@ import { GameMgr } from "../manager/GameManager";
 import Stuff from "./Stuff";
 import { ROOT_NODE } from "../common/rootNode";
 import Item from "../common/item";
+import Skill from "../common/skill";
 
 
 const {ccclass, property} = cc._decorator;
@@ -143,6 +144,15 @@ export default class BagLayer extends cc.Component {
     //炮台技能
     showPlayerSkill(skillId: number){
         this.skillNode.removeAllChildren(true);
+        if(skillId > 0){
+            let skillModel = cc.instantiate(this.pfSkill);
+            skillModel.name = "skillModel";
+            this.skillNode.addChild(skillModel);
+
+            let skillInfo = new SkillInfo(skillId);
+            skillInfo.skillLv = 1;
+            skillModel.getComponent(Skill).initSkillByData(skillInfo);  //设置地块技能模型数据
+        }
     }
 
     onCloseBtn(){
@@ -227,14 +237,13 @@ export default class BagLayer extends cc.Component {
             this.gridLabel.string = "请选择饰品道具！";
             let itemModel = this.itemNode.getChildByName("itemModel");
             if(itemModel){
-                let itemInfo = itemModel.getComponent(Item).itemInfo;   //地块小球模型数据
+                let itemInfo = itemModel.getComponent(Item).itemInfo;   //地块道具模型数据
                 if(itemInfo){
                     this.gridLabel.string = itemInfo.itemCfg.name + ": "+itemInfo.itemCfg.desc;
                 }
             }
 
             let itemList = MyUserDataMgr.getItemListClone();
-
             for(let i=0; i<8; ++i){
                 let itemInfo: ItemInfo = null;
                 if(i < itemList.length){
@@ -248,6 +257,22 @@ export default class BagLayer extends cc.Component {
             }
         }else if(this.curGirdType == 2){   //2技能
             this.gridLabel.string = "请选择萌宠技能！";
+
+            let skillModel = this.skillNode.getChildByName("skillModel");
+            if(skillModel){
+                let skillInfo = skillModel.getComponent(Skill).skillInfo;   //地块技能模型数据
+                if(skillInfo){
+                    this.gridLabel.string = skillInfo.skillCfg.name + ": "+skillInfo.skillCfg.desc;
+                }
+            }
+
+            let skillList = MyUserDataMgr.getSkillListClone();
+            for(let i=0; i<8; ++i){
+                let node = cc.instantiate(this.pfBlock);
+                this.gridNode.addChild(node);
+                let block = node.getComponent(Block);
+                block.initBlockBySkill(i, skillList[i], this);
+            }
         }
     }
 
@@ -277,7 +302,13 @@ export default class BagLayer extends cc.Component {
                 let item = this.nSelectModel.getComponent(Item);
                 item.initItemByData(this.selectBlock.itemInfo, false);   //设置地块道具模型数据 
             }else if(this.curGirdType == 2){   //2技能
-
+                if(this.nSelectModel == null){
+                    this.nSelectModel = cc.instantiate(this.pfSkill);
+                    this.nSelectModel.setPosition(-3000, -3000);
+                    this.node.addChild(this.nSelectModel, 100);
+                }
+                let skill = this.nSelectModel.getComponent(Skill);
+                skill.initSkillByData(this.selectBlock.skillInfo);   //设置地块技能模型数据 
             }
 
             let pos = this.node.convertToNodeSpaceAR(touchPos);
@@ -356,14 +387,35 @@ export default class BagLayer extends cc.Component {
 
                         MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
                         //炮台道具的消耗为每场战斗消耗一个（为零则清除炮台道具设定），故在此处切换道具时不做任何处理
+                    }
+                }
+                this.selectBlock.onRecoverSelf();   //复原本地块模型
+            }else if(this.curGirdType == 2){   //2技能
+                let pos2 = this.skillNode.convertToNodeSpace(touchPos);   //技能
+                let rect2 = cc.rect(0, 0, this.skillNode.width, this.skillNode.height);
+                if(rect2.contains(pos2)){    //新技能
+                    let curPageInfo: PlayerInfo = MyUserDataMgr.getPlayerInfoByIdx(this.curPageIdx);
+                    if(curPageInfo && curPageInfo.useState == 1){   //已经拥有的炮台
+                        let skill = this.selectBlock.skillInfo.clone();
+                        skill.skillPlayerId = curPageInfo.playerId;
+                        //更新技能所属的炮台
+                        MyUserDataMgr.handleEquipSkill(skill.clone(), curPageInfo.skillId);
+                        NotificationMy.emit(NoticeType.UnEquipSkill, curPageInfo.skillId);   //卸载炮台技能
+                        this.selectBlock.setSkillModel(skill.clone());
+
+                        //更新炮台
+                        curPageInfo.skillId = this.selectBlock.skillInfo.skillId;
+
+                        this.showPlayerSkill(curPageInfo.skillId);
+                        NotificationMy.emit(NoticeType.UpdatePlayer, curPageInfo);   //更新炮台
+
+                        MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
                     }else{
                         this.selectBlock.onRecoverSelf();   //复原本地块模型
                     }
                 }else{
                     this.selectBlock.onRecoverSelf();   //复原本地块模型
                 }
-            }else if(this.curGirdType == 2){   //2技能
-
             }
 
             this.selectBlock = null;   //拖动的地块数据

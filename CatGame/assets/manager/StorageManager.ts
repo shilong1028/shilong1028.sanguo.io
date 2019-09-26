@@ -131,5 +131,6 @@ export const LDKey = {
     KEY_CurLevelId: "KEY_CurLevelId",   //当前通关的最大id
     KEY_LevelList: "KEY_LevelList",   //通关列表
     KEY_ItemList: "KEY_ItemList",   //背包列表
+    KEY_SkillList: "KEY_SkillList",   //技能列表
 
 }
