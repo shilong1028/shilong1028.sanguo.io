@@ -1,10 +1,12 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType } from "../manager/Enum";
+import { NoticeType, ChapterInfo, PlayerInfo } from "../manager/Enum";
 import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
 import ChapterPage from "./chapterPage";
-import { MyUserData } from "../manager/MyUserData";
+import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
+import { ROOT_NODE } from "../common/rootNode";
+import { FightMgr } from "../manager/FightManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -80,12 +82,8 @@ export default class MainScene extends cc.Component {
     }
 
     start(){  
-        this.initCombineData();   //初始化数据
-    }
-
-    /**初始化数据 */
-    initCombineData () {
         this.bLoadRoleDataFinish = true;  //是否已经加载完毕用户数据
+        this.levelLabel.string = MyUserData.curLevelId.toString();
         this.UpdateGold();   //更新金币数量
         this.initPageView();
     }
@@ -167,6 +165,27 @@ export default class MainScene extends cc.Component {
     onFightBtn(){
         AudioMgr.playEffect("effect/ui_click");
 
+        let curPlayerInfo: PlayerInfo = MyUserDataMgr.getCurPlayerInfo();
+        if(curPlayerInfo.ballId == 0){   //未装备小球
+            GameMgr.showLayer(this.pfBag);
+            ROOT_NODE.showTipsText("请给炮台装配装备！");
+        }else{
+            let chapterInfo = null;
+            let levelId = MyUserData.curLevelId+1;
+            if(this.curChapterIdx+1 < MyUserData.curChapterId){
+                chapterInfo = new ChapterInfo(this.curChapterIdx+1);   //选中的章节
+                levelId = chapterInfo.chapterCfg.levels[0];
+            }else{
+                chapterInfo = new ChapterInfo(MyUserData.curChapterId);    //当前的章节
+            }
+    
+            if(chapterInfo){
+                FightMgr.level_id = levelId;
+                GameMgr.goToSceneWithLoading("FightScene");
+            }else{
+                ROOT_NODE.showTipsText("章节信息有误！");
+            }
+        }
     }
 
     onShareBtn(){

@@ -1,6 +1,6 @@
 import QiPanSc from "../fight/QiPanSc";
-import { IntersectRay, LevelInfo, BrickInfo, NoticeType, IntersectData, TempIntersectData } from "./Enum";
-import { MyUserData } from "./MyUserData";
+import { IntersectRay, LevelInfo, BrickInfo, NoticeType, IntersectData, TempIntersectData, PlayerInfo } from "./Enum";
+import { MyUserDataMgr } from "./MyUserData";
 import { NotificationMy } from "./NoticeManager";
 import FightScene from "../fight/FightScene";
 import Brick from "../fight/Brick";
@@ -38,6 +38,7 @@ class FightManager {
     bFirstHitGround: boolean = false;    //第一个回落到地面的球设置此值
     ballDropedCount: number = 0;   //小球发射后，已经落地的数量
     roundBallCount: number = 0;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
+    usedPlayerInfo: PlayerInfo = null;   //当前使用的炮台信息
 
     ballOffPosX: number = 50;   //小球排序之间的X轴间隔
     ballSortIdx: number = 0;  //当前已经排序的小球索引数，用于小球排序发射索引的设定
@@ -77,6 +78,7 @@ class FightManager {
         this.bFirstHitGround = false;   //第一个回落到地面的球设置此值
         this.ballDropedCount = 0;   //小球发射后，已经落地的数量
         this.roundBallCount = 0;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
+        this.usedPlayerInfo = null;   //当前使用的炮台信息
         this.ballSortIdx = 0;  //当前当前行已经排序的小球索引数，用于小球排序发射索引的设定
 
         this.rayCount = 0;   //需要绘制的射线段数
@@ -109,8 +111,11 @@ class FightManager {
             this.defaultRayCount = 2;   //默认的绘制指示线的射线段数
         }
 
-        this.roundBallCount = MyUserData.fightList.length;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
-
+        this.usedPlayerInfo = MyUserDataMgr.getCurPlayerInfo();   //当前使用的炮台信息
+        if(this.usedPlayerInfo){
+            this.roundBallCount = this.usedPlayerInfo.playerCfg.ball_num;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
+        }
+        
         this.setBricks();
     }
 
@@ -217,7 +222,7 @@ class FightManager {
             this.emissionSign = this.getBricksAndCatSign(posX);  //小球在猫的左（sign=-1)右(1)两侧
         }
 
-        let fightBallCount = MyUserData.fightList.length;
+        let fightBallCount = this.usedPlayerInfo.playerCfg.ball_num;
         //cc.log("this.ballDropedCount = "+this.ballDropedCount+"; this.roundBallCount = "+this.roundBallCount+"; fightBallCount = "+fightBallCount)
         if(this.ballDropedCount >= this.roundBallCount){ 
             if(fightBallCount > this.roundBallCount){
@@ -329,7 +334,7 @@ class FightManager {
 
     /**获取单个小球的每回合默认位置*/
     getBallNodeDefaultPos(): cc.Vec3{
-        let fightBallCount = MyUserData.fightList.length;
+        let fightBallCount = this.usedPlayerInfo.playerCfg.ball_num;
         if(this.ballSortIdx >= fightBallCount){  //所有球已经排完
             this.ballSortIdx = 0;
             return null;
@@ -669,7 +674,7 @@ class FightManager {
             intersectRayData.point = rayEndPoint.clone();
             
             if(hitType != 6){   //非6移动反弹
-                let maxCount = Math.max(5, MyUserData.fightList.length);
+                let maxCount = 5;  //Math.max(5, this.usedPlayerInfo.playerCfg.ball_num);
                 if(this.roundPathArr.length >= maxCount){
                     this.roundPathArr.shift();
                 }

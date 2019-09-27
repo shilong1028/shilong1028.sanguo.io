@@ -19,6 +19,8 @@ export default class Block extends cc.Component {
     addNode : cc.Node = null;  //添加按钮节点
     @property(cc.Node)
     lockNode: cc.Node = null;  //锁
+    @property(cc.Label)
+    tipLabel: cc.Label = null;   //提示文本
     @property(cc.Sprite)
     goundSpr: cc.Sprite = null;   //地块精灵
     @property(cc.Sprite)
@@ -47,6 +49,7 @@ export default class Block extends cc.Component {
     onLoad () {
         this.addNode.active = false;
         this.lockNode.active = false;
+        this.tipLabel.string = "";
         this.goundSpr.node.active = false;   //地块精灵
         this.selSpr.node.active = false;  //光圈
 
@@ -84,6 +87,7 @@ export default class Block extends cc.Component {
             }else{
                 this.isLock = true;   //砖块是否锁定
                 this.lockNode.active = true;
+                this.tipLabel.string = "第"+GameMgr.blockOpenLevel[this.blockIdx-1]+"关解锁";
             }
         }else if(this.curGirdType == 1){ //1饰品道具
             if(this.itemInfo){

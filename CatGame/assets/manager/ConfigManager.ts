@@ -47,6 +47,7 @@ export class st_player_info{
     cannon;   //炮弹范围 5;15
     attack_up;    //攻击力提升幅度（/100)
     baoji_up;     //暴击率提升幅度（/100)
+    ball_num;   //可发射炮弹数量
     skillId;    //默认技能ID
     desc;    
 
@@ -55,6 +56,7 @@ export class st_player_info{
         this.cannon = CfgMgr.getIntAry(this.cannon, ";");
         this.attack_up = parseInt(this.attack_up)/100;
         this.baoji_up = parseInt(this.baoji_up)/100;
+        this.ball_num = parseInt(this.ball_num);
         this.skillId = parseInt(this.skillId);
     }
 
@@ -68,6 +70,7 @@ export class st_player_info{
         temp.cannon = this.cannon;
         temp.attack_up = this.attack_up;
         temp.baoji_up = this.baoji_up;
+        temp.ball_num = this.ball_num;
         temp.skillId = this.skillId;
         temp.desc = this.desc;
         return temp;
@@ -108,13 +111,13 @@ export class st_chapter_info{
     res;   //图标资源id
     levels;  //关卡 1|10
     diamond;  //奖励钻石数
-    skillIds;    //通关技能随机开启
+    skillId;    //通关技能开启
 
     transType(){
         this.res = parseInt(this.res);
         this.levels = CfgMgr.getIntAry(this.levels, "|");
         this.diamond = parseInt(this.diamond);
-        this.skillIds = CfgMgr.getIntAry(this.skillIds, ";");
+        this.skillId = parseInt(this.skillId);
     }
 
     constructor(){
@@ -126,7 +129,7 @@ export class st_chapter_info{
         temp.res = this.res;
         temp.levels = this.levels;
         temp.diamond = this.diamond;
-        temp.skillIds = this.skillIds;
+        temp.skillId = this.skillId;
         return temp;
     }
 }

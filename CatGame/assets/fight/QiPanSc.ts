@@ -238,9 +238,8 @@ export default class QiPanSc extends cc.Component {
     initBalls(){
         cc.log("qipan: initBalls()");
         this.nBalls.removeAllChildren(true);
-        let fightBallList = MyUserDataMgr.getFightListClone();
-        for(let i=0; i<fightBallList.length; ++i){
-            let ball: Ball = this.addBallToList(i, fightBallList[i]);   //添加小球到攻击列表中
+        for(let i=0; i<FightMgr.usedPlayerInfo.playerCfg.ball_num; ++i){
+            let ball: Ball = this.addBallToList(i, new BallInfo(FightMgr.usedPlayerInfo.ballId));   //添加小球到攻击列表中
             let destVec3 = FightMgr.getBallNodeDefaultPos();
             ball.node.setPosition(cc.v2(destVec3.x, destVec3.y));
             ball.changeBallWithState(BallState.normal);   //根据球的状态来改变外形图片

@@ -31,8 +31,8 @@ export default class Item extends cc.Component {
 
     // update (dt) {}
 
-    initItemById(itemId: number, bshowNum: boolean){
-        this.initItemByData(new ItemInfo(itemId), bshowNum);
+    initItemById(itemId: number){
+        this.initItemByData(new ItemInfo(itemId), false);
     }
 
     initItemByData(itemInfo: ItemInfo, bshowNum: boolean){

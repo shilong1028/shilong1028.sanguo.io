@@ -37,7 +37,7 @@ export default class Skill extends cc.Component {
         this.skillInfo = skillInfo;
         this.iconSpr.spriteFrame = this.iconAtlas.getSpriteFrame(skillInfo.skillId.toString());
         this.nameLabel.string = skillInfo.skillCfg.name;
-        this.lvLabel.string = skillInfo.skillLv.toString();
+        this.lvLabel.string = "Lv"+skillInfo.skillLv;
         if(skillInfo.skillPlayerId > 0){
             this.tipLabel.string = "已装配";
         }else{

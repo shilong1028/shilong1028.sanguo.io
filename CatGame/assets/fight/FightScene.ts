@@ -6,7 +6,6 @@ import QiPanSc from "./QiPanSc";
 import { GameMgr } from "../manager/GameManager";
 import WenZi from "../effectAni/Wenzi";
 import Brick from "./Brick";
-import { MyUserData } from "../manager/MyUserData";
 import Item from "../common/item";
 
 const {ccclass, property} = cc._decorator;
@@ -155,10 +154,10 @@ export default class FightScene extends cc.Component {
 
         FightMgr.loadLevel(FightMgr.level_id, false);      // 根据选择的关卡传值    
         
-        cc.log("MyUserData.ItemList = "+JSON.stringify(MyUserData.ItemList));
-        if(MyUserData.ItemList.length > 0){
-            GameMgr.showLayer(this.pfPalyerItem);  //炮台道具预制体
-        }
+        // cc.log("MyUserData.ItemList = "+JSON.stringify(MyUserData.ItemList));
+        // if(MyUserData.ItemList.length > 0){
+        //     GameMgr.showLayer(this.pfPalyerItem);  //炮台道具预制体
+        // }
     }
 
     onDestroy(){

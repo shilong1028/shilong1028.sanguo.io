@@ -137,7 +137,7 @@ export default class BagLayer extends cc.Component {
             let itemModel = cc.instantiate(this.pfItem);
             itemModel.name = "itemModel";
             this.itemNode.addChild(itemModel);
-            itemModel.getComponent(Item).initItemById(itemId, false);  //设置地块道具模型数据
+            itemModel.getComponent(Item).initItemById(itemId);  //设置地块道具模型数据
         }
     }
 
@@ -162,16 +162,19 @@ export default class BagLayer extends cc.Component {
 
     onEquipBtn(){
         AudioMgr.playEffect("effect/ui_click");
+        this.gridLabel.string = "请选择武器装备！";
         this.initGirdInfo(0);  //0装备小球，1饰品道具，2技能
     }
 
     onItemBtn(){
         AudioMgr.playEffect("effect/ui_click");
+        this.gridLabel.string = "请选择饰品道具！";
         this.initGirdInfo(1);  //0装备小球，1饰品道具，2技能
     }
 
     onSkillBtn(){
         AudioMgr.playEffect("effect/ui_click");
+        this.gridLabel.string = "请选择萌宠技能！";
         this.initGirdInfo(2);  //0装备小球，1饰品道具，2技能
     }
 
@@ -257,7 +260,6 @@ export default class BagLayer extends cc.Component {
             }
         }else if(this.curGirdType == 2){   //2技能
             this.gridLabel.string = "请选择萌宠技能！";
-
             let skillModel = this.skillNode.getChildByName("skillModel");
             if(skillModel){
                 let skillInfo = skillModel.getComponent(Skill).skillInfo;   //地块技能模型数据
@@ -400,7 +402,9 @@ export default class BagLayer extends cc.Component {
                         skill.skillPlayerId = curPageInfo.playerId;
                         //更新技能所属的炮台
                         MyUserDataMgr.handleEquipSkill(skill.clone(), curPageInfo.skillId);
-                        NotificationMy.emit(NoticeType.UnEquipSkill, curPageInfo.skillId);   //卸载炮台技能
+                        if(curPageInfo.skillId > 0){
+                            NotificationMy.emit(NoticeType.UnEquipSkill, curPageInfo.skillId);   //卸载炮台技能
+                        }
                         this.selectBlock.setSkillModel(skill.clone());
 
                         //更新炮台

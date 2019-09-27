@@ -14,12 +14,13 @@ export var MyUserData = {
     totalLineTime: 0,   //总的在线时长（每100s更新记录一次）
     lastGoldTaxTime: 0,   //上一次收税金时间
 
-    blockCount: 3,   //开启的合成地块数量
+    blockCount: 1,   //开启的合成地块数量
     ballList: [],   //未出战小球列表 
     
     curPlayerId: 1,  //当前使用的炮Id
     playerList: [],   //拥有的炮列表
 
+    curChapterId: 1, //当前章节Id
     curLevelId: 0,  //当前通关的最大id
     levelList: [],   //通关列表
 
@@ -43,7 +44,7 @@ class MyUserManager {
         MyUserData.lastGoldTaxTime = 0;   //上一次收税金时间
         LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, 0);
 
-        this.updateBlockCount(3);  //开启的合成地块数量
+        this.updateBlockCount(1);  //开启的合成地块数量
         MyUserData.ballList = new Array();  //未出战小球列表 
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
@@ -51,6 +52,7 @@ class MyUserManager {
         MyUserData.playerList = new Array(); //拥有的炮列表
         LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
 
+        this.updateCurChapterId(1); //当前章节Id
         this.updateCurLevelId(0);  //当前通关的最大id
         MyUserData.levelList = new Array(); //通关列表
         LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(MyUserData.levelList));
@@ -71,12 +73,13 @@ class MyUserManager {
         MyUserData.totalLineTime = LDMgr.getItemInt(LDKey.KEY_TotalLineTime);   //总的在线时长（每500s更新记录一次）
         MyUserData.lastGoldTaxTime = LDMgr.getItemInt(LDKey.KEY_LastGoldTaxTime);   //上一次收税金时间
 
-        MyUserData.blockCount = LDMgr.getItemInt(LDKey.KEY_BlockCount, 3);  //开启的合成地块数量
+        MyUserData.blockCount = LDMgr.getItemInt(LDKey.KEY_BlockCount, 1);  //开启的合成地块数量
         MyUserData.ballList = this.getBallListByLD();    //未出战小球列表 
 
         MyUserData.curPlayerId = LDMgr.getItemInt(LDKey.KEY_CurPlayerId, 0);  //当前使用的炮索引
         MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表
 
+        MyUserData.curChapterId = LDMgr.getItemInt(LDKey.KEY_CurChapterId, 1);  //当前章节id
         MyUserData.curLevelId = LDMgr.getItemInt(LDKey.KEY_CurLevelId, 0);  //当前通关的最大id
         MyUserData.levelList = this.getLevelListByLD();  //通关列表
 
@@ -85,19 +88,15 @@ class MyUserManager {
         MyUserData.SkillList = this.getSkillListByLD();  //技能列表
 
         if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户
-            for(let i=0; i<3; ++i){
+            for(let i=0; i<1; ++i){
                 let ballInfo = new BallInfo(1);
                 ballInfo.timeId = this.lastBallTime - i;   //防止一起读取时多个武将timeId一致
                 this.addBallToBallList(ballInfo, false);
-
-                this.updateItemByCount(i+1, 10);   //测试道具
-                let skill = new SkillInfo(i+1);
-                skill.skillLv = 1;
-                this.updateSkillByData(skill);   //测试技能
             }
             LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
             this.updateUserGold(100);
+            //初始用户100金币，一个炮台，一个炮弹
 
             let playerInfo = new PlayerInfo(1);
             playerInfo.useState = 1;  //使用状态，0未拥有，1已拥有
@@ -249,6 +248,11 @@ class MyUserManager {
         return tempArr;
     }
 
+    //当前章节id
+    updateCurChapterId(chapterId: number){
+        MyUserData.curChapterId = chapterId; 
+        LDMgr.setItem(LDKey.KEY_CurChapterId, chapterId);
+    }
     //当前通关的最大id
     updateCurLevelId(levelId: number){
         MyUserData.curLevelId = levelId; 

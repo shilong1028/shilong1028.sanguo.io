@@ -10,12 +10,13 @@ const {ccclass, property} = cc._decorator;
 class GameManager {
     /**
      * 游戏中，目前有萌猫6种（炮台），毛球20种（炮弹），敌人20种，关卡100关（10章），主角等级20级（每过5关升一级）
+     * 关卡奖励道具，章节奖励技能。
      */
 
     playerCount: number = 6;   //炮台萌猫数量
     skillCount: number = 8;  //技能最大ID
     ballMaxLv: number = 20;  //炮弹配置中的最大等级
-    blockOpenLevel: number[] = new Array(0,0,0,1,5, 10,20,30,45,60, 75,90);
+    blockOpenLevel: number[] = new Array(0,1,3,5,10, 15,20,30,40,55, 70,90);
 
 
     /************************  以下为UI接口  ************** */
@@ -44,10 +45,6 @@ class GameManager {
     gotoMainScene(){	
         this.goToSceneWithLoading("mainScene", true);
     } 
-    //切换到章节场景
-    gotoChapterScene(){
-        this.goToSceneWithLoading("chapterScene");
-    }
 
     /**获取主场景 */
     getMainScene(): MainScene {

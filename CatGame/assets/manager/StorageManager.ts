@@ -128,6 +128,7 @@ export const LDKey = {
     KEY_BallList: "KEY_BallList",  //未出战小球列表
     KEY_CurPlayerId: "KEY_CurPlayerId",    //当前使用炮索引
     KEY_PlayerList: "KEY_PlayerList",   //拥有的炮列表
+    KEY_CurChapterId: "KEY_CurChapterId",   //当前章节id
     KEY_CurLevelId: "KEY_CurLevelId",   //当前通关的最大id
     KEY_LevelList: "KEY_LevelList",   //通关列表
     KEY_ItemList: "KEY_ItemList",   //背包列表
