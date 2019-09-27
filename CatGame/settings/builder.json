@@ -36,7 +36,7 @@
     "zip": false
   },
   "startScene": "327246fb-352e-4d8c-b426-2f5a0221e9b1",
-  "title": "AttackFortress",
+  "title": "CatGame",
   "webOrientation": "portrait",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",

@@ -114,6 +114,16 @@ class FightManager {
         this.usedPlayerInfo = MyUserDataMgr.getCurPlayerInfo();   //当前使用的炮台信息
         if(this.usedPlayerInfo){
             this.roundBallCount = this.usedPlayerInfo.playerCfg.ball_num;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
+
+            let itemId = this.usedPlayerInfo.itemId;
+            if(itemId > 0){
+                if(MyUserDataMgr.getItemCount(itemId) == 0){
+                    this.usedPlayerInfo.itemId = 0;
+                    MyUserDataMgr.updatePlayerFromList(this.usedPlayerInfo.clone());   //更新炮台到拥有的炮列表
+                }else{
+                    MyUserDataMgr.updateItemByCount(itemId, -1);   //技能消耗道具
+                }
+            }
         }
         
         this.setBricks();

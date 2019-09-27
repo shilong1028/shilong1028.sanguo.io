@@ -158,6 +158,16 @@ class MyUserManager {
             this.saveItemList();
         }
     }
+    //获取道具数量
+    getItemCount(itemId: number){
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let bagItem: ItemInfo = MyUserData.ItemList[i];
+            if(bagItem.itemId == itemId){
+                return MyUserData.ItemList[i].itemNum;
+            }
+        }
+        return 0;
+    }
     /**从本地存储中获取物品列表 */
     getItemListByLD(){
         let ItemList = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表

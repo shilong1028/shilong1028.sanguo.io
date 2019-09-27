@@ -7,6 +7,7 @@ import { TipsStrDef, ChapterInfo, SkillInfo } from "../manager/Enum";
 import { sdkWechat } from "../manager/SDK_Wechat";
 import Item from "../common/item";
 import Skill from "../common/skill";
+import { CfgMgr } from "../manager/ConfigManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -72,8 +73,8 @@ export default class FightResult extends cc.Component {
             this.titleLabel.string = "战斗胜利";
             stars = Math.ceil(0.01 + Math.random()*2.98);
 
-            let levelCfg = FightMgr.level_info.levelCfg;
-            if(levelCfg.chapterId > MyUserData.curChapterId){
+            let nextLevelCfg = CfgMgr.getLevelConf(FightMgr.level_id + 1);
+            if(nextLevelCfg && nextLevelCfg.chapterId > MyUserData.curChapterId){
                 let chapterInfo = new ChapterInfo(MyUserData.curChapterId);
                 if(chapterInfo && chapterInfo.chapterCfg.skillId > 0){   //新技能
                     let skill = cc.instantiate(this.pfSkill);
@@ -86,12 +87,13 @@ export default class FightResult extends cc.Component {
                     MyUserDataMgr.updateSkillByData(skillInfo.clone());   //添加技能
                 }
 
-                MyUserDataMgr.updateCurChapterId(levelCfg.chapterId);   //新的章节Id
+                MyUserDataMgr.updateCurChapterId(nextLevelCfg.chapterId);   //新的章节Id
             }
 
+            let levelCfg = FightMgr.level_info.levelCfg;
             this.rewardGold = Math.ceil(levelCfg.gold * 0.5 * stars); //1星为75%，3星为150%
             let probability = levelCfg.probability*stars * 3;
-            if(MyUserData.curLevelId < 3 && MyUserData.curLevelId == FightMgr.level_id-1){
+            if(MyUserData.curLevelId < 3 && MyUserData.curLevelId == FightMgr.level_id-1){  //前三关必得奖励
                 probability *= 10;
             }
             for(let i=0; i<levelCfg.itemIds.length; ++i){

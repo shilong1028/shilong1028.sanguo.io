@@ -1,4 +1,4 @@
-import { BallInfo, BallState, IntersectRay, NoticeType, PlayerInfo, IntersectData } from "../manager/Enum";
+import { BallInfo, BallState, IntersectRay, NoticeType, PlayerInfo, IntersectData, ItemInfo, SkillInfo } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
 import Brick from "./Brick";
 import { FightMgr } from "../manager/FightManager";
@@ -47,6 +47,7 @@ export default class Ball extends cc.Component {
     bGroundBounce: boolean = false;  //是否触底不结束而重新弹起
     adsorBrickId: number = -1;   //小球被吸附的砖块ID
     bMultiHit: boolean = false;   //是否覆盖连体打击
+    ballSplitProbability: number = 0;  //分裂技能概率
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -81,6 +82,7 @@ export default class Ball extends cc.Component {
         this.bGroundBounce = false;  //是否触底不结束而重新弹起
         this.adsorBrickId = -1;   //小球被吸附的砖块ID
         this.bMultiHit = false;   //是否覆盖连体打击
+        this.ballSplitProbability = 0;  //分裂技能概率
     }
 
     onLoad(){
@@ -260,26 +262,44 @@ export default class Ball extends cc.Component {
         }
     }
 
-    /** 发射弹珠
-     * @param pos 发射点
-     * @param angle 发射角度，degree
-     */
+    //炮台技能处理
+    handleLaunchSkill(skillId: number, itemId:number=0){
+        if(skillId > 0){
+            let skillInfo = new SkillInfo(skillId);
+            let probability = skillInfo.skillCfg.probability;
+            if(itemId > 0){
+                let item = new ItemInfo(itemId);
+                if(item){
+                    probability += item.itemCfg.probability;
+                }
+            }
+            
+            if(Math.random() <= probability){ 
+                if(skillId == 1){  //冰冻 一定概率使得某回合暂停下移
+                }else if(skillId == 2){  //强化 一定概率使得炮弹攻击力翻倍
+                    this.addRoundAttack();   //增加回合攻击力(充能) 
+                }else if(skillId == 3){  //分裂 一定概率使得炮弹分裂为三个子弹
+                    this.ballSplitProbability = probability;  //分裂技能概率
+                }else if(skillId == 4){  //反弹 一定概率使得炮弹落地后重新反弹
+                    this.openGroundBounce();   //反弹特性
+                }else if(skillId == 5){  //连体 一定概率使得炮弹覆盖打击多个砖块
+                    this.openMultiHit();   //是否覆盖连体打击
+                }else if(skillId == 6){  //爆炸 一定概率击毁敌人后将其四周敌人炸死
+                }else if(skillId == 7){  //激光 一定概率使得炮弹行或列激光打击
+                }else if(skillId == 8){  //穿透 一定概率使得炮弹穿透打击
+                } 
+            }
+        }
+    }
+
+    //发射弹珠
     launch(pos: cc.Vec2, endData: IntersectRay){
         this.changeBallWithState(BallState.moveLaunch);
 
-        let probability = FightMgr.getFightScene().getItemActionById(102);  //充能强化
-        if(Math.random() <= probability){ 
-            this.addRoundAttack();   //增加回合攻击力(充能) 
-        }
-
-        let probability2 = FightMgr.getFightScene().getItemActionById(104);  //反弹
-        if(Math.random() <= probability2){ 
-            this.openGroundBounce();   //反弹特性
-        }
-
-        let probability3 = FightMgr.getFightScene().getItemActionById(105);  //连体攻击
-        if(Math.random() <= probability3){ 
-            this.openMultiHit();   //是否覆盖连体打击
+        let playerInfo: PlayerInfo = MyUserDataMgr.getCurPlayerInfo();
+        if(playerInfo){
+            let skillId = Math.random() < 0.5 ? playerInfo.playerCfg.skillId : playerInfo.skillId;
+            this.handleLaunchSkill(skillId, playerInfo.itemId);
         }
 
         this.launchPos = pos.clone();
@@ -334,8 +354,7 @@ export default class Ball extends cc.Component {
                     }else{
                         AudioMgr.playEffect("effect/launch");  //小球弹射音效
 
-                        let probability = FightMgr.getFightScene().getItemActionById(103);  //分裂
-                        if(Math.random() <= probability){ 
+                        if(this.ballSplitProbability > 0 && Math.random() <= this.ballSplitProbability){   //分裂技能概率
                             FightMgr.qipanSc.handleBallSplit(this);
                         }
                         
@@ -422,8 +441,17 @@ export default class Ball extends cc.Component {
 
             let playerInfo: PlayerInfo = MyUserDataMgr.getCurPlayerInfo();
             if(playerInfo){
-                attack = attack * (1.0 + playerInfo.playerCfg.attack_up);
-                baoji = baoji * (1.0 + playerInfo.playerCfg.baoji_up);
+                let attack_up = playerInfo.playerCfg.attack_up;   //炮台提升的攻击和暴击
+                let baoji_up = playerInfo.playerCfg.baoji_up;
+                if(playerInfo.itemId > 0){
+                    let item = new ItemInfo(playerInfo.itemId);
+                    if(item){
+                        attack_up += item.itemCfg.attack_up;   //炮台绑定的道具提升的攻击和暴击
+                        baoji_up += item.itemCfg.baoji_up;
+                    }
+                }
+                attack = attack * (1.0 + attack_up);
+                baoji = baoji * (1.0 + baoji_up);
             }
             if(bAddRoundAtk == true){
                 attack += this.roundAttack;   //小球在每回合增加的攻击力（吃相关道具，当前回合有效）

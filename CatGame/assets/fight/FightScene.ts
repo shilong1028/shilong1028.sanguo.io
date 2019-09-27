@@ -222,16 +222,6 @@ export default class FightScene extends cc.Component {
         }
     }
 
-    /**通过道具ID获取炮台道具作用的概率 */
-    getItemActionById(itemId: number){
-        for(let i=0; i<this.equipItemList.length; ++i){
-            if(this.equipItemList[i] && this.equipItemList[i].itemId == itemId){
-                return 0.5;
-            }
-        }
-        return 0;
-    }
-
     /**返回按钮 */
     onBackBtn(){
         AudioMgr.playEffect("effect/ui_click");
@@ -406,6 +396,7 @@ export default class FightScene extends cc.Component {
     showStagnationImg(bShow:boolean, showRow: number=-1){
         this.stagnationImg.stopAllActions();
         if(bShow == true){
+            console.log("showStagnationImg");
             this.stagnationRow = showRow;  //显示冰冻的回合
             //this.stagnationImg.opacity = 0;   //停滞冰冻图片
             this.stagnationImg.runAction(cc.fadeIn(1.0));

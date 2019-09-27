@@ -1,4 +1,4 @@
-import { IntersectRay, NoticeType, BallInfo, BallState, BrickInfo } from "../manager/Enum";
+import { IntersectRay, NoticeType, BallInfo, BallState, BrickInfo, SkillInfo, ItemInfo } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
 import Brick from "./Brick";
 import { FightMgr } from "../manager/FightManager";
@@ -840,8 +840,22 @@ export default class QiPanSc extends cc.Component {
                         this.handleBrickDeadAndCheckEnemy(false);   //砖块消失检查是否还有敌方砖块
                         this.createNewRoundLineBricks();
                     }else{
-                        let probability = FightMgr.getFightScene().getItemActionById(101);  //冰冻
-                        if(Math.random() <= probability){  //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
+                        let bStagnation: boolean = false;
+                        let skillId = Math.random() < 0.5 ? FightMgr.usedPlayerInfo.playerCfg.skillId : FightMgr.usedPlayerInfo.skillId;
+                        if(skillId == 1){   //冰冻
+                            let skillInfo = new SkillInfo(1);
+                            let probability = skillInfo.skillCfg.probability;
+                            if(FightMgr.usedPlayerInfo.itemId > 0){
+                                let item = new ItemInfo(FightMgr.usedPlayerInfo.itemId);
+                                if(item){
+                                    probability += item.itemCfg.probability;
+                                }
+                            }
+                            if(Math.random() <= probability){ 
+                                bStagnation = true;
+                            }
+                        }
+                        if(bStagnation == true){  //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
                             this.bCreateNextRound = false;  //是否在检查完回合事件后进行新行砖块创建并下移
                             this.NotifyBricksMoveDown(false);   //砖块下移
 
