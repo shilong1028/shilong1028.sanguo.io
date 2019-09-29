@@ -75,13 +75,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>multihit_effect.png</string>
+            <string>baoji_effect.png</string>
             <key>size</key>
             <string>{182,122}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:55f898b96cb5a402693c1063432a5c7d:b2d00fdf091a0d06f80ef5205537a9fe:53327605fe22544f3d6ce00840ba7b56$</string>
+            <string>$TexturePacker:SmartUpdate:6d4eb1e9207d1224b9894939667fea59:b2d00fdf091a0d06f80ef5205537a9fe:b9bc30e582eb2b70f3b8cec85cf10434$</string>
             <key>textureFileName</key>
-            <string>multihit_effect.png</string>
+            <string>baoji_effect.png</string>
         </dict>
     </dict>
 </plist>

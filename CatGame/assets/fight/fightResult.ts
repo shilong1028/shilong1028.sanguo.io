@@ -2,12 +2,9 @@ import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
-import { SDKMgr } from "../manager/SDKManager";
-import { TipsStrDef, ChapterInfo, SkillInfo } from "../manager/Enum";
-import { sdkWechat } from "../manager/SDK_Wechat";
-import Item from "../common/item";
 import Skill from "../common/skill";
 import { CfgMgr } from "../manager/ConfigManager";
+import { SkillInfo } from "../manager/Enum";
 
 const {ccclass, property} = cc._decorator;
 
@@ -28,14 +25,14 @@ export default class FightResult extends cc.Component {
     @property(cc.SpriteFrame)
     lightFrame: cc.SpriteFrame = null;
 
-    @property(cc.Node)
-    itemLayout: cc.Node = null;  //道具掉落
-    @property(cc.Prefab)
-    pfItem: cc.Prefab = null;  //道具
+    @property([cc.Node])
+    skillNodes: cc.Node[] = new Array(3);
+
     @property(cc.Prefab)
     pfSkill: cc.Prefab = null;  //技能图标
 
     rewardGold: number = 0;   //奖励金币
+    bNextLevel: boolean = true;   //下一关
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -55,6 +52,7 @@ export default class FightResult extends cc.Component {
 
             let nextLevelCfg = CfgMgr.getLevelConf(FightMgr.level_id + 1);
             if(nextLevelCfg && nextLevelCfg.chapterId > MyUserData.curChapterId){
+                this.bNextLevel = false;
                 MyUserDataMgr.updateCurChapterId(nextLevelCfg.chapterId);   //新的章节Id
             }
 
@@ -63,7 +61,7 @@ export default class FightResult extends cc.Component {
              //添加技能
             for(let i=0; i<levelCfg.skillIds.length; ++i){
                 let skill = cc.instantiate(this.pfSkill);
-                this.itemLayout.addChild(skill);
+                this.skillNodes[i].addChild(skill);
 
                 let skillInfo = new SkillInfo(levelCfg.skillIds[i]);
                 skill.getComponent(Skill).initSkillByData(skillInfo);
@@ -72,6 +70,8 @@ export default class FightResult extends cc.Component {
             this.titleLabel.string = "战斗失败";
         }
         this.rewardLabel.string = "+"+GameMgr.num2e(this.rewardGold);
+        MyUserDataMgr.updateUserGold(this.rewardGold);
+
         MyUserDataMgr.saveLevelFightInfo(FightMgr.level_id, FightMgr.win, stars);
 
         for(let i=0; i<3; ++i){
@@ -85,19 +85,19 @@ export default class FightResult extends cc.Component {
 
     // update (dt) {}
 
-    onBackBtn(){
+    onSkillBtn(sender, parStr){
         AudioMgr.playEffect("effect/ui_click");
-        this.handleNormal(false);
-    }
-
-    //复活或显示结算
-    handleNormal(bNext:boolean=true){
-        MyUserDataMgr.updateUserGold(this.rewardGold);
-        if(bNext == true){
-            this.node.removeFromParent(true);
-            FightMgr.loadLevel(FightMgr.level_id+1, false);      //下一关
-        }else{
-            GameMgr.gotoMainScene();
+        let idx = parseInt(parStr);
+        let skillId = FightMgr.level_info.levelCfg.skillIds[idx];
+        if(skillId > 0){
+            if(this.bNextLevel == true){
+                FightMgr.getFightScene().addFightSkillById(skillId);
+                
+                this.node.removeFromParent(true);
+                FightMgr.loadLevel(FightMgr.level_id+1, false);      //下一关
+            }else{
+                GameMgr.gotoMainScene();
+            }
         }
     }
 }

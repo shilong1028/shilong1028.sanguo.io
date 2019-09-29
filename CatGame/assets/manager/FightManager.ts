@@ -107,10 +107,6 @@ class FightManager {
         this.level_id = levelId;
         this.level_info = new LevelInfo(levelId);
 
-        if(this.level_id <= 10){
-            this.defaultRayCount = 2;   //默认的绘制指示线的射线段数
-        }
-
         this.usedPlayerInfo = MyUserDataMgr.getCurPlayerInfo();   //当前使用的炮台信息
         if(this.usedPlayerInfo){
             this.roundBallCount = this.usedPlayerInfo.playerCfg.ball_num;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
@@ -125,6 +121,8 @@ class FightManager {
                 }
             }
         }
+
+        this.getFightScene().showSkillIcons();  //显示章节战斗技能
         
         this.setBricks();
     }
@@ -136,7 +134,7 @@ class FightManager {
         // 列数可以从jsonInfo的width确定，但实际的height要从具体关卡的objects数据中确定
         if(this.level_info && this.level_info.levelCfg){
             let levelCfg = this.level_info.levelCfg;
-            cc.log("FightMgr:setBricks(), levelCfg = "+JSON.stringify(levelCfg));
+            //cc.log("FightMgr:setBricks(), levelCfg = "+JSON.stringify(levelCfg));
             let enemyCount = levelCfg.enemy_count;   //砖块还剩余总数
             let enemyLines = levelCfg.total_lines;  
             let enemyIds:number[] = new Array();

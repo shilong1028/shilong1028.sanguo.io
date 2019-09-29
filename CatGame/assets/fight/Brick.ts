@@ -6,6 +6,7 @@ import Ball from "./Ball";
 import Dot from "./Dot";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
+import { ROOT_NODE } from "../common/rootNode";
 
 const {ccclass, property} = cc._decorator;
 
@@ -537,7 +538,8 @@ export default class Brick extends cc.Component {
             }  
             this.hitDamage(harm, ball, true);   //处理砖块收到伤害, 注意，伤害一定要放在bump_event之后，因为受击后砖块可能死亡
 
-            if(ball.bMultiHit){    //小球有连体覆盖打击效果
+            if(ball.multiHitProbability > 0 && Math.random() <= ball.multiHitProbability){    //小球有连体覆盖打击效果
+                ROOT_NODE.showTipsText("触发连击技能，覆盖打击目标多个砖块。");
                 let curPos = this.node.position.clone();
                 NotificationMy.emit(NoticeType.BrickDiffuseHit, new cc.Vec3(curPos.x, curPos.y, 1000000+harm));   //砖块受击散播
             }

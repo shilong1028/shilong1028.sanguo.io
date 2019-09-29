@@ -1,11 +1,13 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, ItemInfo } from "../manager/Enum";
+import { NoticeType, ItemInfo, SkillInfo } from "../manager/Enum";
 import { AudioMgr } from "../manager/AudioMgr";
 import { FightMgr } from "../manager/FightManager";
 import QiPanSc from "./QiPanSc";
 import { GameMgr } from "../manager/GameManager";
 import WenZi from "../effectAni/Wenzi";
 import Brick from "./Brick";
+import Skill from "../common/skill";
+import { ROOT_NODE } from "../common/rootNode";
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,6 +38,9 @@ export default class FightScene extends cc.Component {
     @property([cc.SpriteFrame])
     speedFrames: cc.SpriteFrame[] = new Array(3);
 
+    @property([cc.Node])
+    skillNodes: cc.Node[] = new Array(4);
+
     @property(cc.Prefab)
     pfFightResult: cc.Prefab = null;
     @property(cc.Prefab)
@@ -53,6 +58,8 @@ export default class FightScene extends cc.Component {
     pfharmHp: cc.Prefab = null;   //飘血预制体
     @property(cc.Prefab)
     pfDot: cc.Prefab = null;   //指示点预制体  
+    @property(cc.Prefab)
+    pfSkill: cc.Prefab = null;
 
     @property(cc.SpriteFrame)
     boomFrame: cc.SpriteFrame = null;  //炸弹图片
@@ -70,7 +77,7 @@ export default class FightScene extends cc.Component {
     @property(cc.SpriteAtlas)
     ballFantanAtlas: cc.SpriteAtlas = null;  //小球反弹特效
     @property(cc.SpriteAtlas)
-    multiHitAtlas: cc.SpriteAtlas = null;  //小球连体覆盖打击特效
+    baojiAtlas: cc.SpriteAtlas = null;  //小球狂暴特效
 
     brickPool: cc.NodePool =  null;   //砖块缓存池
 
@@ -82,8 +89,9 @@ export default class FightScene extends cc.Component {
 
     curRoundProgress: number = 0;   //当前关卡回合进度
     totalRoundCount: number = 0;
-    equipItemList: ItemInfo[] = new Array(3);
     stagnationRow: number = -1;  //显示冰冻的回合
+
+    skillList: SkillInfo[] = new Array();   //章节技能列表，每一关累计，章节内有效
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -99,9 +107,9 @@ export default class FightScene extends cc.Component {
 
         this.levelLabel.string = "";  //第几关
         this.tempBottomNode.opacity = 0;  //底部拖动取消提示
-        this.stagnationImg.opacity = 0;   //停滞冰冻图片
+        this.stagnationImg.opacity = 0;   //停滞冰冻图片    
         this.stagnationRow = -1;  //显示冰冻的回合
-        
+
         if(bInit == false){
             NotificationMy.emit(NoticeType.GameReStart, null);  //重新开始游戏
         }
@@ -133,14 +141,49 @@ export default class FightScene extends cc.Component {
     }
 
     start () {
-        this.clearSceneData(true);
-
         this.brickPool = new cc.NodePool(Brick);   //砖块缓存池
         //只有在new cc.NodePool(Dot)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
 
         FightMgr.qipanSc = this.qipanNode.getComponent(QiPanSc);   //棋盘
 
         FightMgr.loadLevel(FightMgr.level_id, false);      // 根据选择的关卡传值    
+    }
+
+    //显示章节战斗技能
+    showSkillIcons(){
+        if(this.skillList.length == 0){
+            let curSkillId = FightMgr.usedPlayerInfo.playerCfg.skillId;
+            if(curSkillId > 0){
+                let skillInfo = new SkillInfo(curSkillId);
+                this.skillList.push(skillInfo);
+            }
+        }
+
+        for(let i=0; i<4; i++){
+            this.skillNodes[i].removeAllChildren(true);
+            let skillInfo = this.skillList[i];
+            if(skillInfo){
+                let skill = cc.instantiate(this.pfSkill);
+                this.skillNodes[i].addChild(skill);
+                skill.getComponent(Skill).initSkillByData(skillInfo);
+            }
+        }
+
+        let skillInfo = FightMgr.getFightScene().getFightSkillById(7);  //一定概率增加指视线段数量
+        if(skillInfo){   //指示
+            let probability = skillInfo.skillCfg.probability * skillInfo.skillLv;
+            if(FightMgr.usedPlayerInfo.itemId > 0){
+                let item = new ItemInfo(FightMgr.usedPlayerInfo.itemId);
+                if(item){
+                    probability += item.itemCfg.probability;
+                }
+            }
+            cc.log("指示技能概率 "+probability);
+            if(Math.random() <= probability){ 
+                FightMgr.defaultRayCount ++;   //默认的绘制指示线的射线段数
+                ROOT_NODE.showTipsText("触发指示技能，增加一段指示线。");
+            }
+        }
     }
 
     onDestroy(){
@@ -198,6 +241,29 @@ export default class FightScene extends cc.Component {
 
         if(FightMgr.bGameOver == false){ 
             GameMgr.showLayer(this.pfPauseInfo);   //暂停界面
+        }
+    }
+
+    /**获取指定的战斗技能 */
+    getFightSkillById(skillId: number){
+        for(let i=0; i<this.skillList.length; ++i){
+            if(this.skillList[i].skillId == skillId){
+                return this.skillList[i].clone();
+            }
+        }
+        return null;
+    }
+
+    /**添加新的技能到战斗列表中 */
+    addFightSkillById(skillId: number){
+        if(skillId > 0){
+            for(let i=0; i<this.skillList.length; ++i){
+                if(this.skillList[i].skillId == skillId){
+                    this.skillList[i].skillLv ++;
+                    return;
+                }
+            }
+            this.skillList.push(new SkillInfo(skillId));
         }
     }
 

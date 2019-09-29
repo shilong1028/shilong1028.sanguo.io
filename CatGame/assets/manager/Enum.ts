@@ -249,6 +249,16 @@ export class TempIntersectData{
     borders: cc.Vec2[] = null;   //砖块顶点集合
 }
 
+//发射技能
+export class LaunchSkillState{
+    qianghuaPro: number = 0;  //2强化 一定概率提升攻击力
+    fenLiePro: number = 0;  //3分裂 一定概率使得炮弹分裂为三个子弹
+    fanTanPro: number = 0;  //4反弹 一定概率使得炮弹落地后重新反弹
+    lianTiPro: number = 0;  //5连体 一定概率使得炮弹覆盖打击多个砖块
+    baoZhaPro: number = 0;  //6爆炸 一定概率击毁敌人后将其四周敌人炸死
+    kuagnBaoPro: number = 0;  //9狂暴 一定概率提升暴击率
+}
+
 /**球的状态 */
 export enum BallState {  //(初始--排序）--待机--瞄准--移动发射--飞行--碰撞--下落回收---排序--下一回合待机
     init = 0, //初始状态
@@ -266,20 +276,13 @@ export enum BallState {  //(初始--排序）--待机--瞄准--移动发射--飞
 export const TipsStrDef = {
     KEY_GoldTip: "金币不足!", 
     KEY_GetGoldTip: "获得金币：", 
+    KEY_DiamondTip: "钻石不足！", 
     KEY_WeaponTip: "武器无法装配!", 
+    KEY_WeaponTip2: "没有装配武器，无法出战！",
     KEY_FireTip: "最后一个武器不可回收！", 
     KEY_QualityTip: "最大品质等级小球不可合成!",
-
-
-    KEY_HeChengTip: "合成位置不足。",  
-    KEY_HeChengTip2: "合成位置不足，请先合成或回收士兵。",
-    
-    KEY_DiamondTip: "钻石不足，可使用转盘获得。",   
      
-    KEY_RecoverTip: "将士兵拖到此处回收。", 
-    KEY_LevelMaxTip: "太棒了，您已通过全部关卡！", 
-     
-    KEY_Share: "升级士兵，然后扔出去！"
+    KEY_Share: "分享快乐！"
 }
 
 /**异步消息通知类型 */

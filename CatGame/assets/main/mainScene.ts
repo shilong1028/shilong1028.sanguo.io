@@ -1,5 +1,5 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, ChapterInfo, PlayerInfo } from "../manager/Enum";
+import { NoticeType, ChapterInfo, PlayerInfo, TipsStrDef } from "../manager/Enum";
 import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
@@ -185,18 +185,23 @@ export default class MainScene extends cc.Component {
 
         let curPlayerInfo: PlayerInfo = MyUserDataMgr.getCurPlayerInfo();
         if(curPlayerInfo){  
-            let chapterInfo = null;
-            if(this.curChapterIdx+1 < MyUserData.curChapterId){
-                chapterInfo = new ChapterInfo(this.curChapterIdx+1);   //选中的章节
+            if(curPlayerInfo.ballId == 0){
+                ROOT_NODE.showTipsText(TipsStrDef.KEY_WeaponTip2);
+                this.showMidUI(1);   //显示中间信息，0地图关卡、1背包炮台、2商店
             }else{
-                chapterInfo = new ChapterInfo(MyUserData.curChapterId);    //当前的章节
-            }
-    
-            if(chapterInfo){
-                FightMgr.level_id = chapterInfo.chapterCfg.levels[0];
-                GameMgr.goToSceneWithLoading("FightScene");
-            }else{
-                ROOT_NODE.showTipsText("章节信息有误！");
+                let chapterInfo = null;
+                if(this.curChapterIdx+1 < MyUserData.curChapterId){
+                    chapterInfo = new ChapterInfo(this.curChapterIdx+1);   //选中的章节
+                }else{
+                    chapterInfo = new ChapterInfo(MyUserData.curChapterId);    //当前的章节
+                }
+        
+                if(chapterInfo){
+                    FightMgr.level_id = chapterInfo.chapterCfg.levels[0];
+                    GameMgr.goToSceneWithLoading("FightScene");
+                }else{
+                    ROOT_NODE.showTipsText("章节信息有误！");
+                }
             }
         }
     }
