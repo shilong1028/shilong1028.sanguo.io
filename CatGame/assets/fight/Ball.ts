@@ -43,12 +43,14 @@ export default class Ball extends cc.Component {
     bReady: boolean = false;  //发射准备
     bDropState: boolean = false;    //曲线下落状态（飞行中下落，地面的不再弹射）
     bFixedFlyDir: boolean = false;   //穿透砖块触碰后，小球在本回合内与其他砖块碰撞不再改变方向
-    roundAttack: number = 0;   //小球在每回合增加的攻击力（吃相关道具，当前回合有效）
+    roundAttack: number = 0;   //小球在每回合增加的攻击力（当前回合有效）
+    roundBaoji: number = 0;   //小球在每回合增加的暴击率（当前回合有效）
 
     bGroundBounce: boolean = false;  //是否触底不结束而重新弹起
     adsorBrickId: number = -1;   //小球被吸附的砖块ID
     multiHitProbability: number = 0;  //连体技能概率
     ballSplitProbability: number = 0;  //分裂技能概率
+    baoZhaProbability: number = 0;  //爆炸技能概率
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -78,12 +80,14 @@ export default class Ball extends cc.Component {
 
         this.bDropState = false;    //曲线下落状态（飞行中下落，地面的不再弹射）
         this.bFixedFlyDir = false;   //穿透砖块触碰后，小球在本回合内与其他砖块碰撞不再改变方向
-        this.roundAttack = 0;   //小球在每回合增加的攻击力（吃相关道具，当前回合有效）
+        this.roundAttack = 0;   //小球在每回合增加的攻击力（当前回合有效）
+        this.roundBaoji = 0;   //小球在每回合增加的暴击率（当前回合有效）
 
         this.bGroundBounce = false;  //是否触底不结束而重新弹起
         this.adsorBrickId = -1;   //小球被吸附的砖块ID
         this.multiHitProbability = 0;  //连体技能概率
         this.ballSplitProbability = 0;  //分裂技能概率
+        this.baoZhaProbability = 0;  //爆炸技能概率
     }
 
     onLoad(){
@@ -140,7 +144,7 @@ export default class Ball extends cc.Component {
 
     changeBallSkin(){
         if(this.ballId > 1000){   //分裂产生的小球
-            this.ballSpr.spriteFrame = FightMgr.getFightScene().boomFrame;
+            this.ballSpr.spriteFrame = FightMgr.getFightScene().boomFrames[0];
         }else if(this.ballInfo){
             this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("dog"+this.ballInfo.cannonId+"_normal");
         }
@@ -226,13 +230,28 @@ export default class Ball extends cc.Component {
         let skillInfo = FightMgr.getFightScene().getFightSkillById(2);  //强化
         let upVal = skillInfo.skillCfg.attack_up * skillInfo.skillLv;
         
-        this.roundAttack = Math.ceil(this.getBallAttack(false) * upVal);   //小球在每回合增加的攻击力（吃相关道具，当前回合有效）
-        cc.log("addRoundAttack() 增加回合攻击力 this.roundAttack = "+this.roundAttack);
+        this.roundAttack = Math.ceil(this.getBallAttack(false) * upVal);   //小球在每回合增加的攻击力（当前回合有效）
+
         let effAni = this.effectNode.getChildByName("chongneng_effect_1");
         if(effAni == null){
             effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().ballChongnengAtlas);
             if(effAni){
                 effAni.name = "chongneng_effect_1";
+                this.effectNode.addChild(effAni, 100);
+            }
+        }
+    }
+
+    /**狂暴特性 */
+    addRoundBaoji(){
+        let skillInfo = FightMgr.getFightScene().getFightSkillById(9);  //狂暴
+        this.roundBaoji = skillInfo.skillCfg.baoji_up * skillInfo.skillLv;  //小球在每回合增加的暴击率（当前回合有效）
+
+        let effAni = this.effectNode.getChildByName("baoji_effect");
+        if(effAni == null){
+            effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().baojiAtlas);
+            if(effAni){
+                effAni.name = "baoji_effect";
                 this.effectNode.addChild(effAni, 100);
             }
         }
@@ -247,18 +266,6 @@ export default class Ball extends cc.Component {
             effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().ballFantanAtlas);
             if(effAni){
                 effAni.name = "fantan_effect_1";
-                this.effectNode.addChild(effAni, 100);
-            }
-        }
-    }
-
-    /**狂暴特性 */
-    openBaoji(){
-        let effAni = this.effectNode.getChildByName("baoji_effect");
-        if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().baojiAtlas);
-            if(effAni){
-                effAni.name = "baoji_effect";
                 this.effectNode.addChild(effAni, 100);
             }
         }
@@ -285,6 +292,15 @@ export default class Ball extends cc.Component {
         }
         if(skillsState.lianTiPro > 0){  //5连体 一定概率使得炮弹覆盖打击多个砖块
             this.multiHitProbability = skillsState.lianTiPro;  //连体技能概率
+        }
+        if(skillsState.baoZhaPro > 0){  //6爆炸 一定概率在击毁敌人后将其四周敌人也全部炸死
+            this.baoZhaProbability = skillsState.baoZhaPro;  //爆炸技能概率
+        }
+        if(skillsState.kuangBaoPro > 0){  //9狂暴 一定概率提升暴击率
+            if(Math.random() <= skillsState.kuangBaoPro){ 
+                ROOT_NODE.showTipsText("触发狂暴技能，暴击率提升。");
+                this.addRoundBaoji();   
+            }
         }
 
         this.launchPos = pos.clone();
@@ -425,24 +441,25 @@ export default class Ball extends cc.Component {
             let attack = this.ballInfo.cannonCfg.attack;
             let baoji = this.ballInfo.cannonCfg.baoji;
 
-            let playerInfo: PlayerInfo = MyUserDataMgr.getCurPlayerInfo();
-            if(playerInfo){
-                let attack_up = playerInfo.playerCfg.attack_up;   //炮台提升的攻击和暴击
-                let baoji_up = playerInfo.playerCfg.baoji_up;
-                if(playerInfo.itemId > 0){
-                    let item = new ItemInfo(playerInfo.itemId);
+            if(FightMgr.usedPlayerInfo){
+                let attack_up = FightMgr.usedPlayerInfo.playerCfg.attack_up;   //炮台提升的攻击和暴击
+                let baoji_up = FightMgr.usedPlayerInfo.playerCfg.baoji_up;
+                if(FightMgr.usedPlayerInfo.itemId > 0){
+                    let item = new ItemInfo(FightMgr.usedPlayerInfo.itemId);
                     if(item){
                         attack_up += item.itemCfg.attack_up;   //炮台绑定的道具提升的攻击和暴击
                         baoji_up += item.itemCfg.baoji_up;
                     }
                 }
                 attack = attack * (1.0 + attack_up);
-                baoji = baoji * (1.0 + baoji_up);
+                baoji = baoji + baoji_up;
             }
             if(bAddRoundAtk == true){
-                attack += this.roundAttack;   //小球在每回合增加的攻击力（吃相关道具，当前回合有效）
+                attack += this.roundAttack;   //小球在每回合增加的攻击力（当前回合有效）
+                baoji += this.roundBaoji;   //小球在每回合增加的暴击率（当前回合有效）
             }
             attack = Math.floor(attack);
+
             if(Math.random() <= baoji){
                 attack *= 2;
             }
@@ -868,7 +885,6 @@ export default class Ball extends cc.Component {
         this.setBallOpacity(130);   //吸附小球的透明度变成0
 
         FightMgr.roundBallCount -- ;   //有吸附小球
-        //cc.log("FightMgr.roundBallCount = "+FightMgr.roundBallCount+"; FightMgr.roundAddBallNum = "+FightMgr.roundAddBallNum);
         if(FightMgr.roundBallCount <= FightMgr.ballDropedCount){  //回合内增加的小球
             FightMgr.hanldeBallDropOver(this.node.x, true);
         }

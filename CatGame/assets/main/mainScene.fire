@@ -4768,7 +4768,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "numLabel",
+    "_name": "goldNum",
     "_objFlags": 0,
     "_parent": {
       "__id__": 101
@@ -5053,7 +5053,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "numLabel",
+    "_name": "diamondNum",
     "_objFlags": 0,
     "_parent": {
       "__id__": 107

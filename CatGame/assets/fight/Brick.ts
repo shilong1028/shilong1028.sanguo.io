@@ -15,12 +15,10 @@ export default class Brick extends cc.Component {
     
     @property(cc.Node)
     brickNode: cc.Node = null;  //砖块显示总节点, 用于抖动，放缩，复制移动等动作目标
+    @property(cc.Sprite)
+    brickSpr: cc.Sprite = null;   //砖块样式纹理， 用于延迟动作目标 
     @property(cc.Label)
     labPH: cc.Label = null;
-    @property(cc.Sprite)
-    brickSpr: cc.Sprite = null;   //砖块样式纹理， 用于延迟动作目标
-    @property(cc.Node)
-    brickBg: cc.Node = null;   
     @property(cc.ProgressBar)
     hpBar: cc.ProgressBar = null;
     @property(cc.Node)
@@ -28,6 +26,11 @@ export default class Brick extends cc.Component {
 
     @property(cc.SpriteFrame)
     shieldFrame: cc.SpriteFrame = null;  //盾牌
+
+    @property(cc.Sprite)
+    brickBgSpr: cc.Sprite = null;  
+    @property([cc.SpriteFrame])
+    bgFrames: cc.SpriteFrame[] = new Array(2);  //砖块背景图片
 
     @property(cc.PolygonCollider)
     collider: cc.PolygonCollider = null;
@@ -98,6 +101,7 @@ export default class Brick extends cc.Component {
         
         NotificationMy.on(NoticeType.BallHitBrick, this.handleBallHitBrick, this);  //小球攻击砖块
         NotificationMy.on(NoticeType.BrickDiffuseHit, this.hanldeBrickDiffuseHit, this);  //砖块受击散播
+        NotificationMy.on(NoticeType.BrickBombDead, this.hanldeBrickBombDead, this);   //爆炸砖块死亡
 
         this.brickSpr.node.zIndex = 1;
         this.hpNode.zIndex = 2;
@@ -324,6 +328,8 @@ export default class Brick extends cc.Component {
             let monster_ai = this.brick_info.monsterCfg.ai;   //行为 0无 1：左右往复移动 2：间隔吸附 3.坠落两行
             //cc.log("brick.initBrickSpecialInfo(), monster_ai = "+monster_ai);
             if(monster_ai == 1){   //1：左右往复移动
+                this.brickBgSpr.spriteFrame = this.bgFrames[1];
+
                 this.node.group = "MoveBrick";
                 let gameBorderRect = FightMgr.gameBordersRect;   //棋盘边界矩形（中心点+宽高）
                 this.moveToPosX = gameBorderRect.width/2 - this.node.width/2;   //移动砖块的水平移动
@@ -597,6 +603,12 @@ export default class Brick extends cc.Component {
                     this.brick_info.curHp = 0;
                     harm = parseInt(this.labPH.string);
                     this.showDeadEffect(bDeadEvent);   //死亡特效 
+
+                    if(ball && ball.baoZhaProbability > 0 && Math.random() <= ball.baoZhaProbability){    //爆炸打击效果
+                        ROOT_NODE.showTipsText("触发爆炸技能，将四周敌人全部炸死。");
+                        let curPos = this.node.position.clone();
+                        NotificationMy.emit(NoticeType.BrickBombDead, new cc.Vec3(curPos.x, curPos.y, 0));   //爆炸
+                    }
                 }
                 this.setBrickHpLabel();
                 if(harm > 0){  
@@ -606,9 +618,43 @@ export default class Brick extends cc.Component {
         }
     }
 
-    /**砖块受击激光散播 */
+    /**处理爆炸砖块死亡事件 */
+    hanldeBrickBombDead(bombPos: cc.Vec3){
+        if(this.isBrickDead() == false && this.brick_info){
+            let offsetX = Math.abs(this.node.x - bombPos.x);
+            let offsetY = Math.abs(this.node.y - bombPos.y);
+            let bBomb:boolean = false;
+            if(bombPos.z == -1){  //3-爆炸行。死亡后爆炸，消灭相邻两行行4个敌方。
+                if(offsetX < 10 && offsetY > 50 && offsetY <= 250){
+                    bBomb = true;
+                }
+            }else if(bombPos.z == 1){  //4-爆炸列。死亡后爆炸，消灭相邻两列4个敌方。
+                if(offsetY < 10 && offsetX > 50 && offsetX <= 250){
+                    bBomb = true;
+                }
+            }else if(bombPos.z == 0){  //1-爆炸一圈。死亡之后爆炸，使周围一圈8个砖块中所有敌方阵营死亡  
+                let len = this.node.position.sub(cc.v2(bombPos.x, bombPos.y)).mag();
+                if(len > 10 && len <= 150){
+                    bBomb = true;
+                }
+            }
+            if(bBomb == true){
+                let img = FightMgr.qipanSc.createBoomEffectImg(cc.v2(bombPos.x, bombPos.y), 0)
+                if(img){
+                    img.scale = 0.8;
+                    img.opacity = 255;
+                    img.runAction(cc.sequence(cc.spawn(cc.moveTo(0.1, this.node.position), cc.sequence(cc.scaleTo(0.05, 1.5), cc.scaleTo(0.05, 0.8))), cc.callFunc(function(){
+                        this.hitDamage(parseInt(this.labPH.string), null, true);
+                        img.removeFromParent(true);
+                    }.bind(this))));
+                }
+            }
+        }
+    }
+
+    /**砖块受击连击散播 */
     hanldeBrickDiffuseHit(hitPos: cc.Vec3){
-        if(this.isBrickDead() == false){
+        if(this.isBrickDead() == false  && this.brick_info){
             let offsetX = Math.abs(this.node.x - hitPos.x);
             let offsetY = Math.abs(this.node.y - hitPos.y);
             let harm = Math.abs(hitPos.z);
@@ -632,7 +678,7 @@ export default class Brick extends cc.Component {
             }
 
             if(bHarmed == true){
-                let img = FightMgr.qipanSc.createBoomEffectImg(cc.v2(hitPos.x, hitPos.y))
+                let img = FightMgr.qipanSc.createBoomEffectImg(cc.v2(hitPos.x, hitPos.y), 1)
                 if(img){
                     img.scale = 0.8;
                     img.opacity = 255;

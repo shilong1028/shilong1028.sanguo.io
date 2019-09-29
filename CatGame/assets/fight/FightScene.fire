@@ -3267,9 +3267,14 @@
     "pfSkill": {
       "__uuid__": "db8316af-ec51-495c-8677-6a47a70b7247"
     },
-    "boomFrame": {
-      "__uuid__": "0924bd8c-f580-49d0-9f65-2fa4417c0708"
-    },
+    "boomFrames": [
+      {
+        "__uuid__": "0924bd8c-f580-49d0-9f65-2fa4417c0708"
+      },
+      {
+        "__uuid__": "7f3ce5d2-f783-42fc-a8c3-ef9770d2a4f2"
+      }
+    ],
     "deadAtlas": {
       "__uuid__": "4b34fe68-71c5-4ff1-9915-ae008eea14d6"
     },

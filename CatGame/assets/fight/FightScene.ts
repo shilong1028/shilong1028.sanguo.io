@@ -61,8 +61,8 @@ export default class FightScene extends cc.Component {
     @property(cc.Prefab)
     pfSkill: cc.Prefab = null;
 
-    @property(cc.SpriteFrame)
-    boomFrame: cc.SpriteFrame = null;  //炸弹图片
+    @property([cc.SpriteFrame])
+    boomFrames: cc.SpriteFrame[] = new Array(2);  //炸弹图片
 
     @property(cc.SpriteAtlas)
     deadAtlas: cc.SpriteAtlas = null;   //砖块死亡烟雾特效
@@ -151,7 +151,8 @@ export default class FightScene extends cc.Component {
 
     //显示章节战斗技能
     showSkillIcons(){
-        if(this.skillList.length == 0){
+        if(this.skillList.length == 0){   //初次进入战斗场景
+            FightMgr.fightAddCount = 0;    //章节加球技能增加值（每一章节内有效）
             let curSkillId = FightMgr.usedPlayerInfo.playerCfg.skillId;
             if(curSkillId > 0){
                 let skillInfo = new SkillInfo(curSkillId);
@@ -182,6 +183,22 @@ export default class FightScene extends cc.Component {
             if(Math.random() <= probability){ 
                 FightMgr.defaultRayCount ++;   //默认的绘制指示线的射线段数
                 ROOT_NODE.showTipsText("触发指示技能，增加一段指示线。");
+            }
+        }
+
+        let skillInfo2 = FightMgr.getFightScene().getFightSkillById(8);  //一定概率增加可发射的武器数量
+        if(skillInfo2){   //加球
+            let probability = skillInfo2.skillCfg.probability * skillInfo2.skillLv;
+            if(FightMgr.usedPlayerInfo.itemId > 0){
+                let item = new ItemInfo(FightMgr.usedPlayerInfo.itemId);
+                if(item){
+                    probability += item.itemCfg.probability;
+                }
+            }
+            cc.log("加球技能概率 "+probability);
+            if(Math.random() <= probability){ 
+                FightMgr.fightAddCount++;    //章节加球技能增加值（每一章节内有效）
+                ROOT_NODE.showTipsText("触发加球技能，增加一个武器数量。");
             }
         }
     }

@@ -122,7 +122,7 @@ export const LDKey = {
     KEY_Sound_Volume: "KEY_Sound_Volume",   //本地音效音量
 
     KEY_GoldCount: "KEY_GoldCount",   //金币数量
-    KEY_DiamondCount: "KEY_GoldCount",   //钻石数量
+    KEY_DiamondCount: "KEY_DiamondCount",   //钻石数量
     KEY_TotalLineTime: "KEY_TotalLineTime",   //总的在线时长（每500s更新记录一次）
     KEY_LastGoldTaxTime: "KEY_LastGoldTaxTime",   //上一次收税金时间
     KEY_BallList: "KEY_BallList",  //未出战小球列表

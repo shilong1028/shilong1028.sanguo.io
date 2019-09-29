@@ -256,7 +256,7 @@ export class LaunchSkillState{
     fanTanPro: number = 0;  //4反弹 一定概率使得炮弹落地后重新反弹
     lianTiPro: number = 0;  //5连体 一定概率使得炮弹覆盖打击多个砖块
     baoZhaPro: number = 0;  //6爆炸 一定概率击毁敌人后将其四周敌人炸死
-    kuagnBaoPro: number = 0;  //9狂暴 一定概率提升暴击率
+    kuangBaoPro: number = 0;  //9狂暴 一定概率提升暴击率
 }
 
 /**球的状态 */
@@ -305,6 +305,7 @@ export const NoticeType = {
     BrickInvincible: "BrickInvincible",  //砖块无敌/盾牌
     BrickAddEvent: "BrickAddEvent",   //添加新砖块，用于移动砖块检测
     BrickDiffuseHit: "BrickDiffuseHit",  //砖块受击散播
+    BrickBombDead: "BrickBombDead",  //爆炸砖块死亡
 
     BallAdsorbEvent: "BallAdsorbEvent",   //砖块吸附小球
     BallSpeedUp: "BallSpeedUp",   //小球加速

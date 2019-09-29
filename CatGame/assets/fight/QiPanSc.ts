@@ -237,8 +237,9 @@ export default class QiPanSc extends cc.Component {
     /********************************** 以下部分为小球处理  **************************************** */
     /**初始化小球 */
     initBalls(){
+        cc.log("initBalls(), FightMgr.fightAddCount = "+FightMgr.fightAddCount);
         this.nBalls.removeAllChildren(true);
-        for(let i=0; i<FightMgr.usedPlayerInfo.playerCfg.ball_num; ++i){
+        for(let i=0; i<FightMgr.fightBallTotal; ++i){
             let ball: Ball = this.addBallToList(i, new BallInfo(FightMgr.usedPlayerInfo.ballId));   //添加小球到攻击列表中
             let destVec3 = FightMgr.getBallNodeDefaultPos();
             ball.node.setPosition(cc.v2(destVec3.x, destVec3.y));
@@ -321,7 +322,7 @@ export default class QiPanSc extends cc.Component {
             }else if(skillId == 7){  //指示 一定概率增加指视线段数量
             }else if(skillId == 8){  //加球 一定概率增加可发射的武器数量
             }else if(skillId == 9){  //狂暴 一定概率提升暴击率
-                skillState.kuagnBaoPro = probability;
+                skillState.kuangBaoPro = probability;
             } 
         }
         cc.log("发射小球概率 skillState = "+JSON.stringify(skillState));
@@ -1028,11 +1029,11 @@ export default class QiPanSc extends cc.Component {
     }
 
     /**创建炸弹特效图片 */
-    createBoomEffectImg(pos: cc.Vec2){
+    createBoomEffectImg(pos: cc.Vec2, idx: number){
         let img = new cc.Node();
-        img.name = "BrickBoomImg";
+        img.name = "BrickBoomImg"+idx;
         let imgSpr = img.addComponent(cc.Sprite);
-        imgSpr.spriteFrame = FightMgr.getFightScene().boomFrame;
+        imgSpr.spriteFrame = FightMgr.getFightScene().boomFrames[idx];
         img.position = pos;
         img.opacity = 0;
         this.nEffect.addChild(img, 100);
