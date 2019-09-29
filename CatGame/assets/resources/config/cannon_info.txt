@@ -1,139 +1,119 @@
 [1]
-name = 炮弹1
+name = 白色猫爪
 attack = 1
 baoji = 0
 cost = 10
-sell = 10
+quality = 1
+res = 1
 
 [2]
-name = 炮弹2
+name = 绿色猫爪
 attack = 2
 baoji = 5
 cost = 20
-sell = 15
+quality = 2
+res = 1
 
 [3]
-name = 炮弹3
+name = 蓝色猫爪
 attack = 3
 baoji = 10
-cost = 40
-sell = 25
+cost = 50
+quality = 3
+res = 1
 
 [4]
-name = 炮弹4
+name = 紫色猫爪
 attack = 5
 baoji = 15
-cost = 80
-sell = 50
+cost = 100
+quality = 4
+res = 1
 
 [5]
-name = 炮弹5
+name = 橙色猫爪
 attack = 8
 baoji = 20
-cost = 160
-sell = 120
-
-[6]
-name = 炮弹6
-attack = 12
-baoji = 25
-cost = 320
-sell = 250
-
-[7]
-name = 炮弹7
-attack = 18
-baoji = 25
-cost = 640
-sell = 500
-
-[8]
-name = 炮弹8
-attack = 27
-baoji = 25
-cost = 1300
-sell = 1000
-
-[9]
-name = 炮弹9
-attack = 40
-baoji = 30
-cost = 2600
-sell = 2000
-
-[10]
-name = 炮弹10
-attack = 60
-baoji = 30
-cost = 5200
-sell = 4000
+cost = 200
+quality = 5
+res = 1
 
 [11]
-name = 炮弹11
-attack = 90
-baoji = 30
-cost = 10300
-sell = 8000
+name = 白色猫棒
+attack = 10
+baoji = 10
+cost = 100
+quality = 1
+res = 2
 
 [12]
-name = 炮弹12
-attack = 130
-baoji = 35
-cost = 20500
-sell = 15000
+name = 绿色猫棒
+attack = 20
+baoji = 15
+cost = 200
+quality = 2
+res = 2
 
 [13]
-name = 炮弹13
-attack = 190
-baoji = 35
-cost = 41000
-sell = 30000
+name = 蓝色猫棒
+attack = 30
+baoji = 20
+cost = 500
+quality = 3
+res = 2
 
 [14]
-name = 炮弹14
-attack = 280
-baoji = 35
-cost = 82000
-sell = 60000
+name = 紫色猫棒
+attack = 50
+baoji = 25
+cost = 1000
+quality = 4
+res = 2
 
 [15]
-name = 炮弹15
-attack = 420
+name = 橙色猫棒
+attack = 80
+baoji = 30
+cost = 2000
+quality = 5
+res = 2
+
+[21]
+name = 白色飞盘
+attack = 50
+baoji = 20
+cost = 1000
+quality = 1
+res = 3
+
+[22]
+name = 绿色飞盘
+attack = 100
+baoji = 25
+cost = 2000
+quality = 2
+res = 3
+
+[23]
+name = 蓝色飞盘
+attack = 150
+baoji = 30
+cost = 5000
+quality = 3
+res = 3
+
+[24]
+name = 紫色飞盘
+attack = 250
+baoji = 35
+cost = 10000
+quality = 4
+res = 3
+
+[25]
+name = 橙色飞盘
+attack = 400
 baoji = 40
-cost = 164000
-sell = 120000
-
-[16]
-name = 炮弹16
-attack = 600
-baoji = 40
-cost = 328000
-sell = 250000
-
-[17]
-name = 炮弹17
-attack = 850
-baoji = 40
-cost = 655000
-sell = 500000
-
-[18]
-name = 炮弹18
-attack = 1200
-baoji = 45
-cost = 1310000
-sell = 1000000
-
-[19]
-name = 炮弹19
-attack = 1700
-baoji = 45
-cost = 2620000
-sell = 2000000
-
-[20]
-name = 炮弹20
-attack = 2400
-baoji = 50
-cost = 5250000
-sell = 3000000
+cost = 20000
+quality = 5
+res = 3

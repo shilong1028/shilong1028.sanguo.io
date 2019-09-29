@@ -17,13 +17,15 @@ export class st_cannon_info{
     attack;    //攻击力
     baoji;     //暴击率（/100)
     cost;   //购买花费
-    sell;    //销售价格
+    quality;   //品质
+    res;   //资源
 
     transType(){
         this.attack = parseInt(this.attack);
         this.baoji = parseInt(this.baoji)/100;
         this.cost = parseInt(this.cost);
-        this.sell = parseInt(this.sell);
+        this.quality = parseInt(this.quality);
+        this.res = parseInt(this.res);
     }
 
     constructor(){
@@ -35,7 +37,8 @@ export class st_cannon_info{
         temp.attack = this.attack;
         temp.baoji = this.baoji;
         temp.cost = this.cost;
-        temp.sell = this.sell;
+        temp.quality = this.quality;
+        temp.res = this.res;
         return temp;
     }
 }
@@ -44,7 +47,7 @@ export class st_cannon_info{
 export class st_player_info{
     name;     //名称
     cost;   //购买花费
-    cannon;   //炮弹范围 5;15
+    weapons;   //炮弹范围 5;15
     attack_up;    //攻击力提升幅度（/100)
     baoji_up;     //暴击率提升幅度（/100)
     ball_num;   //可发射炮弹数量
@@ -53,7 +56,7 @@ export class st_player_info{
 
     transType(){
         this.cost = parseInt(this.cost);
-        this.cannon = CfgMgr.getIntAry(this.cannon, ";");
+        this.weapons = CfgMgr.getIntAry(this.weapons, ";");
         this.attack_up = parseInt(this.attack_up)/100;
         this.baoji_up = parseInt(this.baoji_up)/100;
         this.ball_num = parseInt(this.ball_num);
@@ -67,7 +70,7 @@ export class st_player_info{
         let temp = new st_player_info();
         temp.name = this.name;
         temp.cost = this.cost;
-        temp.cannon = this.cannon;
+        temp.weapons = this.weapons;
         temp.attack_up = this.attack_up;
         temp.baoji_up = this.baoji_up;
         temp.ball_num = this.ball_num;
@@ -110,14 +113,14 @@ export class st_chapter_info{
     name;  //名称
     res;   //图标资源id
     levels;  //关卡 1|10
-    diamond;  //奖励钻石数
-    skillId;    //通关技能开启
+    diamond;  //奖励钻石数（只有第一次通关奖励）
+    gold;    //奖励金币数
 
     transType(){
         this.res = parseInt(this.res);
         this.levels = CfgMgr.getIntAry(this.levels, "|");
         this.diamond = parseInt(this.diamond);
-        this.skillId = parseInt(this.skillId);
+        this.gold = parseInt(this.gold);
     }
 
     constructor(){
@@ -129,7 +132,7 @@ export class st_chapter_info{
         temp.res = this.res;
         temp.levels = this.levels;
         temp.diamond = this.diamond;
-        temp.skillId = this.skillId;
+        temp.gold = this.gold;
         return temp;
     }
 }
@@ -137,28 +140,24 @@ export class st_chapter_info{
 //关卡配置数据
 export class st_level_info{
     gold;     //通关奖励（2星），1星为75%，3星为150%
-    cost;   //关卡消耗
+    chapterId;   //章节ID
     enemy_count;   //砖块数量
     enemy_ids;    //砖块id集合 1|1
     total_lines;     //总行数
     init_lines;    //初始显示行数
     name;  //关卡名称
     resId;   //关卡图标资源id
-    chapterId;   //章节ID
-    itemIds;    //通关道具奖励
-    probability;   //通关道具掉落概率（1星）2星*2 3星*3
+    skillIds;    //技能开启
     
     transType(){
         this.gold = parseInt(this.gold);
-        this.cost = parseInt(this.cost);
+        this.chapterId = parseInt(this.chapterId);
         this.enemy_count = parseInt(this.enemy_count);
         this.enemy_ids = CfgMgr.getIntAry(this.enemy_ids, "|");
         this.total_lines = parseInt(this.total_lines);
         this.init_lines = parseInt(this.init_lines);
         this.resId = parseInt(this.resId);
-        this.chapterId = parseInt(this.chapterId);
-        this.itemIds = CfgMgr.getIntAry(this.itemIds, ";");
-        this.probability = parseInt(this.probability)/100;
+        this.skillIds = CfgMgr.getIntAry(this.skillIds, ";");
     }
 
     constructor(){
@@ -167,16 +166,14 @@ export class st_level_info{
     clone(){
         let temp = new st_level_info();
         temp.gold = this.gold;
-        temp.cost = this.cost;
+        temp.chapterId = this.chapterId;
         temp.enemy_count = this.enemy_count;
         temp.enemy_ids = this.enemy_ids;
         temp.total_lines = this.total_lines;
         temp.init_lines = this.init_lines;
         temp.name = this.name;
         temp.resId = this.resId;
-        temp.chapterId = this.chapterId;
-        temp.itemIds = this.itemIds;
-        temp.probability = this.probability;
+        temp.skillIds = this.skillIds;
         return temp;
     }
 }
@@ -187,12 +184,14 @@ export class st_item_info{
     attack_up;    //攻击力提升幅度（/100)
     baoji_up;     //暴击率提升幅度（/100)
     probability;  //提升炮台技能概率（/100)
+    quality;
     desc;    //描述
 
     transType(){
         this.attack_up = parseInt(this.attack_up)/100;
         this.baoji_up = parseInt(this.baoji_up)/100;
         this.probability = parseInt(this.probability)/100;
+        this.quality = parseInt(this.quality);
     }
 
     constructor(){
@@ -204,6 +203,7 @@ export class st_item_info{
         temp.attack_up = this.attack_up;
         temp.baoji_up = this.baoji_up;
         temp.probability = this.probability;
+        temp.quality = this.quality;
         temp.desc = this.desc;
         return temp;
     }
@@ -212,15 +212,15 @@ export class st_item_info{
 //技能配置信息
 export class st_skill_info{
     name;  //名称
-    res;   //图标资源id
     probability;  //技能释放概率
-    diamond;  //技能重启花费
+    attack_up;    //攻击力提升幅度（/100)
+    baoji_up;     //暴击率提升幅度（/100)
     desc;    //描述
 
     transType(){
-        this.res = parseInt(this.res);
         this.probability = parseInt(this.probability)/100;
-        this.diamond = parseInt(this.diamond);
+        this.attack_up = parseInt(this.attack_up)/100;
+        this.baoji_up = parseInt(this.baoji_up)/100;
     }
 
     constructor(){
@@ -229,9 +229,9 @@ export class st_skill_info{
     clone(){
         let temp = new st_skill_info();
         temp.name = this.name;
-        temp.res = this.res;
         temp.probability = this.probability;
-        temp.diamond = this.diamond;
+        temp.attack_up = this.attack_up;
+        temp.baoji_up = this.baoji_up;
         temp.desc = this.desc;
         return temp;
     }

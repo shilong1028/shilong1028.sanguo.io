@@ -3,67 +3,67 @@ name = 章节1
 res = 1
 levels = 1|5
 diamond = 50
-skillId = 1
+gold = 1000
 
 [2]
 name = 章节2
 res = 2
 levels = 6|10
-diamond = 50
-skillId = 2
+diamond = 100
+gold = 3000
 
 [3]
 name = 章节3
 res = 3
 levels = 11|15
-diamond = 50
-skillId = 3
+diamond = 200
+gold = 5000
 
 [4]
 name = 章节4
 res = 4
 levels = 16|20
 diamond = 50
-skillId = 4
+gold = 1000
 
 [5]
 name = 章节5
 res = 5
 levels = 21|30
 diamond = 50
-skillId = 5
+gold = 1000
 
 [6]
 name = 章节6
 res = 6
 levels = 31|40
 diamond = 50
-skillId = 6
+gold = 1000
 
 [7]
 name = 章节7
 res = 7
 levels = 41|50
 diamond = 50
-skillId = 7
+gold = 1000
 
 [8]
 name = 章节8
 res = 8
 levels = 51|60
 diamond = 50
-skillId = 8
+gold = 1000
 
 [9]
 name = 章节9
 res = 9
 levels = 61|80
 diamond = 50
-skillId = 0
+gold = 1000
 
 [10]
 name = 章节10
 res = 10
 levels = 81|100
 diamond = 50
-skillId = 0
+gold = 1000

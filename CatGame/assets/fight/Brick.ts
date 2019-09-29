@@ -5,6 +5,7 @@ import { BrickInfo, NoticeType } from "../manager/Enum";
 import Ball from "./Ball";
 import Dot from "./Dot";
 import { AudioMgr } from "../manager/AudioMgr";
+import { GameMgr } from "../manager/GameManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -15,8 +16,6 @@ export default class Brick extends cc.Component {
     brickNode: cc.Node = null;  //砖块显示总节点, 用于抖动，放缩，复制移动等动作目标
     @property(cc.Label)
     labPH: cc.Label = null;
-    @property(cc.Label)
-    idLabel: cc.Label = null;
     @property(cc.Sprite)
     brickSpr: cc.Sprite = null;   //砖块样式纹理， 用于延迟动作目标
     @property(cc.Node)
@@ -101,7 +100,6 @@ export default class Brick extends cc.Component {
 
         this.brickSpr.node.zIndex = 1;
         this.hpNode.zIndex = 2;
-        this.idLabel.node.zIndex = 2;
 
         this.clearBrickData();
     }
@@ -190,8 +188,6 @@ export default class Brick extends cc.Component {
         this.node.setContentSize(cc.size(98, 98));
 
         this.brickId = FightMgr.getNewBrickId();   //每个砖块分配一个唯一ID
-        this.idLabel.string = this.brickId.toString();
-        this.idLabel.node.color = cc.color(0,0,255);
 
         this.brick_info = brickInfo;
         this.brickSpr.spriteFrame = this.bricksAtlas.getSpriteFrame("monster_"+this.brick_info.monsterId);   //砖块类型，关卡json配置中的数据
@@ -230,8 +226,6 @@ export default class Brick extends cc.Component {
         if(this.brickId <= 0){
             this.brickId = FightMgr.getNewBrickId();   //每个砖块分配一个唯一ID
         }
-        this.idLabel.string = this.brickId.toString();
-        this.idLabel.node.color = cc.color(0,0,255);
 
         if(this.isMoveBrick() == true){
             FightMgr.qipanSc.handleBrickMoveDownAndCheckAttr();   //处理砖块回合下落完毕(检查事件)
@@ -296,7 +290,8 @@ export default class Brick extends cc.Component {
             }else if(brickEventType == 1){
                 let effNode = this.brickSpr.node.getChildByName("BrickSprEffectChild");
                 if(effNode == null){
-                    effNode = FightMgr.qipanSc.createEffectAniNode(FightMgr.getFightScene().brickWudiAtlas, true, 12, cc.WrapMode.Loop);
+                    effNode = GameMgr.createAtlasAniNode(FightMgr.getFightScene().brickWudiAtlas, 12, cc.WrapMode.Loop);
+                    effNode.scale = 2.0;
                     effNode.name = "BrickSprEffectChild";
                     this.brickSpr.node.addChild(effNode, 50);
                 }
@@ -532,7 +527,6 @@ export default class Brick extends cc.Component {
             }
 
             this.bRoundHited = true;   //该回合内是否被碰撞过
-            this.idLabel.node.color = cc.color(255,0,0);
 
             if(this.bInvincible == true){   //盾牌无敌状态
                 harm = 0;
@@ -685,7 +679,6 @@ export default class Brick extends cc.Component {
         if(this.isBrickDead() == true){ 
             return;
         }
-        this.idLabel.node.color = cc.color(0,0,255);
         this.bRoundHited = false;   //该回合内是否被碰撞过
         this.clearBrickActions();   //清除砖块或纹理的所有动画
         if(this.isMoveBrick() == true){

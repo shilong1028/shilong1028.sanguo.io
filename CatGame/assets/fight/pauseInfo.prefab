@@ -31,20 +31,17 @@
       },
       {
         "__id__": 17
-      },
-      {
-        "__id__": 44
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 49
+        "__id__": 44
       }
     ],
     "_prefab": {
-      "__id__": 50
+      "__id__": 45
     },
     "_opacity": 255,
     "_color": {
@@ -346,7 +343,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 80,
-      "height": 50.4
+      "height": 63
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -396,7 +393,7 @@
     "_string": "暂停",
     "_N$string": "暂停",
     "_fontSize": 40,
-    "_lineHeight": 40,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -404,7 +401,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -659,7 +656,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 40,
+      "y": 60,
       "z": 0
     },
     "_scale": {
@@ -772,9 +769,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -838,7 +835,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -870,7 +867,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "500ee155-c6a6-4ae9-bf63-275c0537149a"
+      "__uuid__": "26fce2f5-37d7-4bc2-a6de-5f4eb057b665"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -884,7 +881,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "1b4796e3-b0b1-4cdd-bcbc-b683b8c0dbb0"
+      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
     },
     "_id": ""
   },
@@ -1069,9 +1066,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -1135,7 +1132,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -1167,7 +1164,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "946fce6a-c83e-43a0-9a02-ac5c1e367ce7"
+      "__uuid__": "e037f340-3356-441f-8352-f115638a128b"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1181,7 +1178,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "1b4796e3-b0b1-4cdd-bcbc-b683b8c0dbb0"
+      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
     },
     "_id": ""
   },
@@ -1366,9 +1363,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -1432,7 +1429,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -1464,7 +1461,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "41d91972-25e9-4d34-8c6d-f6a4b7da083d"
+      "__uuid__": "26fce2f5-37d7-4bc2-a6de-5f4eb057b665"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1478,7 +1475,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "1b4796e3-b0b1-4cdd-bcbc-b683b8c0dbb0"
+      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
     },
     "_id": ""
   },
@@ -1619,196 +1616,6 @@
     "sync": false
   },
   {
-    "__type__": "cc.Node",
-    "_name": "musicBtn",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 2,
-    "_components": [
-      {
-        "__id__": 45
-      },
-      {
-        "__id__": 46
-      }
-    ],
-    "_prefab": {
-      "__id__": 48
-    },
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 68,
-      "height": 77
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 240,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 44
-    },
-    "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "3323a7a3-6bf7-4433-a96c-f7465f7fdb25"
-    },
-    "_type": 0,
-    "_sizeMode": 2,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": false,
-    "_atlas": {
-      "__uuid__": "1b4796e3-b0b1-4cdd-bcbc-b683b8c0dbb0"
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "cc.Button",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 44
-    },
-    "_enabled": true,
-    "duration": 0.1,
-    "zoomScale": 0.9,
-    "clickEvents": [
-      {
-        "__id__": 47
-      }
-    ],
-    "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
-    "_N$transition": 3,
-    "transition": 3,
-    "_N$normalColor": {
-      "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
-      "a": 255
-    },
-    "_N$pressedColor": {
-      "__type__": "cc.Color",
-      "r": 211,
-      "g": 211,
-      "b": 211,
-      "a": 255
-    },
-    "pressedColor": {
-      "__type__": "cc.Color",
-      "r": 211,
-      "g": 211,
-      "b": 211,
-      "a": 255
-    },
-    "_N$hoverColor": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "hoverColor": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_N$disabledColor": {
-      "__type__": "cc.Color",
-      "r": 124,
-      "g": 124,
-      "b": 124,
-      "a": 255
-    },
-    "_N$normalSprite": null,
-    "_N$pressedSprite": null,
-    "pressedSprite": null,
-    "_N$hoverSprite": null,
-    "hoverSprite": null,
-    "_N$disabledSprite": null,
-    "_N$target": null,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 1
-    },
-    "component": "",
-    "_componentId": "9a74eX72hdO+ZSCmiupDFTc",
-    "handler": "onMusicBtn",
-    "customEventData": ""
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__uuid__": "07fa2cd6-bb8a-41a0-8fdd-a883492fc6cb"
-    },
-    "fileId": "8bLasbpPlHkrwlQPHqfw+9",
-    "sync": false
-  },
-  {
     "__type__": "9a74eX72hdO+ZSCmiupDFTc",
     "_name": "",
     "_objFlags": 0,
@@ -1821,15 +1628,6 @@
     },
     "touchNode": {
       "__id__": 2
-    },
-    "musicSpr": {
-      "__id__": 45
-    },
-    "musicCloseFrame": {
-      "__uuid__": "146ed902-183a-4ddf-90e7-023b0ec5f8fa"
-    },
-    "musicOpenFrame": {
-      "__uuid__": "3323a7a3-6bf7-4433-a96c-f7465f7fdb25"
     },
     "_id": ""
   },

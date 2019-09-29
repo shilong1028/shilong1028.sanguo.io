@@ -260,7 +260,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 750,
-      "height": 1625
+      "height": 1334
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -309,7 +309,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "eef67183-23e8-4f06-a7a0-17478ffcb370"
+      "__uuid__": "47779794-cce0-49ef-9d9c-0052529824a5"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -344,9 +344,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -410,7 +410,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": "e2raJ3rPtOmpfkgBNeooGM"
@@ -434,9 +434,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -524,15 +524,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 233.34,
-      "height": 50.4
+      "width": 228.89,
+      "height": 63
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -582,7 +582,7 @@
     "_string": "加载配置中...",
     "_N$string": "加载配置中...",
     "_fontSize": 40,
-    "_lineHeight": 40,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -590,7 +590,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": "faqOqUKSZMdpMDi6+41X2Z"
@@ -614,9 +614,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -680,7 +680,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 3,
     "_N$cacheMode": 0,
     "_id": "82TjTBH5xHobO8KuuBnrRQ"

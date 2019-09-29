@@ -1,55 +1,62 @@
 [1]
 name = 冰冻
-res = 1
-probability = 30
-diamond = 50
+probability = 20
+attack_up = 0
+baoji_up = 0
 desc = 一定概率使得某回合暂停下移
 
 [2]
 name = 强化
-res = 2
 probability = 30
-diamond = 50
-desc = 一定概率使得炮弹攻击力翻倍
+attack_up = 50
+baoji_up = 0
+desc = 一定概率提升攻击力
 
 [3]
 name = 分裂
-res = 3
 probability = 20
-diamond = 100
-desc = 一定概率使得炮弹分裂为三个子弹
+attack_up = 0
+baoji_up = 0
+desc = 一定概率使得武器分裂为三个武器
 
 [4]
 name = 反弹
-res = 4
 probability = 20
-diamond = 100
-desc = 一定概率使得炮弹落地后重新反弹
+attack_up = 0
+baoji_up = 0
+desc = 一定概率使得武器落地后重新反弹攻击
 
 [5]
 name = 连体
-res = 5
-probability = 20
-diamond = 100
-desc = 一定概率使得炮弹覆盖打击多个砖块
+probability = 10
+attack_up = 0
+baoji_up = 0
+desc = 一定概率使得武器覆盖打击四周多个砖块
 
 [6]
 name = 爆炸
-res = 6
 probability = 10
-diamond = 500
-desc = 一定概率击毁敌人后将其四周敌人炸死
+attack_up = 0
+baoji_up = 0
+desc = 一定概率在击毁敌人后将其四周敌人也全部炸死
 
 [7]
-name = 激光
-res = 7
-probability = 10
-diamond = 500
-desc = 一定概率使得炮弹行或列激光打击
+name = 指示
+probability = 30
+attack_up = 0
+baoji_up = 0
+desc = 一定概率增加指视线段数量
 
 [8]
-name = 穿透
-res = 8
+name = 加球
 probability = 10
-diamond = 500
-desc = 一定概率使得炮弹穿透打击
+attack_up = 0
+baoji_up = 0
+desc = 一定概率增加可发射的武器数量
+
+[9]
+name = 狂暴
+probability = 20
+attack_up = 0
+baoji_up = 10
+desc = 一定概率提升暴击率

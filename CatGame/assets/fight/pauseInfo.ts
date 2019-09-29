@@ -16,13 +16,6 @@ export default class PauseInfo extends cc.Component {
     @property(cc.Node)
     touchNode: cc.Node = null;
 
-    @property(cc.Sprite)
-    musicSpr: cc.Sprite = null;   //背景音乐控制按钮图标
-    @property(cc.SpriteFrame)
-    musicCloseFrame: cc.SpriteFrame = null;
-    @property(cc.SpriteFrame)
-    musicOpenFrame: cc.SpriteFrame = null;
-
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -31,7 +24,6 @@ export default class PauseInfo extends cc.Component {
 
     start () {
         NotificationMy.emit(NoticeType.GamePause, null);   //游戏暂停，停止小球和砖块的动作，但动画特效不受影响
-        this.showMusicSpr();
     }
 
     // update (dt) {}
@@ -42,29 +34,6 @@ export default class PauseInfo extends cc.Component {
         let rect1 = cc.rect(0, 0, this.bgImg.width, this.bgImg.height);
         if(!rect1.contains(pos1)){
             this.onContinueBtn();
-        }
-    }
-
-    /**音乐开关 */
-    onMusicBtn(){
-        AudioMgr.playEffect("effect/ui_click");
-
-        let keyVal = AudioMgr.getMusicOnOffState();   //获取音效总开关状态
-        if(keyVal == 1){   //关闭
-            keyVal = 0;
-        }else{  //现在为开启状态，按钮显示开启图标
-            keyVal = 1;
-        }
-        AudioMgr.setMusicOnOffState(keyVal);
-        this.showMusicSpr();
-    }
-
-    showMusicSpr(){
-        let keyVal = AudioMgr.getMusicOnOffState();   //获取音效总开关状态
-        if(keyVal == 0){     //现在为开启状态，按钮显示开启图标
-            this.musicSpr.spriteFrame = this.musicOpenFrame;
-        }else{ 
-            this.musicSpr.spriteFrame = this.musicCloseFrame;
         }
     }
 

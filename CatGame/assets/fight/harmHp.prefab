@@ -37,7 +37,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 25.95,
+      "width": 29.32,
       "height": 37.8
     },
     "_anchorPoint": {
@@ -96,7 +96,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 2,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""

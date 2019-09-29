@@ -1,59 +1,29 @@
 [1]
-name = 土炮
+name = 家猫
 cost = 0
-cannon = 1;5
+weapons = 1;5
 attack_up = 0
 baoji_up = 0
-ball_num = 1
-skillId = 0
-desc = 土炮，可以发射1个1-5级炮弹，不会提升攻击力和暴击率，没有默认技能。
+ball_num = 3
+skillId = 7
+desc = 家猫，可以发射3个猫爪武器，具有“指示”技能，无额外攻击暴击提升。
 
 [2]
-name = 铁炮
+name = 宠猫
 cost = 1000
-cannon = 3;8
+weapons = 11;15
 attack_up = 10
 baoji_up = 5
-ball_num = 3
-skillId = 1
-desc = 铁炮，可以发射3个3-8级炮弹，稍微提升攻击力和暴击率，拥有默认冰冻技能。
-
-[3]
-name = 铜炮
-cost = 10000
-cannon = 5;10
-attack_up = 20
-baoji_up = 10
 ball_num = 5
 skillId = 2
-desc = 铜炮，可以发射5个5-10级炮弹，较少提升攻击力和暴击率，拥有默认强化技能。
+desc = 宠猫，可以发射5个猫棒武器，具有“强化”技能，稍微提升攻击暴击。
 
-[4]
-name = 山炮
-cost = 100000
-cannon = 8;13
-attack_up = 30
-baoji_up = 15
-ball_num = 7
-skillId = 3
-desc = 山炮，可以发射7个8-13级炮弹，较高提升攻击力和暴击率，拥有默认分裂技能。
-
-[5]
-name = 轻坦克
-cost = 1000000
-cannon = 10;15
-attack_up = 40
-baoji_up = 20
-ball_num = 10
-skillId = 4
-desc = 轻坦克，可以发射10个10-15级炮弹，小幅度提升攻击力和暴击率，拥有默认反弹技能。
-
-[6]
-name = 重坦克
-cost = 10000000
-cannon = 13;20
-attack_up = 50
-baoji_up = 25
-ball_num = 10
-skillId = 5
-desc = 重坦克，可以发射10个13-20级炮弹，大幅度提升攻击力和暴击率，拥有默认连体技能。
+[3]
+name = 宠狗
+cost = 10000
+weapons = 21;25
+attack_up = 20
+baoji_up = 10
+ball_num = 8
+skillId = 9
+desc = 宠狗，可以发射8个飞盘武器，具有“狂暴”技能，提升一定的攻击暴击。

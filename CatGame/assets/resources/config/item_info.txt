@@ -1,69 +1,119 @@
 [1]
-name = 精准
+name = 白色铃铛
 attack_up = 10
 baoji_up = 0
 probability = 0
-desc = 提升炮弹攻击力10%
+quality = 1
+desc = 提升攻击10%
 
 [2]
-name = 突暴
+name = 绿色铃铛
+attack_up = 15
+baoji_up = 5
+probability = 5
+quality = 2
+desc = 提升攻击15%，暴击5%，技能命中5%
+
+[3]
+name = 蓝色铃铛
+attack_up = 20
+baoji_up = 5
+probability = 10
+quality = 3
+desc = 提升攻击20%，暴击5%，技能命中10%
+
+[4]
+name = 紫色铃铛
+attack_up = 25
+baoji_up = 10
+probability = 15
+quality = 4
+desc = 提升攻击25%，暴击10%，技能命中15%
+
+[5]
+name = 橙色铃铛
+attack_up = 30
+baoji_up = 10
+probability = 20
+quality = 5
+desc = 提升攻击30%，暴击10%，技能命中20%
+
+[11]
+name = 白色眼罩
 attack_up = 0
 baoji_up = 10
 probability = 0
-desc = 提升炮弹暴击率10%
+quality = 1
+desc = 提升暴击10%
 
-[3]
-name = 幸运
+[12]
+name = 绿色眼罩
+attack_up = 5
+baoji_up = 15
+probability = 5
+quality = 2
+desc = 提升攻击5%，暴击15%，技能命中5%
+
+[13]
+name = 蓝色眼罩
+attack_up = 5
+baoji_up = 20
+probability = 10
+quality = 3
+desc = 提升攻击5%，暴击20%，技能命中10%
+
+[14]
+name = 紫色眼罩
+attack_up = 10
+baoji_up = 25
+probability = 15
+quality = 4
+desc = 提升攻击10%，暴击25%，技能命中15%
+
+[15]
+name = 橙色眼罩
+attack_up = 10
+baoji_up = 30
+probability = 20
+quality = 5
+desc = 提升攻击10%，暴击30%，技能命中20%
+
+[21]
+name = 白色发卡
 attack_up = 0
 baoji_up = 0
 probability = 10
-desc = 提升炮台技能概率10%
+quality = 1
+desc = 技能命中10%
 
-[4]
-name = 强化
-attack_up = 20
-baoji_up = 0
-probability = 0
-desc = 提升炮弹攻击力20%
+[22]
+name = 绿色发卡
+attack_up = 5
+baoji_up = 5
+probability = 15
+quality = 2
+desc = 提升攻击5%，暴击5%，技能命中15%
 
-[5]
-name = 连暴
-attack_up = 0
-baoji_up = 20
-probability = 0
-desc = 提升炮弹暴击率20%
-
-[6]
-name = 大运
-attack_up = 0
-baoji_up = 0
+[23]
+name = 蓝色发卡
+attack_up = 10
+baoji_up = 5
 probability = 20
-desc = 提升炮台技能概率20%
+quality = 3
+desc = 提升攻击10%，暴击5%，技能命中20%
 
-[7]
-name = 利刃
-attack_up = 50
-baoji_up = 0
-probability = 0
-desc = 提升炮弹攻击力50%
+[24]
+name = 紫色发卡
+attack_up = 10
+baoji_up = 10
+probability = 25
+quality = 4
+desc = 提升攻击10%，暴击10%，技能命中25%
 
-[8]
-name = 天暴
-attack_up = 0
-baoji_up = 50
-probability = 0
-desc = 提升炮弹暴击率50%
-
-[9]
-name = 鸿运
-attack_up = 0
-baoji_up = 0
-probability = 50
-desc = 提升炮台技能概率50%
-
-[10]
-name = 天书
-attack_up = 30
-baoji_up = 30
+[25]
+name = 橙色发卡
+attack_up = 15
+baoji_up = 15
 probability = 30
-desc = 提升攻击、暴击、概率各30%
+quality = 5
+desc = 提升攻击15%，暴击15%，技能命中30%

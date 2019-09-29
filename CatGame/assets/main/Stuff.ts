@@ -7,10 +7,8 @@ export default class Stuff extends cc.Component {
 
     @property(cc.Sprite)
     ballSpr: cc.Sprite = null;
-    @property(cc.Label)
-    levelLabel: cc.Label = null;
-    @property(cc.Node)
-    levelNode: cc.Node = null;
+    @property(cc.Sprite)
+    colorSpr: cc.Sprite = null;
     @property(cc.Label)
     nameLabel: cc.Label = null;
 
@@ -22,9 +20,9 @@ export default class Stuff extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.levelLabel.string = "";
         this.nameLabel.string = "";
         this.ballSpr.spriteFrame = null;
+        this.colorSpr.spriteFrame = null;
     }
 
     start () {
@@ -35,10 +33,10 @@ export default class Stuff extends cc.Component {
     /**设置地块小球模型数据 */
     setStuffData(ballInfo: BallInfo, bActive:boolean = true){
         this.ballInfo = ballInfo;
-        this.levelLabel.string = (ballInfo.cannonId%10).toString();
 
         if(bActive == true){
-            this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("dog"+(ballInfo.cannonId-1)+"_normal");
+            this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("weapon_"+ballInfo.cannonCfg.res);
+            this.colorSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("colorBg"+ballInfo.cannonCfg.quality);
         }
     }
 
@@ -57,8 +55,4 @@ export default class Stuff extends cc.Component {
         }
     }
 
-    /**显示等级节点 */
-    showLevelNode(bShow: boolean){
-        this.levelNode.active = bShow;
-    }
 }

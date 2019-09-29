@@ -31,6 +31,7 @@ export default class FightRenew extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     levelInfo: LevelInfo = null;   //关卡信息
     proTime: number = 5;  //倒计时时间
+    goldCost: number = 10000;   //金币复活
 
     bVideoPlaying: boolean = false;   //视频播放中
     bVideoPlaySucc: boolean = false;   //视频是否播放完毕
@@ -49,7 +50,8 @@ export default class FightRenew extends cc.Component {
     }
 
     start () {
-        this.goldNum.string = FightMgr.level_info.levelCfg.cost;
+        this.goldCost = Math.ceil(FightMgr.level_info.levelCfg.gold/2);
+        this.goldNum.string = this.goldCost.toString();
     }
 
     update (dt) {
@@ -71,11 +73,11 @@ export default class FightRenew extends cc.Component {
     /**金币复活 */
     onGoldBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        if(MyUserData.GoldCount >= FightMgr.level_info.levelCfg.cost){
-            MyUserDataMgr.updateUserGold(-FightMgr.level_info.levelCfg.cost);
+        if(MyUserData.GoldCount >= this.goldCost){
+            MyUserDataMgr.updateUserGold(-this.goldCost);
             this.handleNormal(true);  //复活或显示结算
         }else{
-            ROOT_NODE.showTipsText("金币不足！");
+            ROOT_NODE.showTipsText(TipsStrDef.KEY_GoldTip);
         }
     }
 

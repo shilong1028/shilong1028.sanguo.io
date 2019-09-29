@@ -1,1299 +1,1099 @@
 [1]
 gold = 50
-cost = 10
+chapterId = 1
 enemy_count = 1
 enemy_ids = 1|1
 total_lines = 1
 init_lines = 1
 name = 初识汉奸
 resId = 1
-chapterId = 1
-itemIds = 1
-probability = 10
+skillIds = 1;3;5
 
 [2]
 gold = 100
-cost = 20
+chapterId = 1
 enemy_count = 3
 enemy_ids = 1|2
 total_lines = 1
 init_lines = 1
 name = 赶跑汉奸
 resId = 1
-chapterId = 1
-itemIds = 2
-probability = 10
+skillIds = 1;3;5
 
 [3]
 gold = 150
-cost = 30
+chapterId = 1
 enemy_count = 5
 enemy_ids = 1|2
 total_lines = 2
 init_lines = 2
 name = 打败汉奸
 resId = 1
-chapterId = 1
-itemIds = 3
-probability = 10
+skillIds = 1;3;5
 
 [4]
 gold = 200
-cost = 40
+chapterId = 1
 enemy_count = 6
 enemy_ids = 1|3
 total_lines = 2
 init_lines = 2
 name = 活捉汉奸
 resId = 1
-chapterId = 1
-itemIds = 4
-probability = 10
+skillIds = 1;3;5
 
 [5]
 gold = 250
-cost = 50
+chapterId = 1
 enemy_count = 7
 enemy_ids = 1|3
 total_lines = 2
 init_lines = 2
 name = 击毙汉奸
 resId = 1
-chapterId = 1
-itemIds = 5
-probability = 10
+skillIds = 1;3;5
 
 [6]
 gold = 300
-cost = 60
+chapterId = 2
 enemy_count = 8
 enemy_ids = 2|2
 total_lines = 3
 init_lines = 3
 name = 初识大头兵
 resId = 2
-chapterId = 2
-itemIds = 6
-probability = 15
+skillIds = 1;3;5
 
 [7]
 gold = 350
-cost = 70
+chapterId = 2
 enemy_count = 9
 enemy_ids = 2|3
 total_lines = 3
 init_lines = 3
 name = 赶跑大头兵
 resId = 2
-chapterId = 2
-itemIds = 7
-probability = 15
+skillIds = 1;3;5
 
 [8]
 gold = 400
-cost = 80
+chapterId = 2
 enemy_count = 10
 enemy_ids = 2|3
 total_lines = 3
 init_lines = 3
 name = 打败大头兵
 resId = 2
-chapterId = 2
-itemIds = 8
-probability = 15
+skillIds = 1;3;5
 
 [9]
 gold = 450
-cost = 90
+chapterId = 2
 enemy_count = 11
 enemy_ids = 2|4
 total_lines = 3
 init_lines = 3
 name = 活捉大头兵
 resId = 2
-chapterId = 2
-itemIds = 9
-probability = 15
+skillIds = 1;3;5
 
 [10]
 gold = 500
-cost = 100
+chapterId = 2
 enemy_count = 12
 enemy_ids = 2|4
 total_lines = 3
 init_lines = 3
 name = 击毙大头兵
 resId = 2
-chapterId = 2
-itemIds = 10
-probability = 15
+skillIds = 1;3;5
 
 [11]
 gold = 600
-cost = 150
+chapterId = 3
 enemy_count = 13
 enemy_ids = 3|3
 total_lines = 4
 init_lines = 3
 name = 初识三等兵
 resId = 3
-chapterId = 3
-itemIds = 1;2
-probability = 15
+skillIds = 1;3;5
 
 [12]
 gold = 700
-cost = 200
+chapterId = 3
 enemy_count = 14
 enemy_ids = 3|4
 total_lines = 4
 init_lines = 3
 name = 赶跑三等兵
 resId = 3
-chapterId = 3
-itemIds = 2;3
-probability = 15
+skillIds = 1;3;5
 
 [13]
 gold = 800
-cost = 250
+chapterId = 3
 enemy_count = 15
 enemy_ids = 3|4
 total_lines = 4
 init_lines = 3
 name = 打败三等兵
 resId = 3
-chapterId = 3
-itemIds = 3;4
-probability = 15
+skillIds = 1;3;5
 
 [14]
 gold = 900
-cost = 300
+chapterId = 3
 enemy_count = 16
 enemy_ids = 3|5
 total_lines = 4
 init_lines = 3
 name = 活捉三等兵
 resId = 3
-chapterId = 3
-itemIds = 4;5
-probability = 15
+skillIds = 1;3;5
 
 [15]
 gold = 1000
-cost = 350
+chapterId = 3
 enemy_count = 17
 enemy_ids = 3|5
 total_lines = 4
 init_lines = 3
 name = 击毙三等兵
 resId = 3
-chapterId = 3
-itemIds = 5;6
-probability = 20
+skillIds = 1;3;5
 
 [16]
 gold = 1100
-cost = 400
+chapterId = 4
 enemy_count = 18
 enemy_ids = 4|4
 total_lines = 5
 init_lines = 3
 name = 初识二等兵
 resId = 4
-chapterId = 4
-itemIds = 6;7
-probability = 20
+skillIds = 1;3;5
 
 [17]
 gold = 1200
-cost = 450
+chapterId = 4
 enemy_count = 19
 enemy_ids = 4|5
 total_lines = 5
 init_lines = 3
 name = 赶跑二等兵
 resId = 4
-chapterId = 4
-itemIds = 7;8
-probability = 20
+skillIds = 1;3;5
 
 [18]
 gold = 1300
-cost = 500
+chapterId = 4
 enemy_count = 20
 enemy_ids = 4|5
 total_lines = 5
 init_lines = 3
 name = 打败二等兵
 resId = 4
-chapterId = 4
-itemIds = 8;9
-probability = 20
+skillIds = 1;3;5
 
 [19]
 gold = 1400
-cost = 550
+chapterId = 4
 enemy_count = 21
 enemy_ids = 4|6
 total_lines = 5
 init_lines = 3
 name = 活捉二等兵
 resId = 4
-chapterId = 4
-itemIds = 9;10
-probability = 20
+skillIds = 1;3;5
 
 [20]
 gold = 1500
-cost = 600
+chapterId = 4
 enemy_count = 22
 enemy_ids = 4|6
 total_lines = 6
 init_lines = 3
 name = 击毙二等兵
 resId = 4
-chapterId = 4
-itemIds = 1;2;3
-probability = 20
+skillIds = 1;3;5
 
 [21]
 gold = 1700
-cost = 700
+chapterId = 5
 enemy_count = 23
 enemy_ids = 5|5
 total_lines = 6
 init_lines = 3
 name = 初识一等兵
 resId = 5
-chapterId = 5
-itemIds = 2;3;4
-probability = 20
+skillIds = 1;3;5
 
 [22]
 gold = 1900
-cost = 800
+chapterId = 5
 enemy_count = 24
 enemy_ids = 5|6
 total_lines = 6
 init_lines = 3
 name = 赶跑一等兵
 resId = 5
-chapterId = 5
-itemIds = 3;4;5
-probability = 20
+skillIds = 1;3;5
 
 [23]
 gold = 2100
-cost = 900
+chapterId = 5
 enemy_count = 25
 enemy_ids = 5|6
 total_lines = 6
 init_lines = 3
 name = 打败一等兵
 resId = 5
-chapterId = 5
-itemIds = 4;5;6
-probability = 20
+skillIds = 1;3;5
 
 [24]
 gold = 2300
-cost = 1000
+chapterId = 5
 enemy_count = 26
 enemy_ids = 5|7
 total_lines = 7
 init_lines = 3
 name = 活捉一等兵
 resId = 5
-chapterId = 5
-itemIds = 5;6;7
-probability = 20
+skillIds = 1;3;5
 
 [25]
 gold = 2500
-cost = 1100
+chapterId = 5
 enemy_count = 27
 enemy_ids = 5|7
 total_lines = 7
 init_lines = 3
 name = 击毙一等兵
 resId = 5
-chapterId = 5
-itemIds = 6;7;8
-probability = 25
+skillIds = 1;3;5
 
 [26]
 gold = 2700
-cost = 1200
+chapterId = 5
 enemy_count = 28
 enemy_ids = 6|6
 total_lines = 7
 init_lines = 3
 name = 初识上等兵
 resId = 6
-chapterId = 5
-itemIds = 7;8;9
-probability = 25
+skillIds = 1;3;5
 
 [27]
 gold = 2900
-cost = 1300
+chapterId = 5
 enemy_count = 29
 enemy_ids = 6|7
 total_lines = 7
 init_lines = 3
 name = 赶跑上等兵
 resId = 6
-chapterId = 5
-itemIds = 8;9;10
-probability = 25
+skillIds = 1;3;5
 
 [28]
 gold = 3100
-cost = 1400
+chapterId = 5
 enemy_count = 30
 enemy_ids = 6|7
 total_lines = 8
 init_lines = 3
 name = 打败上等兵
 resId = 6
-chapterId = 5
-itemIds = 1;2;3;4
-probability = 25
+skillIds = 1;3;5
 
 [29]
 gold = 4300
-cost = 1500
+chapterId = 5
 enemy_count = 31
 enemy_ids = 6|8
 total_lines = 8
 init_lines = 3
 name = 活捉上等兵
 resId = 6
-chapterId = 5
-itemIds = 2;3;4;5
-probability = 25
+skillIds = 1;3;5
 
 [30]
 gold = 4500
-cost = 1600
+chapterId = 5
 enemy_count = 32
 enemy_ids = 6|8
 total_lines = 8
 init_lines = 3
 name = 击毙上等兵
 resId = 6
-chapterId = 5
-itemIds = 3;4;5;6
-probability = 25
+skillIds = 1;3;5
 
 [31]
 gold = 4800
-cost = 1700
+chapterId = 6
 enemy_count = 33
 enemy_ids = 7|7
 total_lines = 8
 init_lines = 3
 name = 初识伍长
 resId = 7
-chapterId = 6
-itemIds = 4;5;6;7
-probability = 25
+skillIds = 1;3;5
 
 [32]
 gold = 5100
-cost = 1800
+chapterId = 6
 enemy_count = 34
 enemy_ids = 7|8
 total_lines = 8
 init_lines = 3
 name = 赶跑伍长
 resId = 7
-chapterId = 6
-itemIds = 5;6;7;8
-probability = 25
+skillIds = 1;3;5
 
 [33]
 gold = 5400
-cost = 1900
+chapterId = 6
 enemy_count = 35
 enemy_ids = 7|8
 total_lines = 8
 init_lines = 3
 name = 打败伍长
 resId = 7
-chapterId = 6
-itemIds = 6;7;8;9
-probability = 25
+skillIds = 1;3;5
 
 [34]
 gold = 5700
-cost = 2000
+chapterId = 6
 enemy_count = 36
 enemy_ids = 7|9
 total_lines = 9
 init_lines = 3
 name = 活捉伍长
 resId = 7
-chapterId = 6
-itemIds = 7;8;9;10
-probability = 25
+skillIds = 1;3;5
 
 [35]
 gold = 6000
-cost = 2100
+chapterId = 6
 enemy_count = 37
 enemy_ids = 7|9
 total_lines = 9
 init_lines = 3
 name = 击毙伍长
 resId = 7
-chapterId = 6
-itemIds = 1;2;3;4
-probability = 25
+skillIds = 1;3;5
 
 [36]
 gold = 6300
-cost = 2200
+chapterId = 6
 enemy_count = 38
 enemy_ids = 8|8
 total_lines = 9
 init_lines = 3
 name = 初识军曹
 resId = 8
-chapterId = 6
-itemIds = 2;3;4;5
-probability = 25
+skillIds = 1;3;5
 
 [37]
 gold = 6600
-cost = 2300
+chapterId = 6
 enemy_count = 39
 enemy_ids = 8|9
 total_lines = 9
 init_lines = 3
 name = 赶跑军曹
 resId = 8
-chapterId = 6
-itemIds = 3;4;5;6
-probability = 25
+skillIds = 1;3;5
 
 [38]
 gold = 6900
-cost = 2400
+chapterId = 6
 enemy_count = 40
 enemy_ids = 8|9
 total_lines = 9
 init_lines = 3
 name = 打败军曹
 resId = 8
-chapterId = 6
-itemIds = 4;5;6;7
-probability = 25
+skillIds = 1;3;5
 
 [39]
 gold = 7200
-cost = 2500
+chapterId = 6
 enemy_count = 41
 enemy_ids = 8|10
 total_lines = 9
 init_lines = 3
 name = 活捉军曹
 resId = 8
-chapterId = 6
-itemIds = 5;6;7;8
-probability = 25
+skillIds = 1;3;5
 
 [40]
 gold = 7500
-cost = 2600
+chapterId = 6
 enemy_count = 42
 enemy_ids = 8|10
 total_lines = 10
 init_lines = 3
 name = 击毙军曹
 resId = 8
-chapterId = 6
-itemIds = 6;7;8;9
-probability = 25
+skillIds = 1;3;5
 
 [41]
 gold = 7900
-cost = 2800
+chapterId = 7
 enemy_count = 43
 enemy_ids = 9|9
 total_lines = 10
 init_lines = 3
 name = 初识曹长
 resId = 9
-chapterId = 7
-itemIds = 7;8;9;10
-probability = 25
+skillIds = 1;3;5
 
 [42]
 gold = 8300
-cost = 3000
+chapterId = 7
 enemy_count = 44
 enemy_ids = 9|10
 total_lines = 10
 init_lines = 3
 name = 赶跑曹长
 resId = 9
-chapterId = 7
-itemIds = 1;2;3;4
-probability = 25
+skillIds = 1;3;5
 
 [43]
 gold = 8700
-cost = 3200
+chapterId = 7
 enemy_count = 45
 enemy_ids = 9|10
 total_lines = 10
 init_lines = 3
 name = 打败曹长
 resId = 9
-chapterId = 7
-itemIds = 2;3;4;5
-probability = 25
+skillIds = 1;3;5
 
 [44]
 gold = 9100
-cost = 3400
+chapterId = 7
 enemy_count = 46
 enemy_ids = 9|11
 total_lines = 10
 init_lines = 3
 name = 活捉曹长
 resId = 9
-chapterId = 7
-itemIds = 3;4;5;6
-probability = 25
+skillIds = 1;3;5
 
 [45]
 gold = 9500
-cost = 3600
+chapterId = 7
 enemy_count = 47
 enemy_ids = 9|11
 total_lines = 10
 init_lines = 3
 name = 击毙曹长
 resId = 9
-chapterId = 7
-itemIds = 4;5;6;7
-probability = 25
+skillIds = 1;3;5
 
 [46]
 gold = 9900
-cost = 3800
+chapterId = 7
 enemy_count = 48
 enemy_ids = 10|10
 total_lines = 10
 init_lines = 3
 name = 初识准尉
 resId = 10
-chapterId = 7
-itemIds = 5;6;7;8
-probability = 25
+skillIds = 1;3;5
 
 [47]
 gold = 10300
-cost = 4000
+chapterId = 7
 enemy_count = 49
 enemy_ids = 10|11
 total_lines = 10
 init_lines = 3
 name = 赶跑准尉
 resId = 10
-chapterId = 7
-itemIds = 6;7;8;9
-probability = 25
+skillIds = 1;3;5
 
 [48]
 gold = 10700
-cost = 4200
+chapterId = 7
 enemy_count = 50
 enemy_ids = 10|11
 total_lines = 10
 init_lines = 3
 name = 打败准尉
 resId = 10
-chapterId = 7
-itemIds = 7;8;9;10
-probability = 25
+skillIds = 1;3;5
 
 [49]
 gold = 11100
-cost = 4400
+chapterId = 7
 enemy_count = 51
 enemy_ids = 10|12
 total_lines = 11
 init_lines = 3
 name = 活捉准尉
 resId = 10
-chapterId = 7
-itemIds = 1;2;3;4
-probability = 25
+skillIds = 1;3;5
 
 [50]
 gold = 11500
-cost = 4600
+chapterId = 7
 enemy_count = 52
 enemy_ids = 10|12
 total_lines = 11
 init_lines = 3
 name = 击毙准尉
 resId = 10
-chapterId = 7
-itemIds = 2;3;4;5
-probability = 25
+skillIds = 1;3;5
 
 [51]
 gold = 12000
-cost = 4800
+chapterId = 8
 enemy_count = 53
 enemy_ids = 11|11
 total_lines = 11
 init_lines = 3
 name = 初识少尉
 resId = 11
-chapterId = 8
-itemIds = 3;4;5;6
-probability = 30
+skillIds = 1;3;5
 
 [52]
 gold = 12500
-cost = 5000
+chapterId = 8
 enemy_count = 54
 enemy_ids = 11|12
 total_lines = 11
 init_lines = 3
 name = 赶跑少尉
 resId = 11
-chapterId = 8
-itemIds = 4;5;6;7
-probability = 30
+skillIds = 1;3;5
 
 [53]
 gold = 13000
-cost = 5400
+chapterId = 8
 enemy_count = 55
 enemy_ids = 11|12
 total_lines = 11
 init_lines = 3
 name = 打败少尉
 resId = 11
-chapterId = 8
-itemIds = 5;6;7;8
-probability = 30
+skillIds = 1;3;5
 
 [54]
 gold = 13500
-cost = 5800
+chapterId = 8
 enemy_count = 56
 enemy_ids = 11|13
 total_lines = 12
 init_lines = 3
 name = 活捉少尉
 resId = 11
-chapterId = 8
-itemIds = 6;7;8;9
-probability = 30
+skillIds = 1;3;5
 
 [55]
 gold = 14000
-cost = 6200
+chapterId = 8
 enemy_count = 57
 enemy_ids = 11|13
 total_lines = 12
 init_lines = 3
 name = 击毙少尉
 resId = 11
-chapterId = 8
-itemIds = 7;8;9;10
-probability = 30
+skillIds = 1;3;5
 
 [56]
 gold = 14500
-cost = 6600
+chapterId = 8
 enemy_count = 58
 enemy_ids = 12|12
 total_lines = 12
 init_lines = 3
 name = 初识中尉
 resId = 12
-chapterId = 8
-itemIds = 1;2;3;4
-probability = 30
+skillIds = 1;3;5
 
 [57]
 gold = 15000
-cost = 7000
+chapterId = 8
 enemy_count = 59
 enemy_ids = 12|13
 total_lines = 12
 init_lines = 3
 name = 赶跑中尉
 resId = 12
-chapterId = 8
-itemIds = 2;3;4;5
-probability = 30
+skillIds = 1;3;5
 
 [58]
 gold = 15500
-cost = 7400
+chapterId = 8
 enemy_count = 60
 enemy_ids = 12|13
 total_lines = 12
 init_lines = 3
 name = 打败中尉
 resId = 12
-chapterId = 8
-itemIds = 3;4;5;6
-probability = 30
+skillIds = 1;3;5
 
 [59]
 gold = 16000
-cost = 7800
+chapterId = 8
 enemy_count = 61
 enemy_ids = 12|14
 total_lines = 12
 init_lines = 3
 name = 活捉中尉
 resId = 12
-chapterId = 8
-itemIds = 4;5;6;7
-probability = 30
+skillIds = 1;3;5
 
 [60]
 gold = 16500
-cost = 8200
+chapterId = 8
 enemy_count = 62
 enemy_ids = 12|14
 total_lines = 12
 init_lines = 3
 name = 击毙中尉
 resId = 12
-chapterId = 8
-itemIds = 5;6;7;8
-probability = 30
+skillIds = 1;3;5
 
 [61]
 gold = 17100
-cost = 8600
+chapterId = 9
 enemy_count = 63
 enemy_ids = 13|13
 total_lines = 13
 init_lines = 3
 name = 初识大尉
 resId = 13
-chapterId = 9
-itemIds = 6;7;8;9
-probability = 30
+skillIds = 1;3;5
 
 [62]
 gold = 17700
-cost = 9000
+chapterId = 9
 enemy_count = 64
 enemy_ids = 13|14
 total_lines = 13
 init_lines = 3
 name = 赶跑大尉
 resId = 13
-chapterId = 9
-itemIds = 7;8;9;10
-probability = 30
+skillIds = 1;3;5
 
 [63]
 gold = 18300
-cost = 9500
+chapterId = 9
 enemy_count = 65
 enemy_ids = 13|14
 total_lines = 13
 init_lines = 3
 name = 打败大尉
 resId = 13
-chapterId = 9
-itemIds = 1;2;3;4
-probability = 30
+skillIds = 1;3;5
 
 [64]
 gold = 18900
-cost = 10000
+chapterId = 9
 enemy_count = 66
 enemy_ids = 13|15
 total_lines = 13
 init_lines = 3
 name = 活捉大尉
 resId = 13
-chapterId = 9
-itemIds = 2;3;4;5
-probability = 30
+skillIds = 1;3;5
 
 [65]
 gold = 19500
-cost = 10500
+chapterId = 9
 enemy_count = 67
 enemy_ids = 13|15
 total_lines = 13
 init_lines = 3
 name = 击毙大尉
 resId = 13
-chapterId = 9
-itemIds = 3;4;5;6
-probability = 30
+skillIds = 1;3;5
 
 [66]
 gold = 20100
-cost = 11000
+chapterId = 9
 enemy_count = 68
 enemy_ids = 14|14
 total_lines = 14
 init_lines = 3
 name = 初识少佐
 resId = 14
-chapterId = 9
-itemIds = 4;5;6;7
-probability = 30
+skillIds = 1;3;5
 
 [67]
 gold = 20700
-cost = 11500
+chapterId = 9
 enemy_count = 69
 enemy_ids = 14|15
 total_lines = 14
 init_lines = 3
 name = 赶跑少佐
 resId = 14
-chapterId = 9
-itemIds = 5;6;7;8
-probability = 30
+skillIds = 1;3;5
 
 [68]
 gold = 21300
-cost = 12000
+chapterId = 9
 enemy_count = 70
 enemy_ids = 14|15
 total_lines = 14
 init_lines = 3
 name = 打败少佐
 resId = 14
-chapterId = 9
-itemIds = 6;7;8;9
-probability = 30
+skillIds = 1;3;5
 
 [69]
 gold = 21900
-cost = 12500
+chapterId = 9
 enemy_count = 71
 enemy_ids = 14|16
 total_lines = 14
 init_lines = 3
 name = 活捉少佐
 resId = 14
-chapterId = 9
-itemIds = 7;8;9;10
-probability = 30
+skillIds = 1;3;5
 
 [70]
 gold = 22500
-cost = 13000
+chapterId = 9
 enemy_count = 72
 enemy_ids = 14|16
 total_lines = 14
 init_lines = 3
 name = 击毙少佐
 resId = 14
-chapterId = 9
-itemIds = 1;2;3;4
-probability = 30
+skillIds = 1;3;5
 
 [71]
 gold = 23200
-cost = 13500
+chapterId = 9
 enemy_count = 73
 enemy_ids = 15|15
 total_lines = 15
 init_lines = 3
 name = 初识中佐
 resId = 15
-chapterId = 9
-itemIds = 2;3;4;5
-probability = 30
+skillIds = 1;3;5
 
 [72]
 gold = 23900
-cost = 14000
+chapterId = 9
 enemy_count = 74
 enemy_ids = 15|16
 total_lines = 15
 init_lines = 3
 name = 赶跑中佐
 resId = 15
-chapterId = 9
-itemIds = 3;4;5;6
-probability = 30
+skillIds = 1;3;5
 
 [73]
 gold = 24600
-cost = 14500
+chapterId = 9
 enemy_count = 75
 enemy_ids = 15|16
 total_lines = 15
 init_lines = 3
 name = 打败中佐
 resId = 15
-chapterId = 9
-itemIds = 4;5;6;7
-probability = 30
+skillIds = 1;3;5
 
 [74]
 gold = 25300
-cost = 15000
+chapterId = 9
 enemy_count = 76
 enemy_ids = 15|17
 total_lines = 15
 init_lines = 3
 name = 活捉中佐
 resId = 15
-chapterId = 9
-itemIds = 5;6;7;8
-probability = 30
+skillIds = 1;3;5
 
 [75]
 gold = 26000
-cost = 15500
+chapterId = 9
 enemy_count = 77
 enemy_ids = 15|17
 total_lines = 15
 init_lines = 3
 name = 击毙中佐
 resId = 15
-chapterId = 9
-itemIds = 6;7;8;9
-probability = 30
+skillIds = 1;3;5
 
 [76]
 gold = 26700
-cost = 16000
+chapterId = 9
 enemy_count = 78
 enemy_ids = 16|16
 total_lines = 16
 init_lines = 3
 name = 初识大佐
 resId = 16
-chapterId = 9
-itemIds = 7;8;9;10
-probability = 35
+skillIds = 1;3;5
 
 [77]
 gold = 27400
-cost = 16500
+chapterId = 9
 enemy_count = 79
 enemy_ids = 16|17
 total_lines = 16
 init_lines = 3
 name = 赶跑大佐
 resId = 16
-chapterId = 9
-itemIds = 1;2;3;4
-probability = 35
+skillIds = 1;3;5
 
 [78]
 gold = 28100
-cost = 17000
+chapterId = 9
 enemy_count = 80
 enemy_ids = 16|17
 total_lines = 16
 init_lines = 3
 name = 打败大佐
 resId = 16
-chapterId = 9
-itemIds = 2;3;4;5
-probability = 35
+skillIds = 1;3;5
 
 [79]
 gold = 28800
-cost = 17500
+chapterId = 9
 enemy_count = 81
 enemy_ids = 16|18
 total_lines = 16
 init_lines = 3
 name = 活捉大佐
 resId = 16
-chapterId = 9
-itemIds = 3;4;5;6
-probability = 35
+skillIds = 1;3;5
 
 [80]
 gold = 29500
-cost = 18000
+chapterId = 9
 enemy_count = 82
 enemy_ids = 16|18
 total_lines = 16
 init_lines = 3
 name = 击毙大佐
 resId = 16
-chapterId = 9
-itemIds = 4;5;6;7
-probability = 35
+skillIds = 1;3;5
 
 [81]
 gold = 30300
-cost = 18500
+chapterId = 10
 enemy_count = 83
 enemy_ids = 17|17
 total_lines = 17
 init_lines = 3
 name = 初识少将
 resId = 17
-chapterId = 10
-itemIds = 5;6;7;8
-probability = 35
+skillIds = 1;3;5
 
 [82]
 gold = 31100
-cost = 19000
+chapterId = 10
 enemy_count = 84
 enemy_ids = 17|18
 total_lines = 17
 init_lines = 3
 name = 赶跑少将
 resId = 17
-chapterId = 10
-itemIds = 6;7;8;9
-probability = 35
+skillIds = 1;3;5
 
 [83]
 gold = 31900
-cost = 19500
+chapterId = 10
 enemy_count = 85
 enemy_ids = 17|18
 total_lines = 17
 init_lines = 3
 name = 打败少将
 resId = 17
-chapterId = 10
-itemIds = 7;8;9;10
-probability = 35
+skillIds = 1;3;5
 
 [84]
 gold = 32700
-cost = 20000
+chapterId = 10
 enemy_count = 86
 enemy_ids = 17|19
 total_lines = 17
 init_lines = 3
 name = 活捉少将
 resId = 17
-chapterId = 10
-itemIds = 1;2;3;4
-probability = 35
+skillIds = 1;3;5
 
 [85]
 gold = 33500
-cost = 20500
+chapterId = 10
 enemy_count = 87
 enemy_ids = 17|19
 total_lines = 18
 init_lines = 3
 name = 击毙少将
 resId = 17
-chapterId = 10
-itemIds = 2;3;4;5
-probability = 35
+skillIds = 1;3;5
 
 [86]
 gold = 34300
-cost = 21000
+chapterId = 10
 enemy_count = 88
 enemy_ids = 18|18
 total_lines = 18
 init_lines = 3
 name = 初识中将
 resId = 18
-chapterId = 10
-itemIds = 3;4;5;6
-probability = 35
+skillIds = 1;3;5
 
 [87]
 gold = 35100
-cost = 21500
+chapterId = 10
 enemy_count = 89
 enemy_ids = 18|19
 total_lines = 18
 init_lines = 3
 name = 赶跑中将
 resId = 18
-chapterId = 10
-itemIds = 4;5;6;7
-probability = 35
+skillIds = 1;3;5
 
 [88]
 gold = 35900
-cost = 22000
+chapterId = 10
 enemy_count = 90
 enemy_ids = 18|19
 total_lines = 18
 init_lines = 3
 name = 打败中将
 resId = 18
-chapterId = 10
-itemIds = 5;6;7;8
-probability = 35
+skillIds = 1;3;5
 
 [89]
 gold = 36700
-cost = 22500
+chapterId = 10
 enemy_count = 91
 enemy_ids = 18|20
 total_lines = 18
 init_lines = 3
 name = 活捉中将
 resId = 18
-chapterId = 10
-itemIds = 6;7;8;9
-probability = 35
+skillIds = 1;3;5
 
 [90]
 gold = 37500
-cost = 23000
+chapterId = 10
 enemy_count = 92
 enemy_ids = 18|20
 total_lines = 18
 init_lines = 3
 name = 击毙中将
 resId = 18
-chapterId = 10
-itemIds = 7;8;9;10
-probability = 35
+skillIds = 1;3;5
 
 [91]
 gold = 38400
-cost = 23500
+chapterId = 10
 enemy_count = 93
 enemy_ids = 19|19
 total_lines = 19
 init_lines = 3
 name = 初识大将
 resId = 19
-chapterId = 10
-itemIds = 1;2;3;4
-probability = 40
+skillIds = 1;3;5
 
 [92]
 gold = 39300
-cost = 24000
+chapterId = 10
 enemy_count = 94
 enemy_ids = 1|19
 total_lines = 19
 init_lines = 3
 name = 赶跑大将
 resId = 19
-chapterId = 10
-itemIds = 2;3;4;5
-probability = 40
+skillIds = 1;3;5
 
 [93]
 gold = 40200
-cost = 24500
+chapterId = 10
 enemy_count = 95
 enemy_ids = 5|19
 total_lines = 19
 init_lines = 3
 name = 打败大将
 resId = 19
-chapterId = 10
-itemIds = 3;4;5;6
-probability = 40
+skillIds = 1;3;5
 
 [94]
 gold = 41100
-cost = 25000
+chapterId = 10
 enemy_count = 96
 enemy_ids = 10|20
 total_lines = 19
 init_lines = 3
 name = 活捉大将
 resId = 19
-chapterId = 10
-itemIds = 4;5;6;7
-probability = 40
+skillIds = 1;3;5
 
 [95]
 gold = 42000
-cost = 26000
+chapterId = 10
 enemy_count = 97
 enemy_ids = 15|20
 total_lines = 19
 init_lines = 3
 name = 击毙大将
 resId = 19
-chapterId = 10
-itemIds = 5;6;7;8
-probability = 40
+skillIds = 1;3;5
 
 [96]
 gold = 42900
-cost = 27000
+chapterId = 10
 enemy_count = 98
 enemy_ids = 20|20
 total_lines = 20
 init_lines = 3
 name = 初识元帅
 resId = 20
-chapterId = 10
-itemIds = 6;7;8;9
-probability = 40
+skillIds = 1;3;5
 
 [97]
 gold = 43800
-cost = 28000
+chapterId = 10
 enemy_count = 99
 enemy_ids = 1|20
 total_lines = 20
 init_lines = 3
 name = 赶跑元帅
 resId = 20
-chapterId = 10
-itemIds = 7;8;9;10
-probability = 40
+skillIds = 1;3;5
 
 [98]
 gold = 44700
-cost = 29000
+chapterId = 10
 enemy_count = 100
 enemy_ids = 5|20
 total_lines = 20
 init_lines = 3
 name = 打败元帅
 resId = 20
-chapterId = 10
-itemIds = 5;6;7;8
-probability = 40
+skillIds = 1;3;5
 
 [99]
 gold = 45600
-cost = 30000
+chapterId = 10
 enemy_count = 100
 enemy_ids = 10|20
 total_lines = 20
 init_lines = 3
 name = 活捉元帅
 resId = 20
-chapterId = 10
-itemIds = 6;7;8;9
-probability = 40
+skillIds = 1;3;5
 
 [100]
 gold = 46500
-cost = 40000
+chapterId = 10
 enemy_count = 100
 enemy_ids = 15|20
 total_lines = 20
 init_lines = 3
 name = 击毙元帅
 resId = 20
-chapterId = 10
-itemIds = 7;8;9;10
-probability = 40
+skillIds = 1;3;5

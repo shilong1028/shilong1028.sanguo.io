@@ -1,6 +1,6 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NotificationMy } from "./NoticeManager";
-import { NoticeType, BallInfo, PlayerInfo, LevelInfo, ItemInfo, SkillInfo } from "./Enum";
+import { NoticeType, BallInfo, PlayerInfo, LevelInfo, ItemInfo } from "./Enum";
 import { GameMgr } from "./GameManager";
 
 
@@ -10,11 +10,11 @@ const { ccclass, property } = cc._decorator;
 export var MyUserData = {
     /**以下数据需要更新到服务器 */
     GoldCount: 0,   //用户金币
+    DiamondCount: 0,  //用户钻石
 
     totalLineTime: 0,   //总的在线时长（每100s更新记录一次）
     lastGoldTaxTime: 0,   //上一次收税金时间
 
-    blockCount: 1,   //开启的合成地块数量
     ballList: [],   //未出战小球列表 
     
     curPlayerId: 1,  //当前使用的炮Id
@@ -25,7 +25,6 @@ export var MyUserData = {
     levelList: [],   //通关列表
 
     ItemList: [],   //背包物品列表
-    SkillList: [],   //技能列表
 };
 
 @ccclass
@@ -39,12 +38,14 @@ class MyUserManager {
         MyUserData.GoldCount = 0;   //用户金币
         LDMgr.setItem(LDKey.KEY_GoldCount, 0);
 
+        MyUserData.DiamondCount = 0;   //用户钻石
+        LDMgr.setItem(LDKey.KEY_DiamondCount, 0);
+
         MyUserData.totalLineTime = 0;  //总的在线时长（每100s更新记录一次）
         LDMgr.setItem(LDKey.KEY_TotalLineTime, 0);
         MyUserData.lastGoldTaxTime = 0;   //上一次收税金时间
         LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, 0);
 
-        this.updateBlockCount(1);  //开启的合成地块数量
         MyUserData.ballList = new Array();  //未出战小球列表 
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
@@ -60,20 +61,17 @@ class MyUserManager {
         MyUserData.ItemList = new Array();   //背包物品列表
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
 
-        MyUserData.SkillList = new Array();   //技能列表
-        LDMgr.setItem(LDKey.KEY_SkillList, JSON.stringify(MyUserData.SkillList));
-
         this.initUserData();
     }
 
     /**初始化用户信息 */
     initUserData(){
         MyUserData.GoldCount = LDMgr.getItemInt(LDKey.KEY_GoldCount);   //用户金币
+        MyUserData.DiamondCount = LDMgr.getItemInt(LDKey.KEY_DiamondCount);  //用户钻石
 
         MyUserData.totalLineTime = LDMgr.getItemInt(LDKey.KEY_TotalLineTime);   //总的在线时长（每500s更新记录一次）
         MyUserData.lastGoldTaxTime = LDMgr.getItemInt(LDKey.KEY_LastGoldTaxTime);   //上一次收税金时间
 
-        MyUserData.blockCount = LDMgr.getItemInt(LDKey.KEY_BlockCount, 1);  //开启的合成地块数量
         MyUserData.ballList = this.getBallListByLD();    //未出战小球列表 
 
         MyUserData.curPlayerId = LDMgr.getItemInt(LDKey.KEY_CurPlayerId, 0);  //当前使用的炮索引
@@ -85,21 +83,10 @@ class MyUserManager {
 
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
 
-        MyUserData.SkillList = this.getSkillListByLD();  //技能列表
-
-        if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户
-            for(let i=0; i<1; ++i){
-                let ballInfo = new BallInfo(1);
-                ballInfo.timeId = this.lastBallTime - i;   //防止一起读取时多个武将timeId一致
-                this.addBallToBallList(ballInfo, false);
-            }
-            LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
-
-            this.updateUserGold(100);
-            //初始用户100金币，一个炮台，一个炮弹
-
+        if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
             let playerInfo = new PlayerInfo(1);
             playerInfo.useState = 1;  //使用状态，0未拥有，1已拥有
+            playerInfo.ballId = 1;  //默认炮台拥有1级小球
             this.updateCurPlayerById(1);  
             this.updatePlayerFromList(playerInfo);   //拥有的炮列表
 
@@ -109,12 +96,6 @@ class MyUserManager {
         }
 
         cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
-    }
-
-    /**更新地块开启数量 */
-    updateBlockCount(openNum:number){
-        MyUserData.blockCount = openNum;  //开启的合成地块数量
-        LDMgr.setItem(LDKey.KEY_BlockCount, openNum);
     }
 
     //获取背包中物品数据
@@ -189,73 +170,6 @@ class MyUserManager {
         }
 
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(tempList));
-    }
-
-    /**修改用户技能列表 */
-    handleEquipSkill(skillInfo: SkillInfo, removeId: number){
-        if(removeId > 0){
-            MyUserData.SkillList[removeId-1].skillPlayerId = 0;   //移除指定技能的绑定炮台
-        }
-
-        for(let i=0; i<MyUserData.SkillList.length; ++i){
-            let skill: SkillInfo = MyUserData.SkillList[i];
-            if(skill.skillId == skillInfo.skillId){
-                MyUserData.SkillList[i] = skillInfo;
-                break;
-            }
-        }
-        this.saveSkillList();
-    }
-    /**更新技能 */
-    updateSkillByData(skillInfo: SkillInfo){
-        for(let i=0; i<MyUserData.SkillList.length; ++i){
-            let skill: SkillInfo = MyUserData.SkillList[i];
-            if(skill.skillId == skillInfo.skillId){
-                MyUserData.SkillList[i] = skillInfo;
-                this.saveSkillList();
-                return;
-            }
-        }
-    }
-    /**从本地存储中获取技能列表 */
-    getSkillListByLD(){
-        let SkillList = LDMgr.getJsonItem(LDKey.KEY_SkillList);   //技能列表 
-        let tempList: SkillInfo[] = new Array();
-        if(SkillList){
-            for(let k=1; k<= GameMgr.skillCount; ++k){
-                let temp = new SkillInfo(k);
-                for(let i=0; i<SkillList.length; ++i){
-                    if(k == SkillList[i].skillId){
-                        temp.skillLv = SkillList[i].skillLv;
-                        temp.skillPlayerId = SkillList[i].skillPlayerId; 
-                        break;
-                    }
-                }
-                tempList.push(temp);
-            }
-        }
-        return tempList;
-    }
-    /**保存技能列表 */
-    saveSkillList(){
-        let tempList = new Array();
-        for(let i=0; i<MyUserData.SkillList.length; ++i){
-            if(MyUserData.SkillList[i].skillLv > 0){
-                let tempItem = MyUserData.SkillList[i].cloneNoCfg();
-                tempList.push(tempItem);
-            }
-        }
-
-        LDMgr.setItem(LDKey.KEY_SkillList, JSON.stringify(tempList));
-    }
-    //获取技能列表克隆
-    getSkillListClone(){
-        let tempArr = new Array();
-        for(let i=0; i<MyUserData.SkillList.length; ++i){
-            let info: SkillInfo = MyUserData.SkillList[i].clone();
-            tempArr.push(info);
-        }
-        return tempArr;
     }
 
     //当前章节id
@@ -348,7 +262,7 @@ class MyUserManager {
         let PalyerList = LDMgr.getJsonItem(LDKey.KEY_PlayerList);  
         let tempList: PlayerInfo[] = new Array();
         if(PalyerList){
-            for(let k=1; k<= GameMgr.playerCount; ++k){
+            for(let k=1; k<= GameMgr.PlayerCount; ++k){
                 let playerInfo = new PlayerInfo(k);
                 for(let i=0; i<PalyerList.length; ++i){
                     if(k == PalyerList[i].playerId){
@@ -356,7 +270,6 @@ class MyUserManager {
                         playerInfo.useState = 1;  //PalyerList[i].useState;
                         playerInfo.ballId = PalyerList[i].ballId;   
                         playerInfo.itemId = PalyerList[i].itemId;
-                        playerInfo.skillId = PalyerList[i].skillId;  
                         break;
                     }
                 }
@@ -512,10 +425,12 @@ class MyUserManager {
         NotificationMy.emit(NoticeType.UpdateGold, null);
     }
 
-
-
-
-
+    /**修改用户钻石 */
+    updateUserDiamond(val:number){
+        MyUserData.DiamondCount += val;
+        LDMgr.setItem(LDKey.KEY_DiamondCount, MyUserData.DiamondCount);
+        NotificationMy.emit(NoticeType.UpdateDiamond, null);
+    }
 
 }
 export var MyUserDataMgr = new MyUserManager();

@@ -107,7 +107,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 750,
-      "height": 1625
+      "height": 1334
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -156,7 +156,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "eef67183-23e8-4f06-a7a0-17478ffcb370"
+      "__uuid__": "47779794-cce0-49ef-9d9c-0052529824a5"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -272,9 +272,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -338,7 +338,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 3,
     "_N$cacheMode": 0,
     "_id": ""
@@ -375,9 +375,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -441,7 +441,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 3,
     "_N$cacheMode": 0,
     "_id": ""
@@ -607,7 +607,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "5e960b05-5324-4299-a0ef-e6bbbbb4f61b"
+      "__uuid__": "10716e5e-9e5b-4f50-a998-56acf81b505f"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -664,7 +664,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 205,
+      "width": 201.67,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -723,7 +723,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -755,7 +755,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "0d213c83-96b4-48b4-8099-0e042863e004"
+      "__uuid__": "ebe013c5-489a-4e68-b232-99b509ce0202"
     },
     "_type": 1,
     "_sizeMode": 0,

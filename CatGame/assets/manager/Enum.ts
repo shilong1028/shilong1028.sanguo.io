@@ -41,7 +41,6 @@ export class PlayerInfo{
     useState: number = 0;  //使用状态，0未拥有，1已拥有
     ballId: number = 0;   //装备小球ID
     itemId: number = 0;    //饰品道具Id
-    skillId: number = 0;  //技能id
     playerCfg: st_player_info = null;
 
     constructor(playerId: number){
@@ -55,7 +54,6 @@ export class PlayerInfo{
         temp.useState = this.useState; 
         temp.ballId = this.ballId;   
         temp.itemId = this.itemId; 
-        temp.skillId = this.skillId;  
 
         //不必写入本地存储的变量s
         temp.playerCfg = null;
@@ -68,7 +66,6 @@ export class PlayerInfo{
         temp.useState = this.useState;
         temp.ballId = this.ballId;   
         temp.itemId = this.itemId;
-        temp.skillId = this.skillId;  
         return temp;
     };
 }
@@ -156,31 +153,18 @@ export class ItemInfo{
 /**技能数据 */
 export class SkillInfo{
     skillId: number = 0;   //配置ID
-    skillLv: number = 0;   //技能等级, 0表示未拥有， >0表示已拥有
-    skillPlayerId: number = 0;   //技能绑定的炮台ID， >0表示已经装配到某炮台
+    skillLv: number = 1;   //技能等级
     skillCfg: st_skill_info = null;
 
     constructor(skillId: number){
         this.skillId = skillId;
-        this.skillLv = 0;
-        this.skillPlayerId = 0;
+        this.skillLv = 1;
         this.skillCfg = CfgMgr.getSkillConf(skillId);
     };
-
-    cloneNoCfg(){
-        let temp = new SkillInfo(this.skillId);
-        temp.skillLv = this.skillLv;
-        temp.skillPlayerId = this.skillPlayerId;
-  
-        //不必写入本地存储的变量s
-        temp.skillCfg = null;
-        return temp;
-    }
 
     clone(){
         let temp = new SkillInfo(this.skillId); 
         temp.skillLv = this.skillLv;
-        temp.skillPlayerId = this.skillPlayerId;
         return temp;
     };
 }
@@ -280,14 +264,21 @@ export enum BallState {  //(初始--排序）--待机--瞄准--移动发射--飞
 
 /**提示文本集合 */
 export const TipsStrDef = {
+    KEY_GoldTip: "金币不足!", 
+    KEY_GetGoldTip: "获得金币：", 
+    KEY_WeaponTip: "武器无法装配!", 
+    KEY_FireTip: "最后一个武器不可回收！", 
+    KEY_QualityTip: "最大品质等级小球不可合成!",
+
+
     KEY_HeChengTip: "合成位置不足。",  
     KEY_HeChengTip2: "合成位置不足，请先合成或回收士兵。",
-    KEY_HeChengTip3: "最高等级士兵无法继续合成。",
+    
     KEY_DiamondTip: "钻石不足，可使用转盘获得。",   
-    KEY_FireTip: "最后一个士兵不可解雇。",  
+     
     KEY_RecoverTip: "将士兵拖到此处回收。", 
     KEY_LevelMaxTip: "太棒了，您已通过全部关卡！", 
-    KEY_GoldTip: "金币不足，通关奖励大量金币。",  
+     
     KEY_Share: "升级士兵，然后扔出去！"
 }
 
@@ -300,10 +291,10 @@ export const NoticeType = {
     GameReStart: "GameReStart",  //重新开始游戏
 
     UpdateGold: "UpdateGold",   //更新金币显示
+    UpdateDiamond: "UpdateDiamond",   //更新钻石显示
     BuyAddBall: "BuyAddBall",   //购买小球
     BlockBallSel: "BlockBallSel",   //地块上小球被选择，相同等级的小球地块要显示光圈
     UpdatePlayer: "UpdatePlayer",   //更新炮台
-    UnEquipSkill: "UnEquipSkill",   //卸载炮台技能
 
     BrickDeadEvent: "BrickDeadEvent",   //砖块消失（死亡）
     BrickMoveDownAction: "BrickMoveDownAction",   //砖块下移通知
