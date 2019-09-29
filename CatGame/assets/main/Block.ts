@@ -128,6 +128,8 @@ export default class Block extends cc.Component {
         }
         if(this.curGirdType == 0){
             this.setBallStuff(null);
+        }else if(this.curGirdType == 1){
+            this.setItemModel(null);
         }
 
         this.ballInfo = null;  //地块上小球数据
@@ -162,7 +164,7 @@ export default class Block extends cc.Component {
         this.itemInfo = itemInfo;
         this.setBlockShow();   //根据开启情形来显示地块外观
 
-        if(itemInfo == null || this.blockIdx > MyUserData.ItemList.length){
+        if(itemInfo == null){
             if(this.nModel){
                 this.nModel.removeFromParent(true);
                 this.nModel = null;
@@ -176,6 +178,18 @@ export default class Block extends cc.Component {
             this.nModel.getComponent(Item).initItemByData(itemInfo, true);  //设置地块道具模型数据
             this.setModelOpacity(255);
         }
+    }
+
+    /**将本地块上的道具卖掉 */
+    handleSellItem(){
+        if(this.itemInfo){
+            let sellNum = this.itemInfo.itemCfg.sell * this.itemInfo.itemNum;
+            MyUserDataMgr.sellItemFromItemList(this.itemInfo.itemId);  
+            this.onRemoveModel();   //模型
+
+            return sellNum;
+        }
+        return 0;
     }
 
     //////////////  以下为地块小球接口  /////////////////////////////
@@ -220,14 +234,8 @@ export default class Block extends cc.Component {
 
     /**设置地块上的小球模型 */
     setBallStuff(ballInfo: BallInfo){
-        let bshowUI = true;
-        if(this.ballInfo && ballInfo){
-            bshowUI = false;
-        }
         this.ballInfo = ballInfo;
-        if(bshowUI == true){
-            this.setBlockShow();   //根据开启情形来显示地块外观
-        }
+        this.setBlockShow();   //根据开启情形来显示地块外观
 
         if(ballInfo == null){
             if(this.nModel){
@@ -272,7 +280,7 @@ export default class Block extends cc.Component {
     /**将本地块上的小球卖掉 */
     handleSellBall(){
         if(this.ballInfo){
-            let sellNum = Math.floor(this.ballInfo.cannonCfg.cost/3);
+            let sellNum = this.ballInfo.cannonCfg.sell;
             MyUserDataMgr.sellBallFromBallList(this.ballInfo);  
             this.onRemoveModel();   //模型
 

@@ -16,11 +16,7 @@ export default class FightRenew extends cc.Component {
 
     @property(cc.Button)
     vedioBtn: cc.Button = null;
-    @property(cc.Node)
-    videoIcon: cc.Node = null;
-    @property(cc.Node)
-    shareIcon: cc.Node = null;
-    
+
     @property(cc.Label)
     progressLabel: cc.Label = null;
     @property(cc.ProgressBar)
@@ -39,14 +35,6 @@ export default class FightRenew extends cc.Component {
     onLoad () {
         this.progressLabel.string = "5s";
         this.progressBar.progress = 100;
-
-        if(false){ 
-            this.videoIcon.active = true;
-            this.shareIcon.active = false;
-        }else{
-            this.videoIcon.active = false;
-            this.shareIcon.active = true;
-        }
     }
 
     start () {
@@ -89,44 +77,27 @@ export default class FightRenew extends cc.Component {
         this.bVideoPlaying = true;   //视频播放中
 
         let self = this;
-        if(this.shareIcon.active == true){
-            SDKMgr.shareGame(TipsStrDef.KEY_Share, (succ:boolean)=>{
-                console.log("reset 分享 succ = "+succ);
-                self.bVideoPlaying = false;   //视频播放中
-                if(succ == true){
-                    self.bVideoPlaySucc = true;   //视频是否播放完毕
-                    if(self.proTime <= 0){
-                        self.handleNormal(true);  //复活或显示结算
-                    }
-                }else{
-                    if(self.proTime <= 0){
-                        self.handleNormal(false);
-                    }
-                }
-            },self);
-        }else{
-            sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", false, ()=>{
-                console.log("reset 激励视频广告显示失败");
-            }, (succ:boolean)=>{
-                console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
+        sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", false, ()=>{
+            console.log("reset 激励视频广告显示失败");
+        }, (succ:boolean)=>{
+            console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
 
-                self.bVideoPlaying = false;   //视频播放中
-                if(succ == true){
-                    self.bVideoPlaySucc = true;   //视频是否播放完毕
-                    if(self.proTime <= 0){
-                        sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
-                        self.handleNormal(true);  //复活或显示结算
-                    }else{
-                        sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
-                    }
+            self.bVideoPlaying = false;   //视频播放中
+            if(succ == true){
+                self.bVideoPlaySucc = true;   //视频是否播放完毕
+                if(self.proTime <= 0){
+                    sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
+                    self.handleNormal(true);  //复活或显示结算
                 }else{
                     sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
-                    if(self.proTime <= 0){
-                        self.handleNormal(false);
-                    }
                 }
-            }, self);   //播放下载的视频广告
-        }
+            }else{
+                sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
+                if(self.proTime <= 0){
+                    self.handleNormal(false);
+                }
+            }
+        }, self);   //播放下载的视频广告
     }
 
     /**跳过 */

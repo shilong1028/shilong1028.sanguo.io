@@ -40,7 +40,7 @@ export default class PlayerCell extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        NotificationMy.on(NoticeType.UpdatePlayer, this.UpdatePlayer, this);   //更新炮台
+        NotificationMy.on(NoticeType.UpdatePlayerList, this.UpdatePlayer, this);   //更新炮台
 
         this.goldBtnNode.active = true;
         this.useBtnNode.active = false;

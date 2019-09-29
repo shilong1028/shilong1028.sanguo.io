@@ -293,7 +293,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -444,7 +444,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 114.64,
+      "width": 120.1,
       "height": 37.8
     },
     "_anchorPoint": {
@@ -503,7 +503,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -547,7 +547,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 135.49,
+      "width": 140.78,
       "height": 37.8
     },
     "_anchorPoint": {
@@ -606,7 +606,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -829,7 +829,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 41.71,
+      "width": 43.98,
       "height": 37.8
     },
     "_anchorPoint": {
@@ -888,7 +888,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -1116,7 +1116,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 3,
     "_N$cacheMode": 0,
     "_id": ""
@@ -1219,7 +1219,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -1332,7 +1332,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 106.95,
+      "width": 107.4,
       "height": 37.8
     },
     "_anchorPoint": {
@@ -1391,7 +1391,7 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""

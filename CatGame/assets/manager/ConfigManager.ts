@@ -16,14 +16,14 @@ export class st_cannon_info{
     name;     //名称
     attack;    //攻击力
     baoji;     //暴击率（/100)
-    cost;   //购买花费
+    sell;   //回收价
     quality;   //品质
     res;   //资源
 
     transType(){
         this.attack = parseInt(this.attack);
         this.baoji = parseInt(this.baoji)/100;
-        this.cost = parseInt(this.cost);
+        this.sell = parseInt(this.sell);
         this.quality = parseInt(this.quality);
         this.res = parseInt(this.res);
     }
@@ -36,7 +36,7 @@ export class st_cannon_info{
         temp.name = this.name;
         temp.attack = this.attack;
         temp.baoji = this.baoji;
-        temp.cost = this.cost;
+        temp.sell = this.sell;
         temp.quality = this.quality;
         temp.res = this.res;
         return temp;
@@ -185,6 +185,7 @@ export class st_item_info{
     baoji_up;     //暴击率提升幅度（/100)
     probability;  //提升炮台技能概率（/100)
     quality;
+    sell;   //回收价
     desc;    //描述
 
     transType(){
@@ -192,6 +193,7 @@ export class st_item_info{
         this.baoji_up = parseInt(this.baoji_up)/100;
         this.probability = parseInt(this.probability)/100;
         this.quality = parseInt(this.quality);
+        this.sell = parseInt(this.sell);
     }
 
     constructor(){
@@ -204,6 +206,7 @@ export class st_item_info{
         temp.baoji_up = this.baoji_up;
         temp.probability = this.probability;
         temp.quality = this.quality;
+        temp.sell = this.sell;
         temp.desc = this.desc;
         return temp;
     }
@@ -232,6 +235,49 @@ export class st_skill_info{
         temp.probability = this.probability;
         temp.attack_up = this.attack_up;
         temp.baoji_up = this.baoji_up;
+        temp.desc = this.desc;
+        return temp;
+    }
+}
+
+//商城配置信息
+export class st_shop_info{
+    name;  //名称
+    gold;  //随机获取的金币值（0.5-1.0倍之间）
+    diamond;  //随机获取的金币值（0.3-1.0倍之间）
+    weapon;    //随机获取武器的概率（/100)
+    item;     //随机获取道具的概率（/100)
+    quality;   //宝箱品质
+    costGold;   //开启花费的金币，costGold>0则为金币开启，costDiamond>0则为钻石开启，vedio>0则为视频开启
+    costDiamond;
+    vedio;
+    desc;    //描述
+
+    transType(){
+        this.gold = parseInt(this.gold);
+        this.diamond = parseInt(this.diamond);
+        this.weapon = parseInt(this.weapon)/100;
+        this.item = parseInt(this.item)/100;
+        this.quality = parseInt(this.quality);
+        this.costGold = parseInt(this.costGold);
+        this.costDiamond = parseInt(this.costDiamond);
+        this.vedio = parseInt(this.vedio);
+    }
+
+    constructor(){
+    }
+
+    clone(){
+        let temp = new st_shop_info();
+        temp.name = this.name;
+        temp.gold = this.gold;
+        temp.diamond = this.diamond;
+        temp.weapon = this.weapon;
+        temp.item = this.item;
+        temp.quality = this.quality;
+        temp.costGold = this.costGold;
+        temp.costDiamond = this.costDiamond;
+        temp.vedio = this.vedio;
         temp.desc = this.desc;
         return temp;
     }
@@ -275,6 +321,10 @@ class CfgManager_class {
     //技能配置表
     C_skill_info : Map<number, st_skill_info> = new Map<number, st_skill_info>();
     SC_skill_info = st_skill_info;
+
+    //商城配置表
+    C_shop_info : Map<number, st_shop_info> = new Map<number, st_shop_info>();
+    SC_shop_info = st_shop_info;
 
 
     //********************** 以下是一些配置接口 ***************** */
@@ -342,6 +392,16 @@ class CfgManager_class {
     /**获取技能配置数据 */
     getSkillConf(skillId: number): st_skill_info{
         let obj = this.C_skill_info[skillId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+
+    /**获取商城配置数据 */
+    getShopConf(shopId: number): st_shop_info{
+        let obj = this.C_shop_info[shopId];
         if(obj){
             return obj.clone();
         }else{

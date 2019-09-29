@@ -68,6 +68,7 @@ export default class BagLayer extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.ontTouchEnd, this);
 
         NotificationMy.on(NoticeType.BuyAddBall, this.addBallToOneBlock, this);   //购买小球
+        NotificationMy.on(NoticeType.UpdateItemList, this.UpdateItemList, this);   //更新道具
 
         this.delNode.active= false;  //回收站
         this.gridLabel.string = "";
@@ -278,6 +279,14 @@ export default class BagLayer extends cc.Component {
         }
     }
 
+    //更新道具
+    UpdateItemList(){
+        if(this.curGirdType == 1){  
+            this.curGirdType = -1;   //0装备小球，1饰品道具，2技能
+            this.initGirdInfo(1);
+        }
+    }
+
     /**设置选中的将要移动的地块 */
     setSelectBlock(block: Block){
         this.selectBlock = block;   //拖动的地块数据
@@ -342,7 +351,7 @@ export default class BagLayer extends cc.Component {
                                 curPageInfo.ballId = this.selectBlock.ballInfo.cannonId;
     
                                 this.showPlayerEquip(curPageInfo.ballId);
-                                NotificationMy.emit(NoticeType.UpdatePlayer, curPageInfo);   //更新炮台
+                                NotificationMy.emit(NoticeType.UpdatePlayerList, curPageInfo);   //更新炮台
     
                                 MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
                                 MyUserDataMgr.equipBallFromBallList(this.selectBlock.ballInfo.clone(), equipBallInfo);
@@ -360,13 +369,13 @@ export default class BagLayer extends cc.Component {
                         let pos3 = this.delNode.convertToNodeSpace(touchPos);   //回收站
                         let rect3 = cc.rect(0, 0, this.delNode.width, this.delNode.height);
                         if(rect3.contains(pos3)){ 
-                            if(MyUserData.ballList.length == 1){   //最后一个小球不可删除
-                                ROOT_NODE.showTipsText(TipsStrDef.KEY_FireTip);
-                                this.selectBlock.onRecoverSelf();   //复原本地块模型
-                            }else{
+                            // if(MyUserData.ballList.length == 1){   //最后一个小球不可删除
+                            //     ROOT_NODE.showTipsText(TipsStrDef.KEY_FireTip);
+                            //     this.selectBlock.onRecoverSelf();   //复原本地块模型
+                            // }else{
                                 let sellGold = this.selectBlock.handleSellBall();  
                                 this.showDelBallGainAni(sellGold);   //显示售卖士兵收益 
-                            }
+                            //}
                             this.nSelectModel.setPosition(-3000, -3000);
                         }else{
                             this.selectBlock.onRecoverSelf();   //复原本地块模型
@@ -382,13 +391,23 @@ export default class BagLayer extends cc.Component {
                         curPageInfo.itemId = this.selectBlock.itemInfo.itemId;
 
                         this.showPlayerItem(curPageInfo.itemId);
-                        NotificationMy.emit(NoticeType.UpdatePlayer, curPageInfo);   //更新炮台
+                        NotificationMy.emit(NoticeType.UpdatePlayerList, curPageInfo);   //更新炮台
 
                         MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
                         //炮台道具的消耗为每场战斗消耗一个（为零则清除炮台道具设定），故在此处切换道具时不做任何处理
                     }
+                    this.selectBlock.onRecoverSelf();   //复原本地块模型
+                }else{
+                    let pos3 = this.delNode.convertToNodeSpace(touchPos);   //回收站
+                    let rect3 = cc.rect(0, 0, this.delNode.width, this.delNode.height);
+                    if(rect3.contains(pos3)){ 
+                        let sellGold = this.selectBlock.handleSellItem();  
+                        this.showDelBallGainAni(sellGold);   //显示售卖收益 
+                        this.nSelectModel.setPosition(-3000, -3000);
+                    }else{
+                        this.selectBlock.onRecoverSelf();   //复原本地块模型
+                    }
                 }
-                this.selectBlock.onRecoverSelf();   //复原本地块模型
             }
 
             this.selectBlock = null;   //拖动的地块数据
@@ -417,7 +436,6 @@ export default class BagLayer extends cc.Component {
             for(let i=0; i<blocks.length; i++){
                 let block: Block = blocks[i].getComponent(Block);
                 if(block.ballInfo == null){
-                    MyUserDataMgr.updateUserGold(-ballInfo.cannonCfg.cost);
                     MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);
 
                     block.setBallStuff(ballInfo);

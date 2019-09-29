@@ -1,36 +1,46 @@
 import viewCell from "../tableView/viewCell";
-import { BallInfo, NoticeType } from "../manager/Enum";
-import Stuff from "./Stuff";
 import { AudioMgr } from "../manager/AudioMgr";
-import { MyUserData } from "../manager/MyUserData";
+import { st_shop_info, CfgMgr } from "../manager/ConfigManager";
+import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
 import { NotificationMy } from "../manager/NoticeManager";
-import { GameMgr } from "../manager/GameManager";
+import { NoticeType, BallInfo } from "../manager/Enum";
+import { sdkWechat } from "../manager/SDK_Wechat";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ShopCell extends viewCell {
 
-    @property(cc.Button)
-    goldBtn: cc.Button = null;
+    @property(cc.Sprite)
+    cellBg: cc.Sprite = null;
+    @property(cc.Sprite)
+    boxBg: cc.Sprite = null;
+    @property(cc.Sprite)
+    btnSpr: cc.Sprite = null;
+    @property(cc.Sprite)
+    btnIcon: cc.Sprite = null;
+    @property(cc.Label)
+    numLabel: cc.Label = null;
+
     @property(cc.Label)
     goldLabel: cc.Label = null;
-
     @property(cc.Label)
-    atkLabel: cc.Label = null;
+    diamondLabel: cc.Label = null;
     @property(cc.Label)
-    baojiLabel: cc.Label = null;
+    weaponLabel: cc.Label = null;
     @property(cc.Label)
-    sellLabel: cc.Label = null;
+    itemLabel: cc.Label = null;
 
-    @property(cc.Node)
-    stuffNode: cc.Node = null;
-
-    nStuff: Stuff = null;
+    @property(cc.SpriteAtlas)
+    qualityAtlas: cc.SpriteAtlas = null;
+    @property([cc.SpriteFrame])
+    iconFrames: cc.SpriteFrame[] = new Array(3);
+    @property([cc.SpriteFrame])
+    bgFrames: cc.SpriteFrame[] = new Array(2);
 
     data : any = null;
-    cellData : BallInfo = null;  
+    cellData : st_shop_info = null;  
     cellIdx : number = -1;  
   
     // LIFE-CYCLE CALLBACKS:
@@ -53,17 +63,34 @@ export default class ShopCell extends viewCell {
 
         this.onSelected(this._selectState);
 
-        if(this.nStuff == null){
-            let stuff = cc.instantiate(GameMgr.getMainScene().pfStuff);
-            this.stuffNode.addChild(stuff);
-            this.nStuff = stuff.getComponent(Stuff);
-        }
-        this.nStuff.setStuffAndName(this.cellData);
+        this.goldLabel.string = "金币约："+this.cellData.gold;
+        this.diamondLabel.string = "钻石约："+this.cellData.diamond;
+        this.weaponLabel.string = "武器概率："+(this.cellData.weapon*100)+"%";
+        this.itemLabel.string = "饰品概率："+(this.cellData.item*100)+"%";
 
-        this.goldLabel.string = ""+this.cellData.cannonCfg.cost;
-        this.atkLabel.string = "攻击力："+this.cellData.cannonCfg.attack;
-        this.baojiLabel.string = "暴击率："+this.cellData.cannonCfg.baoji;
-        this.sellLabel.string = "回收价："+this.cellData.cannonCfg.cost;
+        this.boxBg.spriteFrame = this.qualityAtlas.getSpriteFrame("colorBg"+this.cellData.quality);
+        if(this.cellIdx%2 == 0){
+            this.cellBg.spriteFrame = this.bgFrames[0];
+            this.btnSpr.spriteFrame = this.bgFrames[1];
+        }else{
+            this.cellBg.spriteFrame = this.bgFrames[1];
+            this.btnSpr.spriteFrame = this.bgFrames[0];
+        }
+
+        if(this.cellData.vedio > 0){   //视频获取
+            this.btnIcon.spriteFrame = this.iconFrames[0];
+            this.numLabel.string = this.cellData.vedio.toString();
+        }else if(this.cellData.costDiamond > 0){   //钻石获取
+            this.btnIcon.spriteFrame = this.iconFrames[1];
+            this.numLabel.string = this.cellData.costDiamond.toString();
+        }else if(this.cellData.costGold > 0){   //金币获取
+            this.btnIcon.spriteFrame = this.iconFrames[2];
+            this.numLabel.string = this.cellData.costGold.toString();
+        }else{
+            this.btnIcon.spriteFrame = null;
+            this.numLabel.string = "99999999";
+        }
+
     }
 
     onSelected(bSel){
@@ -79,19 +106,81 @@ export default class ShopCell extends viewCell {
         this.onSelected(true);
     }
 
-    onGoldBtn(){
+    onBuyBtn(){
         AudioMgr.playEffect("effect/ui_buy");
-        let ballInfo = this.cellData;
-        if(ballInfo){
-            if(MyUserData.GoldCount >= ballInfo.cannonCfg.cost){
-                if(MyUserData.ballList.length >= GameMgr.BagGridCount){
-                    ROOT_NODE.showTipsText("合成网格中可用地块已满，无法购买！请解雇无用的对象后重新购买。");
+
+        if(this.cellData){
+            if(this.cellData.vedio > 0){   //视频获取
+                let self = this;
+                sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", false, ()=>{
+                    console.log("reset 激励视频广告显示失败");
+                }, (succ:boolean)=>{
+                    console.log("reset 激励视频广告正常播放结束， succ = "+succ);
+                    if(succ == true){
+                        sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
+                        this.handleBuyShop();  
+                    }else{
+                        sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
+                    }
+                }, self);   //播放下载的视频广告
+            }else if(this.cellData.costDiamond > 0){   //钻石获取
+                if(MyUserData.DiamondCount >= this.cellData.costDiamond){
+                    MyUserDataMgr.updateUserDiamond(-this.cellData.costDiamond); 
+                    this.handleBuyShop();
                 }else{
-                    NotificationMy.emit(NoticeType.BuyAddBall, ballInfo);   //购买小球
+                    ROOT_NODE.showGoldAddDialog();  //获取金币提示框
                 }
-            }else{
-                ROOT_NODE.showGoldAddDialog();  //获取金币提示框
+            }else if(this.cellData.costGold > 0){   //金币获取
+                if(MyUserData.GoldCount >= this.cellData.costGold){
+                    MyUserDataMgr.updateUserGold(-this.cellData.costGold); 
+                    this.handleBuyShop();
+                }else{
+                    ROOT_NODE.showGoldAddDialog();  //获取金币提示框
+                }
             }
+        }
+    }
+
+    //随机获得宝箱
+    handleBuyShop(){
+        //随机获取的金币值（0.5-1.0倍之间）
+        if(this.cellData.costGold > 0){
+            let gold = Math.floor((Math.random()*0.5 + 0.5)*this.cellData.costGold);
+            if(gold > 0){
+                ROOT_NODE.showTipsText("获得金币："+gold);
+                MyUserDataMgr.updateUserGold(gold);
+            }
+        }
+        //随机获取的金币值（0.3-1.0倍之间）
+        if(this.cellData.costDiamond > 0){
+            let diamond = Math.floor((Math.random()*0.7 + 0.3)*this.cellData.costDiamond);
+            if(diamond > 0){
+                ROOT_NODE.showTipsText("获得钻石："+diamond);
+                MyUserDataMgr.updateUserDiamond(diamond);
+            }
+        }
+        //随机获取武器的概率
+        if(this.cellData.weapon > 0 && Math.random() <= this.cellData.weapon){
+            let keys = Object.getOwnPropertyNames(CfgMgr.C_cannon_info);
+            let idx = Math.floor(Math.random()*keys.length*0.99);
+            let weaponId = parseInt(keys[idx]);
+            let weaponCfg = CfgMgr.getCannonConf(weaponId);
+            ROOT_NODE.showTipsText("获得："+weaponCfg.name);
+
+            let ballInfo = new BallInfo(weaponId);
+            MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
+            NotificationMy.emit(NoticeType.BuyAddBall, ballInfo.clone());  //购买小球
+        }
+        //随机获取道具的概率
+        if(this.cellData.item > 0 && Math.random() <= this.cellData.item){
+            let keys = Object.getOwnPropertyNames(CfgMgr.C_item_info);
+            let idx = Math.floor(Math.random()*keys.length*0.99);
+            let itemId = parseInt(keys[idx]);
+            let itemCfg = CfgMgr.getItemConf(itemId);
+            ROOT_NODE.showTipsText("获得："+itemCfg.name);
+
+            MyUserDataMgr.updateItemByCount(itemId, 1);  //修改用户背包物品列表
+            NotificationMy.emit(NoticeType.UpdateItemList, null);   //刷新道具
         }
     }
 }

@@ -118,7 +118,6 @@ class FightManager {
             if(itemId > 0){
                 if(MyUserDataMgr.getItemCount(itemId) == 0){
                     this.usedPlayerInfo.itemId = 0;
-                    MyUserDataMgr.updatePlayerFromList(this.usedPlayerInfo.clone());   //更新炮台到拥有的炮列表
                 }else{
                     MyUserDataMgr.updateItemByCount(itemId, -1);   //技能消耗道具
                 }

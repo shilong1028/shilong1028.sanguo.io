@@ -95,7 +95,7 @@ class MyUserManager {
             LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
         }
 
-        cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+        //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
     //获取背包中物品数据
@@ -116,6 +116,17 @@ class MyUserManager {
         }
         return tempArr;
     }
+    /**销售未出战小球 */
+    sellItemFromItemList(itemId: number){
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            if(itemId == MyUserData.ItemList[i].itemId){
+                MyUserData.ItemList.splice(i, 1);
+                this.checkPlayersItemId(itemId);    //道具消耗完后，检查炮台绑定的道具信息
+                this.saveItemList();
+                break;
+            }
+        }
+    }
     /**修改用户背包物品列表 */
     updateItemByCount(itemId: number, val: number){
         for(let i=0; i<MyUserData.ItemList.length; ++i){
@@ -127,6 +138,7 @@ class MyUserManager {
                 }
                 if(MyUserData.ItemList[i].itemNum <= 0){
                     MyUserData.ItemList.splice(i, 1);  //道具用完，从背包删除
+                    this.checkPlayersItemId(itemId);    //道具消耗完后，检查炮台绑定的道具信息
                 }
                 this.saveItemList();
                 return;
@@ -300,6 +312,15 @@ class MyUserManager {
         if(playerInfo.useState == 1){
             this.savePlayerList();
         }
+    }
+    /**道具消耗完后，检查炮台绑定的道具信息 */
+    checkPlayersItemId(itemId: number){
+        for(let i=0; i<MyUserData.playerList.length; ++i){
+            if(MyUserData.playerList[i].itemId == itemId){
+                MyUserData.playerList[i].itemId = 0;
+            }
+        }
+        this.savePlayerList();
     }
     
     /**从本地存储中获取未出战小球列表 */

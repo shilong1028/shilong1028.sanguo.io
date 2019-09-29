@@ -368,7 +368,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 330,
-      "height": 163
+      "height": 149.1
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -415,16 +415,16 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "金币不足！分享或观看视频可以获取金币奖励！",
-    "_N$string": "金币不足！分享或观看视频可以获取金币奖励！",
-    "_fontSize": 40,
-    "_lineHeight": 50,
+    "_string": "观看视频获取大量金币和钻石！\n分享游戏获取一些金币和钻石！",
+    "_N$string": "观看视频获取大量金币和钻石！\n分享游戏获取一些金币和钻石！",
+    "_fontSize": 30,
+    "_lineHeight": 35,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
+    "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 3,
@@ -1222,7 +1222,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
+      "width": 200,
       "height": 63
     },
     "_anchorPoint": {
@@ -1270,8 +1270,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "获取金币",
-    "_N$string": "获取金币",
+    "_string": "获取游戏币",
+    "_N$string": "获取游戏币",
     "_fontSize": 40,
     "_lineHeight": 50,
     "_enableWrapText": true,
@@ -1353,12 +1353,7 @@
     "vedioBtn": {
       "__id__": 24
     },
-    "videoIcon": {
-      "__id__": 17
-    },
-    "shareIcon": {
-      "__id__": 14
-    },
+    "shareBtn": null,
     "_id": ""
   },
   {

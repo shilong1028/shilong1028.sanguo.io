@@ -297,7 +297,8 @@ export const NoticeType = {
     UpdateDiamond: "UpdateDiamond",   //更新钻石显示
     BuyAddBall: "BuyAddBall",   //购买小球
     BlockBallSel: "BlockBallSel",   //地块上小球被选择，相同等级的小球地块要显示光圈
-    UpdatePlayer: "UpdatePlayer",   //更新炮台
+    UpdatePlayerList: "UpdatePlayerList",   //更新炮台列表
+    UpdateItemList: "UpdateItemList",   //刷新道具
 
     BrickDeadEvent: "BrickDeadEvent",   //砖块消失（死亡）
     BrickMoveDownAction: "BrickMoveDownAction",   //砖块下移通知

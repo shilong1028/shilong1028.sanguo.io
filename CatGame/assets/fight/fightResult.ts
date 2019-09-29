@@ -4,7 +4,7 @@ import { AudioMgr } from "../manager/AudioMgr";
 import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
 import Skill from "../common/skill";
 import { CfgMgr } from "../manager/ConfigManager";
-import { SkillInfo } from "../manager/Enum";
+import { SkillInfo, ChapterInfo } from "../manager/Enum";
 
 const {ccclass, property} = cc._decorator;
 
@@ -50,13 +50,20 @@ export default class FightResult extends cc.Component {
             this.titleLabel.string = "战斗胜利";
             stars = Math.ceil(0.01 + Math.random()*2.98);
 
+            let levelCfg = FightMgr.level_info.levelCfg;
             let nextLevelCfg = CfgMgr.getLevelConf(FightMgr.level_id + 1);
             if(nextLevelCfg && nextLevelCfg.chapterId > MyUserData.curChapterId){
                 this.bNextLevel = false;
+                let curChapterInfo = new ChapterInfo(levelCfg.chapterId);
+                //首次通章奖励钻石
+                if(levelCfg.chapterId == MyUserData.curChapterId){
+                    MyUserDataMgr.updateUserDiamond(curChapterInfo.chapterCfg.diamond);
+                }
+                MyUserDataMgr.updateUserGold(curChapterInfo.chapterCfg.gold);
+
                 MyUserDataMgr.updateCurChapterId(nextLevelCfg.chapterId);   //新的章节Id
             }
 
-            let levelCfg = FightMgr.level_info.levelCfg;
             this.rewardGold = Math.ceil(levelCfg.gold * 0.5 * stars); //1星为75%，3星为150%
              //添加技能
             for(let i=0; i<levelCfg.skillIds.length; ++i){

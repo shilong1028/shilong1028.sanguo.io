@@ -1,8 +1,7 @@
 import TableView from "../tableView/tableView";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
-import { BallInfo } from "../manager/Enum";
-
+import { CfgMgr } from "../manager/ConfigManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -23,13 +22,13 @@ export default class ShopLayer extends cc.Component {
     // update (dt) {}
 
     initTableData(){
-        let ballArr = new Array();
-        for(let i=1; i<= GameMgr.ballMaxLv; ++i){
-            ballArr.push(new BallInfo(i));
+        let shopArr = new Array();
+        for(let i=1; i<= GameMgr.ShopCount; ++i){
+            shopArr.push(CfgMgr.getShopConf(i));
         }
 
         this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
-        this.tableView.initTableView(ballArr.length, { array: ballArr, target: this }); 
+        this.tableView.initTableView(shopArr.length, { array: shopArr, target: this }); 
     }
 
     onCloseBtn(){
