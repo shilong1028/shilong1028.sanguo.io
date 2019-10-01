@@ -29,7 +29,8 @@ class FightManager {
     bGameOver: boolean = false;   //该局游戏是否结束
     bUserReset: boolean = false;  //本次是否使用了复活（每关限一次，重新开始不重置）
     win: boolean = false;  //本场胜负
-    atkScore: number = 0;  //本场攻击得分
+    stars: number = 0;    //战斗星级
+    starTargetNum: number = 100;  //达到三星一回合需要消灭的砖块数量
     brickBreakNum: number = 0;   //击毁的砖块数
     brickBreakAim: number = 0;   //本场目标块数
 
@@ -71,7 +72,8 @@ class FightManager {
 
         this.bGameOver = false;   //该局游戏是否结束
         this.win = false;  //本场胜负
-        this.atkScore = 0;   //攻击积分
+        this.stars = 0;    //战斗星级
+        this.starTargetNum = 100;  //达到三星一回合需要消灭的砖块数量
         this.brickBreakNum = 0;   //击毁的砖块数
         this.brickBreakAim = 0;   //本场目标块数
         
@@ -131,6 +133,12 @@ class FightManager {
         this.setBricks();
     }
 
+    //更新砖块死亡数据
+    updateBrickDeadNum(){
+        this.brickBreakNum ++;   //击毁的砖块数 
+        this.getFightScene().showBrickProgerss();
+    }
+
     /**关卡配置加载完毕后的回调 */
     setBricks(){
         // 每次加载清空之前的bricks
@@ -138,9 +146,16 @@ class FightManager {
         // 列数可以从jsonInfo的width确定，但实际的height要从具体关卡的objects数据中确定
         if(this.level_info && this.level_info.levelCfg){
             let levelCfg = this.level_info.levelCfg;
+            this.brickBreakAim = levelCfg.enemy_count;   //本场目标块数
             //cc.log("FightMgr:setBricks(), levelCfg = "+JSON.stringify(levelCfg));
             let enemyCount = levelCfg.enemy_count;   //砖块还剩余总数
             let enemyLines = levelCfg.total_lines;  
+
+            this.starTargetNum = Math.ceil(2*enemyCount/enemyLines);  //达到三星一回合需要消灭的砖块数量
+            if(this.starTargetNum > this.brickBreakAim){
+                this.starTargetNum = this.brickBreakAim;
+            }
+
             let enemyIds:number[] = new Array();
             for(let i=levelCfg.enemy_ids[0]; i<= levelCfg.enemy_ids[1]; i++){
                 enemyIds.push(i);

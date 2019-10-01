@@ -494,8 +494,6 @@ export default class QiPanSc extends cc.Component {
         if(objs == null || objs == undefined){
             //cc.warn("objs == null || objs == undefined, this.curRow = "+this.curRow+"; bricksCfg = "+JSON.stringify(bricksCfg));
         }else{
-            FightMgr.getFightScene().updateRoundProgress();   //更新关卡回合显示
-
             if(this.curRow > FightMgr.level_info.levelCfg.total_lines){
                 //console.log("新行已经超出了配置最大行数限制，故不再显示");
                 return;

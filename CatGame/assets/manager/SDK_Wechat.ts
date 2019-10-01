@@ -46,9 +46,9 @@ export class SDK_Wechat  {
             return;
         }
         //平台上的分享图片链接地址
-        let imgUrls = ['https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksLSx0JGX2iby3NPcENLfOHxZZF2zqUWvrDUQlfm29k09LwHZZLQXxur9/0'];
+        let imgUrls = ['https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksI8sHibZ9Tib5tXxCp0u88qKibB6MOnic2gM3bbQLRXMwfFUclgbu2yqFiau/0'];
         //平台上的分享图片编号
-        let imgIds = ['DwOUCqh7Q-uO9i2EkbyBQw'];
+        let imgIds = ['mho_5RMnQrClChbBFjPIvA'];
 
         wx.updateShareMenu({
             withShareTicket: true,
@@ -216,7 +216,7 @@ export class SDK_Wechat  {
 
     preLoadVideoAd: any = null;   //提前预加载完毕了视频广告
     /**预加载或播放视频广告 */
-    preLoadAndPlayVideoAd(adId:string, bPreLoad:boolean, errorCallBack:any, videoCallBack:any, callTarget:any){
+    preLoadAndPlayVideoAd(bPreLoad:boolean, errorCallBack:any, videoCallBack:any, callTarget:any){
         //console.log('preLoadAndPlayVideoAd, 预加载或播放视频广告 bPreLoad = '+bPreLoad);
         let wx = (window as any).wx;
         if(wx == null){
@@ -228,6 +228,7 @@ export class SDK_Wechat  {
         this.errorCallBack = errorCallBack;   //加载视频失败回调
 
         let self = this;
+        let adId = "adunit-40458eb80d6b2cd3";
         var rewardedVideoAd = null;
         if(bPreLoad == true){   //预下载
             this.preLoadVideoAd = null;
@@ -237,11 +238,11 @@ export class SDK_Wechat  {
 
             rewardedVideoAd.load()
             .then(() => {
-                //console.log('预加载激励视频广告成功');
+                console.log('预加载激励视频广告成功');
                 self.preLoadVideoAd = rewardedVideoAd;
             })
             .catch(err => {
-                //console.log('激励视频广告显示失败, err = '+err);
+                console.log('激励视频广告显示失败, err = '+err);
                 self.preLoadVideoAd = null;
                 if(self.errorCallBack && self.callTarget){
                     self.errorCallBack.call(self.callTarget, "无法观看视频");
@@ -260,14 +261,14 @@ export class SDK_Wechat  {
 
             rewardedVideoAd.onClose(res => {
                 if (res && res.isEnded) {
-                    //console.log("激励视频广告正常播放结束，可以下发游戏奖励， res = "+JSON.stringify(res));
+                    console.log("激励视频广告正常播放结束，可以下发游戏奖励， res = "+JSON.stringify(res));
                     if(self.videoCallBack && self.callTarget){
                         self.videoCallBack.call(self.callTarget, true);
                     }else{
                         //console.log("播放成功回调错误");
                     }
                 } else {
-                    //console.log("激励视频广告播放中途退出，不下发游戏奖励， res = "+JSON.stringify(res));
+                    console.log("激励视频广告播放中途退出，不下发游戏奖励， res = "+JSON.stringify(res));
                     if(self.videoCallBack && self.callTarget){
                         self.videoCallBack.call(self.callTarget, false);
                     }else{
@@ -280,11 +281,11 @@ export class SDK_Wechat  {
                 // 失败重试
                 rewardedVideoAd.load()
                 .then(() => {
-                    //console.log('经过预下载后，但仍需要加载视频');
+                    console.log('经过预下载后，但仍需要加载视频');
                     rewardedVideoAd.show();
                 })
                 .catch(err => {
-                    //console.log('经过预下载后，激励视频广告仍然显示失败, err = '+err);
+                    console.log('经过预下载后，激励视频广告仍然显示失败, err = '+err);
                 })
             });
         }

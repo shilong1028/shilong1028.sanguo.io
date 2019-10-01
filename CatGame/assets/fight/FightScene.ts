@@ -87,8 +87,6 @@ export default class FightScene extends cc.Component {
     bTouched: boolean = false;  //用户当前是否触屏
     fingerPos: cc.Vec2 = null;   //手指触摸位置，用于移动砖块等处的指示线绘制
 
-    curRoundProgress: number = 0;   //当前关卡回合进度
-    totalRoundCount: number = 0;
     stagnationRow: number = -1;  //显示冰冻的回合
 
     skillList: SkillInfo[] = new Array();   //章节技能列表，每一关累计，章节内有效
@@ -101,9 +99,6 @@ export default class FightScene extends cc.Component {
         this.bBallSpeedDropState = false;   //小球是否已经处于抛物下落加速
         this.bTouched = false;   //用户当前是否触屏
         this.fingerPos = null;   //手指触摸位置，用于移动砖块等处的指示线绘制
-
-        this.curRoundProgress = 0;   //当前关卡回合进度
-        this.totalRoundCount = 0;
 
         this.levelLabel.string = "";  //第几关
         this.tempBottomNode.opacity = 0;  //底部拖动取消提示
@@ -291,9 +286,7 @@ export default class FightScene extends cc.Component {
         cc.log("handleSetBricksFinish");
         this.levelLabel.string = FightMgr.level_id.toString();  //第几关
 
-        this.curRoundProgress = 0;   //当前关卡回合进度
-        this.totalRoundCount = FightMgr.level_info.levelCfg.total_lines;
-        this.showRoundProgerss();  //显示关卡回合进度
+        this.showBrickProgerss();  //显示关卡砖块进度
 
         FightMgr.bReNewLevel = false;   //是否重新开始游戏
 
@@ -302,22 +295,20 @@ export default class FightScene extends cc.Component {
         //this.checkGuideStep();   //检索引导步骤
     }
 
-    /**显示关卡回合进度 */
-    showRoundProgerss(){
-        this.labProgress.string = this.curRoundProgress + "/" + this.totalRoundCount;  //当前关卡回合进度
-        let progress = this.curRoundProgress / this.totalRoundCount;
+    /**显示关卡砖块进度 */
+    showBrickProgerss(){
+        let tempNum = FightMgr.brickBreakAim - FightMgr.brickBreakNum;
+        if(tempNum < 0){
+            tempNum = 0;
+        }
+        this.labProgress.string = tempNum + "/" + FightMgr.brickBreakAim; 
+        let progress = tempNum / FightMgr.brickBreakAim;
         if(progress < 0){
             progress = 0;
         }else if(progress > 1){
             progress = 1;
         }
         this.pbRoundBar.progress = progress;
-    }
-
-    /**更新关卡回合显示 */
-    updateRoundProgress(){
-        this.curRoundProgress ++;   //当前关卡回合进度
-        this.showRoundProgerss();
     }
 
     touchStart(event: cc.Touch){
@@ -460,12 +451,12 @@ export default class FightScene extends cc.Component {
         }
     }
 
-    /**显示回合砖块死亡特效（帅，太棒等） */
+    /**显示回合砖块死亡特效（帅，真棒，厉害） */
     checkRoundBrickDeadCount(count: number){
         if(count > 0){
-            let countArr = new Array(3, 5, 10);
-            for(let i=countArr.length-1; i>=0; i--){
-                if(countArr[i] == count && i< 3){
+            let countArr = new Array(Math.ceil(FightMgr.starTargetNum/3), Math.ceil(FightMgr.starTargetNum/2), FightMgr.starTargetNum);
+            for(let i=2; i>=0; i--){
+                if(countArr[i] == count){
                     let oldEff = this.node.getChildByName("RoundBrickDeadEffAni");
                     if(oldEff){
                         oldEff.removeFromParent(true);
@@ -481,6 +472,14 @@ export default class FightScene extends cc.Component {
                     }
                     effNode.name = "RoundBrickDeadEffAni";
                     this.node.addChild(effNode, 100);
+
+                    if(i == 2){   //厉害
+                        FightMgr.stars = 3;   //战斗星级
+                    }else if(i == 1){
+                        if(FightMgr.stars <2 ){
+                            FightMgr.stars = 2; 
+                        }
+                    }
                     return;
                 }
             }

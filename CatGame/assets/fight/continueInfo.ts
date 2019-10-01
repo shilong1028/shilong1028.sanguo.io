@@ -77,27 +77,24 @@ export default class FightRenew extends cc.Component {
         this.bVideoPlaying = true;   //视频播放中
 
         let self = this;
-        sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", false, ()=>{
-            console.log("reset 激励视频广告显示失败");
+        sdkWechat.preLoadAndPlayVideoAd(false, ()=>{
+            //console.log("reset 激励视频广告显示失败");
+            self.handleNormal(false);
         }, (succ:boolean)=>{
-            console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
-
+            //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
             self.bVideoPlaying = false;   //视频播放中
+            sdkWechat.preLoadAndPlayVideoAd(true, null, null, self);   //预下载下一条视频广告
             if(succ == true){
                 self.bVideoPlaySucc = true;   //视频是否播放完毕
                 if(self.proTime <= 0){
-                    sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
                     self.handleNormal(true);  //复活或显示结算
-                }else{
-                    sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
                 }
             }else{
-                sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
                 if(self.proTime <= 0){
                     self.handleNormal(false);
                 }
             }
-        }, self);   //播放下载的视频广告
+        }, self);   //播放下载的视频广告 
     }
 
     /**跳过 */

@@ -71,21 +71,22 @@ class AudioMgr_class {
     playBGM(fileName: string, loop:boolean = true) {
         this.stopBGM();
         if(this.KEY_Music_onOff == 0){   //开启
-            if(SDKMgr.isSDK && SDKMgr.WeiChat){
-                if(this.bgmAudio == null){
-                    this.bgmAudio = (window as any).wx.createInnerAudioContext();
-                    this.bgmAudio.onError(()=>{
-                        //重新播放
-                        this.playBGM(fileName, loop);
-                    });
-                }
+            // if(SDKMgr.isSDK && SDKMgr.WeiChat){
+            //     if(this.bgmAudio == null){
+            //         this.bgmAudio = (window as any).wx.createInnerAudioContext();
+            //         this.bgmAudio.onError(()=>{
+            //             //重新播放
+            //             this.playBGM(fileName, loop);
+            //         });
+            //     }
 
-                this.bgmAudio.src = 'sound/'+fileName + ".mp3";
-                this.bgmAudio.loop = loop;
-                this.bgmAudio.play();
-            }else{
-                AudioMgr.playBGM(fileName, loop);
-            }
+            //     this.bgmAudio.src = 'sound/'+fileName + ".mp3";
+            //     this.bgmAudio.loop = loop;
+            //     this.bgmAudio.play();
+            // }else{
+            //     AudioMgr.playBGM(fileName, loop);
+            // }
+            AudioMgr.playBGM(fileName, loop);
         }
     }
     stopBGM(){
@@ -105,41 +106,42 @@ class AudioMgr_class {
     /**播放Effect bOverlap是否覆盖类型的音效 */
     playEffect(fileName: string, loop:boolean = false, bOverlap: boolean=false) {
         if(this.KEY_Music_onOff == 0){   //开启
-            if(SDKMgr.isSDK){
-				let innerAudioContext = null;
-				let tPool = this.mapPool[fileName];
-				if(tPool == null){
-					tPool = [];
-					this.mapPool[fileName] = tPool;
-				}
+            // if(SDKMgr.isSDK){
+			// 	let innerAudioContext = null;
+			// 	let tPool = this.mapPool[fileName];
+			// 	if(tPool == null){
+			// 		tPool = [];
+			// 		this.mapPool[fileName] = tPool;
+			// 	}
 
-				if(tPool.length > 0){
-					innerAudioContext = tPool.pop();
-				}else{
-					if(SDKMgr.WeiChat){
-						innerAudioContext = (window as any).wx.createInnerAudioContext();
-                        this.iCount ++;
+			// 	if(tPool.length > 0){
+			// 		innerAudioContext = tPool.pop();
+			// 	}else{
+			// 		if(SDKMgr.WeiChat){
+			// 			innerAudioContext = (window as any).wx.createInnerAudioContext();
+            //             this.iCount ++;
             
-                        innerAudioContext.onStop(()=>{
-                            tPool.push(innerAudioContext);
-                        });
+            //             innerAudioContext.onStop(()=>{
+            //                 tPool.push(innerAudioContext);
+            //             });
 
-                        innerAudioContext.onEnded(()=>{
-                            tPool.push(innerAudioContext);
-                        });
+            //             innerAudioContext.onEnded(()=>{
+            //                 tPool.push(innerAudioContext);
+            //             });
 
-                        innerAudioContext.onError(()=>{
-                            tPool.push(innerAudioContext);
-                        });
-					}else if(SDKMgr.QGVivo){
-						innerAudioContext = SDKMgr.QGVivo.createInnerAudioContext();
-						this.iCount ++;
-                    }
-				}
+            //             innerAudioContext.onError(()=>{
+            //                 tPool.push(innerAudioContext);
+            //             });
+			// 		}else if(SDKMgr.QGVivo){
+			// 			innerAudioContext = SDKMgr.QGVivo.createInnerAudioContext();
+			// 			this.iCount ++;
+            //         }
+			// 	}
 
-                innerAudioContext.src = 'sound/'+fileName + ".mp3";
-                innerAudioContext.play();
-             }else{
+            //     innerAudioContext.src = 'sound/'+fileName + ".mp3";
+            //     innerAudioContext.play();
+            //  }else
+             {
                 cc.loader.loadRes("sound/" + fileName, cc.AudioClip, function (err, ac) {
                     this.lastEffectName = "";  //上一个音效名称
                     if (err) {

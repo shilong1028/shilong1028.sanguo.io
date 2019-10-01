@@ -140,6 +140,7 @@ export default class Brick extends cc.Component {
             sprChild.removeFromParent(true);
         }
 
+        FightMgr.updateBrickDeadNum();   //更新砖块死亡数据
         if(bForceRemove == false && this.brick_info){
             NotificationMy.emit(NoticeType.BrickDeadEvent, this); 
         }
@@ -611,9 +612,6 @@ export default class Brick extends cc.Component {
                     }
                 }
                 this.setBrickHpLabel();
-                if(harm > 0){  
-                    FightMgr.atkScore += harm;
-                }
             }
         }
     }

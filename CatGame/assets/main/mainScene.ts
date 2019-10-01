@@ -7,6 +7,7 @@ import ChapterPage from "./chapterPage";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
 import { FightMgr } from "../manager/FightManager";
+import { sdkWechat } from "../manager/SDK_Wechat";
 
 const {ccclass, property} = cc._decorator;
 
@@ -114,6 +115,8 @@ export default class MainScene extends cc.Component {
         this.UpdateDiamond();  
 
         this.showMidUI(0);   //显示中间信息，0地图关卡、1背包炮台、2商店
+
+        sdkWechat.preLoadAndPlayVideoAd(true, null, null, null);   //预下载下一条视频广告
     }
 
     // update (dt) {
@@ -283,6 +286,11 @@ export default class MainScene extends cc.Component {
     onBagBtn(){
         AudioMgr.playEffect("effect/ui_click");
         this.showMidUI(1);   //显示中间信息，0地图关卡、1背包炮台、2商店
+    }
+
+    onAddGoldBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        ROOT_NODE.showGoldAddDialog();  //获取金币提示框
     }
 
     /**音乐开关 */

@@ -34,15 +34,15 @@ export default class GoldAdd extends cc.Component {
         this.shareBtn.interactable = false; 
 
         let self = this;
-        sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", false, ()=>{
-            console.log("reset 激励视频广告显示失败");
+        sdkWechat.preLoadAndPlayVideoAd(false, ()=>{
+            //console.log("reset 激励视频广告显示失败");
+            self.handleNormal(0);
         }, (succ:boolean)=>{
-            console.log("reset 激励视频广告正常播放结束， succ = "+succ);
+            //console.log("reset 激励视频广告正常播放结束， succ = "+succ);
+            sdkWechat.preLoadAndPlayVideoAd( true, null, null, self);   //预下载下一条视频广告
             if(succ == true){
-                sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
                 self.handleNormal(2);  
             }else{
-                sdkWechat.preLoadAndPlayVideoAd("adunit-dccf6a6b0bf49344", true, null, null, self);   //预下载下一条视频广告
                 self.handleNormal(0);
             }
         }, self);   //播放下载的视频广告

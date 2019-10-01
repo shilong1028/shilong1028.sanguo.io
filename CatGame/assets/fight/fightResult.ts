@@ -25,6 +25,17 @@ export default class FightResult extends cc.Component {
     @property(cc.SpriteFrame)
     lightFrame: cc.SpriteFrame = null;
 
+    @property(cc.Node)
+    chapterNode: cc.Node = null;  //章节奖励总结的
+    @property(cc.Label)
+    goldLabel: cc.Label = null;
+    @property(cc.Node)
+    diamondNode: cc.Node = null;
+    @property(cc.Label)
+    diamondLabel: cc.Label = null;
+
+    @property(cc.Node)
+    skillNode: cc.Node = null;   //技能总节点
     @property([cc.Node])
     skillNodes: cc.Node[] = new Array(3);
 
@@ -44,45 +55,55 @@ export default class FightResult extends cc.Component {
     start () {
         this.levelLabel.string = FightMgr.level_id.toString();  //第几关
 
-        let stars = 0;
         this.rewardGold = 0;   //奖励金币
         if(FightMgr.win == true){
             this.titleLabel.string = "战斗胜利";
-            stars = Math.ceil(0.01 + Math.random()*2.98);
-
-            let levelCfg = FightMgr.level_info.levelCfg;
-            let nextLevelCfg = CfgMgr.getLevelConf(FightMgr.level_id + 1);
-            if(nextLevelCfg && nextLevelCfg.chapterId > MyUserData.curChapterId){
-                this.bNextLevel = false;
-                let curChapterInfo = new ChapterInfo(levelCfg.chapterId);
-                //首次通章奖励钻石
-                if(levelCfg.chapterId == MyUserData.curChapterId){
-                    MyUserDataMgr.updateUserDiamond(curChapterInfo.chapterCfg.diamond);
-                }
-                MyUserDataMgr.updateUserGold(curChapterInfo.chapterCfg.gold);
-
-                MyUserDataMgr.updateCurChapterId(nextLevelCfg.chapterId);   //新的章节Id
+            if(FightMgr.stars < 1){
+                FightMgr.stars = 1;
             }
 
-            this.rewardGold = Math.ceil(levelCfg.gold * 0.5 * stars); //1星为75%，3星为150%
-             //添加技能
-            for(let i=0; i<levelCfg.skillIds.length; ++i){
-                let skill = cc.instantiate(this.pfSkill);
-                this.skillNodes[i].addChild(skill);
+            let levelCfg = FightMgr.level_info.levelCfg;
+            this.rewardGold = Math.ceil(levelCfg.gold * 0.5 * FightMgr.stars); //1星为75%，3星为150%
 
-                let skillInfo = new SkillInfo(levelCfg.skillIds[i]);
-                skill.getComponent(Skill).initSkillByData(skillInfo);
+            let nextLevelCfg = CfgMgr.getLevelConf(FightMgr.level_id + 1);
+            if(nextLevelCfg && nextLevelCfg.chapterId > levelCfg.chapterId){   //章节最后一关
+                this.bNextLevel = false;
+                this.skillNode.active = false;
+                this.chapterNode.active = true;
+
+                let curChapterInfo = new ChapterInfo(levelCfg.chapterId);
+                this.goldLabel.string = curChapterInfo.chapterCfg.gold.toString();
+                MyUserDataMgr.updateUserGold(curChapterInfo.chapterCfg.gold);
+
+                //首次通章奖励钻石
+                if(levelCfg.chapterId == MyUserData.curChapterId){
+                    this.diamondNode.active = true;
+                    this.diamondLabel.string = curChapterInfo.chapterCfg.diamond.toString();
+
+                    MyUserDataMgr.updateUserDiamond(curChapterInfo.chapterCfg.diamond);
+                    MyUserDataMgr.updateCurChapterId(nextLevelCfg.chapterId);   //新的章节Id
+                }
+            }else{
+                //添加技能
+                for(let i=0; i<levelCfg.skillIds.length; ++i){
+                    let skill = cc.instantiate(this.pfSkill);
+                    this.skillNodes[i].addChild(skill);
+
+                    let skillInfo = new SkillInfo(levelCfg.skillIds[i]);
+                    skill.getComponent(Skill).initSkillByData(skillInfo);
+                }
             }
         }else{
             this.titleLabel.string = "战斗失败";
+            FightMgr.stars = 0;
         }
         this.rewardLabel.string = "+"+GameMgr.num2e(this.rewardGold);
         MyUserDataMgr.updateUserGold(this.rewardGold);
 
-        MyUserDataMgr.saveLevelFightInfo(FightMgr.level_id, FightMgr.win, stars);
+        MyUserDataMgr.saveLevelFightInfo(FightMgr.level_id, FightMgr.win, FightMgr.stars);
 
         for(let i=0; i<3; ++i){
-            if(i < stars){
+            if(i < FightMgr.stars){
                 this.starSprs[i].spriteFrame = this.lightFrame;
             }else{
                 this.starSprs[i].spriteFrame = this.grayFrame;
@@ -106,5 +127,10 @@ export default class FightResult extends cc.Component {
                 GameMgr.gotoMainScene();
             }
         }
+    }
+
+    onCloseBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        GameMgr.gotoMainScene();
     }
 }
