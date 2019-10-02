@@ -43,6 +43,71 @@
                 <key>sourceSize</key>
                 <string>{491,491}</string>
             </dict>
+            <key>chapter_4.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{495,2},{491,491}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{491,491}}</string>
+                <key>sourceSize</key>
+                <string>{491,491}</string>
+            </dict>
+            <key>chapter_5.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,495},{491,491}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{491,491}}</string>
+                <key>sourceSize</key>
+                <string>{491,491}</string>
+            </dict>
+            <key>chapter_6.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,2},{491,491}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{491,491}}</string>
+                <key>sourceSize</key>
+                <string>{491,491}</string>
+            </dict>
+            <key>chapter_7.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{495,2},{491,491}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{491,491}}</string>
+                <key>sourceSize</key>
+                <string>{491,491}</string>
+            </dict>
+            <key>chapter_8.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,495},{491,491}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{491,491}}</string>
+                <key>sourceSize</key>
+                <string>{491,491}</string>
+            </dict>
         </dict>
         <key>metadata</key>
         <dict>
@@ -53,7 +118,7 @@
             <key>size</key>
             <string>{988,988}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:4057333e6b6e941e7b16c51967e41f4c:43b5f784c7fdb6c92312d1fb7b5549d9:f58a846f62a87822f95471b10a35c2b4$</string>
+            <string>$TexturePacker:SmartUpdate:ec7d594f7a65b99c5ffefb2205d5f00d:f1bf48a60b7fe856f856c4ce7d47c452:f58a846f62a87822f95471b10a35c2b4$</string>
             <key>textureFileName</key>
             <string>chapter.png</string>
         </dict>

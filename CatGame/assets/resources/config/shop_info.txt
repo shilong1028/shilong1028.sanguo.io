@@ -5,14 +5,14 @@ diamond = 50
 weapon = 20
 item = 30
 quality = 3
-costGold = 1000
+costGold = 10000
 costDiamond = 0
 vedio = 0
 desc = 消耗金币，获得金币、钻石，小概率获得武器、饰品。
 
 [2]
 name = 银质宝箱
-gold = 1000
+gold = 2000
 diamond = 100
 weapon = 30
 item = 50
@@ -36,7 +36,7 @@ desc = 观看视频，获得金币、钻石，大概率获得武器、饰品。
 
 [4]
 name = 精美铁箱
-gold = 100
+gold = 300
 diamond = 0
 weapon = 20
 item = 0
@@ -48,19 +48,19 @@ desc = 消耗钻石，获得金币，随机获取武器。
 
 [5]
 name = 一般铁箱
-gold = 100
+gold = 300
 diamond = 0
 weapon = 10
 item = 0
 quality = 1
-costGold = 200
+costGold = 1000
 costDiamond = 0
 vedio = 0
 desc = 消耗金币，获取金币，小概率获取武器。
 
 [6]
 name = 精美木箱
-gold = 100
+gold = 300
 diamond = 0
 weapon = 0
 item = 30
@@ -72,12 +72,12 @@ desc = 消耗钻石，获得金币，随机获取饰品。
 
 [7]
 name = 一般木箱
-gold = 100
+gold = 300
 diamond = 0
 weapon = 0
 item = 20
 quality = 1
-costGold = 200
+costGold = 1000
 costDiamond = 0
 vedio = 0
 desc = 消耗金币，获取金币，小概率获取饰品。

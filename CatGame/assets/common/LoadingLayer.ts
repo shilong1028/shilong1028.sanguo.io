@@ -1,3 +1,7 @@
+import { FightMgr } from "../manager/FightManager";
+import { GameMgr } from "../manager/GameManager";
+import { CfgMgr } from "../manager/ConfigManager";
+
 //加载层
 const { ccclass, property } = cc._decorator;
 
@@ -14,6 +18,14 @@ export default class LoadingLayer extends cc.Component {
     @property(cc.Node)
     infoNode: cc.Node = null;
 
+    @property(cc.Sprite)
+    catSpr: cc.Sprite = null;
+    @property(cc.Label)
+    catLabel: cc.Label = null;
+
+    @property(cc.SpriteAtlas)
+    catAtlas: cc.SpriteAtlas = null;
+
     sceneName:string = null;
     t1 : number = 0;
     curP : number = 0;
@@ -25,11 +37,18 @@ export default class LoadingLayer extends cc.Component {
     initLoadData(){
         this.sceneName = null;
         this.loadProBar.progress = 0;
+        this.catLabel.string = "";
         this.t1 = 0;
         this.curP = 0;
     }
 
     start() {
+        let palyerId = Math.floor(Math.random()*GameMgr.PlayerCount*0.99)+1;
+        let playerCfg = CfgMgr.getPlayerConf(palyerId);
+        if(playerCfg){
+            this.catSpr.spriteFrame = this.catAtlas.getSpriteFrame("player_"+palyerId);
+            this.catLabel.string = playerCfg.desc;
+        }
     }
 
     goToScene(name){

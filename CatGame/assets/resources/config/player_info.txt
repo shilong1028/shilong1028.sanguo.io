@@ -10,7 +10,7 @@ desc = 家猫，可以发射3个猫爪武器，具有“指示”技能，无额
 
 [2]
 name = 宠猫
-cost = 1000
+cost = 200
 weapons = 11;15
 attack_up = 10
 baoji_up = 5
@@ -20,7 +20,7 @@ desc = 宠猫，可以发射5个猫棒武器，具有“强化”技能，稍微
 
 [3]
 name = 宠狗
-cost = 10000
+cost = 500
 weapons = 21;25
 attack_up = 20
 baoji_up = 10

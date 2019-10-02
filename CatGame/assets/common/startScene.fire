@@ -309,7 +309,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "47779794-cce0-49ef-9d9c-0052529824a5"
+      "__uuid__": "e5f8c6b7-fa8b-4714-b999-a181e94933ff"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -327,7 +327,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "titleLabel",
+    "_name": "titleImg",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -344,15 +344,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 120,
-      "g": 78,
-      "b": 66,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 650,
-      "height": 252
+      "width": 597,
+      "height": 141
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -362,7 +362,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 250,
+      "y": 200,
       "z": 0
     },
     "_scale": {
@@ -383,10 +383,10 @@
     "groupIndex": 0,
     "_rotationX": 0,
     "_rotationY": 0,
-    "_id": "2c/gixycNE24Ll7A3em/l1"
+    "_id": "d8vk0n8X1JS7IPdMy3Bs8K"
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -398,112 +398,24 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": false,
-    "_string": "萌猫大作战",
-    "_N$string": "萌猫大作战",
-    "_fontSize": 130,
-    "_lineHeight": 200,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Microsoft YaHei",
-    "_N$overflow": 0,
-    "_N$cacheMode": 0,
-    "_id": "e2raJ3rPtOmpfkgBNeooGM"
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "tipsLabel",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 2
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": {
+      "__uuid__": "23f82efc-421d-457e-b785-8f50c9633fc3"
     },
-    "_children": [],
-    "_active": true,
-    "_level": 1,
-    "_components": [
-      {
-        "__id__": 10
-      }
-    ],
-    "_prefab": null,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 120,
-      "g": 78,
-      "b": 66,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 600,
-      "height": 97.8
-    },
-    "_anchorPoint": {
+    "_type": 0,
+    "_sizeMode": 1,
+    "_fillType": 0,
+    "_fillCenter": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
       "x": 0,
-      "y": -400,
-      "z": 0
+      "y": 0
     },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_id": "6ekjFxXJ1IwZVFxf7UlupZ"
-  },
-  {
-    "__type__": "cc.Label",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 9
-    },
-    "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_useOriginalSize": true,
-    "_string": "健康游戏忠告\n抵制不良游戏，拒绝盗版游戏；注意自我保护，谨防受骗上当 。\n适度游戏益脑，沉迷游戏伤身；合理安排时间，享受健康生活。",
-    "_N$string": "健康游戏忠告\n抵制不良游戏，拒绝盗版游戏；注意自我保护，谨防受骗上当 。\n适度游戏益脑，沉迷游戏伤身；合理安排时间，享受健康生活。",
-    "_fontSize": 20,
-    "_lineHeight": 30,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Microsoft YaHei",
-    "_N$overflow": 3,
-    "_N$cacheMode": 0,
-    "_id": "b2iAf5AdhK+rgirZTUGmfK"
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": null,
+    "_id": "99mLZTJCNA1JUVN5B4tWT1"
   },
   {
     "__type__": "cc.Node",
@@ -517,7 +429,7 @@
     "_level": 1,
     "_components": [
       {
-        "__id__": 12
+        "__id__": 10
       }
     ],
     "_prefab": null,
@@ -570,7 +482,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 11
+      "__id__": 9
     },
     "_enabled": true,
     "_materials": [
@@ -594,6 +506,96 @@
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": "faqOqUKSZMdpMDi6+41X2Z"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "tipsLabel",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 1,
+    "_components": [
+      {
+        "__id__": 12
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 120,
+      "g": 78,
+      "b": 66,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 600,
+      "height": 97.8
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": -400,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_id": "6ekjFxXJ1IwZVFxf7UlupZ"
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 11
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_useOriginalSize": true,
+    "_string": "健康游戏忠告\n抵制不良游戏，拒绝盗版游戏；注意自我保护，谨防受骗上当 。\n适度游戏益脑，沉迷游戏伤身；合理安排时间，享受健康生活。",
+    "_N$string": "健康游戏忠告\n抵制不良游戏，拒绝盗版游戏；注意自我保护，谨防受骗上当 。\n适度游戏益脑，沉迷游戏伤身；合理安排时间，享受健康生活。",
+    "_fontSize": 20,
+    "_lineHeight": 30,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Microsoft YaHei",
+    "_N$overflow": 3,
+    "_N$cacheMode": 0,
+    "_id": "b2iAf5AdhK+rgirZTUGmfK"
   },
   {
     "__type__": "cc.Node",
@@ -711,7 +713,7 @@
     },
     "_enabled": true,
     "tipText": {
-      "__id__": 12
+      "__id__": 10
     },
     "cicleAtlas": {
       "__uuid__": "0306fc32-bd5f-4f32-945e-228370c5829e"

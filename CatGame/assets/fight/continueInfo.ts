@@ -1,6 +1,5 @@
-import { LevelInfo, NoticeType, TipsStrDef } from "../manager/Enum";
+import { LevelInfo, NoticeType, TipsStrDef, ChapterInfo } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
-import { SDKMgr } from "../manager/SDKManager";
 import { sdkWechat } from "../manager/SDK_Wechat";
 import { FightMgr } from "../manager/FightManager";
 import { AudioMgr } from "../manager/AudioMgr";
@@ -22,12 +21,12 @@ export default class FightRenew extends cc.Component {
     @property(cc.ProgressBar)
     progressBar: cc.ProgressBar = null;
     @property(cc.Label)
-    goldNum: cc.Label = null;
+    diamondLable: cc.Label = null;
 
     // LIFE-CYCLE CALLBACKS:
     levelInfo: LevelInfo = null;   //关卡信息
     proTime: number = 5;  //倒计时时间
-    goldCost: number = 10000;   //金币复活
+    goldCost: number = 100;   //钻石复活
 
     bVideoPlaying: boolean = false;   //视频播放中
     bVideoPlaySucc: boolean = false;   //视频是否播放完毕
@@ -38,8 +37,14 @@ export default class FightRenew extends cc.Component {
     }
 
     start () {
-        this.goldCost = Math.ceil(FightMgr.level_info.levelCfg.gold/2);
-        this.goldNum.string = this.goldCost.toString();
+        let curChapterInfo = new ChapterInfo(FightMgr.level_info.levelCfg.chapterId);
+        if(curChapterInfo){
+            let levelNum = curChapterInfo.chapterCfg.levels[1]-curChapterInfo.chapterCfg.levels[0];
+            let val = Math.ceil(curChapterInfo.chapterCfg.diamond/levelNum);
+            this.goldCost = Math.ceil(val/5)*5;
+        }
+        
+        this.diamondLable.string = this.goldCost.toString();
     }
 
     update (dt) {
@@ -58,11 +63,11 @@ export default class FightRenew extends cc.Component {
         }
     }
 
-    /**金币复活 */
+    /**钻石复活 */
     onGoldBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        if(MyUserData.GoldCount >= this.goldCost){
-            MyUserDataMgr.updateUserGold(-this.goldCost);
+        if(MyUserData.DiamondCount >= this.goldCost){
+            MyUserDataMgr.updateUserDiamond(-this.goldCost);
             this.handleNormal(true);  //复活或显示结算
         }else{
             ROOT_NODE.showTipsText(TipsStrDef.KEY_GoldTip);

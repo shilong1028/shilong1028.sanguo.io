@@ -10,7 +10,7 @@
   "subMetas": {
     "colorBg1.png": {
       "ver": "1.0.4",
-      "uuid": "48044be1-2706-4b0d-a35e-2b5588b0678b",
+      "uuid": "57f4657b-fac4-4273-99ba-a2fd81766cac",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -32,7 +32,7 @@
     },
     "colorBg2.png": {
       "ver": "1.0.4",
-      "uuid": "21dde8a9-8d48-4bab-a09f-0dcb1e02e811",
+      "uuid": "929f5ff5-0c20-4d38-a7f7-cee22b34919d",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -54,7 +54,7 @@
     },
     "colorBg3.png": {
       "ver": "1.0.4",
-      "uuid": "2686c2bb-8ef9-4ad1-8ddc-061681775350",
+      "uuid": "0b885ce0-675f-4aec-a692-a89265b14dac",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -76,7 +76,7 @@
     },
     "colorBg4.png": {
       "ver": "1.0.4",
-      "uuid": "9a2eb6d5-5381-4bc2-a71c-8bcf0c4ad524",
+      "uuid": "2d2fd798-bbfb-49bc-9f14-0685e83d02e7",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -98,7 +98,7 @@
     },
     "colorBg5.png": {
       "ver": "1.0.4",
-      "uuid": "b3e52da7-fcbf-40bc-b53d-121d3c6fa1a4",
+      "uuid": "30097a67-72e7-4f3d-9eca-52f2d6c7c133",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -120,7 +120,7 @@
     },
     "item_1.png": {
       "ver": "1.0.4",
-      "uuid": "8ff5de53-9d02-4952-94ea-7393c6aab1dc",
+      "uuid": "6a446df7-0329-4ade-86d5-8ac8e01c9f44",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -142,7 +142,7 @@
     },
     "item_2.png": {
       "ver": "1.0.4",
-      "uuid": "9237ff63-688a-4d67-84b0-259143fbfeaa",
+      "uuid": "366207a5-cb40-4951-be4b-71800b2b0cd3",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -164,7 +164,7 @@
     },
     "item_3.png": {
       "ver": "1.0.4",
-      "uuid": "4ad450a7-2f9c-4d17-a45a-b897a9013770",
+      "uuid": "dd450ed1-b29f-46ef-a913-6cf294f74504",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -186,7 +186,7 @@
     },
     "skill_1.png": {
       "ver": "1.0.4",
-      "uuid": "382ad5be-2f3f-4d71-9f10-3a8eb3d215c4",
+      "uuid": "cc465ffb-020e-457e-b8a8-7be1b946675a",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -208,7 +208,7 @@
     },
     "weapon_1.png": {
       "ver": "1.0.4",
-      "uuid": "c45c79f8-579d-4ccc-aacd-27268cb5f8cc",
+      "uuid": "5b0d6be5-a7fc-422e-9564-d0606da48558",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -230,7 +230,7 @@
     },
     "weapon_2.png": {
       "ver": "1.0.4",
-      "uuid": "3f1abb0f-3647-4b3e-9f49-dcadc9a112f6",
+      "uuid": "9a0a15d1-9565-453c-b3a0-af0424f0ffc4",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -252,7 +252,7 @@
     },
     "weapon_3.png": {
       "ver": "1.0.4",
-      "uuid": "0af2621c-2980-4f89-8795-2ad94273b933",
+      "uuid": "d90dfb8e-52fa-4fc9-8648-728b3f096500",
       "rawTextureUuid": "53298733-a198-4ce8-a8e6-ddffc3a187d7",
       "trimType": "auto",
       "trimThreshold": 1,

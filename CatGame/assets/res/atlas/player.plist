@@ -7,80 +7,41 @@
             <key>player_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{144,286},{140,140}}</string>
+                <string>{{606,2},{300,300}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{140,140}}</string>
+                <string>{{0,0},{300,300}}</string>
                 <key>sourceSize</key>
-                <string>{140,140}</string>
+                <string>{300,300}</string>
             </dict>
             <key>player_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{144,144},{140,140}}</string>
+                <string>{{304,2},{300,300}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{140,140}}</string>
+                <string>{{0,0},{300,300}}</string>
                 <key>sourceSize</key>
-                <string>{140,140}</string>
+                <string>{300,300}</string>
             </dict>
             <key>player_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,286},{140,140}}</string>
+                <string>{{2,2},{300,300}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{140,140}}</string>
+                <string>{{0,0},{300,300}}</string>
                 <key>sourceSize</key>
-                <string>{140,140}</string>
-            </dict>
-            <key>player_4.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,144},{140,140}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{140,140}}</string>
-                <key>sourceSize</key>
-                <string>{140,140}</string>
-            </dict>
-            <key>player_5.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{144,2},{140,140}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{140,140}}</string>
-                <key>sourceSize</key>
-                <string>{140,140}</string>
-            </dict>
-            <key>player_6.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,2},{140,140}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{140,140}}</string>
-                <key>sourceSize</key>
-                <string>{140,140}</string>
+                <string>{300,300}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -90,9 +51,9 @@
             <key>realTextureFileName</key>
             <string>player.png</string>
             <key>size</key>
-            <string>{286,428}</string>
+            <string>{908,304}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:74cc5b3e2f0ebfd9d2851f4b52f33c60:0e8ea019672ff6d1e87d7d27c664f616:6f6c59c3c6b7e98e5fb22e47122cb74a$</string>
+            <string>$TexturePacker:SmartUpdate:5bf291ec7627f638f924086ab137df55:bff2892420972d9a345766c7441979c0:6f6c59c3c6b7e98e5fb22e47122cb74a$</string>
             <key>textureFileName</key>
             <string>player.png</string>
         </dict>

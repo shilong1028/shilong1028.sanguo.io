@@ -12,9 +12,9 @@ const {ccclass, property} = cc._decorator;
 export default class PlayerCell extends cc.Component {
 
     @property(cc.Node)
-    goldBtnNode: cc.Node = null;
+    buyNode: cc.Node = null;
     @property(cc.Label)
-    goldLabel: cc.Label = null;
+    diamondLabel: cc.Label = null;   //钻石
     @property(cc.Node)
     useBtnNode: cc.Node = null;
 
@@ -42,7 +42,7 @@ export default class PlayerCell extends cc.Component {
     onLoad () {
         NotificationMy.on(NoticeType.UpdatePlayerList, this.UpdatePlayer, this);   //更新炮台
 
-        this.goldBtnNode.active = true;
+        this.buyNode.active = true;
         this.useBtnNode.active = false;
         this.stateLabel.string = "";
         this.atkLabel.string = "攻击：";
@@ -79,16 +79,16 @@ export default class PlayerCell extends cc.Component {
         }
 
         if(this.playerInfo.useState == 0){
-            this.goldBtnNode.active = true;
+            this.buyNode.active = true;
             this.useBtnNode.active = false;
             this.stateLabel.string = "";
         }else{
-            this.goldBtnNode.active = false;
+            this.buyNode.active = false;
             this.updateStateLabel();
         }
         
         let cfg = this.playerInfo.playerCfg;
-        this.goldLabel.string = ""+cfg.cost;
+        this.diamondLabel.string = ""+cfg.cost;
         this.atkLabel.string = "攻击+"+cfg.attack_up*100+"%";
         this.baojiLabel.string = "暴击+"+cfg.baoji_up*100+"%";
         this.descLabel.string = cfg.desc;
@@ -112,8 +112,8 @@ export default class PlayerCell extends cc.Component {
         AudioMgr.playEffect("effect/ui_buy");
         //购买炮台
         if(this.playerInfo){
-            if(MyUserData.GoldCount >= this.playerInfo.playerCfg.cost){
-                MyUserDataMgr.updateUserGold(-this.playerInfo.playerCfg.cost);
+            if(MyUserData.DiamondCount >= this.playerInfo.playerCfg.cost){
+                MyUserDataMgr.updateUserDiamond(-this.playerInfo.playerCfg.cost);
                 this.playerInfo.useState = 1;
                 MyUserDataMgr.updatePlayerFromList(this.playerInfo);   //添加新炮台到拥有的炮列表
                 this.initPlayerInfo(this.playerInfo);

@@ -1853,8 +1853,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 55,
-      "height": 56
+      "width": 54,
+      "height": 59
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1903,7 +1903,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "de19f7d0-775a-4c12-8537-f32c6007e052"
+      "__uuid__": "da78367b-38e0-4069-a74c-7142c4e519de"
     },
     "_type": 0,
     "_sizeMode": 2,
@@ -1960,7 +1960,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 117.29,
+      "width": 58.64,
       "height": 75.6
     },
     "_anchorPoint": {
@@ -2008,8 +2008,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "1000",
-    "_N$string": "1000",
+    "_string": "10",
+    "_N$string": "10",
     "_fontSize": 50,
     "_lineHeight": 60,
     "_enableWrapText": true,
@@ -2222,7 +2222,7 @@
     "progressBar": {
       "__id__": 27
     },
-    "goldNum": {
+    "diamondLable": {
       "__id__": 53
     },
     "_id": ""

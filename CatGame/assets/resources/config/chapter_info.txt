@@ -1,69 +1,55 @@
 [1]
-name = 章节1
+name = 城市霓彩
 res = 1
 levels = 1|5
 diamond = 50
 gold = 1000
 
 [2]
-name = 章节2
+name = 森林幻境
 res = 2
-levels = 6|10
+levels = 6|12
 diamond = 100
-gold = 3000
+gold = 2000
 
 [3]
-name = 章节3
+name = 沙漠幻风
 res = 3
-levels = 11|15
-diamond = 200
-gold = 5000
+levels = 13|20
+diamond = 100
+gold = 2000
 
 [4]
-name = 章节4
+name = 垃圾乱飞
 res = 4
-levels = 16|20
-diamond = 50
-gold = 1000
+levels = 21|30
+diamond = 200
+gold = 3000
 
 [5]
-name = 章节5
+name = 枝条盘绕
 res = 5
-levels = 21|30
-diamond = 50
-gold = 1000
+levels = 31|40
+diamond = 200
+gold = 3000
 
 [6]
-name = 章节6
+name = 热气炎炎
 res = 6
-levels = 31|40
-diamond = 50
-gold = 1000
+levels = 41|55
+diamond = 300
+gold = 4000
 
 [7]
-name = 章节7
+name = 车水马龙
 res = 7
-levels = 41|50
-diamond = 50
-gold = 1000
+levels = 56|70
+diamond = 300
+gold = 4000
 
 [8]
-name = 章节8
+name = 清新葱郁
 res = 8
-levels = 51|60
-diamond = 50
-gold = 1000
-
-[9]
-name = 章节9
-res = 9
-levels = 61|80
-diamond = 50
-gold = 1000
-
-[10]
-name = 章节10
-res = 10
-levels = 81|100
-diamond = 50
-gold = 1000
+levels = 71|90
+diamond = 400
+gold = 5000

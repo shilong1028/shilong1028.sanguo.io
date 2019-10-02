@@ -146,7 +146,7 @@ export default class Ball extends cc.Component {
         if(this.ballId > 1000){   //分裂产生的小球
             this.ballSpr.spriteFrame = FightMgr.getFightScene().boomFrames[0];
         }else if(this.ballInfo){
-            this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("dog"+this.ballInfo.cannonId+"_normal");
+            this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("cannon_"+this.ballInfo.cannonId);
         }
     }
 
