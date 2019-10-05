@@ -36,7 +36,7 @@ export default class Stuff extends cc.Component {
 
         if(bActive == true){
             this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("weapon_"+ballInfo.cannonCfg.res);
-            this.colorSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("colorBg"+ballInfo.cannonCfg.quality);
+            this.colorSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("colorBg_"+ballInfo.cannonCfg.quality);
         }
     }
 

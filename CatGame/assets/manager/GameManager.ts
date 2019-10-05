@@ -10,7 +10,7 @@ const {ccclass, property} = cc._decorator;
 class GameManager {
     BagGridCount: number = 8;  //背包空间
     PlayerCount: number = 3;   //炮台萌猫数量
-    ChapterCount: number = 8;  //章节数量
+    ChapterCount: number = 7;  //章节数量
     QualityCount: number = 5;  //品质最大等级
     ShopCount: number = 4;   //商品种类
 
@@ -33,6 +33,18 @@ class GameManager {
             });
         }else{
             cc.director.loadScene(sceneName);
+        }
+    }
+
+    /**场景背景图适配 */
+    adaptBgByScene(){
+        let layer = cc.director.getScene().getChildByName("Canvas");
+        if(layer){
+            let bg = layer.getChildByName("bg");
+            if(bg){
+                bg.width = cc.winSize.width;
+                bg.height = cc.winSize.height;
+            }
         }
     }
 

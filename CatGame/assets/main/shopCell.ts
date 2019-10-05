@@ -4,7 +4,7 @@ import { st_shop_info, CfgMgr } from "../manager/ConfigManager";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, BallInfo } from "../manager/Enum";
+import { NoticeType, BallInfo, ItemInfo } from "../manager/Enum";
 import { sdkWechat } from "../manager/SDK_Wechat";
 
 const {ccclass, property} = cc._decorator;
@@ -78,13 +78,13 @@ export default class ShopCell extends viewCell {
         }
 
         if(this.cellData.vedio > 0){   //视频获取
-            this.btnIcon.spriteFrame = this.iconFrames[0];
+            this.btnIcon.spriteFrame = this.iconFrames[2];
             this.numLabel.string = this.cellData.vedio.toString();
         }else if(this.cellData.costDiamond > 0){   //钻石获取
             this.btnIcon.spriteFrame = this.iconFrames[1];
             this.numLabel.string = this.cellData.costDiamond.toString();
         }else if(this.cellData.costGold > 0){   //金币获取
-            this.btnIcon.spriteFrame = this.iconFrames[2];
+            this.btnIcon.spriteFrame = this.iconFrames[0];
             this.numLabel.string = this.cellData.costGold.toString();
         }else{
             this.btnIcon.spriteFrame = null;
@@ -177,7 +177,7 @@ export default class ShopCell extends viewCell {
             let itemCfg = CfgMgr.getItemConf(itemId);
             ROOT_NODE.showTipsText("获得："+itemCfg.name);
 
-            MyUserDataMgr.updateItemByCount(itemId, 1);  //修改用户背包物品列表
+            MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
             NotificationMy.emit(NoticeType.UpdateItemList, null);   //刷新道具
         }
     }

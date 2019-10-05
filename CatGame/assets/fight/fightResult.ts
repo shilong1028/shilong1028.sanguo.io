@@ -11,8 +11,10 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class FightResult extends cc.Component {
 
-    @property(cc.Label)
-    titleLabel: cc.Label = null;
+    @property(cc.Sprite)
+    titleSpr: cc.Sprite = null;
+    @property(cc.SpriteFrame)
+    failFrame: cc.SpriteFrame = null;
     @property(cc.Label)
     levelLabel: cc.Label = null;
     @property(cc.Label)
@@ -27,6 +29,8 @@ export default class FightResult extends cc.Component {
 
     @property(cc.Node)
     chapterNode: cc.Node = null;  //章节奖励总结的
+    @property(cc.Node)
+    goldNode: cc.Node = null;
     @property(cc.Label)
     goldLabel: cc.Label = null;
     @property(cc.Node)
@@ -34,6 +38,8 @@ export default class FightResult extends cc.Component {
     @property(cc.Label)
     diamondLabel: cc.Label = null;
 
+    @property(cc.Node)
+    okBtnNode: cc.Node = null;
     @property(cc.Node)
     skillNode: cc.Node = null;   //技能总节点
     @property([cc.Node])
@@ -49,7 +55,6 @@ export default class FightResult extends cc.Component {
 
     onLoad () {
         this.levelLabel.string = "";
-        this.titleLabel.string = "";
     }
 
     start () {
@@ -57,7 +62,6 @@ export default class FightResult extends cc.Component {
 
         this.rewardGold = 0;   //奖励金币
         if(FightMgr.win == true){
-            this.titleLabel.string = "战斗胜利";
             if(FightMgr.stars < 1){
                 FightMgr.stars = 1;
             }
@@ -70,15 +74,18 @@ export default class FightResult extends cc.Component {
                 this.bNextLevel = false;
                 this.skillNode.active = false;
                 this.chapterNode.active = true;
+                this.okBtnNode.active = true;
 
                 let curChapterInfo = new ChapterInfo(levelCfg.chapterId);
-                this.goldLabel.string = curChapterInfo.chapterCfg.gold.toString();
+                this.goldLabel.string ="+"+ curChapterInfo.chapterCfg.gold;
                 MyUserDataMgr.updateUserGold(curChapterInfo.chapterCfg.gold);
+                this.goldNode.x = 0;
 
                 //首次通章奖励钻石
                 if(levelCfg.chapterId == MyUserData.curChapterId){
+                    this.goldNode.x = -120;
                     this.diamondNode.active = true;
-                    this.diamondLabel.string = curChapterInfo.chapterCfg.diamond.toString();
+                    this.diamondLabel.string = "+"+curChapterInfo.chapterCfg.diamond;
 
                     MyUserDataMgr.updateUserDiamond(curChapterInfo.chapterCfg.diamond);
                     MyUserDataMgr.updateCurChapterId(nextLevelCfg.chapterId);   //新的章节Id
@@ -94,8 +101,11 @@ export default class FightResult extends cc.Component {
                 }
             }
         }else{
-            this.titleLabel.string = "战斗失败";
+            this.titleSpr.spriteFrame = this.failFrame;
             FightMgr.stars = 0;
+            this.skillNode.active = false;
+            this.okBtnNode.active = true;
+            this.okBtnNode.y = -180;
         }
         this.rewardLabel.string = "+"+GameMgr.num2e(this.rewardGold);
         MyUserDataMgr.updateUserGold(this.rewardGold);

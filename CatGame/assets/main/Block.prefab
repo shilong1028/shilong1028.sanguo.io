@@ -47,8 +47,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
-      "height": 150
+      "width": 140,
+      "height": 140
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -109,8 +109,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
-      "height": 150
+      "width": 140,
+      "height": 140
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -159,10 +159,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "0e9aea40-eb02-4466-a1d9-7c434554b81d"
+      "__uuid__": "ccf801b5-daa8-4755-90b1-abd94e7fbfd0"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -171,9 +171,9 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": false,
+    "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "1b4796e3-b0b1-4cdd-bcbc-b683b8c0dbb0"
+      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
     },
     "_id": ""
   },
@@ -219,8 +219,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 54,
-      "height": 58
+      "width": 59,
+      "height": 59
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -269,10 +269,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "f293ed24-6c04-45d8-b24c-4442ab646ca5"
+      "__uuid__": "f3fc7cce-8c28-4dfd-985c-f0fa9b12b40c"
     },
     "_type": 0,
-    "_sizeMode": 2,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -281,9 +281,9 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": false,
+    "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "1b4796e3-b0b1-4cdd-bcbc-b683b8c0dbb0"
+      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
     },
     "_id": ""
   },
@@ -426,12 +426,8 @@
     "selSpr": {
       "__id__": 3
     },
-    "selNorFrame": {
-      "__uuid__": "f66d1715-8048-473a-8b3a-e71293092087"
-    },
-    "selLightFrame": {
-      "__uuid__": "0e9aea40-eb02-4466-a1d9-7c434554b81d"
-    },
+    "selNorFrame": null,
+    "selLightFrame": null,
     "_id": ""
   },
   {

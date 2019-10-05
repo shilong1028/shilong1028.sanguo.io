@@ -239,8 +239,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 600,
-      "height": 400
+      "width": 550,
+      "height": 450
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -275,7 +275,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "titleLabel",
+    "_name": "titleSpr",
     "_objFlags": 0,
     "_parent": {
       "__id__": 6
@@ -296,13 +296,13 @@
       "__type__": "cc.Color",
       "r": 255,
       "g": 255,
-      "b": 0,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 63
+      "width": 112,
+      "height": 58
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -312,7 +312,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 165,
+      "y": 160,
       "z": 0
     },
     "_scale": {
@@ -336,7 +336,7 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -348,21 +348,25 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": false,
-    "_string": "提示",
-    "_N$string": "提示",
-    "_fontSize": 40,
-    "_lineHeight": 50,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Microsoft YaHei",
-    "_N$overflow": 0,
-    "_N$cacheMode": 0,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": {
+      "__uuid__": "aa989866-15e9-4fe4-9430-3e5a8226af67"
+    },
+    "_type": 0,
+    "_sizeMode": 1,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": {
+      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
+    },
     "_id": ""
   },
   {
@@ -373,7 +377,7 @@
     "asset": {
       "__uuid__": "1ee5ac88-10ed-4572-9c88-582f9a8a5e33"
     },
-    "fileId": "83cumwtbVFk4kMLC75ukAw",
+    "fileId": "426rtAejxO663HZVFfdPwM",
     "sync": false
   },
   {
@@ -404,7 +408,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 500,
+      "width": 430,
       "height": 88.2
     },
     "_anchorPoint": {
@@ -524,7 +528,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -130,
+      "x": -110,
       "y": -120,
       "z": 0
     },
@@ -576,8 +580,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 75.6
+      "width": 80,
+      "height": 63
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -587,7 +591,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 0,
+      "y": 10,
       "z": 0
     },
     "_scale": {
@@ -626,8 +630,8 @@
     "_useOriginalSize": false,
     "_string": "取消",
     "_N$string": "取消",
-    "_fontSize": 50,
-    "_lineHeight": 60,
+    "_fontSize": 40,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -821,7 +825,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 130,
+      "x": 110,
       "y": -120,
       "z": 0
     },
@@ -873,8 +877,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 75.6
+      "width": 80,
+      "height": 63
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -884,7 +888,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 0,
+      "y": 10,
       "z": 0
     },
     "_scale": {
@@ -923,8 +927,8 @@
     "_useOriginalSize": false,
     "_string": "确定",
     "_N$string": "确定",
-    "_fontSize": 50,
-    "_lineHeight": 60,
+    "_fontSize": 40,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -1089,7 +1093,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "f7783f0a-a2f7-44da-b98b-37614323a8d2"
+      "__uuid__": "a8f63c9c-d041-42c3-a90a-2736c07a92b0"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1103,7 +1107,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "1b4796e3-b0b1-4cdd-bcbc-b683b8c0dbb0"
+      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
     },
     "_id": ""
   },

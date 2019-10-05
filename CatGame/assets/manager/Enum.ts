@@ -23,15 +23,42 @@ export class BallInfo{
     }
 
     clone(){
-        let newInfo = new BallInfo(this.cannonId);
-        newInfo.timeId = this.timeId;
-        return newInfo;
+        let temp = new BallInfo(this.cannonId);
+        temp.timeId = this.timeId;
+        return temp;
     };
 
     updateCannon(cannonId: number){
         this.cannonId = cannonId;
         this.cannonCfg = CfgMgr.getCannonConf(cannonId);
     }
+}
+
+/**道具数据 */
+export class ItemInfo{
+    timeId: number = 0;   //道具ID唯一编号，使用创建时的系统时间为ID
+    itemId: number = 0;   //配置ID
+    itemCfg: st_item_info = null;
+
+    constructor(itemId: number){
+        this.timeId = new Date().getTime();
+        this.itemId = itemId;
+        this.itemCfg = CfgMgr.getItemConf(itemId);
+    };
+
+    cloneNoCfg(){
+        let temp = new ItemInfo(this.itemId);
+  
+        //不必写入本地存储的变量s
+        temp.itemCfg = null;
+        return temp;
+    }
+
+    clone(){
+        let temp = new ItemInfo(this.itemId); 
+        temp.timeId = this.timeId;
+        return temp;
+    };
 }
 
 /**炮数据 */
@@ -121,32 +148,6 @@ export class BrickInfo{
         this.monsterCfg = CfgMgr.getMonsterConf(monsterId);
         this.curHp = this.monsterCfg.hp;
         this.maxHp = this.monsterCfg.hp;
-    };
-}
-
-/**道具数据 */
-export class ItemInfo{
-    itemId: number = 0;   //配置ID
-    itemNum: number = 0;   
-    itemCfg: st_item_info = null;
-
-    constructor(itemId: number, itemNum:number=0){
-        this.itemId = itemId;
-        this.itemNum = itemNum;
-        this.itemCfg = CfgMgr.getItemConf(itemId);
-    };
-
-    cloneNoCfg(){
-        let temp = new ItemInfo(this.itemId, this.itemNum);
-  
-        //不必写入本地存储的变量s
-        temp.itemCfg = null;
-        return temp;
-    }
-
-    clone(){
-        let temp = new ItemInfo(this.itemId, this.itemNum); 
-        return temp;
     };
 }
 
@@ -277,10 +278,12 @@ export const TipsStrDef = {
     KEY_GoldTip: "金币不足!", 
     KEY_GetGoldTip: "获得金币：", 
     KEY_DiamondTip: "钻石不足！", 
-    KEY_WeaponTip: "武器无法装配!", 
     KEY_WeaponTip2: "没有装配武器，无法出战！",
+    KEY_WeaponTip3: "请选择武器装备或合成！",
+    KEY_ItemTip: "请选择饰品装备或合成！",
     KEY_FireTip: "最后一个武器不可回收！", 
     KEY_QualityTip: "最大品质等级小球不可合成!",
+    KEY_PlayerTip: "请先解锁萌宠!",
      
     KEY_Share: "分享快乐！"
 }
@@ -297,6 +300,7 @@ export const NoticeType = {
     UpdateDiamond: "UpdateDiamond",   //更新钻石显示
     BuyAddBall: "BuyAddBall",   //购买小球
     BlockBallSel: "BlockBallSel",   //地块上小球被选择，相同等级的小球地块要显示光圈
+    BlockItemSel: "BlockItemSel",   //地块上道具被选择，相同等级的道具地块要显示光圈
     UpdatePlayerList: "UpdatePlayerList",   //更新炮台列表
     UpdateItemList: "UpdateItemList",   //刷新道具
 

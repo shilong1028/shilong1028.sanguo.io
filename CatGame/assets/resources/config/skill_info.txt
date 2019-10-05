@@ -27,11 +27,11 @@ baoji_up = 0
 desc = 一定概率使得武器落地后重新反弹攻击
 
 [5]
-name = 连体
+name = 扩散
 probability = 10
 attack_up = 0
 baoji_up = 0
-desc = 一定概率使得武器覆盖打击四周多个砖块
+desc = 一定概率使得武器扩散打击四周多个砖块
 
 [6]
 name = 爆炸

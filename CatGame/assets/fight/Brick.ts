@@ -201,7 +201,7 @@ export default class Brick extends cc.Component {
 
         this.brick_info = brickInfo;
         this.brickSpr.spriteFrame = this.bricksAtlas.getSpriteFrame("monster_"+this.brick_info.monsterCfg.res);   //砖块类型，关卡json配置中的数据
-        this.qualitySpr.spriteFrame = this.qualityAtlas.getSpriteFrame("colorBg"+this.brick_info.monsterCfg.quality);
+        this.qualitySpr.spriteFrame = this.qualityAtlas.getSpriteFrame("colorBg_"+this.brick_info.monsterCfg.quality);
 
         this.setBrickHpLabel();
         this.setBrickInvincibleSpr();   //根据无敌状态设置砖块纹理

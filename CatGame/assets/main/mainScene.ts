@@ -1,12 +1,10 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, ChapterInfo, PlayerInfo, TipsStrDef } from "../manager/Enum";
+import { NoticeType } from "../manager/Enum";
 import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
-import ChapterPage from "./chapterPage";
-import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
+import { MyUserData } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
-import { FightMgr } from "../manager/FightManager";
 import { sdkWechat } from "../manager/SDK_Wechat";
 
 const {ccclass, property} = cc._decorator;
@@ -32,13 +30,6 @@ export default class MainScene extends cc.Component {
     @property(cc.Label)
     labDiamond: cc.Label = null;    //玩家钻石数
 
-    @property(cc.PageView)
-    chapterPageView: cc.PageView = null;
-    @property(cc.Node)
-    leftArrowNode: cc.Node = null;
-    @property(cc.Node)
-    rightArrowNode: cc.Node = null;
-
     @property(cc.Sprite)
     musicSpr: cc.Sprite = null;   //背景音乐控制按钮图标
     @property(cc.SpriteFrame)
@@ -57,16 +48,17 @@ export default class MainScene extends cc.Component {
     @property(cc.SpriteFrame)
     yellowFrame: cc.SpriteFrame = null;
 
-    @property(cc.Prefab)
-    pfPage: cc.Prefab = null;    //章节页签
-    @property(cc.Prefab)
-    pfStuff: cc.Prefab = null;
-
     bLoadRoleDataFinish: boolean = false;   //是否已经加载完毕用户数据
-    curChapterIdx: number = -1;   //当前章节索引
     curMidUIType: number = -1;   //显示中间UI，0地图关卡、1背包炮台、2商店
 
     onLoad(){
+        GameMgr.adaptBgByScene();   //场景背景图适配
+        if(cc.winSize.height <= 1334){
+            this.topNode.y = cc.winSize.height/2;
+        }else{
+            this.topNode.y = cc.winSize.height/2 - 70;
+        }
+        
         this.bLoadRoleDataFinish = false;  //是否已经加载完毕用户数据
         
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
@@ -163,9 +155,6 @@ export default class MainScene extends cc.Component {
         let movePosX = 0;
         if(uiType == 0){
             movePosX = 0;
-            if(this.curChapterIdx  == -1){  //当前章节索引
-                this.initPageView();
-            }  
         }else if(uiType == 1){   //1背包炮台
             movePosX = 750;
         }else if(uiType == 2){   //2商店
@@ -175,87 +164,6 @@ export default class MainScene extends cc.Component {
         this.midNode.stopAllActions();
         let moveTime = Math.abs(movePosX - this.midNode.x)/1500;
         this.midNode.runAction(cc.moveTo(moveTime, cc.v2(movePosX, this.midNode.y)));
-    }
-
-    /**出战按钮 */
-    onFightBtn(){
-        AudioMgr.playEffect("effect/ui_click");
-
-        let curPlayerInfo: PlayerInfo = MyUserDataMgr.getCurPlayerInfo();
-        if(curPlayerInfo){  
-            if(curPlayerInfo.ballId == 0){
-                ROOT_NODE.showTipsText(TipsStrDef.KEY_WeaponTip2);
-                this.showMidUI(1);   //显示中间信息，0地图关卡、1背包炮台、2商店
-            }else{
-                let chapterInfo = null;
-                if(this.curChapterIdx+1 < MyUserData.curChapterId){
-                    chapterInfo = new ChapterInfo(this.curChapterIdx+1);   //选中的章节
-                }else{
-                    chapterInfo = new ChapterInfo(MyUserData.curChapterId);    //当前的章节
-                }
-        
-                if(chapterInfo){
-                    FightMgr.level_id = chapterInfo.chapterCfg.levels[0];
-                    GameMgr.goToSceneWithLoading("FightScene");
-                }else{
-                    ROOT_NODE.showTipsText("章节信息有误！");
-                }
-            }
-        }
-    }
-
-    //显示章节
-    initPageView(){
-        for(let i=0; i<GameMgr.ChapterCount; ++i){
-            let page = cc.instantiate(this.pfPage);
-            this.chapterPageView.addPage(page);
-            page.getComponent(ChapterPage).initChapterPage(i);
-        }
-
-        this.curChapterIdx = MyUserData.curChapterId-1;   //当前章节索引
-        this.showChapterUI();  //显示当前章节信息
-        this.chapterPageView.scrollToPage(this.curChapterIdx, 0.1);
-    }
-    // 监听事件
-    onPageEvent (sender, eventType) {
-        // 翻页事件
-        if (eventType !== cc.PageView.EventType.PAGE_TURNING) {
-            return;
-        }
-        //console.log("当前所在的页面索引:" + sender.getCurrentPageIndex());
-        this.curChapterIdx = sender.getCurrentPageIndex();   //当前章节索引
-        this.showChapterUI();  //显示当前章节信息
-    }
-    onLeftPageBtn(){
-        AudioMgr.playEffect("effect/ui_click");
-
-        this.curChapterIdx --;  //当前章节索引
-        this.showChapterUI();  //显示当前章节信息
-        this.chapterPageView.scrollToPage(this.curChapterIdx, 0.1);
-    }
-    onRightPageBtn(){
-        AudioMgr.playEffect("effect/ui_click");
-
-        this.curChapterIdx ++;   //当前章节ID
-        this.showChapterUI();  //显示当前章节信息
-        this.chapterPageView.scrollToPage(this.curChapterIdx, 0.1);
-    }
-    //显示当前章节信息
-    showChapterUI(){
-        this.handleMovePage();
-        //let chapterInfo = new ChapterInfo(this.curChapterIdx + 1);
-    }
-    handleMovePage(){
-        if(this.curChapterIdx <= 0){
-            this.curChapterIdx = 0;
-            this.leftArrowNode.active = false;
-        }else if(this.curChapterIdx >= GameMgr.ChapterCount-1){
-            this.curChapterIdx = GameMgr.ChapterCount-1;
-            this.rightArrowNode.active = false;
-        }else{
-            this.leftArrowNode.active = true;
-            this.rightArrowNode.active = true;
-        }
     }
 
     onShareBtn(){

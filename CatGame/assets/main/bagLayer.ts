@@ -1,15 +1,15 @@
 
 import { AudioMgr } from "../manager/AudioMgr";
-import { NoticeType, TipsStrDef, BallInfo, PlayerInfo, ItemInfo, SkillInfo } from "../manager/Enum";
+import { NoticeType, TipsStrDef, BallInfo, PlayerInfo, ItemInfo } from "../manager/Enum";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { NotificationMy } from "../manager/NoticeManager";
 import PlayerCell from "./playerCell";
 import Block from "./Block";
 import { GameMgr } from "../manager/GameManager";
 import Stuff from "./Stuff";
-import { ROOT_NODE } from "../common/rootNode";
+import RootNode, { ROOT_NODE } from "../common/rootNode";
 import Item from "../common/item";
-import Skill from "../common/skill";
+import PlayerHelp from "./playerHelp";
 
 
 const {ccclass, property} = cc._decorator;
@@ -23,10 +23,6 @@ export default class BagLayer extends cc.Component {
     equipNode: cc.Node = null;
     @property(cc.Node)
     itemNode: cc.Node = null;
-    @property(cc.Node)
-    skillNode: cc.Node = null;
-    @property(cc.Label)
-    skillDesc: cc.Label = null;
     @property(cc.Node)
     gridNode: cc.Node = null;
     @property(cc.Label)
@@ -46,7 +42,9 @@ export default class BagLayer extends cc.Component {
     @property(cc.Prefab)
     pfItem: cc.Prefab = null;
     @property(cc.Prefab)
-    pfSkill: cc.Prefab = null;
+    pfStuff: cc.Prefab = null;
+    @property(cc.Prefab)
+    pfHelp: cc.Prefab = null;
 
     @property(cc.SpriteAtlas)
     stuffUpAtlas: cc.SpriteAtlas = null;
@@ -82,7 +80,7 @@ export default class BagLayer extends cc.Component {
     start () {
         this.initPageView();
 
-        this.gridLabel.string = "请选择武器装备或合成！";
+        this.gridLabel.string = TipsStrDef.KEY_WeaponTip3;
         this.initGirdInfo(0);  //0装备小球，1饰品道具，2技能
     }
 
@@ -144,14 +142,13 @@ export default class BagLayer extends cc.Component {
         if(curPlayerInfo){
             this.showPlayerEquip(curPlayerInfo.ballId);
             this.showPlayerItem(curPlayerInfo.itemId);
-            this.showPlayerSkill(curPlayerInfo.playerCfg.skillId);
         }
     }
     //装备炮弹
     showPlayerEquip(ballId: number){
         this.equipNode.removeAllChildren(true);
         if(ballId > 0){
-            let stuffNode = cc.instantiate(GameMgr.getMainScene().pfStuff);
+            let stuffNode = cc.instantiate(this.pfStuff);
             stuffNode.name = "stuffNode";
             this.equipNode.addChild(stuffNode);
             stuffNode.getComponent(Stuff).setStuffData(new BallInfo(ballId));  //设置地块小球模型数据
@@ -169,42 +166,25 @@ export default class BagLayer extends cc.Component {
         }
     }
 
-    //炮台技能
-    showPlayerSkill(skillId: number){
-        this.skillNode.removeAllChildren(true);
-        if(skillId > 0){
-            let skillModel = cc.instantiate(this.pfSkill);
-            skillModel.name = "skillModel";
-            this.skillNode.addChild(skillModel);
-
-            let skillInfo = new SkillInfo(skillId);
-            skillModel.getComponent(Skill).initSkillByData(skillInfo);  //设置地块技能模型数据
-
-            this.skillDesc.string = skillInfo.skillCfg.desc;   //技能描述
-        }
-    }
-
-    onCloseBtn(){
+    onHelpBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        this.node.removeFromParent(true);
+        let curPlayerInfo: PlayerInfo = MyUserDataMgr.getPlayerInfoByIdx(this.curPageIdx);
+        if(curPlayerInfo){
+            let layer = GameMgr.showLayer(this.pfHelp);
+            layer.getComponent(PlayerHelp).initPlayerInfo(curPlayerInfo);
+        }
     }
 
     onEquipBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        this.gridLabel.string = "请选择武器装备或合成！";
+        this.gridLabel.string = TipsStrDef.KEY_WeaponTip3;
         this.initGirdInfo(0);  //0装备小球，1饰品道具，2技能
     }
 
     onItemBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        this.gridLabel.string = "请选择饰品装备或合成！";
+        this.gridLabel.string = TipsStrDef.KEY_ItemTip;
         this.initGirdInfo(1);  //0装备小球，1饰品道具，2技能
-    }
-
-    onSkillBtn(){
-        AudioMgr.playEffect("effect/ui_click");
-        this.gridLabel.string = "默认技能说明：";
-        this.initGirdInfo(2);  //0装备小球，1饰品道具，2技能
     }
 
     onTouchStart(event: cc.Event.EventTouch) {  
@@ -225,7 +205,11 @@ export default class BagLayer extends cc.Component {
     ontTouchEnd(event: cc.Event.EventTouch) {
         if(this.nSelectModel && this.selectBlock){  
             this.placeSelectBlock(event.getLocation());   //放置选中的地块模型
-            NotificationMy.emit(NoticeType.BlockBallSel, null);   //地块上小球被选择，相同等级的小球地块要显示光圈
+            if(this.curGirdType == 0){
+                NotificationMy.emit(NoticeType.BlockBallSel, null);   //地块上小球被选择，相同等级的小球地块要显示光圈
+            }else if(this.curGirdType == 1){
+                NotificationMy.emit(NoticeType.BlockItemSel, null);   //地块上道具被选择，相同等级的道具地块要显示光圈
+            }
         }
     }
 
@@ -267,15 +251,6 @@ export default class BagLayer extends cc.Component {
                 let block = node.getComponent(Block);
                 block.initBlockByItem(i, itemInfo, this);
             }
-        }else if(this.curGirdType == 2){   //2技能
-            this.gridLabel.string = "默认技能说明：";
-            let skillModel = this.skillNode.getChildByName("skillModel");
-            if(skillModel){
-                let skillInfo = skillModel.getComponent(Skill).skillInfo;   //地块技能模型数据
-                if(skillInfo){
-                    this.gridLabel.string = skillInfo.skillCfg.name + ": "+skillInfo.skillCfg.desc;
-                }
-            }
         }
     }
 
@@ -298,7 +273,7 @@ export default class BagLayer extends cc.Component {
             touchPos = GameMgr.adaptTouchPos(touchPos, this.node.position);  //校正因适配而产生的触摸偏差
             if(this.curGirdType == 0){   //0装备小球
                 if(this.nSelectModel == null){
-                    this.nSelectModel = cc.instantiate(GameMgr.getMainScene().pfStuff);
+                    this.nSelectModel = cc.instantiate(this.pfStuff);
                     this.nSelectModel.setPosition(-3000, -3000);
                     this.node.addChild(this.nSelectModel, 100);
                 }
@@ -311,7 +286,7 @@ export default class BagLayer extends cc.Component {
                     this.node.addChild(this.nSelectModel, 100);
                 }
                 let item = this.nSelectModel.getComponent(Item);
-                item.initItemByData(this.selectBlock.itemInfo, false);   //设置地块道具模型数据 
+                item.initItemByData(this.selectBlock.itemInfo);   //设置地块道具模型数据 
             }
 
             let pos = this.node.convertToNodeSpaceAR(touchPos);
@@ -340,31 +315,27 @@ export default class BagLayer extends cc.Component {
                     if(rect2.contains(pos2)){    //装备新小球
                         let curPageInfo: PlayerInfo = MyUserDataMgr.getPlayerInfoByIdx(this.curPageIdx);
                         if(curPageInfo && curPageInfo.useState == 1){   //已经拥有的炮台
-                            // if(this.selectBlock.ballInfo.cannonId < curPageInfo.playerCfg.weapons[0] || this.selectBlock.ballInfo.cannonId > curPageInfo.playerCfg.weapons[1]){
-                            //     ROOT_NODE.showTipsText(TipsStrDef.KEY_WeaponTip);
-                            //     this.selectBlock.onRecoverSelf();   //复原本地块模型
-                            // }else{
-                                let equipBallInfo = null;
-                                if(curPageInfo.ballId > 0){
-                                    equipBallInfo = new BallInfo(curPageInfo.ballId);
-                                }
-                                curPageInfo.ballId = this.selectBlock.ballInfo.cannonId;
-    
-                                this.showPlayerEquip(curPageInfo.ballId);
-                                NotificationMy.emit(NoticeType.UpdatePlayerList, curPageInfo);   //更新炮台
-    
-                                MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
-                                MyUserDataMgr.equipBallFromBallList(this.selectBlock.ballInfo.clone(), equipBallInfo);
-    
-                                if(equipBallInfo){
-                                    this.selectBlock.setBallStuff(equipBallInfo.clone());  //设置地块上的小球模型
-                                }else{
-                                    this.selectBlock.onRemoveModel();   //将本地块上的模型移走了
-                                }
+                            let equipBallInfo = null;
+                            if(curPageInfo.ballId > 0){
+                                equipBallInfo = new BallInfo(curPageInfo.ballId);
                             }
-                        // }else{
-                        //     this.selectBlock.onRecoverSelf();   //复原本地块模型
-                        // }
+                            curPageInfo.ballId = this.selectBlock.ballInfo.cannonId;
+
+                            this.showPlayerEquip(curPageInfo.ballId);
+                            NotificationMy.emit(NoticeType.UpdatePlayerList, curPageInfo);   //更新炮台
+
+                            MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
+                            MyUserDataMgr.equipBallToPlayer(this.selectBlock.ballInfo.clone(), equipBallInfo);
+
+                            if(equipBallInfo){
+                                this.selectBlock.setBallStuff(equipBallInfo.clone());  //设置地块上的小球模型
+                            }else{
+                                this.selectBlock.onRemoveModel();   //将本地块上的模型移走了
+                            }
+                        }else{
+                            ROOT_NODE.showTipsText(TipsStrDef.KEY_PlayerTip);
+                            this.selectBlock.onRecoverSelf();   //复原本地块模型
+                        }
                     }else{
                         let pos3 = this.delNode.convertToNodeSpace(touchPos);   //回收站
                         let rect3 = cc.rect(0, 0, this.delNode.width, this.delNode.height);
@@ -383,15 +354,27 @@ export default class BagLayer extends cc.Component {
                 if(rect2.contains(pos2)){    //新饰品道具
                     let curPageInfo: PlayerInfo = MyUserDataMgr.getPlayerInfoByIdx(this.curPageIdx);
                     if(curPageInfo && curPageInfo.useState == 1){   //已经拥有的炮台
+                        let equipItemInfo = null;
+                        if(curPageInfo.itemId > 0){
+                            equipItemInfo = new ItemInfo(curPageInfo.itemId);
+                        }
                         curPageInfo.itemId = this.selectBlock.itemInfo.itemId;
 
                         this.showPlayerItem(curPageInfo.itemId);
                         NotificationMy.emit(NoticeType.UpdatePlayerList, curPageInfo);   //更新炮台
 
                         MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
-                        //炮台道具的消耗为每场战斗消耗一个（为零则清除炮台道具设定），故在此处切换道具时不做任何处理
+                        MyUserDataMgr.equipItemToPlayer(this.selectBlock.itemInfo.clone(), equipItemInfo);
+
+                        if(equipItemInfo){
+                            this.selectBlock.setItemModel(equipItemInfo.clone());  //设置地块上的道具模型
+                        }else{
+                            this.selectBlock.onRemoveModel();   //将本地块上的模型移走了
+                        }
+                    }else{
+                        ROOT_NODE.showTipsText(TipsStrDef.KEY_PlayerTip);
+                        this.selectBlock.onRecoverSelf();   //复原本地块模型
                     }
-                    this.selectBlock.onRecoverSelf();   //复原本地块模型
                 }else{
                     let pos3 = this.delNode.convertToNodeSpace(touchPos);   //回收站
                     let rect3 = cc.rect(0, 0, this.delNode.width, this.delNode.height);

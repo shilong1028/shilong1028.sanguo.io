@@ -30,6 +30,7 @@ export var MyUserData = {
 @ccclass
 class MyUserManager {
     lastBallTime: number = 0;   //最后一个添加未出战小球的时间（如果新小球的timeId《=lastTime，则timeId++);
+    lastItemTime: number = 0;
 
     /**清除所有用户数据 */
     clearUserData(){
@@ -96,92 +97,6 @@ class MyUserManager {
         }
 
         //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
-    }
-
-    //获取背包中物品数据
-    getItemFromList(itemId: number):ItemInfo{
-        for(let i=0; i<MyUserData.ItemList.length; ++i){
-            if(MyUserData.ItemList[i].itemId == itemId){
-                return MyUserData.ItemList[i].clone();
-            }
-        }
-        return new ItemInfo(itemId, 0);
-    }
-    //获取背包列表克隆
-    getItemListClone(){
-        let tempArr = new Array();
-        for(let i=0; i<MyUserData.ItemList.length; ++i){
-            let info: ItemInfo = MyUserData.ItemList[i].clone();
-            tempArr.push(info);
-        }
-        return tempArr;
-    }
-    /**销售未出战小球 */
-    sellItemFromItemList(itemId: number){
-        for(let i=0; i<MyUserData.ItemList.length; ++i){
-            if(itemId == MyUserData.ItemList[i].itemId){
-                MyUserData.ItemList.splice(i, 1);
-                this.checkPlayersItemId(itemId);    //道具消耗完后，检查炮台绑定的道具信息
-                this.saveItemList();
-                break;
-            }
-        }
-    }
-    /**修改用户背包物品列表 */
-    updateItemByCount(itemId: number, val: number){
-        for(let i=0; i<MyUserData.ItemList.length; ++i){
-            let bagItem: ItemInfo = MyUserData.ItemList[i];
-            if(bagItem.itemId == itemId){
-                MyUserData.ItemList[i].itemNum += val;
-                if(MyUserData.ItemList[i].itemNum <= 0){
-                    MyUserData.ItemList[i].itemNum = 0;
-                }
-                if(MyUserData.ItemList[i].itemNum <= 0){
-                    MyUserData.ItemList.splice(i, 1);  //道具用完，从背包删除
-                    this.checkPlayersItemId(itemId);    //道具消耗完后，检查炮台绑定的道具信息
-                }
-                this.saveItemList();
-                return;
-            }
-        }
-
-        if(val > 0){   //增加的新道具
-            let item = new ItemInfo(itemId, val);
-            MyUserData.ItemList.push(item);
-            this.saveItemList();
-        }
-    }
-    //获取道具数量
-    getItemCount(itemId: number){
-        for(let i=0; i<MyUserData.ItemList.length; ++i){
-            let bagItem: ItemInfo = MyUserData.ItemList[i];
-            if(bagItem.itemId == itemId){
-                return MyUserData.ItemList[i].itemNum;
-            }
-        }
-        return 0;
-    }
-    /**从本地存储中获取物品列表 */
-    getItemListByLD(){
-        let ItemList = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表
-        let tempList = new Array();
-        if(ItemList){
-            for(let i=0; i<ItemList.length; ++i){
-                let tempItem = new ItemInfo(ItemList[i].itemId, ItemList[i].itemNum);
-                tempList.push(tempItem);
-            }
-        }
-        return tempList;
-    }
-    /**保存背包物品列表 */
-    saveItemList(){
-        let tempList = new Array();
-        for(let i=0; i<MyUserData.ItemList.length; ++i){
-            let tempItem = MyUserData.ItemList[i].cloneNoCfg();
-            tempList.push(tempItem);
-        }
-
-        LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(tempList));
     }
 
     //当前章节id
@@ -313,14 +228,78 @@ class MyUserManager {
             this.savePlayerList();
         }
     }
-    /**道具消耗完后，检查炮台绑定的道具信息 */
-    checkPlayersItemId(itemId: number){
-        for(let i=0; i<MyUserData.playerList.length; ++i){
-            if(MyUserData.playerList[i].itemId == itemId){
-                MyUserData.playerList[i].itemId = 0;
+
+    //获取背包列表克隆
+    getItemListClone(){
+        let tempArr = new Array();
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let info: ItemInfo = MyUserData.ItemList[i].clone();
+            tempArr.push(info);
+        }
+        return tempArr;
+    }
+    /**销售未出战小球 */
+    sellItemFromItemList(itemInfo: ItemInfo){
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            if(itemInfo.timeId == MyUserData.ItemList[i].timeId){
+                MyUserData.ItemList.splice(i, 1);
+                this.saveItemList();
+                break;
             }
         }
-        this.savePlayerList();
+    }
+    /**装备道具到炮台 */
+    equipItemToPlayer(itemInfo: ItemInfo, equipItem: ItemInfo=null){
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let curTimeId = MyUserData.ItemList[i].timeId;
+            if(itemInfo.timeId == curTimeId){
+                MyUserData.ItemList.splice(i, 1);
+                break;
+            }
+        }
+        if(equipItem){
+            MyUserData.ItemList.push(equipItem);
+        }
+        this.saveItemList();
+    }
+    /**添加道具到列表 */
+    addItemToItemList(itemInfo: ItemInfo, bSave: boolean = true){
+        if(bSave == true){
+            if(itemInfo.timeId <= this.lastItemTime){   //重复timeId
+                itemInfo.timeId = this.lastItemTime + 1;
+            }
+            this.lastBallTime = itemInfo.timeId;   //最后一个添加未出战小球的时间（如果新小球的timeId《=lastTime，则timeId++);
+        }
+
+        MyUserData.ItemList.push(itemInfo);
+
+        if(bSave){
+            this.saveItemList();
+        }
+    }
+    /**从本地存储中获取物品列表 */
+    getItemListByLD(){
+        let ItemList = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表
+        let tempList = new Array();
+        this.lastItemTime = new Date().getTime()-1;   //最后一个添加未出战道具的时间（如果新道具的timeId《=lastTime，则timeId++);
+        if(ItemList){
+            for(let i=0; i<ItemList.length; ++i){
+                let tempItem = new ItemInfo(ItemList[i].itemId);
+                tempItem.timeId = this.lastItemTime - i;   //防止一起读取时多个道具timeId一致
+                tempList.push(tempItem);
+            }
+        }
+        return tempList;
+    }
+    /**保存背包物品列表 */
+    saveItemList(){
+        let tempList = new Array();
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let tempItem = MyUserData.ItemList[i].cloneNoCfg();
+            tempList.push(tempItem);
+        }
+
+        LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(tempList));
     }
     
     /**从本地存储中获取未出战小球列表 */
@@ -362,7 +341,7 @@ class MyUserManager {
         }
     }
     /**添加小球到炮台道具 */
-    equipBallFromBallList(ballInfo: BallInfo, equipBall: BallInfo=null){
+    equipBallToPlayer(ballInfo: BallInfo, equipBall: BallInfo=null){
         for(let i=0; i<MyUserData.ballList.length; ++i){
             let curTimeId = MyUserData.ballList[i].timeId;
             if(ballInfo.timeId == curTimeId){
@@ -419,7 +398,6 @@ class MyUserManager {
         }
         return tempArr;
     }
-
 
     //更新在线总时长
     updateLineTime(dt:number){

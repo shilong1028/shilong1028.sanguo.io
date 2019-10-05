@@ -192,6 +192,7 @@ export class st_item_info{
     probability;  //提升炮台技能概率（/100)
     quality;
     sell;   //回收价
+    res;
     desc;    //描述
 
     transType(){
@@ -200,6 +201,7 @@ export class st_item_info{
         this.probability = parseInt(this.probability)/100;
         this.quality = parseInt(this.quality);
         this.sell = parseInt(this.sell);
+        this.res = parseInt(this.res);
     }
 
     constructor(){
@@ -213,6 +215,7 @@ export class st_item_info{
         temp.probability = this.probability;
         temp.quality = this.quality;
         temp.sell = this.sell;
+        temp.res = this.res;
         temp.desc = this.desc;
         return temp;
     }

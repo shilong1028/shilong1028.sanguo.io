@@ -9,8 +9,8 @@ export default class Skill extends cc.Component {
     iconSpr: cc.Sprite = null;
     @property(cc.Label)
     nameLabel: cc.Label = null;
-    @property(cc.Label)
-    lvLabel: cc.Label = null;
+    @property(cc.Sprite)
+    qualitySpr: cc.Sprite = null;
 
     @property(cc.SpriteAtlas)
     iconAtlas: cc.SpriteAtlas = null;
@@ -21,7 +21,6 @@ export default class Skill extends cc.Component {
     onLoad () {
         this.iconSpr.spriteFrame = null;
         this.nameLabel.string = "";
-        this.lvLabel.string = "Lv";
     }
 
     start () {
@@ -34,6 +33,6 @@ export default class Skill extends cc.Component {
         this.skillInfo = skillInfo;
         this.iconSpr.spriteFrame = this.iconAtlas.getSpriteFrame("skill_"+this.skillInfo.skillId);
         this.nameLabel.string = skillInfo.skillCfg.name;
-        this.lvLabel.string = "Lv"+skillInfo.skillLv;
+        this.qualitySpr.spriteFrame = this.iconAtlas.getSpriteFrame("colorBg_"+this.skillInfo.skillLv);
     }
 }

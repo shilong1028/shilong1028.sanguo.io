@@ -1,7 +1,7 @@
 import { BallInfo, NoticeType, TipsStrDef, ItemInfo } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
 import Stuff from "./Stuff";
-import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
+import { MyUserDataMgr } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
 import { ROOT_NODE } from "../common/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
@@ -17,10 +17,6 @@ export default class Block extends cc.Component {
     addNode : cc.Node = null;  //添加按钮节点
     @property(cc.Sprite)
     selSpr: cc.Sprite = null;   //选择框精灵
-    @property(cc.SpriteFrame)
-    selNorFrame: cc.SpriteFrame = null;  //选中后，其他非同等级地块小球光圈显示（白色）
-    @property(cc.SpriteFrame)
-    selLightFrame: cc.SpriteFrame = null;   //选中后，其他同等级地块小球光圈显示（黄色)
 
     nModel: cc.Node = null;   //模型节点   //小球装备、饰品道具、技能图标
     ballInfo: BallInfo = null;  //地块上小球数据
@@ -40,6 +36,7 @@ export default class Block extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
 
         NotificationMy.on(NoticeType.BlockBallSel, this.handleBlockBallSel, this);   //地块上小球被选择，相同等级的小球地块要显示光圈
+        NotificationMy.on(NoticeType.BlockItemSel, this.handleBlockItemSel, this); 
     }
 
     onDestroy(){
@@ -83,13 +80,13 @@ export default class Block extends cc.Component {
                     let cfg = this.ballInfo.cannonCfg;
                     this.bagLayer.gridLabel.string = cfg.name+", 攻击"+cfg.attack+", 暴击"+cfg.baoji;
                 }else{
-                    this.bagLayer.gridLabel.string = "请选择武器装备！";
+                    this.bagLayer.gridLabel.string = TipsStrDef.KEY_WeaponTip3;
                 }    
             }else if(this.curGirdType == 1){   //1饰品道具
                 if(this.itemInfo){
                     this.bagLayer.gridLabel.string = this.itemInfo.itemCfg.name + ": "+this.itemInfo.itemCfg.desc;
                 }else{
-                    this.bagLayer.gridLabel.string = "请选择饰品道具！";
+                    this.bagLayer.gridLabel.string = TipsStrDef.KEY_ItemTip;
                 }
             }
         }
@@ -108,8 +105,8 @@ export default class Block extends cc.Component {
 
             if(this.curGirdType == 0){
                 NotificationMy.emit(NoticeType.BlockBallSel, this.ballInfo);   //地块上小球被选择，相同等级的小球地块要显示光圈
-            }else{
-                this.selSpr.node.active = true;  //光圈
+            }else if(this.curGirdType == 1){
+                NotificationMy.emit(NoticeType.BlockItemSel, this.itemInfo);   //地块上道具被选择，相同等级的道具地块要显示光圈
             }
         }else{
             this.setModelOpacity(255);
@@ -175,7 +172,7 @@ export default class Block extends cc.Component {
                 this.nModel = cc.instantiate(this.bagLayer.pfItem);
                 this.node.addChild(this.nModel, 100);
             }
-            this.nModel.getComponent(Item).initItemByData(itemInfo, true);  //设置地块道具模型数据
+            this.nModel.getComponent(Item).initItemByData(itemInfo);  //设置地块道具模型数据
             this.setModelOpacity(255);
         }
     }
@@ -183,13 +180,23 @@ export default class Block extends cc.Component {
     /**将本地块上的道具卖掉 */
     handleSellItem(){
         if(this.itemInfo){
-            let sellNum = this.itemInfo.itemCfg.sell * this.itemInfo.itemNum;
-            MyUserDataMgr.sellItemFromItemList(this.itemInfo.itemId);  
+            let sellNum = this.itemInfo.itemCfg.sell;
+            MyUserDataMgr.sellItemFromItemList(this.itemInfo);  
             this.onRemoveModel();   //模型
 
             return sellNum;
         }
         return 0;
+    }
+
+    /**地块上道具被选择，相同等级的道具地块要显示光圈 */
+    handleBlockItemSel(itemInfo: ItemInfo){
+        this.selSpr.node.active = false;  //光圈
+        if(this.curGirdType == 1 && itemInfo){
+            if(this.itemInfo && this.itemInfo.itemId == itemInfo.itemId){
+                this.selSpr.node.active = true;  //光圈
+            }
+        }
     }
 
     //////////////  以下为地块小球接口  /////////////////////////////
@@ -245,7 +252,7 @@ export default class Block extends cc.Component {
             this.ballInfo = null;
         }else{
             if(this.nModel == null){
-                this.nModel = cc.instantiate(GameMgr.getMainScene().pfStuff);
+                this.nModel = cc.instantiate(this.bagLayer.pfStuff);
                 this.node.addChild(this.nModel, 100);
             }
             this.nModel.getComponent(Stuff).setStuffData(ballInfo);  //设置地块小球模型数据
@@ -255,19 +262,11 @@ export default class Block extends cc.Component {
 
     /**地块上小球被选择，相同等级的小球地块要显示光圈 */
     handleBlockBallSel(ballInfo: BallInfo){
-        if(this.curGirdType == 0){
-            if(ballInfo){
+        this.selSpr.node.active = false;  //光圈
+        if(this.curGirdType == 0 && ballInfo){
+            if(this.ballInfo && this.ballInfo.cannonId == ballInfo.cannonId){
                 this.selSpr.node.active = true;  //光圈
-                if(this.ballInfo && this.ballInfo.cannonId == ballInfo.cannonId){
-                    this.selSpr.spriteFrame = this.selLightFrame;
-                }else{
-                    this.selSpr.spriteFrame = this.selNorFrame;
-                }
-            }else{
-                this.selSpr.node.active = false;  //光圈
             }
-        }else{
-            this.selSpr.node.active = false;  //光圈
         }
     }
 
@@ -293,11 +292,11 @@ export default class Block extends cc.Component {
     showUpdateBallEffect(){
         let oldInfo: BallInfo = new BallInfo(this.ballInfo.cannonId - 1);
 
-        let aniStuff = cc.instantiate(GameMgr.getMainScene().pfStuff);
+        let aniStuff = cc.instantiate(this.bagLayer.pfStuff);
         this.node.addChild(aniStuff, 90);
         aniStuff.getComponent(Stuff).setStuffData(oldInfo);  //设置地块小球模型数据
 
-        let aniStuff2 = cc.instantiate(GameMgr.getMainScene().pfStuff);
+        let aniStuff2 = cc.instantiate(this.bagLayer.pfStuff);
         this.node.addChild(aniStuff2, 90);
         aniStuff2.getComponent(Stuff).setStuffData(oldInfo);  //设置地块小球模型数据
 

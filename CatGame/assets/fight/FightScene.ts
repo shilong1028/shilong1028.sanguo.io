@@ -6,8 +6,6 @@ import QiPanSc from "./QiPanSc";
 import { GameMgr } from "../manager/GameManager";
 import WenZi from "../effectAni/Wenzi";
 import Brick from "./Brick";
-import Skill from "../common/skill";
-import { ROOT_NODE } from "../common/rootNode";
 
 const {ccclass, property} = cc._decorator;
 
@@ -26,20 +24,12 @@ export default class FightScene extends cc.Component {
     @property(cc.Node)
     stagnationImg: cc.Node = null;   //停滞冰冻图片
     @property(cc.Node)
-    bottomNode: cc.Node = null;   //底部栏
-    @property(cc.Node)
-    tempBottomNode: cc.Node = null;  //底部拖动取消提示
-
-    @property(cc.Node)
     qipanNode: cc.Node = null;   //棋盘节点
 
     @property(cc.Sprite)
     SpeedSpr: cc.Sprite = null;  //加速
     @property([cc.SpriteFrame])
     speedFrames: cc.SpriteFrame[] = new Array(3);
-
-    @property([cc.Node])
-    skillNodes: cc.Node[] = new Array(4);
 
     @property(cc.Prefab)
     pfFightResult: cc.Prefab = null;
@@ -101,7 +91,6 @@ export default class FightScene extends cc.Component {
         this.fingerPos = null;   //手指触摸位置，用于移动砖块等处的指示线绘制
 
         this.levelLabel.string = "";  //第几关
-        this.tempBottomNode.opacity = 0;  //底部拖动取消提示
         this.stagnationImg.opacity = 0;   //停滞冰冻图片    
         this.stagnationRow = -1;  //显示冰冻的回合
 
@@ -111,6 +100,7 @@ export default class FightScene extends cc.Component {
     }
 
     onLoad () {
+        GameMgr.adaptBgByScene();   //场景背景图适配
         if(cc.winSize.height <= 1334){
             this.topNode.y = cc.winSize.height/2;
         }else{
@@ -148,16 +138,6 @@ export default class FightScene extends cc.Component {
             if(curSkillId > 0){
                 let skillInfo = new SkillInfo(curSkillId);
                 this.skillList.push(skillInfo);
-            }
-        }
-
-        for(let i=0; i<4; i++){
-            this.skillNodes[i].removeAllChildren(true);
-            let skillInfo = this.skillList[i];
-            if(skillInfo){
-                let skill = cc.instantiate(this.pfSkill);
-                this.skillNodes[i].addChild(skill);
-                skill.getComponent(Skill).initSkillByData(skillInfo);
             }
         }
 
@@ -311,9 +291,6 @@ export default class FightScene extends cc.Component {
         FightMgr.qipanSc.fixGuideStep = 0;
 
         this.cancelTouch();  //取消触摸
-        if(this.handleTouchPos(event.getLocation()) == true){
-            this.tempBottomNode.opacity = 255;  //底部拖动取消提示
-        }
     }
 
     touchMove(event: cc.Touch){
@@ -340,10 +317,7 @@ export default class FightScene extends cc.Component {
             if(pos.y >= FightMgr.getBallPosY() && pos.y <= this.qipanNode.height/2){  //触点在棋盘范围内
                 if(this.fingerPos && this.fingerPos.sub(pos).mag()<10){   //降低触摸移动的灵敏度
                     return false;
-                }
-
-                this.tempBottomNode.opacity = 255;  //底部拖动取消提示
-                
+                }       
                 this.bTouched = true;
                 this.fingerPos = pos;  //手指触摸位置，用于移动砖块等处的指示线绘制
 
@@ -367,8 +341,6 @@ export default class FightScene extends cc.Component {
         if(FightMgr.qipanSc.canTouchIndicator() == true){
             FightMgr.qipanSc.handleCancleTouch();   //取消触摸状态
         }
-
-        this.tempBottomNode.opacity = 0;  //底部拖动取消提示
     }
 
     /**移动砖块导致的重绘指示线 */

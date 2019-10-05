@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "harmHp",
+    "_name": "skillCell",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -31,14 +31,14 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 0,
-      "b": 0,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 29.32,
-      "height": 37.8
+      "width": 104,
+      "height": 104
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -67,38 +67,16 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_id": ""
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "2c40eR5+79OlZ1rWQWdiZKB",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_useOriginalSize": true,
-    "_string": "11",
-    "_N$string": "11",
-    "_fontSize": 25,
-    "_lineHeight": 30,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 2,
-    "_N$fontFamily": "Microsoft YaHei",
-    "_N$overflow": 0,
-    "_N$cacheMode": 0,
     "_id": ""
   },
   {
@@ -107,9 +85,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "ac8474d1-cfb5-4906-9d58-2f14ec723267"
+      "__uuid__": "961f0d9d-41c1-4522-bc6a-df87252d1bd6"
     },
-    "fileId": "cdBChzDRZH97U7vM0iNSf8",
+    "fileId": "543C1WiIdH5bKW2ImWnY8i",
     "sync": false
   }
 ]

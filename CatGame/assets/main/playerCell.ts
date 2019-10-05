@@ -1,5 +1,5 @@
 
-import { PlayerInfo, NoticeType } from "../manager/Enum";
+import { PlayerInfo, NoticeType, TipsStrDef } from "../manager/Enum";
 import { AudioMgr } from "../manager/AudioMgr";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
@@ -12,20 +12,14 @@ const {ccclass, property} = cc._decorator;
 export default class PlayerCell extends cc.Component {
 
     @property(cc.Node)
-    buyNode: cc.Node = null;
+    maskNode: cc.Node = null;
     @property(cc.Label)
     diamondLabel: cc.Label = null;   //钻石
     @property(cc.Node)
-    useBtnNode: cc.Node = null;
+    useBtnNode: cc.Node = null;   //换装
+    @property(cc.Node)
+    usedNode: cc.Node = null;   //使用中
 
-    @property(cc.Label)
-    stateLabel: cc.Label = null;
-    @property(cc.Label)
-    atkLabel: cc.Label = null;
-    @property(cc.Label)
-    baojiLabel: cc.Label = null;
-    @property(cc.Label)
-    descLabel: cc.Label = null;
     @property(cc.Label)
     nameLabel: cc.Label = null;
     @property(cc.Sprite)
@@ -42,12 +36,9 @@ export default class PlayerCell extends cc.Component {
     onLoad () {
         NotificationMy.on(NoticeType.UpdatePlayerList, this.UpdatePlayer, this);   //更新炮台
 
-        this.buyNode.active = true;
+        this.maskNode.active = true;
         this.useBtnNode.active = false;
-        this.stateLabel.string = "";
-        this.atkLabel.string = "攻击：";
-        this.baojiLabel.string = "暴击：";
-        this.descLabel.string = "";
+        this.usedNode.active = false;
         this.nameLabel.string = "";
     }
 
@@ -79,19 +70,16 @@ export default class PlayerCell extends cc.Component {
         }
 
         if(this.playerInfo.useState == 0){
-            this.buyNode.active = true;
+            this.maskNode.active = true;
             this.useBtnNode.active = false;
-            this.stateLabel.string = "";
+            this.usedNode.active = false;
         }else{
-            this.buyNode.active = false;
+            this.maskNode.active = false;
             this.updateStateLabel();
         }
         
         let cfg = this.playerInfo.playerCfg;
         this.diamondLabel.string = ""+cfg.cost;
-        this.atkLabel.string = "攻击+"+cfg.attack_up*100+"%";
-        this.baojiLabel.string = "暴击+"+cfg.baoji_up*100+"%";
-        this.descLabel.string = cfg.desc;
         this.nameLabel.string = cfg.name;
         this.playerSpr.spriteFrame = this.playerAtlas.getSpriteFrame("player_"+this.playerInfo.playerId);
     }
@@ -100,10 +88,10 @@ export default class PlayerCell extends cc.Component {
         if(this.playerInfo){
             if(this.playerInfo.playerId == MyUserData.curPlayerId){
                 this.useBtnNode.active = false;
-                this.stateLabel.string = "使用中";
+                this.usedNode.active = true;
             }else{
                 this.useBtnNode.active = true;
-                this.stateLabel.string = "已拥有";
+                this.usedNode.active = false;
             }
         }
     }
@@ -127,12 +115,16 @@ export default class PlayerCell extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
         //换装炮台
         if(this.playerInfo && this.playerInfo.useState == 1){
-            MyUserDataMgr.updateCurPlayerById(this.playerInfo.playerId);
-            this.initPlayerInfo(this.playerInfo);
-
-            if(this.bagLayer){
-                this.bagLayer.usedPlayerPage.updateStateLabel();  //当前使用的炮台
-                this.bagLayer.usedPlayerPage = this;
+            if(this.playerInfo.ballId == 0){
+                ROOT_NODE.showTipsText(TipsStrDef.KEY_WeaponTip2);
+            }else{
+                MyUserDataMgr.updateCurPlayerById(this.playerInfo.playerId);
+                this.initPlayerInfo(this.playerInfo);
+    
+                if(this.bagLayer){
+                    this.bagLayer.usedPlayerPage.updateStateLabel();  //当前使用的炮台
+                    this.bagLayer.usedPlayerPage = this;
+                }
             }
         }
     }

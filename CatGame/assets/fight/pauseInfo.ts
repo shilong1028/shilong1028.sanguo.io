@@ -3,6 +3,7 @@ import { NoticeType } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { FightMgr } from "../manager/FightManager";
+import TableView from "../tableView/tableView";
 
 
 //暂停界面
@@ -15,6 +16,8 @@ export default class PauseInfo extends cc.Component {
     bgImg: cc.Node = null;
     @property(cc.Node)
     touchNode: cc.Node = null;
+    @property(TableView)
+    tableView: TableView = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -24,6 +27,10 @@ export default class PauseInfo extends cc.Component {
 
     start () {
         NotificationMy.emit(NoticeType.GamePause, null);   //游戏暂停，停止小球和砖块的动作，但动画特效不受影响
+
+        let skillList = FightMgr.getFightScene().skillList;
+        this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
+        this.tableView.initTableView(skillList.length, { array: skillList, target: this}); 
     }
 
     // update (dt) {}

@@ -965,7 +965,7 @@ export default class QiPanSc extends cc.Component {
     /**显示飘血动画 */
     showHpAction(harm: number, pos: cc.Vec2){
         let harmNode = cc.instantiate(this.fightScene.pfharmHp);
-        harmNode.color = cc.color(253, 255, 45);
+        //harmNode.color = cc.color(253, 255, 45);
 
         let harmLabel = harmNode.getComponent(cc.Label);
         harmLabel.string = harm.toString();

@@ -226,6 +226,9 @@
       },
       {
         "__id__": 65
+      },
+      {
+        "__id__": 88
       }
     ],
     "_active": true,
@@ -248,7 +251,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 500,
+      "width": 550,
       "height": 650
     },
     "_anchorPoint": {
@@ -284,7 +287,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "title",
+    "_name": "titleSpr",
     "_objFlags": 0,
     "_parent": {
       "__id__": 6
@@ -305,13 +308,13 @@
       "__type__": "cc.Color",
       "r": 255,
       "g": 255,
-      "b": 0,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
-      "height": 63
+      "width": 227,
+      "height": 59
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -321,7 +324,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 300,
+      "y": 260,
       "z": 0
     },
     "_scale": {
@@ -345,7 +348,7 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -357,21 +360,25 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": true,
-    "_string": "战斗胜利",
-    "_N$string": "战斗胜利",
-    "_fontSize": 40,
-    "_lineHeight": 50,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Microsoft YaHei",
-    "_N$overflow": 0,
-    "_N$cacheMode": 0,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": {
+      "__uuid__": "06f27bc4-c3f6-4a12-bfe2-be64325a2e90"
+    },
+    "_type": 0,
+    "_sizeMode": 1,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": {
+      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
+    },
     "_id": ""
   },
   {
@@ -382,7 +389,7 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "92RSgsF5BBtZU9ACkc0lpS",
+    "fileId": "44vC8rvuFPy4HQ1iqm2Rts",
     "sync": false
   },
   {
@@ -423,7 +430,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 144.44,
+      "width": 151.76999999999998,
       "height": 50
     },
     "_anchorPoint": {
@@ -495,7 +502,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -46.11,
+      "x": -49.77499999999999,
       "y": 0,
       "z": 0
     },
@@ -590,8 +597,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 30,
-      "height": 55.56
+      "width": 37.33,
+      "height": 53.33
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -600,7 +607,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 0,
+      "x": 7.105427357601002e-15,
       "y": 0,
       "z": 0
     },
@@ -641,7 +648,7 @@
     "_string": "0",
     "_N$string": "0",
     "_fontSize": 40,
-    "_lineHeight": 50,
+    "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "09e5ca75-fad3-4df8-9d5d-aba87d94b689"
@@ -705,7 +712,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 46.11,
+      "x": 49.775000000000006,
       "y": 0,
       "z": 0
     },
@@ -782,7 +789,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 144.44,
+      "width": 151.76999999999998,
       "height": 50
     },
     "_resize": 1,
@@ -1237,9 +1244,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -1292,9 +1299,9 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "战斗奖励",
-    "_N$string": "战斗奖励",
-    "_fontSize": 30,
+    "_string": "关卡奖励",
+    "_N$string": "关卡奖励",
+    "_fontSize": 35,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -1365,7 +1372,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -17,
+      "y": 0,
       "z": 0
     },
     "_scale": {
@@ -1516,9 +1523,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
@@ -1690,7 +1697,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -170,
+      "y": -150,
       "z": 0
     },
     "_scale": {
@@ -1789,8 +1796,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "选择战斗技能",
-    "_N$string": "选择战斗技能",
+    "_string": "选择一个技能",
+    "_N$string": "选择一个技能",
     "_fontSize": 35,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -2413,16 +2420,13 @@
       },
       {
         "__id__": 78
-      },
-      {
-        "__id__": 87
       }
     ],
     "_active": false,
     "_level": 3,
     "_components": [],
     "_prefab": {
-      "__id__": 95
+      "__id__": 87
     },
     "_opacity": 255,
     "_color": {
@@ -2505,7 +2509,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 80,
+      "y": 90,
       "z": 0
     },
     "_scale": {
@@ -2566,7 +2570,7 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "326pjs9bRBSqIaVZzqvTZL",
+    "fileId": "fb7LkKh8dOmZF8xo8uBcn5",
     "sync": false
   },
   {
@@ -2604,7 +2608,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 77.59,
+      "width": 82.59,
       "height": 50
     },
     "_anchorPoint": {
@@ -2614,8 +2618,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 20,
+      "x": -120,
+      "y": 30,
       "z": 0
     },
     "_scale": {
@@ -2676,7 +2680,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -11.295000000000002,
+      "x": -13.795000000000002,
       "y": 0,
       "z": 0
     },
@@ -2742,7 +2746,7 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "c1+XxiPDxMNImdzWsNZQJY",
+    "fileId": "95gfC98GpLnLjy/G80nv1A",
     "sync": false
   },
   {
@@ -2783,7 +2787,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 30,
+      "x": 32.5,
       "y": 0,
       "z": 0
     },
@@ -2845,7 +2849,7 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "3dcuz+17BFebLifUlDjJkA",
+    "fileId": "9ffKBZ2idIDIhqF9qvceWC",
     "sync": false
   },
   {
@@ -2858,7 +2862,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 77.59,
+      "width": 82.59,
       "height": 50
     },
     "_resize": 1,
@@ -2874,7 +2878,7 @@
     "_N$paddingRight": 0,
     "_N$paddingTop": 0,
     "_N$paddingBottom": 0,
-    "_N$spacingX": 5,
+    "_N$spacingX": 10,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0,
@@ -2889,7 +2893,7 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "b71EDUCH1Mpr/Lm+s+SCHJ",
+    "fileId": "80UB0LSRNBYKOs697wczyK",
     "sync": false
   },
   {
@@ -2937,8 +2941,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 0,
-      "y": -40,
+      "x": 80,
+      "y": 30,
       "z": 0
     },
     "_scale": {
@@ -3065,7 +3069,7 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "2azDpo91JNCoVsrEI4N1iO",
+    "fileId": "c3kxHOfZ9CJb4QBx+xRkBS",
     "sync": false
   },
   {
@@ -3168,7 +3172,7 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "6aRtc3o21PFavkitrclWzj",
+    "fileId": "f2KFjlVx5MMKtmf37Mbd41",
     "sync": false
   },
   {
@@ -3212,7 +3216,18 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "3fzhnVTgNEN5/fZp0Z77tO",
+    "fileId": "e12Dfu5ptFLp1wYzxMchWm",
+    "sync": false
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
+    },
+    "fileId": "61Putu6X1Gta6i+wAR5/mR",
     "sync": false
   },
   {
@@ -3220,25 +3235,25 @@
     "_name": "okBtn",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 6
     },
     "_children": [
       {
-        "__id__": 88
+        "__id__": 89
       }
     ],
-    "_active": true,
-    "_level": 4,
+    "_active": false,
+    "_level": 3,
     "_components": [
       {
-        "__id__": 91
+        "__id__": 92
       },
       {
-        "__id__": 92
+        "__id__": 93
       }
     ],
     "_prefab": {
-      "__id__": 94
+      "__id__": 95
     },
     "_opacity": 255,
     "_color": {
@@ -3250,8 +3265,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
-      "height": 80
+      "width": 250,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3261,7 +3276,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -120,
+      "y": -220,
       "z": 0
     },
     "_scale": {
@@ -3289,18 +3304,18 @@
     "_name": "New Label",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 87
+      "__id__": 88
     },
     "_children": [],
     "_active": true,
     "_level": 5,
     "_components": [
       {
-        "__id__": 89
+        "__id__": 90
       }
     ],
     "_prefab": {
-      "__id__": 90
+      "__id__": 91
     },
     "_opacity": 255,
     "_color": {
@@ -3312,8 +3327,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 70,
-      "height": 50.4
+      "width": 80,
+      "height": 63
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3323,7 +3338,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 0,
+      "y": 10,
       "z": 0
     },
     "_scale": {
@@ -3351,7 +3366,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 88
+      "__id__": 89
     },
     "_enabled": true,
     "_materials": [
@@ -3362,8 +3377,8 @@
     "_useOriginalSize": false,
     "_string": "确定",
     "_N$string": "确定",
-    "_fontSize": 35,
-    "_lineHeight": 40,
+    "_fontSize": 40,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -3384,7 +3399,7 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "c6CMpytjNAFoot7/nDy3iT",
+    "fileId": "31LpMm4ttBtb6Eg2EjYy4E",
     "sync": false
   },
   {
@@ -3392,7 +3407,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 87
+      "__id__": 88
     },
     "_enabled": true,
     "_materials": [
@@ -3426,14 +3441,14 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 87
+      "__id__": 88
     },
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 0.9,
     "clickEvents": [
       {
-        "__id__": 93
+        "__id__": 94
       }
     ],
     "_N$interactable": true,
@@ -3509,18 +3524,7 @@
     "asset": {
       "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
     },
-    "fileId": "6bKpkKJn1LMqjRU3tIW76J",
-    "sync": false
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
-    },
-    "fileId": "58RVicXA5PDpWk9LJMLIO4",
+    "fileId": "78/IyOWXxMnZUSrndCHfdt",
     "sync": false
   },
   {
@@ -3539,7 +3543,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "f7783f0a-a2f7-44da-b98b-37614323a8d2"
+      "__uuid__": "a8f63c9c-d041-42c3-a90a-2736c07a92b0"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -3553,7 +3557,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": false,
     "_atlas": {
-      "__uuid__": "1b4796e3-b0b1-4cdd-bcbc-b683b8c0dbb0"
+      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
     },
     "_id": ""
   },
@@ -3576,8 +3580,11 @@
       "__id__": 1
     },
     "_enabled": true,
-    "titleLabel": {
+    "titleSpr": {
       "__id__": 8
+    },
+    "failFrame": {
+      "__uuid__": "5b2862fa-9b81-4525-8017-da9a75a79c4f"
     },
     "levelLabel": {
       "__id__": 15
@@ -3605,6 +3612,9 @@
     "chapterNode": {
       "__id__": 65
     },
+    "goldNode": {
+      "__id__": 69
+    },
     "goldLabel": {
       "__id__": 74
     },
@@ -3613,6 +3623,9 @@
     },
     "diamondLabel": {
       "__id__": 83
+    },
+    "okBtnNode": {
+      "__id__": 88
     },
     "skillNode": {
       "__id__": 45
