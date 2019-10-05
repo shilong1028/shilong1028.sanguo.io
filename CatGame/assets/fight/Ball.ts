@@ -146,7 +146,7 @@ export default class Ball extends cc.Component {
         if(this.ballId > 1000){   //分裂产生的小球
             this.ballSpr.spriteFrame = FightMgr.getFightScene().boomFrames[0];
         }else if(this.ballInfo){
-            this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("cannon_"+this.ballInfo.cannonId);
+            this.ballSpr.spriteFrame = this.cannonAtlas.getSpriteFrame("cannon_"+this.ballInfo.cannonCfg.quality);
         }
     }
 
@@ -277,7 +277,7 @@ export default class Ball extends cc.Component {
 
         if(skillsState.qianghuaPro > 0){  //2强化 一定概率提升攻击力
             if(Math.random() <= skillsState.qianghuaPro){ 
-                ROOT_NODE.showTipsText("触发强化技能，攻击力提升。");
+                //ROOT_NODE.showTipsText("触发强化技能，攻击力提升。");
                 this.addRoundAttack();   //增加回合攻击力(充能) 
             }
         }
@@ -286,7 +286,7 @@ export default class Ball extends cc.Component {
         }
         if(skillsState.fanTanPro > 0){  //4反弹 一定概率使得炮弹落地后重新反弹
             if(Math.random() <= skillsState.fanTanPro){ 
-                ROOT_NODE.showTipsText("触发反弹技能，落地后会重新弹起。");
+                //ROOT_NODE.showTipsText("触发反弹技能，落地后会重新弹起。");
                 this.openGroundBounce();   //反弹特性
             }
         }
@@ -298,7 +298,7 @@ export default class Ball extends cc.Component {
         }
         if(skillsState.kuangBaoPro > 0){  //9狂暴 一定概率提升暴击率
             if(Math.random() <= skillsState.kuangBaoPro){ 
-                ROOT_NODE.showTipsText("触发狂暴技能，暴击率提升。");
+                //ROOT_NODE.showTipsText("触发狂暴技能，暴击率提升。");
                 this.addRoundBaoji();   
             }
         }
@@ -356,7 +356,7 @@ export default class Ball extends cc.Component {
                         AudioMgr.playEffect("effect/launch");  //小球弹射音效
 
                         if(this.ballSplitProbability > 0 && Math.random() <= this.ballSplitProbability){   //分裂技能概率
-                            ROOT_NODE.showTipsText("触发分裂技能，武器分裂为三份。");
+                            //ROOT_NODE.showTipsText("触发分裂技能，武器分裂为三份。");
                             FightMgr.qipanSc.handleBallSplit(this);
                         }
                         

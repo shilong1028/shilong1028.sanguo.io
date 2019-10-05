@@ -86,12 +86,16 @@ export class st_monster_info{
     hp;   //默认血量
     event;   //事件 0无 1-间隔回合无敌 2-回合第一次盾牌 3-重生。当砖块死亡时，原地复活一个y移动砖块（Id=7)
     ai;    //行为 0无 1：左右往复移动 2：间隔吸附 3.坠落两行
+    quality;
+    res;
     desc;    
 
     transType(){
         this.hp = parseInt(this.hp);
         this.event = parseInt(this.event);
         this.ai = parseInt(this.ai);
+        this.quality = parseInt(this.quality);
+        this.res = parseInt(this.res);
     }
 
     constructor(){
@@ -103,6 +107,8 @@ export class st_monster_info{
         temp.hp = this.hp;
         temp.event = this.event;
         temp.ai = this.ai;
+        temp.quality = this.quality;
+        temp.res = this.res;
         temp.desc = this.desc;
         return temp;
     }

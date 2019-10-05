@@ -3,6 +3,8 @@ name = 汉奸
 hp = 1
 event = 0
 ai = 0
+quality = 1
+res = 1
 desc = 汉奸
 
 [2]
@@ -10,6 +12,8 @@ name = 大头兵
 hp = 2
 event = 0
 ai = 0
+quality = 2
+res = 1
 desc = 大头兵
 
 [3]
@@ -17,6 +21,8 @@ name = 三等兵
 hp = 3
 event = 0
 ai = 0
+quality = 1
+res = 2
 desc = 三等兵
 
 [4]
@@ -24,6 +30,8 @@ name = 二等兵
 hp = 5
 event = 0
 ai = 0
+quality = 2
+res = 2
 desc = 二等兵
 
 [5]
@@ -31,6 +39,8 @@ name = 一等兵
 hp = 7
 event = 0
 ai = 0
+quality = 3
+res = 2
 desc = 一等兵
 
 [6]
@@ -38,6 +48,8 @@ name = 上等兵
 hp = 10
 event = 0
 ai = 0
+quality = 1
+res = 3
 desc = 上等兵
 
 [7]
@@ -45,6 +57,8 @@ name = 伍长
 hp = 15
 event = 0
 ai = 1
+quality = 2
+res = 3
 desc = 具有移动功能
 
 [8]
@@ -52,6 +66,8 @@ name = 军曹
 hp = 20
 event = 0
 ai = 2
+quality = 1
+res = 4
 desc = 具有吸附功能
 
 [9]
@@ -59,6 +75,8 @@ name = 曹长
 hp = 30
 event = 1
 ai = 3
+quality = 2
+res = 4
 desc = 具有下坠功能，间隔无敌功能
 
 [10]
@@ -66,6 +84,8 @@ name = 准尉
 hp = 40
 event = 0
 ai = 0
+quality = 3
+res = 4
 desc = 准尉
 
 [11]
@@ -73,6 +93,8 @@ name = 少尉
 hp = 55
 event = 0
 ai = 0
+quality = 1
+res = 5
 desc = 少尉
 
 [12]
@@ -80,6 +102,8 @@ name = 中尉
 hp = 70
 event = 0
 ai = 0
+quality = 2
+res = 5
 desc = 中尉
 
 [13]
@@ -87,6 +111,8 @@ name = 大尉
 hp = 85
 event = 0
 ai = 0
+quality = 1
+res = 6
 desc = 大尉
 
 [14]
@@ -94,6 +120,8 @@ name = 少佐
 hp = 100
 event = 0
 ai = 0
+quality = 2
+res = 6
 desc = 少佐
 
 [15]
@@ -101,6 +129,8 @@ name = 中佐
 hp = 125
 event = 0
 ai = 2
+quality = 3
+res = 6
 desc = 中佐
 
 [16]
@@ -108,6 +138,8 @@ name = 大佐
 hp = 150
 event = 0
 ai = 0
+quality = 1
+res = 7
 desc = 大佐
 
 [17]
@@ -115,6 +147,8 @@ name = 少将
 hp = 175
 event = 3
 ai = 1
+quality = 2
+res = 7
 desc = 死亡后重生一个移动砖块
 
 [18]
@@ -122,6 +156,8 @@ name = 中将
 hp = 200
 event = 0
 ai = 0
+quality = 3
+res = 7
 desc = 中将
 
 [19]
@@ -129,6 +165,8 @@ name = 大将
 hp = 250
 event = 0
 ai = 0
+quality = 1
+res = 8
 desc = 大将
 
 [20]
@@ -136,4 +174,6 @@ name = 元帅
 hp = 300
 event = 2
 ai = 0
+quality = 2
+res = 8
 desc = 第一次伤害无效

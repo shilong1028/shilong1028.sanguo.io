@@ -165,7 +165,7 @@ export class SDK_Wechat  {
     ////////////////////////////广告相关功能  ////////////////////////////////////////////
     curBanner:any = null;
     
-    createBannerWithWidth(bannerId:string, adWidth: number=300){
+    createBannerWithWidth(adWidth: number=300){
         let wx = (window as any).wx;
         if(wx == null){
             return;
@@ -180,7 +180,7 @@ export class SDK_Wechat  {
         console.log("info = "+JSON.stringify(info));
 
         let bannerAd = wx.createBannerAd({
-            adUnitId: bannerId,
+            adUnitId: "adunit-0895b0ed4218bdfd",
             style: {
                 left: 0,
                 top: 0,

@@ -299,12 +299,12 @@ class FightManager {
 
     /**获取大猫Y轴坐标 */
     getCatPosY(){
-        return this.gameBottomPosY + 70;   //大猫中心与棋盘底部坐标的偏移
+        return this.gameBottomPosY;   //大猫中心与棋盘底部坐标的偏移
     }
 
     /**获取小球的Y轴坐标 */
     getBallPosY(){
-        return this.gameBottomPosY + 50;  //小球中心的Y轴与棋盘底部坐标的偏移，以及指示线起点Y轴坐标
+        return this.gameBottomPosY + 20;  //小球中心的Y轴与棋盘底部坐标的偏移，以及指示线起点Y轴坐标
     }
 
     /**

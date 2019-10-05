@@ -15,7 +15,7 @@ export default class ShopCell extends viewCell {
     @property(cc.Sprite)
     cellBg: cc.Sprite = null;
     @property(cc.Sprite)
-    boxBg: cc.Sprite = null;
+    boxSpr: cc.Sprite = null;
     @property(cc.Sprite)
     btnSpr: cc.Sprite = null;
     @property(cc.Sprite)
@@ -32,8 +32,8 @@ export default class ShopCell extends viewCell {
     @property(cc.Label)
     itemLabel: cc.Label = null;
 
-    @property(cc.SpriteAtlas)
-    qualityAtlas: cc.SpriteAtlas = null;
+    @property([cc.SpriteFrame])
+    boxFrames: cc.SpriteFrame[] = new Array(3);
     @property([cc.SpriteFrame])
     iconFrames: cc.SpriteFrame[] = new Array(3);
     @property([cc.SpriteFrame])
@@ -68,7 +68,7 @@ export default class ShopCell extends viewCell {
         this.weaponLabel.string = "武器概率："+(this.cellData.weapon*100)+"%";
         this.itemLabel.string = "饰品概率："+(this.cellData.item*100)+"%";
 
-        this.boxBg.spriteFrame = this.qualityAtlas.getSpriteFrame("colorBg"+this.cellData.quality);
+        this.boxSpr.spriteFrame = this.boxFrames[this.cellData.quality-1];
         if(this.cellIdx%2 == 0){
             this.cellBg.spriteFrame = this.bgFrames[0];
             this.btnSpr.spriteFrame = this.bgFrames[1];

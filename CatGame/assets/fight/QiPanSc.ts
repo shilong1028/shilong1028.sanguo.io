@@ -889,7 +889,7 @@ export default class QiPanSc extends cc.Component {
                             }
                             cc.log("冰冻概率 "+probability);
                             if(Math.random() <= probability){ 
-                                ROOT_NODE.showTipsText("触发冰冻技能，敌人下移冻结一回合。");
+                                //ROOT_NODE.showTipsText("触发冰冻技能，敌人下移冻结一回合。");
                                 bStagnation = true;
                             }
                         }

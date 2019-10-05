@@ -3,6 +3,8 @@ import { GameMgr } from "../manager/GameManager";
 import { ROOT_NODE } from "./rootNode";
 import { MyUserDataMgr } from "../manager/MyUserData";
 import { LDMgr, LDKey } from "../manager/StorageManager";
+import { SDKMgr } from "../manager/SDKManager";
+import { sdkWechat } from "../manager/SDK_Wechat";
 
 //初始场景，用于初始化加载数据
 const {ccclass, property} = cc._decorator;
@@ -33,6 +35,10 @@ export default class LoginScene extends cc.Component {
         }
         this.btnNode.active = true;
         this.bUpdateStr = true;
+
+        if(SDKMgr.WeiChat){
+            sdkWechat.createBannerWithWidth();  //Banner广告
+        }
     }
 
     update (dt) {

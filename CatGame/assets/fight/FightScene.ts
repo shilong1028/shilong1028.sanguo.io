@@ -129,10 +129,6 @@ export default class FightScene extends cc.Component {
 
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
-
-        // if(SDKMgr.isSDK == true && SDKMgr.WeiChat){
-        //     sdkWechat.createBannerWithWidth("adunit-7c748fc257f96483");
-        // }
     }
 
     start () {
@@ -177,7 +173,7 @@ export default class FightScene extends cc.Component {
             cc.log("指示技能概率 "+probability);
             if(Math.random() <= probability){ 
                 FightMgr.defaultRayCount ++;   //默认的绘制指示线的射线段数
-                ROOT_NODE.showTipsText("触发指示技能，增加一段指示线。");
+                //ROOT_NODE.showTipsText("触发指示技能，增加一段指示线。");
             }
         }
 
@@ -193,7 +189,7 @@ export default class FightScene extends cc.Component {
             cc.log("加球技能概率 "+probability);
             if(Math.random() <= probability){ 
                 FightMgr.fightAddCount++;    //章节加球技能增加值（每一章节内有效）
-                ROOT_NODE.showTipsText("触发加球技能，增加一个武器数量。");
+                //ROOT_NODE.showTipsText("触发加球技能，增加一个武器数量。");
             }
         }
     }
@@ -342,9 +338,9 @@ export default class FightScene extends cc.Component {
             let pos = this.qipanNode.convertToNodeSpaceAR(localPos);
             //if(FightMgr.bordersContainsPoint(FightMgr.getGameBorders(0), pos)){  //触点在棋盘范围内
             if(pos.y >= FightMgr.getBallPosY() && pos.y <= this.qipanNode.height/2){  //触点在棋盘范围内
-                // if(this.fingerPos && this.fingerPos.sub(pos).mag()<10){   //降低触摸移动的灵敏度
-                //     return false;
-                // }
+                if(this.fingerPos && this.fingerPos.sub(pos).mag()<10){   //降低触摸移动的灵敏度
+                    return false;
+                }
 
                 this.tempBottomNode.opacity = 255;  //底部拖动取消提示
                 

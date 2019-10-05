@@ -70,7 +70,7 @@ export default class FightRenew extends cc.Component {
             MyUserDataMgr.updateUserDiamond(-this.goldCost);
             this.handleNormal(true);  //复活或显示结算
         }else{
-            ROOT_NODE.showTipsText(TipsStrDef.KEY_GoldTip);
+            ROOT_NODE.showTipsText(TipsStrDef.KEY_DiamondTip);
         }
     }
 

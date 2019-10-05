@@ -340,10 +340,10 @@ export default class BagLayer extends cc.Component {
                     if(rect2.contains(pos2)){    //装备新小球
                         let curPageInfo: PlayerInfo = MyUserDataMgr.getPlayerInfoByIdx(this.curPageIdx);
                         if(curPageInfo && curPageInfo.useState == 1){   //已经拥有的炮台
-                            if(this.selectBlock.ballInfo.cannonId < curPageInfo.playerCfg.weapons[0] || this.selectBlock.ballInfo.cannonId > curPageInfo.playerCfg.weapons[1]){
-                                ROOT_NODE.showTipsText(TipsStrDef.KEY_WeaponTip);
-                                this.selectBlock.onRecoverSelf();   //复原本地块模型
-                            }else{
+                            // if(this.selectBlock.ballInfo.cannonId < curPageInfo.playerCfg.weapons[0] || this.selectBlock.ballInfo.cannonId > curPageInfo.playerCfg.weapons[1]){
+                            //     ROOT_NODE.showTipsText(TipsStrDef.KEY_WeaponTip);
+                            //     this.selectBlock.onRecoverSelf();   //复原本地块模型
+                            // }else{
                                 let equipBallInfo = null;
                                 if(curPageInfo.ballId > 0){
                                     equipBallInfo = new BallInfo(curPageInfo.ballId);
@@ -362,20 +362,15 @@ export default class BagLayer extends cc.Component {
                                     this.selectBlock.onRemoveModel();   //将本地块上的模型移走了
                                 }
                             }
-                        }else{
-                            this.selectBlock.onRecoverSelf();   //复原本地块模型
-                        }
+                        // }else{
+                        //     this.selectBlock.onRecoverSelf();   //复原本地块模型
+                        // }
                     }else{
                         let pos3 = this.delNode.convertToNodeSpace(touchPos);   //回收站
                         let rect3 = cc.rect(0, 0, this.delNode.width, this.delNode.height);
                         if(rect3.contains(pos3)){ 
-                            // if(MyUserData.ballList.length == 1){   //最后一个小球不可删除
-                            //     ROOT_NODE.showTipsText(TipsStrDef.KEY_FireTip);
-                            //     this.selectBlock.onRecoverSelf();   //复原本地块模型
-                            // }else{
-                                let sellGold = this.selectBlock.handleSellBall();  
-                                this.showDelBallGainAni(sellGold);   //显示售卖士兵收益 
-                            //}
+                            let sellGold = this.selectBlock.handleSellBall();  
+                            this.showDelBallGainAni(sellGold);   //显示售卖士兵收益 
                             this.nSelectModel.setPosition(-3000, -3000);
                         }else{
                             this.selectBlock.onRecoverSelf();   //复原本地块模型

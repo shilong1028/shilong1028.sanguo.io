@@ -17,6 +17,8 @@ export default class Brick extends cc.Component {
     brickNode: cc.Node = null;  //砖块显示总节点, 用于抖动，放缩，复制移动等动作目标
     @property(cc.Sprite)
     brickSpr: cc.Sprite = null;   //砖块样式纹理， 用于延迟动作目标 
+    @property(cc.Sprite)
+    qualitySpr: cc.Sprite = null;
     @property(cc.Label)
     labPH: cc.Label = null;
     @property(cc.ProgressBar)
@@ -36,6 +38,8 @@ export default class Brick extends cc.Component {
     collider: cc.PolygonCollider = null;
     @property(cc.SpriteAtlas)
     bricksAtlas: cc.SpriteAtlas = null;
+    @property(cc.SpriteAtlas)
+    qualityAtlas: cc.SpriteAtlas = null;
 
     moveDownActionTag = 1111;   //下移动作Tag
     moveBrickActionTag = 2222;   //移动砖块的水平移动
@@ -196,7 +200,8 @@ export default class Brick extends cc.Component {
         this.brickId = FightMgr.getNewBrickId();   //每个砖块分配一个唯一ID
 
         this.brick_info = brickInfo;
-        this.brickSpr.spriteFrame = this.bricksAtlas.getSpriteFrame("monster_"+this.brick_info.monsterId);   //砖块类型，关卡json配置中的数据
+        this.brickSpr.spriteFrame = this.bricksAtlas.getSpriteFrame("monster_"+this.brick_info.monsterCfg.res);   //砖块类型，关卡json配置中的数据
+        this.qualitySpr.spriteFrame = this.qualityAtlas.getSpriteFrame("colorBg"+this.brick_info.monsterCfg.quality);
 
         this.setBrickHpLabel();
         this.setBrickInvincibleSpr();   //根据无敌状态设置砖块纹理
@@ -546,7 +551,7 @@ export default class Brick extends cc.Component {
             this.hitDamage(harm, ball, true);   //处理砖块收到伤害, 注意，伤害一定要放在bump_event之后，因为受击后砖块可能死亡
 
             if(ball.multiHitProbability > 0 && Math.random() <= ball.multiHitProbability){    //小球有连体覆盖打击效果
-                ROOT_NODE.showTipsText("触发连击技能，覆盖打击目标多个砖块。");
+                //ROOT_NODE.showTipsText("触发连击技能，覆盖打击目标多个砖块。");
                 let curPos = this.node.position.clone();
                 NotificationMy.emit(NoticeType.BrickDiffuseHit, new cc.Vec3(curPos.x, curPos.y, 1000000+harm));   //砖块受击散播
             }
@@ -606,7 +611,7 @@ export default class Brick extends cc.Component {
                     this.showDeadEffect(bDeadEvent);   //死亡特效 
 
                     if(ball && ball.baoZhaProbability > 0 && Math.random() <= ball.baoZhaProbability){    //爆炸打击效果
-                        ROOT_NODE.showTipsText("触发爆炸技能，将四周敌人全部炸死。");
+                        //ROOT_NODE.showTipsText("触发爆炸技能，将四周敌人全部炸死。");
                         let curPos = this.node.position.clone();
                         NotificationMy.emit(NoticeType.BrickBombDead, new cc.Vec3(curPos.x, curPos.y, 0));   //爆炸
                     }

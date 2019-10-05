@@ -7,106 +7,106 @@
             <key>chapter_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{495,2},{491,491}}</string>
+                <string>{{283,564},{270,279}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{491,491}}</string>
+                <string>{{0,0},{270,279}}</string>
                 <key>sourceSize</key>
-                <string>{491,491}</string>
+                <string>{270,279}</string>
             </dict>
             <key>chapter_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,495},{491,491}}</string>
+                <string>{{546,283},{270,279}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{491,491}}</string>
+                <string>{{0,0},{270,279}}</string>
                 <key>sourceSize</key>
-                <string>{491,491}</string>
+                <string>{270,279}</string>
             </dict>
             <key>chapter_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{491,491}}</string>
+                <string>{{274,283},{270,279}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{491,491}}</string>
+                <string>{{0,0},{270,279}}</string>
                 <key>sourceSize</key>
-                <string>{491,491}</string>
+                <string>{270,279}</string>
             </dict>
             <key>chapter_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{495,2},{491,491}}</string>
+                <string>{{546,2},{270,279}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{491,491}}</string>
+                <string>{{0,0},{270,279}}</string>
                 <key>sourceSize</key>
-                <string>{491,491}</string>
+                <string>{270,279}</string>
             </dict>
             <key>chapter_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,495},{491,491}}</string>
+                <string>{{274,2},{270,279}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{491,491}}</string>
+                <string>{{0,0},{270,279}}</string>
                 <key>sourceSize</key>
-                <string>{491,491}</string>
+                <string>{270,279}</string>
             </dict>
             <key>chapter_6.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{491,491}}</string>
+                <string>{{2,564},{270,279}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{491,491}}</string>
+                <string>{{0,0},{270,279}}</string>
                 <key>sourceSize</key>
-                <string>{491,491}</string>
+                <string>{270,279}</string>
             </dict>
             <key>chapter_7.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{495,2},{491,491}}</string>
+                <string>{{2,283},{270,279}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{491,491}}</string>
+                <string>{{0,0},{270,279}}</string>
                 <key>sourceSize</key>
-                <string>{491,491}</string>
+                <string>{270,279}</string>
             </dict>
             <key>chapter_8.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,495},{491,491}}</string>
+                <string>{{2,2},{270,279}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{491,491}}</string>
+                <string>{{0,0},{270,279}}</string>
                 <key>sourceSize</key>
-                <string>{491,491}</string>
+                <string>{270,279}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -116,9 +116,9 @@
             <key>realTextureFileName</key>
             <string>chapter.png</string>
             <key>size</key>
-            <string>{988,988}</string>
+            <string>{818,836}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:ec7d594f7a65b99c5ffefb2205d5f00d:f1bf48a60b7fe856f856c4ce7d47c452:f58a846f62a87822f95471b10a35c2b4$</string>
+            <string>$TexturePacker:SmartUpdate:5c90ffb4889585510893c918ded92243:7d2472625f1bce97aa96edb96f866e6e:f58a846f62a87822f95471b10a35c2b4$</string>
             <key>textureFileName</key>
             <string>chapter.png</string>
         </dict>

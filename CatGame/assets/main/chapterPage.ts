@@ -45,7 +45,7 @@ export default class ChapterPage extends cc.Component {
         this.chapterLabel.string = chapterId.toString();
         this.nameLabel.string = this.chapterInfo.chapterCfg.name;
         this.iconSpr.spriteFrame = this.iconAtlas.getSpriteFrame("chapter_"+chapterId);
-        this.descLabel.string = "拥有关卡第"+this.chapterInfo.chapterCfg.levels[0]+"-"+this.chapterInfo.chapterCfg.levels[1]+"关";
+        this.descLabel.string = "拥有关卡第"+this.chapterInfo.chapterCfg.levels[0]+"-"+this.chapterInfo.chapterCfg.levels[1]+"关;\n通关奖励"+this.chapterInfo.chapterCfg.diamond+"钻石";
 
         if(chapterId <= MyUserData.curChapterId){
             this.lockImg.active = false;

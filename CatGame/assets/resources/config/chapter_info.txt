@@ -1,47 +1,47 @@
 [1]
-name = 城市霓彩
+name = 房间
 res = 1
 levels = 1|5
 diamond = 50
 gold = 1000
 
 [2]
-name = 森林幻境
+name = 城市
 res = 2
 levels = 6|12
 diamond = 100
 gold = 2000
 
 [3]
-name = 沙漠幻风
+name = 郊区
 res = 3
 levels = 13|20
 diamond = 100
 gold = 2000
 
 [4]
-name = 垃圾乱飞
+name = 野外
 res = 4
 levels = 21|30
 diamond = 200
 gold = 3000
 
 [5]
-name = 枝条盘绕
+name = 火山
 res = 5
 levels = 31|40
 diamond = 200
 gold = 3000
 
 [6]
-name = 热气炎炎
+name = 大漠
 res = 6
 levels = 41|55
 diamond = 300
 gold = 4000
 
 [7]
-name = 车水马龙
+name = 雪山
 res = 7
 levels = 56|70
 diamond = 300

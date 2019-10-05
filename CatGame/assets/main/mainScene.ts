@@ -31,10 +31,6 @@ export default class MainScene extends cc.Component {
     labGold: cc.Label = null;   //玩家金币数
     @property(cc.Label)
     labDiamond: cc.Label = null;    //玩家钻石数
-    @property(cc.Label)
-    chapterLabel: cc.Label = null;    //第几章
-    @property(cc.Label)
-    chapterDesc: cc.Label = null;  //通关奖励
 
     @property(cc.PageView)
     chapterPageView: cc.PageView = null;
@@ -82,7 +78,6 @@ export default class MainScene extends cc.Component {
         this.shareBtn.active = false;  //分享
         if(SDKMgr.WeiChat){
             this.shareBtn.active = true;  //分享
-            //sdkWechat.createBannerWithWidth("adunit-7c748fc257f96483");
         }
     }
 
@@ -248,9 +243,7 @@ export default class MainScene extends cc.Component {
     //显示当前章节信息
     showChapterUI(){
         this.handleMovePage();
-        let chapterInfo = new ChapterInfo(this.curChapterIdx + 1);
-        this.chapterLabel.string = chapterInfo.chapterId.toString();
-        this.chapterDesc.string = "通关奖励"+chapterInfo.chapterCfg.diamond+"钻石"; 
+        //let chapterInfo = new ChapterInfo(this.curChapterIdx + 1);
     }
     handleMovePage(){
         if(this.curChapterIdx <= 0){
