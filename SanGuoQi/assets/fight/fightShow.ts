@@ -119,7 +119,7 @@ export default class FightShow extends cc.Component {
     }
 
     showTipsLable(str: string, col: cc.Color = cc.Color.WHITE, posType: number = 0){
-        cc.log("showTipsLable(), str = "+str);
+        //cc.log("showTipsLable(), str = "+str);
         this.tipsArr.push({"str":str, "col":col, "posType":posType});   //posType=0 中间位置 -1为左侧将军位置 1为右侧将军位置
     }
 
@@ -134,8 +134,8 @@ export default class FightShow extends cc.Component {
         this.rightBlock = rightBlock;
         this.leftCardInfo = leftBlock.cardInfo;
         this.rightCardInfo = rightBlock.cardInfo;
-        cc.log("initFightShowData(), this.leftCardInfo = "+JSON.stringify(this.leftCardInfo));
-        cc.log("initFightShowData(), this.rightCardInfo = "+JSON.stringify(this.rightCardInfo));
+        //cc.log("initFightShowData(), this.leftCardInfo = "+JSON.stringify(this.leftCardInfo));
+        //cc.log("initFightShowData(), this.rightCardInfo = "+JSON.stringify(this.rightCardInfo));
 
         if(this.nShowType == 1){   //合成
             this.fightIcon.spriteFrame = this.hechengIcon;
@@ -162,7 +162,7 @@ export default class FightShow extends cc.Component {
 
     //双方战斗操作过程
     FightAiOpt(){
-        cc.log("开始战斗");
+        //cc.log("开始战斗");
         let stepDelay = 0.5;
         this.node.runAction(cc.sequence(
             cc.repeat(cc.sequence(cc.delayTime(stepDelay), cc.callFunc(function(){
@@ -171,7 +171,7 @@ export default class FightShow extends cc.Component {
                 this.rightHitLeft();  //右侧攻击左侧（被动方还击主动方）
             }.bind(this))), 3), 
         cc.delayTime(0.1), cc.callFunc(function(){
-            cc.log("对战回合结束处理");
+            //cc.log("对战回合结束处理");
             if(this.checkFightUnitDead() == false){ //检测战斗部曲状态（血量《0，兵力《0，士气《0，则部曲溃逃）
                 //双方均未死亡
                 this.leftBlock.showBlockCard(this.leftCardInfo);  //设置地块上的卡牌模型
@@ -184,8 +184,8 @@ export default class FightShow extends cc.Component {
 
     //武将死亡或对战回合结束处理
     handleFightEnd(){
-        cc.log("handleFightEnd, this.leftCardInfo = "+JSON.stringify(this.leftCardInfo));
-        cc.log("handleFightEnd, this.rightCardInfo = "+JSON.stringify(this.rightCardInfo));
+        //cc.log("handleFightEnd, this.leftCardInfo = "+JSON.stringify(this.leftCardInfo));
+        //cc.log("handleFightEnd, this.rightCardInfo = "+JSON.stringify(this.rightCardInfo));
         this.node.stopAllActions();
         let stepDelay = 0.5;
         this.node.runAction(cc.sequence(cc.delayTime(stepDelay), cc.callFunc(function(){
@@ -199,7 +199,7 @@ export default class FightShow extends cc.Component {
 
     //检测战斗部曲状态（血量《0，兵力《0，士气《0，则部曲溃逃）
     checkFightUnitDead(){
-        cc.log("checkFightUnitDead() 检测战斗部曲状态（血量《0，兵力《0，士气《0，则部曲溃逃）");
+        //cc.log("checkFightUnitDead() 检测战斗部曲状态（血量《0，兵力《0，士气《0，则部曲溃逃）");
         let leftGeneral = this.leftCardInfo.generalInfo;
         let rightGeneral = this.rightCardInfo.generalInfo;
 
@@ -337,12 +337,12 @@ export default class FightShow extends cc.Component {
         let atkCardCfg = attackCardInfo.generalInfo.generalCfg;
         let defCardCfg = defendCardInfo.generalInfo.generalCfg;
 
-        cc.log("开始攻击，攻击方："+atkCardCfg.name+"; 防御方： "+defCardCfg.name);
+        //cc.log("开始攻击，攻击方："+atkCardCfg.name+"; 防御方： "+defCardCfg.name);
         let basicAtk = atkCardCfg.atk;
         let basicDef = defCardCfg.def;
         //技能进攻
         let retArr = this.handleFightSkill(attackCardInfo.generalInfo, defendCardInfo.generalInfo);
-        cc.log("basicAtk = "+basicAtk+"; basicDef = "+basicDef+"; retArr = "+JSON.stringify(retArr));
+        //cc.log("basicAtk = "+basicAtk+"; basicDef = "+basicDef+"; retArr = "+JSON.stringify(retArr));
         basicAtk = retArr[0];
         basicDef = retArr[1];
 
@@ -350,7 +350,7 @@ export default class FightShow extends cc.Component {
         let defend = basicDef *((defendCardInfo.generalInfo.generalLv-1)/3+1);
         basicAtk = attack;
         basicDef = defend;
-        cc.log("atkLv = "+attackCardInfo.generalInfo.generalLv+"; basicAtk = "+basicAtk+"; defLv = "+defendCardInfo.generalInfo.generalLv+"; basicDef = "+basicDef);
+        //cc.log("atkLv = "+attackCardInfo.generalInfo.generalLv+"; basicAtk = "+basicAtk+"; defLv = "+defendCardInfo.generalInfo.generalLv+"; basicDef = "+basicDef);
 
         //攻击方在箭塔下
         if(atkArrowTown == 1){
@@ -402,7 +402,7 @@ export default class FightShow extends cc.Component {
         this.showTipsLable("武将受到伤害"+generalHarm, cc.Color.GREEN, (bLeftIsAtk == true ? 1 : -1));
         let soldierHarm = harm - generalHarm;
         this.showTipsLable("士兵受到伤害"+generalHarm, cc.Color.GREEN, (bLeftIsAtk == true ? 1 : -1));
-        cc.log("攻击 "+attack+"; 防御 "+defend+"; 伤害 "+harm+"; 武将伤害 "+generalHarm+"; 士兵伤害 "+soldierHarm+"; minHarm = "+minHarm);
+        //cc.log("攻击 "+attack+"; 防御 "+defend+"; 伤害 "+harm+"; 武将伤害 "+generalHarm+"; 士兵伤害 "+soldierHarm+"; minHarm = "+minHarm);
 
         let blood = defendCardInfo.generalInfo.tempFightInfo.fightHp - generalHarm;
         if(blood <= 0){
@@ -437,7 +437,7 @@ export default class FightShow extends cc.Component {
             atkUsedSkill = this.bRightUsedSkill;
             defUsedSkill = this.bLeftUsedSkill;
         }
-        cc.log("释放技能, bLeftIsAtk = "+bLeftIsAtk+"; atkUsedSkill = "+atkUsedSkill+"; defUsedSkill = "+defUsedSkill);
+        //cc.log("释放技能, bLeftIsAtk = "+bLeftIsAtk+"; atkUsedSkill = "+atkUsedSkill+"; defUsedSkill = "+defUsedSkill);
 
         let basicAtk = attackGeneral.generalCfg.atk;
         let basicDef = defendGeneral.generalCfg.def;
@@ -445,7 +445,7 @@ export default class FightShow extends cc.Component {
         if(atkUsedSkill == false && attackGeneral.tempFightInfo.fightMp >= 20){
             let atkSkills = attackGeneral.skills;
             if(atkSkills.length > 0 && Math.random() > 0.7){   //攻击方随机释放技能
-                cc.log("攻击方随机释放技能");
+                //cc.log("攻击方随机释放技能");
                 let randIdx = Math.floor(Math.random()*(atkSkills.length-0.01));
                 let randSkill: SkillInfo = atkSkills[randIdx];
                 if(randSkill && randSkill.skillCfg){
@@ -486,7 +486,7 @@ export default class FightShow extends cc.Component {
         if(defUsedSkill == false && defendGeneral.tempFightInfo.fightMp >= 20){
             let defSkills = defendGeneral.skills;
             if(defSkills.length > 0 && Math.random() > 0.7){   //防御方随机释放技能
-                cc.log("防御方随机释放技能");
+                //cc.log("防御方随机释放技能");
                 let randIdx = Math.floor(Math.random()*(defSkills.length-0.01));
                 let randSkill: SkillInfo = defSkills[randIdx];
                 if(randSkill && randSkill.skillCfg){
@@ -542,7 +542,7 @@ export default class FightShow extends cc.Component {
 
     //使用技能减少Mp值
     handleAtkUseSkill(bLeftUseSkill:boolean, hp:number=0, shiqi:number=0){
-        cc.log("handleAtkUseSkill(), bLeftUseSkill = "+bLeftUseSkill+"; hp = "+hp+"; shiqi = "+shiqi);
+        //cc.log("handleAtkUseSkill(), bLeftUseSkill = "+bLeftUseSkill+"; hp = "+hp+"; shiqi = "+shiqi);
         if(bLeftUseSkill == true){
             this.bLeftUsedSkill = true;
             this.leftCardInfo.generalInfo.tempFightInfo.fightMp -= 20;

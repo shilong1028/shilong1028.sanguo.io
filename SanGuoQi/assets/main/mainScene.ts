@@ -79,7 +79,7 @@ export default class MainScene extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    MapLimitPos: cc.Vec2 = cc.v2(2884, 2632);  //地图位置限制
+    MapLimitPos: cc.Vec2 = cc.v2(3840, 3335);  //地图位置限制 7680*6670
     touchBeginPos: cc.Vec2 = null;  //触摸起点
     bTaskUp: boolean = false;  //任务是否拉伸出来了
     curShowGridChildIdx: number = 0;
@@ -106,9 +106,9 @@ export default class MainScene extends cc.Component {
         this.rightNode.position = cc.v2(cc.winSize.width/2, cc.winSize.height/2);
 
         if(MyUserData.capitalLv > 0){
-            this.mapNode.position = cc.v2(-600, -900);   //主城开启后显示山阳郡昌邑
+            this.mapNode.position = cc.v2(-1100, -1000);   //主城开启后显示山阳郡昌邑
         }else{
-            this.mapNode.position = cc.v2(0, -900);   //初始显示洛阳  5768*5264   2884*2632
+            this.mapNode.position = cc.v2(-300, -900);   //初始显示洛阳 
         }
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
 
@@ -139,37 +139,37 @@ export default class MainScene extends cc.Component {
     }
 
     showGirdChildByUpdate(){
-        if(this.curShowGridChildIdx == 3){
-            this.gridNode.getChildByName("SanGuoMap_09").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_10").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_15").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_16").getComponent(cc.Sprite).enabled = true;
-        }else if(this.curShowGridChildIdx == 2){
-            this.gridNode.getChildByName("SanGuoMap_08").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_11").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_14").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_17").getComponent(cc.Sprite).enabled = true;
-            for(let i=0; i<4; ++i){
-                this.gridNode.getChildByName("SanGuoMap_0"+(2+i)).getComponent(cc.Sprite).enabled = true;
-                this.gridNode.getChildByName("SanGuoMap_2"+(0+i)).getComponent(cc.Sprite).enabled = true;
-            }
-        }else if(this.curShowGridChildIdx == 1){
-            this.gridNode.getChildByName("SanGuoMap_01").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_06").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_07").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_12").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_13").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_18").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_19").getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("SanGuoMap_24").getComponent(cc.Sprite).enabled = true;
-            for(let i=0; i<6; ++i){
-                this.gridNode.getChildByName("SanGuoMap_"+(25+i)).getComponent(cc.Sprite).enabled = true;
-            }
-        }else if(this.curShowGridChildIdx == 0){
-            for(let i=0; i<6; ++i){
-                this.gridNode.getChildByName("SanGuoMap_"+(31+i)).getComponent(cc.Sprite).enabled = true;
-            }
-        }
+        // if(this.curShowGridChildIdx == 3){
+        //     this.gridNode.getChildByName("SanGuoMap_09").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_10").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_15").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_16").getComponent(cc.Sprite).enabled = true;
+        // }else if(this.curShowGridChildIdx == 2){
+        //     this.gridNode.getChildByName("SanGuoMap_08").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_11").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_14").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_17").getComponent(cc.Sprite).enabled = true;
+        //     for(let i=0; i<4; ++i){
+        //         this.gridNode.getChildByName("SanGuoMap_0"+(2+i)).getComponent(cc.Sprite).enabled = true;
+        //         this.gridNode.getChildByName("SanGuoMap_2"+(0+i)).getComponent(cc.Sprite).enabled = true;
+        //     }
+        // }else if(this.curShowGridChildIdx == 1){
+        //     this.gridNode.getChildByName("SanGuoMap_01").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_06").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_07").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_12").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_13").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_18").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_19").getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("SanGuoMap_24").getComponent(cc.Sprite).enabled = true;
+        //     for(let i=0; i<6; ++i){
+        //         this.gridNode.getChildByName("SanGuoMap_"+(25+i)).getComponent(cc.Sprite).enabled = true;
+        //     }
+        // }else if(this.curShowGridChildIdx == 0){
+        //     for(let i=0; i<6; ++i){
+        //         this.gridNode.getChildByName("SanGuoMap_"+(31+i)).getComponent(cc.Sprite).enabled = true;
+        //     }
+        // }
     }
 
     onDestroy(){

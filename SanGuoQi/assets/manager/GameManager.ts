@@ -220,7 +220,7 @@ class GameManager {
 
     /** 领取奖励*/
     receiveRewards(rewards: ItemInfo[]){
-        cc.log("receiveRewards(), rewards = "+JSON.stringify(rewards));
+        //cc.log("receiveRewards(), rewards = "+JSON.stringify(rewards));
         if(rewards){
             let bSaveList = false;
             for(let i=0; i<rewards.length; ++i){

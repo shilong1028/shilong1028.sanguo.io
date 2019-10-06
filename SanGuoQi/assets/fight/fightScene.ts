@@ -256,7 +256,7 @@ export default class FightScene extends cc.Component {
                 }
             }
         }
-        cc.log("checkGameOver(), myCampCount = "+myCampCount+"; enemyCampCount = "+enemyCampCount);
+        //cc.log("checkGameOver(), myCampCount = "+myCampCount+"; enemyCampCount = "+enemyCampCount);
 
         if(bCheckOver == true){
             if(myCampCount == 0){   //失败
@@ -365,57 +365,57 @@ export default class FightScene extends cc.Component {
 
     /**根据AI结果处理敌方操作 */
     handleEnemyAIResultOpt(){
-        cc.log("handleEnemyAIResultOpt() 根据AI结果处理敌方操作 FightMgr.bMyRound = "+FightMgr.bMyRound);
+        //cc.log("handleEnemyAIResultOpt() 根据AI结果处理敌方操作 FightMgr.bMyRound = "+FightMgr.bMyRound);
         if(FightMgr.EnemyAutoAi == false || FightMgr.bMyRound == true){   //敌方自动AI
             return;
         }
 
         this.node.runAction(cc.sequence(cc.delayTime(0.3), cc.callFunc(function(){
-            cc.log("敌方AI延迟 FightMgr.bMyRound = "+FightMgr.bMyRound);
+            //cc.log("敌方AI延迟 FightMgr.bMyRound = "+FightMgr.bMyRound);
             if(FightMgr.bMyRound == false){
                 if(FightMgr.EnemyAIResult && (FightMgr.EnemyAIResult.hitWeight > 0 || FightMgr.EnemyAIResult.runAwayWeight > 0)){   //有结果
                     if(FightMgr.EnemyAIResult.hitWeight >= 1.5){  //必杀有希望
-                        cc.log("敌方选择战斗，攻击可能赢");
+                        //cc.log("敌方选择战斗，攻击可能赢");
                         FightMgr.EnemyAIResult.hitMy.onCardDropBlock(FightMgr.EnemyAIResult.hitEnemy);
                     }else if(FightMgr.EnemyAIResult.runAwayWeight >= 1.5){   //逃走
                         let nearArr = this.getNearEmptyBlock(FightMgr.EnemyAIResult.runAwayEnemy);   //获得相邻空地块数据
                         if(nearArr.length > 0){
-                            cc.log("敌方选择逃走，敌方要死");
+                            //cc.log("敌方选择逃走，敌方要死");
                             let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
                             nearArr[randIdx].onCardDropBlock(FightMgr.EnemyAIResult.runAwayEnemy);
                         }
                     }else{
                         if(FightMgr.EnemyAIResult.hitWeight >= 1.0 && Math.random() > (1.6 - FightMgr.EnemyAIResult.hitWeight)){  //搏一搏
-                            cc.log("敌方选择战斗，搏一搏, 可能赢");
+                            //cc.log("敌方选择战斗，搏一搏, 可能赢");
                             FightMgr.EnemyAIResult.hitMy.onCardDropBlock(FightMgr.EnemyAIResult.hitEnemy);
                         }else if(FightMgr.EnemyAIResult.runAwayEnemy >= 1.0 && Math.random() > (1.9 - FightMgr.EnemyAIResult.runAwayEnemy)){  //随机逃走
                             let nearArr = this.getNearEmptyBlock(FightMgr.EnemyAIResult.runAwayEnemy);  
                             if(nearArr.length > 0){
-                                cc.log("敌方选择随机逃走");
+                                //cc.log("敌方选择随机逃走");
                                 let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
                                 nearArr[randIdx].onCardDropBlock(FightMgr.EnemyAIResult.runAwayEnemy);
                             }
                         }else{
-                            cc.log("敌方未根据AI结果选择战斗或逃走，继续AI分析");
+                            //cc.log("敌方未根据AI结果选择战斗或逃走，继续AI分析");
                             if(FightMgr.EnemyAIResult.hitEnemy && FightMgr.EnemyAIResult.hitMy){
                                 if(this.enemyOpenBlocks.length == 1 || this.enemyOpenBlocks.length > this.myOpenBlocks.length){   
-                                    cc.log("敌方选择战斗，敌方仅剩一个或数量比我方多");
+                                    //cc.log("敌方选择战斗，敌方仅剩一个或数量比我方多");
                                     FightMgr.EnemyAIResult.hitMy.onCardDropBlock(FightMgr.EnemyAIResult.hitEnemy);
                                 }else if(Math.random() > 0.6){
-                                    cc.log("敌方随机选择战斗");
+                                    //cc.log("敌方随机选择战斗");
                                     FightMgr.EnemyAIResult.hitMy.onCardDropBlock(FightMgr.EnemyAIResult.hitEnemy);
                                 }else{
-                                    cc.log("敌方AI无结果，自动随机移动3");
+                                    //cc.log("敌方AI无结果，自动随机移动3");
                                     this.handleEnemyRandomAIMove();   //敌方AI无结果时，自动随机移动
                                 }
                             }else{
-                                cc.log("敌方AI无结果，自动随机移动2");
+                                //cc.log("敌方AI无结果，自动随机移动2");
                                 this.handleEnemyRandomAIMove();   //敌方AI无结果时，自动随机移动
                             }
                         }
                     }
                 }else{
-                    cc.log("敌方AI无结果，自动随机移动1");
+                    //cc.log("敌方AI无结果，自动随机移动1");
                     this.handleEnemyRandomAIMove();   //敌方AI无结果时，自动随机移动
                 }
             }
@@ -424,29 +424,29 @@ export default class FightScene extends cc.Component {
 
     /**敌方AI无结果时，自动随机移动 */
     handleEnemyRandomAIMove(){
-        cc.log("handleEnemyRandomAIMove() 敌方AI无结果，自动随机移动 FightMgr.bMyRound = "+FightMgr.bMyRound);
+        //cc.log("handleEnemyRandomAIMove() 敌方AI无结果，自动随机移动 FightMgr.bMyRound = "+FightMgr.bMyRound);
         if(FightMgr.EnemyAutoAi == false || FightMgr.bMyRound == true){   //敌方自动AI
             return;
         }
         let count = 50;
         while(count > 0){
-            cc.log("count = "+count);
+            //cc.log("count = "+count);
             let randIdx = Math.floor(Math.random()*this.enemyOpenBlocks.length*0.99);
             let runAwayEnemy = this.enemyOpenBlocks[randIdx];
             let nearArr = this.getNearEmptyBlock(runAwayEnemy);   //获得相邻空地块数据
             if(nearArr.length > 0){
-                cc.log("敌方选择移动");
+                //cc.log("敌方选择移动");
                 let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
                 nearArr[randIdx].onCardDropBlock(runAwayEnemy);
                 return;
             }else{  //无路可逃
                 if(this.enemyOpenBlocks.length == 1){   
-                    cc.log("敌方仅剩一个且无路可逃，被迫随机战斗");
+                    //cc.log("敌方仅剩一个且无路可逃，被迫随机战斗");
                     let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
                     nearArr[randIdx].onCardDropBlock(runAwayEnemy);
                     return;
                 }else{
-                    cc.log("无路可逃");
+                    //cc.log("无路可逃");
                 }
             }
             count --;
@@ -463,7 +463,7 @@ export default class FightScene extends cc.Component {
 
     /**敌方回合处理(每个block自己决定权重后由FightManager.handelEnemyAIResult处理) */
     oldEnemyRoundOptAI(){
-        cc.log("***********oldEnemyRoundOptAI(), 敌方自动AI FightMgr.EnemyAutoAi = "+FightMgr.EnemyAutoAi);
+        //cc.log("***********oldEnemyRoundOptAI(), 敌方自动AI FightMgr.EnemyAutoAi = "+FightMgr.EnemyAutoAi);
         if(FightMgr.EnemyAutoAi == false){   //敌方自动AI
             return;
         }
@@ -475,8 +475,8 @@ export default class FightScene extends cc.Component {
             let hitEnemy = null;   //敌方预击杀的单位
             let hitMy = null;    //我方预被击杀的单位
             let hitWeight = 0;   //击杀权重
-            cc.log("1、预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。");
-            cc.log("敌方开启的卡牌数量 "+this.enemyOpenBlocks.length+"; 我方开启的卡牌数量 "+this.myOpenBlocks.length);
+            //cc.log("1、预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。");
+            //cc.log("敌方开启的卡牌数量 "+this.enemyOpenBlocks.length+"; 我方开启的卡牌数量 "+this.myOpenBlocks.length);
             for(let i=0; i<this.enemyOpenBlocks.length; ++i){
                 let enemyBlock = this.enemyOpenBlocks[i];
 
@@ -541,19 +541,19 @@ export default class FightScene extends cc.Component {
 
             if(runAwayWeight == 1.0){   //有单位要死
                 if(hitWeight >= 2.0){  //必杀有希望
-                    cc.log("敌方选择战斗，必杀有希望");
+                    //cc.log("敌方选择战斗，必杀有希望");
                     hitMy.onCardDropBlock(hitEnemy);
                     return;
                 }else{
                     let nearArr = this.getNearEmptyBlock(runAwayEnemy);   //获得相邻空地块数据
                     if(nearArr.length > 0){
-                        cc.log("敌方选择逃走，敌方要死");
+                        //cc.log("敌方选择逃走，敌方要死");
                         let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
                         nearArr[randIdx].onCardDropBlock(runAwayEnemy);
                         return;
                     }else{  //无路可逃
                         if(hitWeight > 1.3){  //可以搏一搏
-                            cc.log("敌方必死单位无路可逃，敌方有单位可以搏一搏");
+                            //cc.log("敌方必死单位无路可逃，敌方有单位可以搏一搏");
                             hitMy.onCardDropBlock(hitEnemy);
                             return;
                         }
@@ -561,11 +561,11 @@ export default class FightScene extends cc.Component {
                 }
             }else{  //没有必死的敌方单位
                 if(hitWeight >= 1.5){  //必杀有希望
-                    cc.log("敌方选择战斗，攻击可能赢");
+                    //cc.log("敌方选择战斗，攻击可能赢");
                     hitMy.onCardDropBlock(hitEnemy);
                     return;
                 }else if(hitWeight >= 1.0 && Math.random() > (1.9 - hitWeight)){  //搏一搏
-                    cc.log("敌方选择战斗，搏一搏, 可能赢");
+                    //cc.log("敌方选择战斗，搏一搏, 可能赢");
                     hitMy.onCardDropBlock(hitEnemy);
                     return;
                 }else{
@@ -573,18 +573,18 @@ export default class FightScene extends cc.Component {
                         if(Math.random() >= 0.5){
                             let nearArr = this.getNearEmptyBlock(runAwayEnemy);   //获得相邻空地块数据
                             if(nearArr.length > 0){
-                                cc.log("敌方选择逃走，可能会死随机逃跑");
+                                //cc.log("敌方选择逃走，可能会死随机逃跑");
                                 let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
                                 nearArr[randIdx].onCardDropBlock(runAwayEnemy);
                                 return;
                             }else{  //无路可逃
                                 if(hitWeight >= 0.5){   //敌方开启卡牌数量比我方多
                                     if(this.enemyOpenBlocks.length >= this.myOpenBlocks.length+2){
-                                        cc.log("敌方选择战斗，敌方开启卡牌多");
+                                        //cc.log("敌方选择战斗，敌方开启卡牌多");
                                         hitMy.onCardDropBlock(hitEnemy);
                                         return;
                                     }else if(Math.random() > 0.8){
-                                        cc.log("敌方随机选择战斗");
+                                        //cc.log("敌方随机选择战斗");
                                         hitMy.onCardDropBlock(hitEnemy);
                                         return;
                                     }
@@ -594,11 +594,11 @@ export default class FightScene extends cc.Component {
                     }else{
                         if(hitWeight >= 0.5){   //敌方开启卡牌数量比我方多
                             if(this.enemyOpenBlocks.length >= this.myOpenBlocks.length+2){
-                                cc.log("敌方选择战斗，敌方开启卡牌多");
+                                //cc.log("敌方选择战斗，敌方开启卡牌多");
                                 hitMy.onCardDropBlock(hitEnemy);
                                 return;
                             }else if(Math.random() > 0.8){
-                                cc.log("敌方随机选择战斗");
+                                //cc.log("敌方随机选择战斗");
                                 hitMy.onCardDropBlock(hitEnemy);
                                 return;
                             }
@@ -686,7 +686,7 @@ export default class FightScene extends cc.Component {
 
             let nearArr = this.getNearEmptyBlock(enemyBlock);   //获得相邻空地块数据
             if(nearArr.length > 0){
-                cc.log("敌方选择移动一格");
+                //cc.log("敌方选择移动一格");
                 let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
                 nearArr[randIdx].onCardDropBlock(enemyBlock);
                 return;
@@ -695,7 +695,7 @@ export default class FightScene extends cc.Component {
                     let enemyBlock = this.enemyOpenBlocks[i];
                     let nearArr = this.getNearEmptyBlock(enemyBlock);   //获得相邻空地块数据
                     if(nearArr.length > 0){
-                        cc.log("敌方选择移动一格");
+                        //cc.log("敌方选择移动一格");
                         let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
                         nearArr[randIdx].onCardDropBlock(enemyBlock);
                         return;
@@ -706,7 +706,7 @@ export default class FightScene extends cc.Component {
 
             //5、敌方未进行任何操作，也无路可逃，强迫战斗
             if(hitEnemy && hitMy){
-                cc.log("强迫战斗");
+                //cc.log("强迫战斗");
                 hitMy.onCardDropBlock(hitEnemy);
                 return;
             }else{
@@ -714,7 +714,7 @@ export default class FightScene extends cc.Component {
                     let enemyBlock = this.enemyOpenBlocks[i];
                     let nearArr = this.getNearEnemyBlock(enemyBlock);   //获得相邻敌对地块数据
                     if(nearArr.length > 0){
-                        cc.log("强迫操作");
+                        //cc.log("强迫操作");
                         let randIdx = Math.floor(Math.random()*nearArr.length*0.99);
                         nearArr[randIdx].onCardDropBlock(enemyBlock);
                         return;

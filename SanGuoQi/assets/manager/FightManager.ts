@@ -153,7 +153,7 @@ class FightManager {
 
     /**下回合处理 */
     nextRoundOpt(){
-        cc.log("nextRoundOpt() 下回合处理, this.bMyRound = "+this.bMyRound);
+        //cc.log("nextRoundOpt() 下回合处理, this.bMyRound = "+this.bMyRound);
         if(this.getFightScene().checkGameOver(true) == false){
             this.fightRoundCount ++;   //战斗回合数
             NoticeMgr.emit(NoticeType.PerNextRound, null);  //下一个回合准备(会处理回合士气变化)
@@ -167,7 +167,7 @@ class FightManager {
 
     /**我方回合处理 */
     handleMyRoundOpt(){
-        cc.log("handleMyRoundOpt()");
+        //cc.log("handleMyRoundOpt()");
         this.bMyRound = true;
         this.bStopTouch = false;  //是否停止触摸反应
         this.getFightScene().showRoundDesc();
@@ -175,7 +175,7 @@ class FightManager {
 
     /**敌方回合处理 */
     handleEnemyRoundOpt(){
-        cc.log("handleEnemyRoundOpt()");
+        //cc.log("handleEnemyRoundOpt()");
         this.bMyRound = false;
         this.getFightScene().showRoundDesc();
         if(this.EnemyAutoAi == true){
@@ -183,7 +183,7 @@ class FightManager {
             if(FightMgr.EnemyAutoAi == true){   //敌方自动AI
                 this.EnemyAIResult = null;   //敌方AI返回结果
                 this.EnemyAutoAiCount = this.getFightScene().enemyOpenBlocks.length;   //敌方AI计数
-                cc.log("this.EnemyAutoAiCount = "+this.EnemyAutoAiCount);
+                //cc.log("this.EnemyAutoAiCount = "+this.EnemyAutoAiCount);
                 NoticeMgr.emit(NoticeType.EnemyRoundOptAI, null);
             }
         }else{
@@ -220,7 +220,7 @@ class FightManager {
                 }
             }
         }
-        cc.log("handelEnemyAIResult(), this.EnemyAutoAiCount = "+this.EnemyAutoAiCount);
+        //cc.log("handelEnemyAIResult(), this.EnemyAutoAiCount = "+this.EnemyAutoAiCount);
         if(this.EnemyAutoAiCount == 0){   //每个敌方均AI完毕
             this.getFightScene().handleEnemyAIResultOpt();    //根据AI结果处理敌方操作
         }

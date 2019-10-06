@@ -34,6 +34,8 @@ class MyUserManager {
 
     /**清除所有用户数据 */
     clearUserData(){
+        LDMgr.setItem(LDKey.KEY_NewUser, 0);  //是否新用户
+
         MyUserData.GoldCount = 0;   //用户金币
         LDMgr.setItem(LDKey.KEY_GoldCount, 0);
         MyUserData.DiamondCount = 0;   //用户钻石(金锭）数
@@ -66,7 +68,14 @@ class MyUserManager {
         MyUserData.GeneralList = new Array();  //武将列表
         LDMgr.setItem(LDKey.KEY_GeneralList, JSON.stringify(MyUserData.GeneralList));
 
-        this.initUserData();
+        this.initNewUserData();
+    }
+
+    /**初始新用户赋值 */
+    initNewUserData(){
+        if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
+            LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
+        }
     }
 
     /**初始化用户信息 */
@@ -96,7 +105,7 @@ class MyUserManager {
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
         MyUserData.GeneralList = this.getGeneralListByLD();  //武将列表
 
-        cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+        //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
     //更新在线总时长

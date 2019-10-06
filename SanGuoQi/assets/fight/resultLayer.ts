@@ -40,7 +40,7 @@ export default class ResultLayer extends cc.Component {
         }
 
         let fightGeneralList = FightMgr.battleGeneralArr;
-        cc.log("fightGeneralList = "+JSON.stringify(fightGeneralList));
+        //cc.log("fightGeneralList = "+JSON.stringify(fightGeneralList));
         this.totalKillCount = 0;
         for(let i=0; i<fightGeneralList.length; ++i){
             this.totalKillCount += fightGeneralList[i].tempFightInfo.killCount;

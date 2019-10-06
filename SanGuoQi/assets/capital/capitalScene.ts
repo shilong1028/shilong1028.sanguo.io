@@ -53,10 +53,10 @@ export default class CapitalScene extends cc.Component {
     }
 
     showGirdChildByUpdate(){
-        if(this.curShowGridChildIdx >= 0){
-            this.gridNode.getChildByName("bg_capital_0"+this.curShowGridChildIdx).getComponent(cc.Sprite).enabled = true;
-            this.gridNode.getChildByName("bg_capital_0"+(this.curShowGridChildIdx+3)).getComponent(cc.Sprite).enabled = true;
-        }
+        // if(this.curShowGridChildIdx >= 0){
+        //     this.gridNode.getChildByName("bg_capital_0"+this.curShowGridChildIdx).getComponent(cc.Sprite).enabled = true;
+        //     this.gridNode.getChildByName("bg_capital_0"+(this.curShowGridChildIdx+3)).getComponent(cc.Sprite).enabled = true;
+        // }
     }
 
     touchStart(event: cc.Touch){

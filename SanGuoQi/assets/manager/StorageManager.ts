@@ -35,7 +35,7 @@ class StorageManager_class  {
 
     getItemInt(key:string) : number{
         let val = cc.sys.localStorage.getItem(key);
-        console.log("getItemInt(), key = "+key+"; val = "+val+"; isNaN(val) = "+isNaN(val));
+        //console.log("getItemInt(), key = "+key+"; val = "+val+"; isNaN(val) = "+isNaN(val));
         if(isNaN(val) == true || val == null || val == undefined || val == ""){  
             val = 0;
             this.setItem(key, 0);
@@ -104,6 +104,7 @@ class StorageManager_class  {
 export  const LDMgr = new StorageManager_class();
 
 export const LDKey = {
+    KEY_NewUser: "KEY_NewUser",  //是否新用户
     KEY_GoldCount: "KEY_GoldCount",   //金币数量
     KEY_DiamondCount: "KEY_DiamondCount",//钻石（金锭）数量
     KEY_FoodCount: "KEY_FoodCount",   //粮食数量

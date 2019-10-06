@@ -4,6 +4,7 @@ import { FightMgr } from "../manager/FightManager";
 import Card from "./card";
 import FightShow from "./fightShow";
 import { NoticeMgr } from "../manager/NoticeManager";
+import { ROOT_NODE } from "../common/rootNode";
 
 //棋盘格子对象
 const {ccclass, property} = cc._decorator;
@@ -90,7 +91,8 @@ export default class Block extends cc.Component {
             }
 
             if(this.cardInfo.shiqi <= 0){  //士气过低，逃离战场
-                cc.log("士气过低，逃离战场  this.cardInfo = "+JSON.stringify(this.cardInfo));
+                ROOT_NODE.showTipsText("士气过低，逃离战场!");
+                //cc.log("士气过低，逃离战场  this.cardInfo = "+JSON.stringify(this.cardInfo));
                 if(this.cardInfo.campId == FightMgr.myCampId){
                     FightMgr.getFightScene().setMyOpenBlock(false, this);   //设置我方已经开启的卡牌
                 }else{
@@ -303,7 +305,7 @@ export default class Block extends cc.Component {
 
     /**敌方回合AI处理 */
     handleEnemyRoundOptAI(){
-        cc.log("handleEnemyRoundOptAI(), 敌方自动AI FightMgr.EnemyAutoAi = "+FightMgr.EnemyAutoAi);
+        //cc.log("handleEnemyRoundOptAI(), 敌方自动AI FightMgr.EnemyAutoAi = "+FightMgr.EnemyAutoAi);
         if(this.isLock == true || this.cardInfo == null || this.cardNode == null || FightMgr.EnemyAutoAi == false || this.cardInfo.campId == FightMgr.myCampId){   //敌方自动AI
             return;
         }
@@ -316,7 +318,7 @@ export default class Block extends cc.Component {
         let hitMy = null;    //我方预被击杀的单位
         let hitWeight = 0;   //击杀权重
 
-        cc.log("预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。");
+        //cc.log("预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。");
         let myOpenBlocks = FightMgr.getFightScene().myOpenBlocks;
 
         for(let j=0; j<myOpenBlocks.length; ++j){
