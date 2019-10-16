@@ -68,7 +68,7 @@ export default class ShopCell extends viewCell {
         this.weaponLabel.string = "武器概率："+(this.cellData.weapon*100)+"%";
         this.itemLabel.string = "饰品概率："+(this.cellData.item*100)+"%";
 
-        this.boxSpr.spriteFrame = this.boxFrames[this.cellData.quality-1];
+        this.boxSpr.spriteFrame = this.boxFrames[this.cellData.res-1];
         if(this.cellIdx%2 == 0){
             this.cellBg.spriteFrame = this.bgFrames[0];
             this.btnSpr.spriteFrame = this.bgFrames[1];
@@ -160,11 +160,17 @@ export default class ShopCell extends viewCell {
         //随机获取武器的概率
         if(this.cellData.weapon > 0 && Math.random() <= this.cellData.weapon){
             let keys = Object.getOwnPropertyNames(CfgMgr.C_cannon_info);
-            let idx = Math.floor(Math.random()*keys.length*0.99);
-            let weaponId = parseInt(keys[idx]);
-            let weaponCfg = CfgMgr.getCannonConf(weaponId);
-            ROOT_NODE.showTipsText("获得："+weaponCfg.name);
-
+            let bRandom = true;
+            let weaponId = 0;
+            while(bRandom){
+                let idx = Math.floor(Math.random()*keys.length*0.99);
+                weaponId = parseInt(keys[idx]);
+                let weaponCfg = CfgMgr.getCannonConf(weaponId);
+                if(weaponCfg && weaponCfg.quality <= this.cellData.quality){
+                    bRandom = false;
+                    ROOT_NODE.showTipsText("获得："+weaponCfg.name);
+                }
+            }
             let ballInfo = new BallInfo(weaponId);
             MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
             NotificationMy.emit(NoticeType.BuyAddBall, ballInfo.clone());  //购买小球
@@ -172,11 +178,17 @@ export default class ShopCell extends viewCell {
         //随机获取道具的概率
         if(this.cellData.item > 0 && Math.random() <= this.cellData.item){
             let keys = Object.getOwnPropertyNames(CfgMgr.C_item_info);
-            let idx = Math.floor(Math.random()*keys.length*0.99);
-            let itemId = parseInt(keys[idx]);
-            let itemCfg = CfgMgr.getItemConf(itemId);
-            ROOT_NODE.showTipsText("获得："+itemCfg.name);
-
+            let bRandom = true;
+            let itemId = 0;
+            while(bRandom){
+                let idx = Math.floor(Math.random()*keys.length*0.99);
+                itemId = parseInt(keys[idx]);
+                let itemCfg = CfgMgr.getItemConf(itemId);
+                if(itemCfg && itemCfg.quality <= this.cellData.quality){
+                    bRandom = false;
+                    ROOT_NODE.showTipsText("获得："+itemCfg.name);
+                }
+            }
             MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
             NotificationMy.emit(NoticeType.UpdateItemList, null);   //刷新道具
         }

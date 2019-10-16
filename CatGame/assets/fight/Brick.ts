@@ -1,4 +1,3 @@
-
 import { NotificationMy } from "../manager/NoticeManager";
 import { FightMgr } from "../manager/FightManager";
 import { BrickInfo, NoticeType } from "../manager/Enum";
@@ -6,7 +5,6 @@ import Ball from "./Ball";
 import Dot from "./Dot";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
-import { ROOT_NODE } from "../common/rootNode";
 
 const {ccclass, property} = cc._decorator;
 
@@ -96,6 +94,7 @@ export default class Brick extends cc.Component {
         NotificationMy.on(NoticeType.GameResume, this.handleGameResume, this);   //继续游戏
         NotificationMy.on(NoticeType.GameReStart, this.handleGameReStart, this);   //重新开始游戏
 
+        NotificationMy.on(NoticeType.BrickLineCreateOver, this.handleBrickLineCreateOver, this);  //砖块行创建完毕
         NotificationMy.on(NoticeType.BrickMoveDownAction, this.handleBrickMoveDownAction, this);    //砖块下移通知
         NotificationMy.on(NoticeType.BrickDownMultiLine, this.handleDownMulitLine, this);  //砖块多行下移
 
@@ -210,7 +209,10 @@ export default class Brick extends cc.Component {
         this.node.setPosition(-gameBorderRect.width/2 + (this.brick_info.column+0.5)*FightMgr.tileWidth,  gameBorderRect.height/2 - FightMgr.tileHeight/2);
 
         this.initBrickSpecialInfo();   //初始化特殊砖块的一些属性，比如移动等
+    }
 
+    //砖块行创建完毕
+    handleBrickLineCreateOver(){
         if(this.isMoveBrick() == true){
             this.setMoveLineBricks();  
             this.moveBrickAction(false);   //移动砖块的水平移动
@@ -239,6 +241,8 @@ export default class Brick extends cc.Component {
         }
 
         if(this.isMoveBrick() == true){
+            this.setMoveLineBricks();  
+            this.moveBrickAction(false);   //移动砖块的水平移动
             FightMgr.qipanSc.handleBrickMoveDownAndCheckAttr();   //处理砖块回合下落完毕(检查事件)
         }else{
             if(srcPos){ //移动时砖块图片的位置偏移，=null则不移动
@@ -334,7 +338,7 @@ export default class Brick extends cc.Component {
             let monster_ai = this.brick_info.monsterCfg.ai;   //行为 0无 1：左右往复移动 2：间隔吸附 3.坠落两行
             //cc.log("brick.initBrickSpecialInfo(), monster_ai = "+monster_ai);
             if(monster_ai == 1){   //1：左右往复移动
-                this.brickBgSpr.spriteFrame = this.bgFrames[1];
+                //this.brickBgSpr.spriteFrame = this.bgFrames[1];
 
                 this.node.group = "MoveBrick";
                 let gameBorderRect = FightMgr.gameBordersRect;   //棋盘边界矩形（中心点+宽高）

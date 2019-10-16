@@ -1,5 +1,5 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType } from "../manager/Enum";
+import { NoticeType, TipsStrDef } from "../manager/Enum";
 import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
@@ -169,7 +169,7 @@ export default class MainScene extends cc.Component {
     onShareBtn(){
         AudioMgr.playEffect("effect/ui_click");
 
-        SDKMgr.shareGame("分享快乐", (succ:boolean)=>{
+        SDKMgr.shareGame(TipsStrDef.KEY_Share, (succ:boolean)=>{
             console.log("loginScene 分享 succ = "+succ);
             if(succ == true){
             }

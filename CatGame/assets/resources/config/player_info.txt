@@ -1,29 +1,29 @@
 [1]
-name = 家猫
+name = 干脆面
 cost = 0
 weapons = 1;5
 attack_up = 0
 baoji_up = 0
 ball_num = 3
 skillId = 7
-desc = 家猫，可以发射3个武器，具有“指示”技能，无额外攻击暴击提升。
+desc = 干脆面，可以发射3个武器，具有“指示”技能，无额外攻击暴击提升。
 
 [2]
-name = 宠猫
+name = KK狗
 cost = 200
 weapons = 11;15
 attack_up = 10
 baoji_up = 5
 ball_num = 5
 skillId = 2
-desc = 宠猫，可以发射5个武器，具有“强化”技能，稍微提升攻击暴击。
+desc = KK狗，可以发射5个武器，具有“强化”技能，稍微提升攻击暴击。
 
 [3]
-name = 宠狗
+name = 细妹
 cost = 500
 weapons = 21;25
 attack_up = 20
 baoji_up = 10
 ball_num = 8
 skillId = 9
-desc = 宠狗，可以发射8个武器，具有“狂暴”技能，提升一定的攻击暴击。
+desc = 细妹，可以发射8个武器，具有“狂暴”技能，提升一定的攻击暴击。

@@ -62,7 +62,20 @@ class MyUserManager {
         MyUserData.ItemList = new Array();   //背包物品列表
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
 
-        this.initUserData();
+        this.initNewUserData();  //新玩家初始化
+    }
+
+    //新玩家初始化
+    initNewUserData(){
+        let playerInfo = new PlayerInfo(1);
+        playerInfo.useState = 1;  //使用状态，0未拥有，1已拥有
+        playerInfo.ballId = 1;  //默认炮台拥有1级小球
+        this.updateCurPlayerById(1);  
+        this.updatePlayerFromList(playerInfo);   //拥有的炮列表
+
+        this.updateCurLevelId(0);  //当前通关的最大id
+
+        LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
     }
 
     /**初始化用户信息 */
@@ -85,15 +98,7 @@ class MyUserManager {
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
 
         if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
-            let playerInfo = new PlayerInfo(1);
-            playerInfo.useState = 1;  //使用状态，0未拥有，1已拥有
-            playerInfo.ballId = 1;  //默认炮台拥有1级小球
-            this.updateCurPlayerById(1);  
-            this.updatePlayerFromList(playerInfo);   //拥有的炮列表
-
-            this.updateCurLevelId(0);  //当前通关的最大id
-
-            LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
+            this.initNewUserData();  //新玩家初始化
         }
 
         //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));

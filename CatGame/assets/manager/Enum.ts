@@ -279,13 +279,13 @@ export const TipsStrDef = {
     KEY_GetGoldTip: "获得金币：", 
     KEY_DiamondTip: "钻石不足！", 
     KEY_WeaponTip2: "没有装配武器，无法出战！",
-    KEY_WeaponTip3: "请选择武器装备或合成！",
-    KEY_ItemTip: "请选择饰品装备或合成！",
+    KEY_WeaponTip3: "请选择武器进行装备或合成！",
+    KEY_ItemTip: "请选择饰品进行装备或合成！",
     KEY_FireTip: "最后一个武器不可回收！", 
     KEY_QualityTip: "最大品质等级小球不可合成!",
     KEY_PlayerTip: "请先解锁萌宠!",
      
-    KEY_Share: "分享快乐！"
+    KEY_Share: "一起来逗一逗，分享联萌快乐！"
 }
 
 /**异步消息通知类型 */
@@ -303,6 +303,8 @@ export const NoticeType = {
     BlockItemSel: "BlockItemSel",   //地块上道具被选择，相同等级的道具地块要显示光圈
     UpdatePlayerList: "UpdatePlayerList",   //更新炮台列表
     UpdateItemList: "UpdateItemList",   //刷新道具
+
+    BrickLineCreateOver: "BrickLineCreateOver",   //砖块行创建完毕
 
     BrickDeadEvent: "BrickDeadEvent",   //砖块消失（死亡）
     BrickMoveDownAction: "BrickMoveDownAction",   //砖块下移通知

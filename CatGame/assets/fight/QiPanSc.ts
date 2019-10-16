@@ -509,6 +509,7 @@ export default class QiPanSc extends cc.Component {
                     brickNode.y = this.node.height/2 - FightMgr.tileHeight*(this.levelInitLineNum - this.curRow + 1.5);  //棋盘边界矩形（中心点+宽高）
                 } 
             }
+            NotificationMy.emit(NoticeType.BrickLineCreateOver, null);  //砖块行创建完毕
         }
     }
 

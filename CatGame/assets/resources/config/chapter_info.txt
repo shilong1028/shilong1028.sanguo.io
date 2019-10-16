@@ -17,39 +17,39 @@ name = 郊区
 res = 3
 levels = 13|20
 diamond = 100
-gold = 2000
+gold = 3000
 
 [4]
 name = 野外
 res = 4
 levels = 21|30
 diamond = 200
-gold = 3000
+gold = 4000
 
 [5]
 name = 火山
 res = 5
 levels = 31|40
 diamond = 200
-gold = 3000
+gold = 5000
 
 [6]
 name = 大漠
 res = 6
 levels = 41|55
 diamond = 300
-gold = 4000
+gold = 6000
 
 [7]
 name = 雪山
 res = 7
 levels = 56|70
 diamond = 300
-gold = 4000
+gold = 7000
 
 [8]
 name = 清新葱郁
 res = 8
 levels = 71|90
 diamond = 400
-gold = 5000
+gold = 8000

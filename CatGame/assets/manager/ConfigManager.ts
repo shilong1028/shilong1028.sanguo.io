@@ -256,7 +256,8 @@ export class st_shop_info{
     diamond;  //随机获取的金币值（0.3-1.0倍之间）
     weapon;    //随机获取武器的概率（/100)
     item;     //随机获取道具的概率（/100)
-    quality;   //宝箱品质
+    res;    //宝箱品质及资源索引
+    quality;   //抽中武器或饰品的最高品质
     costGold;   //开启花费的金币，costGold>0则为金币开启，costDiamond>0则为钻石开启，vedio>0则为视频开启
     costDiamond;
     vedio;
@@ -267,6 +268,7 @@ export class st_shop_info{
         this.diamond = parseInt(this.diamond);
         this.weapon = parseInt(this.weapon)/100;
         this.item = parseInt(this.item)/100;
+        this.res = parseInt(this.res);
         this.quality = parseInt(this.quality);
         this.costGold = parseInt(this.costGold);
         this.costDiamond = parseInt(this.costDiamond);
@@ -283,6 +285,7 @@ export class st_shop_info{
         temp.diamond = this.diamond;
         temp.weapon = this.weapon;
         temp.item = this.item;
+        temp.res = this.res;
         temp.quality = this.quality;
         temp.costGold = this.costGold;
         temp.costDiamond = this.costDiamond;

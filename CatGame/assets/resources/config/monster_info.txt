@@ -2,7 +2,7 @@
 name = 汉奸
 hp = 1
 event = 0
-ai = 0
+ai = 1
 quality = 1
 res = 1
 desc = 汉奸

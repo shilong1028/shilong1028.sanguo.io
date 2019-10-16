@@ -72,9 +72,14 @@ export default class GoldAdd extends cc.Component {
 
     //复活或显示结算
     handleNormal(goldType: number){
+        /**
+         * 游戏中 1钻石 = 100金币
+         * 一次分享最多可以获得5个钻石和200金币
+         * 一次视频最多可以获得20个钻石和500金币
+         */
         if(goldType == 1){   //分享成功
             MyUserDataMgr.updateUserGold(Math.floor((Math.random()*0.5 + 0.5)*200));
-            MyUserDataMgr.updateUserDiamond(Math.floor((Math.random()*0.5 + 0.5)*10));
+            MyUserDataMgr.updateUserDiamond(Math.floor((Math.random()*0.5 + 0.5)*5));
         }else if(goldType == 2){   //视频成功
             MyUserDataMgr.updateUserGold(Math.floor((Math.random()*0.5 + 0.5)*500));
             MyUserDataMgr.updateUserDiamond(Math.floor((Math.random()*0.5 + 0.5)*20));

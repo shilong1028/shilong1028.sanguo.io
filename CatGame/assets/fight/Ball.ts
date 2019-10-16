@@ -1,10 +1,8 @@
-import { BallInfo, BallState, IntersectRay, NoticeType, PlayerInfo, IntersectData, ItemInfo, SkillInfo, LaunchSkillState } from "../manager/Enum";
+import { BallInfo, BallState, IntersectRay, NoticeType, IntersectData, ItemInfo, LaunchSkillState } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
 import Brick from "./Brick";
 import { FightMgr } from "../manager/FightManager";
-import { MyUserDataMgr } from "../manager/MyUserData";
 import { AudioMgr } from "../manager/AudioMgr";
-import { ROOT_NODE } from "../common/rootNode";
 
 const {ccclass, property} = cc._decorator;
 

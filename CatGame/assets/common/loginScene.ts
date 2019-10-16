@@ -16,7 +16,7 @@ export default class LoginScene extends cc.Component {
     @property(cc.Label)
     descLabel: cc.Label = null;
 
-    descStr: string = "      “萌宠大作战”是一款休闲弹射类小游戏。游戏背景为小猫的伙伴小鸡仔被老鹰叼走了，小猫为了救回小鸡仔，开始联络伙伴小狗、小鸽子等组建救援小队。\
+    descStr: string = "      联萌大作战是一款休闲弹射类小游戏。游戏背景为小猫的伙伴小鸡仔被老鹰叼走了，小猫为了救回小鸡仔，开始联络伙伴小狗、小鸽子等组建救援小队。\
     救援小队从主人房间出发，经历别墅、城市、郊野、丛林、火山、沙漠、雪山等困境，最后到达老鹰老巢，战斗并救回小鸡仔。";
     curDescStrIdx: number = 0;
     bUpdateStr: boolean = false;
