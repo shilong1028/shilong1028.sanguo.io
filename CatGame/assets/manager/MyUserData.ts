@@ -53,6 +53,7 @@ class MyUserManager {
         this.updateCurPlayerById(0);  //当前使用的炮
         MyUserData.playerList = new Array(); //拥有的炮列表
         LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
+        MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表(并初始化未拥有的炮台)
 
         this.updateCurChapterId(1); //当前章节Id
         this.updateCurLevelId(0);  //当前通关的最大id
@@ -76,6 +77,8 @@ class MyUserManager {
         this.updateCurLevelId(0);  //当前通关的最大id
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
+
+        //cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
     /**初始化用户信息 */
@@ -89,7 +92,7 @@ class MyUserManager {
         MyUserData.ballList = this.getBallListByLD();    //未出战小球列表 
 
         MyUserData.curPlayerId = LDMgr.getItemInt(LDKey.KEY_CurPlayerId, 0);  //当前使用的炮索引
-        MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表
+        MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表(并初始化未拥有的炮台)
 
         MyUserData.curChapterId = LDMgr.getItemInt(LDKey.KEY_CurChapterId, 1);  //当前章节id
         MyUserData.curLevelId = LDMgr.getItemInt(LDKey.KEY_CurLevelId, 0);  //当前通关的最大id
@@ -189,7 +192,7 @@ class MyUserManager {
             return null;
         }
     }
-    /**从本地存储中获取拥有的炮列表 */
+    /**从本地存储中获取拥有的炮列表(并初始化未拥有的炮台) */
     getPlayerListByLD(){
         let PalyerList = LDMgr.getJsonItem(LDKey.KEY_PlayerList);  
         let tempList: PlayerInfo[] = new Array();
