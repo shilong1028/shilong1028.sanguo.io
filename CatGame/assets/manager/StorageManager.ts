@@ -125,6 +125,8 @@ export const LDKey = {
     KEY_DiamondCount: "KEY_DiamondCount",   //钻石数量
     KEY_TotalLineTime: "KEY_TotalLineTime",   //总的在线时长（每500s更新记录一次）
     KEY_LastGoldTaxTime: "KEY_LastGoldTaxTime",   //上一次收税金时间
+    KEY_SignTime: "KEY_SignTime",   //当前签到索引和上一次签到时间
+
     KEY_BallList: "KEY_BallList",  //未出战小球列表
     KEY_CurPlayerId: "KEY_CurPlayerId",    //当前使用炮索引
     KEY_PlayerList: "KEY_PlayerList",   //拥有的炮列表

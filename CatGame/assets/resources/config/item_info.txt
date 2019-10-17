@@ -29,7 +29,7 @@ res = 1
 desc = 提升攻击20%，暴击5%，技能命中10%
 
 [4]
-name = 紫色铃铛
+name = 黄色铃铛
 attack_up = 25
 baoji_up = 10
 probability = 15
@@ -79,7 +79,7 @@ res = 2
 desc = 提升攻击5%，暴击20%，技能命中10%
 
 [14]
-name = 紫色眼罩
+name = 黄色眼罩
 attack_up = 10
 baoji_up = 25
 probability = 15
@@ -129,7 +129,7 @@ res = 3
 desc = 提升攻击10%，暴击5%，技能命中20%
 
 [24]
-name = 紫色发卡
+name = 黄色发卡
 attack_up = 10
 baoji_up = 10
 probability = 25

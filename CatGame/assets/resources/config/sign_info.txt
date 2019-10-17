@@ -1,0 +1,41 @@
+[1]
+type = 1
+num = 500
+rewardId = 0
+desc = 奖励500金币
+
+[2]
+type = 2
+num = 20
+rewardId = 0
+desc = 奖励20钻石
+
+[3]
+type = 3
+num = 1
+rewardId = 3
+desc = 奖励蓝色铃铛
+
+[4]
+type = 4
+num = 1
+rewardId = 3
+desc = 奖励蓝色猫爪
+
+[5]
+type = 2
+num = 100
+rewardId = 0
+desc = 奖励100钻石
+
+[6]
+type = 3
+num = 1
+rewardId = 14
+desc = 奖励黄色眼罩
+
+[7]
+type = 4
+num = 1
+rewardId = 14
+desc = 奖励黄色猫棒

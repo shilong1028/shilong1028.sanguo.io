@@ -15,6 +15,9 @@ export var MyUserData = {
     totalLineTime: 0,   //总的在线时长（每100s更新记录一次）
     lastGoldTaxTime: 0,   //上一次收税金时间
 
+    lastSignIdx: 0,   //上一次签到索引 1-7
+    lastSignTime: 0,   //上一次签到时间
+
     ballList: [],   //未出战小球列表 
     
     curPlayerId: 1,  //当前使用的炮Id
@@ -25,6 +28,8 @@ export var MyUserData = {
     levelList: [],   //通关列表
 
     ItemList: [],   //背包物品列表
+
+    
 };
 
 @ccclass
@@ -46,6 +51,10 @@ class MyUserManager {
         LDMgr.setItem(LDKey.KEY_TotalLineTime, 0);
         MyUserData.lastGoldTaxTime = 0;   //上一次收税金时间
         LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, 0);
+
+        MyUserData.lastSignIdx = 0;   //上一次签到索引 1-7
+        MyUserData.lastSignTime = 0;   //上一次签到时间
+        LDMgr.setItem(LDKey.KEY_SignTime, "0-0");
 
         MyUserData.ballList = new Array();  //未出战小球列表 
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
@@ -89,6 +98,15 @@ class MyUserManager {
         MyUserData.totalLineTime = LDMgr.getItemInt(LDKey.KEY_TotalLineTime);   //总的在线时长（每500s更新记录一次）
         MyUserData.lastGoldTaxTime = LDMgr.getItemInt(LDKey.KEY_LastGoldTaxTime);   //上一次收税金时间
 
+        let signData = LDMgr.getItemKeyVal(LDKey.KEY_SignTime);  //当前签到索引和上一次签到时间
+        if(signData == null){
+            MyUserData.lastSignIdx = 0;   //上一次签到索引 1-7
+            MyUserData.lastSignTime = 0;   //上一次签到时间
+        }else{
+            MyUserData.lastSignIdx = parseInt(signData.key);
+            MyUserData.lastSignTime = parseInt(signData.val);
+        }
+
         MyUserData.ballList = this.getBallListByLD();    //未出战小球列表 
 
         MyUserData.curPlayerId = LDMgr.getItemInt(LDKey.KEY_CurPlayerId, 0);  //当前使用的炮索引
@@ -105,6 +123,17 @@ class MyUserManager {
         }
 
         //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+    }
+
+    //更新签到数据
+    updateUserSign(signIdx: number, signTime: number){
+        if(MyUserData.lastSignIdx == signIdx && MyUserData.lastSignTime == signTime){
+            return;
+        }
+        MyUserData.lastSignIdx = signIdx;   //上一次签到索引 1-7
+        MyUserData.lastSignTime = signTime;
+
+        LDMgr.setItem(LDKey.KEY_SignTime, MyUserData.lastSignIdx.toString()+"-"+MyUserData.lastSignTime);
     }
 
     //当前章节id

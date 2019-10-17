@@ -295,6 +295,32 @@ export class st_shop_info{
     }
 }
 
+//签到配置信息
+export class st_sign_info{
+    type;   //奖励类型 1金币 2钻石 3饰品道具 4武器
+    num;  //奖励数量
+    rewardId;  //奖励物品的id
+    desc;    //描述
+
+    transType(){
+        this.type = parseInt(this.type);
+        this.num = parseInt(this.num);
+        this.rewardId = parseInt(this.rewardId);
+    }
+
+    constructor(){
+    }
+
+    clone(){
+        let temp = new st_sign_info();
+        temp.type = this.type;
+        temp.num = this.num;
+        temp.rewardId = this.rewardId;
+        temp.desc = this.desc;
+        return temp;
+    }
+}
+
 
 //*********************  以下为接口类定义 *********************************** */
 
@@ -338,9 +364,22 @@ class CfgManager_class {
     C_shop_info : Map<number, st_shop_info> = new Map<number, st_shop_info>();
     SC_shop_info = st_shop_info;
 
+    //签到配置表
+    C_sign_info : Map<number, st_sign_info> = new Map<number, st_sign_info>();
+    SC_sign_info = st_sign_info;
 
     //********************** 以下是一些配置接口 ***************** */
-    
+
+    /**获取签到配置数据 */
+    getSignConf(signIdx: number): st_sign_info{
+        let obj = this.C_sign_info[signIdx];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+
     /**获取炮弹配置数据 */
     getCannonConf(cannonId: number): st_cannon_info{
         let obj = this.C_cannon_info[cannonId];

@@ -48,6 +48,9 @@ export default class MainScene extends cc.Component {
     @property(cc.SpriteFrame)
     yellowFrame: cc.SpriteFrame = null;
 
+    @property(cc.Prefab)
+    pfSign: cc.Prefab = null;  //签到页面
+
     bLoadRoleDataFinish: boolean = false;   //是否已经加载完毕用户数据
     curMidUIType: number = -1;   //显示中间UI，0地图关卡、1背包炮台、2商店
 
@@ -103,7 +106,13 @@ export default class MainScene extends cc.Component {
 
         this.showMidUI(0);   //显示中间信息，0地图关卡、1背包炮台、2商店
 
-        sdkWechat.preLoadAndPlayVideoAd(true, null, null, null);   //预下载下一条视频广告
+        if(GameMgr.isSameDayWithCurTime(MyUserData.lastSignTime) == false){  //同一天
+            this.onSignBtn();
+        }
+
+        this.node.runAction(cc.sequence(cc.delayTime(1.0), cc.callFunc(function(){
+            sdkWechat.preLoadAndPlayVideoAd(true, null, null, null);   //预下载下一条视频广告
+        })))
     }
 
     // update (dt) {
@@ -192,6 +201,11 @@ export default class MainScene extends cc.Component {
     onAddGoldBtn(){
         AudioMgr.playEffect("effect/ui_click");
         ROOT_NODE.showGoldAddDialog();  //获取金币提示框
+    }
+
+    onSignBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        GameMgr.showLayer(this.pfSign);
     }
 
     /**音乐开关 */

@@ -219,7 +219,7 @@ export class SDK_Wechat  {
     preLoadAndPlayVideoAd(bPreLoad:boolean, errorCallBack:any, videoCallBack:any, callTarget:any){
         //console.log('preLoadAndPlayVideoAd, 预加载或播放视频广告 bPreLoad = '+bPreLoad);
         let wx = (window as any).wx;
-        if(wx == null){
+        if(wx == null ){
             return;
         }
 

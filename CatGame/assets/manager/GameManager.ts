@@ -247,7 +247,27 @@ class GameManager {
         return localPos;
     }
 
+    /**判定给定时间和现在是否同一天 */
+    isSameDayWithCurTime(lastTime: number){
+        //console.log("isSameDayWithTime(), lastTime = "+lastTime);
+        if(lastTime < 10000){
+            return false;
+        }
+        let curDate = new Date();
+        let curDay = curDate.getDay();
+        let curMonth = curDate.getMonth();
+ 
+        let lastDate = new Date();
+        lastDate.setTime(lastTime);
+        let lastDay = lastDate.getDay();
+        let lastMonth = lastDate.getMonth();
 
+        if(curMonth == lastMonth && curDay == lastDay){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     //********************  以下为应用接口函数  ********************* */
     

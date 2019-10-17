@@ -5,6 +5,7 @@ import { MyUserDataMgr } from "../manager/MyUserData";
 import { LDMgr, LDKey } from "../manager/StorageManager";
 import { SDKMgr } from "../manager/SDKManager";
 import { sdkWechat } from "../manager/SDK_Wechat";
+import { AudioMgr } from "../manager/AudioMgr";
 
 //初始场景，用于初始化加载数据
 const {ccclass, property} = cc._decorator;
@@ -59,11 +60,13 @@ export default class LoginScene extends cc.Component {
     }
 
     onLoginGame(){
+        AudioMgr.playEffect("effect/ui_click");
         this.btnNode.active = false;
         GameMgr.gotoMainScene();   //进入主场景
     }
 
     onResetGame(){
+        AudioMgr.playEffect("effect/ui_click");
         ROOT_NODE.showTipsDialog("是否清除所有游戏重新开始？", ()=>{
             this.btnNode.active = false;
             MyUserDataMgr.clearUserData();   //清除所有用户数据

@@ -23,7 +23,7 @@ quality = 3
 res = 1
 
 [4]
-name = 紫色猫爪
+name = 黄色猫爪
 attack = 5
 baoji = 15
 sell = 40
@@ -63,7 +63,7 @@ quality = 3
 res = 2
 
 [14]
-name = 紫色猫棒
+name = 黄色猫棒
 attack = 50
 baoji = 25
 sell = 400
@@ -103,7 +103,7 @@ quality = 3
 res = 3
 
 [24]
-name = 紫色飞盘
+name = 黄色飞盘
 attack = 250
 baoji = 35
 sell = 2000
