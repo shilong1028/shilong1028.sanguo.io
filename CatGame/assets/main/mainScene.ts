@@ -15,8 +15,8 @@ export default class MainScene extends cc.Component {
     bottomNode: cc.Node = null;
     @property(cc.Node)
     topNode: cc.Node = null;
-    @property(cc.Node)
-    midNode: cc.Node = null;
+    @property(cc.PageView)
+    midPageView: cc.PageView = null;
     @property(cc.Node)
     bagNode: cc.Node = null;
     @property(cc.Node)
@@ -50,6 +50,7 @@ export default class MainScene extends cc.Component {
     @property(cc.Prefab)
     pfSign: cc.Prefab = null;  //签到页面
 
+    curPageIdx: number = -1;  
     bLoadRoleDataFinish: boolean = false;   //是否已经加载完毕用户数据
     curMidUIType: number = -1;   //显示中间UI，0地图关卡、1背包炮台、2商店
 
@@ -98,7 +99,7 @@ export default class MainScene extends cc.Component {
         this.UpdateGold();  
         this.UpdateDiamond();  
 
-        this.showMidUI(0);   //显示中间信息，0地图关卡、1背包炮台、2商店
+        this.showMidUI(0, 0.01);   //显示中间信息，0地图关卡、1背包炮台、2商店
 
         if(GameMgr.isSameDayWithCurTime(MyUserData.lastSignTime) == false){  //同一天
             this.onSignBtn();
@@ -147,27 +148,43 @@ export default class MainScene extends cc.Component {
     }
 
     /**显示中间信息，0地图关卡、1背包炮台、2商店 */
-    showMidUI(uiType: number){
+    showMidUI(uiType: number, moveTime: number=0.05){
         if(this.curMidUIType == uiType){
             return;
         }
         this.showBtnSprFrame(false);
         this.curMidUIType = uiType;   //显示中间UI，0地图关卡、1背包炮台、2商店
         this.showBtnSprFrame(true);
-
-        let movePosX = 0;
-        if(uiType == 0){
-            movePosX = 0;
-        }else if(uiType == 1){   //1背包炮台
-            movePosX = 750;
-        }else if(uiType == 2){   //2商店
-            movePosX = -750;
+        
+        if(this.curMidUIType == 0){   //地图关卡
+            this.curPageIdx = 1;
+        }else if(this.curMidUIType == 1){  //背包炮台
+            this.curPageIdx = 0;
+        }else{  //商店
+            this.curPageIdx = 2;
         }
-
-        this.midNode.stopAllActions();
-        let moveTime = Math.abs(movePosX - this.midNode.x)/1500;
-        this.midNode.runAction(cc.moveTo(moveTime, cc.v2(movePosX, this.midNode.y)));
+        if(moveTime > 0){
+            this.midPageView.scrollToPage(this.curPageIdx, moveTime);
+        }
     }
+
+    // 监听事件
+    onMidPageEvent (sender, eventType) {
+        // 翻页事件
+        if (eventType !== cc.PageView.EventType.PAGE_TURNING) {
+            return;
+        }
+        this.curPageIdx = sender.getCurrentPageIndex();   //当前章节索引
+        let uiType = 0;
+        if(this.curPageIdx == 1){   //地图关卡
+            uiType = 0;
+        }else if(this.curPageIdx == 0){  //背包炮台
+            uiType = 1;
+        }else{  //商店
+            uiType = 2;
+        }
+        this.showMidUI(uiType); 
+    } 
 
     onShareBtn(){
         AudioMgr.playEffect("effect/ui_click");

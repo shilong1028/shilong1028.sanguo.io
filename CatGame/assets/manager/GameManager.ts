@@ -114,7 +114,6 @@ class GameManager {
                 }
             }
         }
-        console.log("GetBannerWidth(), frameScale = "+frameScale+"; hScale = "+hScale+"; frameSize.width = "+frameSize.width+"; adWidth = "+adWidth)
         adWidth = Math.max(adWidth, 300);
         return adWidth;
     }
@@ -148,7 +147,6 @@ class GameManager {
 
         let maskBg = layer.getChildByName("maskBg");
         if(maskBg){
-            console.log("maskBg cc.winSize.width = "+cc.winSize.width+"; cc.winSize.height = "+cc.winSize.height)
             maskBg.width = cc.winSize.width;
             maskBg.height = cc.winSize.height;
         }
@@ -163,8 +161,6 @@ class GameManager {
             layer.position = cc.v2(cc.winSize.width/2, cc.winSize.height/2);
         }
         parent.addChild(layer);
-
-        console.log("pos = "+layer.position+"; cc.winSize.width = "+cc.winSize.width+"; cc.winSize.height = "+cc.winSize.height)
 
         return layer;
     }
