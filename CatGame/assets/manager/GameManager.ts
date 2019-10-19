@@ -1,6 +1,7 @@
 import { ROOT_NODE } from "../common/rootNode";
 import MainScene from "../main/mainScene";
 import LoadingLayer from "../common/LoadingLayer";
+import TipsDialog from "../common/tipsDialog";
 
 
 //游戏菜单管理器
@@ -37,7 +38,39 @@ class GameManager {
     }
 
     /**场景背景图适配 */
-    adaptBgByScene(){
+    adaptBgByScene(topNode: cc.Node=null, bottomNode: cc.Node=null){
+        //设计分辨率
+        let designSize = cc.view.getDesignResolutionSize();  //cc.size(750, 1334); 
+        //逻辑分辨率  和window.screen.width window.screen.height 一致
+        let frameSize = cc.view.getFrameSize();
+        //为当前的游戏窗口的大小
+        //cc.Director.getWinSize is deprecated. Please use cc.winSize instead
+        //但是不知道为什么cc.winSize输出为(0.00, 0.00)，而单独使用cc.winSize.width或cc.winSize.height则输出正确
+        //返回视图窗口可见区域尺寸
+        //let visibleSize = cc.view.getVisibleSize(); //为按照设计分辨率等比放缩后的尺寸，肯能为小数比如1333.4
+
+        let frameScale = frameSize.height/frameSize.width; 
+        if(frameScale > 1.77 && frameScale < 1.8){   //等比拉伸，背景填充   和设计分辨率750*1334宽高比差不多
+            let scaleW = frameSize.width/designSize.width;
+            let scaleH = frameSize.height/designSize.height;
+            //console.log("等比拉伸，背景填充")
+            if(scaleH < scaleW){
+                //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_HEIGHT);
+                cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_HEIGHT); 
+            }else{
+                //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_WIDTH);
+                cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_WIDTH); 
+            }
+        }else if(frameScale <= 1.77){   //等高放缩，背景宽拉伸，左右侧按钮位移
+            //console.log("等高放缩，背景宽拉伸，左右侧按钮位移")
+            //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_HEIGHT);   //表示固定高度
+            cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_HEIGHT); 
+        }else if(frameScale >= 1.8){   //等宽放缩，背景高拉伸，顶底按钮位移
+            //console.log("等宽放缩，背景高拉伸，顶底按钮位移")
+            //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_WIDTH);
+            cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_WIDTH);   //表示固定宽度
+        }
+
         let layer = cc.director.getScene().getChildByName("Canvas");
         if(layer){
             let bg = layer.getChildByName("bg");
@@ -46,6 +79,44 @@ class GameManager {
                 bg.height = cc.winSize.height;
             }
         }
+
+        if(topNode){
+            if(frameScale < 1.8){
+                topNode.y = cc.winSize.height/2;
+            }else{
+                topNode.y = cc.winSize.height/2 - 70;   //窄屏手机，可能有刘海
+            }
+        }
+
+        if(bottomNode){
+            let adWidth = this.GetBannerWidth();
+            let BannerHeight = Math.ceil(adWidth*0.35)*2;
+            bottomNode.y = BannerHeight - cc.winSize.height/2;
+        }   
+    }
+
+    GetBannerWidth(){
+        let designSize = cc.view.getDesignResolutionSize();
+        let frameSize = cc.view.getFrameSize();
+        let frameScale = frameSize.height/frameSize.width; 
+        let hScale = frameSize.height/(designSize.height/2);
+        let adWidth = 300;   //最小宽度   //414*144, 315*109.6 349*121.4  300*104.4 369*128.4    高为宽的0.348
+        if(frameScale >= 1.8){   //等宽放缩，背景高拉伸，顶底按钮位移
+            adWidth = Math.min(Math.floor(315 * (1+(hScale-1)/2)), frameSize.width);
+        }else{
+            if(hScale < 1.0){   //小屏幕缩小
+                adWidth = 300
+            }else{
+                if(frameSize.width > 315){  
+                    adWidth = 315
+                }else{
+                    adWidth = frameSize.width;
+                }
+            }
+        }
+        console.log("GetBannerWidth(), frameScale = "+frameScale+"; hScale = "+hScale+"; frameSize.width = "+frameSize.width+"; adWidth = "+adWidth)
+        adWidth = Math.max(adWidth, 300);
+        return adWidth;
     }
 
     //切换到主场景
@@ -68,19 +139,45 @@ class GameManager {
         let layer = cc.instantiate(prefab);
         layer.width = cc.winSize.width;
         layer.height = cc.winSize.height;
-        
-        let bg = layer.getChildByName("bg");
+
+        let bg = layer.getChildByName("bg");   //加载层
         if(bg){
             bg.width = cc.winSize.width;
             bg.height = cc.winSize.height;
         }
 
+        let maskBg = layer.getChildByName("maskBg");
+        if(maskBg){
+            console.log("maskBg cc.winSize.width = "+cc.winSize.width+"; cc.winSize.height = "+cc.winSize.height)
+            maskBg.width = cc.winSize.width;
+            maskBg.height = cc.winSize.height;
+        }
+
         if(parent == null){
             parent = cc.director.getScene();
+        }
+        let canvas = cc.director.getScene().getChildByName("Canvas");
+        if(canvas){
+            layer.position = cc.v2(canvas.width/2, canvas.height/2);
+        }else{
             layer.position = cc.v2(cc.winSize.width/2, cc.winSize.height/2);
         }
         parent.addChild(layer);
+
+        console.log("pos = "+layer.position+"; cc.winSize.width = "+cc.winSize.width+"; cc.winSize.height = "+cc.winSize.height)
+
         return layer;
+    }
+
+    //通用提示框
+    showTipsDialog(tipStr: string, okCallback: any=null){
+        let tips = this.showLayer(ROOT_NODE.pfTipsDialog);
+        tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback);
+    }
+
+    //获取金币提示框
+    showGoldAddDialog(){
+        this.showLayer(ROOT_NODE.pfGoldAdd);
     }
 
     /**通过内存图集创建序列帧动画 */

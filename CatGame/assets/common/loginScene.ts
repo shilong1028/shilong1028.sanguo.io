@@ -39,9 +39,7 @@ export default class LoginScene extends cc.Component {
         this.btnNode.active = true;
         this.bUpdateStr = true;
 
-        if(SDKMgr.WeiChat){
-            sdkWechat.createBannerWithWidth();  //Banner广告
-        }
+        SDKMgr.createrBannerAd();   //创建Banner
     }
 
     update (dt) {
@@ -67,7 +65,7 @@ export default class LoginScene extends cc.Component {
 
     onResetGame(){
         AudioMgr.playEffect("effect/ui_click");
-        ROOT_NODE.showTipsDialog("是否清除所有游戏重新开始？", ()=>{
+        GameMgr.showTipsDialog("是否清除所有游戏重新开始？", ()=>{
             this.btnNode.active = false;
             MyUserDataMgr.clearUserData();   //清除所有用户数据
             GameMgr.gotoMainScene();   //进入主场景

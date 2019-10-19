@@ -100,12 +100,7 @@ export default class FightScene extends cc.Component {
     }
 
     onLoad () {
-        GameMgr.adaptBgByScene();   //场景背景图适配
-        if(cc.winSize.height <= 1334){
-            this.topNode.y = cc.winSize.height/2;
-        }else{
-            this.topNode.y = cc.winSize.height/2 - 70;
-        }
+        GameMgr.adaptBgByScene(this.topNode);   //场景背景图适配
 
         AudioMgr.playEffect("effect/enterfight");
 

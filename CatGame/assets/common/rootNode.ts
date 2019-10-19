@@ -1,5 +1,4 @@
 import TipsText from "./tipsText";
-import TipsDialog from "./tipsDialog";
 import { MyUserDataMgr } from "../manager/MyUserData";
 
 //游戏常驻节点
@@ -88,23 +87,6 @@ export default class RootNode extends cc.Component {
             cc.director.getScene().addChild(tips);
             tips.getComponent(TipsText).initTipsText(tipStr);
         }
-    }
-
-    //通用提示框
-    showTipsDialog(tipStr: string, okCallback: any=null){
-        let tips = cc.instantiate(this.pfTipsDialog);
-        tips.y = cc.winSize.height/2;
-        tips.x = cc.winSize.width/2;
-        cc.director.getScene().addChild(tips);
-        tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback);
-    }
-
-    //获取金币提示框
-    showGoldAddDialog(){
-        let tips = cc.instantiate(this.pfGoldAdd);
-        tips.y = cc.winSize.height/2;
-        tips.x = cc.winSize.width/2;
-        cc.director.getScene().addChild(tips);
     }
 }
 

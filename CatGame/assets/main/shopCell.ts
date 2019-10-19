@@ -6,6 +6,7 @@ import { ROOT_NODE } from "../common/rootNode";
 import { NotificationMy } from "../manager/NoticeManager";
 import { NoticeType, BallInfo, ItemInfo } from "../manager/Enum";
 import { sdkWechat } from "../manager/SDK_Wechat";
+import { GameMgr } from "../manager/GameManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -126,14 +127,14 @@ export default class ShopCell extends viewCell {
                     MyUserDataMgr.updateUserDiamond(-this.cellData.costDiamond); 
                     this.handleBuyShop();
                 }else{
-                    ROOT_NODE.showGoldAddDialog();  //获取金币提示框
+                    GameMgr.showGoldAddDialog();  //获取金币提示框
                 }
             }else if(this.cellData.costGold > 0){   //金币获取
                 if(MyUserData.GoldCount >= this.cellData.costGold){
                     MyUserDataMgr.updateUserGold(-this.cellData.costGold); 
                     this.handleBuyShop();
                 }else{
-                    ROOT_NODE.showGoldAddDialog();  //获取金币提示框
+                    GameMgr.showGoldAddDialog();  //获取金币提示框
                 }
             }
         }

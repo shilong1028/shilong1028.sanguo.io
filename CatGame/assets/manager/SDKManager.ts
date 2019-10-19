@@ -181,6 +181,17 @@ class SDKManager_class  {
         }
     }
 
+    //Banner管理
+    createrBannerAd(){
+        if(SDKMgr.WeiChat){
+            sdkWechat.createBannerWithWidth();  //Banner广告
+
+            setInterval(()=>{
+                sdkWechat.createBannerWithWidth();
+            }, 200000);   //每隔固定时间被调用一次
+        }
+    }
+
 }
 
 export  let SDKMgr = new SDKManager_class();

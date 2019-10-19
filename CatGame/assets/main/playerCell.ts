@@ -5,6 +5,7 @@ import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
 import BagLayer from "./bagLayer";
 import { NotificationMy } from "../manager/NoticeManager";
+import { GameMgr } from "../manager/GameManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -106,7 +107,7 @@ export default class PlayerCell extends cc.Component {
                 MyUserDataMgr.updatePlayerFromList(this.playerInfo);   //添加新炮台到拥有的炮列表
                 this.initPlayerInfo(this.playerInfo);
             }else{
-                ROOT_NODE.showGoldAddDialog();  //获取金币提示框
+                GameMgr.showGoldAddDialog();  //获取金币提示框
             }
         }
     }

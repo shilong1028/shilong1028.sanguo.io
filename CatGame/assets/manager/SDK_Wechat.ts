@@ -1,4 +1,5 @@
 import { SDKMgr } from "./SDKManager";
+import { GameMgr } from "./GameManager";
 
 
 export class SDK_Wechat  {
@@ -49,6 +50,9 @@ export class SDK_Wechat  {
         let imgUrls = ['https://mmocgame.qpic.cn/wechatgame/ap8QGBf5gXg4n7Ese58NnzS4saYJf4THM3aOx394fcRVHKrp9bSgDjjrsyYL1gbS/0'];
         //平台上的分享图片编号
         let imgIds = ['1IqtE4CzQUyV5TP0MTxYCw'];
+
+        imgUrls = ['https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksI8sHibZ9Tib5tXxCp0u88qKibB6MOnic2gM3bbQLRXMwfFUclgbu2yqFiau/0'];
+        imgIds = ['mho_5RMnQrClChbBFjPIvA'];
 
         wx.updateShareMenu({
             withShareTicket: true,
@@ -165,7 +169,7 @@ export class SDK_Wechat  {
     ////////////////////////////广告相关功能  ////////////////////////////////////////////
     curBanner:any = null;
     
-    createBannerWithWidth(adWidth: number=300){
+    createBannerWithWidth(){   //414*144, 315*109.6 349*121.4  300*104.4     高为宽的0.348
         let wx = (window as any).wx;
         if(wx == null){
             return;
@@ -176,15 +180,16 @@ export class SDK_Wechat  {
             this.curBanner = null;
         }
 
-        const info = wx.getSystemInfoSync();
-        console.log("info = "+JSON.stringify(info));
-
+        //const info = wx.getSystemInfoSync();
+        let adWidth = GameMgr.GetBannerWidth();
+        let frameSize = cc.view.getFrameSize();
+        
         let bannerAd = wx.createBannerAd({
             adUnitId: "adunit-0895b0ed4218bdfd",
             style: {
                 left: 0,
                 top: 0,
-                width: adWidth,   //当 style.width 小于 300 时，会取作 300。 当 style.width 大于屏幕宽度时，会取作屏幕宽度。 在组件内部会以此值为基准，根据 Banner 广告的标准尺寸，进行缩放。
+                width: adWidth,   //在组件内部会以此值为基准，根据 Banner 广告的标准尺寸，进行缩放。
             }
         });
 
@@ -194,8 +199,9 @@ export class SDK_Wechat  {
 
         bannerAd.onResize(res => {   //如果在 onResize 的回调函数中重设 width 且总是与上一次缩放后的 width 不同，那么可能会导致 onResize 的回调函数一直触发，并卡死在 onResize 的回调函数中。
             console.log("bannerAd.style = "+JSON.stringify(bannerAd.style));
-            bannerAd.style.left = (info.windowWidth - bannerAd.style.realWidth) * 0.5;
-            bannerAd.style.top = (info.windowHeight - bannerAd.style.realHeight);
+            bannerAd.style.left = (frameSize.width - bannerAd.style.realWidth) * 0.5 + 0.1;
+            bannerAd.style.top = (frameSize.height - bannerAd.style.realHeight) + 0.1;   //left和top都加上0.1，不加就会被iphonex该死的底部bar给顶上去，而且时而顶上去，时而又是正常
+            console.log("bannerAd.style22 = "+JSON.stringify(bannerAd.style));
         });
 
         // 在适合的场景显示 Banner 广告
@@ -220,6 +226,11 @@ export class SDK_Wechat  {
         //console.log('preLoadAndPlayVideoAd, 预加载或播放视频广告 bPreLoad = '+bPreLoad);
         let wx = (window as any).wx;
         if(wx == null ){
+            return;
+        }
+
+        if(this.preLoadVideoAd){
+            console.log('预加载激励视频还未播放');
             return;
         }
 
@@ -256,10 +267,12 @@ export class SDK_Wechat  {
                 rewardedVideoAd = wx.createRewardedVideoAd({
                     adUnitId: adId
                 });
-
+            }else{
+                console.log("播放预下载的视频")
             }
 
             rewardedVideoAd.onClose(res => {
+                self.preLoadVideoAd = null;
                 if (res && res.isEnded) {
                     console.log("激励视频广告正常播放结束，可以下发游戏奖励， res = "+JSON.stringify(res));
                     if(self.videoCallBack && self.callTarget){
@@ -291,7 +304,7 @@ export class SDK_Wechat  {
         }
 
         rewardedVideoAd.onError(err => {
-            //console.log("今日观看视频数量已达上限, err = "+err);
+            console.log("今日观看视频数量已达上限, err = "+err);
         });
 
     }

@@ -4,7 +4,6 @@ import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserData } from "../manager/MyUserData";
-import { ROOT_NODE } from "../common/rootNode";
 import { sdkWechat } from "../manager/SDK_Wechat";
 
 const {ccclass, property} = cc._decorator;
@@ -55,12 +54,7 @@ export default class MainScene extends cc.Component {
     curMidUIType: number = -1;   //显示中间UI，0地图关卡、1背包炮台、2商店
 
     onLoad(){
-        GameMgr.adaptBgByScene();   //场景背景图适配
-        if(cc.winSize.height <= 1334){
-            this.topNode.y = cc.winSize.height/2;
-        }else{
-            this.topNode.y = cc.winSize.height/2 - 70;
-        }
+        GameMgr.adaptBgByScene(this.topNode, this.bottomNode);   //场景背景图适配
         
         this.bLoadRoleDataFinish = false;  //是否已经加载完毕用户数据
         
@@ -110,7 +104,7 @@ export default class MainScene extends cc.Component {
             this.onSignBtn();
         }
 
-        this.node.runAction(cc.sequence(cc.delayTime(1.0), cc.callFunc(function(){
+        this.node.runAction(cc.sequence(cc.delayTime(5.0), cc.callFunc(function(){
             sdkWechat.preLoadAndPlayVideoAd(true, null, null, null);   //预下载下一条视频广告
         })))
     }
@@ -200,7 +194,7 @@ export default class MainScene extends cc.Component {
 
     onAddGoldBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        ROOT_NODE.showGoldAddDialog();  //获取金币提示框
+        GameMgr.showGoldAddDialog();  //获取金币提示框
     }
 
     onSignBtn(){
