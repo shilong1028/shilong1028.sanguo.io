@@ -306,8 +306,7 @@ export default class FightScene extends cc.Component {
         }
 
         if(FightMgr.bGameOver == false){
-            let localPos = GameMgr.adaptTouchPos(touchPos, this.node.position);  //校正因适配而产生的触摸偏差
-            let pos = this.qipanNode.convertToNodeSpaceAR(localPos);
+            let pos = this.qipanNode.convertToNodeSpaceAR(touchPos);
             //if(FightMgr.bordersContainsPoint(FightMgr.getGameBorders(0), pos)){  //触点在棋盘范围内
             if(pos.y >= FightMgr.getBallPosY() && pos.y <= this.qipanNode.height/2){  //触点在棋盘范围内
                 if(this.fingerPos && this.fingerPos.sub(pos).mag()<10){   //降低触摸移动的灵敏度

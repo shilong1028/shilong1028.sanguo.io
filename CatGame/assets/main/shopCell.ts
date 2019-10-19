@@ -174,7 +174,6 @@ export default class ShopCell extends viewCell {
             }
             let ballInfo = new BallInfo(weaponId);
             MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
-            NotificationMy.emit(NoticeType.BuyAddBall, ballInfo.clone());  //购买小球
         }
         //随机获取道具的概率
         if(this.cellData.item > 0 && Math.random() <= this.cellData.item){
@@ -191,7 +190,6 @@ export default class ShopCell extends viewCell {
                 }
             }
             MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
-            NotificationMy.emit(NoticeType.UpdateItemList, null);   //刷新道具
         }
     }
 }

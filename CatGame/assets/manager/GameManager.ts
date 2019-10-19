@@ -2,6 +2,9 @@ import { ROOT_NODE } from "../common/rootNode";
 import MainScene from "../main/mainScene";
 import LoadingLayer from "../common/LoadingLayer";
 import TipsDialog from "../common/tipsDialog";
+import { MyUserDataMgr } from "./MyUserData";
+import { AudioMgr } from "./AudioMgr";
+import { TipsStrDef } from "./Enum";
 
 
 //游戏菜单管理器
@@ -9,7 +12,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 class GameManager {
-    BagGridCount: number = 8;  //背包空间
+    BagGridCount: number = 20;  //背包空间
     PlayerCount: number = 3;   //炮台萌猫数量
     ChapterCount: number = 7;  //章节数量
     QualityCount: number = 5;  //品质最大等级
@@ -331,15 +334,6 @@ class GameManager {
         }
     }
 
-    /**校正因适配而产生的触摸偏差 */
-    adaptTouchPos(touchPos: cc.Vec2, nodePos: cc.Vec2){
-        let localPos = touchPos;
-        // if(UIHelper.scenePolicy == cc.ResolutionPolicy.FIXED_WIDTH){
-        //     localPos = cc.v2(nodePos.x - cc.winSize.width/2 + touchPos.x, nodePos.y - cc.winSize.height/2 + touchPos.y);
-        // }
-        return localPos;
-    }
-
     /**判定给定时间和现在是否同一天 */
     isSameDayWithCurTime(lastTime: number){
         //console.log("isSameDayWithTime(), lastTime = "+lastTime);
@@ -364,7 +358,22 @@ class GameManager {
 
     //********************  以下为应用接口函数  ********************* */
     
+    /**显示售卖收益 */
+    showDelGainAni(sellGold: number){
+        if(sellGold >= 0){
+            MyUserDataMgr.updateUserGold(sellGold);   //修改用户金币 
+            AudioMgr.playEffect("effect/gold_gain");
+            ROOT_NODE.showTipsText(TipsStrDef.KEY_GetGoldTip + sellGold);
 
+            // let pos = this.bottomNode.convertToWorldSpaceAR(cc.Vec2.ZERO);
+            // this.showIconEffectAni(cc.v2(pos.x, pos.y + 60), 0);
+
+            // let gainNode = cc.instantiate(this.pfGainGold);
+            // gainNode.setPosition(cc.v2(0, 60));
+            // this.bottomNode.addChild(gainNode, 100);
+            // gainNode.getComponent(GainGoldNode).showGainGlodVal(sellGold); 
+        }
+    }
 
 
 

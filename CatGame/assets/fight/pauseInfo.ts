@@ -36,9 +36,9 @@ export default class PauseInfo extends cc.Component {
     // update (dt) {}
 
     touchEnd(event: cc.Touch){
-        let pos = GameMgr.adaptTouchPos(event.getLocation(), this.node.position);  //校正因适配而产生的触摸偏差
-        let pos1 = this.bgImg.convertToNodeSpace(pos);
-        let rect1 = cc.rect(0, 0, this.bgImg.width, this.bgImg.height);
+        let pos = event.getLocation();
+        let pos1 = this.bgImg.convertToNodeSpaceAR(pos);
+        let rect1 = cc.rect(-this.bgImg.width/2, -this.bgImg.height/2, this.bgImg.width, this.bgImg.height);
         if(!rect1.contains(pos1)){
             this.onContinueBtn();
         }

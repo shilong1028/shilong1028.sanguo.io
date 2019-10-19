@@ -31,8 +31,8 @@ export default class TipsDialog extends cc.Component {
     // update (dt) {}
 
     touchEnd(event: cc.Touch){
-        let pos1 = this.bgImg.convertToNodeSpace(event.getLocation());
-        let rect1 = cc.rect(0, 0, this.bgImg.width, this.bgImg.height);
+        let pos1 = this.bgImg.convertToNodeSpaceAR(event.getLocation());
+        let rect1 = cc.rect(-this.bgImg.width/2, -this.bgImg.height/2, this.bgImg.width, this.bgImg.height);
         if(!rect1.contains(pos1)){
             this.onCloseBtn();
         }

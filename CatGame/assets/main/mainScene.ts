@@ -152,6 +152,7 @@ export default class MainScene extends cc.Component {
         if(this.curMidUIType == uiType){
             return;
         }
+
         this.showBtnSprFrame(false);
         this.curMidUIType = uiType;   //显示中间UI，0地图关卡、1背包炮台、2商店
         this.showBtnSprFrame(true);
@@ -160,6 +161,7 @@ export default class MainScene extends cc.Component {
             this.curPageIdx = 1;
         }else if(this.curMidUIType == 1){  //背包炮台
             this.curPageIdx = 0;
+            NotificationMy.emit(NoticeType.UpdateBagGrid, null);    //更新背包显示
         }else{  //商店
             this.curPageIdx = 2;
         }

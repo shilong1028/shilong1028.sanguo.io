@@ -1,7 +1,8 @@
 import { LDMgr, LDKey } from "./StorageManager";
 import { NotificationMy } from "./NoticeManager";
-import { NoticeType, BallInfo, PlayerInfo, LevelInfo, ItemInfo } from "./Enum";
+import { NoticeType, BallInfo, PlayerInfo, LevelInfo, ItemInfo, TipsStrDef } from "./Enum";
 import { GameMgr } from "./GameManager";
+import { ROOT_NODE } from "../common/rootNode";
 
 
 //用户数据管理
@@ -86,6 +87,8 @@ class MyUserManager {
         this.updateCurLevelId(0);  //当前通关的最大id
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
+
+        MyUserData.DiamondCount = 10000;
 
         //cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
@@ -275,6 +278,31 @@ class MyUserManager {
         }
         return tempArr;
     }
+    /**更新道具小球 */
+    updateItemInItemList(itemInfo: ItemInfo, delItemInfo: ItemInfo=null){
+        let optCount = 1;
+        if(delItemInfo != null){
+            optCount = 2;
+        }
+        let delIdx = -1;
+        for(let i=0; i<MyUserData.ItemList.length; ++i){
+            let curTimeId = MyUserData.ItemList[i].timeId;
+            if(itemInfo.timeId == curTimeId){
+                MyUserData.ItemList[i] = itemInfo;    //更新的小球
+                optCount --;
+            }else if(delItemInfo && delItemInfo.timeId == curTimeId){
+                delIdx = i;  //删除的小球索引
+                optCount --;   
+            }
+            if(optCount <= 0){
+                break;
+            }
+        }
+        if(delIdx >= 0){
+            MyUserData.ItemList.splice(delIdx, 1);
+        }
+        this.saveItemList();
+    }
     /**销售未出战小球 */
     sellItemFromItemList(itemInfo: ItemInfo){
         for(let i=0; i<MyUserData.ItemList.length; ++i){
@@ -301,6 +329,11 @@ class MyUserManager {
     }
     /**添加道具到列表 */
     addItemToItemList(itemInfo: ItemInfo, bSave: boolean = true){
+        if(MyUserData.ItemList.length >= GameMgr.BagGridCount){
+            ROOT_NODE.showTipsText(TipsStrDef.KEY_BagMaxTip)
+            return;
+        }
+
         if(bSave == true){
             if(itemInfo.timeId <= this.lastItemTime){   //重复timeId
                 itemInfo.timeId = this.lastItemTime + 1;
@@ -309,7 +342,7 @@ class MyUserManager {
         }
 
         MyUserData.ItemList.push(itemInfo);
-
+        
         if(bSave){
             this.saveItemList();
         }
@@ -328,8 +361,19 @@ class MyUserManager {
         }
         return tempList;
     }
+    sortItemList(){
+        MyUserData.ItemList.sort(function(a:ItemInfo, b:ItemInfo){ 
+            if(a.itemCfg.quality == b.itemCfg.quality){
+                return b.itemId- a.itemId
+            }else{
+                return b.itemCfg.quality - a.itemCfg.quality
+            }
+        });
+    }
     /**保存背包物品列表 */
     saveItemList(){
+        this.sortItemList();
+
         let tempList = new Array();
         for(let i=0; i<MyUserData.ItemList.length; ++i){
             let tempItem = MyUserData.ItemList[i].cloneNoCfg();
@@ -353,8 +397,19 @@ class MyUserManager {
         }
         return tempList;
     }
+    sortBallList(){
+        MyUserData.ballList.sort(function(a:BallInfo, b:BallInfo){ 
+            if(a.cannonCfg.quality == b.cannonCfg.quality){
+                return  b.cannonId - a.cannonId
+            }else{
+                return  b.cannonCfg.quality - a.cannonCfg.quality
+            }
+        });
+    }
     /**保存未出战小球列表 */
     saveBallList(){
+        this.sortBallList();
+
         let BallList = new Array();
         for(let i=0; i<MyUserData.ballList.length; ++i){
             let tempItem = MyUserData.ballList[i].cloneNoCfg();
@@ -364,6 +419,11 @@ class MyUserManager {
     }
     /**添加小球到未出战列表 */
     addBallToBallList(ballInfo: BallInfo, bSave: boolean = true){
+        if(MyUserData.ballList.length >= GameMgr.BagGridCount){
+            ROOT_NODE.showTipsText(TipsStrDef.KEY_BagMaxTip)
+            return;
+        }
+
         if(bSave == true){
             if(ballInfo.timeId <= this.lastBallTime){   //重复timeId的小球
                 ballInfo.timeId = this.lastBallTime + 1;

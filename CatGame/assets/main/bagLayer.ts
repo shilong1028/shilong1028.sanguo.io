@@ -7,9 +7,10 @@ import PlayerCell from "./playerCell";
 import Block from "./Block";
 import { GameMgr } from "../manager/GameManager";
 import Stuff from "./Stuff";
-import RootNode, { ROOT_NODE } from "../common/rootNode";
 import Item from "../common/item";
 import PlayerHelp from "./playerHelp";
+import BagGrid from "./bagGrid";
+import { ROOT_NODE } from "../common/rootNode";
 
 
 const {ccclass, property} = cc._decorator;
@@ -27,8 +28,6 @@ export default class BagLayer extends cc.Component {
     gridNode: cc.Node = null;
     @property(cc.Label)
     gridLabel: cc.Label = null; 
-    @property(cc.Node)
-    delNode: cc.Node = null;   //删除节点
 
     @property(cc.Node)
     leftArrowNode: cc.Node = null;
@@ -45,6 +44,8 @@ export default class BagLayer extends cc.Component {
     pfStuff: cc.Prefab = null;
     @property(cc.Prefab)
     pfHelp: cc.Prefab = null;
+    @property(cc.Prefab)
+    pfGridBag: cc.Prefab = null;
 
     @property(cc.SpriteAtlas)
     stuffUpAtlas: cc.SpriteAtlas = null;
@@ -65,10 +66,8 @@ export default class BagLayer extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_END, this.ontTouchEnd, this);
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.ontTouchEnd, this);
 
-        NotificationMy.on(NoticeType.BuyAddBall, this.addBallToOneBlock, this);   //购买小球
-        NotificationMy.on(NoticeType.UpdateItemList, this.UpdateItemList, this);   //更新道具
+        NotificationMy.on(NoticeType.UpdateBagGrid, this.handleUpdateBagGrid, this);    //更新背包显示
 
-        this.delNode.active= false;  //回收站
         this.gridLabel.string = "";
     }
 
@@ -189,11 +188,14 @@ export default class BagLayer extends cc.Component {
 
     onTouchStart(event: cc.Event.EventTouch) {  
         if(this.selectBlock){
-            if(this.curGirdType == 0){
-                this.delNode.active= true;  //回收站
-            }
             this.updateSelectBlock(event.getLocation());   //拖动更新选中的地块模型的位置
         }
+    }
+
+    onMoreBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        let layer = GameMgr.showLayer(this.pfGridBag);
+        layer.getComponent(BagGrid).initGirdInfo(this.curGirdType);  //0装备小球，1饰品道具，2技能
     }
 
     onTouchMove(event: cc.Event.EventTouch) {
@@ -227,7 +229,7 @@ export default class BagLayer extends cc.Component {
 
         if(this.curGirdType == 0){   //0装备小球
             let ballList = MyUserDataMgr.getBallListClone();
-            for(let i=0; i<GameMgr.BagGridCount; ++i){
+            for(let i=0; i<8; ++i){
                 let ballInfo: BallInfo = null;
                 if(i < ballList.length){
                     ballInfo = ballList[i];
@@ -240,7 +242,7 @@ export default class BagLayer extends cc.Component {
             }
         }else if(this.curGirdType == 1){   //1饰品道具
             let itemList = MyUserDataMgr.getItemListClone();
-            for(let i=0; i<GameMgr.BagGridCount; ++i){
+            for(let i=0; i<8; ++i){
                 let itemInfo: ItemInfo = null;
                 if(i < itemList.length){
                     itemInfo = itemList[i];
@@ -254,11 +256,25 @@ export default class BagLayer extends cc.Component {
         }
     }
 
+    handleUpdateBagGrid(){
+        if(this.curGirdType == 0){   //0装备小球
+            this.UpdateBallList();
+        }else if(this.curGirdType == 1){   //1饰品道具
+            this.UpdateItemList();
+        }
+    }
+
     //更新道具
     UpdateItemList(){
         if(this.curGirdType == 1){  
             this.curGirdType = -1;   //0装备小球，1饰品道具，2技能
             this.initGirdInfo(1);
+        }
+    }
+    UpdateBallList(){
+        if(this.curGirdType == 0){  
+            this.curGirdType = -1;   //0装备小球，1饰品道具，2技能
+            this.initGirdInfo(0);
         }
     }
 
@@ -270,7 +286,6 @@ export default class BagLayer extends cc.Component {
     /**拖动更新选中的地块模型的位置 */
     updateSelectBlock(touchPos: cc.Vec2){
         if(this.selectBlock){
-            touchPos = GameMgr.adaptTouchPos(touchPos, this.node.position);  //校正因适配而产生的触摸偏差
             if(this.curGirdType == 0){   //0装备小球
                 if(this.nSelectModel == null){
                     this.nSelectModel = cc.instantiate(this.pfStuff);
@@ -297,11 +312,9 @@ export default class BagLayer extends cc.Component {
     /**放置选中的地块模型 */
     placeSelectBlock(touchPos : cc.Vec2){
         if(this.selectBlock && this.selectBlock){
-            touchPos = GameMgr.adaptTouchPos(touchPos, this.node.position);  //校正因适配而产生的触摸偏差
-
             if(this.curGirdType == 0){   //0装备小球，1饰品道具，2技能
-                let pos = this.gridNode.convertToNodeSpace(touchPos);   //网格
-                let rect = cc.rect(0, 0, this.gridNode.width, this.gridNode.height);
+                let pos = this.gridNode.convertToNodeSpaceAR(touchPos);   //网格
+                let rect = cc.rect(-this.gridNode.width/2, -this.gridNode.height/2, this.gridNode.width, this.gridNode.height);
                 if(rect.contains(pos)){ 
                     let dropBlock: cc.Node = this.getBlockSlotIndex(touchPos);   //根据位置找到对应的地块
                     if(dropBlock == null){   //未找到合适的地块
@@ -310,8 +323,8 @@ export default class BagLayer extends cc.Component {
                         dropBlock.getComponent(Block).onModelDropBlock(this.selectBlock);   //将一个地块上的小球放置到选中的地块上
                     }
                 }else{
-                    let pos2 = this.equipNode.convertToNodeSpace(touchPos);   //装备
-                    let rect2 = cc.rect(0, 0, this.equipNode.width, this.equipNode.height);
+                    let pos2 = this.equipNode.convertToNodeSpaceAR(touchPos);   //装备
+                    let rect2 = cc.rect(-this.equipNode.width/2, -this.equipNode.height/2, this.equipNode.width, this.equipNode.height);
                     if(rect2.contains(pos2)){    //装备新小球
                         let curPageInfo: PlayerInfo = MyUserDataMgr.getPlayerInfoByIdx(this.curPageIdx);
                         if(curPageInfo && curPageInfo.useState == 1){   //已经拥有的炮台
@@ -337,51 +350,46 @@ export default class BagLayer extends cc.Component {
                             this.selectBlock.onRecoverSelf();   //复原本地块模型
                         }
                     }else{
-                        let pos3 = this.delNode.convertToNodeSpace(touchPos);   //回收站
-                        let rect3 = cc.rect(0, 0, this.delNode.width, this.delNode.height);
-                        if(rect3.contains(pos3)){ 
-                            let sellGold = this.selectBlock.handleSellBall();  
-                            this.showDelBallGainAni(sellGold);   //显示售卖士兵收益 
-                            this.nSelectModel.setPosition(-3000, -3000);
-                        }else{
-                            this.selectBlock.onRecoverSelf();   //复原本地块模型
-                        }
+                        this.selectBlock.onRecoverSelf();   //复原本地块模型
                     }
                 }
             }else if(this.curGirdType == 1){   //1饰品道具
-                let pos2 = this.itemNode.convertToNodeSpace(touchPos);   //道具
-                let rect2 = cc.rect(0, 0, this.itemNode.width, this.itemNode.height);
-                if(rect2.contains(pos2)){    //新饰品道具
-                    let curPageInfo: PlayerInfo = MyUserDataMgr.getPlayerInfoByIdx(this.curPageIdx);
-                    if(curPageInfo && curPageInfo.useState == 1){   //已经拥有的炮台
-                        let equipItemInfo = null;
-                        if(curPageInfo.itemId > 0){
-                            equipItemInfo = new ItemInfo(curPageInfo.itemId);
-                        }
-                        curPageInfo.itemId = this.selectBlock.itemInfo.itemId;
-
-                        this.showPlayerItem(curPageInfo.itemId);
-                        NotificationMy.emit(NoticeType.UpdatePlayerList, curPageInfo);   //更新炮台
-
-                        MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
-                        MyUserDataMgr.equipItemToPlayer(this.selectBlock.itemInfo.clone(), equipItemInfo);
-
-                        if(equipItemInfo){
-                            this.selectBlock.setItemModel(equipItemInfo.clone());  //设置地块上的道具模型
-                        }else{
-                            this.selectBlock.onRemoveModel();   //将本地块上的模型移走了
-                        }
-                    }else{
-                        ROOT_NODE.showTipsText(TipsStrDef.KEY_PlayerTip);
+                let pos = this.gridNode.convertToNodeSpaceAR(touchPos);   //网格
+                let rect = cc.rect(-this.gridNode.width/2, -this.gridNode.height/2, this.gridNode.width, this.gridNode.height);
+                if(rect.contains(pos)){ 
+                    let dropBlock: cc.Node = this.getBlockSlotIndex(touchPos);   //根据位置找到对应的地块
+                    if(dropBlock == null){   //未找到合适的地块
                         this.selectBlock.onRecoverSelf();   //复原本地块模型
+                    }else{
+                        dropBlock.getComponent(Block).onModelDropBlock(this.selectBlock);   //将一个地块上的小球放置到选中的地块上
                     }
                 }else{
-                    let pos3 = this.delNode.convertToNodeSpace(touchPos);   //回收站
-                    let rect3 = cc.rect(0, 0, this.delNode.width, this.delNode.height);
-                    if(rect3.contains(pos3)){ 
-                        let sellGold = this.selectBlock.handleSellItem();  
-                        this.showDelBallGainAni(sellGold);   //显示售卖收益 
-                        this.nSelectModel.setPosition(-3000, -3000);
+                    let pos2 = this.itemNode.convertToNodeSpaceAR(touchPos);   //道具
+                    let rect2 = cc.rect(-this.itemNode.width/2, -this.itemNode.height/2, this.itemNode.width, this.itemNode.height);
+                    if(rect2.contains(pos2)){    //新饰品道具
+                        let curPageInfo: PlayerInfo = MyUserDataMgr.getPlayerInfoByIdx(this.curPageIdx);
+                        if(curPageInfo && curPageInfo.useState == 1){   //已经拥有的炮台
+                            let equipItemInfo = null;
+                            if(curPageInfo.itemId > 0){
+                                equipItemInfo = new ItemInfo(curPageInfo.itemId);
+                            }
+                            curPageInfo.itemId = this.selectBlock.itemInfo.itemId;
+
+                            this.showPlayerItem(curPageInfo.itemId);
+                            NotificationMy.emit(NoticeType.UpdatePlayerList, curPageInfo);   //更新炮台
+
+                            MyUserDataMgr.updatePlayerFromList(curPageInfo);   //更新炮台到拥有的炮列表
+                            MyUserDataMgr.equipItemToPlayer(this.selectBlock.itemInfo.clone(), equipItemInfo);
+
+                            if(equipItemInfo){
+                                this.selectBlock.setItemModel(equipItemInfo.clone());  //设置地块上的道具模型
+                            }else{
+                                this.selectBlock.onRemoveModel();   //将本地块上的模型移走了
+                            }
+                        }else{
+                            ROOT_NODE.showTipsText(TipsStrDef.KEY_PlayerTip);
+                            this.selectBlock.onRecoverSelf();   //复原本地块模型
+                        }
                     }else{
                         this.selectBlock.onRecoverSelf();   //复原本地块模型
                     }
@@ -390,7 +398,6 @@ export default class BagLayer extends cc.Component {
 
             this.selectBlock = null;   //拖动的地块数据
             this.nSelectModel.setPosition(-3000, -3000);
-            this.delNode.active= false;  //小球解雇和升级节点
         }
     }
 
@@ -405,38 +412,5 @@ export default class BagLayer extends cc.Component {
             }
         }
         return null;
-    }
-
-    /**添加一个小球到地块 */
-    addBallToOneBlock(ballInfo: BallInfo){
-        if(ballInfo && this.curGirdType == 0){
-            let blocks = this.gridNode.children;
-            for(let i=0; i<blocks.length; i++){
-                let block: Block = blocks[i].getComponent(Block);
-                if(block.ballInfo == null){
-                    MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);
-
-                    block.setBallStuff(ballInfo);
-                    break;
-                }
-            }
-        }
-    }
-
-    /**显示售卖士兵收益 */
-    showDelBallGainAni(sellGold: number){
-        if(sellGold >= 0){
-            MyUserDataMgr.updateUserGold(sellGold);   //修改用户金币 
-            AudioMgr.playEffect("effect/gold_gain");
-            ROOT_NODE.showTipsText(TipsStrDef.KEY_GetGoldTip + sellGold);
-
-            // let pos = this.bottomNode.convertToWorldSpaceAR(cc.Vec2.ZERO);
-            // this.showIconEffectAni(cc.v2(pos.x, pos.y + 60), 0);
-
-            // let gainNode = cc.instantiate(this.pfGainGold);
-            // gainNode.setPosition(cc.v2(0, 60));
-            // this.bottomNode.addChild(gainNode, 100);
-            // gainNode.getComponent(GainGoldNode).showGainGlodVal(sellGold); 
-        }
     }
 }

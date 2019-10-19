@@ -59,6 +59,11 @@ export class ItemInfo{
         temp.timeId = this.timeId;
         return temp;
     };
+
+    updateItem(itemId: number){
+        this.itemId = itemId;
+        this.itemCfg = CfgMgr.getItemConf(itemId);
+    }
 }
 
 /**炮数据 */
@@ -282,8 +287,9 @@ export const TipsStrDef = {
     KEY_WeaponTip3: "请选择武器进行装备或合成！",
     KEY_ItemTip: "请选择饰品进行装备或合成！",
     KEY_FireTip: "最后一个武器不可回收！", 
-    KEY_QualityTip: "最大品质等级小球不可合成!",
+    KEY_QualityTip: "最大品质等级不可合成!",
     KEY_PlayerTip: "请先解锁萌宠!",
+    KEY_BagMaxTip: "背包已满，请整理背包（合成或删除）!",
      
     KEY_Share: "一起来逗一逗，分享联萌快乐！"
 }
@@ -298,12 +304,12 @@ export const NoticeType = {
 
     UpdateGold: "UpdateGold",   //更新金币显示
     UpdateDiamond: "UpdateDiamond",   //更新钻石显示
-    BuyAddBall: "BuyAddBall",   //购买小球
+    UpdateBagGrid: "UpdateBagGrid",   //更新背包显示
+    BlockGridSel: "BlockGridSel",   //全部背包中武器或道具被选中
     BlockBallSel: "BlockBallSel",   //地块上小球被选择，相同等级的小球地块要显示光圈
     BlockItemSel: "BlockItemSel",   //地块上道具被选择，相同等级的道具地块要显示光圈
     UpdatePlayerList: "UpdatePlayerList",   //更新炮台列表
-    UpdateItemList: "UpdateItemList",   //刷新道具
-
+    
     BrickLineCreateOver: "BrickLineCreateOver",   //砖块行创建完毕
 
     BrickDeadEvent: "BrickDeadEvent",   //砖块消失（死亡）

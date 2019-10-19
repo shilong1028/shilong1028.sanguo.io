@@ -89,7 +89,6 @@ export default class SignLayer extends cc.Component {
                 if(itemCfg){
                     ROOT_NODE.showTipsText("获得："+itemCfg.name);
                     MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
-                    NotificationMy.emit(NoticeType.UpdateItemList, null);   //刷新道具
                 }
             }else if(this.curSelCell.signData.type == 4){   //武器
                 let weaponId = this.curSelCell.signData.rewardId;
@@ -98,7 +97,6 @@ export default class SignLayer extends cc.Component {
                     ROOT_NODE.showTipsText("获得："+weaponCfg.name);
                     let ballInfo = new BallInfo(weaponId);
                     MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
-                    NotificationMy.emit(NoticeType.BuyAddBall, ballInfo.clone());  //购买小球
                 }
             }
 
