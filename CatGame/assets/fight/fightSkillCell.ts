@@ -1,13 +1,13 @@
 import viewCell from "../tableView/viewCell";
 import Skill from "../common/skill";
 import { SkillInfo } from "../manager/Enum";
-import { FightMgr } from "../manager/FightManager";
+import { ROOT_NODE } from "../common/rootNode";
 
 //用于tableView的itemCell
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class SkillCell extends viewCell {
+export default class FightSkillCell extends viewCell {
 
     //@property(cc.Node)
     selBg: cc.Node = null;
@@ -42,7 +42,7 @@ export default class SkillCell extends viewCell {
         this.onSelected(this._selectState);
 
         if(this.SkillSc == null){
-            let skillNode = cc.instantiate(FightMgr.getFightScene().pfSkill);
+            let skillNode = cc.instantiate(ROOT_NODE.pfSkill);
             this.node.addChild(skillNode, 10);
             this.SkillSc = skillNode.getComponent(Skill);
         }

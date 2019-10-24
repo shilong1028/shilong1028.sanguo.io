@@ -1,149 +1,134 @@
 [1]
 name = 白色铃铛
-attack_up = 10
-baoji_up = 0
-probability = 0
-quality = 1
-sell = 10
 res = 1
-desc = 提升攻击10%
+diamond_up = 3
+gold_up = 10
+quality = 1
+sell = 20
+desc = 提升关卡金币奖励10%，钻石奖励3%
 
 [2]
 name = 绿色铃铛
-attack_up = 15
-baoji_up = 5
-probability = 5
-quality = 2
-sell = 20
 res = 1
-desc = 提升攻击15%，暴击5%，技能命中5%
+diamond_up = 5
+gold_up = 15
+quality = 2
+sell = 50
+desc = 提升关卡金币奖励15%，钻石奖励5%
 
 [3]
 name = 蓝色铃铛
-attack_up = 20
-baoji_up = 5
-probability = 10
-quality = 3
-sell = 30
 res = 1
-desc = 提升攻击20%，暴击5%，技能命中10%
+diamond_up = 7
+gold_up = 20
+quality = 3
+sell = 100
+desc = 提升关卡金币奖励20%，钻石奖励7%
 
 [4]
 name = 黄色铃铛
-attack_up = 25
-baoji_up = 10
-probability = 15
-quality = 4
-sell = 40
 res = 1
-desc = 提升攻击25%，暴击10%，技能命中15%
+diamond_up = 10
+gold_up = 25
+quality = 4
+sell = 150
+desc = 提升关卡金币奖励25%，钻石奖励10%
 
 [5]
 name = 橙色铃铛
-attack_up = 30
-baoji_up = 10
-probability = 20
-quality = 5
-sell = 50
 res = 1
-desc = 提升攻击30%，暴击10%，技能命中20%
+diamond_up = 15
+gold_up = 30
+quality = 5
+sell = 200
+desc = 提升关卡金币奖励30%，钻石奖励15%
 
 [11]
 name = 白色眼罩
-attack_up = 0
-baoji_up = 10
-probability = 0
-quality = 1
-sell = 10
 res = 2
-desc = 提升暴击10%
+diamond_up = 10
+gold_up = 3
+quality = 1
+sell = 20
+desc = 提升关卡金币奖励3%，钻石奖励10%
 
 [12]
 name = 绿色眼罩
-attack_up = 5
-baoji_up = 15
-probability = 5
-quality = 2
-sell = 20
 res = 2
-desc = 提升攻击5%，暴击15%，技能命中5%
+diamond_up = 15
+gold_up = 5
+quality = 2
+sell = 50
+desc = 提升关卡金币奖励5%，钻石奖励15%
 
 [13]
 name = 蓝色眼罩
-attack_up = 5
-baoji_up = 20
-probability = 10
-quality = 3
-sell = 30
 res = 2
-desc = 提升攻击5%，暴击20%，技能命中10%
+diamond_up = 20
+gold_up = 7
+quality = 3
+sell = 100
+desc = 提升关卡金币奖励7%，钻石奖励20%
 
 [14]
 name = 黄色眼罩
-attack_up = 10
-baoji_up = 25
-probability = 15
-quality = 4
-sell = 40
 res = 2
-desc = 提升攻击10%，暴击25%，技能命中15%
+diamond_up = 25
+gold_up = 10
+quality = 4
+sell = 150
+desc = 提升关卡金币奖励10%，钻石奖励25%
 
 [15]
 name = 橙色眼罩
-attack_up = 10
-baoji_up = 30
-probability = 20
-quality = 5
-sell = 50
 res = 2
-desc = 提升攻击10%，暴击30%，技能命中20%
+diamond_up = 30
+gold_up = 15
+quality = 5
+sell = 200
+desc = 提升关卡金币奖励15%，钻石奖励30%
 
 [21]
 name = 白色发卡
-attack_up = 0
-baoji_up = 0
-probability = 10
-quality = 1
-sell = 10
 res = 3
-desc = 技能命中10%
+diamond_up = 5
+gold_up = 5
+quality = 1
+sell = 20
+desc = 提升关卡金币奖励5%，钻石奖励5%
 
 [22]
 name = 绿色发卡
-attack_up = 5
-baoji_up = 5
-probability = 15
-quality = 2
-sell = 20
 res = 3
-desc = 提升攻击5%，暴击5%，技能命中15%
+diamond_up = 10
+gold_up = 10
+quality = 2
+sell = 50
+desc = 提升关卡金币奖励10%，钻石奖励10%
 
 [23]
 name = 蓝色发卡
-attack_up = 10
-baoji_up = 5
-probability = 20
-quality = 3
-sell = 30
 res = 3
-desc = 提升攻击10%，暴击5%，技能命中20%
+diamond_up = 10
+gold_up = 15
+quality = 3
+sell = 100
+desc = 提升关卡金币奖励15%，钻石奖励10%
 
 [24]
 name = 黄色发卡
-attack_up = 10
-baoji_up = 10
-probability = 25
-quality = 4
-sell = 40
 res = 3
-desc = 提升攻击10%，暴击10%，技能命中25%
+diamond_up = 15
+gold_up = 20
+quality = 4
+sell = 150
+desc = 提升关卡金币奖励20%，钻石奖励15%
 
 [25]
 name = 橙色发卡
-attack_up = 15
-baoji_up = 15
-probability = 30
-quality = 5
-sell = 50
 res = 3
-desc = 提升攻击15%，暴击15%，技能命中30%
+diamond_up = 20
+gold_up = 25
+quality = 5
+sell = 200
+desc = 提升关卡金币奖励25%，钻石奖励20%

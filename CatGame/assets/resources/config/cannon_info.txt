@@ -1,119 +1,149 @@
 [1]
 name = 白色猫爪
-attack = 1
-baoji = 0
-sell = 10
+attack_up = 5
+baoji_up = 5
+probability = 0
 quality = 1
 res = 1
+sell = 20
+desc = 攻击型武器，提升攻击5%，暴击5%，技能触发率0%
 
 [2]
 name = 绿色猫爪
-attack = 2
-baoji = 5
-sell = 20
+attack_up = 10
+baoji_up = 5
+probability = 5
 quality = 2
 res = 1
+sell = 50
+desc = 攻击型武器，提升攻击10%，暴击5%，技能触发率5%
 
 [3]
 name = 蓝色猫爪
-attack = 3
-baoji = 10
-sell = 30
+attack_up = 15
+baoji_up = 10
+probability = 5
 quality = 3
 res = 1
+sell = 100
+desc = 攻击型武器，提升攻击15%，暴击10%，技能触发率5%
 
 [4]
 name = 黄色猫爪
-attack = 5
-baoji = 15
-sell = 40
+attack_up = 20
+baoji_up = 10
+probability = 10
 quality = 4
 res = 1
+sell = 150
+desc = 攻击型武器，提升攻击20%，暴击10%，技能触发率10%
 
 [5]
 name = 橙色猫爪
-attack = 8
-baoji = 20
-sell = 50
+attack_up = 30
+baoji_up = 15
+probability = 10
 quality = 5
 res = 1
+sell = 200
+desc = 攻击型武器，提升攻击30%，暴击15%，技能触发率10%
 
 [11]
 name = 白色猫棒
-attack = 10
-baoji = 10
-sell = 100
+attack_up = 0
+baoji_up = 10
+probability = 5
 quality = 1
 res = 2
+sell = 20
+desc = 暴击型武器，提升攻击0%，暴击10%，技能触发率5%
 
 [12]
 name = 绿色猫棒
-attack = 20
-baoji = 15
-sell = 200
+attack_up = 5
+baoji_up = 15
+probability = 5
 quality = 2
 res = 2
+sell = 50
+desc = 暴击型武器，提升攻击5%，暴击15%，技能触发率5%
 
 [13]
 name = 蓝色猫棒
-attack = 30
-baoji = 20
-sell = 300
+attack_up = 5
+baoji_up = 20
+probability = 10
 quality = 3
 res = 2
+sell = 100
+desc = 暴击型武器，提升攻击5%，暴击20%，技能触发率10%
 
 [14]
 name = 黄色猫棒
-attack = 50
-baoji = 25
-sell = 400
+attack_up = 10
+baoji_up = 25
+probability = 10
 quality = 4
 res = 2
+sell = 150
+desc = 暴击型武器，提升攻击10%，暴击25%，技能触发率10%
 
 [15]
 name = 橙色猫棒
-attack = 80
-baoji = 30
-sell = 500
+attack_up = 10
+baoji_up = 30
+probability = 15
 quality = 5
 res = 2
+sell = 200
+desc = 暴击型武器，提升攻击10%，暴击30%，技能触发率15%
 
 [21]
 name = 白色飞盘
-attack = 50
-baoji = 20
-sell = 500
+attack_up = 5
+baoji_up = 0
+probability = 10
 quality = 1
 res = 3
+sell = 20
+desc = 技能型武器，提升攻击5%，暴击0%，技能触发率10%
 
 [22]
 name = 绿色飞盘
-attack = 100
-baoji = 25
-sell = 1000
+attack_up = 5
+baoji_up = 5
+probability = 15
 quality = 2
 res = 3
+sell = 50
+desc = 技能型武器，提升攻击5%，暴击5%，技能触发率15%
 
 [23]
 name = 蓝色飞盘
-attack = 150
-baoji = 30
-sell = 1500
+attack_up = 10
+baoji_up = 5
+probability = 20
 quality = 3
 res = 3
+sell = 100
+desc = 技能型武器，提升攻击10%，暴击5%，技能触发率20%
 
 [24]
 name = 黄色飞盘
-attack = 250
-baoji = 35
-sell = 2000
+attack_up = 10
+baoji_up = 10
+probability = 25
 quality = 4
 res = 3
+sell = 150
+desc = 技能型武器，提升攻击10%，暴击10%，技能触发率25%
 
 [25]
 name = 橙色飞盘
-attack = 400
-baoji = 40
-sell = 2500
+attack_up = 15
+baoji_up = 10
+probability = 30
 quality = 5
 res = 3
+sell = 200
+desc = 技能型武器，提升攻击15%，暴击10%，技能触发率30%

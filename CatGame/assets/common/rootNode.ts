@@ -16,6 +16,13 @@ export default class RootNode extends cc.Component {
     @property(cc.Prefab)
     pfGoldAdd: cc.Prefab = null;  //获取金币提示框
 
+    @property(cc.Prefab)
+    pfItem: cc.Prefab = null;
+    @property(cc.Prefab)
+    pfStuff: cc.Prefab = null;
+    @property(cc.Prefab)
+    pfSkill: cc.Prefab = null;
+    
     // LIFE-CYCLE CALLBACKS:
 
     tipsPool: cc.NodePool =  null;   //缓存池

@@ -14,18 +14,21 @@ type float = number;
 //炮弹配置数据
 export class st_cannon_info{
     name;     //名称
-    attack;    //攻击力
-    baoji;     //暴击率（/100)
-    sell;   //回收价
+    attack_up;    //攻击力提升（/100）
+    baoji_up;     //暴击率（/100)
+    probability;   //技能触发概率（/100)
     quality;   //品质
     res;   //资源
+    sell;   //回收价
+    desc;
 
     transType(){
-        this.attack = parseInt(this.attack);
-        this.baoji = parseInt(this.baoji)/100;
-        this.sell = parseInt(this.sell);
+        this.attack_up = parseInt(this.attack_up)/100;
+        this.baoji_up = parseInt(this.baoji_up)/100;
+        this.probability = parseInt(this.probability)/100;
         this.quality = parseInt(this.quality);
         this.res = parseInt(this.res);
+        this.sell = parseInt(this.sell);
     }
 
     constructor(){
@@ -34,11 +37,13 @@ export class st_cannon_info{
     clone(){
         let temp = new st_cannon_info();
         temp.name = this.name;
-        temp.attack = this.attack;
-        temp.baoji = this.baoji;
-        temp.sell = this.sell;
+        temp.attack_up = this.attack_up;
+        temp.baoji_up = this.baoji_up;
+        temp.probability = this.probability;
         temp.quality = this.quality;
         temp.res = this.res;
+        temp.sell = this.sell;
+        temp.desc = this.desc;
         return temp;
     }
 }
@@ -47,7 +52,6 @@ export class st_cannon_info{
 export class st_player_info{
     name;     //名称
     cost;   //购买花费
-    weapons;   //炮弹范围 5;15
     attack_up;    //攻击力提升幅度（/100)
     baoji_up;     //暴击率提升幅度（/100)
     ball_num;   //可发射炮弹数量
@@ -56,7 +60,6 @@ export class st_player_info{
 
     transType(){
         this.cost = parseInt(this.cost);
-        this.weapons = CfgMgr.getIntAry(this.weapons, ";");
         this.attack_up = parseInt(this.attack_up)/100;
         this.baoji_up = parseInt(this.baoji_up)/100;
         this.ball_num = parseInt(this.ball_num);
@@ -70,7 +73,6 @@ export class st_player_info{
         let temp = new st_player_info();
         temp.name = this.name;
         temp.cost = this.cost;
-        temp.weapons = this.weapons;
         temp.attack_up = this.attack_up;
         temp.baoji_up = this.baoji_up;
         temp.ball_num = this.ball_num;
@@ -153,7 +155,7 @@ export class st_level_info{
     init_lines;    //初始显示行数
     name;  //关卡名称
     resId;   //关卡图标资源id
-    skillIds;    //技能开启
+    diamond;    //关卡奖励钻石
     
     transType(){
         this.gold = parseInt(this.gold);
@@ -163,7 +165,7 @@ export class st_level_info{
         this.total_lines = parseInt(this.total_lines);
         this.init_lines = parseInt(this.init_lines);
         this.resId = parseInt(this.resId);
-        this.skillIds = CfgMgr.getIntAry(this.skillIds, ";");
+        this.diamond = parseInt(this.diamond);
     }
 
     constructor(){
@@ -179,7 +181,7 @@ export class st_level_info{
         temp.init_lines = this.init_lines;
         temp.name = this.name;
         temp.resId = this.resId;
-        temp.skillIds = this.skillIds;
+        temp.diamond = this.diamond;
         return temp;
     }
 }
@@ -187,21 +189,19 @@ export class st_level_info{
 //道具配置信息
 export class st_item_info{
     name;  //名称
-    attack_up;    //攻击力提升幅度（/100)
-    baoji_up;     //暴击率提升幅度（/100)
-    probability;  //提升炮台技能概率（/100)
+    res;
+    diamond_up;    //关卡金币奖励提升幅度（/100)
+    gold_up;     //关卡钻石奖励提升幅度（/100)
     quality;
     sell;   //回收价
-    res;
     desc;    //描述
 
     transType(){
-        this.attack_up = parseInt(this.attack_up)/100;
-        this.baoji_up = parseInt(this.baoji_up)/100;
-        this.probability = parseInt(this.probability)/100;
+        this.res = parseInt(this.res);
+        this.diamond_up = parseInt(this.diamond_up)/100;
+        this.gold_up = parseInt(this.gold_up)/100;
         this.quality = parseInt(this.quality);
         this.sell = parseInt(this.sell);
-        this.res = parseInt(this.res);
     }
 
     constructor(){
@@ -210,12 +210,11 @@ export class st_item_info{
     clone(){
         let temp = new st_item_info();
         temp.name = this.name;
-        temp.attack_up = this.attack_up;
-        temp.baoji_up = this.baoji_up;
-        temp.probability = this.probability;
+        temp.res = this.res;
+        temp.diamond_up = this.diamond_up;
+        temp.gold_up = this.gold_up;
         temp.quality = this.quality;
         temp.sell = this.sell;
-        temp.res = this.res;
         temp.desc = this.desc;
         return temp;
     }

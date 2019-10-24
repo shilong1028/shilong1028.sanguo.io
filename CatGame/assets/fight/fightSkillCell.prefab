@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "skillCell",
+    "_name": "fightSkillCell",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -70,7 +70,7 @@
     "_id": ""
   },
   {
-    "__type__": "2c40eR5+79OlZ1rWQWdiZKB",
+    "__type__": "483acpIWnBHQ5yVIhXMUYpu",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -85,7 +85,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "961f0d9d-41c1-4522-bc6a-df87252d1bd6"
+      "__uuid__": "d37524e1-c338-4b53-9f52-0fdfc801365c"
     },
     "fileId": "543C1WiIdH5bKW2ImWnY8i",
     "sync": false

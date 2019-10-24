@@ -372,7 +372,7 @@ class MyUserManager {
     }
     /**保存背包物品列表 */
     saveItemList(){
-        this.sortItemList();
+        //this.sortItemList();
 
         let tempList = new Array();
         for(let i=0; i<MyUserData.ItemList.length; ++i){
@@ -408,7 +408,7 @@ class MyUserManager {
     }
     /**保存未出战小球列表 */
     saveBallList(){
-        this.sortBallList();
+        //this.sortBallList();
 
         let BallList = new Array();
         for(let i=0; i<MyUserData.ballList.length; ++i){

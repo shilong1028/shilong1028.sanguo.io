@@ -1,20 +1,18 @@
 import { BallInfo, NoticeType, TipsStrDef, ItemInfo } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
-import Stuff from "./Stuff";
 import { MyUserDataMgr } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
 import { ROOT_NODE } from "../common/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
-import BagLayer from "./bagLayer";
 import Item from "../common/item";
+import Stuff from "../common/Stuff";
+import BagGrid from "./bagGrid";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Block extends cc.Component {
 
-    @property(cc.Node)
-    addNode : cc.Node = null;  //添加按钮节点
     @property(cc.Sprite)
     selSpr: cc.Sprite = null;   //选择框精灵
 
@@ -25,12 +23,11 @@ export default class Block extends cc.Component {
     blockIdx : number = 0;   //网格位置索引
 
     curGirdType = 0;   //0装备小球，1饰品道具，2技能
-    bagLayer: BagLayer = null;
+    BagGrid: BagGrid = null;
 
     // LIFE-CYCLE CALLBACKS:
     
     onLoad () {
-        this.addNode.active = false;
         this.selSpr.node.active = false;  //光圈
 
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -50,22 +47,6 @@ export default class Block extends cc.Component {
     update (dt) {
     }
 
-    /**根据开启情形来显示地块外观 */
-    setBlockShow(){
-        this.addNode.active = false;
-        this.selSpr.node.active = false;  //光圈
-
-        if(this.curGirdType == 0){  //0装备小球
-            if(this.ballInfo == null){
-                this.addNode.active = true;
-            }
-        }else if(this.curGirdType == 1){ //1饰品道具
-            if(this.itemInfo == null){
-                this.addNode.active = true;
-            }
-        }
-    }
-
     /**设置小球模型透明度 */
     setModelOpacity(opacity: number){
         if(this.nModel){  
@@ -74,23 +55,6 @@ export default class Block extends cc.Component {
     }
 
     onTouchStart(event: cc.Event.EventTouch) {
-        if(this.bagLayer){
-            if(this.curGirdType == 0){   //0装备小球
-                if(this.ballInfo){
-                    let cfg = this.ballInfo.cannonCfg;
-                    this.bagLayer.gridLabel.string = cfg.name+", 攻击"+cfg.attack+", 暴击"+cfg.baoji;
-                }else{
-                    this.bagLayer.gridLabel.string = TipsStrDef.KEY_WeaponTip3;
-                }    
-            }else if(this.curGirdType == 1){   //1饰品道具
-                if(this.itemInfo){
-                    this.bagLayer.gridLabel.string = this.itemInfo.itemCfg.name + ": "+this.itemInfo.itemCfg.desc;
-                }else{
-                    this.bagLayer.gridLabel.string = TipsStrDef.KEY_ItemTip;
-                }
-            }
-        }
-
         if( this.nModel == null){
             return;
         }
@@ -101,7 +65,7 @@ export default class Block extends cc.Component {
     handleTouchSelModel(bSel: boolean = true){
         if(bSel){
             this.setModelOpacity(120);  //被移动地块上小球变成半透明
-            this.bagLayer.setSelectBlock(this);   //拖动更新选中的小球模型的位置
+            this.BagGrid.setSelectBlock(this);   //拖动更新选中的小球模型的位置
 
             if(this.curGirdType == 0){
                 NotificationMy.emit(NoticeType.BlockBallSel, this.ballInfo);   //地块上小球被选择，相同等级的小球地块要显示光圈
@@ -167,8 +131,6 @@ export default class Block extends cc.Component {
   
                     dropBlock.onRemoveModel();   //将本地块上的模型移走了
                     this.showUpdateItemEffect();  //显示升级特效   
-                    
-                    this.bagLayer.UpdateGridUI();
                 }
             }else{    //交换
                 dropBlock.setItemModel(this.itemInfo.clone());  //设置地块上的模型
@@ -181,10 +143,10 @@ export default class Block extends cc.Component {
     }
 
     /**初始化地块数据 */
-    initBlockByItem(idx: number, itemInfo: ItemInfo, bagLayer: BagLayer){
+    initBlockByItem(idx: number, itemInfo: ItemInfo, BagGrid: BagGrid){
         this.blockIdx = idx+1;
         this.curGirdType = 1;   //0装备小球，1饰品道具，2技能
-        this.bagLayer = bagLayer;
+        this.BagGrid = BagGrid;
 
         this.setItemModel(itemInfo);  //设置地块上的道具模型
     }
@@ -192,7 +154,7 @@ export default class Block extends cc.Component {
     /**设置地块上的道具模型 */
     setItemModel(itemInfo: ItemInfo){
         this.itemInfo = itemInfo;
-        this.setBlockShow();   //根据开启情形来显示地块外观
+        this.selSpr.node.active = false;  //光圈
 
         if(itemInfo == null){
             if(this.nModel){
@@ -202,7 +164,7 @@ export default class Block extends cc.Component {
             this.itemInfo = null;
         }else{
             if(this.nModel == null){
-                this.nModel = cc.instantiate(this.bagLayer.pfItem);
+                this.nModel = cc.instantiate(ROOT_NODE.pfItem);
                 this.node.addChild(this.nModel, 100);
             }
             this.nModel.getComponent(Item).initItemByData(itemInfo);  //设置地块道具模型数据
@@ -236,11 +198,11 @@ export default class Block extends cc.Component {
     showUpdateItemEffect(){
         let oldInfo: ItemInfo = new ItemInfo(this.itemInfo.itemId - 1);
 
-        let aniItem = cc.instantiate(this.bagLayer.pfItem);
+        let aniItem = cc.instantiate(ROOT_NODE.pfItem);
         this.node.addChild(aniItem, 90);
         aniItem.getComponent(Item).initItemByData(oldInfo);  //设置地块模型数据
 
-        let aniItem2 = cc.instantiate(this.bagLayer.pfItem);
+        let aniItem2 = cc.instantiate(ROOT_NODE.pfItem);
         this.node.addChild(aniItem2, 90);
         aniItem2.getComponent(Item).initItemByData(oldInfo);  //设置地块模型数据
 
@@ -255,10 +217,10 @@ export default class Block extends cc.Component {
     //////////////  以下为地块小球接口  /////////////////////////////
 
     /**初始化地块数据 */
-    initBlockByBall(idx: number, ballInfo: BallInfo, bagLayer: BagLayer){
+    initBlockByBall(idx: number, ballInfo: BallInfo, BagGrid: BagGrid){
         this.blockIdx = idx+1;
         this.curGirdType = 0;   //0装备小球，1饰品道具，2技能
-        this.bagLayer = bagLayer;
+        this.BagGrid = BagGrid;
 
         this.setBallStuff(ballInfo);  //设置地块上的小球模型
     }
@@ -295,7 +257,7 @@ export default class Block extends cc.Component {
     /**设置地块上的小球模型 */
     setBallStuff(ballInfo: BallInfo){
         this.ballInfo = ballInfo;
-        this.setBlockShow();   //根据开启情形来显示地块外观
+        this.selSpr.node.active = false;  //光圈
 
         if(ballInfo == null){
             if(this.nModel){
@@ -305,7 +267,7 @@ export default class Block extends cc.Component {
             this.ballInfo = null;
         }else{
             if(this.nModel == null){
-                this.nModel = cc.instantiate(this.bagLayer.pfStuff);
+                this.nModel = cc.instantiate(ROOT_NODE.pfStuff);
                 this.node.addChild(this.nModel, 100);
             }
             this.nModel.getComponent(Stuff).setStuffData(ballInfo);  //设置地块小球模型数据
@@ -321,12 +283,6 @@ export default class Block extends cc.Component {
                 this.selSpr.node.active = true;  //光圈
             }
         }
-    }
-
-    /**点击地块购买小球或道具*/
-    onAddBtn(){
-        AudioMgr.playEffect("effect/ui_click");
-        GameMgr.getMainScene().showMidUI(2);   //显示中间信息，0地图关卡、1背包炮台、2商店
     }
 
     /**将本地块上的小球卖掉 */
@@ -345,11 +301,11 @@ export default class Block extends cc.Component {
     showUpdateBallEffect(){
         let oldInfo: BallInfo = new BallInfo(this.ballInfo.cannonId - 1);
 
-        let aniStuff = cc.instantiate(this.bagLayer.pfStuff);
+        let aniStuff = cc.instantiate(ROOT_NODE.pfStuff);
         this.node.addChild(aniStuff, 90);
         aniStuff.getComponent(Stuff).setStuffData(oldInfo);  //设置地块小球模型数据
 
-        let aniStuff2 = cc.instantiate(this.bagLayer.pfStuff);
+        let aniStuff2 = cc.instantiate(ROOT_NODE.pfStuff);
         this.node.addChild(aniStuff2, 90);
         aniStuff2.getComponent(Stuff).setStuffData(oldInfo);  //设置地块小球模型数据
 
@@ -365,7 +321,7 @@ export default class Block extends cc.Component {
     showUpdateAni(){
         this.setModelOpacity(255);
 
-        let aniNode = GameMgr.createAtlasAniNode(this.bagLayer.stuffUpAtlas, 12, cc.WrapMode.Default);
+        let aniNode = GameMgr.createAtlasAniNode(this.BagGrid.stuffUpAtlas, 12, cc.WrapMode.Default);
         this.node.addChild(aniNode, 110, "hechengAniNode");
 
         // let effectSpr = aniNode.getComponent(cc.Sprite);

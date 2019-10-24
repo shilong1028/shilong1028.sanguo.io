@@ -48,8 +48,6 @@ export default class FightScene extends cc.Component {
     pfharmHp: cc.Prefab = null;   //飘血预制体
     @property(cc.Prefab)
     pfDot: cc.Prefab = null;   //指示点预制体  
-    @property(cc.Prefab)
-    pfSkill: cc.Prefab = null;
 
     @property([cc.SpriteFrame])
     boomFrames: cc.SpriteFrame[] = new Array(2);  //炸弹图片

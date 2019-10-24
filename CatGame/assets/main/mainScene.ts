@@ -161,7 +161,6 @@ export default class MainScene extends cc.Component {
             this.curPageIdx = 1;
         }else if(this.curMidUIType == 1){  //背包炮台
             this.curPageIdx = 0;
-            NotificationMy.emit(NoticeType.UpdateBagGrid, null);    //更新背包显示
         }else{  //商店
             this.curPageIdx = 2;
         }

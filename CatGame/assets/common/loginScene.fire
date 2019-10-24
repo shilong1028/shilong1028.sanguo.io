@@ -1379,6 +1379,15 @@
     "pfGoldAdd": {
       "__uuid__": "ead6f56b-473e-4647-8449-e5711e70bb6e"
     },
+    "pfItem": {
+      "__uuid__": "870f3bdf-34a2-43f8-924d-94c2b9f4c007"
+    },
+    "pfStuff": {
+      "__uuid__": "3d71e379-6e28-4cdd-a10c-efd1a711509b"
+    },
+    "pfSkill": {
+      "__uuid__": "db8316af-ec51-495c-8677-6a47a70b7247"
+    },
     "_id": "0dQNsZNAdGZJKmG0BCYkJm"
   }
 ]

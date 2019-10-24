@@ -304,7 +304,6 @@ export const NoticeType = {
 
     UpdateGold: "UpdateGold",   //更新金币显示
     UpdateDiamond: "UpdateDiamond",   //更新钻石显示
-    UpdateBagGrid: "UpdateBagGrid",   //更新背包显示
     BlockGridSel: "BlockGridSel",   //全部背包中武器或道具被选中
     BlockBallSel: "BlockBallSel",   //地块上小球被选择，相同等级的小球地块要显示光圈
     BlockItemSel: "BlockItemSel",   //地块上道具被选择，相同等级的道具地块要显示光圈

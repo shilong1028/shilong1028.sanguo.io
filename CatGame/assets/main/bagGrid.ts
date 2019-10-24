@@ -1,13 +1,12 @@
-
-import { AudioMgr } from "../manager/AudioMgr";
-import { NoticeType, BallInfo, ItemInfo } from "../manager/Enum";
-import { GameMgr } from "../manager/GameManager";
-import Stuff from "./Stuff";
-import Item from "../common/item";
-import BagGridBlock from "./bagGridBlock";
+import Block from "./Block";
 import { NotificationMy } from "../manager/NoticeManager";
+import { AudioMgr } from "../manager/AudioMgr";
+import { NoticeType, BallInfo, ItemInfo, PlayerInfo, TipsStrDef } from "../manager/Enum";
 import { MyUserDataMgr } from "../manager/MyUserData";
-
+import { GameMgr } from "../manager/GameManager";
+import { ROOT_NODE } from "../common/rootNode";
+import Stuff from "../common/Stuff";
+import Item from "../common/item";
 
 const {ccclass, property} = cc._decorator;
 
@@ -15,16 +14,23 @@ const {ccclass, property} = cc._decorator;
 export default class BagGrid extends cc.Component {
 
     @property(cc.Node)
-    delNode: cc.Node = null;   //删除节点
+    equipNode: cc.Node = null;   //武器装配节点
+    @property(cc.Node)
+    itemNode: cc.Node = null;
     @property(cc.Node)
     gridNode: cc.Node = null;
+    @property(cc.Node)
+    delNode: cc.Node = null;   //删除节点
+
+    @property(cc.Sprite)
+    equipBtnSpr: cc.Sprite = null;
+    @property(cc.Sprite)
+    itemBtnSpr: cc.Sprite = null;
+    @property(cc.SpriteFrame)
+    btnSprArr: cc.SpriteFrame[] = new Array(2);
 
     @property(cc.Prefab)
-    pfGridBlock: cc.Prefab = null;
-    @property(cc.Prefab)
-    pfItem: cc.Prefab = null;
-    @property(cc.Prefab)
-    pfStuff: cc.Prefab = null;
+    pfBlock: cc.Prefab = null;
 
     @property(cc.SpriteAtlas)
     stuffUpAtlas: cc.SpriteAtlas = null;
@@ -32,9 +38,10 @@ export default class BagGrid extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     curGirdType: number = -1;   //0装备小球，1饰品道具，2技能
-
     nSelectModel: cc.Node = null;   //拖动选择的地块模型
-    selectBlock: BagGridBlock = null;   //拖动的地块数据
+    selectBlock: Block = null;   //拖动的地块数据
+
+    showPlayerInfo: PlayerInfo = null;
 
     onLoad () {
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -55,6 +62,22 @@ export default class BagGrid extends cc.Component {
 
     // update (dt) {}
 
+    onEquipBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        this.initGirdInfo(0);  //0装备小球，1饰品道具，2技能
+
+        this.equipBtnSpr.spriteFrame = this.btnSprArr[0];
+        this.itemBtnSpr.spriteFrame = this.btnSprArr[1];
+    }
+
+    onItemBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        this.initGirdInfo(1);  //0装备小球，1饰品道具，2技能
+
+        this.equipBtnSpr.spriteFrame = this.btnSprArr[1];
+        this.itemBtnSpr.spriteFrame = this.btnSprArr[0];
+    }
+
     onTouchStart(event: cc.Event.EventTouch) {  
         if(this.selectBlock){
             this.delNode.active= true;  //回收站
@@ -71,15 +94,22 @@ export default class BagGrid extends cc.Component {
     ontTouchEnd(event: cc.Event.EventTouch) {
         if(this.nSelectModel && this.selectBlock){  
             this.placeSelectBlock(event.getLocation());   //放置选中的地块模型
-            NotificationMy.emit(NoticeType.BlockGridSel, null);    //全部背包中武器或道具被选中
+            if(this.curGirdType == 0){
+                NotificationMy.emit(NoticeType.BlockBallSel, null);   //地块上小球被选择，相同等级的小球地块要显示光圈
+            }else if(this.curGirdType == 1){
+                NotificationMy.emit(NoticeType.BlockItemSel, null);   //地块上道具被选择，相同等级的道具地块要显示光圈
+            }
         }
     }
 
-    initGirdInfo(gridType: number){
+    initGirdInfo(gridType: number, showPlayerInfo: PlayerInfo=null){
         if(this.curGirdType == gridType){
             return;
         }
         this.curGirdType = gridType;   //0装备小球，1饰品道具，2技能
+        if(this.showPlayerInfo){
+            this.showPlayerInfo = showPlayerInfo;
+        }
 
         this.gridNode.removeAllChildren();
         if(this.nSelectModel){
@@ -95,9 +125,9 @@ export default class BagGrid extends cc.Component {
                     ballInfo = ballList[i];
                 }
     
-                let node = cc.instantiate(this.pfGridBlock);
+                let node = cc.instantiate(this.pfBlock);
                 this.gridNode.addChild(node);
-                let block = node.getComponent(BagGridBlock);
+                let block = node.getComponent(Block);
                 block.initBlockByBall(i, ballInfo, this);
             }
         }else if(this.curGirdType == 1){   //1饰品道具
@@ -108,16 +138,16 @@ export default class BagGrid extends cc.Component {
                     itemInfo = itemList[i];
                 }
     
-                let node = cc.instantiate(this.pfGridBlock);
+                let node = cc.instantiate(this.pfBlock);
                 this.gridNode.addChild(node);
-                let block = node.getComponent(BagGridBlock);
+                let block = node.getComponent(Block);
                 block.initBlockByItem(i, itemInfo, this);
             }
         }
     }
 
     /**设置选中的将要移动的地块 */
-    setSelectBlock(block: BagGridBlock){
+    setSelectBlock(block: Block){
         this.selectBlock = block;   //拖动的地块数据
     }
 
@@ -126,7 +156,7 @@ export default class BagGrid extends cc.Component {
         if(this.selectBlock){
             if(this.curGirdType == 0){   //0装备小球
                 if(this.nSelectModel == null){
-                    this.nSelectModel = cc.instantiate(this.pfStuff);
+                    this.nSelectModel = cc.instantiate(ROOT_NODE.pfStuff);
                     this.nSelectModel.setPosition(-3000, -3000);
                     this.node.addChild(this.nSelectModel, 100);
                 }
@@ -134,7 +164,7 @@ export default class BagGrid extends cc.Component {
                 stuff.setStuffData(this.selectBlock.ballInfo);   //设置地块小球模型数据 
             }else if(this.curGirdType == 1){   //1饰品道具
                 if(this.nSelectModel == null){
-                    this.nSelectModel = cc.instantiate(this.pfItem);
+                    this.nSelectModel = cc.instantiate(ROOT_NODE.pfItem);
                     this.nSelectModel.setPosition(-3000, -3000);
                     this.node.addChild(this.nSelectModel, 100);
                 }
@@ -150,30 +180,99 @@ export default class BagGrid extends cc.Component {
     /**放置选中的地块模型 */
     placeSelectBlock(touchPos : cc.Vec2){
         if(this.selectBlock && this.selectBlock){
-            let pos = this.gridNode.convertToNodeSpaceAR(touchPos);   //网格
-            let rect = cc.rect(-this.gridNode.width/2, -this.gridNode.height/2, this.gridNode.width, this.gridNode.height);
-            if(rect.contains(pos)){ 
-                let dropBlock: cc.Node = this.getBlockSlotIndex(touchPos);   //根据位置找到对应的地块
-                if(dropBlock == null){   //未找到合适的地块
-                    this.selectBlock.onRecoverSelf();   //复原本地块模型
-                }else{
-                    dropBlock.getComponent(BagGridBlock).onModelDropBlock(this.selectBlock);   //将一个地块上的小球放置到选中的地块上
-                }
-            }else{
-                let pos3 = this.delNode.convertToNodeSpaceAR(touchPos);   //回收站
-                let rect3 = cc.rect(-this.delNode.width/2, -this.delNode.height/2, this.delNode.width, this.delNode.height);
-                if(rect3.contains(pos3)){ 
-                    this.nSelectModel.setPosition(-3000, -3000);
-
-                    if(this.curGirdType == 0){   //0装备小球，1饰品道具，2技能
-                        let sellGold = this.selectBlock.handleSellBall();  
-                        GameMgr.showDelGainAni(sellGold);   //显示售卖士兵收益 
-                    }else if(this.curGirdType == 1){   //1饰品道具
-                        let sellGold = this.selectBlock.handleSellItem();  
-                        GameMgr.showDelGainAni(sellGold);   //显示售卖收益 
+            if(this.curGirdType == 0){   //0装备小球，1饰品道具，2技能
+                let pos = this.gridNode.convertToNodeSpace(touchPos);   //网格
+                let rect = cc.rect(0, 0, this.gridNode.width, this.gridNode.height);
+                if(rect.contains(pos)){ 
+                    let dropBlock: cc.Node = this.getBlockSlotIndex(touchPos);   //根据位置找到对应的地块
+                    if(dropBlock == null){   //未找到合适的地块
+                        this.selectBlock.onRecoverSelf();   //复原本地块模型
+                    }else{
+                        dropBlock.getComponent(Block).onModelDropBlock(this.selectBlock);   //将一个地块上的小球放置到选中的地块上
                     }
                 }else{
-                    this.selectBlock.onRecoverSelf();   //复原本地块模型
+                    let pos2 = this.equipNode.convertToNodeSpace(touchPos);   //装备
+                    let rect2 = cc.rect(0, 0, this.equipNode.width, this.equipNode.height);
+                    if(rect2.contains(pos2)){    //装备新小球
+                        if(this.showPlayerInfo && this.showPlayerInfo.useState == 1){   //已经拥有的炮台
+                            let equipBallInfo = null;
+                            if(this.showPlayerInfo.ballId > 0){
+                                equipBallInfo = new BallInfo(this.showPlayerInfo.ballId);
+                            }
+                            this.showPlayerInfo.ballId = this.selectBlock.ballInfo.cannonId;
+
+                            NotificationMy.emit(NoticeType.UpdatePlayerList, this.showPlayerInfo);   //更新炮台
+
+                            MyUserDataMgr.updatePlayerFromList(this.showPlayerInfo);   //更新炮台到拥有的炮列表
+                            MyUserDataMgr.equipBallToPlayer(this.selectBlock.ballInfo.clone(), equipBallInfo);
+
+                            if(equipBallInfo){
+                                this.selectBlock.setBallStuff(equipBallInfo.clone());  //设置地块上的小球模型
+                            }else{
+                                this.selectBlock.onRemoveModel();   //将本地块上的模型移走了
+                            }
+                        }else{
+                            ROOT_NODE.showTipsText(TipsStrDef.KEY_PlayerTip);
+                            this.selectBlock.onRecoverSelf();   //复原本地块模型
+                        }
+                    }else{
+                        let pos3 = this.delNode.convertToNodeSpace(touchPos);   //回收站
+                        let rect3 = cc.rect(0, 0, this.delNode.width, this.delNode.height);
+                        if(rect3.contains(pos3)){ 
+                            let sellGold = this.selectBlock.handleSellBall();  
+                            GameMgr.showDelGainAni(sellGold);   //显示售卖士兵收益 
+                            this.nSelectModel.setPosition(-3000, -3000);
+                        }else{
+                            this.selectBlock.onRecoverSelf();   //复原本地块模型
+                        }
+                    }
+                }
+            }else if(this.curGirdType == 1){   //1饰品道具
+                let pos = this.gridNode.convertToNodeSpace(touchPos);   //网格
+                let rect = cc.rect(0, 0, this.gridNode.width, this.gridNode.height);
+                if(rect.contains(pos)){ 
+                    let dropBlock: cc.Node = this.getBlockSlotIndex(touchPos);   //根据位置找到对应的地块
+                    if(dropBlock == null){   //未找到合适的地块
+                        this.selectBlock.onRecoverSelf();   //复原本地块模型
+                    }else{
+                        dropBlock.getComponent(Block).onModelDropBlock(this.selectBlock);   //将一个地块上的小球放置到选中的地块上
+                    }
+                }else{
+                    let pos2 = this.itemNode.convertToNodeSpace(touchPos);   //道具
+                    let rect2 = cc.rect(0, 0, this.itemNode.width, this.itemNode.height);
+                    if(rect2.contains(pos2)){    //新饰品道具
+                        if(this.showPlayerInfo && this.showPlayerInfo.useState == 1){   //已经拥有的炮台
+                            let equipItemInfo = null;
+                            if(this.showPlayerInfo.itemId > 0){
+                                equipItemInfo = new ItemInfo(this.showPlayerInfo.itemId);
+                            }
+                            this.showPlayerInfo.itemId = this.selectBlock.itemInfo.itemId;
+
+                            NotificationMy.emit(NoticeType.UpdatePlayerList, this.showPlayerInfo);   //更新炮台
+
+                            MyUserDataMgr.updatePlayerFromList(this.showPlayerInfo);   //更新炮台到拥有的炮列表
+                            MyUserDataMgr.equipItemToPlayer(this.selectBlock.itemInfo.clone(), equipItemInfo);
+
+                            if(equipItemInfo){
+                                this.selectBlock.setItemModel(equipItemInfo.clone());  //设置地块上的道具模型
+                            }else{
+                                this.selectBlock.onRemoveModel();   //将本地块上的模型移走了
+                            }
+                        }else{
+                            ROOT_NODE.showTipsText(TipsStrDef.KEY_PlayerTip);
+                            this.selectBlock.onRecoverSelf();   //复原本地块模型
+                        }
+                    }else{
+                        let pos3 = this.delNode.convertToNodeSpace(touchPos);   //回收站
+                        let rect3 = cc.rect(0, 0, this.delNode.width, this.delNode.height);
+                        if(rect3.contains(pos3)){ 
+                            let sellGold = this.selectBlock.handleSellItem();  
+                            GameMgr.showDelGainAni(sellGold);   //显示售卖收益 
+                            this.nSelectModel.setPosition(-3000, -3000);
+                        }else{
+                            this.selectBlock.onRecoverSelf();   //复原本地块模型
+                        }
+                    }
                 }
             }
 
@@ -197,8 +296,6 @@ export default class BagGrid extends cc.Component {
     }
 
     onCloseBtn(){
-        NotificationMy.emit(NoticeType.UpdateBagGrid, null);    //更新背包显示
-
         AudioMgr.playEffect("effect/ui_click");
         this.node.removeFromParent(true);
     }

@@ -5,6 +5,7 @@ import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
 import Skill from "../common/skill";
 import { CfgMgr } from "../manager/ConfigManager";
 import { SkillInfo, ChapterInfo } from "../manager/Enum";
+import { ROOT_NODE } from "../common/rootNode";
 
 const {ccclass, property} = cc._decorator;
 
@@ -45,11 +46,10 @@ export default class FightResult extends cc.Component {
     @property([cc.Node])
     skillNodes: cc.Node[] = new Array(3);
 
-    @property(cc.Prefab)
-    pfSkill: cc.Prefab = null;  //技能图标
-
     rewardGold: number = 0;   //奖励金币
     bNextLevel: boolean = true;   //下一关
+
+    skillIdArr: number[] = [];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -92,11 +92,27 @@ export default class FightResult extends cc.Component {
                 }
             }else{
                 //添加技能
-                for(let i=0; i<levelCfg.skillIds.length; ++i){
-                    let skill = cc.instantiate(this.pfSkill);
+                while(this.skillIdArr.length < 3){
+                    let skillId = Math.ceil(Math.random()*GameMgr.SkillCount);
+                    if(skillId == 0){
+                        skillId = 1;
+                    }
+                    let bInsert = true;
+                    for(let i=0; i<this.skillIdArr.length; ++i){
+                        if(this.skillIdArr[i] == skillId){
+                            bInsert = false;
+                        }
+                    }
+                    if(bInsert == true){
+                        this.skillIdArr.push(skillId);
+                    }
+                }
+
+                for(let i=0; i<this.skillIdArr.length; ++i){
+                    let skill = cc.instantiate(ROOT_NODE.pfSkill);
                     this.skillNodes[i].addChild(skill);
 
-                    let skillInfo = new SkillInfo(levelCfg.skillIds[i]);
+                    let skillInfo = new SkillInfo(this.skillIdArr[i]);
                     skill.getComponent(Skill).initSkillByData(skillInfo);
                 }
             }
@@ -126,7 +142,7 @@ export default class FightResult extends cc.Component {
     onSkillBtn(sender, parStr){
         AudioMgr.playEffect("effect/ui_click");
         let idx = parseInt(parStr);
-        let skillId = FightMgr.level_info.levelCfg.skillIds[idx];
+        let skillId = this.skillIdArr[idx];
         if(skillId > 0){
             if(this.bNextLevel == true){
                 FightMgr.getFightScene().addFightSkillById(skillId);
