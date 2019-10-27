@@ -105,7 +105,9 @@ export default class Ball extends cc.Component {
 
         this.clearBallData();
 
-        this.initBallStateData();  //清除球的状态信息，初始化或发射前会调用
+        //this.initBallStateData();  //清除球的状态信息，初始化或发射前会调用
+        //注意，引擎升级到2.2后，发现在此处调用initBallStateData中的this.BallStreak.enabled = false;  后报错。
+        //TypeError: Cannot read property '_assembler' of null at RenderFlow.249._proto._updateRenderData
 
         this.changeBallWithState(BallState.init);  //根据球的状态来改变外形图片
     }

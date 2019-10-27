@@ -1004,7 +1004,7 @@ export default class QiPanSc extends cc.Component {
     createEffectLoopAniNode(atlas: cc.SpriteAtlas){
         if(atlas){
             let aniNode = GameMgr.createAtlasAniNode(atlas, 12, cc.WrapMode.Loop);
-            aniNode.scale = 2.0;
+            // aniNode.scale = 2.0;   //球缩小了，因此不用放大二倍了
             // let effectSpr = aniNode.getComponent(cc.Sprite);
             // if(effectSpr){
             //     effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;
