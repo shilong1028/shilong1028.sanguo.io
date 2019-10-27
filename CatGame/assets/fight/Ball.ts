@@ -225,32 +225,37 @@ export default class Ball extends cc.Component {
 
     /**增加回合攻击力(充能) */
     addRoundAttack(){
+        this.roundAttack = 0;
         let skillInfo = FightMgr.getFightScene().getFightSkillById(2);  //强化
-        let upVal = skillInfo.skillCfg.attack_up * skillInfo.skillLv;
-        
-        this.roundAttack = Math.ceil(this.getBallAttack(false) * upVal);   //小球在每回合增加的攻击力（当前回合有效）
-
-        let effAni = this.effectNode.getChildByName("chongneng_effect_1");
-        if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().ballChongnengAtlas);
-            if(effAni){
-                effAni.name = "chongneng_effect_1";
-                this.effectNode.addChild(effAni, 100);
+        if(skillInfo){
+            let upVal = skillInfo.skillCfg.attack_up * skillInfo.skillLv;
+            this.roundAttack = Math.ceil(this.getBallAttack(false) * upVal);   //小球在每回合增加的攻击力（当前回合有效）
+            
+            let effAni = this.effectNode.getChildByName("chongneng_effect_1");
+            if(effAni == null){
+                effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().ballChongnengAtlas);
+                if(effAni){
+                    effAni.name = "chongneng_effect_1";
+                    this.effectNode.addChild(effAni, 100);
+                }
             }
         }
     }
 
     /**狂暴特性 */
     addRoundBaoji(){
+        this.roundBaoji = 0;
         let skillInfo = FightMgr.getFightScene().getFightSkillById(9);  //狂暴
-        this.roundBaoji = skillInfo.skillCfg.baoji_up * skillInfo.skillLv;  //小球在每回合增加的暴击率（当前回合有效）
+        if(skillInfo){
+            this.roundBaoji = skillInfo.skillCfg.baoji_up * skillInfo.skillLv;  //小球在每回合增加的暴击率（当前回合有效）
 
-        let effAni = this.effectNode.getChildByName("baoji_effect");
-        if(effAni == null){
-            effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().baojiAtlas);
-            if(effAni){
-                effAni.name = "baoji_effect";
-                this.effectNode.addChild(effAni, 100);
+            let effAni = this.effectNode.getChildByName("baoji_effect");
+            if(effAni == null){
+                effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().baojiAtlas);
+                if(effAni){
+                    effAni.name = "baoji_effect";
+                    this.effectNode.addChild(effAni, 100);
+                }
             }
         }
     }
@@ -415,7 +420,7 @@ export default class Ball extends cc.Component {
                 this.node.angle = 0;
                 //cc.log("setBallRotation(), 设置小球角度 射线垂直向上， this.ballFlyDir = "+this.ballFlyDir);
             }else{
-                let rad = this.ballFlyDir.signAngle(cc.v2(0,1));
+                let rad = cc.v2(this.ballFlyDir.x, this.ballFlyDir.y).signAngle(cc.v2(0,1));
                 let angle = cc.misc.radiansToDegrees(rad);
                 this.node.angle = -angle;   //cc.Node.rotation` is deprecated since v2.1.0, please set `-angle` instead. (`this.node.rotation = x` -> `this.node.angle = -x`)
             }
@@ -435,23 +440,18 @@ export default class Ball extends cc.Component {
 
     /**获取小球攻击力，等级攻击力+额外攻击力+暴击 */
     getBallAttack(bAddRoundAtk:boolean=true){
-        if(this.ballInfo){
-            let attack = this.ballInfo.cannonCfg.attack;
-            let baoji = this.ballInfo.cannonCfg.baoji;
+        if(FightMgr.usedPlayerInfo){
+            let attack = FightMgr.usedPlayerInfo.playerCfg.attack;
+            let baoji = FightMgr.usedPlayerInfo.playerCfg.baoji;
 
-            if(FightMgr.usedPlayerInfo){
-                let attack_up = FightMgr.usedPlayerInfo.playerCfg.attack_up;   //炮台提升的攻击和暴击
-                let baoji_up = FightMgr.usedPlayerInfo.playerCfg.baoji_up;
-                if(FightMgr.usedPlayerInfo.itemId > 0){
-                    let item = new ItemInfo(FightMgr.usedPlayerInfo.itemId);
-                    if(item){
-                        attack_up += item.itemCfg.attack_up;   //炮台绑定的道具提升的攻击和暴击
-                        baoji_up += item.itemCfg.baoji_up;
-                    }
-                }
+            if(this.ballInfo){
+                let attack_up = this.ballInfo.cannonCfg.attack_up;
+                let baoji_up = this.ballInfo.cannonCfg.baoji_up;
+    
                 attack = attack * (1.0 + attack_up);
                 baoji = baoji + baoji_up;
             }
+
             if(bAddRoundAtk == true){
                 attack += this.roundAttack;   //小球在每回合增加的攻击力（当前回合有效）
                 baoji += this.roundBaoji;   //小球在每回合增加的暴击率（当前回合有效）
@@ -463,7 +463,6 @@ export default class Ball extends cc.Component {
             }
             return attack;
         }
-
         return 0;
     }
 

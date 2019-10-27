@@ -16,7 +16,7 @@ class GameManager {
     PlayerCount: number = 3;   //炮台萌猫数量
     ChapterCount: number = 7;  //章节数量
     QualityCount: number = 5;  //品质最大等级
-    ShopCount: number = 5;   //商品种类
+    ShopCount: number = 4;   //商品种类
     SkillCount: number = 9;   //技能数量
 
     /************************  以下为UI接口  ************** */

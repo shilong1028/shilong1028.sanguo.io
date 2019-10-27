@@ -2,34 +2,34 @@
 name = 金质宝箱
 gold = 1000
 diamond = 50
-weapon = 30
+weapon = 40
 item = 50
 res = 3
 quality = 3
 costGold = 0
-costDiamond = 200
+costDiamond = 100
 vedio = 0
 desc = 消耗大量钻石，较高概率获得黄色品质以下的武器和饰品。
 
 [2]
 name = 银质宝箱
 gold = 500
-diamond = 10
-weapon = 20
-item = 30
+diamond = 30
+weapon = 30
+item = 40
 res = 2
 quality = 2
 costGold = 0
-costDiamond = 100
+costDiamond = 50
 vedio = 0
 desc = 消耗一定钻石，较高概率获得蓝色品质以下的武器和饰品。
 
 [3]
 name = 铜制宝箱
-gold = 500
-diamond = 10
-weapon = 10
-item = 20
+gold = 300
+diamond = 20
+weapon = 20
+item = 30
 res = 1
 quality = 2
 costGold = 0
@@ -40,22 +40,9 @@ desc = 观看视频，获得金币、钻石，大概率获得武器或饰品。
 [4]
 name = 铁质宝箱
 gold = 200
-diamond = 5
-weapon = 5
-item = 10
-res = 1
-quality = 2
-costGold = 0
-costDiamond = 20
-vedio = 0
-desc = 消耗钻石，极小概率获得蓝色品质以下的武器或饰品。
-
-[5]
-name = 木质宝箱
-gold = 200
-diamond = 3
-weapon = 5
-item = 10
+diamond = 10
+weapon = 10
+item = 20
 res = 1
 quality = 2
 costGold = 2000

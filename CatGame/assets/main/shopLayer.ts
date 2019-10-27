@@ -2,6 +2,7 @@ import TableView from "../tableView/tableView";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { CfgMgr } from "../manager/ConfigManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -24,7 +25,11 @@ export default class ShopLayer extends cc.Component {
     initTableData(){
         let shopArr = new Array();
         for(let i=1; i<= GameMgr.ShopCount; ++i){
-            shopArr.push(CfgMgr.getShopConf(i));
+            let shopCfg = CfgMgr.getShopConf(i);
+            if(!SDKMgr.isSDK && shopCfg.vedio > 0){
+            }else{
+                shopArr.push(shopCfg);
+            }
         }
 
         this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换

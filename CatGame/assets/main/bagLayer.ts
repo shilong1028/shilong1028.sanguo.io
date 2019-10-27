@@ -119,7 +119,11 @@ export default class BagLayer extends cc.Component {
     //更新炮台
     UpdatePlayer(playerInfo: PlayerInfo){
         if(playerInfo && this.curshowPlayerInfo && playerInfo.playerId == this.curshowPlayerInfo.playerId){
-            this.showCurPlayerInfo(); 
+            this.curshowPlayerInfo = playerInfo;
+            this.playerLabel.string = this.curshowPlayerInfo.playerCfg.desc;
+            this.showPlayerEquip(this.curshowPlayerInfo.ballId);
+            this.showPlayerItem(this.curshowPlayerInfo.itemId);
+            this.showPlayerSkill(this.curshowPlayerInfo.playerCfg.skillId);
         }
     }
 
@@ -157,7 +161,7 @@ export default class BagLayer extends cc.Component {
     }
     //饰品道具
     showPlayerItem(itemId: number){
-        let itemModel = this.equipNode.getChildByName("itemChildModel");
+        let itemModel = this.itemNode.getChildByName("itemChildModel");
         if(itemId > 0){
             if(itemModel == null){
                 itemModel = cc.instantiate(ROOT_NODE.pfItem);
@@ -205,7 +209,6 @@ export default class BagLayer extends cc.Component {
     //打开背包界面 //0装备小球，1饰品道具，2技能
     openBagGridByType(gridType: number){
         let layer = GameMgr.showLayer(this.pfGridBag);
-
         layer.getComponent(BagGrid).initGirdInfo(gridType, this.curshowPlayerInfo.clone());  //0装备小球，1饰品道具，2技能
     }
 

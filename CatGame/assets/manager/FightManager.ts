@@ -57,7 +57,7 @@ class FightManager {
      * 外扩后还可以避免两个相邻砖块转角的判定。如果相邻两块砖块距离太近，则认为相邻的转角位边框镜面反射，而非弧度反射。
      */
     speedUpRatio: number =  1;  //战斗加速倍数，0-2分别表示1-3倍加速
-
+    
     /**加载关卡前 清空之前可能余留的信息 */
     clearFightMgrData(){
         this.bReNewLevel = false;   //是否重新开始游戏(看视频)
@@ -117,7 +117,7 @@ class FightManager {
             this.roundBallCount = this.usedPlayerInfo.playerCfg.ball_num;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
         }
 
-        this.getFightScene().showSkillIcons();  //显示章节战斗技能
+        this.getFightScene().initFightSkillList();  //显示章节战斗技能
         this.roundBallCount += this.fightAddCount;    //章节加球技能增加值（每一章节内有效）
         this.fightBallTotal = this.roundBallCount;   //关卡战斗总小球数量
 
@@ -303,7 +303,7 @@ class FightManager {
      */
     getAngle(dir:cc.Vec2){
         dir.normalizeSelf();
-        let sa = dir.signAngle(cc.v2(1,0));
+        let sa = cc.v2(dir.x, dir.y).signAngle(cc.v2(1,0));
         let angle = cc.misc.radiansToDegrees(sa);
         return angle;
     }
@@ -794,15 +794,15 @@ class FightManager {
     /**指定方向产生方向偏移 */
     adaptDirByVec(newDir: cc.Vec2, vec: cc.Vec2){
         //如果新方向为水平，则产生一个1-3度的偏移
-        let offsetRad = newDir.signAngle(vec);  //signAngle标识向量旋转到指定向量需要旋转的弧度（顺时针为负，逆时针为正）
+        let offsetRad = cc.v2(newDir.x, newDir.y).signAngle(vec);  //signAngle标识向量旋转到指定向量需要旋转的弧度（顺时针为负，逆时针为正）
         //负值标识newDir在X轴上， 正值标识newDir在X轴下方。向量顺时针旋转的角度为负弧度，向量逆时针旋转的角度为正弧度
         if(Math.abs(offsetRad) < 0.05){   //水平向右
             let off = 0.05;   //Math.random()*0.03 + 0.02;
             if(offsetRad < 0){    //offsetRad<0 newDir在X轴上，>0偏下
-                newDir.rotateSelf(off);
+                newDir = cc.v2(newDir.x, newDir.y).rotate(off);
                 return newDir;
             }else{
-                newDir.rotateSelf(-off);
+                newDir = cc.v2(newDir.x, newDir.y).rotate(-off);
                 return newDir;
             }
         }else{
@@ -810,10 +810,10 @@ class FightManager {
             if(newOff < 0.05){  //水平向左
                 let off = 0.05;  //Math.random()*0.03 + 0.02;
                 if(offsetRad < 0){    //offsetRad<0 newDir在X轴上，>0偏下
-                    newDir.rotateSelf(-off);
+                    newDir = cc.v2(newDir.x, newDir.y).rotate(-off);
                     return newDir;
                 }else{
-                    newDir.rotateSelf(off);
+                    newDir = cc.v2(newDir.x, newDir.y).rotate(off);
                     return newDir;
                 }
             }
@@ -1543,17 +1543,17 @@ class FightManager {
             }else if(centerLen < radius){   //相交
                 let rad = Math.abs(Math.acos(centerLen/radius));    //垂线和交线的夹角弧度。
                 let referDir = point.sub(center).normalizeSelf();   //垂线向量
-                let dir1 = referDir.clone().rotateSelf(rad);   //顺时针   //注意会改变自身，故要使用克隆对象
-                let dir2 = referDir.clone().rotateSelf(-rad);  //逆时针
+                let dir1 = cc.v2(referDir.x, referDir.y).rotate(rad);   //顺时针   //注意会改变自身，故要使用克隆对象
+                let dir2 = cc.v2(referDir.x, referDir.y).rotate(-rad);  //逆时针
                 let intersectPoint1 = cc.v2(center.x + dir1.x * radius, center.y + dir1.y * radius);
                 let intersectPoint2 = cc.v2(center.x + dir2.x * radius, center.y + dir2.y * radius);
 
                 if(intersectPoint1.sub(startPos).mag() <= intersectPoint2.sub(startPos).mag()){
                     intersectPoint = intersectPoint1;  //顺时针  
-                    newDir = dir.rotateSelf(2*rad);
+                    newDir = cc.v2(dir.x, dir.y).rotate(2*rad);
                 }else{
                     intersectPoint = intersectPoint2;   //逆时针
-                    newDir = dir.rotateSelf(-2*rad);
+                    newDir = cc.v2(dir.x, dir.y).rotate(-2*rad);
                 }
 
                 return {newDir: newDir, intersectPoint: intersectPoint};

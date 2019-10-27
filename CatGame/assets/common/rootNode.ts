@@ -73,7 +73,6 @@ export default class RootNode extends cc.Component {
     /**显示提示文本 */
     showTipsText(tipStr: string){
         this.tipsArr.push(tipStr);
-
         if(this.tipsArr.length == 1 && this.tipsStep == 0){
             this.createTipsText();  //创建并提示文本
         }
@@ -84,10 +83,9 @@ export default class RootNode extends cc.Component {
             this.tipsStep = 0;
             return;
         }else{
-            this.tipsStep = 20;
+            this.tipsStep = 10;
 
             let tipStr = this.tipsArr.shift();
-
             let tips = cc.instantiate(this.pfTipsText);
             tips.y = 700;
             tips.x = cc.winSize.width/2;

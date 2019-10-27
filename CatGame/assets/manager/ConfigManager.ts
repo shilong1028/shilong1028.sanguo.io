@@ -52,16 +52,16 @@ export class st_cannon_info{
 export class st_player_info{
     name;     //名称
     cost;   //购买花费
-    attack_up;    //攻击力提升幅度（/100)
-    baoji_up;     //暴击率提升幅度（/100)
+    attack;    //攻击力
+    baoji;     //暴击率/100
     ball_num;   //可发射炮弹数量
     skillId;    //默认技能ID
     desc;    
 
     transType(){
         this.cost = parseInt(this.cost);
-        this.attack_up = parseInt(this.attack_up)/100;
-        this.baoji_up = parseInt(this.baoji_up)/100;
+        this.attack = parseInt(this.attack);
+        this.baoji = parseInt(this.baoji)/100;
         this.ball_num = parseInt(this.ball_num);
         this.skillId = parseInt(this.skillId);
     }
@@ -73,8 +73,8 @@ export class st_player_info{
         let temp = new st_player_info();
         temp.name = this.name;
         temp.cost = this.cost;
-        temp.attack_up = this.attack_up;
-        temp.baoji_up = this.baoji_up;
+        temp.attack = this.attack;
+        temp.baoji = this.baoji;
         temp.ball_num = this.ball_num;
         temp.skillId = this.skillId;
         temp.desc = this.desc;

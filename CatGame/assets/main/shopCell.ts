@@ -3,8 +3,7 @@ import { AudioMgr } from "../manager/AudioMgr";
 import { st_shop_info, CfgMgr } from "../manager/ConfigManager";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
-import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, BallInfo, ItemInfo } from "../manager/Enum";
+import { BallInfo, ItemInfo } from "../manager/Enum";
 import { sdkWechat } from "../manager/SDK_Wechat";
 import { GameMgr } from "../manager/GameManager";
 
@@ -23,6 +22,8 @@ export default class ShopCell extends viewCell {
     btnIcon: cc.Sprite = null;
     @property(cc.Label)
     numLabel: cc.Label = null;
+    @property(cc.Label)
+    descLabel: cc.Label = null;
 
     @property(cc.Label)
     goldLabel: cc.Label = null;
@@ -68,6 +69,7 @@ export default class ShopCell extends viewCell {
         this.diamondLabel.string = "钻石约："+this.cellData.diamond;
         this.weaponLabel.string = "武器概率："+(this.cellData.weapon*100)+"%";
         this.itemLabel.string = "饰品概率："+(this.cellData.item*100)+"%";
+        this.descLabel.string = this.cellData.desc;
 
         this.boxSpr.spriteFrame = this.boxFrames[this.cellData.res-1];
         if(this.cellIdx%2 == 0){
@@ -89,7 +91,7 @@ export default class ShopCell extends viewCell {
             this.numLabel.string = this.cellData.costGold.toString();
         }else{
             this.btnIcon.spriteFrame = null;
-            this.numLabel.string = "99999999";
+            this.numLabel.string = "未开启";
         }
 
     }
@@ -142,22 +144,30 @@ export default class ShopCell extends viewCell {
 
     //随机获得宝箱
     handleBuyShop(){
+        let tipsStr = "";
         //随机获取的金币值（0.5-1.0倍之间）
-        if(this.cellData.costGold > 0){
-            let gold = Math.floor((Math.random()*0.5 + 0.5)*this.cellData.costGold);
+        if(this.cellData.gold > 0){
+            let gold = Math.floor((Math.random()*0.5 + 0.5)*this.cellData.gold);
             if(gold > 0){
-                ROOT_NODE.showTipsText("获得金币："+gold);
+                tipsStr += ("获得金币："+gold);
+                //ROOT_NODE.showTipsText("获得金币："+gold);
                 MyUserDataMgr.updateUserGold(gold);
             }
         }
         //随机获取的金币值（0.3-1.0倍之间）
-        if(this.cellData.costDiamond > 0){
-            let diamond = Math.floor((Math.random()*0.7 + 0.3)*this.cellData.costDiamond);
+        if(this.cellData.diamond > 0){
+            let diamond = Math.floor((Math.random()*0.5 + 0.5)*this.cellData.diamond);
             if(diamond > 0){
-                ROOT_NODE.showTipsText("获得钻石："+diamond);
+                if(tipsStr.length > 0){
+                    tipsStr += ("   获得钻石："+diamond);
+                }else{
+                    tipsStr += ("获得钻石："+diamond);
+                }
+                //ROOT_NODE.showTipsText("获得钻石："+diamond);
                 MyUserDataMgr.updateUserDiamond(diamond);
             }
         }
+        let bGetWeaopn = false;
         //随机获取武器的概率
         if(this.cellData.weapon > 0 && Math.random() <= this.cellData.weapon){
             let keys = Object.getOwnPropertyNames(CfgMgr.C_cannon_info);
@@ -169,7 +179,14 @@ export default class ShopCell extends viewCell {
                 let weaponCfg = CfgMgr.getCannonConf(weaponId);
                 if(weaponCfg && weaponCfg.quality <= this.cellData.quality){
                     bRandom = false;
-                    ROOT_NODE.showTipsText("获得："+weaponCfg.name);
+
+                    bGetWeaopn = true;
+                    if(tipsStr.length > 0){
+                        tipsStr += ("\n获得："+weaponCfg.name);
+                    }else{
+                        tipsStr += ("获得："+weaponCfg.name);
+                    }
+                    //ROOT_NODE.showTipsText("获得："+weaponCfg.name);
                 }
             }
             let ballInfo = new BallInfo(weaponId);
@@ -186,10 +203,21 @@ export default class ShopCell extends viewCell {
                 let itemCfg = CfgMgr.getItemConf(itemId);
                 if(itemCfg && itemCfg.quality <= this.cellData.quality){
                     bRandom = false;
-                    ROOT_NODE.showTipsText("获得："+itemCfg.name);
+
+                    if(tipsStr.length > 0){
+                        if(bGetWeaopn){
+                            tipsStr += ("   获得："+itemCfg.name);
+                        }else{
+                            tipsStr += ("\n获得："+itemCfg.name);
+                        }
+                    }else{
+                        tipsStr += ("获得："+itemCfg.name);
+                    }
+                    //ROOT_NODE.showTipsText("获得："+itemCfg.name);
                 }
             }
             MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
         }
+        ROOT_NODE.showTipsText(tipsStr);
     }
 }

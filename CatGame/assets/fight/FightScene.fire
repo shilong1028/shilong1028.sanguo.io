@@ -2481,6 +2481,9 @@
     "pfDot": {
       "__uuid__": "f1fba36e-6b32-4b5e-af99-1464af7c96e7"
     },
+    "pfBeginReward": {
+      "__uuid__": "f2d73042-f452-499d-b74d-b6752e03a5a8"
+    },
     "boomFrames": [
       {
         "__uuid__": "0924bd8c-f580-49d0-9f65-2fa4417c0708"

@@ -1,5 +1,5 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType } from "../manager/Enum";
+import { NoticeType, SkillInfo } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { FightMgr } from "../manager/FightManager";
@@ -14,6 +14,8 @@ export default class PauseInfo extends cc.Component {
 
     @property(cc.Node)
     bgImg: cc.Node = null;
+    @property(cc.Label)
+    descLabel: cc.Label = null;
     @property(cc.Node)
     touchNode: cc.Node = null;
     @property(TableView)
@@ -23,6 +25,7 @@ export default class PauseInfo extends cc.Component {
 
     onLoad () {
         this.touchNode.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);
+        this.descLabel.string = "";
     }
 
     start () {
@@ -31,6 +34,10 @@ export default class PauseInfo extends cc.Component {
         let skillList = FightMgr.getFightScene().skillList;
         this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
         this.tableView.initTableView(skillList.length, { array: skillList, target: this}); 
+    }
+
+    handleSelCell(cellIdx: number, skillInfo: SkillInfo){
+        this.descLabel.string = skillInfo.skillCfg.desc;
     }
 
     // update (dt) {}

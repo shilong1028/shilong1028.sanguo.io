@@ -66,6 +66,10 @@ export default class FightSkillCell extends viewCell {
     //被点击时相应的方法
     clicked () {      
         this.onSelected(true);
+
+        if(this.targetSc && this.targetSc.handleSelCell){
+            this.targetSc.handleSelCell(this.cellIdx, this.cellData);
+        }
     }
 
 }

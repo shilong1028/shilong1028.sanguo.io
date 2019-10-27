@@ -1,15 +1,14 @@
-import { IntersectRay, NoticeType, BallInfo, BallState, BrickInfo, SkillInfo, ItemInfo, LaunchSkillState } from "../manager/Enum";
+import { IntersectRay, NoticeType, BallInfo, BallState, BrickInfo, ItemInfo, LaunchSkillState } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
 import Brick from "./Brick";
 import { FightMgr } from "../manager/FightManager";
 import Cat from "./Cat";
 import Ball from "./Ball";
-import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
+import { MyUserData } from "../manager/MyUserData";
 import { AudioMgr } from "../manager/AudioMgr";
 import Dot from "./Dot";
 import { GameMgr } from "../manager/GameManager";
 import FightScene from "./FightScene";
-import { ROOT_NODE } from "../common/rootNode";
 
 //棋盘
 const {ccclass, property} = cc._decorator;
@@ -294,17 +293,17 @@ export default class QiPanSc extends cc.Component {
     //炮台发射技能处理
     handleLaunchSkills(){
         let skillState = new LaunchSkillState();
-        let item = null;
-        if(FightMgr.usedPlayerInfo.itemId > 0){
-            item = new ItemInfo(FightMgr.usedPlayerInfo.itemId);   //炮台饰品道具
+        let weapon: BallInfo = null;
+        if(FightMgr.usedPlayerInfo.ballId > 0){
+            weapon = new BallInfo(FightMgr.usedPlayerInfo.ballId);  
         }
 
         let skillList = FightMgr.getFightScene().skillList;
         for(let i=0; i<skillList.length; ++i){
             let skillInfo = skillList[i];
             let probability = skillInfo.skillCfg.probability * skillInfo.skillLv;
-            if(item){
-                probability += item.itemCfg.probability;
+            if(weapon){
+                probability += weapon.cannonCfg.probability;
             }
 
             let skillId = skillInfo.skillId;
@@ -325,7 +324,7 @@ export default class QiPanSc extends cc.Component {
                 skillState.kuangBaoPro = probability;
             } 
         }
-        cc.log("发射小球概率 skillState = "+JSON.stringify(skillState));
+        //cc.log("发射小球概率 skillState = "+JSON.stringify(skillState));
         return skillState;
     }
 
@@ -879,20 +878,9 @@ export default class QiPanSc extends cc.Component {
                         this.createNewRoundLineBricks();
                     }else{
                         let bStagnation: boolean = false;
-                        let skillInfo = FightMgr.getFightScene().getFightSkillById(1);  //一定概率使得某回合暂停下移
-                        if(skillInfo){   //冰冻
-                            let probability = skillInfo.skillCfg.probability * skillInfo.skillLv;
-                            if(FightMgr.usedPlayerInfo.itemId > 0){
-                                let item = new ItemInfo(FightMgr.usedPlayerInfo.itemId);
-                                if(item){
-                                    probability += item.itemCfg.probability;
-                                }
-                            }
-                            cc.log("冰冻概率 "+probability);
-                            if(Math.random() <= probability){ 
-                                //ROOT_NODE.showTipsText("触发冰冻技能，敌人下移冻结一回合。");
-                                bStagnation = true;
-                            }
+                        if(FightMgr.getFightScene().checkRandomFightSkillById(1) == true){    //一定概率使得某回合暂停下移
+                            //ROOT_NODE.showTipsText("触发冰冻技能，敌人下移冻结一回合。");
+                            bStagnation = true;
                         }
                         if(bStagnation == true){  //停滞砖块死亡后，若屏幕内有敌方阵营，本回合结束后所有怪物（无论是敌方阵营或友方阵营）不下移；屏幕外的也不下移。
                             this.bCreateNextRound = false;  //是否在检查完回合事件后进行新行砖块创建并下移
@@ -974,7 +962,7 @@ export default class QiPanSc extends cc.Component {
         this.nEffect.addChild(harmNode, 100);
 
         let a = Math.random()*60 - 30;
-        let dir = cc.v2(0, 1).rotateSelf(cc.misc.degreesToRadians(a));
+        let dir = cc.v2(0, 1).rotate(cc.misc.degreesToRadians(a));
         let y = Math.random()*5 + 15;
         let x = dir.x * Math.abs(y/dir.y);
 

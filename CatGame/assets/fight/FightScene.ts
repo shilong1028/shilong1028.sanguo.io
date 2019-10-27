@@ -1,5 +1,5 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, ItemInfo, SkillInfo } from "../manager/Enum";
+import { NoticeType, SkillInfo, BallInfo } from "../manager/Enum";
 import { AudioMgr } from "../manager/AudioMgr";
 import { FightMgr } from "../manager/FightManager";
 import QiPanSc from "./QiPanSc";
@@ -48,6 +48,8 @@ export default class FightScene extends cc.Component {
     pfharmHp: cc.Prefab = null;   //飘血预制体
     @property(cc.Prefab)
     pfDot: cc.Prefab = null;   //指示点预制体  
+    @property(cc.Prefab)
+    pfBeginReward: cc.Prefab = null;  //开局奖励
 
     @property([cc.SpriteFrame])
     boomFrames: cc.SpriteFrame[] = new Array(2);  //炸弹图片
@@ -78,6 +80,7 @@ export default class FightScene extends cc.Component {
     stagnationRow: number = -1;  //显示冰冻的回合
 
     skillList: SkillInfo[] = new Array();   //章节技能列表，每一关累计，章节内有效
+    bShowBeginReward: boolean = true;   //章节第一关第一次显示开局奖励
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -121,10 +124,14 @@ export default class FightScene extends cc.Component {
         FightMgr.qipanSc = this.qipanNode.getComponent(QiPanSc);   //棋盘
 
         FightMgr.loadLevel(FightMgr.level_id, false);      // 根据选择的关卡传值    
+
+        if(this.bShowBeginReward == true){   //章节开局奖励
+            GameMgr.showLayer(this.pfBeginReward);
+        }
     }
 
     //显示章节战斗技能
-    showSkillIcons(){
+    initFightSkillList(){
         if(this.skillList.length == 0){   //初次进入战斗场景
             FightMgr.fightAddCount = 0;    //章节加球技能增加值（每一章节内有效）
             let curSkillId = FightMgr.usedPlayerInfo.playerCfg.skillId;
@@ -134,36 +141,14 @@ export default class FightScene extends cc.Component {
             }
         }
 
-        let skillInfo = FightMgr.getFightScene().getFightSkillById(7);  //一定概率增加指视线段数量
-        if(skillInfo){   //指示
-            let probability = skillInfo.skillCfg.probability * skillInfo.skillLv;
-            if(FightMgr.usedPlayerInfo.itemId > 0){
-                let item = new ItemInfo(FightMgr.usedPlayerInfo.itemId);
-                if(item){
-                    probability += item.itemCfg.probability;
-                }
-            }
-            cc.log("指示技能概率 "+probability);
-            if(Math.random() <= probability){ 
-                FightMgr.defaultRayCount ++;   //默认的绘制指示线的射线段数
-                //ROOT_NODE.showTipsText("触发指示技能，增加一段指示线。");
-            }
+        if(this.checkRandomFightSkillById(7) == true){   //一定概率增加指视线段数量
+            FightMgr.defaultRayCount ++;   //默认的绘制指示线的射线段数
+            //ROOT_NODE.showTipsText("触发指示技能，增加一段指示线。");
         }
 
-        let skillInfo2 = FightMgr.getFightScene().getFightSkillById(8);  //一定概率增加可发射的武器数量
-        if(skillInfo2){   //加球
-            let probability = skillInfo2.skillCfg.probability * skillInfo2.skillLv;
-            if(FightMgr.usedPlayerInfo.itemId > 0){
-                let item = new ItemInfo(FightMgr.usedPlayerInfo.itemId);
-                if(item){
-                    probability += item.itemCfg.probability;
-                }
-            }
-            cc.log("加球技能概率 "+probability);
-            if(Math.random() <= probability){ 
-                FightMgr.fightAddCount++;    //章节加球技能增加值（每一章节内有效）
-                //ROOT_NODE.showTipsText("触发加球技能，增加一个武器数量。");
-            }
+        if(this.checkRandomFightSkillById(8) == true){   //一定概率增加可发射的武器数量
+            FightMgr.fightAddCount++;    //章节加球技能增加值（每一章节内有效）
+            //ROOT_NODE.showTipsText("触发加球技能，增加一个武器数量。");
         }
     }
 
@@ -209,7 +194,7 @@ export default class FightScene extends cc.Component {
     /**游戏切入后台 */
     onHide() {
         cc.log("_____________  onHide()游戏切入后台  _____________________")
-        this.node.stopAllActions();
+        //this.node.stopAllActions();   //偶尔报TypeError: Cannot read property 'stopAllActions' of null
         cc.game.pause();
     }
 
@@ -223,6 +208,24 @@ export default class FightScene extends cc.Component {
         if(FightMgr.bGameOver == false){ 
             GameMgr.showLayer(this.pfPauseInfo);   //暂停界面
         }
+    }
+
+    /**检查指定的战斗技能是否触发 */
+    checkRandomFightSkillById(skillId: number){
+        let skillInfo = this.getFightSkillById(skillId);  //一定概率增加指视线段数量
+        if(skillInfo){   //指示
+            let probability = skillInfo.skillCfg.probability * skillInfo.skillLv;
+            if(FightMgr.usedPlayerInfo.ballId > 0){
+                let weapon = new BallInfo(FightMgr.usedPlayerInfo.ballId);
+                if(weapon){
+                    probability += weapon.cannonCfg.probability;
+                }
+            }
+            if(Math.random() <= probability){ 
+                return true;
+            }
+        }
+        return false;
     }
 
     /**获取指定的战斗技能 */

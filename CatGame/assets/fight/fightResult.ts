@@ -6,6 +6,7 @@ import Skill from "../common/skill";
 import { CfgMgr } from "../manager/ConfigManager";
 import { SkillInfo, ChapterInfo } from "../manager/Enum";
 import { ROOT_NODE } from "../common/rootNode";
+import ChapterResult from "./chapterResult";
 
 const {ccclass, property} = cc._decorator;
 
@@ -29,22 +30,14 @@ export default class FightResult extends cc.Component {
     lightFrame: cc.SpriteFrame = null;
 
     @property(cc.Node)
-    chapterNode: cc.Node = null;  //章节奖励总结的
-    @property(cc.Node)
-    goldNode: cc.Node = null;
-    @property(cc.Label)
-    goldLabel: cc.Label = null;
-    @property(cc.Node)
-    diamondNode: cc.Node = null;
-    @property(cc.Label)
-    diamondLabel: cc.Label = null;
-
-    @property(cc.Node)
     okBtnNode: cc.Node = null;
     @property(cc.Node)
     skillNode: cc.Node = null;   //技能总节点
     @property([cc.Node])
     skillNodes: cc.Node[] = new Array(3);
+
+    @property(cc.Prefab)
+    pfChapterResult: cc.Prefab = null;
 
     rewardGold: number = 0;   //奖励金币
     bNextLevel: boolean = true;   //下一关
@@ -73,23 +66,7 @@ export default class FightResult extends cc.Component {
             if(nextLevelCfg && nextLevelCfg.chapterId > levelCfg.chapterId){   //章节最后一关
                 this.bNextLevel = false;
                 this.skillNode.active = false;
-                this.chapterNode.active = true;
                 this.okBtnNode.active = true;
-
-                let curChapterInfo = new ChapterInfo(levelCfg.chapterId);
-                this.goldLabel.string ="+"+ curChapterInfo.chapterCfg.gold;
-                MyUserDataMgr.updateUserGold(curChapterInfo.chapterCfg.gold);
-                this.goldNode.x = 0;
-
-                //首次通章奖励钻石
-                if(levelCfg.chapterId == MyUserData.curChapterId){
-                    this.goldNode.x = -120;
-                    this.diamondNode.active = true;
-                    this.diamondLabel.string = "+"+curChapterInfo.chapterCfg.diamond;
-
-                    MyUserDataMgr.updateUserDiamond(curChapterInfo.chapterCfg.diamond);
-                    MyUserDataMgr.updateCurChapterId(nextLevelCfg.chapterId);   //新的章节Id
-                }
             }else{
                 //添加技能
                 while(this.skillIdArr.length < 3){
@@ -157,6 +134,8 @@ export default class FightResult extends cc.Component {
 
     onCloseBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        GameMgr.gotoMainScene();
+        
+        GameMgr.showLayer(this.pfChapterResult);
+        this.node.removeFromParent(true);
     }
 }
