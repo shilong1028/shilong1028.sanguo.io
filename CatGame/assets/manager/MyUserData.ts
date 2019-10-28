@@ -57,20 +57,20 @@ class MyUserManager {
         MyUserData.lastSignTime = 0;   //上一次签到时间
         LDMgr.setItem(LDKey.KEY_SignTime, "0-0");
 
-        MyUserData.ballList = new Array();  //未出战小球列表 
+        MyUserData.ballList = [];  //未出战小球列表 
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
 
         this.updateCurPlayerById(0);  //当前使用的炮
-        MyUserData.playerList = new Array(); //拥有的炮列表
+        MyUserData.playerList = []; //拥有的炮列表
         LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
         MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表(并初始化未拥有的炮台)
 
         this.updateCurChapterId(1); //当前章节Id
         this.updateCurLevelId(0);  //当前通关的最大id
-        MyUserData.levelList = new Array(); //通关列表
+        MyUserData.levelList = []; //通关列表
         LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(MyUserData.levelList));
 
-        MyUserData.ItemList = new Array();   //背包物品列表
+        MyUserData.ItemList = [];   //背包物品列表
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
 
         this.initNewUserData();  //新玩家初始化
@@ -152,7 +152,7 @@ class MyUserManager {
     /**从本地存储中获取通关列表 */
     getLevelListByLD(){
         let LevelList = LDMgr.getJsonItem(LDKey.KEY_LevelList);  
-        let tempList: LevelInfo[] = new Array();
+        let tempList: LevelInfo[] = [];
         if(LevelList){
             for(let i=0; i<LevelList.length; ++i){
                 let tempItem = new LevelInfo(LevelList[i].levelId, LevelList[i].starNum); 
@@ -163,7 +163,7 @@ class MyUserManager {
     }
     /**保存拥有的炮列表 */
     saveLevelList(){
-        let LevelList = new Array();
+        let LevelList = [];
         for(let i=0; i<MyUserData.levelList.length; ++i){
             let tempItem = MyUserData.levelList[i].cloneNoCfg();
             LevelList.push(tempItem);
@@ -227,7 +227,7 @@ class MyUserManager {
     /**从本地存储中获取拥有的炮列表(并初始化未拥有的炮台) */
     getPlayerListByLD(){
         let PalyerList = LDMgr.getJsonItem(LDKey.KEY_PlayerList);  
-        let tempList: PlayerInfo[] = new Array();
+        let tempList: PlayerInfo[] = [];
         if(PalyerList){
             for(let k=1; k<= GameMgr.PlayerCount; ++k){
                 let playerInfo = new PlayerInfo(k);
@@ -247,7 +247,7 @@ class MyUserManager {
     }
     /**保存拥有的炮列表 */
     savePlayerList(){
-        let PlayerList = new Array();
+        let PlayerList = [];
         for(let i=0; i<MyUserData.playerList.length; ++i){
             if(MyUserData.playerList[i].useState == 1){
                 let tempItem = MyUserData.playerList[i].cloneNoCfg();
@@ -271,7 +271,7 @@ class MyUserManager {
 
     //获取背包列表克隆
     getItemListClone(){
-        let tempArr = new Array();
+        let tempArr = [];
         for(let i=0; i<MyUserData.ItemList.length; ++i){
             let info: ItemInfo = MyUserData.ItemList[i].clone();
             tempArr.push(info);
@@ -350,7 +350,7 @@ class MyUserManager {
     /**从本地存储中获取物品列表 */
     getItemListByLD(){
         let ItemList = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表
-        let tempList = new Array();
+        let tempList = [];
         this.lastItemTime = new Date().getTime()-1;   //最后一个添加未出战道具的时间（如果新道具的timeId《=lastTime，则timeId++);
         if(ItemList){
             for(let i=0; i<ItemList.length; ++i){
@@ -369,12 +369,11 @@ class MyUserManager {
                 return b.itemCfg.quality - a.itemCfg.quality
             }
         });
+        this.saveItemList();
     }
     /**保存背包物品列表 */
     saveItemList(){
-        //this.sortItemList();
-
-        let tempList = new Array();
+        let tempList = [];
         for(let i=0; i<MyUserData.ItemList.length; ++i){
             let tempItem = MyUserData.ItemList[i].cloneNoCfg();
             tempList.push(tempItem);
@@ -386,7 +385,7 @@ class MyUserManager {
     /**从本地存储中获取未出战小球列表 */
     getBallListByLD(){
         let BallList = LDMgr.getJsonItem(LDKey.KEY_BallList);  
-        let tempList: BallInfo[] = new Array();
+        let tempList: BallInfo[] = [];
         this.lastBallTime = new Date().getTime()-1;   //最后一个添加未出战小球的时间（如果新小球的timeId《=lastTime，则timeId++);
         if(BallList){
             for(let i=0; i<BallList.length; ++i){
@@ -405,12 +404,11 @@ class MyUserManager {
                 return  b.cannonCfg.quality - a.cannonCfg.quality
             }
         });
+        this.saveBallList();
     }
     /**保存未出战小球列表 */
     saveBallList(){
-        //this.sortBallList();
-
-        let BallList = new Array();
+        let BallList = [];
         for(let i=0; i<MyUserData.ballList.length; ++i){
             let tempItem = MyUserData.ballList[i].cloneNoCfg();
             BallList.push(tempItem);
@@ -488,7 +486,7 @@ class MyUserManager {
     }
     //获取未出战列表克隆
     getBallListClone(){
-        let tempArr = new Array();
+        let tempArr = [];
         for(let i=0; i<MyUserData.ballList.length; ++i){
             let info: BallInfo = MyUserData.ballList[i].clone();
             tempArr.push(info);

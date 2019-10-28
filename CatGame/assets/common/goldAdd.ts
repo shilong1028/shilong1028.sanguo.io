@@ -1,7 +1,6 @@
 import { AudioMgr } from "../manager/AudioMgr";
 import { SDKMgr } from "../manager/SDKManager";
 import { TipsStrDef } from "../manager/Enum";
-import { sdkWechat } from "../manager/SDK_Wechat";
 import { MyUserDataMgr } from "../manager/MyUserData";
 
 //获得界面
@@ -33,19 +32,11 @@ export default class GoldAdd extends cc.Component {
         this.vedioBtn.interactable = false; 
         this.shareBtn.interactable = false; 
 
-        let self = this;
-        sdkWechat.preLoadAndPlayVideoAd(false, ()=>{
-            //console.log("reset 激励视频广告显示失败");
-            self.handleNormal(0);
-        }, (succ:boolean)=>{
-            //console.log("reset 激励视频广告正常播放结束， succ = "+succ);
-            sdkWechat.preLoadAndPlayVideoAd( true, null, null, self);   //预下载下一条视频广告
-            if(succ == true){
-                self.handleNormal(2);  
-            }else{
-                self.handleNormal(0);
-            }
-        }, self);   //播放下载的视频广告
+        SDKMgr.showVedioAd(()=>{
+            this.handleNormal(0);   //失败
+        }, ()=>{
+            this.handleNormal(2);    //成功
+        });  
     }
 
     onShareBtn(){

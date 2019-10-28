@@ -2,7 +2,7 @@ import Block from "./Block";
 import { NotificationMy } from "../manager/NoticeManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { NoticeType, BallInfo, ItemInfo, PlayerInfo, TipsStrDef } from "../manager/Enum";
-import { MyUserDataMgr } from "../manager/MyUserData";
+import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
 import { ROOT_NODE } from "../common/rootNode";
 import Stuff from "../common/Stuff";
@@ -64,18 +64,40 @@ export default class BagGrid extends cc.Component {
 
     onEquipBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        this.initGirdInfo(0);  //0装备小球，1饰品道具，2技能
-
-        this.equipBtnSpr.spriteFrame = this.btnSprArr[0];
-        this.itemBtnSpr.spriteFrame = this.btnSprArr[1];
+        this.initGirdInfo(0);  //0装备小球，1饰品道具，2技能   
     }
 
     onItemBtn(){
         AudioMgr.playEffect("effect/ui_click");
         this.initGirdInfo(1);  //0装备小球，1饰品道具，2技能
+    }
 
-        this.equipBtnSpr.spriteFrame = this.btnSprArr[1];
-        this.itemBtnSpr.spriteFrame = this.btnSprArr[0];
+    //排序
+    onSortBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+
+        if(MyUserData.GoldCount >= 100){
+            MyUserDataMgr.updateUserGold(-100);
+            
+            if(this.curGirdType == 0){
+                MyUserDataMgr.sortBallList();
+    
+                this.curGirdType = -1;
+                this.initGirdInfo(0);  //0装备小球，1饰品道具，2技能
+            }else if(this.curGirdType == 1){
+                MyUserDataMgr.sortItemList();
+    
+                this.curGirdType = -1;
+                this.initGirdInfo(1);  //0装备小球，1饰品道具，2技能
+            }
+        }else{
+            GameMgr.showGoldAddDialog();  //获取金币提示框
+        }
+    }
+
+    onCloseBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        this.node.removeFromParent(true);
     }
 
     onTouchStart(event: cc.Event.EventTouch) {  
@@ -118,6 +140,9 @@ export default class BagGrid extends cc.Component {
         this.nSelectModel = null;
 
         if(this.curGirdType == 0){   //0装备小球
+            this.equipBtnSpr.spriteFrame = this.btnSprArr[0];
+            this.itemBtnSpr.spriteFrame = this.btnSprArr[1];
+
             let ballList = MyUserDataMgr.getBallListClone();
             for(let i=0; i<GameMgr.BagGridCount; ++i){
                 let ballInfo: BallInfo = null;
@@ -131,6 +156,9 @@ export default class BagGrid extends cc.Component {
                 block.initBlockByBall(i, ballInfo, this);
             }
         }else if(this.curGirdType == 1){   //1饰品道具
+            this.equipBtnSpr.spriteFrame = this.btnSprArr[1];
+            this.itemBtnSpr.spriteFrame = this.btnSprArr[0];
+
             let itemList = MyUserDataMgr.getItemListClone();
             for(let i=0; i<GameMgr.BagGridCount; ++i){
                 let itemInfo: ItemInfo = null;
@@ -293,11 +321,6 @@ export default class BagGrid extends cc.Component {
             }
         }
         return null;
-    }
-
-    onCloseBtn(){
-        AudioMgr.playEffect("effect/ui_click");
-        this.node.removeFromParent(true);
     }
 
 }

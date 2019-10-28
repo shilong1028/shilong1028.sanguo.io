@@ -3,7 +3,7 @@ import { GameMgr } from "../manager/GameManager";
 import { FightMgr } from "../manager/FightManager";
 import { ChapterInfo } from "../manager/Enum";
 import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
-import { sdkWechat } from "../manager/SDK_Wechat";
+import { SDKMgr } from "../manager/SDKManager";
 
 //章节奖励
 const {ccclass, property} = cc._decorator;
@@ -53,21 +53,13 @@ export default class ChapterResult extends cc.Component {
     /**看视频复活 */
     onVedioBtn(){
         AudioMgr.playEffect("effect/ui_click");
-
         this.vedioBtn.interactable = false; 
-        let self = this;
-        sdkWechat.preLoadAndPlayVideoAd(false, ()=>{
-            //console.log("reset 激励视频广告显示失败");
-            self.handleReward();
-        }, (succ:boolean)=>{
-            //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
-            sdkWechat.preLoadAndPlayVideoAd(true, null, null, self);   //预下载下一条视频广告
-            if(succ == true){
-                self.handleReward(2);
-            }else{
-                self.handleReward();
-            }
-        }, self);   //播放下载的视频广告 
+
+        SDKMgr.showVedioAd(()=>{
+            this.handleReward();   //失败
+        }, ()=>{
+            this.handleReward(2);    //成功
+        });  
     }
 
     onCloseBtn(){

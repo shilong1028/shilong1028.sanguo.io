@@ -6,6 +6,7 @@ import { ROOT_NODE } from "../common/rootNode";
 import { BallInfo, ItemInfo } from "../manager/Enum";
 import { sdkWechat } from "../manager/SDK_Wechat";
 import { GameMgr } from "../manager/GameManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -114,16 +115,11 @@ export default class ShopCell extends viewCell {
 
         if(this.cellData){
             if(this.cellData.vedio > 0){   //视频获取
-                let self = this;
-                sdkWechat.preLoadAndPlayVideoAd(false, ()=>{
-                    //console.log("reset 激励视频广告显示失败");
-                }, (succ:boolean)=>{
-                    //console.log("reset 激励视频广告正常播放结束， succ = "+succ);
-                    sdkWechat.preLoadAndPlayVideoAd(true, null, null, self);   //预下载下一条视频广告
-                    if(succ == true){ 
-                        this.handleBuyShop();  
-                    }
-                }, self);   //播放下载的视频广告
+                SDKMgr.showVedioAd(()=>{
+                      //失败
+                }, ()=>{
+                    this.handleBuyShop();  //成功
+                }); 
             }else if(this.cellData.costDiamond > 0){   //钻石获取
                 if(MyUserData.DiamondCount >= this.cellData.costDiamond){
                     MyUserDataMgr.updateUserDiamond(-this.cellData.costDiamond); 

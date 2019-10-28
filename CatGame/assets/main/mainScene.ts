@@ -4,7 +4,6 @@ import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserData } from "../manager/MyUserData";
-import { sdkWechat } from "../manager/SDK_Wechat";
 
 const {ccclass, property} = cc._decorator;
 
@@ -104,10 +103,6 @@ export default class MainScene extends cc.Component {
         if(GameMgr.isSameDayWithCurTime(MyUserData.lastSignTime) == false){  //同一天
             this.onSignBtn();
         }
-
-        this.node.runAction(cc.sequence(cc.delayTime(5.0), cc.callFunc(function(){
-            sdkWechat.preLoadAndPlayVideoAd(true, null, null, null);   //预下载下一条视频广告
-        })))
     }
 
     // update (dt) {

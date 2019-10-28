@@ -26,7 +26,7 @@ export default class RootNode extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     tipsPool: cc.NodePool =  null;   //缓存池
-    tipsArr: string[] = new Array();   //提示文本数组
+    tipsArr: string[] = [];   //提示文本数组
     tipsStep: number = 0;   //提示步骤
 
     onLoad () {

@@ -14,6 +14,7 @@ const {ccclass, property} = cc._decorator;
 class GameManager {
     BagGridCount: number = 20;  //背包空间
     PlayerCount: number = 3;   //炮台萌猫数量
+    PlayerMaxLv: number = 5;  //炮台最大等级
     ChapterCount: number = 7;  //章节数量
     QualityCount: number = 5;  //品质最大等级
     ShopCount: number = 4;   //商品种类

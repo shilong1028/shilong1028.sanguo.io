@@ -6,6 +6,7 @@ import { ROOT_NODE } from "../common/rootNode";
 import BagLayer from "./bagLayer";
 import { NotificationMy } from "../manager/NoticeManager";
 import { GameMgr } from "../manager/GameManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -19,15 +20,33 @@ export default class PlayerCell extends cc.Component {
     @property(cc.Node)
     useBtnNode: cc.Node = null;   //换装
     @property(cc.Node)
+    updateNode: cc.Node = null;  //升级
+    @property(cc.Button)
+    updateBtn: cc.Button = null;
+    @property(cc.Node)
     usedNode: cc.Node = null;   //使用中
 
     @property(cc.Label)
     nameLabel: cc.Label = null;
     @property(cc.Sprite)
     playerSpr: cc.Sprite = null;
+    @property(cc.Label)
+    atkLabel: cc.Label = null;
+    @property(cc.Label)
+    baojiLabel: cc.Label = null;
+    @property(cc.Label)
+    lvLabel: cc.Label = null;
+    @property(cc.Label)
+    lvDesc: cc.Label = null;
+    @property(cc.Label)
+    lvCost: cc.Label = null;
+    @property(cc.Sprite)
+    lvIcon: cc.Sprite = null;
 
     @property(cc.SpriteAtlas)
     playerAtlas: cc.SpriteAtlas = null;
+    @property([cc.SpriteFrame])
+    iconArr: cc.SpriteFrame[] = [];
 
     playerInfo : PlayerInfo = null;  
     bagLayer: BagLayer = null;
@@ -40,7 +59,13 @@ export default class PlayerCell extends cc.Component {
         this.maskNode.active = true;
         this.useBtnNode.active = false;
         this.usedNode.active = false;
+        this.updateNode.active = false;
         this.nameLabel.string = "";
+        this.atkLabel.string = "";
+        this.baojiLabel.string = "";
+        this.lvLabel.string = "";
+        this.lvDesc.string = "";
+        this.lvCost.string = "";
     }
 
     start () {
@@ -58,6 +83,7 @@ export default class PlayerCell extends cc.Component {
     UpdatePlayer(playerInfo: PlayerInfo){
         if(playerInfo && this.playerInfo && playerInfo.playerId == this.playerInfo.playerId){
             this.playerInfo = playerInfo;   //只更新了装备、道具、技能等
+            this.initPlayerInfo(this.playerInfo);
         }
     }
 
@@ -74,8 +100,10 @@ export default class PlayerCell extends cc.Component {
             this.maskNode.active = true;
             this.useBtnNode.active = false;
             this.usedNode.active = false;
+            this.updateNode.active = false;
         }else{
             this.maskNode.active = false;
+            this.updateNode.active = true;
             this.updateStateLabel();
         }
         
@@ -83,6 +111,28 @@ export default class PlayerCell extends cc.Component {
         this.diamondLabel.string = ""+cfg.cost;
         this.nameLabel.string = cfg.name;
         this.playerSpr.spriteFrame = this.playerAtlas.getSpriteFrame("player_"+this.playerInfo.playerId);
+        
+        this.atkLabel.string = "攻击力："+cfg.attack+"+"+Math.floor(cfg.update_atk*(this.playerInfo.level-1));
+        this.baojiLabel.string = "暴击率："+(cfg.baoji*100)+"%+"+Math.floor(cfg.baoji*20*(this.playerInfo.level-1))+"%";
+        this.lvDesc.string = "每升一级增加攻击力+"+cfg.update_atk+"、增加暴击率+20%，花费：";
+
+        if(this.playerInfo.level == GameMgr.PlayerMaxLv){
+            this.lvLabel.string = "等级：Lv"+this.playerInfo.level+"(满级)";
+            this.updateBtn.interactable = false;
+        }else{
+            this.lvLabel.string = "等级：Lv"+this.playerInfo.level;
+        }
+        
+        if(cfg.update_vedio > 0){
+            this.lvIcon.spriteFrame = this.iconArr[0];
+            this.lvCost.string = "x"+cfg.update_vedio;
+        }else if(cfg.update_diamond > 0){
+            this.lvIcon.spriteFrame = this.iconArr[1];
+            this.lvCost.string = "x"+cfg.update_diamond;
+        }else{
+            this.lvIcon.spriteFrame = this.iconArr[2];
+            this.lvCost.string = "x"+cfg.update_gold;
+        }
     }
 
     updateStateLabel(){
@@ -121,12 +171,58 @@ export default class PlayerCell extends cc.Component {
             }else{
                 MyUserDataMgr.updateCurPlayerById(this.playerInfo.playerId);
                 this.initPlayerInfo(this.playerInfo);
-    
+
                 if(this.bagLayer){
                     this.bagLayer.usedPlayerPage.updateStateLabel();  //当前使用的炮台
                     this.bagLayer.usedPlayerPage = this;
                 }
             }
+        }
+    }
+
+
+    onUpdateBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        //换装炮台
+        if(this.playerInfo && this.playerInfo.useState == 1){
+            if(this.playerInfo.level >= GameMgr.PlayerMaxLv){   //最大等级
+                
+            }else{
+                if(this.playerInfo.playerCfg.update_vedio > 0){
+                    SDKMgr.showVedioAd(()=>{
+                        //失败
+                    }, ()=>{
+                        this.handleUpdate();  //成功
+                    }); 
+                }else if(this.playerInfo.playerCfg.update_diamond > 0){
+                    if(MyUserData.DiamondCount >= this.playerInfo.playerCfg.update_diamond){
+                        MyUserDataMgr.updateUserDiamond(-this.playerInfo.playerCfg.update_diamond);
+                        this.handleUpdate();
+                    }else{
+                        GameMgr.showGoldAddDialog();  //获取金币提示框
+                    }
+                }else{
+                    if(MyUserData.GoldCount >= this.playerInfo.playerCfg.update_gold){
+                        MyUserDataMgr.updateUserGold(-this.playerInfo.playerCfg.update_gold);
+                        this.handleUpdate();
+                    }else{
+                        GameMgr.showGoldAddDialog();  //获取金币提示框
+                    }
+                }
+
+
+            }
+        }
+    }
+
+    handleUpdate(){
+        this.playerInfo.level ++;
+        MyUserDataMgr.updatePlayerFromList(this.playerInfo);  //更新炮台到拥有的炮列表
+        this.initPlayerInfo(this.playerInfo);
+
+        if(this.bagLayer){
+            this.bagLayer.usedPlayerPage.updateStateLabel();  //当前使用的炮台
+            this.bagLayer.usedPlayerPage = this;
         }
     }
 

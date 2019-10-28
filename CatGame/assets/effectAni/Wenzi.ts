@@ -13,7 +13,7 @@ export default class WenZi extends cc.Component {
     titleSpr: cc.Sprite = null;
 
     @property([cc.SpriteFrame])
-    titleFrames: cc.SpriteFrame[] = new Array();
+    titleFrames: cc.SpriteFrame[] = [];
 
     // LIFE-CYCLE CALLBACKS:
 

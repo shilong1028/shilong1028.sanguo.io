@@ -1,9 +1,9 @@
 import TableView from "../tableView/tableView";
 import { AudioMgr } from "../manager/AudioMgr";
-import { sdkWechat } from "../manager/SDK_Wechat";
 import { GameMgr } from "../manager/GameManager";
 import { SkillInfo } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 //开局奖励
 const {ccclass, property} = cc._decorator;
@@ -26,7 +26,7 @@ export default class NewClass extends cc.Component {
     }
 
     start () {
-        let skillList = new Array();
+        let skillList = [];
         for(let i=1; i<= GameMgr.SkillCount; ++i){
             skillList.push(new SkillInfo(i));
         }
@@ -46,21 +46,13 @@ export default class NewClass extends cc.Component {
     /**看视频复活 */
     onVedioBtn(){
         AudioMgr.playEffect("effect/ui_click");
-
         this.vedioBtn.interactable = false; 
-        let self = this;
-        sdkWechat.preLoadAndPlayVideoAd(false, ()=>{
-            //console.log("reset 激励视频广告显示失败");
-            self.handleReward();
-        }, (succ:boolean)=>{
-            //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
-            sdkWechat.preLoadAndPlayVideoAd(true, null, null, self);   //预下载下一条视频广告
-            if(succ == true){
-                self.handleReward(true);
-            }else{
-                self.handleReward();
-            }
-        }, self);   //播放下载的视频广告 
+
+        SDKMgr.showVedioAd(()=>{
+            this.handleReward();   //失败
+        }, ()=>{
+            this.handleReward(true);    //成功
+        });  
     }
 
     onCloseBtn(){

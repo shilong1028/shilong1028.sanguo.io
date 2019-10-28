@@ -53,10 +53,10 @@ export default class Brick extends cc.Component {
     bRoundHited: boolean = false;   //该回合内是否被碰撞过
 
     colliderRayData = null;   //与移动砖块碰撞的射线
-    effectNodeArr: cc.Node[] = new Array();   //事件特效节点
+    effectNodeArr: cc.Node[] = [];   //事件特效节点
 
-    moveLineBricks: cc.Node[] = new Array();   //移动砖块所在行的其他砖块集合
-    moveCollisionBall: cc.Node[] = new Array();   //移动砖块和小球碰撞的临时集合
+    moveLineBricks: cc.Node[] = [];   //移动砖块所在行的其他砖块集合
+    moveCollisionBall: cc.Node[] = [];   //移动砖块和小球碰撞的临时集合
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -75,10 +75,10 @@ export default class Brick extends cc.Component {
         this.collider.points = null;
         this.colliderRayData = null;   //与移动砖块碰撞的射线
 
-        this.effectNodeArr = new Array();   //事件特效节点
+        this.effectNodeArr = [];   //事件特效节点
 
-        this.moveLineBricks = new Array();   //移动砖块所在行的其他砖块集合
-        this.moveCollisionBall = new Array();   //移动砖块和小球碰撞的临时集合
+        this.moveLineBricks = [];   //移动砖块所在行的其他砖块集合
+        this.moveCollisionBall = [];   //移动砖块和小球碰撞的临时集合
 
         this.labPH.string = "";
         this.hpBar.progress = 0;
@@ -191,8 +191,8 @@ export default class Brick extends cc.Component {
         //cc.log("brick.initBrickInfo(), brickInfo = "+JSON.stringify(brickInfo))
         this.collider.points = null;
         this.collider.enabled = false;
-        this.moveLineBricks = new Array();   //移动砖块所在行的其他砖块集合
-        this.moveCollisionBall = new Array();   //移动砖块和小球碰撞的临时集合
+        this.moveLineBricks = [];   //移动砖块所在行的其他砖块集合
+        this.moveCollisionBall = [];   //移动砖块和小球碰撞的临时集合
 
         this.node.setContentSize(cc.size(98, 98));
 
@@ -345,7 +345,7 @@ export default class Brick extends cc.Component {
                 this.moveToPosX = gameBorderRect.width/2 - this.node.width/2;   //移动砖块的水平移动
 
                 let sprSize = cc.size(98, 98);    //this.brickSpr.node.getContentSize();
-                let colliderPoints = new Array();
+                let colliderPoints = [];
                 colliderPoints.push(cc.v2(-sprSize.width/2, -sprSize.height/2));
                 colliderPoints.push(cc.v2(-sprSize.width/2, sprSize.height/2));
                 colliderPoints.push(cc.v2(sprSize.width/2, sprSize.height/2));

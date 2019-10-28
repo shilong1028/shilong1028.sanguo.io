@@ -34,8 +34,8 @@ class FightManager {
     brickBreakNum: number = 0;   //击毁的砖块数
     brickBreakAim: number = 0;   //本场目标块数
 
-    tempCastRayArr: IntersectRay[] = new Array();   //每回合正在规划的临时射线数据集合（仅保存起始点和方向等射线数据）
-    roundPathArr: IntersectRay[] = new Array();   //每回合射线路径数据集合，用于路径复用
+    tempCastRayArr: IntersectRay[] = [];   //每回合正在规划的临时射线数据集合（仅保存起始点和方向等射线数据）
+    roundPathArr: IntersectRay[] = [];   //每回合射线路径数据集合，用于路径复用
     bFirstHitGround: boolean = false;    //第一个回落到地面的球设置此值
     ballDropedCount: number = 0;   //小球发射后，已经落地的数量
     roundBallCount: number = 0;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
@@ -47,8 +47,8 @@ class FightManager {
     ballSortIdx: number = 0;  //当前已经排序的小球索引数，用于小球排序发射索引的设定
 
     rayCount: number = 0;   //需要绘制的射线段数
-    curBrickNodes: cc.Node[] = new Array();   //当前绘制有效的砖块集合
-    tempItemNodes: cc.Node[] = new Array();   //射线规划时，临时存储某条射线经过的道具集合
+    curBrickNodes: cc.Node[] = [];   //当前绘制有效的砖块集合
+    tempItemNodes: cc.Node[] = [];   //射线规划时，临时存储某条射线经过的道具集合
     defaultRayCount: number = 1;   //默认的绘制指示线的射线段数
     rayLineMaxLen: number = 1200;   //射线最大长度
     ballRadiusConf: number = 15;   //点（小球）碰撞检测半径
@@ -77,8 +77,8 @@ class FightManager {
         this.brickBreakNum = 0;   //击毁的砖块数
         this.brickBreakAim = 0;   //本场目标块数
         
-        this.tempCastRayArr = new Array();   //每回合正在规划的临时射线数据集合（仅保存起始点和方向等射线数据）
-        this.roundPathArr = new Array();   //每回合射线路径数据集合，用于路径复用
+        this.tempCastRayArr = [];   //每回合正在规划的临时射线数据集合（仅保存起始点和方向等射线数据）
+        this.roundPathArr = [];   //每回合射线路径数据集合，用于路径复用
         this.bFirstHitGround = false;   //第一个回落到地面的球设置此值
         this.ballDropedCount = 0;   //小球发射后，已经落地的数量
         this.roundBallCount = 0;   //该回合战斗小球的数量（吸附砖块等可能影响该变量）
@@ -87,8 +87,8 @@ class FightManager {
         this.ballSortIdx = 0;  //当前当前行已经排序的小球索引数，用于小球排序发射索引的设定
 
         this.rayCount = 0;   //需要绘制的射线段数
-        this.curBrickNodes = new Array();   //当前绘制有效的砖块集合
-        this.tempItemNodes = new Array();   //射线规划时，临时存储某条射线经过的道具集合
+        this.curBrickNodes = [];   //当前绘制有效的砖块集合
+        this.tempItemNodes = [];   //射线规划时，临时存储某条射线经过的道具集合
         this.defaultRayCount = 1;   //默认的绘制指示线的射线段数
 
         this.speedUpRatio =  1;  //战斗加速倍数，0-2分别表示1-3倍加速
@@ -147,7 +147,7 @@ class FightManager {
                 this.starTargetNum = this.brickBreakAim;
             }
 
-            let enemyIds:number[] = new Array();
+            let enemyIds:number[] = [];
             for(let i=levelCfg.enemy_ids[0]; i<= levelCfg.enemy_ids[1]; i++){
                 enemyIds.push(i);
             }
@@ -169,7 +169,7 @@ class FightManager {
 
                 let columnArr = this.getRandomNumsByCount(count, 7, 0);   //在指定序列中[min, max)产生count个随机数
                 //cc.log("enemyCount = "+enemyCount+"; enemyLines = "+enemyLines+"; count = "+count+"; columnArr = "+JSON.stringify(columnArr));
-                let linebricks: BrickInfo[] = new Array();
+                let linebricks: BrickInfo[] = [];
                 for(let j=0; j<count; ++j){
                     let randomIdx = Math.floor(Math.random()*(enemyIds.length-0.0001));
                     let enemyId = enemyIds[randomIdx];
@@ -191,7 +191,7 @@ class FightManager {
 
     /**在指定序列中[min, max)产生count个随机数 */
     getRandomNumsByCount(count: number, max: number, min: number=0){
-        let list: number[] = new Array();
+        let list: number[] = [];
         let offLen = max - min;
         if(offLen <= count){
             for(let i=min; i<=max; i++){
@@ -246,8 +246,8 @@ class FightManager {
                 NotificationMy.emit(NoticeType.BallAdsorbEvent, -1);   //砖块吸附小球
             }
             else if(this.ballDropedCount >= this.fightBallTotal){   //本次战斗小球数量 
-                this.tempCastRayArr = new Array();   //每回合正在规划的临时射线数据集合（仅保存起始点和方向等射线数据）
-                this.roundPathArr = new Array();   //每回合射线路径数据集合，用于路径复用
+                this.tempCastRayArr = [];   //每回合正在规划的临时射线数据集合（仅保存起始点和方向等射线数据）
+                this.roundPathArr = [];   //每回合射线路径数据集合，用于路径复用
                 this.getFightScene().handleBallsDropOver();  //处理所有小球都下落完毕，之后小球排序，检查回合结束 
             }
         }
@@ -394,7 +394,7 @@ class FightManager {
 
     /**清除复用数据 */
     clearRoundPathArr(){
-        this.roundPathArr = new Array();
+        this.roundPathArr = [];
     }
 
     /**复用回合路径集合中的路径数据 
@@ -517,7 +517,7 @@ class FightManager {
     /**射出射线（多条折线），并返回第一条折线的末点坐标 */
     castMultiRay(startPos: cc.Vec2, dir: cc.Vec2, rayCount: number): IntersectRay{
         //cc.log("castMultiRay(), startPos = "+startPos+"; dir = "+dir+"; rayCount = "+rayCount);
-        this.roundPathArr = new Array();   //每回合射线路径数据集合，用于路径复用
+        this.roundPathArr = [];   //每回合射线路径数据集合，用于路径复用
         this.rayCount = rayCount;  //需要绘制的射线段数
         this.curBrickNodes = this.qipanSc.nBricks.children;   //当前绘制有效的砖块集合
         let rayDir = this.normalDir(dir);
@@ -534,7 +534,7 @@ class FightManager {
      * @param callback 新射线是否在规划中时的回调（小球将延迟后再次发送规划请求）
     */
     resetCastRay(startPos: cc.Vec2, dir: cc.Vec2, brickIds: number[], hitType:number, callback: any): IntersectRay{
-        this.curBrickNodes = new Array();   //当前绘制有效的砖块集合
+        this.curBrickNodes = [];   //当前绘制有效的砖块集合
         let rayDir = this.normalDir(dir);
         if(rayDir == null){
             return null;
@@ -571,7 +571,7 @@ class FightManager {
      */
     castRay(startPos: cc.Vec2, dir: cc.Vec2, rayCount:number = 1, bShowDot:boolean, brickIds: number[], hitType:number=0): IntersectRay{
         //cc.log("castRay(), startPos = "+startPos+"; dir = "+dir+"; rayCount = "+rayCount+"; bShowDot = "+bShowDot+"; hitType = "+hitType);
-        this.tempItemNodes = new Array();   //射线规划时，临时存储某条射线经过的道具集合
+        this.tempItemNodes = [];   //射线规划时，临时存储某条射线经过的道具集合
         if(rayCount <= 0){  //需要绘制的射线段数
             return null;
         }
@@ -744,7 +744,7 @@ class FightManager {
 
             if(brickLen == -1 || (brickLen > 0 && intersectDist <= brickLen)){
                 if(intersectDist != brickLen){   //墙比砖块距离更近，重置数组
-                    intersectArr = new Array();
+                    intersectArr = [];
                 }
 
                 let rayY = this.getBallPosY();   //小球的Y轴坐标
@@ -881,8 +881,8 @@ class FightManager {
      * @param hitType  0碰撞，1无碰撞, 2偏转，3穿透, 4砖块死亡通知, 5地面反弹， 6移动反弹
      */
     checkIntersectionWithBricks(startPos:cc.Vec2, dir: cc.Vec2, endPos:cc.Vec2, bShowDot:boolean, hitType:number, brickIds: number[]): IntersectData[]{
-        let tempArr: IntersectData[] = new Array();   //返回的碰撞砖块数据集合（因为可能两个砖块碰撞距离相同）
-        this.tempItemNodes = new Array();   //射线规划时，临时存储某条射线经过的道具集合
+        let tempArr: IntersectData[] = [];   //返回的碰撞砖块数据集合（因为可能两个砖块碰撞距离相同）
+        this.tempItemNodes = [];   //射线规划时，临时存储某条射线经过的道具集合
         let dist = -1;
         for(let i=0; i<this.curBrickNodes.length; i++){
             if(this.curBrickNodes[i]){  
@@ -932,7 +932,7 @@ class FightManager {
                         let data: IntersectData = this.checkIntersectionOneBrick(startPos, endPos, brick, hitType);  //获取射线和单个砖块的碰撞及反射
                         if(data){
                             if(dist == - 1 || data.distLen < dist ){  //dist 上一个相交砖块的距离，-1标识无
-                                tempArr = new Array();   //返回的碰撞砖块数据集合（因为可能两个砖块碰撞距离相同）
+                                tempArr = [];   //返回的碰撞砖块数据集合（因为可能两个砖块碰撞距离相同）
                                 dist = data.distLen;
                                 tempArr.push(data);
                             }else if(dist > 0 && dist == data.distLen){
@@ -989,7 +989,7 @@ class FightManager {
      * @param radOffLen 为转角弧度反射的偏移距离（半径），改距离内按照转角碰撞处理而非边镜面发射处理
     */
     checkBrickInterectByDir(startPos:cc.Vec2, endPos:cc.Vec2, brick: Brick, radOffLen: number): TempIntersectData{
-        let borders: cc.Vec2[] = new Array();   
+        let borders: cc.Vec2[] = [];   
         let sprSize = brick.node.getContentSize();
         let nodePos = brick.node.position.clone();
         let tempData: TempIntersectData = null;
@@ -1031,7 +1031,7 @@ class FightManager {
                 let centerLen = -1;
                 let centerPos = null;
                 let centerRadius = 0;
-                let centerArr = new Array();
+                let centerArr = [];
 
                 for(let i=0; i<borders.length; i++){
                     let center: cc.Vec2 = null;  //通过顶点和偏移，获取圆心
@@ -1105,7 +1105,7 @@ class FightManager {
                     let centerIdx = -1;   //距离射线起点最近的顶点索引
                     let centerLen = -1;
                     let centerPos = null;
-                    let centerArr = new Array();
+                    let centerArr = [];
 
                     for(let i=0; i<borders.length; i++){
                         let center: cc.Vec2 = this.getCenterByVertex(borders[i], i, this.radConf+this.ballRadiusConf);  //通过顶点和偏移，获取圆心

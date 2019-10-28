@@ -637,7 +637,7 @@ export default class QiPanSc extends cc.Component {
 
     /**先左1右2随机，后上3下4随机 */
     getRandomAdjacent(){
-        let list: number[] = new Array();
+        let list: number[] = [];
         let randomFun = function(num1, num2){
             if(Math.random() < 0.5){
                 list.push(num1);
@@ -836,7 +836,7 @@ export default class QiPanSc extends cc.Component {
 
     /**返回指定坐标行的砖块集合 */
     getLineBricksByPos(pos: cc.Vec2, bincludeSelf=false){
-        let nodeArr: cc.Node[] = new Array();
+        let nodeArr: cc.Node[] = [];
         for(let i=0; i<this.nBricks.children.length; ++i){
             let node: cc.Node = this.nBricks.children[i];
             if(Math.abs(pos.y - node.y) < 10){
@@ -1004,7 +1004,7 @@ export default class QiPanSc extends cc.Component {
     createEffectLoopAniNode(atlas: cc.SpriteAtlas){
         if(atlas){
             let aniNode = GameMgr.createAtlasAniNode(atlas, 12, cc.WrapMode.Loop);
-            // aniNode.scale = 2.0;   //球缩小了，因此不用放大二倍了
+            aniNode.scale = 2.0;
             // let effectSpr = aniNode.getComponent(cc.Sprite);
             // if(effectSpr){
             //     effectSpr.srcBlendFactor = cc.macro.BlendFactor.SRC_ALPHA;

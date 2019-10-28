@@ -56,6 +56,10 @@ export class st_player_info{
     baoji;     //暴击率/100
     ball_num;   //可发射炮弹数量
     skillId;    //默认技能ID
+    update_atk;    //升级攻击力   暴击固定提升20%
+    update_gold;     //升级花费金币
+    update_diamond;   //升级花费钻石
+    update_vedio;    //升价花费视频次数  优于钻石  优于金币显示
     desc;    
 
     transType(){
@@ -64,6 +68,10 @@ export class st_player_info{
         this.baoji = parseInt(this.baoji)/100;
         this.ball_num = parseInt(this.ball_num);
         this.skillId = parseInt(this.skillId);
+        this.update_atk = parseInt(this.update_atk);
+        this.update_gold = parseInt(this.update_gold);
+        this.update_diamond = parseInt(this.update_diamond);
+        this.update_vedio = parseInt(this.update_vedio);
     }
 
     constructor(){
@@ -78,6 +86,10 @@ export class st_player_info{
         temp.ball_num = this.ball_num;
         temp.skillId = this.skillId;
         temp.desc = this.desc;
+        temp.update_atk = this.update_atk;
+        temp.update_gold = this.update_gold;
+        temp.update_diamond = this.update_diamond;
+        temp.update_vedio = this.update_vedio;
         return temp;
     }
 }

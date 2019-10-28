@@ -37,6 +37,8 @@
     "TiledMap",
     "Spine Skeleton",
     "DragonBones",
+    "VideoPlayer",
+    "WebView",
     "StudioComponent",
     "3D",
     "3D Primitive"
@@ -60,7 +62,7 @@
     "MoveBrick",
     "Brick"
   ],
-  "last-module-event-record-time": 1571235979938,
+  "last-module-event-record-time": 1572274770182,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,

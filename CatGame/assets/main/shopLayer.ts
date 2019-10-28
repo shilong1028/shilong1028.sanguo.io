@@ -23,7 +23,7 @@ export default class ShopLayer extends cc.Component {
     // update (dt) {}
 
     initTableData(){
-        let shopArr = new Array();
+        let shopArr = [];
         for(let i=1; i<= GameMgr.ShopCount; ++i){
             let shopCfg = CfgMgr.getShopConf(i);
             if(!SDKMgr.isSDK && shopCfg.vedio > 0){

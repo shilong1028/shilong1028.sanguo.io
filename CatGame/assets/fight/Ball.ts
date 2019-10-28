@@ -35,7 +35,7 @@ export default class Ball extends cc.Component {
     ballFlyDir: cc.Vec2 = null;   //发射方向
     launchPos: cc.Vec2 = null;   //发射点
     launchEndData: IntersectRay = null;   //折线末点
-    hitBrickIdArr: number[] = new Array();   //小球碰撞的砖块ID集合，避免异步砖块死亡死，再次寻路
+    hitBrickIdArr: number[] = [];   //小球碰撞的砖块ID集合，避免异步砖块死亡死，再次寻路
 
     /**可以发射 */
     bReady: boolean = false;  //发射准备
@@ -74,7 +74,7 @@ export default class Ball extends cc.Component {
         this.ballFlyDir = null;   //发射方向
         this.launchPos = null;   //发射点
         this.launchEndData = null;   //折线末点  
-        this.hitBrickIdArr = new Array();   //小球碰撞的砖块ID集合，避免异步砖块死亡死，再次寻路
+        this.hitBrickIdArr = [];   //小球碰撞的砖块ID集合，避免异步砖块死亡死，再次寻路
 
         this.bDropState = false;    //曲线下落状态（飞行中下落，地面的不再弹射）
         this.bFixedFlyDir = false;   //穿透砖块触碰后，小球在本回合内与其他砖块碰撞不再改变方向
@@ -441,8 +441,11 @@ export default class Ball extends cc.Component {
     /**获取小球攻击力，等级攻击力+额外攻击力+暴击 */
     getBallAttack(bAddRoundAtk:boolean=true){
         if(FightMgr.usedPlayerInfo){
-            let attack = FightMgr.usedPlayerInfo.playerCfg.attack;
-            let baoji = FightMgr.usedPlayerInfo.playerCfg.baoji;
+            let playerCfg = FightMgr.usedPlayerInfo.playerCfg;
+            let attack = playerCfg.attack;
+            attack += playerCfg.update_atk*(FightMgr.usedPlayerInfo.level-1);
+            let baoji = playerCfg.baoji;
+            baoji += 0.2*(FightMgr.usedPlayerInfo.level-1);
 
             if(this.ballInfo){
                 let attack_up = this.ballInfo.cannonCfg.attack_up;
@@ -538,7 +541,7 @@ export default class Ball extends cc.Component {
             let tempEndData: IntersectRay = this.launchEndData.clone();
             this.launchEndData = null;   //重置射线数据，防止update或异步消息再次处理
 
-            let tempHitIds: number[] = new Array();  //撞击砖块ID临时集合
+            let tempHitIds: number[] = [];  //撞击砖块ID临时集合
         
             for(let i=0; i<tempEndData.nodeIds.length; ++i){  //普通砖块
                 let brickId = tempEndData.nodeIds[i];
@@ -678,7 +681,7 @@ export default class Ball extends cc.Component {
     */
     resetLaunchEndData(brickIds: number[], hitType: number){
         if(brickIds == null || brickIds == undefined){
-            brickIds = new Array();
+            brickIds = [];
         }
         this.node.stopActionByTag(this.MoveFlyActionTag);   //停止飞行动作
         if(this.bDropState == true){  //曲线下落状态（飞行中下落，地面的不再弹射）
@@ -693,7 +696,7 @@ export default class Ball extends cc.Component {
             }
 
             if(this.bFixedFlyDir == false){   //穿透时，不清空碰撞砖块列表，待穿透撞墙后清空
-                this.hitBrickIdArr = new Array();   //小球碰撞的砖块ID集合，避免异步砖块死亡死，再次寻路
+                this.hitBrickIdArr = [];   //小球碰撞的砖块ID集合，避免异步砖块死亡死，再次寻路
             }
 
             //cc.log("resetLaunchEndData(), this.ballId = "+this.ballId+"; this.ballFlyDir = "+this.ballFlyDir+"; hitType = "+hitType);
@@ -721,7 +724,7 @@ export default class Ball extends cc.Component {
                 if(hitType == 3){
                     for(let i=0; i<this.launchEndData.borderIdxs.length; ++i){
                         if(this.launchEndData.borderIdxs[i] >= 0){  //与游戏边界相交的边界索引集合
-                            this.hitBrickIdArr = new Array();    //穿透时，不清空碰撞砖块列表，待穿透撞墙后清空
+                            this.hitBrickIdArr = [];    //穿透时，不清空碰撞砖块列表，待穿透撞墙后清空
                             break;
                         }
                     }
@@ -812,7 +815,7 @@ export default class Ball extends cc.Component {
                 controlPos.x = gameBorderRect.width/2;
             }
             let len = nodePos.sub(pos).mag();
-            let bezierArr = new Array();
+            let bezierArr = [];
             bezierArr[0] = nodePos;
             bezierArr[1] = controlPos;
             bezierArr[2] = pos;
@@ -943,7 +946,7 @@ export default class Ball extends cc.Component {
             let newDir = this.ballFlyDir.rotate(randRad);
 
             let retData = this.checkInnerBrickNewDir(newDir);   //检测小球是否在砖块内部，并返回新方向
-            let ids = new Array();
+            let ids = [];
             // if(retData.brickId >= 0){
             //     retData = this.checkInnerBrickNewDir(retData.dir, retData.brickId);
 

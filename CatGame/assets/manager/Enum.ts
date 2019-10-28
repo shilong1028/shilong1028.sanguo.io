@@ -182,9 +182,9 @@ export class IntersectRay{
     hitType:number = 0;   //  0碰撞，1无碰撞, 2偏转，3穿透, 4砖块死亡通知
     point: cc.Vec2 = null;    //综合交点（射线末端的新反射起点）
     newDir: cc.Vec2 = null;  //射线末端的反射新方向
-    nodeIds: number[] = new Array();   //射线末端碰撞的非移动砖块ID集合
-    itemNodes: cc.Node[] = new Array();   //射线经过的道具节点集合
-    borderIdxs: number[] = new Array();  //与游戏边界相交的边界索引集合
+    nodeIds: number[] = [];   //射线末端碰撞的非移动砖块ID集合
+    itemNodes: cc.Node[] = [];   //射线经过的道具节点集合
+    borderIdxs: number[] = [];  //与游戏边界相交的边界索引集合
 
     constructor(){
         this.srcPos = null;
@@ -192,9 +192,9 @@ export class IntersectRay{
         this.hitType = 0;
         this.point = null;
         this.newDir = null;
-        this.nodeIds = new Array();
-        this.itemNodes = new Array();
-        this.borderIdxs = new Array();
+        this.nodeIds = [];
+        this.itemNodes = [];
+        this.borderIdxs = [];
     }
 
     clone(){

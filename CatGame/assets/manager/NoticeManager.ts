@@ -9,13 +9,13 @@ class Notification_class {
 
     on(type, callback, target) {
         if (this._eventMap[type] === undefined) {
-            this._eventMap[type] = new Array();
+            this._eventMap[type] = [];
         }
         this._eventMap[type].push({ callback: callback, target: target });
 
         var objId = this.getTargetUid(target);
         if (this._eventTarget[objId] === undefined) {
-            this._eventTarget[objId] = new Array();
+            this._eventTarget[objId] = [];
         }
         this._eventTarget[objId].push({ type: type, callback: callback });
     }

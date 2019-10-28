@@ -79,7 +79,7 @@ export default class FightScene extends cc.Component {
 
     stagnationRow: number = -1;  //显示冰冻的回合
 
-    skillList: SkillInfo[] = new Array();   //章节技能列表，每一关累计，章节内有效
+    skillList: SkillInfo[] = [];   //章节技能列表，每一关累计，章节内有效
     bShowBeginReward: boolean = true;   //章节第一关第一次显示开局奖励
 
     // LIFE-CYCLE CALLBACKS:

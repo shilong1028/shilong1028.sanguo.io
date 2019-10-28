@@ -51,8 +51,8 @@ export class SDK_Wechat  {
         //平台上的分享图片编号
         let imgIds = ['1IqtE4CzQUyV5TP0MTxYCw'];
 
-        imgUrls = ['https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksI8sHibZ9Tib5tXxCp0u88qKibB6MOnic2gM3bbQLRXMwfFUclgbu2yqFiau/0'];
-        imgIds = ['mho_5RMnQrClChbBFjPIvA'];
+        // imgUrls = ['https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksI8sHibZ9Tib5tXxCp0u88qKibB6MOnic2gM3bbQLRXMwfFUclgbu2yqFiau/0'];
+        // imgIds = ['mho_5RMnQrClChbBFjPIvA'];
 
         wx.updateShareMenu({
             withShareTicket: true,

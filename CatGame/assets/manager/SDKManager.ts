@@ -192,6 +192,21 @@ class SDKManager_class  {
         }
     }
 
+    //显示视频广告
+    showVedioAd(failCallback, succCallback){
+        sdkWechat.preLoadAndPlayVideoAd(false, ()=>{
+            //console.log("reset 激励视频广告显示失败");
+            failCallback();
+        }, (succ:boolean)=>{
+            //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
+            if(succ){
+                succCallback();
+            }else{
+                failCallback()
+            }
+        }, this);   //播放下载的视频广告 
+    }
+
 }
 
 export  let SDKMgr = new SDKManager_class();

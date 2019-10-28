@@ -22,7 +22,7 @@ export default class SkillLayer extends cc.Component {
     // update (dt) {}
 
     initTableData(){
-        let skillArr = new Array();
+        let skillArr = [];
         for(let i=1; i<= GameMgr.SkillCount; ++i){
             skillArr.push(new SkillInfo(i));
         }

@@ -1,10 +1,10 @@
 import { LevelInfo, NoticeType, TipsStrDef, ChapterInfo } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
-import { sdkWechat } from "../manager/SDK_Wechat";
 import { FightMgr } from "../manager/FightManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
+import { SDKMgr } from "../manager/SDKManager";
 
 
 //复活界面
@@ -29,7 +29,6 @@ export default class FightRenew extends cc.Component {
     goldCost: number = 100;   //钻石复活
 
     bVideoPlaying: boolean = false;   //视频播放中
-    bVideoPlaySucc: boolean = false;   //视频是否播放完毕
 
     onLoad () {
         this.progressLabel.string = "5s";
@@ -52,9 +51,8 @@ export default class FightRenew extends cc.Component {
             this.proTime -= dt;
             if(this.proTime < 0){
                 this.proTime = 0;
-                //console.log("倒计时结束, this.bVideoPlaying = "+this.bVideoPlaying+"; this.bVideoPlaySucc = "+this.bVideoPlaySucc);
                 if(this.bVideoPlaying == false){
-                    this.handleNormal(this.bVideoPlaySucc);  //复活或显示结算
+                    this.handleNormal(false);  //复活或显示结算
                 }
                 return;
             }
@@ -81,25 +79,11 @@ export default class FightRenew extends cc.Component {
         this.vedioBtn.interactable = false; 
         this.bVideoPlaying = true;   //视频播放中
 
-        let self = this;
-        sdkWechat.preLoadAndPlayVideoAd(false, ()=>{
-            //console.log("reset 激励视频广告显示失败");
-            self.handleNormal(false);
-        }, (succ:boolean)=>{
-            //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
-            self.bVideoPlaying = false;   //视频播放中
-            sdkWechat.preLoadAndPlayVideoAd(true, null, null, self);   //预下载下一条视频广告
-            if(succ == true){
-                self.bVideoPlaySucc = true;   //视频是否播放完毕
-                if(self.proTime <= 0){
-                    self.handleNormal(true);  //复活或显示结算
-                }
-            }else{
-                if(self.proTime <= 0){
-                    self.handleNormal(false);
-                }
-            }
-        }, self);   //播放下载的视频广告 
+        SDKMgr.showVedioAd(()=>{
+            this.handleNormal(false);   //失败
+        }, ()=>{
+            this.handleNormal(true);  //成功
+        }); 
     }
 
     /**跳过 */
