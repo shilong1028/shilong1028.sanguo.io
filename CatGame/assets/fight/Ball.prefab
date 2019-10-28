@@ -25,6 +25,7 @@
       }
     ],
     "_active": true,
+    "_level": 1,
     "_components": [
       {
         "__id__": 7
@@ -57,21 +58,17 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1
-      ]
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
     },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
@@ -82,7 +79,6 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 2,
     "groupIndex": 2,
     "_id": ""
   },
@@ -95,6 +91,7 @@
     },
     "_children": [],
     "_active": true,
+    "_level": 2,
     "_components": [
       {
         "__id__": 3
@@ -121,21 +118,17 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0.699999988079071,
-        0.699999988079071,
-        1
-      ]
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 0.7,
+      "y": 0.7,
+      "z": 1
     },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
@@ -146,8 +139,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 2,
-    "groupIndex": 2,
+    "groupIndex": 0,
     "_id": ""
   },
   {
@@ -204,6 +196,7 @@
     },
     "_children": [],
     "_active": true,
+    "_level": 2,
     "_components": [],
     "_prefab": {
       "__id__": 6
@@ -226,21 +219,17 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1
-      ]
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
     },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
@@ -251,8 +240,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 2,
-    "groupIndex": 2,
+    "groupIndex": 0,
     "_id": ""
   },
   {
@@ -281,7 +269,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_fadeTime": 0.1,
+    "_fadeTime": 0.15,
     "_minSeg": 1,
     "_stroke": 30,
     "_texture": {

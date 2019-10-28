@@ -52,6 +52,18 @@
       "x": 0.5,
       "y": 0.5
     },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -62,23 +74,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "",
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1
-      ]
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Node",
@@ -119,6 +115,18 @@
       "x": 0.5,
       "y": 0.5
     },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -129,23 +137,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "",
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1
-      ]
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Sprite",
@@ -254,6 +246,18 @@
       "x": 0.5,
       "y": 0.5
     },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 70,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -264,23 +268,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "",
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        70,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1
-      ]
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Node",
@@ -318,6 +306,18 @@
       "x": 0.5,
       "y": 0.5
     },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 330,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -328,23 +328,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "",
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        330,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1
-      ]
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Label",
@@ -426,6 +410,18 @@
       "x": 0.5,
       "y": 0.5
     },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 210,
+      "y": 330,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -436,23 +432,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "",
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        210,
-        330,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1
-      ]
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Sprite",
@@ -615,6 +595,18 @@
       "x": 0.5,
       "y": 0.5
     },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 110,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -625,23 +617,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "",
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        110,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1
-      ]
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Layout",
@@ -719,6 +695,18 @@
       "x": 0.5,
       "y": 0.5
     },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": -150,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -729,23 +717,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "",
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        -150,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1
-      ]
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -801,6 +773,18 @@
       "x": 0.5,
       "y": 0.5
     },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": -290,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -811,23 +795,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "",
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        -290,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1
-      ]
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Node",
@@ -865,6 +833,18 @@
       "x": 0.5,
       "y": 0.5
     },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 10,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
     "_eulerAngles": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -875,23 +855,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "",
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float32Array",
-      "array": [
-        0,
-        10,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1
-      ]
-    }
+    "_id": ""
   },
   {
     "__type__": "cc.Label",
