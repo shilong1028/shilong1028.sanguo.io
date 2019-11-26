@@ -7,7 +7,7 @@
             <key>monster_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{202,102},{98,98}}</string>
+                <string>{{302,102},{98,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>monster_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{202,2},{98,98}}</string>
+                <string>{{302,2},{98,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>monster_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{102,102},{98,98}}</string>
+                <string>{{202,102},{98,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,7 +46,7 @@
             <key>monster_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{102,2},{98,98}}</string>
+                <string>{{202,2},{98,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -59,20 +59,20 @@
             <key>monster_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{302,2},{86,74}}</string>
+                <string>{{102,102},{98,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{86,74}}</string>
+                <string>{{0,0},{98,98}}</string>
                 <key>sourceSize</key>
-                <string>{86,74}</string>
+                <string>{98,98}</string>
             </dict>
             <key>monster_6.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,102},{98,98}}</string>
+                <string>{{102,2},{98,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -85,7 +85,7 @@
             <key>monster_7.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{98,98}}</string>
+                <string>{{2,102},{98,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,15 +98,15 @@
             <key>monster_8.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{302,90},{84,70}}</string>
+                <string>{{2,2},{98,98}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{84,70}}</string>
+                <string>{{0,0},{98,98}}</string>
                 <key>sourceSize</key>
-                <string>{84,70}</string>
+                <string>{98,98}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -116,9 +116,9 @@
             <key>realTextureFileName</key>
             <string>monster.png</string>
             <key>size</key>
-            <string>{378,202}</string>
+            <string>{402,202}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:a2227d4dd239a4ea40d41561ec46d6b2:6fb309e19327ee0b6060ce4a944667e8:a6ae2b9304b7a9e734cf6a25f3604866$</string>
+            <string>$TexturePacker:SmartUpdate:667861dbc2dd08a21792afe0259ed8d2:b1a147e3cdcd80ff0cf4aec3d532ec54:a6ae2b9304b7a9e734cf6a25f3604866$</string>
             <key>textureFileName</key>
             <string>monster.png</string>
         </dict>

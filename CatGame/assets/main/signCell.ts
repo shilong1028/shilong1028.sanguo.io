@@ -18,8 +18,6 @@ export default class SignCell extends cc.Component {
     @property(cc.Sprite)
     colorSpr: cc.Sprite = null;   //道具品质
     @property(cc.Label)
-    numLabel: cc.Label = null;   //奖励数据
-    @property(cc.Label)
     descLabel: cc.Label = null;   
     @property(cc.Node)
     maskNode: cc.Node = null;  //已经签到标签
@@ -43,7 +41,6 @@ export default class SignCell extends cc.Component {
 
     onLoad () {
         this.dayLabel.string = "";
-        this.numLabel.string = "";
         this.maskNode.active = false;
         this.colorSpr.spriteFrame = null;
         this.iconSpr.spriteFrame = null;
@@ -62,9 +59,6 @@ export default class SignCell extends cc.Component {
 
         this.dayLabel.string = this.signIdx.toString();
         this.descLabel.string = this.signData.desc;
-        if(this.signData.num > 1){
-            this.numLabel.string = "x"+this.signData.num;
-        }
 
         if(this.signData.type == 1){   //金币
             this.iconSpr.spriteFrame = this.iconFrames[0];
