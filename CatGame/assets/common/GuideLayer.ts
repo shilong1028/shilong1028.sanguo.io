@@ -33,6 +33,8 @@ export default class GuideLayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.touchNode.width = cc.winSize.width;
+        this.touchNode.height = cc.winSize.height;
         this.touchNode.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
 
         this.mask.node.active = false;
@@ -74,6 +76,9 @@ export default class GuideLayer extends cc.Component {
             let pos = this.node.convertToNodeSpaceAR(worldPos)
             pos.x += offsetPos.x;
             pos.y += offsetPos.y;
+            if(maskSpr == null){
+                pos = this.adaptPos(pos);
+            }
 
             this.mask.node.position = pos;
             this.mask.node.active = true;
@@ -97,9 +102,17 @@ export default class GuideLayer extends cc.Component {
         }
     }
 
+    adaptPos(pos: cc.Vec2){
+        //适配
+        pos.x += (this.node.x - cc.winSize.width/2);
+        pos.y += (this.node.y - cc.winSize.height/2);
+        return pos;
+    }
+
     onTouchStart(event: cc.Event.EventTouch) {
         if(this.maskCallback && this.mask.node.active == true){
-            let pos = this.node.convertToNodeSpaceAR(event.getLocation());
+            let pos = this.touchNode.convertToNodeSpaceAR(event.getLocation());
+            pos = this.adaptPos(pos);
             let rect = cc.rect(this.mask.node.x-this.mask.node.width/2, this.mask.node.y-this.mask.node.height/2, this.mask.node.width, this.mask.node.height);
             if(rect.contains(pos)){
                 this.onClickMask();

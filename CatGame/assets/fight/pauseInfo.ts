@@ -21,6 +21,9 @@ export default class PauseInfo extends cc.Component {
     touchNode: cc.Node = null;
     @property(TableView)
     tableView: TableView = null;
+    @property(cc.Node)
+    listBg: cc.Node = null;
+
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -40,7 +43,7 @@ export default class PauseInfo extends cc.Component {
         }
     }
     guideSkillInfo(step: GuideStepEnum){
-        GuideMgr.showGuideLayer(this.tableView.node, ()=>{
+        GuideMgr.showGuideLayer(this.listBg, ()=>{
             GuideMgr.endGuide_NewPlayer(step);
             this.descLabel.string = FightMgr.getFightScene().skillList[0].skillCfg.desc;
         });

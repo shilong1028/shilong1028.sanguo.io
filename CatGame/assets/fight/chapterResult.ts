@@ -71,7 +71,7 @@ export default class ChapterResult extends cc.Component {
         MyUserDataMgr.updateUserGold(this.chapterInfo.chapterCfg.gold * times);
         MyUserDataMgr.updateUserDiamond(this.diamondReward * times);
 
-        this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
+        this.node.runAction(cc.sequence(cc.delayTime(0.1* times), cc.callFunc(function(){
             GameMgr.gotoMainScene();
         })));
     }
