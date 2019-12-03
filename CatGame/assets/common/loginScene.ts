@@ -14,6 +14,8 @@ const {ccclass, property} = cc._decorator;
 export default class LoginScene extends cc.Component {
     @property(cc.Node)
     btnNode: cc.Node = null;
+    @property(cc.Node)
+    beginNode: cc.Node = null;
     @property(cc.Label)
     descLabel: cc.Label = null;
 
@@ -22,11 +24,13 @@ export default class LoginScene extends cc.Component {
     curDescStrIdx: number = 0;
     bUpdateStr: boolean = false;
 
+    touchIconCount = 0;
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         GameMgr.adaptBgByScene();   //场景背景图适配
-        this.btnNode.active = false;
+        this.beginNode.active = false;
         this.descLabel.string = "";
     }
 
@@ -36,8 +40,8 @@ export default class LoginScene extends cc.Component {
         }else{
             MyUserDataMgr.initUserData();    //初始化用户信息
         }
-        this.btnNode.active = true;
         this.bUpdateStr = true;
+        this.beginNode.active = true;
 
         SDKMgr.createrBannerAd();   //创建Banner
     }
@@ -54,6 +58,14 @@ export default class LoginScene extends cc.Component {
                 //substring(start,end)表示从start到end之间的字符串，包括start位置的字符但是不包括end位置的字符。
                 this.descLabel.string = str;
             }
+        }
+    }
+
+    onIconBtn(){
+        this.touchIconCount ++;
+        if(this.touchIconCount == 10){
+            this.btnNode.active = true;
+            this.beginNode.active = false;
         }
     }
 

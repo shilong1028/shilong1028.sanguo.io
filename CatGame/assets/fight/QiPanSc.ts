@@ -347,13 +347,14 @@ export default class QiPanSc extends cc.Component {
     /********************************* 以下部分为指示线  ******************************* */
     //射线教程
     showIndicatorTeach(){
-        if(FightMgr.level_id == 1 && MyUserData.curLevelId == 0 && this.launchCount == 0){   //第一关前两个回合强制引导线  //本次战斗发射次数
+        console.log("showIndicatorTeach 射线教程")
+        //if(FightMgr.level_id == 1 && MyUserData.curLevelId == 0 && this.launchCount == 0){   //第一关前两个回合强制引导线  //本次战斗发射次数
             this.fixGuideStep = 0;  //第一关固定指示线（移动步数）
             this.fixGuideOffDir = 1;  //第一关固定指示线当前偏移(方向)
             this.fixGuideLen = -350;  //第一关固定指示线偏移
             this.bShowFixGuideDot = true;   //是否显示第一关固定指示线
             this.handleFixGuideStepUpdate(); 
-        }
+        //}
     }
 
     //第一关引导指示线移动
@@ -871,7 +872,6 @@ export default class QiPanSc extends cc.Component {
                     //多行下移的最后一行不再创建新层
                     //cc.log("不再创建新层")
                     this.bBricksDownOver = true;    //砖块加载完或下落完毕
-                    this.showIndicatorTeach();   //射线教程
                 }else{
                     if(this.nBricks.children.length == 0 || this.checkHasEnemyCurView() == false){   //当前视图内没有敌人了
                         this.handleBrickDeadAndCheckEnemy(false);   //砖块消失检查是否还有敌方砖块

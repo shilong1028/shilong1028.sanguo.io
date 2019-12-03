@@ -7,6 +7,7 @@ import { GameMgr } from "../manager/GameManager";
 import { ROOT_NODE } from "../common/rootNode";
 import Stuff from "../common/Stuff";
 import Item from "../common/item";
+import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -58,6 +59,15 @@ export default class BagGrid extends cc.Component {
     }
 
     start () {
+        if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Player_Guide_Step3, this.guideSort, this) == false){ 
+        }
+    }
+    //点击排序，让饰品按照品质高低排序。相同品质道具可以拖动升级至高品质。
+    guideSort(step: GuideStepEnum){
+        GuideMgr.showGuideLayer(null, ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            this.onSortBtn();
+        }, cc.size(140, 140), cc.v2(200, 380));
     }
 
     // update (dt) {}

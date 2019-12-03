@@ -6,7 +6,6 @@ import { PlayerInfo, TipsStrDef, ChapterInfo } from "../manager/Enum";
 import { ROOT_NODE } from "../common/rootNode";
 import { FightMgr } from "../manager/FightManager";
 
-
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -22,6 +21,9 @@ export default class ChapterLayer extends cc.Component {
     chapterLabel: cc.Label = null;
     @property(cc.Label)
     rewardLabel: cc.Label = null;
+
+    @property(cc.Sprite)
+    fightBtnSpr: cc.Sprite = null;
 
     @property(cc.Prefab)
     pfPage: cc.Prefab = null;    //章节页签

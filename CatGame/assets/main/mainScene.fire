@@ -165,7 +165,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 365.46272039703314
+      "z": 358.5345171667576
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -4362,6 +4362,9 @@
     "rewardLabel": {
       "__id__": 87
     },
+    "fightBtnSpr": {
+      "__id__": 92
+    },
     "pfPage": {
       "__uuid__": "ecf321a2-7400-4109-921e-3712afbf4145"
     },
@@ -7181,11 +7184,14 @@
     "midPageView": {
       "__id__": 105
     },
-    "bagNode": {
+    "petNode": {
       "__id__": 10
     },
     "shopNode": {
       "__id__": 96
+    },
+    "chapterNode": {
+      "__id__": 59
     },
     "shareBtn": {
       "__id__": 128

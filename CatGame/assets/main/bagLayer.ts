@@ -10,6 +10,7 @@ import { ROOT_NODE } from "../common/rootNode";
 import Skill from "../common/skill";
 import { PlayerInfo, BallInfo, SkillInfo, NoticeType } from "../manager/Enum";
 import Stuff from "../common/Stuff";
+import { GuideStepEnum, GuideMgr } from "../manager/GuideMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -216,6 +217,14 @@ export default class BagLayer extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
 
         GameMgr.showLayer(this.pfSKillLayer);
+    }
+
+     //给萌宠添加饰品，增加战斗金币或钻石产出。
+    guidePlayer(step: GuideStepEnum){
+        GuideMgr.showGuideLayer(null, ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            this.onItemBtn();
+        }, cc.size(130, 130), cc.v2(0, 380));
     }
 
 }

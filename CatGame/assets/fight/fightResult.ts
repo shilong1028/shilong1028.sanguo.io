@@ -7,6 +7,7 @@ import { CfgMgr } from "../manager/ConfigManager";
 import { SkillInfo, ChapterInfo } from "../manager/Enum";
 import { ROOT_NODE } from "../common/rootNode";
 import ChapterResult from "./chapterResult";
+import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -92,6 +93,9 @@ export default class FightResult extends cc.Component {
                     let skillInfo = new SkillInfo(this.skillIdArr[i]);
                     skill.getComponent(Skill).initSkillByData(skillInfo);
                 }
+
+                if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step3, this.guideFightSkill, this) == false){  //选择新战斗技能，并继续下一关。
+                }
             }
         }else{
             this.titleSpr.spriteFrame = this.failFrame;
@@ -114,11 +118,22 @@ export default class FightResult extends cc.Component {
         }
     }
 
+    guideFightSkill(step: GuideStepEnum){
+        GuideMgr.showGuideLayer(this.skillNodes[1], ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            this.handleSelSkill(1);
+        });
+    }
+
     // update (dt) {}
 
     onSkillBtn(sender, parStr){
         AudioMgr.playEffect("effect/ui_click");
         let idx = parseInt(parStr);
+        this.handleSelSkill(idx);
+    }
+
+    handleSelSkill(idx: number){
         let skillId = this.skillIdArr[idx];
         if(skillId > 0){
             if(this.bNextLevel == true){

@@ -6,12 +6,15 @@ import QiPanSc from "./QiPanSc";
 import { GameMgr } from "../manager/GameManager";
 import WenZi from "../effectAni/Wenzi";
 import Brick from "./Brick";
+import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class FightScene extends cc.Component {
 
+    @property(cc.Node)
+    backNode: cc.Node = null;
     @property(cc.Node)
     topNode: cc.Node = null;    //顶部栏
     @property(cc.Label)
@@ -125,9 +128,38 @@ export default class FightScene extends cc.Component {
 
         FightMgr.loadLevel(FightMgr.level_id, false);      // 根据选择的关卡传值    
 
-        if(this.bShowBeginReward == true){   //章节开局奖励
-            GameMgr.showLayer(this.pfBeginReward);
+        if(FightMgr.level_id == 1){
+            if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step2, this.guideFightMove, this) == false){  //左右拖动手指，改变发射轨迹。
+                if(this.bShowBeginReward == true){   //章节开局奖励
+                    GameMgr.showLayer(this.pfBeginReward);
+                }
+            }
+        }else{
+            if(this.bShowBeginReward == true){   //章节开局奖励
+                GameMgr.showLayer(this.pfBeginReward);
+            }else{
+                this.handleStartFight();
+            }
         }
+    }
+
+    handleStartFight(){
+        if(FightMgr.level_id > 1){
+            if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.FightSet_Guide_Step, this.guideFightSet, this) == false){  //点击信息按钮，查看技能或退出游戏。
+            }
+        }
+    }
+    guideFightSet(step: GuideStepEnum){
+        GuideMgr.showGuideLayer(this.backNode, ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            this.onBackBtn();
+        });
+    }
+    guideFightMove(step: GuideStepEnum){
+        FightMgr.qipanSc.showIndicatorTeach();   //射线教程
+        GuideMgr.showGuideLayer(null, ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+        }, cc.size(500, 100), cc.v2(0, -200));
     }
 
     //显示章节战斗技能
@@ -264,7 +296,7 @@ export default class FightScene extends cc.Component {
 
         FightMgr.qipanSc.initQiPanObjs(this);   //初始化棋盘对象
 
-        //this.checkGuideStep();   //检索引导步骤
+        this.handleStartFight();
     }
 
     /**显示关卡砖块进度 */

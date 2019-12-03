@@ -15,6 +15,8 @@ export default class RootNode extends cc.Component {
     pfLoading: cc.Prefab = null;  //加载进度层
     @property(cc.Prefab)
     pfGoldAdd: cc.Prefab = null;  //获取金币提示框
+    @property(cc.Prefab)
+    guidePrefab: cc.Prefab = null;   //引导层
 
     @property(cc.Prefab)
     pfItem: cc.Prefab = null;

@@ -4,6 +4,10 @@ import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserData } from "../manager/MyUserData";
+import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
+import ChapterLayer from "./chapterLayer";
+import ShopLayer from "./shopLayer";
+import BagLayer from "./bagLayer";
 
 const {ccclass, property} = cc._decorator;
 
@@ -17,9 +21,11 @@ export default class MainScene extends cc.Component {
     @property(cc.PageView)
     midPageView: cc.PageView = null;
     @property(cc.Node)
-    bagNode: cc.Node = null;
+    petNode: cc.Node = null;
     @property(cc.Node)
     shopNode: cc.Node = null;
+    @property(cc.Node)
+    chapterNode: cc.Node = null;
 
     @property(cc.Node)
     shareBtn: cc.Node = null;  //分享
@@ -100,9 +106,39 @@ export default class MainScene extends cc.Component {
 
         this.showMidUI(0, 0.01);   //显示中间信息，0地图关卡、1背包炮台、2商店
 
-        if(GameMgr.isSameDayWithCurTime(MyUserData.lastSignTime) == false){  //同一天
-            this.onSignBtn();
+        if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step, this.guideFight, this) == false){   //战斗引导   
+            if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Shop_Guide_Step, this.guideShop, this) == false){   //点击商店，购买武器或饰品。
+                if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Player_Guide_Step, this.guidePlayer, this) == false){   //点击萌宠，查看萌宝信息。
+                    if(GameMgr.isSameDayWithCurTime(MyUserData.lastSignTime) == false){  //同一天
+                        this.onSignBtn();
+                    }
+                }
+            } 
         }
+    }
+    checkGuidePlayer(){
+        if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Player_Guide_Step, this.guidePlayer, this) == false){   //点击萌宠，查看萌宝信息。
+        }
+    }
+    guidePlayer(step: GuideStepEnum){
+        GuideMgr.showGuideLayer(this.bagBtnSpr.node, ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            this.onBagBtn();
+            this.petNode.getComponent(BagLayer).guidePlayer(GuideStepEnum.Player_Guide_Step2);
+        });
+    }
+    guideShop(step: GuideStepEnum){
+        GuideMgr.showGuideLayer(this.shopBtnSpr.node, ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            this.onShopBtn();
+            this.shopNode.getComponent(ShopLayer).guideBuy(GuideStepEnum.Shop_Guide_Step2);
+        });
+    }
+    guideFight(step: GuideStepEnum){
+        GuideMgr.showGuideLayer(null, ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            this.chapterNode.getComponent(ChapterLayer).onFightBtn();
+        }, cc.size(300, 120), cc.v2(0, -240));
     }
 
     // update (dt) {

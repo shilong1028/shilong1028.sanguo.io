@@ -116,7 +116,7 @@ class StorageManager_class  {
 export  const LDMgr = new StorageManager_class();
 
 export const LDKey = {
-    KEY_NewUser: "KEY_NewUser_1019",   //是否新用户
+    KEY_NewUser: "KEY_NewUser_1203",   //是否新用户
     KEY_Music_onOff: "KEY_Music_onOff",  //音乐或音效开关(开启)
     KEY_Music_Volume: "KEY_Music_Volume",     //本地音乐音量
     KEY_Sound_Volume: "KEY_Sound_Volume",   //本地音效音量
@@ -134,5 +134,6 @@ export const LDKey = {
     KEY_CurLevelId: "KEY_CurLevelId",   //当前通关的最大id
     KEY_LevelList: "KEY_LevelList",   //通关列表
     KEY_ItemList: "KEY_ItemList",   //背包列表
+    KEY_GuideSteps: "KEY_GuideSteps",   //新手引导步骤"1000-1100-1200-..."
 
 }

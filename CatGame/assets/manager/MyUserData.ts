@@ -3,6 +3,7 @@ import { NotificationMy } from "./NoticeManager";
 import { NoticeType, BallInfo, PlayerInfo, LevelInfo, ItemInfo, TipsStrDef } from "./Enum";
 import { GameMgr } from "./GameManager";
 import { ROOT_NODE } from "../common/rootNode";
+import { GuideMgr } from "./GuideMgr";
 
 
 //用户数据管理
@@ -30,7 +31,7 @@ export var MyUserData = {
 
     ItemList: [],   //背包物品列表
 
-    
+    guideStepStrs: "",   //新手引导步骤"1000-1100-1200-..."
 };
 
 @ccclass
@@ -73,6 +74,9 @@ class MyUserManager {
         MyUserData.ItemList = [];   //背包物品列表
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
 
+        MyUserData.guideStepStrs = "";   //新手引导步骤"1000-1100-1200-..."
+        GuideMgr.clearFinishGuideStep();
+
         this.initNewUserData();  //新玩家初始化
     }
 
@@ -88,7 +92,8 @@ class MyUserManager {
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
 
-        MyUserData.DiamondCount = 10000;
+        MyUserData.DiamondCount = 50;
+        MyUserData.GoldCount = 200;
 
         //cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
@@ -121,11 +126,20 @@ class MyUserManager {
 
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
 
+        MyUserData.guideStepStrs = LDMgr.getItem(LDKey.KEY_GuideSteps);   //新手引导步骤"1000-1100-1200-..."
+        GuideMgr.setFinishGuideStep(MyUserData.guideStepStrs);   //设置完成的引导步骤（开始）字符串  "1000-1100-1200-..."
+
         if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
             this.initNewUserData();  //新玩家初始化
         }
 
         //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+    }
+
+    /**更新新手引导数据 */
+    updateGuideStepData(guideStr: string){
+        MyUserData.guideStepStrs = guideStr;   //新手引导步骤"1000-1100-1200-..."
+        LDMgr.setItem(LDKey.KEY_GuideSteps, MyUserData.guideStepStrs);
     }
 
     //更新签到数据

@@ -1,6 +1,16 @@
 import { SDKMgr } from "./SDKManager";
 import { GameMgr } from "./GameManager";
 
+var VedioIds = {
+    ChapterVedioId: "adunit-7938468818a49805",
+    FuhuoVedioId: "adunit-c66c8322a1391f90",
+    KaijuVedioId: "adunit-f09c92332a0c1a78",
+    UpLvVedioId: "adunit-06bb99420f5a9799",
+    ShopVedioId: "adunit-ff57491503401a14",
+    GoldVedioId: "adunit-65bb70d7557e085f",
+    SignVedioId: "adunit-40458eb80d6b2cd3",
+}
+
 
 export class SDK_Wechat  {
 
@@ -47,9 +57,9 @@ export class SDK_Wechat  {
             return;
         }
         //平台上的分享图片链接地址
-        let imgUrls = ['https://mmocgame.qpic.cn/wechatgame/ap8QGBf5gXg4n7Ese58NnzS4saYJf4THM3aOx394fcRVHKrp9bSgDjjrsyYL1gbS/0'];
+        let imgUrls = ['https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksJB5QHQ8anlZGWdicrK3Cllk7a8XOPCD2jicENfrRR9XVQaKZOV1VyfnZ/0'];
         //平台上的分享图片编号
-        let imgIds = ['1IqtE4CzQUyV5TP0MTxYCw'];
+        let imgIds = ['JYY2Z/rRTJ2U9IeEVGSwgw=='];
 
         wx.updateShareMenu({
             withShareTicket: true,

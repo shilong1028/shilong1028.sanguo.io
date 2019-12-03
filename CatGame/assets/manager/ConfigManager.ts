@@ -332,6 +332,34 @@ export class st_sign_info{
     }
 }
 
+//引导配置信息
+export class st_guide_info{
+    info;   //引导提示
+    key;   //是否关键步骤
+    end;    //是否大步骤引导结束
+    offsetY;   //提示相对引导框的上下位置偏移
+    desc;    //引导描述
+
+    transType(){
+        this.key = parseInt(this.key);
+        this.end = parseInt(this.end);
+        this.offsetY = parseInt(this.offsetY);
+    }
+
+    constructor(){
+    }
+
+    clone(){
+        let temp = new st_guide_info();
+        temp.info = this.info;
+        temp.key = this.key;
+        temp.end = this.end;
+        temp.offsetY = this.offsetY;
+        temp.desc = this.desc;
+        return temp;
+    }
+}
+
 
 //*********************  以下为接口类定义 *********************************** */
 
@@ -379,7 +407,21 @@ class CfgManager_class {
     C_sign_info : Map<number, st_sign_info> = new Map<number, st_sign_info>();
     SC_sign_info = st_sign_info;
 
+    //引导配置表
+    C_guide_info : Map<number, st_guide_info> = new Map<number, st_guide_info>();
+    SC_guide_info = st_guide_info;
+
     //********************** 以下是一些配置接口 ***************** */
+
+    /**获取引导配置数据 */
+    getGuideConf(guideId: number): st_guide_info{
+        let obj = this.C_guide_info[guideId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
 
     /**获取签到配置数据 */
     getSignConf(signIdx: number): st_sign_info{

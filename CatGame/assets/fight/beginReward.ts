@@ -63,6 +63,7 @@ export default class NewClass extends cc.Component {
     handleReward(bVedio: boolean=false){
         let skillId = Math.floor(Math.random()*GameMgr.SkillCount*0.99)+1;
         FightMgr.getFightScene().addFightSkillById(skillId);
+        FightMgr.getFightScene().handleStartFight();
 
         this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
             this.node.removeFromParent(true);

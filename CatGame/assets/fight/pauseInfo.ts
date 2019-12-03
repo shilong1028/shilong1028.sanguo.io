@@ -4,6 +4,7 @@ import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { FightMgr } from "../manager/FightManager";
 import TableView from "../tableView/tableView";
+import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
 
 
 //暂停界面
@@ -34,6 +35,15 @@ export default class PauseInfo extends cc.Component {
         let skillList = FightMgr.getFightScene().skillList;
         this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
         this.tableView.initTableView(skillList.length, { array: skillList, target: this}); 
+
+        if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.FightSet_Guide_Step2, this.guideSkillInfo, this) == false){  //点击技能，查看战斗技能说明。
+        }
+    }
+    guideSkillInfo(step: GuideStepEnum){
+        GuideMgr.showGuideLayer(this.tableView.node, ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            this.descLabel.string = FightMgr.getFightScene().skillList[0].skillCfg.desc;
+        });
     }
 
     handleSelCell(cellIdx: number, skillInfo: SkillInfo){
