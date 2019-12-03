@@ -637,8 +637,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "观看视频获取大量金币和钻石！\n分享游戏获取一些金币和钻石！",
-    "_N$string": "观看视频获取大量金币和钻石！\n分享游戏获取一些金币和钻石！",
+    "_string": "观看视频随机获得200-500金币，10-20钻石！",
+    "_N$string": "观看视频随机获得200-500金币，10-20钻石！",
     "_fontSize": 30,
     "_lineHeight": 35,
     "_enableWrapText": true,
@@ -679,7 +679,7 @@
         "__id__": 22
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 4,
     "_components": [
       {
@@ -1113,7 +1113,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 110,
+      "x": 0,
       "y": -120,
       "z": 0
     },

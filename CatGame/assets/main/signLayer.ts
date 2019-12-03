@@ -6,6 +6,7 @@ import { ROOT_NODE } from "../common/rootNode";
 import { CfgMgr } from "../manager/ConfigManager";
 import { BallInfo, NoticeType, ItemInfo } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 
 //签到页面
@@ -20,6 +21,8 @@ export default class SignLayer extends cc.Component {
     lastSighCell: cc.Node = null;   //第七天签到
     @property(cc.Button)
     signBtn: cc.Button = null;
+    @property(cc.Button)
+    vedioBtn: cc.Button = null;
       
     @property(cc.Prefab)
     pfSignCell: cc.Prefab = null;
@@ -56,6 +59,7 @@ export default class SignLayer extends cc.Component {
     setBtnGray(bGray: boolean = true){
         let bInteractable = !bGray;
         this.signBtn.interactable = bInteractable;
+        this.vedioBtn.interactable = bInteractable;
     }
 
     onSelectSignCell(cell: SignCell){
@@ -74,38 +78,61 @@ export default class SignLayer extends cc.Component {
         if(this.curSelCell && this.curSelCell.signIdx > 0 && this.curSelCell.signData){
             this.setBtnGray();
             this.curSelCell.onSigned();
-       
-            if(this.curSelCell.signData.type == 1){   //金币
-                let gold = this.curSelCell.signData.num;
-                ROOT_NODE.showTipsText("获得金币："+gold);
-                MyUserDataMgr.updateUserGold(gold);
-            }else if(this.curSelCell.signData.type == 2){   //钻石
-                let diamond = this.curSelCell.signData.num;
-                ROOT_NODE.showTipsText("获得钻石："+diamond);
-                MyUserDataMgr.updateUserDiamond(diamond);
-            }else if(this.curSelCell.signData.type == 3){   //饰品道具
-                let itemId = this.curSelCell.signData.rewardId;
-                let itemCfg = CfgMgr.getItemConf(itemId);
-                if(itemCfg){
-                    ROOT_NODE.showTipsText("获得："+itemCfg.name);
-                    MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
-                }
-            }else if(this.curSelCell.signData.type == 4){   //武器
-                let weaponId = this.curSelCell.signData.rewardId;
-                let weaponCfg = CfgMgr.getCannonConf(weaponId);
-                if(weaponCfg){
-                    ROOT_NODE.showTipsText("获得："+weaponCfg.name);
-                    let ballInfo = new BallInfo(weaponId);
-                    MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
-                }
-            }
 
-            MyUserDataMgr.updateUserSign(this.curSelCell.signIdx, new Date().getTime());   ////更新签到数据
-
-            this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
-                this.node.removeFromParent(true);
-            }.bind(this))));
+            this.handleReward();  
         }
     }
 
+    onVedioBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        if(this.curSelCell && this.curSelCell.signIdx > 0 && this.curSelCell.signData){
+            this.setBtnGray();
+            this.curSelCell.onSigned();
+            
+            SDKMgr.showVedioAd("SignVedioId", ()=>{
+                this.handleReward();   //失败
+            }, ()=>{
+                this.handleReward(2);    //成功
+            });  
+        }
+    }
+
+    handleReward(times: number=1){
+        if(this.curSelCell.signData.type == 1){   //金币
+            let gold = this.curSelCell.signData.num *times;
+            ROOT_NODE.showTipsText("获得金币："+gold);
+            MyUserDataMgr.updateUserGold(gold);
+        }else if(this.curSelCell.signData.type == 2){   //钻石
+            let diamond = this.curSelCell.signData.num *times;
+            ROOT_NODE.showTipsText("获得钻石："+diamond);
+            MyUserDataMgr.updateUserDiamond(diamond);
+        }else if(this.curSelCell.signData.type == 3){   //饰品道具
+            let itemId = this.curSelCell.signData.rewardId;
+            let itemCfg = CfgMgr.getItemConf(itemId);
+            if(itemCfg){
+                ROOT_NODE.showTipsText("获得："+itemCfg.name);
+                MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
+                if(times > 1){
+                    MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
+                }
+            }
+        }else if(this.curSelCell.signData.type == 4){   //武器
+            let weaponId = this.curSelCell.signData.rewardId;
+            let weaponCfg = CfgMgr.getCannonConf(weaponId);
+            if(weaponCfg){
+                ROOT_NODE.showTipsText("获得："+weaponCfg.name);
+                let ballInfo = new BallInfo(weaponId);
+                MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
+                if(times > 1){
+                    MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
+                }
+            }
+        }
+
+        MyUserDataMgr.updateUserSign(this.curSelCell.signIdx, new Date().getTime());   ////更新签到数据
+
+        this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
+            this.node.removeFromParent(true);
+        }.bind(this))));
+    }
 }

@@ -115,7 +115,7 @@ export default class ShopCell extends viewCell {
 
         if(this.cellData){
             if(this.cellData.vedio > 0){   //视频获取
-                SDKMgr.showVedioAd(()=>{
+                SDKMgr.showVedioAd("ShopVedioId", ()=>{
                       //失败
                 }, ()=>{
                     this.handleBuyShop();  //成功

@@ -55,7 +55,7 @@ export default class ChapterResult extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
         this.vedioBtn.interactable = false; 
 
-        SDKMgr.showVedioAd(()=>{
+        SDKMgr.showVedioAd("ChapterVedioId", ()=>{
             this.handleReward();   //失败
         }, ()=>{
             this.handleReward(2);    //成功

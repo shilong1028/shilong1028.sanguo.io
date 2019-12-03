@@ -189,7 +189,7 @@ export default class PlayerCell extends cc.Component {
                 
             }else{
                 if(this.playerInfo.playerCfg.update_vedio > 0){
-                    SDKMgr.showVedioAd(()=>{
+                    SDKMgr.showVedioAd("UpLvVedioId", ()=>{
                         //失败
                     }, ()=>{
                         this.handleUpdate();  //成功

@@ -32,7 +32,7 @@ export default class GoldAdd extends cc.Component {
         this.vedioBtn.interactable = false; 
         this.shareBtn.interactable = false; 
 
-        SDKMgr.showVedioAd(()=>{
+        SDKMgr.showVedioAd("GoldVedioId", ()=>{
             this.handleNormal(0);   //失败
         }, ()=>{
             this.handleNormal(2);    //成功

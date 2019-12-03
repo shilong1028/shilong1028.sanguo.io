@@ -2,13 +2,13 @@ import { SDKMgr } from "./SDKManager";
 import { GameMgr } from "./GameManager";
 
 var VedioIds = {
-    ChapterVedioId: "adunit-7938468818a49805",
-    FuhuoVedioId: "adunit-c66c8322a1391f90",
-    KaijuVedioId: "adunit-f09c92332a0c1a78",
-    UpLvVedioId: "adunit-06bb99420f5a9799",
-    ShopVedioId: "adunit-ff57491503401a14",
-    GoldVedioId: "adunit-65bb70d7557e085f",
-    SignVedioId: "adunit-40458eb80d6b2cd3",
+    ChapterVedioId: "adunit-7938468818a49805",   //章节奖励  》15
+    FuhuoVedioId: "adunit-c66c8322a1391f90",    //复活
+    KaijuVedioId: "adunit-f09c92332a0c1a78",   //开局奖励
+    UpLvVedioId: "adunit-06bb99420f5a9799",   //宠物升级
+    ShopVedioId: "adunit-ff57491503401a14",    //商店    》15
+    GoldVedioId: "adunit-65bb70d7557e085f",    //添加金币    》15
+    SignVedioId: "adunit-40458eb80d6b2cd3",    //签到    》15
 }
 
 
@@ -205,10 +205,8 @@ export class SDK_Wechat  {
         });
 
         bannerAd.onResize(res => {   //如果在 onResize 的回调函数中重设 width 且总是与上一次缩放后的 width 不同，那么可能会导致 onResize 的回调函数一直触发，并卡死在 onResize 的回调函数中。
-            console.log("bannerAd.style = "+JSON.stringify(bannerAd.style));
             bannerAd.style.left = (frameSize.width - bannerAd.style.realWidth) * 0.5 + 0.1;
             bannerAd.style.top = (frameSize.height - bannerAd.style.realHeight) + 0.1;   //left和top都加上0.1，不加就会被iphonex该死的底部bar给顶上去，而且时而顶上去，时而又是正常
-            console.log("bannerAd.style22 = "+JSON.stringify(bannerAd.style));
         });
 
         // 在适合的场景显示 Banner 广告
@@ -227,17 +225,11 @@ export class SDK_Wechat  {
     videoCallBack: any = null;   //播放视频成功回调
     errorCallBack: any = null;   //加载视频失败回调
 
-    preLoadVideoAd: any = null;   //提前预加载完毕了视频广告
     /**预加载或播放视频广告 */
-    preLoadAndPlayVideoAd(bPreLoad:boolean, errorCallBack:any, videoCallBack:any, callTarget:any){
+    playVideoAd(adkey: string, errorCallBack:any, videoCallBack:any, callTarget:any){
         //console.log('preLoadAndPlayVideoAd, 预加载或播放视频广告 bPreLoad = '+bPreLoad);
         let wx = (window as any).wx;
         if(wx == null ){
-            return;
-        }
-
-        if(this.preLoadVideoAd){
-            console.log('预加载激励视频还未播放');
             return;
         }
 
@@ -246,76 +238,55 @@ export class SDK_Wechat  {
         this.errorCallBack = errorCallBack;   //加载视频失败回调
 
         let self = this;
-        let adId = "adunit-40458eb80d6b2cd3";
-        var rewardedVideoAd = null;
-        if(bPreLoad == true){   //预下载
-            this.preLoadVideoAd = null;
-            rewardedVideoAd = wx.createRewardedVideoAd({
-                adUnitId: adId
-            });
-
+        let adId = VedioIds[adkey];
+        console.log("adId = "+adId);
+        var rewardedVideoAd = wx.createRewardedVideoAd({
+            adUnitId: adId
+        });
+        rewardedVideoAd.onLoad(() =>{
+            if (rewardedVideoAd){
+                rewardedVideoAd.offLoad()
+            }
+        });
+        rewardedVideoAd.show().catch(() => {
+            // 失败重试
             rewardedVideoAd.load()
             .then(() => {
-                console.log('预加载激励视频广告成功');
-                self.preLoadVideoAd = rewardedVideoAd;
+                console.log('经过预下载后，但仍需要加载视频');
+                rewardedVideoAd.show();
             })
             .catch(err => {
-                console.log('激励视频广告显示失败, err = '+err);
-                self.preLoadVideoAd = null;
-                if(self.errorCallBack && self.callTarget){
-                    self.errorCallBack.call(self.callTarget, "无法观看视频");
-                }else{
-                    //console.log("预显示回调错误");
-                }
+                console.log('经过预下载后，激励视频广告仍然显示失败, err = '+err);
             })
-        }else{
-            rewardedVideoAd = this.preLoadVideoAd;
-            if(rewardedVideoAd == null){
-                rewardedVideoAd = wx.createRewardedVideoAd({
-                    adUnitId: adId
-                });
-            }else{
-                console.log("播放预下载的视频")
+        });
+        rewardedVideoAd.onClose(res => {
+            if (rewardedVideoAd){
+                rewardedVideoAd.offClose()//防止多次回调
             }
-
-            rewardedVideoAd.onClose(res => {
-                self.preLoadVideoAd = null;
-                if (res && res.isEnded) {
-                    console.log("激励视频广告正常播放结束，可以下发游戏奖励， res = "+JSON.stringify(res));
-                    if(self.videoCallBack && self.callTarget){
-                        self.videoCallBack.call(self.callTarget, true);
-                    }else{
-                        //console.log("播放成功回调错误");
-                    }
-                } else {
-                    console.log("激励视频广告播放中途退出，不下发游戏奖励， res = "+JSON.stringify(res));
-                    if(self.videoCallBack && self.callTarget){
-                        self.videoCallBack.call(self.callTarget, false);
-                    }else{
-                        //console.log("播放失败回调错误");
-                    }
+            if (res && res.isEnded) {
+                console.log("激励视频广告正常播放结束，可以下发游戏奖励， res = "+JSON.stringify(res));
+                if(self.videoCallBack && self.callTarget){
+                    self.videoCallBack.call(self.callTarget, true);
+                }else{
+                    //console.log("播放成功回调错误");
                 }
-            })
-
-            rewardedVideoAd.show().catch(() => {
-                // 失败重试
-                rewardedVideoAd.load()
-                .then(() => {
-                    console.log('经过预下载后，但仍需要加载视频');
-                    rewardedVideoAd.show();
-                })
-                .catch(err => {
-                    console.log('经过预下载后，激励视频广告仍然显示失败, err = '+err);
-                })
-            });
-        }
-
+            } else {
+                console.log("激励视频广告播放中途退出，不下发游戏奖励， res = "+JSON.stringify(res));
+                if(self.videoCallBack && self.callTarget){
+                    self.videoCallBack.call(self.callTarget, false);
+                }else{
+                    //console.log("播放失败回调错误");
+                }
+            }
+        });
         rewardedVideoAd.onError(err => {
+            if (rewardedVideoAd){
+                rewardedVideoAd.offError()
+            }
             console.log("今日观看视频数量已达上限, err = "+err);
         });
 
     }
-
 
     //****************************登录和用户信息  *********************** */
     wxAuthBtn:any = null;
@@ -445,8 +416,6 @@ export class SDK_Wechat  {
                 //发送 res.code 到后台换取 openId, sessionKey, unionId
                 if (res.code) {
                     console.log('登录成功！' + res.code);
-                    SDKMgr.SdkData.code = res.code;
-
                     self.getUserInfo();  //请求用户信息或授权请求
                 } else {
                     console.log('获取用户登录态失败！' + res.errMsg)

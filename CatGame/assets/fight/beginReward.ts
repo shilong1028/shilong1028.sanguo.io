@@ -48,7 +48,7 @@ export default class NewClass extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
         this.vedioBtn.interactable = false; 
 
-        SDKMgr.showVedioAd(()=>{
+        SDKMgr.showVedioAd("KaijuVedioId", ()=>{
             this.handleReward();   //失败
         }, ()=>{
             this.handleReward(true);    //成功
