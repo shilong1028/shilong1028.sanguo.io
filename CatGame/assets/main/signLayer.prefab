@@ -1412,9 +1412,11 @@
   },
   {
     "__type__": "cc.ClickEvent",
-    "target": null,
+    "target": {
+      "__id__": 1
+    },
     "component": "",
-    "_componentId": "4c541bY5ptLD6jAI206dx/h",
+    "_componentId": "e427cWxdyNNeI+xmbNJWCSw",
     "handler": "onVedioBtn",
     "customEventData": ""
   },
