@@ -42,6 +42,9 @@ export default class BagGrid extends cc.Component {
     nSelectModel: cc.Node = null;   //拖动选择的地块模型
     selectBlock: Block = null;   //拖动的地块数据
 
+    guideSelBlockNode: cc.Node = null;  //引导选择拖动的地块节点
+    guideTouchPos: cc.Vec2 = null;
+
     showPlayerInfo: PlayerInfo = null;
 
     onLoad () {
@@ -49,6 +52,8 @@ export default class BagGrid extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.node.on(cc.Node.EventType.TOUCH_END, this.ontTouchEnd, this);
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.ontTouchEnd, this);
+
+        NotificationMy.on(NoticeType.Guide_TouchMove, this.hanldeGuideTouchMove, this);   //新手引导触摸移动
 
         this.delNode.active= false;  //回收站
     }
@@ -60,13 +65,54 @@ export default class BagGrid extends cc.Component {
 
     start () {
         if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Player_Guide_Step3, this.guideSort, this) == false){ 
+            if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.ItemUp_Guide_Step, this.guideItemBtn, this) == false){ 
+                this.guideSelBlockNode = null;  //引导选择拖动的地块节点
+            }
         }
     }
+
+    //点击饰品
+    guideItemBtn(step: GuideStepEnum){
+        GuideMgr.showGuideLayer(null, ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            this.onItemBtn();
+            this.node.runAction(cc.sequence(cc.delayTime(0.2), cc.callFunc(function(){
+                if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.ItemUp_Guide_Step2, this.guideMoveUp, this) == false){ 
+                }
+            }.bind(this))));
+        }, cc.size(130, 60), cc.v2(-140, 260));
+    }
+
+    //引导拖动装备
+    guideMoveEquip(step: GuideStepEnum){
+        GuideMgr.showGuideMoveLayer(cc.v2(-50, -150), cc.v2(50, 200), ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+        }, cc.size(300, 400), cc.v2(-80, 250));
+    }
+
+    //引导拖动升级
+    guideMoveUp(step: GuideStepEnum){
+        GuideMgr.showGuideMoveLayer(cc.v2(-100, 0), cc.v2(80, 0), ()=>{
+            GuideMgr.endGuide_NewPlayer(step);
+            if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.ItemUp_Guide_Step3, this.guideMoveEquip, this) == false){ 
+            }
+
+            if(this.guideTouchPos && this.selectBlock){  
+                this.placeSelectBlock(this.guideTouchPos);   //放置选中的地块模型
+            }
+            this.guideSelBlockNode = null;  //引导选择拖动的地块节点
+        }, cc.size(280, 130), cc.v2(-210, 120));
+    }
+
     //点击排序，让饰品按照品质高低排序。相同品质道具可以拖动升级至高品质。
     guideSort(step: GuideStepEnum){
         GuideMgr.showGuideLayer(null, ()=>{
             GuideMgr.endGuide_NewPlayer(step);
             this.onSortBtn();
+            this.node.runAction(cc.sequence(cc.delayTime(0.2), cc.callFunc(function(){
+                if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.ItemUp_Guide_Step, this.guideItemBtn, this) == false){ 
+                }
+            }.bind(this))));
         }, cc.size(140, 140), cc.v2(200, 380));
     }
 
@@ -110,22 +156,40 @@ export default class BagGrid extends cc.Component {
         this.node.removeFromParent(true);
     }
 
+    /**新手引导触摸移动 */
+    hanldeGuideTouchMove(touchPos: cc.Vec2){
+        if(this.guideSelBlockNode){
+            touchPos = GameMgr.adaptTouchPosByNode(this.node, touchPos);
+            this.guideTouchPos = touchPos;
+            let block: Block = this.guideSelBlockNode.getComponent(Block);
+            block.handleTouchSelModel();   //拖动更新选中的模型的位置
+
+            if(this.selectBlock == null){
+                this.selectBlock = block;   //拖动的地块数据
+            }
+            this.updateSelectBlock(touchPos);   //拖动更新选中的小球模型的位置
+        }
+    }
+
     onTouchStart(event: cc.Event.EventTouch) {  
         if(this.selectBlock){
             this.delNode.active= true;  //回收站
-            this.updateSelectBlock(event.getLocation());   //拖动更新选中的地块模型的位置
+            let touchPos = GameMgr.adaptTouchPosByNode(this.node, event.getLocation());
+            this.updateSelectBlock(touchPos);   //拖动更新选中的地块模型的位置
         }
     }
 
     onTouchMove(event: cc.Event.EventTouch) {
         if(this.nSelectModel && this.selectBlock){ 
-            this.updateSelectBlock(event.getLocation());   //拖动更新选中的地块模型的位置
+            let touchPos = GameMgr.adaptTouchPosByNode(this.node, event.getLocation());
+            this.updateSelectBlock(touchPos);   //拖动更新选中的地块模型的位置
         }
     }
 
     ontTouchEnd(event: cc.Event.EventTouch) {
         if(this.nSelectModel && this.selectBlock){  
-            this.placeSelectBlock(event.getLocation());   //放置选中的地块模型
+            let touchPos = GameMgr.adaptTouchPosByNode(this.node, event.getLocation());
+            this.placeSelectBlock(touchPos);   //放置选中的地块模型
             if(this.curGirdType == 0){
                 NotificationMy.emit(NoticeType.BlockBallSel, null);   //地块上小球被选择，相同等级的小球地块要显示光圈
             }else if(this.curGirdType == 1){
@@ -181,6 +245,7 @@ export default class BagGrid extends cc.Component {
                 let block = node.getComponent(Block);
                 block.initBlockByItem(i, itemInfo, this);
             }
+            this.guideSelBlockNode = this.gridNode.children[0];  //引导选择拖动的地块节点
         }
     }
 

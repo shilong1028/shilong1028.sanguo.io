@@ -73,11 +73,10 @@ export default class ShopLayer extends cc.Component {
 
                 bGetWeaopn = true;
                 if(tipsStr.length > 0){
-                    tipsStr += ("\n获得："+weaponCfg.name);
+                    tipsStr += ("\n获得两个："+weaponCfg.name);
                 }else{
-                    tipsStr += ("获得："+weaponCfg.name);
+                    tipsStr += ("获得两个："+weaponCfg.name);
                 }
-                //ROOT_NODE.showTipsText("获得："+weaponCfg.name);
             }
         }
         let ballInfo = new BallInfo(weaponId);
@@ -86,36 +85,27 @@ export default class ShopLayer extends cc.Component {
         //随机获取道具的概率
         keys = Object.getOwnPropertyNames(CfgMgr.C_item_info);
         bRandom = true;
-        let itemId1 = 0;
-        let itemId2 = 0;
+        let itemId = 0;
         while(bRandom){
             let idx = Math.floor(Math.random()*keys.length*0.99);
-            let itemId = parseInt(keys[idx]);
+            itemId = parseInt(keys[idx]);
             let itemCfg = CfgMgr.getItemConf(itemId);
-            if(itemCfg && itemCfg.quality <= 3){
-                if(itemId1 == 0){
-                    itemId1 = itemId;
-                }else if(itemId2 == 0){
-                    itemId2 = itemId;
-                }
-                if(itemId1 > 0 && itemId2 > 0){
-                    bRandom = false;
-                }
+            if(itemCfg && itemCfg.quality <= 2){
+                bRandom = false;
 
                 if(tipsStr.length > 0){
                     if(bGetWeaopn){
-                        tipsStr += ("   获得："+itemCfg.name);
+                        tipsStr += ("   获得两个："+itemCfg.name);
                     }else{
-                        tipsStr += ("\n获得："+itemCfg.name);
+                        tipsStr += ("\n获得两个："+itemCfg.name);
                     }
                 }else{
-                    tipsStr += ("获得："+itemCfg.name);
+                    tipsStr += ("获得两个："+itemCfg.name);
                 }
-                //ROOT_NODE.showTipsText("获得："+itemCfg.name);
             }
         }
-        MyUserDataMgr.addItemToItemList(new ItemInfo(itemId1), false);  //修改用户背包物品列表
-        MyUserDataMgr.addItemToItemList(new ItemInfo(itemId2), true);  //修改用户背包物品列表
+        MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), false);  //修改用户背包物品列表
+        MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
  
         ROOT_NODE.showTipsText(tipsStr);
     }

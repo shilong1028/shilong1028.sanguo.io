@@ -301,6 +301,7 @@ export const NoticeType = {
     GamePause: "GamePause",   //游戏暂停，停止小球和砖块的动作，但动画特效不受影响
     GameResume: "GameResume",  //继续游戏
     GameReStart: "GameReStart",  //重新开始游戏
+    Guide_TouchMove: "Guide_TouchMove",  //触摸引导移动
 
     UpdateGold: "UpdateGold",   //更新金币显示
     UpdateDiamond: "UpdateDiamond",   //更新钻石显示

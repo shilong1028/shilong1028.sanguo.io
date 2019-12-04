@@ -322,7 +322,8 @@ export default class FightScene extends cc.Component {
     }
 
     touchMove(event: cc.Touch){
-        this.handleTouchPos(event.getLocation());
+        let touchPos = GameMgr.adaptTouchPosByNode(this.node, event.getLocation());
+        this.handleTouchPos(touchPos);
     }
 
     touchEnd(event: cc.Touch){

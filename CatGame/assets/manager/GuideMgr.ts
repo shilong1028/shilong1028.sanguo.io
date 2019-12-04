@@ -27,6 +27,10 @@ export enum GuideStepEnum{
     Player_Guide_Step2 = 1301,  //给萌宠添加饰品，增加战斗金币或钻石产出。
     Player_Guide_Step3 = 1302,  //点击排序，让饰品按照品质高低排序。相同品质道具可以拖动升级至高品质。
 
+    ItemUp_Guide_Step = 1400,    //点击页签切换背包道具显示。
+    ItemUp_Guide_Step2 = 1401,  //拖动两个相同品质道具可以合成更高品质道具。
+    ItemUp_Guide_Step3 = 1402,  //拖动物品至装备或饰品框，可以添加或更换道具。
+
     GudieOver = 9900,   //引导完毕
 };
 
@@ -80,6 +84,15 @@ class GuideMgr_class {
                 }
             }
             guideSc.initGuideData(worldPos, maskSpr, callback, btnSize, offsetPos);
+        }
+        return guideLayer;
+    }
+
+    showGuideMoveLayer(beginPos, endPos, callback=null, btnSize = null, offsetPos=cc.Vec2.ZERO){
+        let guideLayer = this.showGuideLayer(null, callback, btnSize, offsetPos);
+        let guideSc = guideLayer.getComponent(GuideLayer);
+        if(guideSc){
+            guideSc.setMoveGuideData(beginPos, endPos);
         }
         return guideLayer;
     }

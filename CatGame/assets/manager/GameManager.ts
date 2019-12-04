@@ -100,6 +100,16 @@ class GameManager {
         }   
     }
 
+    //适配触摸位置和页面的触摸点，尤其是iponeX
+    adaptTouchPosByNode(node: cc.Node, pos: cc.Vec2){
+        //适配
+        if(node && pos){
+            pos.x += (node.x - cc.winSize.width/2);
+            pos.y += (node.y - cc.winSize.height/2);
+        }
+        return pos;
+    }
+
     GetBannerWidth(){
         let designSize = cc.view.getDesignResolutionSize();
         let frameSize = cc.view.getFrameSize();

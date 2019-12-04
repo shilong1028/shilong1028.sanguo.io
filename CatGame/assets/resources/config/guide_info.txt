@@ -65,5 +65,26 @@ desc =
 info = 点击排序，让饰品按照品质高低排序。相同品质道具可以拖动升级至高品质。
 key = 0
 end = 1
-offsetY = -300
+offsetY = -200
 desc = 引导排序和合成
+
+[1400]
+info = 点击页签切换背包道具显示。
+key = 0
+end = 0
+offsetY = -150
+desc = 引导拖动合成
+
+[1401]
+info = 拖动两个相同品质道具可以合成更高品质道具。
+key = 1
+end = 0
+offsetY = -150
+desc = 
+
+[1402]
+info = 拖动物品至装备或饰品框，可以添加或更换道具。
+key = 0
+end = 1
+offsetY = -300
+desc = 
