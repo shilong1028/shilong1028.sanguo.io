@@ -1,12 +1,11 @@
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
-import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
+import { MyUserDataMgr } from "../manager/MyUserData";
 import Skill from "../common/skill";
 import { CfgMgr } from "../manager/ConfigManager";
-import { SkillInfo, ChapterInfo } from "../manager/Enum";
+import { SkillInfo } from "../manager/Enum";
 import { ROOT_NODE } from "../common/rootNode";
-import ChapterResult from "./chapterResult";
 import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
 
 const {ccclass, property} = cc._decorator;
@@ -150,7 +149,11 @@ export default class FightResult extends cc.Component {
     onCloseBtn(){
         AudioMgr.playEffect("effect/ui_click");
         
-        GameMgr.showLayer(this.pfChapterResult);
-        this.node.removeFromParent(true);
+        if(FightMgr.win == true && this.bNextLevel == false){
+            GameMgr.showLayer(this.pfChapterResult);
+            this.node.removeFromParent(true);
+        }else{
+            GameMgr.gotoMainScene();
+        }
     }
 }

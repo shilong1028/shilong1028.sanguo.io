@@ -1,22 +1,22 @@
 import { SDKMgr } from "./SDKManager";
 import { GameMgr } from "./GameManager";
 
-var WeChat_VedioIds = {
-    ChapterVedioId: "adunit-7938468818a49805",   //章节奖励  》15
-    FuhuoVedioId:   "adunit-c66c8322a1391f90",    //复活
-    KaijuVedioId:   "adunit-f09c92332a0c1a78",   //开局奖励
-    UpLvVedioId:    "adunit-06bb99420f5a9799",   //宠物升级
-    ShopVedioId:    "adunit-ff57491503401a14",    //商店    》15
-    GoldVedioId:    "adunit-65bb70d7557e085f",    //添加金币    》15
-    SignVedioId:    "adunit-40458eb80d6b2cd3",    //签到    》15
+var QQ_VedioIds = {
+    ChapterVedioId: "10f9fc47d6f7f7584ec5544078ad8b01",   //章节奖励  》15
+    FuhuoVedioId:   "80945ae10eb1884700e603079d9704a7",    //复活
+    KaijuVedioId:   "58342de57f6d73b656c955a365c452c4",   //开局奖励
+    UpLvVedioId:    "e530bb9f92eaa3ae3ab7d9cd8d942e31",   //宠物升级
+    ShopVedioId:    "07e77e716fe1c2602bc8152e36d74aa0",    //商店    》15
+    GoldVedioId:    "f2a566f06d20c2bda17dbf7216f4a24f",    //添加金币    》15
+    SignVedioId:    "693f5c79979255da21e5c15c74cefe0e",    //签到    》15
 }
 
-export class SDK_Wechat  {
+export class SDK_QQ  {
 
     ///////////////////////初始化SDK 更新和分享按钮
     initSDK(){
-        let wx = (window as any).wx;  //微信小游戏
-        const updateManager = wx.getUpdateManager();
+        let qq = (window as any).qq;  
+        const updateManager = qq.getUpdateManager();
 
         updateManager.onCheckForUpdate(function (res) {
             // 请求完新版本信息的回调
@@ -24,7 +24,7 @@ export class SDK_Wechat  {
         });
 
         updateManager.onUpdateReady(function () {
-            wx.showModal({
+            qq.showModal({
                 title: '更新提示',
                 content: '新版本已经准备好，是否重启应用？',
                 success(res) {
@@ -41,7 +41,7 @@ export class SDK_Wechat  {
         });
 
         //微信分享菜单
-        wx.showShareMenu({
+        qq.showShareMenu({
             withShareTicket: true,
             success(res) {
             },
@@ -51,8 +51,8 @@ export class SDK_Wechat  {
     }
 
     share(titleStr: string){
-        let wx = SDKMgr.WeiChat;
-        if (wx == null) {
+        let qq = (window as any).qq;  
+        if (qq == null) {
             return;
         }
         //平台上的分享图片链接地址
@@ -60,7 +60,7 @@ export class SDK_Wechat  {
         //平台上的分享图片编号
         let imgIds = ['JYY2Z/rRTJ2U9IeEVGSwgw=='];
 
-        wx.updateShareMenu({
+        qq.updateShareMenu({
             withShareTicket: true,
             success(res) {
                 //console.log("分享成功", res);
@@ -72,7 +72,7 @@ export class SDK_Wechat  {
             }
         })
 
-        wx.shareAppMessage({
+        qq.shareAppMessage({
             title: titleStr,
             imageUrlId: imgIds[0],
             imageUrl: imgUrls[0],
@@ -83,8 +83,8 @@ export class SDK_Wechat  {
     curBanner:any = null;
     
     createBannerWithWidth(adUnitId){   //414*144, 315*109.6 349*121.4  300*104.4     高为宽的0.348
-        let wx = (window as any).wx;
-        if(wx == null){
+        let qq = (window as any).qq;  
+        if (qq == null) {
             return;
         }
 
@@ -97,7 +97,7 @@ export class SDK_Wechat  {
         let adWidth = GameMgr.GetBannerWidth();
         let frameSize = cc.view.getFrameSize();
         
-        let bannerAd = wx.createBannerAd({
+        let bannerAd = qq.createBannerAd({
             adUnitId: adUnitId,
             style: {
                 left: 0,
@@ -134,8 +134,8 @@ export class SDK_Wechat  {
     /**预加载或播放视频广告 */
     playVideoAd(adkey: string, errorCallBack:any, videoCallBack:any, callTarget:any){
         //console.log('preLoadAndPlayVideoAd, 预加载或播放视频广告 bPreLoad = '+bPreLoad);
-        let wx = (window as any).wx;
-        if(wx == null ){
+        let qq = (window as any).qq;  
+        if (qq == null) {
             return;
         }
 
@@ -144,9 +144,9 @@ export class SDK_Wechat  {
         this.errorCallBack = errorCallBack;   //加载视频失败回调
 
         let self = this;
-        let adId = WeChat_VedioIds[adkey];
+        let adId = QQ_VedioIds[adkey];
         //console.log("adId = "+adId);
-        var rewardedVideoAd = wx.createRewardedVideoAd({
+        var rewardedVideoAd = qq.createRewardedVideoAd({
             adUnitId: adId
         });
         rewardedVideoAd.onLoad(() =>{
@@ -195,129 +195,19 @@ export class SDK_Wechat  {
     }
 
     //****************************登录和用户信息  *********************** */
-    wxAuthBtn:any = null;
-    removeAuthorizeBtn () {
-        if(this.wxAuthBtn != null){
-            this.wxAuthBtn.destroy();
-        }
-    }
-
-    
-    //检测微信用户是否授权，并显示授权按钮
-    checkWechatAuthorize (){
-        let wx = SDKMgr.WeiChat;
-        if(wx == null){
-            return;
-        }
-        let self = this;
-        wx.getSetting({  //获取用户的当前设置。返回值中只会出现小程序已经向用户请求过的权限。
-            success(res) {
-                //console.log('res.authSetting = ' + JSON.stringify(res.authSetting));
-                if (res.authSetting['scope.userInfo']) {   //已经授权
-                }else {
-                    self.showAuthorizeBtn();   //显示微信授权界面和获取用户信息按钮
-                }
-            },
-            fail(res) {
-                self.showAuthorizeBtn();   //显示微信授权界面和获取用户信息按钮
-            }
-        });
-    }
-
-    //显示微信授权界面和获取用户信息按钮
-    showAuthorizeBtn () {
-        let wx = SDKMgr.WeiChat;
-        if(wx == null){
-            return;
-        }
-        //console.log('showAuthorizeBtn');
-
-        let sysInfo = wx.getSystemInfoSync();
-        // let screenW = sysInfo.screenWidth;
-        // let screenH = sysInfo.screenHeight;
-
-        // let rate = sysInfo.screenWidth/750;
-        // let h = rate * 385;
-        // let screenW = sysInfo.screenWidth*0.5 - 10;
-        // let screenH = 75*rate;
-        // let t  = sysInfo.screenHeight * 0.5 - screenH - h;
-        // let l  = sysInfo.screenWidth * 0.5;
-        // let button = wx.createUserInfoButton({
-        //     type: 'text',
-        //     text: '   ',
-        //     style: {
-        //         left: l,
-        //         top: t,
-        //         width: screenW,
-        //         height: screenH,
-        //         lineHeight: 40,
-        //         backgroundColor: '',
-        //         color: '#ffffff',
-        //         textAlign: 'center',
-        //         fontSize: 25,
-        //         borderRadius: 4
-        //     }
-        // });
-
-        let button = wx.createUserInfoButton({
-            type: 'text',
-           text: '获取用户信息',
-            style: {
-                left: 10,
-                top: 76,
-                width: 200,
-                height: 40,
-                lineHeight: 40,
-                backgroundColor: '#ff0000',
-                color: '#ffffff',
-                textAlign: 'center',
-                fontSize: 16,
-                borderRadius: 4
-            }
-        })
-
-        button.onTap((res) => {
-            if (res.rawData && res.rawData.length > 1) {
-                button.destroy();  //授权之后隐藏该按钮
-                let self = this;
-                // 必须是在用户已经授权的情况下调用
-                wx.getUserInfo({  //获取用户信息,自从微信接口有了新的调整之后 这个wx.getUserInfo（）便不再出现授权弹窗了，需要使用button做引导
-                    success(res) {
-                        self.onAuthorizeOK(res);
-                        self.removeAuthorizeBtn();
-                    },
-                    fail(res) {
-                        // 获取失败的去引导用户授权
-                        //console.log('获取用户信息失败！res = ' + JSON.stringify(res));
-                        //不授权登录
-                        self.onAuthorizeOK(null);
-                        self.removeAuthorizeBtn();
-                    }
-                })
-            } else {
-                //获取授权失败
-                //不处理，用户可以再次点击授权按钮
-            }
-        });
-        this.wxAuthBtn = button;
-    }
-
-    onAuthorizeOK(res){
-        //console.log('onAuthorizeOK() res = ' + JSON.stringify(res));
-    }
 
     //登录
-    loginWeiChat() {
-        let wx = SDKMgr.WeiChat;
-        if (wx == null) {
+    loginQQ() {
+        let qq = (window as any).qq;  
+        if (qq == null) {
             return;
         }
         let self = this;
 
         //微信账号登录
-        wx.login({
+        qq.login({
             success(res) {
-                //console.log('微信登录！res = ' + JSON.stringify(res));
+                //console.log('登录！res = ' + JSON.stringify(res));
                 //res = {"errMsg":"login:ok","code":"023uNqjb1xlyMw0yYDjb1Vy5jb1uNqjQ"}
                 //发送 res.code 到后台换取 openId, sessionKey, unionId
                 if (res.code) {
@@ -332,11 +222,14 @@ export class SDK_Wechat  {
 
     //请求用户信息或授权请求
     getUserInfo (){
-        let wx = SDKMgr.WeiChat;
+        let qq = (window as any).qq;  
+        if (qq == null) {
+            return;
+        }
         let self = this;
-        wx.getSetting({  //获取用户的当前设置。返回值中只会出现小程序已经向用户请求过的权限。
+        qq.getSetting({  //获取用户的当前设置。返回值中只会出现小程序已经向用户请求过的权限。
             success(res) {
-               // console.log('res.authSetting = ' + JSON.stringify(res.authSetting));
+                //console.log('res.authSetting = ' + JSON.stringify(res.authSetting));
                 if (res.authSetting['scope.userInfo']) {   //已经授权
                     self.getUserInfoFunc();   //获取用户信息
                 } else {
@@ -353,26 +246,15 @@ export class SDK_Wechat  {
 
     //获取微信玩家信息
     getUserInfoFunc() {
-        let wx = SDKMgr.WeiChat;
+        let qq = (window as any).qq;  
+        if (qq == null) {
+            return;
+        }
         let self = this;
         // 必须是在用户已经授权的情况下调用
-        wx.getUserInfo({  //获取用户信息,自从微信接口有了新的调整之后 这个wx.getUserInfo（）便不再出现授权弹窗了，需要使用button做引导
+        qq.getUserInfo({  //获取用户信息,自从微信接口有了新的调整之后 这个wx.getUserInfo（）便不再出现授权弹窗了，需要使用button做引导
             success(res) {
                 //console.log('getUserInfoFunc() res = ' + JSON.stringify(res));
-                /**
-                 * res = {"errMsg":"getUserInfo:ok",
-                 * "rawData":"{\"nickName\":\"shilong1028\",\"gender\":1,\"language\":\"zh_CN\",\"city\":\"Xuhui\",\"province\":\"Shanghai\",\"country\":\"China\",
-                 * \"avatarUrl\":\"https://wx.qlogo.cn/mmopen/vi_32/lcib9AaFmzOfTZHoKHaDF42h6nHCpE4lj7SP1icCt9R185kic3jLyc7EydDkLhAlFAYFK0KuztVa1kibIaOiabscbrQ/132\"}",
-                 * "userInfo":{"nickName":"shilong1028","gender":1,"language":"zh_CN","city":"Xuhui","province":"Shanghai","country":"China",
-                 * "avatarUrl":"https://wx.qlogo.cn/mmopen/vi_32/lcib9AaFmzOfTZHoKHaDF42h6nHCpE4lj7SP1icCt9R185kic3jLyc7EydDkLhAlFAYFK0KuztVa1kibIaOiabscbrQ/132"},
-                 * "signature":"741eb561136150a1189ba679d3e9e53f1ee4099d",
-                 * "encryptedData":"k+mbVAXDT1A0325Flt6e+GZ309QK/iv1KR8HYyJOrQ2T7GyWIc6zvR4hVLmv+2BgQKWT8M89dlMygyTYSbt6JLb7jjbVlEAF8ElwKUSUdwS7qlegQ4h1IaBARxRCSJd8
-                    * JwraTGSDn6mAAzQsKIFUeP2bNxMq40LMrWtfekv2ZoKmpG+jvrhufUtRkIS70UsF3uFEMr85ZjV0cXcn/hi14CeF7AM/BSyZYpF3KoPB9ZBqmlWIX3SstdjK324Ra5O3a5A7TfXnOk+T7uWWU5mVlb
-                    * FsS9vDbwAWxXZjFsqXnTUonNkTNWACRMdYZhBd64Xl3LeHbZrelo9BliqDYHz2PuhP1aEt2umqWJKJHLoX7CB5JzqdQMx2sfeQvWvdU8DVan9+xGpBsYVkFT6H8xiLWU8mJIcaZ1Iv3uEACvnlICt
-                    * CftaMRkGR0lRGM8TQQg0fEVnA1yPkIYitSZBvad3uVX2hqdBv+JaDWHqr7tSA0Lw=",
-                * "iv":"MKNFdyMEyjS/SgErvzeFXg=="}
-                */
-
                 self.onLoginOK(res);
             },
             fail(res) {
@@ -390,5 +272,5 @@ export class SDK_Wechat  {
     }
 }
 
-export var sdkWechat = new SDK_Wechat();
+export var sdkQQ = new SDK_QQ();
 

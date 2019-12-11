@@ -215,12 +215,16 @@ export default class FightScene extends cc.Component {
     /**后台切回前台 */
     onShow() {
         cc.log("************* onShow() 后台切回前台 ***********************")
-        this.node.stopActionByTag(this.GameHideShowDelayActionTag);   //后台切回延迟动作Tag
-        let delayAction = cc.sequence(cc.delayTime(0.05), cc.callFunc(function(){
+        if(this.node){
+            this.node.stopActionByTag(this.GameHideShowDelayActionTag);   //后台切回延迟动作Tag
+            let delayAction = cc.sequence(cc.delayTime(0.05), cc.callFunc(function(){
+                cc.game.resume();
+            }.bind(this)));
+            delayAction.setTag(this.GameHideShowDelayActionTag);
+            this.node.runAction(delayAction);
+        }else{
             cc.game.resume();
-        }.bind(this)));
-        delayAction.setTag(this.GameHideShowDelayActionTag);
-        this.node.runAction(delayAction);
+        }
     }
 
     /**游戏切入后台 */
