@@ -103,7 +103,19 @@ export default class FightScene extends cc.Component {
         }
     }
 
+    onDestroy(){
+        console.log("fightScene.onDestroy")
+        FightMgr.clearFightMgrData();
+        FightMgr.qipanSc = null;   //棋盘
+
+        this.node.targetOff(this);
+        NotificationMy.offAll(this);
+
+        this.brickPool.clear();
+    }
+
     onLoad () {
+        console.log("fightScene.onLoad")
         GameMgr.adaptBgByScene(this.topNode);   //场景背景图适配
 
         AudioMgr.playEffect("effect/enterfight");
@@ -118,6 +130,8 @@ export default class FightScene extends cc.Component {
 
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
+
+        this.skillList = [];   //章节技能列表，每一关累计，章节内有效
     }
 
     start () {
@@ -182,17 +196,6 @@ export default class FightScene extends cc.Component {
             FightMgr.fightAddCount++;    //章节加球技能增加值（每一章节内有效）
             //ROOT_NODE.showTipsText("触发加球技能，增加一个武器数量。");
         }
-    }
-
-    onDestroy(){
-        FightMgr.qipanSc = null;   //棋盘
-
-        this.node.targetOff(this);
-        NotificationMy.offAll(this);
-
-        this.brickPool.clear();
-
-        FightMgr.clearFightMgrData();
     }
 
     /**从缓存池中获取或创建砖块 */

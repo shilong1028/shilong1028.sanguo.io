@@ -27,7 +27,6 @@ export default class LoadingLayer extends cc.Component {
     catAtlas: cc.SpriteAtlas = null;
 
     sceneName:string = null;
-    t1 : number = 0;
     curP : number = 0;
 
     onLoad () {
@@ -38,7 +37,6 @@ export default class LoadingLayer extends cc.Component {
         this.sceneName = null;
         this.loadProBar.progress = 0;
         this.catLabel.string = "";
-        this.t1 = 0;
         this.curP = 0;
     }
 
@@ -54,7 +52,6 @@ export default class LoadingLayer extends cc.Component {
     goToScene(name){
         this.initLoadData();
         this.sceneName = name;  //下一个场景名称
-        this.t1 = new Date().getTime();
     }
 
     // update (dt) {}
@@ -81,25 +78,11 @@ export default class LoadingLayer extends cc.Component {
     }
 
     loadFinish(err, asset = null) {   //加载完成的回调
-        this.loadProBar.progress = 1;
-
-        if(new Date().getTime() - this.t1 < 300){
-            this.scheduleOnce(this.loadGameScene, 0.3);
-        }else{
-            this.loadGameScene();
-        }        
-    }
-
-    loadGameScene(){
+        console.log("loadFinish")
+        this.loadProBar.progress = 1;  
         this.node.stopAllActions();
-        this.node.runAction(cc.sequence(cc.fadeOut(0.2), cc.callFunc(function(){
-            //HUD.hideLayer(this);
-        }.bind(this))));
-
-        let curScene = cc.director.getScene();
-        if(curScene){
-            //curScene.runAction(cc.fadeOut(0.5));
-        }
-        cc.director.loadScene(this.sceneName);
+        this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
+            cc.director.loadScene(this.sceneName);
+        }.bind(this))));  
     }
 }

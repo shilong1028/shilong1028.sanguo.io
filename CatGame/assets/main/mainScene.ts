@@ -60,6 +60,7 @@ export default class MainScene extends cc.Component {
     curMidUIType: number = -1;   //显示中间UI，0地图关卡、1背包炮台、2商店
 
     onLoad(){
+        console.log("mainScene.onLoad")
         GameMgr.adaptBgByScene(this.topNode, this.bottomNode);   //场景背景图适配
         
         this.bLoadRoleDataFinish = false;  //是否已经加载完毕用户数据
@@ -71,12 +72,13 @@ export default class MainScene extends cc.Component {
         NotificationMy.on(NoticeType.UpdateDiamond, this.UpdateDiamond, this);   //更新钻石显示
 
         this.shareBtn.active = false;  //分享
-        if(SDKMgr.WeiChat){
+        if(SDKMgr.isSDK == true){
             this.shareBtn.active = true;  //分享
         }
     }
 
     onDestroy(){
+        console.log("mainScene.onDestroy")
         NotificationMy.offAll(this);
         this.node.targetOff(this);
     }
