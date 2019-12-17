@@ -7,6 +7,7 @@ import { BallInfo, ItemInfo } from "../manager/Enum";
 import { sdkWechat } from "../manager/SDK_Wechat";
 import { GameMgr } from "../manager/GameManager";
 import { SDKMgr } from "../manager/SDKManager";
+import ShopLayer from "./shopLayer";
 
 const {ccclass, property} = cc._decorator;
 
@@ -45,6 +46,7 @@ export default class ShopCell extends viewCell {
     data : any = null;
     cellData : st_shop_info = null;  
     cellIdx : number = -1;  
+    targetLayer: ShopLayer = null;
   
     // LIFE-CYCLE CALLBACKS:
 
@@ -59,6 +61,7 @@ export default class ShopCell extends viewCell {
 
         //if(reload){
             this.data = data;   //{ array: list, target: x.js }
+            this.targetLayer = data.target;
             this.cellIdx = index; 
             this.cellData = this.data.array[this.cellIdx];
             this.node.active = true;
@@ -66,10 +69,18 @@ export default class ShopCell extends viewCell {
 
         this.onSelected(this._selectState);
 
-        this.goldLabel.string = "金币约："+this.cellData.gold;
-        this.diamondLabel.string = "钻石约："+this.cellData.diamond;
-        this.weaponLabel.string = "武器概率："+(this.cellData.weapon*100)+"%";
-        this.itemLabel.string = "饰品概率："+(this.cellData.item*100)+"%";
+        if(SDKMgr.bOpenVedioShop == true){   //视频商城
+            this.goldLabel.string = "已看次数："+SDKMgr.getAdCountByKey(this.cellData.name);
+            this.diamondLabel.string = "最大次数： 5"
+            this.weaponLabel.string = this.cellData.name;
+            this.itemLabel.string = "";
+        }else{
+            this.goldLabel.string = "金币约："+this.cellData.gold;
+            this.diamondLabel.string = "钻石约："+this.cellData.diamond;
+            this.weaponLabel.string = "武器概率："+(this.cellData.weapon*100)+"%";
+            this.itemLabel.string = "饰品概率："+(this.cellData.item*100)+"%";
+        }
+
         this.descLabel.string = this.cellData.desc;
 
         this.boxSpr.spriteFrame = this.boxFrames[this.cellData.res-1];
@@ -114,25 +125,39 @@ export default class ShopCell extends viewCell {
         AudioMgr.playEffect("effect/ui_buy");
 
         if(this.cellData){
-            if(this.cellData.vedio > 0){   //视频获取
-                SDKMgr.showVedioAd("ShopVedioId", ()=>{
-                      //失败
-                }, ()=>{
-                    this.handleBuyShop();  //成功
-                }); 
-            }else if(this.cellData.costDiamond > 0){   //钻石获取
-                if(MyUserData.DiamondCount >= this.cellData.costDiamond){
-                    MyUserDataMgr.updateUserDiamond(-this.cellData.costDiamond); 
-                    this.handleBuyShop();
-                }else{
-                    GameMgr.showGoldAddDialog();  //获取金币提示框
+            if(SDKMgr.bOpenVedioShop == true){   //视频商城
+                let adCount = SDKMgr.getAdCountByKey(this.cellData.name);
+                if(adCount <= 5){
+                    SDKMgr.showVedioAd(this.cellData.name, ()=>{
+                        //失败
+                  }, ()=>{
+                        //成功
+                        if(this.targetLayer){
+                            this.targetLayer.initTableData(true);
+                        }
+                  }); 
                 }
-            }else if(this.cellData.costGold > 0){   //金币获取
-                if(MyUserData.GoldCount >= this.cellData.costGold){
-                    MyUserDataMgr.updateUserGold(-this.cellData.costGold); 
-                    this.handleBuyShop();
-                }else{
-                    GameMgr.showGoldAddDialog();  //获取金币提示框
+            }else{
+                if(this.cellData.vedio > 0){   //视频获取
+                    SDKMgr.showVedioAd("ShopVedioId", ()=>{
+                          //失败
+                    }, ()=>{
+                        this.handleBuyShop();  //成功
+                    }); 
+                }else if(this.cellData.costDiamond > 0){   //钻石获取
+                    if(MyUserData.DiamondCount >= this.cellData.costDiamond){
+                        MyUserDataMgr.updateUserDiamond(-this.cellData.costDiamond); 
+                        this.handleBuyShop();
+                    }else{
+                        GameMgr.showGoldAddDialog();  //获取金币提示框
+                    }
+                }else if(this.cellData.costGold > 0){   //金币获取
+                    if(MyUserData.GoldCount >= this.cellData.costGold){
+                        MyUserDataMgr.updateUserGold(-this.cellData.costGold); 
+                        this.handleBuyShop();
+                    }else{
+                        GameMgr.showGoldAddDialog();  //获取金币提示框
+                    }
                 }
             }
         }

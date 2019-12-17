@@ -1,6 +1,8 @@
 import { sdkWechat } from "./SDK_Wechat";
 import { sdkQQ } from "./SDK_QQ";
 import { sdkTT } from "./SDK_TT";
+import { LDMgr, LDKey } from "./StorageManager";
+import { GameMgr } from "./GameManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -10,23 +12,22 @@ class SDKManager_class  {
     QQ: any = null;  //qq小程序
     TT: any = null;  //字节跳动
 
+    adDayCounts: any = null;   //每种视频观看次数
+    bOpenVedioShop: boolean = false;   //是否开启视频商城
+
     sdkCheckSuccCallBack: any = null;   //SDK用户数据校验成功回调
     callBackTarget: any = null;
 
     /** 检查和初始化可用的SDK */
     initSDK(){
         //console.log("initSDK()");
-        //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
-        //SDKMgr.QQ = (window as any).qq;   //qq小程序
-        SDKMgr.TT = (window as any).tt;;  //字节跳动
-        //console.log("SDKMgr.WeiChat = "+SDKMgr.WeiChat+"; SDKMgr.QQ = "+SDKMgr.QQ+"; SDKMgr.TT = "+SDKMgr.TT);
+        SDKMgr.initAdDayCount();
 
-        if(SDKMgr.QQ != null){   //qq小程序
-            SDKMgr.isSDK = true;
-            SDKMgr.WeiChat = null;
-            sdkQQ.initSDK();
-        }
-        else if(SDKMgr.TT != null){   //字节跳动小程序
+        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        //SDKMgr.QQ = (window as any).qq;   //qq小程序(不支持个人开发)
+        //SDKMgr.TT = (window as any).tt;;  //字节跳动
+
+        if(SDKMgr.TT != null){   //字节跳动小程序
             SDKMgr.isSDK = true;
             SDKMgr.WeiChat = null;
             sdkTT.initSDK();
@@ -38,7 +39,35 @@ class SDKManager_class  {
         else {
             cc.log("没有找到SDK对应信息");
         }
-        //console.log("SDKMgr.WeiChat = "+SDKMgr.WeiChat+"; SDKMgr.QQ = "+SDKMgr.QQ+"; SDKMgr.TT = "+SDKMgr.TT);
+    }
+
+    getAdCountByKey(key: string){
+        return SDKMgr.adDayCounts[key];
+    }
+
+    initAdDayCount(){
+        let day = LDMgr.getItemInt(LDKey.KEY_LoginDay);   //登录时间(天)
+        if(GameMgr.isSameDayWithCurTime(day) == false){  //非同一天
+            LDMgr.setItem("ChapterVedioId", 0);   //章节奖励  》15
+            LDMgr.setItem("FuhuoVedioId", 0);    //复活
+            LDMgr.setItem("KaijuVedioId", 0);   //开局奖励
+            LDMgr.setItem("UpLvVedioId", 0);   //宠物升级
+            LDMgr.setItem("ShopVedioId", 0);    //商店    》15
+            LDMgr.setItem("GoldVedioId", 0);   //添加金币    》15
+            LDMgr.setItem("SignVedioId", 0);    //签到    》15
+        }
+        LDMgr.setItem(LDKey.KEY_LoginDay, new Date().getTime());   //登录时间(天)
+
+        SDKMgr.adDayCounts = {};
+        SDKMgr.adDayCounts["ChapterVedioId"] = LDMgr.getItemInt("ChapterVedioId");
+        SDKMgr.adDayCounts["FuhuoVedioId"] = LDMgr.getItemInt("FuhuoVedioId");
+        SDKMgr.adDayCounts["KaijuVedioId"] = LDMgr.getItemInt("KaijuVedioId");
+        SDKMgr.adDayCounts["UpLvVedioId"] = LDMgr.getItemInt("UpLvVedioId");
+        SDKMgr.adDayCounts["ShopVedioId"] = LDMgr.getItemInt("ShopVedioId");
+        SDKMgr.adDayCounts["GoldVedioId"] = LDMgr.getItemInt("GoldVedioId");
+        SDKMgr.adDayCounts["SignVedioId"] = LDMgr.getItemInt("SignVedioId");
+
+        //console.log("SDKMgr.adDayCounts = "+JSON.stringify(SDKMgr.adDayCounts))
     }
 
     //设定SDK用户数据校验成功回调
@@ -47,10 +76,7 @@ class SDKManager_class  {
         this.sdkCheckSuccCallBack = callback;
         this.callBackTarget = target;
 
-        if(SDKMgr.QQ != null){   //qq小程序
-            sdkQQ.loginQQ();
-        }
-        else if(SDKMgr.TT != null){  
+        if(SDKMgr.TT != null){  
             sdkTT.loginTT();
         }
         else if(SDKMgr.WeiChat != null){
@@ -82,10 +108,7 @@ class SDKManager_class  {
     shareGame(titleStr: string, callback:any = null, callTarget:any = null){
         this.shareCallback = callback;
         this.shareCallTarget = callTarget;
-        if(SDKMgr.QQ != null){   //qq小程序
-            sdkQQ.share(titleStr);
-        }
-        else if(SDKMgr.TT != null){   //qq小程序
+        if(SDKMgr.TT != null){   //qq小程序
             sdkTT.share(titleStr);
         }
         else if(SDKMgr.WeiChat != null){   //微信小游戏
@@ -109,13 +132,7 @@ class SDKManager_class  {
 
     //Banner管理
     createrBannerAd(){
-        if(SDKMgr.QQ != null){   //qq小程序
-            sdkQQ.createBannerWithWidth("d4fbb33ed6b0b8168d06c601fd107119");  //Banner广告
-            setInterval(()=>{
-                sdkQQ.createBannerWithWidth("d4fbb33ed6b0b8168d06c601fd107119");
-            }, 200000);   //每隔固定时间被调用一次
-        }
-        else if(SDKMgr.TT != null){   
+        if(SDKMgr.TT != null){   
             sdkTT.createBannerWithWidth("33a5n4jxb5h23h07h7");  //Banner广告
             setInterval(()=>{
                 sdkTT.createBannerWithWidth("33a5n4jxb5h23h07h7");
@@ -131,27 +148,26 @@ class SDKManager_class  {
 
     //显示视频广告
     showVedioAd(adkey:string, failCallback, succCallback){
-        if(SDKMgr.QQ != null){   //qq小程序
-            sdkQQ.playVideoAd(adkey, ()=>{
-                //console.log("reset 激励视频广告显示失败");
-                failCallback();
-            }, (succ:boolean)=>{
-                //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
-                if(succ){
-                    succCallback();
-                }else{
-                    failCallback()
-                }
-            }, this);   //播放下载的视频广告 
+        let adCount = SDKMgr.adDayCounts[adkey];
+        if(adCount > 5){
+            adkey = "SignVedioId";   //签到及其他视频
         }
-        else if(SDKMgr.TT != null){   //qq小程序
+
+        let succCallFunc = function(){
+            SDKMgr.adDayCounts[adkey] ++;
+            LDMgr.setItem(adkey, SDKMgr.adDayCounts[adkey]); 
+
+            succCallback();
+        }
+
+        if(SDKMgr.TT != null){   //qq小程序
             sdkTT.playVideoAd(adkey, ()=>{
                 //console.log("reset 激励视频广告显示失败");
                 failCallback();
             }, (succ:boolean)=>{
                 //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
                 if(succ){
-                    succCallback();
+                    succCallFunc();
                 }else{
                     failCallback()
                 }
@@ -164,7 +180,7 @@ class SDKManager_class  {
             }, (succ:boolean)=>{
                 //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
                 if(succ){
-                    succCallback();
+                    succCallFunc();
                 }else{
                     failCallback()
                 }

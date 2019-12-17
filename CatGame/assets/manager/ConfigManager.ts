@@ -289,6 +289,20 @@ export class st_shop_info{
     constructor(){
     }
 
+    initAdShopCell(key: string){
+        this.name = key;
+        this.gold = 0;
+        this.diamond = 0;
+        this.weapon = 0;
+        this.item = 0;
+        this.res = 1;
+        this.quality = 1;
+        this.costGold = 0;
+        this.costDiamond = 0;
+        this.vedio = 1;
+        this.desc = "观看视频";
+    }
+
     clone(){
         let temp = new st_shop_info();
         temp.name = this.name;

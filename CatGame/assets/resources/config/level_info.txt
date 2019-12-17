@@ -1,1099 +1,1099 @@
 [1]
-gold = 100
+resId = 1
 chapterId = 1
 enemy_count = 1
 enemy_ids = 1|1
 total_lines = 1
 init_lines = 1
 name = 初识汉奸
-resId = 1
-diamond = 3
+diamond = 1
+gold = 20
 
 [2]
-gold = 200
+resId = 1
 chapterId = 1
 enemy_count = 3
 enemy_ids = 1|2
 total_lines = 1
 init_lines = 1
 name = 赶跑汉奸
-resId = 1
-diamond = 3
+diamond = 1
+gold = 20
 
 [3]
-gold = 300
+resId = 1
 chapterId = 1
 enemy_count = 5
 enemy_ids = 1|2
 total_lines = 2
 init_lines = 2
 name = 打败汉奸
-resId = 1
-diamond = 3
+diamond = 1
+gold = 20
 
 [4]
-gold = 400
+resId = 1
 chapterId = 1
 enemy_count = 6
 enemy_ids = 1|3
 total_lines = 2
 init_lines = 2
 name = 活捉汉奸
-resId = 1
-diamond = 3
+diamond = 2
+gold = 20
 
 [5]
-gold = 500
+resId = 1
 chapterId = 1
 enemy_count = 7
 enemy_ids = 1|3
 total_lines = 2
 init_lines = 2
 name = 击毙汉奸
-resId = 1
-diamond = 3
+diamond = 2
+gold = 20
 
 [6]
-gold = 200
+resId = 2
 chapterId = 2
 enemy_count = 8
 enemy_ids = 2|2
 total_lines = 3
 init_lines = 3
 name = 初识大头兵
-resId = 2
-diamond = 5
+diamond = 2
+gold = 50
 
 [7]
-gold = 250
+resId = 2
 chapterId = 2
 enemy_count = 9
 enemy_ids = 2|3
 total_lines = 3
 init_lines = 3
 name = 赶跑大头兵
-resId = 2
-diamond = 5
+diamond = 3
+gold = 50
 
 [8]
-gold = 300
+resId = 2
 chapterId = 2
 enemy_count = 10
 enemy_ids = 2|3
 total_lines = 3
 init_lines = 3
 name = 打败大头兵
-resId = 2
-diamond = 5
+diamond = 3
+gold = 50
 
 [9]
-gold = 350
+resId = 2
 chapterId = 2
 enemy_count = 11
 enemy_ids = 2|4
 total_lines = 3
 init_lines = 3
 name = 活捉大头兵
-resId = 2
-diamond = 5
+diamond = 3
+gold = 50
 
 [10]
-gold = 400
+resId = 2
 chapterId = 2
 enemy_count = 12
 enemy_ids = 2|4
 total_lines = 3
 init_lines = 3
 name = 击毙大头兵
-resId = 2
-diamond = 5
+diamond = 3
+gold = 50
 
 [11]
-gold = 450
+resId = 3
 chapterId = 2
 enemy_count = 13
 enemy_ids = 3|3
 total_lines = 4
 init_lines = 3
 name = 初识三等兵
-resId = 3
-diamond = 7
+diamond = 3
+gold = 70
 
 [12]
-gold = 500
+resId = 3
 chapterId = 2
 enemy_count = 14
 enemy_ids = 3|4
 total_lines = 4
 init_lines = 3
 name = 赶跑三等兵
-resId = 3
-diamond = 7
+diamond = 4
+gold = 70
 
 [13]
-gold = 300
+resId = 3
 chapterId = 3
 enemy_count = 15
 enemy_ids = 3|4
 total_lines = 4
 init_lines = 3
 name = 打败三等兵
-resId = 3
-diamond = 7
+diamond = 4
+gold = 70
 
 [14]
-gold = 350
+resId = 3
 chapterId = 3
 enemy_count = 16
 enemy_ids = 3|5
 total_lines = 4
 init_lines = 3
 name = 活捉三等兵
-resId = 3
-diamond = 7
+diamond = 4
+gold = 70
 
 [15]
-gold = 400
+resId = 3
 chapterId = 3
 enemy_count = 17
 enemy_ids = 3|5
 total_lines = 4
 init_lines = 3
 name = 击毙三等兵
-resId = 3
-diamond = 7
+diamond = 4
+gold = 70
 
 [16]
-gold = 450
+resId = 4
 chapterId = 3
 enemy_count = 18
 enemy_ids = 4|4
 total_lines = 5
 init_lines = 3
 name = 初识二等兵
-resId = 4
-diamond = 10
+diamond = 4
+gold = 100
 
 [17]
-gold = 500
+resId = 4
 chapterId = 3
 enemy_count = 19
 enemy_ids = 4|5
 total_lines = 5
 init_lines = 3
 name = 赶跑二等兵
-resId = 4
-diamond = 10
+diamond = 5
+gold = 100
 
 [18]
-gold = 550
+resId = 4
 chapterId = 3
 enemy_count = 20
 enemy_ids = 4|5
 total_lines = 5
 init_lines = 3
 name = 打败二等兵
-resId = 4
-diamond = 10
+diamond = 5
+gold = 100
 
 [19]
-gold = 600
+resId = 4
 chapterId = 3
 enemy_count = 21
 enemy_ids = 4|6
 total_lines = 5
 init_lines = 3
 name = 活捉二等兵
-resId = 4
-diamond = 10
+diamond = 5
+gold = 100
 
 [20]
-gold = 650
+resId = 4
 chapterId = 3
 enemy_count = 22
 enemy_ids = 4|6
 total_lines = 6
 init_lines = 3
 name = 击毙二等兵
-resId = 4
-diamond = 10
+diamond = 5
+gold = 100
 
 [21]
-gold = 400
+resId = 5
 chapterId = 4
 enemy_count = 23
 enemy_ids = 5|5
 total_lines = 6
 init_lines = 3
 name = 初识一等兵
-resId = 5
-diamond = 15
+diamond = 5
+gold = 120
 
 [22]
-gold = 500
+resId = 5
 chapterId = 4
 enemy_count = 24
 enemy_ids = 5|6
 total_lines = 6
 init_lines = 3
 name = 赶跑一等兵
-resId = 5
-diamond = 15
+diamond = 6
+gold = 120
 
 [23]
-gold = 600
+resId = 5
 chapterId = 4
 enemy_count = 25
 enemy_ids = 5|6
 total_lines = 6
 init_lines = 3
 name = 打败一等兵
-resId = 5
-diamond = 15
+diamond = 6
+gold = 120
 
 [24]
-gold = 700
+resId = 5
 chapterId = 4
 enemy_count = 26
 enemy_ids = 5|7
 total_lines = 7
 init_lines = 3
 name = 活捉一等兵
-resId = 5
-diamond = 15
+diamond = 6
+gold = 120
 
 [25]
-gold = 800
+resId = 5
 chapterId = 4
 enemy_count = 27
 enemy_ids = 5|7
 total_lines = 7
 init_lines = 3
 name = 击毙一等兵
-resId = 5
-diamond = 15
+diamond = 6
+gold = 120
 
 [26]
-gold = 900
+resId = 6
 chapterId = 4
 enemy_count = 28
 enemy_ids = 6|6
 total_lines = 7
 init_lines = 3
 name = 初识上等兵
-resId = 6
-diamond = 15
+diamond = 6
+gold = 150
 
 [27]
-gold = 1000
+resId = 6
 chapterId = 4
 enemy_count = 29
 enemy_ids = 6|7
 total_lines = 7
 init_lines = 3
 name = 赶跑上等兵
-resId = 6
-diamond = 15
+diamond = 7
+gold = 150
 
 [28]
-gold = 1100
+resId = 6
 chapterId = 4
 enemy_count = 30
 enemy_ids = 6|7
-total_lines = 8
+total_lines = 7
 init_lines = 3
 name = 打败上等兵
-resId = 6
-diamond = 15
+diamond = 7
+gold = 150
 
 [29]
-gold = 1200
+resId = 6
 chapterId = 4
 enemy_count = 31
 enemy_ids = 6|8
-total_lines = 8
+total_lines = 7
 init_lines = 3
 name = 活捉上等兵
-resId = 6
-diamond = 15
+diamond = 7
+gold = 150
 
 [30]
-gold = 1300
+resId = 6
 chapterId = 4
 enemy_count = 32
 enemy_ids = 6|8
 total_lines = 8
 init_lines = 3
 name = 击毙上等兵
-resId = 6
-diamond = 15
+diamond = 7
+gold = 150
 
 [31]
-gold = 500
+resId = 7
 chapterId = 5
 enemy_count = 33
 enemy_ids = 7|7
 total_lines = 8
 init_lines = 3
 name = 初识伍长
-resId = 7
-diamond = 20
+diamond = 7
+gold = 180
 
 [32]
-gold = 600
+resId = 7
 chapterId = 5
 enemy_count = 34
 enemy_ids = 7|8
 total_lines = 8
 init_lines = 3
 name = 赶跑伍长
-resId = 7
-diamond = 20
+diamond = 8
+gold = 180
 
 [33]
-gold = 700
+resId = 7
 chapterId = 5
 enemy_count = 35
 enemy_ids = 7|8
 total_lines = 8
 init_lines = 3
 name = 打败伍长
-resId = 7
-diamond = 20
+diamond = 8
+gold = 180
 
 [34]
-gold = 800
+resId = 7
 chapterId = 5
 enemy_count = 36
 enemy_ids = 7|9
-total_lines = 9
+total_lines = 8
 init_lines = 3
 name = 活捉伍长
-resId = 7
-diamond = 20
+diamond = 8
+gold = 180
 
 [35]
-gold = 900
+resId = 7
 chapterId = 5
 enemy_count = 37
 enemy_ids = 7|9
-total_lines = 9
+total_lines = 8
 init_lines = 3
 name = 击毙伍长
-resId = 7
-diamond = 20
+diamond = 8
+gold = 180
 
 [36]
-gold = 1000
+resId = 8
 chapterId = 5
 enemy_count = 38
 enemy_ids = 8|8
 total_lines = 9
 init_lines = 3
 name = 初识军曹
-resId = 8
-diamond = 20
+diamond = 8
+gold = 200
 
 [37]
-gold = 1100
+resId = 8
 chapterId = 5
 enemy_count = 39
 enemy_ids = 8|9
 total_lines = 9
 init_lines = 3
 name = 赶跑军曹
-resId = 8
-diamond = 20
+diamond = 9
+gold = 200
 
 [38]
-gold = 1200
+resId = 8
 chapterId = 5
 enemy_count = 40
 enemy_ids = 8|9
 total_lines = 9
 init_lines = 3
 name = 打败军曹
-resId = 8
-diamond = 20
+diamond = 9
+gold = 200
 
 [39]
-gold = 1300
+resId = 8
 chapterId = 5
 enemy_count = 41
 enemy_ids = 8|10
 total_lines = 9
 init_lines = 3
 name = 活捉军曹
-resId = 8
-diamond = 20
+diamond = 9
+gold = 200
 
 [40]
-gold = 1400
+resId = 8
 chapterId = 5
 enemy_count = 42
 enemy_ids = 8|10
-total_lines = 10
+total_lines = 9
 init_lines = 3
 name = 击毙军曹
-resId = 8
-diamond = 20
+diamond = 9
+gold = 200
 
 [41]
-gold = 600
+resId = 9
 chapterId = 6
 enemy_count = 43
 enemy_ids = 9|9
-total_lines = 10
+total_lines = 9
 init_lines = 3
 name = 初识曹长
-resId = 9
-diamond = 25
+diamond = 9
+gold = 230
 
 [42]
-gold = 700
+resId = 9
 chapterId = 6
 enemy_count = 44
 enemy_ids = 9|10
 total_lines = 10
 init_lines = 3
 name = 赶跑曹长
-resId = 9
-diamond = 25
+diamond = 10
+gold = 230
 
 [43]
-gold = 800
+resId = 9
 chapterId = 6
 enemy_count = 45
 enemy_ids = 9|10
 total_lines = 10
 init_lines = 3
 name = 打败曹长
-resId = 9
-diamond = 25
+diamond = 10
+gold = 230
 
 [44]
-gold = 900
+resId = 9
 chapterId = 6
 enemy_count = 46
 enemy_ids = 9|11
 total_lines = 10
 init_lines = 3
 name = 活捉曹长
-resId = 9
-diamond = 25
+diamond = 10
+gold = 230
 
 [45]
-gold = 1000
+resId = 9
 chapterId = 6
 enemy_count = 47
 enemy_ids = 9|11
 total_lines = 10
 init_lines = 3
 name = 击毙曹长
-resId = 9
-diamond = 25
+diamond = 10
+gold = 230
 
 [46]
-gold = 1100
+resId = 10
 chapterId = 6
 enemy_count = 48
 enemy_ids = 10|10
 total_lines = 10
 init_lines = 3
 name = 初识准尉
-resId = 10
-diamond = 25
+diamond = 10
+gold = 250
 
 [47]
-gold = 1200
+resId = 10
 chapterId = 6
 enemy_count = 49
 enemy_ids = 10|11
 total_lines = 10
 init_lines = 3
 name = 赶跑准尉
-resId = 10
-diamond = 25
+diamond = 11
+gold = 250
 
 [48]
-gold = 1300
+resId = 10
 chapterId = 6
 enemy_count = 50
 enemy_ids = 10|11
-total_lines = 10
+total_lines = 11
 init_lines = 3
 name = 打败准尉
-resId = 10
-diamond = 25
+diamond = 11
+gold = 250
 
 [49]
-gold = 1400
+resId = 10
 chapterId = 6
 enemy_count = 51
 enemy_ids = 10|12
 total_lines = 11
 init_lines = 3
 name = 活捉准尉
-resId = 10
-diamond = 25
+diamond = 11
+gold = 250
 
 [50]
-gold = 1500
+resId = 10
 chapterId = 6
 enemy_count = 52
 enemy_ids = 10|12
 total_lines = 11
 init_lines = 3
 name = 击毙准尉
-resId = 10
-diamond = 25
+diamond = 11
+gold = 250
 
 [51]
-gold = 1600
+resId = 11
 chapterId = 6
 enemy_count = 53
 enemy_ids = 11|11
 total_lines = 11
 init_lines = 3
 name = 初识少尉
-resId = 11
-diamond = 30
+diamond = 11
+gold = 280
 
 [52]
-gold = 1700
+resId = 11
 chapterId = 6
 enemy_count = 54
 enemy_ids = 11|12
 total_lines = 11
 init_lines = 3
 name = 赶跑少尉
-resId = 11
-diamond = 30
+diamond = 12
+gold = 280
 
 [53]
-gold = 1800
+resId = 11
 chapterId = 6
 enemy_count = 55
 enemy_ids = 11|12
 total_lines = 11
 init_lines = 3
 name = 打败少尉
-resId = 11
-diamond = 30
+diamond = 12
+gold = 280
 
 [54]
-gold = 1900
+resId = 11
 chapterId = 6
 enemy_count = 56
 enemy_ids = 11|13
 total_lines = 12
 init_lines = 3
 name = 活捉少尉
-resId = 11
-diamond = 30
+diamond = 12
+gold = 280
 
 [55]
-gold = 2000
+resId = 11
 chapterId = 6
 enemy_count = 57
 enemy_ids = 11|13
 total_lines = 12
 init_lines = 3
 name = 击毙少尉
-resId = 11
-diamond = 30
+diamond = 12
+gold = 280
 
 [56]
-gold = 700
+resId = 12
 chapterId = 7
 enemy_count = 58
 enemy_ids = 12|12
 total_lines = 12
 init_lines = 3
 name = 初识中尉
-resId = 12
-diamond = 30
+diamond = 12
+gold = 300
 
 [57]
-gold = 800
+resId = 12
 chapterId = 7
 enemy_count = 59
 enemy_ids = 12|13
 total_lines = 12
 init_lines = 3
 name = 赶跑中尉
-resId = 12
-diamond = 30
+diamond = 13
+gold = 300
 
 [58]
-gold = 900
+resId = 12
 chapterId = 7
 enemy_count = 60
 enemy_ids = 12|13
 total_lines = 12
 init_lines = 3
 name = 打败中尉
-resId = 12
-diamond = 30
+diamond = 13
+gold = 300
 
 [59]
-gold = 1000
+resId = 12
 chapterId = 7
 enemy_count = 61
 enemy_ids = 12|14
 total_lines = 12
 init_lines = 3
 name = 活捉中尉
-resId = 12
-diamond = 30
+diamond = 13
+gold = 300
 
 [60]
-gold = 1100
+resId = 12
 chapterId = 7
 enemy_count = 62
 enemy_ids = 12|14
-total_lines = 12
+total_lines = 13
 init_lines = 3
 name = 击毙中尉
-resId = 12
-diamond = 30
+diamond = 13
+gold = 300
 
 [61]
-gold = 1200
+resId = 13
 chapterId = 7
 enemy_count = 63
 enemy_ids = 13|13
 total_lines = 13
 init_lines = 3
 name = 初识大尉
-resId = 13
-diamond = 35
+diamond = 13
+gold = 320
 
 [62]
-gold = 1300
+resId = 13
 chapterId = 7
 enemy_count = 64
 enemy_ids = 13|14
 total_lines = 13
 init_lines = 3
 name = 赶跑大尉
-resId = 13
-diamond = 35
+diamond = 14
+gold = 320
 
 [63]
-gold = 1400
+resId = 13
 chapterId = 7
 enemy_count = 65
 enemy_ids = 13|14
 total_lines = 13
 init_lines = 3
 name = 打败大尉
-resId = 13
-diamond = 35
+diamond = 14
+gold = 320
 
 [64]
-gold = 1500
+resId = 13
 chapterId = 7
 enemy_count = 66
 enemy_ids = 13|15
 total_lines = 13
 init_lines = 3
 name = 活捉大尉
-resId = 13
-diamond = 35
+diamond = 14
+gold = 320
 
 [65]
-gold = 1600
+resId = 13
 chapterId = 7
 enemy_count = 67
 enemy_ids = 13|15
 total_lines = 13
 init_lines = 3
 name = 击毙大尉
-resId = 13
-diamond = 35
+diamond = 14
+gold = 320
 
 [66]
-gold = 1700
+resId = 14
 chapterId = 7
 enemy_count = 68
 enemy_ids = 14|14
 total_lines = 14
 init_lines = 3
 name = 初识少佐
-resId = 14
-diamond = 35
+diamond = 14
+gold = 350
 
 [67]
-gold = 1800
+resId = 14
 chapterId = 7
 enemy_count = 69
 enemy_ids = 14|15
 total_lines = 14
 init_lines = 3
 name = 赶跑少佐
-resId = 14
-diamond = 35
+diamond = 15
+gold = 350
 
 [68]
-gold = 1900
+resId = 14
 chapterId = 7
 enemy_count = 70
 enemy_ids = 14|15
 total_lines = 14
 init_lines = 3
 name = 打败少佐
-resId = 14
-diamond = 35
+diamond = 15
+gold = 350
 
 [69]
-gold = 2000
+resId = 14
 chapterId = 7
 enemy_count = 71
 enemy_ids = 14|16
 total_lines = 14
 init_lines = 3
 name = 活捉少佐
-resId = 14
-diamond = 35
+diamond = 15
+gold = 350
 
 [70]
-gold = 2100
+resId = 14
 chapterId = 7
 enemy_count = 72
 enemy_ids = 14|16
 total_lines = 14
 init_lines = 3
 name = 击毙少佐
-resId = 14
-diamond = 35
+diamond = 15
+gold = 350
 
 [71]
-gold = 800
+resId = 15
 chapterId = 8
 enemy_count = 73
 enemy_ids = 15|15
 total_lines = 15
 init_lines = 3
 name = 初识中佐
-resId = 15
-diamond = 40
+diamond = 15
+gold = 400
 
 [72]
-gold = 900
+resId = 15
 chapterId = 8
 enemy_count = 74
 enemy_ids = 15|16
 total_lines = 15
 init_lines = 3
 name = 赶跑中佐
-resId = 15
-diamond = 40
+diamond = 16
+gold = 400
 
 [73]
-gold = 1000
+resId = 15
 chapterId = 8
 enemy_count = 75
 enemy_ids = 15|16
 total_lines = 15
 init_lines = 3
 name = 打败中佐
-resId = 15
-diamond = 40
+diamond = 16
+gold = 400
 
 [74]
-gold = 1100
+resId = 15
 chapterId = 8
 enemy_count = 76
 enemy_ids = 15|17
 total_lines = 15
 init_lines = 3
 name = 活捉中佐
-resId = 15
-diamond = 40
+diamond = 16
+gold = 400
 
 [75]
-gold = 1200
+resId = 15
 chapterId = 8
 enemy_count = 77
 enemy_ids = 15|17
 total_lines = 15
 init_lines = 3
 name = 击毙中佐
-resId = 15
-diamond = 40
+diamond = 16
+gold = 420
 
 [76]
-gold = 1300
+resId = 16
 chapterId = 8
 enemy_count = 78
 enemy_ids = 16|16
 total_lines = 16
 init_lines = 3
 name = 初识大佐
-resId = 16
-diamond = 40
+diamond = 16
+gold = 420
 
 [77]
-gold = 1400
+resId = 16
 chapterId = 8
 enemy_count = 79
 enemy_ids = 16|17
 total_lines = 16
 init_lines = 3
 name = 赶跑大佐
-resId = 16
-diamond = 40
+diamond = 17
+gold = 420
 
 [78]
-gold = 1500
+resId = 16
 chapterId = 8
 enemy_count = 80
 enemy_ids = 16|17
 total_lines = 16
 init_lines = 3
 name = 打败大佐
-resId = 16
-diamond = 40
+diamond = 17
+gold = 420
 
 [79]
-gold = 1600
+resId = 16
 chapterId = 8
 enemy_count = 81
 enemy_ids = 16|18
 total_lines = 16
 init_lines = 3
 name = 活捉大佐
-resId = 16
-diamond = 40
+diamond = 17
+gold = 420
 
 [80]
-gold = 1700
+resId = 16
 chapterId = 8
 enemy_count = 82
 enemy_ids = 16|18
 total_lines = 16
 init_lines = 3
 name = 击毙大佐
-resId = 16
-diamond = 40
+diamond = 17
+gold = 420
 
 [81]
-gold = 1800
+resId = 17
 chapterId = 8
 enemy_count = 83
 enemy_ids = 17|17
 total_lines = 17
 init_lines = 3
 name = 初识少将
-resId = 17
-diamond = 45
+diamond = 17
+gold = 450
 
 [82]
-gold = 1900
+resId = 17
 chapterId = 8
 enemy_count = 84
 enemy_ids = 17|18
 total_lines = 17
 init_lines = 3
 name = 赶跑少将
-resId = 17
-diamond = 45
+diamond = 18
+gold = 450
 
 [83]
-gold = 2000
+resId = 17
 chapterId = 8
 enemy_count = 85
 enemy_ids = 17|18
 total_lines = 17
 init_lines = 3
 name = 打败少将
-resId = 17
-diamond = 45
+diamond = 18
+gold = 450
 
 [84]
-gold = 2100
+resId = 17
 chapterId = 8
 enemy_count = 86
 enemy_ids = 17|19
 total_lines = 17
 init_lines = 3
 name = 活捉少将
-resId = 17
-diamond = 45
+diamond = 18
+gold = 450
 
 [85]
-gold = 2200
+resId = 17
 chapterId = 8
 enemy_count = 87
 enemy_ids = 17|19
-total_lines = 18
+total_lines = 17
 init_lines = 3
 name = 击毙少将
-resId = 17
-diamond = 45
+diamond = 18
+gold = 450
 
 [86]
-gold = 2300
+resId = 18
 chapterId = 8
 enemy_count = 88
 enemy_ids = 18|18
 total_lines = 18
 init_lines = 3
 name = 初识中将
-resId = 18
-diamond = 45
+diamond = 18
+gold = 480
 
 [87]
-gold = 2400
+resId = 18
 chapterId = 8
 enemy_count = 89
 enemy_ids = 18|19
 total_lines = 18
 init_lines = 3
 name = 赶跑中将
-resId = 18
-diamond = 45
+diamond = 19
+gold = 480
 
 [88]
-gold = 2500
+resId = 18
 chapterId = 8
 enemy_count = 90
 enemy_ids = 18|19
 total_lines = 18
 init_lines = 3
 name = 打败中将
-resId = 18
-diamond = 45
+diamond = 19
+gold = 480
 
 [89]
-gold = 2600
+resId = 18
 chapterId = 8
 enemy_count = 91
 enemy_ids = 18|20
 total_lines = 18
 init_lines = 3
 name = 活捉中将
-resId = 18
-diamond = 45
+diamond = 19
+gold = 480
 
 [90]
-gold = 2700
+resId = 18
 chapterId = 8
 enemy_count = 92
 enemy_ids = 18|20
 total_lines = 18
 init_lines = 3
 name = 击毙中将
-resId = 18
-diamond = 45
+diamond = 19
+gold = 480
 
 [91]
-gold = 900
+resId = 19
 chapterId = 9
 enemy_count = 93
 enemy_ids = 19|19
 total_lines = 19
 init_lines = 3
 name = 初识大将
-resId = 19
-diamond = 50
+diamond = 19
+gold = 500
 
 [92]
-gold = 1000
+resId = 19
 chapterId = 9
 enemy_count = 94
 enemy_ids = 1|19
 total_lines = 19
 init_lines = 3
 name = 赶跑大将
-resId = 19
-diamond = 50
+diamond = 20
+gold = 500
 
 [93]
-gold = 1100
+resId = 19
 chapterId = 9
 enemy_count = 95
 enemy_ids = 5|19
 total_lines = 19
 init_lines = 3
 name = 打败大将
-resId = 19
-diamond = 50
+diamond = 20
+gold = 500
 
 [94]
-gold = 1200
+resId = 19
 chapterId = 9
 enemy_count = 96
 enemy_ids = 10|20
 total_lines = 19
 init_lines = 3
 name = 活捉大将
-resId = 19
-diamond = 50
+diamond = 20
+gold = 500
 
 [95]
-gold = 1300
+resId = 19
 chapterId = 9
 enemy_count = 97
 enemy_ids = 15|20
 total_lines = 19
 init_lines = 3
 name = 击毙大将
-resId = 19
-diamond = 50
+diamond = 20
+gold = 500
 
 [96]
-gold = 1400
+resId = 20
 chapterId = 9
 enemy_count = 98
 enemy_ids = 20|20
 total_lines = 20
 init_lines = 3
 name = 初识元帅
-resId = 20
-diamond = 50
+diamond = 20
+gold = 500
 
 [97]
-gold = 1500
+resId = 20
 chapterId = 9
 enemy_count = 99
 enemy_ids = 1|20
 total_lines = 20
 init_lines = 3
 name = 赶跑元帅
-resId = 20
-diamond = 50
+diamond = 20
+gold = 500
 
 [98]
-gold = 1600
+resId = 20
 chapterId = 9
 enemy_count = 100
 enemy_ids = 5|20
 total_lines = 20
 init_lines = 3
 name = 打败元帅
-resId = 20
-diamond = 50
+diamond = 20
+gold = 500
 
 [99]
-gold = 1700
+resId = 20
 chapterId = 9
 enemy_count = 100
 enemy_ids = 10|20
 total_lines = 20
 init_lines = 3
 name = 活捉元帅
-resId = 20
-diamond = 50
+diamond = 20
+gold = 500
 
 [100]
-gold = 1800
+resId = 20
 chapterId = 9
 enemy_count = 100
 enemy_ids = 15|20
 total_lines = 20
 init_lines = 3
 name = 击毙元帅
-resId = 20
-diamond = 50
+diamond = 20
+gold = 500

@@ -21,6 +21,8 @@ export default class FightResult extends cc.Component {
     levelLabel: cc.Label = null;
     @property(cc.Label)
     rewardLabel: cc.Label = null;   //奖励数量
+    @property(cc.Node)
+    failTips: cc.Node = null;   //失败提示
 
     @property([cc.Sprite])
     starSprs: cc.Sprite[] = new Array(3);
@@ -48,6 +50,7 @@ export default class FightResult extends cc.Component {
 
     onLoad () {
         this.levelLabel.string = "";
+        this.failTips.active = false;
     }
 
     start () {
@@ -100,6 +103,7 @@ export default class FightResult extends cc.Component {
             this.titleSpr.spriteFrame = this.failFrame;
             FightMgr.stars = 0;
             this.skillNode.active = false;
+            this.failTips.active = true;
             this.okBtnNode.active = true;
             this.okBtnNode.y = -180;
         }

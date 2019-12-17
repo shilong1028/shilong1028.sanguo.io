@@ -64,8 +64,13 @@ export default class LoginScene extends cc.Component {
     onIconBtn(){
         this.touchIconCount ++;
         if(this.touchIconCount == 10){
-            this.btnNode.active = true;
-            this.beginNode.active = false;
+            if(this.btnNode.active == true){   //已经开启重启界面，这次开启视频商城
+                SDKMgr.bOpenVedioShop = true;
+            }else{
+                this.btnNode.active = true;
+                this.beginNode.active = false;
+            }
+            this.touchIconCount = 0;
         }
     }
 

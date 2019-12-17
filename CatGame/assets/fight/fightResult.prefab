@@ -28,11 +28,11 @@
     "_level": 1,
     "_components": [
       {
-        "__id__": 75
+        "__id__": 78
       }
     ],
     "_prefab": {
-      "__id__": 76
+      "__id__": 79
     },
     "_opacity": 255,
     "_color": {
@@ -222,17 +222,20 @@
       },
       {
         "__id__": 65
+      },
+      {
+        "__id__": 68
       }
     ],
     "_active": true,
     "_level": 2,
     "_components": [
       {
-        "__id__": 73
+        "__id__": 76
       }
     ],
     "_prefab": {
-      "__id__": 74
+      "__id__": 77
     },
     "_opacity": 255,
     "_color": {
@@ -2361,6 +2364,107 @@
   },
   {
     "__type__": "cc.Node",
+    "_name": "failTips",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 6
+    },
+    "_children": [],
+    "_active": false,
+    "_level": 3,
+    "_components": [
+      {
+        "__id__": 66
+      }
+    ],
+    "_prefab": {
+      "__id__": 67
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 120,
+      "g": 78,
+      "b": 66,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 525,
+      "height": 50.4
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": -90,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 65
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_useOriginalSize": false,
+    "_string": "升级或更换萌宠可以增加攻击力哟",
+    "_N$string": "升级或更换萌宠可以增加攻击力哟",
+    "_fontSize": 35,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Microsoft YaHei",
+    "_N$overflow": 0,
+    "_N$cacheMode": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "04b756af-4cab-4109-9189-290ac5247698"
+    },
+    "fileId": "56V7WOo2BEeKQYCT9qdwvC",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
     "_name": "okBtn",
     "_objFlags": 0,
     "_parent": {
@@ -2368,21 +2472,21 @@
     },
     "_children": [
       {
-        "__id__": 66
+        "__id__": 69
       }
     ],
     "_active": false,
     "_level": 3,
     "_components": [
       {
-        "__id__": 69
+        "__id__": 72
       },
       {
-        "__id__": 70
+        "__id__": 73
       }
     ],
     "_prefab": {
-      "__id__": 72
+      "__id__": 75
     },
     "_opacity": 255,
     "_color": {
@@ -2431,18 +2535,18 @@
     "_name": "New Label",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 68
     },
     "_children": [],
     "_active": true,
     "_level": 5,
     "_components": [
       {
-        "__id__": 67
+        "__id__": 70
       }
     ],
     "_prefab": {
-      "__id__": 68
+      "__id__": 71
     },
     "_opacity": 255,
     "_color": {
@@ -2491,7 +2595,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 66
+      "__id__": 69
     },
     "_enabled": true,
     "_materials": [
@@ -2532,7 +2636,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 65
+      "__id__": 68
     },
     "_enabled": true,
     "_materials": [
@@ -2566,14 +2670,14 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 65
+      "__id__": 68
     },
     "_enabled": true,
     "duration": 0.1,
     "zoomScale": 0.9,
     "clickEvents": [
       {
-        "__id__": 71
+        "__id__": 74
       }
     ],
     "_N$interactable": true,
@@ -2717,6 +2821,9 @@
     "rewardLabel": {
       "__id__": 41
     },
+    "failTips": {
+      "__id__": 65
+    },
     "starSprs": [
       {
         "__id__": 24
@@ -2735,7 +2842,7 @@
       "__uuid__": "d2db1ea6-0dd7-46ab-8a62-26d05ae7beaf"
     },
     "okBtnNode": {
-      "__id__": 65
+      "__id__": 68
     },
     "skillNode": {
       "__id__": 45

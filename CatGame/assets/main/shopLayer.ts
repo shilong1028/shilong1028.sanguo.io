@@ -1,10 +1,9 @@
 import TableView from "../tableView/tableView";
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
-import { CfgMgr } from "../manager/ConfigManager";
+import { CfgMgr, st_shop_info } from "../manager/ConfigManager";
 import { SDKMgr } from "../manager/SDKManager";
 import { GuideStepEnum, GuideMgr } from "../manager/GuideMgr";
-import ShopCell from "./shopCell";
 import { MyUserDataMgr } from "../manager/MyUserData";
 import { BallInfo, ItemInfo } from "../manager/Enum";
 import { ROOT_NODE } from "../common/rootNode";
@@ -27,13 +26,34 @@ export default class ShopLayer extends cc.Component {
 
     // update (dt) {}
 
-    initTableData(){
+    initTableData(bClear:boolean = false){
+        if(bClear == true && this.tableView){
+            this.tableView.clear();
+        }
         let shopArr = [];
-        for(let i=1; i<= GameMgr.ShopCount; ++i){
-            let shopCfg = CfgMgr.getShopConf(i);
-            if(!SDKMgr.isSDK && shopCfg.vedio > 0){
-            }else{
-                shopArr.push(shopCfg);
+
+        if(SDKMgr.bOpenVedioShop == true){   //视频商城
+            let adKeys = [
+                "ChapterVedioId",   //章节奖励  》15
+                "FuhuoVedioId",    //复活
+                "KaijuVedioId",   //开局奖励
+                "UpLvVedioId",   //宠物升级
+                "ShopVedioId",    //商店    》15
+                "GoldVedioId",    //添加金币    》15
+                "SignVedioId",    //签到    》15
+            ]
+            for(let i=0; i< 7; ++i){
+                let temp = new st_shop_info();
+                temp.initAdShopCell(adKeys[i]);
+                shopArr.push(temp);
+            }
+        }else{
+            for(let i=1; i<= GameMgr.ShopCount; ++i){
+                let shopCfg = CfgMgr.getShopConf(i);
+                if(!SDKMgr.isSDK && shopCfg.vedio > 0){
+                }else{
+                    shopArr.push(shopCfg);
+                }
             }
         }
 
