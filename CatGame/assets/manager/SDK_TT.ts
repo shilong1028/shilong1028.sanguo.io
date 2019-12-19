@@ -1,5 +1,6 @@
 import { SDKMgr } from "./SDKManager";
 import { GameMgr } from "./GameManager";
+import RootNode, { ROOT_NODE } from "../common/rootNode";
 
 var TT_VedioIds = {
     ChapterVedioId: "lmjod6cnnq13f9uahs",   //章节奖励  》15
@@ -11,110 +12,398 @@ var TT_VedioIds = {
     SignVedioId:    "5m1knnlfhf95bgi1o1",    //签到    》15
 }
 
+var shareImageUrl= 'https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksJB5QHQ8anlZGWdicrK3Cllk7a8XOPCD2jicENfrRR9XVQaKZOV1VyfnZ/0';
+
 export class SDK_TT  {
 
     ///////////////////////初始化SDK 更新和分享按钮
+    launch_option: any = null;
+    isConnected: boolean = true;
+    networkType: any = null;
+    toutiao_hide: boolean = false;
+    has_tt_videoad: boolean = false;
+    is_shareAppMessage: boolean = false;
+
     initSDK(){
-        let tt = (window as any).tt;  
-        const updateManager = tt.getUpdateManager();
-
-        updateManager.onCheckForUpdate(function (res) {
-            // 请求完新版本信息的回调
-            //console.log(res.hasUpdate);
-        });
-
-        updateManager.onUpdateReady(function () {
-            tt.showModal({
-                title: '更新提示',
-                content: '新版本已经准备好，是否重启应用？',
-                success(res) {
-                    if (res.confirm) {
-                        // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
-                        updateManager.applyUpdate();
-                    }
-                }
-            })
-        });
-
-        updateManager.onUpdateFailed(function () {
-            // 新版本下载失败
-        });
-
-        //微信分享菜单
-        tt.showShareMenu({
-            withShareTicket: true,
-            success(res) {
-            },
-            fail(res) {
-            }
-        })
-    }
-
-    //录屏
-    recorder: any = null;
-    _videoPath: any = null;
-    startRecordScreen(time,callback){
         let tt = (window as any).tt;  
         if (tt == null) {
             return;
         }
 
-        if(!this.recorder){
-            this.recorder = tt.getGameRecorderManager();
-        } 
-        this.recorder.start({
-            duration: time || 15,
+        //tt.setPreferredFramesPerSecond(60);
+
+        this.getSetting();
+        this.toutiao_recorderManager();
+        this.checkToutiaoUpdate();
+        this.setKeepScreenOn();
+
+        let launch_option = tt.getLaunchOptionsSync();
+        if (launch_option) {
+            this.launch_option = launch_option;
+        }
+
+        tt.onNetworkStatusChange(res => {
+            //isConnected: 当前是否有网络链接
+            //networkType: 网络类型{wifi,2g,3g,4g,unknown,none}
+            sdkTT.isConnected = res.isConnected;
+            sdkTT.networkType = res.networkType;
         });
- 
-        this.recorder.onStart(res =>{
-            callback("start");
+
+        tt.onHide(res => {
+            // 当用户点击左上角关闭，或者按了设备 Home 键离开微信，小程序并没有直接销毁，而是进入了后台
+            // mode: 'hide',targetAction: 8,targetPagePath: 'com.tencent.mm.ui.transmit.SelectConversationUI'
+            sdkTT.toutiao_hide = true;
+            sdkTT.has_keep_screen_on = false;
+            cc.audioEngine.stopAll();
         });
- 
-        this.recorder.onStop(res =>{
-            console.log(res.videoPath);
-            this._videoPath = res.videoPath;
-            callback("end");
-        })
+        tt.onShow(res => {
+            //再次进入微信或再次打开小程序，又会从后台进入前台,
+            //只有当小程序进入后台一定时间，或者系统资源占用过高，才会被真正的销毁
+            sdkTT.toutiao_hide = false;
+
+            // 不在播放广告的时候播放音乐
+            if (!this.has_tt_videoad) {
+                //ddzAudio.play_playing_music();
+            } else {
+                this.has_tt_videoad = false;
+            }
+
+            if (this.is_shareAppMessage) {
+                this.is_shareAppMessage = false;
+            }
+
+            this.checkToutiaoUpdate();
+            this.getSetting();
+        });
+
+        // 显示转发按钮
+        tt.showShareMenu({
+            success: res => {
+            },
+            fail: res => {
+            },
+            complete: res => {
+            },
+        });
+
+        // 分享回调
+        tt.onShareAppMessage(res => {
+            cc.log('tt.onShareAppMessage res:', res);
+            return {
+                title: "萌宠们根本停不下来，一起疯狂弹射打怪。",
+                imageUrl: shareImageUrl,
+                query: "",
+                success(res) {
+                },
+                fail(res) {
+                },
+            };
+        });
     }
+
 
     share(titleStr: string){
         let tt = (window as any).tt;  
         if (tt == null) {
             return;
         }
-        //平台上的分享图片链接地址
-        let imgUrls = ['https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksJB5QHQ8anlZGWdicrK3Cllk7a8XOPCD2jicENfrRR9XVQaKZOV1VyfnZ/0'];
-        //平台上的分享图片编号
-        let imgIds = ['JYY2Z/rRTJ2U9IeEVGSwgw=='];
 
-        tt.updateShareMenu({
-            withShareTicket: true,
-            success(res) {
-                //console.log("分享成功", res);
-                SDKMgr.handleShareSucc();
-            },
-            fail(res) {
-                //console.log("分享失败", res);
-
-            }
-        })
+        this.is_shareAppMessage = true;
 
         tt.shareAppMessage({
+            channel: '',
             title: titleStr,
-            imageUrlId: imgIds[0],
-            imageUrl: imgUrls[0],
-            // channel: 'video',
-            // query: '',
-            // extra: {
-            //     videoPath: this._videoPath, // 可用录屏得到的视频地址
-            //     videoTopics: ['萌宠弹射']
-            // },
-            // success() {
-            //     console.log('分享视频成功');
-            // },
-            // fail(e) {
-            //     console.log('分享视频失败');
-            // }
+            imageUrlId: shareImageUrl,
+            imageUrl: '1e29bdm71eg5b2pcp0',
+            query: '',
+            success: res => {
+            },
+            fail: res => {
+            },
+            complete: res => {
+            },
+        });
+    }
+
+    has_keep_screen_on: boolean = false;
+    setKeepScreenOn() {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+
+        if (!tt.setKeepScreenOn) {
+            return;
+        }
+        if (this.has_keep_screen_on) {
+            return;
+        }
+        // 保持屏幕常亮
+        tt.setKeepScreenOn({
+            keepScreenOn: true,
+            success: res => {
+                sdkTT.has_keep_screen_on = (res.errMsg == 'setKeepScreenOn:ok');
+            },
+            fail: res => {
+            }
+        });
+    }
+
+    checkToutiaoUpdate() {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+
+        let updateManager = tt.getUpdateManager();
+        updateManager.onCheckForUpdate(function (res) {
+        });
+        updateManager.onUpdateReady(() => {
+            tt.showModal({
+                title: '更新提示',
+                showCancel: false,
+                confirmText: '确定',
+                content: '新版本已经准备好，是否重启应用？',
+                success(res) {
+                    if (res.confirm) {
+                        cc.audioEngine.stopAll();
+                        updateManager.applyUpdate();
+                    }
+                },
+            });
+        });
+        updateManager.onUpdateFailed(() => {
+            ROOT_NODE.showTipsText('新版本更新失败，请退出游戏并确认网络后重新启动！');
+        });
+    }
+
+    recorderManager: any = null;
+    record: any = null;
+    record_state: any = null;
+    stop_record_voice_time: any = null;
+    start_record_voice_time: any = null;
+    is_canel_record: boolean = false;
+    soundUpLoad: any = null;
+    innerAudioContext: any = null;
+    toutiao_recorderManager() {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+
+        this.recorderManager = tt.getRecorderManager();
+        this.recorderManager.onStart(() => {
+            if (sdkTT.record_state!=null && sdkTT.record_state==1) {
+                sdkTT.recorderManager.stop();
+            }
+        });
+        this.recorderManager.onStop((res) => {
+            if (sdkTT.stop_record_voice_time && sdkTT.start_record_voice_time) {
+                let duration = Math.ceil((sdkTT.stop_record_voice_time-sdkTT.start_record_voice_time)/1000);
+                if (!sdkTT.is_canel_record) {
+                    if ((sdkTT.stop_record_voice_time-sdkTT.start_record_voice_time) < 500) {
+                        ROOT_NODE.showTipsText("录音时间太短");
+                    } else {
+                        if (duration > 11) {
+                            return;
+                        }
+                        sdkTT.record = res.tempFilePath;
+                        ROOT_NODE.showTipsText("录音完成！");
+                        sdkTT.toutiao_upLoadFile(sdkTT.soundUpLoad, res.tempFilePath, 'mp3', duration);
+                    }
+                } else {
+                    ROOT_NODE.showTipsText("取消录音！");
+                }
+            }
+        });
+        this.recorderManager.onError(() => {
+            if (sdkTT.get_auth_scope('scope.record') <= 0) {
+                return;
+            }
+        });
+        this.innerAudioContext = tt.createInnerAudioContext();
+        this.innerAudioContext.onError((res) => {
+            ROOT_NODE.showTipsText("播放录音失败！");
+        });
+    }
+    toutiao_upLoadFile(server_url, path, type, duration) {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+        tt.uploadFile({
+            url: server_url,
+            filePath: path,
+            name: type,
+            formData: {
+                user: 'hougege'
+            },
+            success: (res) => {
+                let response_data = JSON.parse(res.data);
+                if (response_data.errorCode != 0) {
+                    ROOT_NODE.showTipsText(response_data.errorCode);
+                    return;
+                }
+                //cc.ddz.ChatSystem.SendChatMsg(ddzEnum.ChatType.MsgVoice, response_data.obj, duration);
+            },
+            fail(res) {
+            },
+            complete(res) {
+            }
+        })
+    }
+
+    get_auth_scope_userinfo(callback=null) {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+        this.authorize(
+            'scope.userInfo',
+            success => {
+                let auth_val = sdkTT.get_auth_scope('scope.userInfo');
+                if (auth_val > 0) {
+                    sdkTT.getUserInfo();
+                } else {
+                    if (callback) { callback(); }
+                }
+            },
+            fail => {
+                if (callback) { callback(); }
+            }
+        );
+    }
+    get_auth_scope(auth_str:string) {
+        if (!this.authSetting) {                            // 没有授权数据
+            return -1;
+        } else if (this.authSetting[auth_str] === true) {   // 已授权
+            return 1;
+        } else if (this.authSetting[auth_str] === false) {  // 拒绝授权
+            return 0;
+        } else {                                            // 没有授权数据
+            return -1;
+        }
+    }
+    authorize(auth_str:string, succ_callback=null, fail_callback=null) {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+        let auth_val = this.get_auth_scope(auth_str);
+        if (auth_val > 0) {
+            if (succ_callback) {
+                succ_callback();
+            }
+        } else if (auth_val == 0) {
+            cc.log('tt.authorize deny');
+        } else {
+            tt.authorize({
+                scope: auth_str,
+                success: res => {
+                    sdkTT.getSetting(succ_callback);
+                },
+                fail: res => {
+                    if (res.errMsg.indexOf('auth deny') > -1 || res.errMsg.indexOf('auth denied') > -1) {
+                        // iOS 和 Android 对于拒绝授权的回调 errMsg 没有统一，需要做一下兼容处理
+                    }
+                    sdkTT.getSetting(fail_callback);
+                },
+                complete: res => {
+                },
+            });
+        }
+    }
+
+    authSetting: any = null;
+    getSetting(callback = null) {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+        tt.getSetting({
+            success: res => {
+                sdkTT.authSetting = res.authSetting;
+                if (callback) {
+                    callback();
+                }
+            },
+            fail: res => {
+            },
+            complete: () => {
+            },
+        });
+    }
+    //请求用户信息或授权请求
+    userInfo: any = null;
+    getUserInfo() {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+
+        tt.getSetting({  //获取用户的当前设置。返回值中只会出现小程序已经向用户请求过的权限。
+            success(res) {
+                //console.log('res.authSetting = ' + JSON.stringify(res.authSetting));
+                if (res.authSetting['scope.userInfo']) {   //已经授权
+                    sdkTT.getUserInfoFunc();   //获取用户信息
+                } else {
+                    //不授权登录
+                    sdkTT.onLoginOK(null);
+                }
+            },
+            fail(res) {
+                // 获取用户的当前设置失败, 不授权登录
+                sdkTT.onLoginOK(null);
+            }
+        });
+    }
+    //获取玩家信息
+    getUserInfoFunc() {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+
+        tt.getUserInfo({
+            withCredentials: true,
+            success: res => {
+                sdkTT.userInfo = res.userInfo;
+                sdkTT.onLoginOK(res);
+            },
+            fail: res => {
+                sdkTT.onLoginOK(null);  //不授权登录
+            },
+            complete: () => {
+            },
+        });
+    }
+    
+    //////////////////////////////////////
+    onLoginOK(res: any) {
+        SDKMgr.SDK_Login();
+    }
+
+    //登录
+    loginTT() {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+
+        tt.login({
+            force: false,
+            success: res => {
+                //发送 res.code 到后台换取 openId, sessionKey, unionId
+                if (res.code) {   //头条账号登录
+                    sdkTT.getUserInfo();  //请求用户信息或授权请求
+                } else {   //匿名登录
+                    sdkTT.onLoginOK(null);  //不授权登录
+                }
+            },
+            fail: res => {
+            },
+            complete: res => {
+            },
         });
     }
 
@@ -244,84 +533,178 @@ export class SDK_TT  {
             }
             //console.log("今日观看视频数量已达上限, err = "+err);
         });
-
     }
 
-    //****************************登录和用户信息  *********************** */
-
-    //登录
-    loginTT() {
+    requestToutiaoPos() {
         let tt = (window as any).tt;  
         if (tt == null) {
             return;
         }
-        let self = this;
-
-        //微信账号登录
-        tt.login({
-            success(res) {
-                //console.log('登录！res = ' + JSON.stringify(res));
-                //res = {"errMsg":"login:ok","code":"023uNqjb1xlyMw0yYDjb1Vy5jb1uNqjQ"}
-                //发送 res.code 到后台换取 openId, sessionKey, unionId
-                if (res.code) {
-                    //console.log('登录成功！' + res.code);
-                    self.getUserInfo();  //请求用户信息或授权请求
-                } else {
-                    //console.log('获取用户登录态失败！' + res.errMsg)
-                }
-            }
-        })
-    }
-
-    //请求用户信息或授权请求
-    getUserInfo (){
-        let tt = (window as any).tt;  
-        if (tt == null) {
-            return;
-        }
-        let self = this;
-        tt.getSetting({  //获取用户的当前设置。返回值中只会出现小程序已经向用户请求过的权限。
-            success(res) {
-                //console.log('res.authSetting = ' + JSON.stringify(res.authSetting));
-                if (res.authSetting['scope.userInfo']) {   //已经授权
-                    self.getUserInfoFunc();   //获取用户信息
-                } else {
-                    //不授权登录
-                    self.onLoginOK(null);
-                }
+        tt.getLocation({
+            type: 'wgs84',
+            altitude: false,
+            success: res => {
             },
-            fail(res) {
-                // 获取用户的当前设置失败, 不授权登录
-                self.onLoginOK(null);
+            fail: res => {
+            },
+            complete: res => {
+            },
+        });
+    }
+
+    openSetting(callback, scope_str) {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+        tt.openSetting({
+            success: res => {
+            },
+            fail: res => {
+            },
+            complete: res => {
+            },
+        });
+    }
+
+    exitMiniProgram() {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+        tt.exitMiniProgram({
+            success: res => {
+            },
+            fail: res => {
+            },
+            complete: res => {
             }
         });
     }
 
-    //获取微信玩家信息
-    getUserInfoFunc() {
+    vibrateLong() {
         let tt = (window as any).tt;  
         if (tt == null) {
             return;
         }
-        let self = this;
-        // 必须是在用户已经授权的情况下调用
-        tt.getUserInfo({  //获取用户信息,自从微信接口有了新的调整之后 这个wx.getUserInfo（）便不再出现授权弹窗了，需要使用button做引导
-            success(res) {
-                //console.log('getUserInfoFunc() res = ' + JSON.stringify(res));
-                self.onLoginOK(res);
+        tt.vibrateLong({
+            success: function (res) {
             },
-            fail(res) {
-                // 获取失败的去引导用户授权
-                //console.log('获取用户信息失败！res = ' + JSON.stringify(res));
-                //不授权登录
-                self.onLoginOK(null);
-            }
-        })
+            fail: function (res) {
+            },
+            complete: function (res) {
+            },
+        });
     }
 
-    //处理微信登录并获取用户信息成功
-    onLoginOK(res: any) {
-        SDKMgr.SDK_Login();
+    getNetworkType(callback) {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+        tt.getNetworkType({
+            success: function (res) {
+                sdkTT.networkType = res.networkType;
+            },
+            fail: function (res) {
+            },
+            complete: function (res) {
+            },
+        });
+    }
+
+    //录屏
+    game_recorder: any = null;
+    is_recording_video: boolean = false;
+    startRecordTime: any = null;
+    stopRecordTime: any = null;
+
+    createGameRecordManager() {
+        let tt = (window as any).tt;  
+        if (tt == null) {
+            return;
+        }
+        this.game_recorder = tt.getGameRecorderManager();
+        this.game_recorder.onStart(res => {
+            sdkTT.is_recording_video = true;
+            sdkTT.startRecordTime = new Date().getTime();
+        });
+        this.game_recorder.onStop(res => {
+            sdkTT.is_recording_video = false;
+            sdkTT.stopRecordTime = new Date().getTime();
+            sdkTT.dealRecordVideoStopHandler(res.videoPath);
+        });
+        this.game_recorder.onError(res => {
+            sdkTT.is_recording_video = false;
+        });
+
+        this.game_recorder.start({
+            duration: 300
+        });
+    }
+    dealRecordVideoStopHandler(videoPath) {
+        if (!this.startRecordTime || !this.stopRecordTime) {
+            return;
+        }
+        if ((this.stopRecordTime - this.startRecordTime)/1000.0 <= 3.0) {
+            ROOT_NODE.showTipsText('亲，时间太短啦，需要录制超过3秒');
+            return;
+        }
+
+        GameMgr.showTipsDialog("录屏完成，快去分享给好友吧？", ()=>{
+            let tt = (window as any).tt;  
+            if (tt == null) {
+                return;
+            }
+            tt.shareAppMessage({
+                channel: 'video',
+                imageUrl: shareImageUrl,
+                query: '',
+                extra: {
+                    videoPath: videoPath,
+                    videoTopics: ['联萌大作战'],
+                    createChallenge: false
+                },
+                success() {
+                },
+                fail() {
+                }
+            });
+        });
+    }
+
+    toutiao_startRecord_mp3() {
+        let auth_val = this.get_auth_scope('scope.record');
+        this.record_state = 0; //  0:开始 1：结束
+        if (auth_val > 0) {
+            this.start_record_voice_time = new Date().getTime();
+            this.recorderManager.start({
+                sampleRate: 8000,
+                numberOfChannels: 1,
+                encodeBitRate: 16000,
+                format: 'mp3'
+            });
+
+        } else {
+            this.authorize(
+                'scope.record',
+                success => {
+                },
+                fail => {
+                    ROOT_NODE.showTipsText('录音失败,请打开右上角菜单设置内语音权限');
+                }
+            );
+        }
+    }
+    toutiao_stopRecord() {
+        this.is_canel_record = false;
+        this.record_state = 1;
+        this.stop_record_voice_time = new Date().getTime();
+        this.recorderManager.stop();
+    }
+    toutiao_canelRecord() {
+        this.is_canel_record = true;
+        this.recorderManager.stop();
     }
 
 }

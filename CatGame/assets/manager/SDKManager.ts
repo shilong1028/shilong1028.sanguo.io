@@ -23,9 +23,8 @@ class SDKManager_class  {
         //console.log("initSDK()");
         SDKMgr.initAdDayCount();
 
-        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
-        //SDKMgr.QQ = (window as any).qq;   //qq小程序(不支持个人开发)
-        //SDKMgr.TT = (window as any).tt;;  //字节跳动
+        //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        SDKMgr.TT = (window as any).tt;;  //字节跳动
 
         if(SDKMgr.TT != null){   //字节跳动小程序
             SDKMgr.isSDK = true;

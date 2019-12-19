@@ -12,6 +12,7 @@ var QQ_VedioIds = {
     SignVedioId:    "693f5c79979255da21e5c15c74cefe0e",    //签到    》15
 }
 
+//qq小程序(不支持个人开发)
 export class SDK_QQ  {
 
     ///////////////////////初始化SDK 更新和分享按钮
