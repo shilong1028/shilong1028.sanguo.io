@@ -80,8 +80,6 @@ export default class LoadingLayer extends cc.Component {
         console.log("loadFinish")
         this.loadProBar.progress = 1;  
         this.node.stopAllActions();
-        this.node.runAction(cc.sequence(cc.delayTime(0.2), cc.callFunc(function(){
-            cc.director.loadScene(this.sceneName);
-        }.bind(this))));  
+        cc.director.loadScene(this.sceneName);
     }
 }

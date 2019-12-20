@@ -60,6 +60,7 @@ export default class MainScene extends cc.Component {
     curMidUIType: number = -1;   //显示中间UI，0地图关卡、1背包炮台、2商店
 
     onLoad(){
+        console.log("mainScene onLoad")
         GameMgr.adaptBgByScene(this.topNode, this.bottomNode);   //场景背景图适配
         
         this.bLoadRoleDataFinish = false;  //是否已经加载完毕用户数据
@@ -83,14 +84,14 @@ export default class MainScene extends cc.Component {
 
     /**后台切回前台 */
     onShow() {
-        cc.log("************* onShow() 后台切回前台 ***********************")
+        console.log("************* onShow() 后台切回前台 ***********************")
         //NotificationMy.emit(NoticeType.GameResume, null);  //继续游戏
         cc.game.resume();
     }
 
     /**游戏切入后台 */
     onHide() {
-        cc.log("_____________  onHide()游戏切入后台  _____________________")
+        console.log("_____________  onHide()游戏切入后台  _____________________")
         //NotificationMy.emit(NoticeType.GAME_ON_HIDE, null);
         //NotificationMy.emit(NoticeType.GamePause, null);   //游戏暂停，停止小球和砖块的动作，但动画特效不受影响
         cc.game.pause();

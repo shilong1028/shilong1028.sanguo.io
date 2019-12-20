@@ -41,10 +41,10 @@ export default class TipsReward extends cc.Component {
 
     setRewards(gold:number, diamond: number, callback: any = null, items:ItemInfo[]=null, balls: BallInfo[]=null, skills: SkillInfo[]=null){
         this.callback = callback;
-        if(gold > 0){
+        if(gold >= 0){
             this.goldLabel.string = "+"+gold;
         }
-        if(diamond > 0){
+        if(diamond >= 0){
             this.diamondLabel.string = "+"+diamond;
         }
         if(items){

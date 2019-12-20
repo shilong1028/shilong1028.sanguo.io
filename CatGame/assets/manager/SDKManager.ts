@@ -18,15 +18,15 @@ class SDKManager_class  {
     sdkCheckSuccCallBack: any = null;   //SDK用户数据校验成功回调
     callBackTarget: any = null;
 
-    bannerCheckTime: number = 1577116800000;   //字节跳动屏蔽Banner时间戳
+    bannerCheckTime: number = 1577121839000000;   //字节跳动屏蔽Banner时间戳
 
     /** 检查和初始化可用的SDK */
     initSDK(){
         SDKMgr.initAdDayCount();
 
-        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
-        //SDKMgr.TT = (window as any).tt;;  //字节跳动
-        SDKMgr.bannerCheckTime = 1577116800;  //2019-12-24 00:00:00
+        //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        SDKMgr.TT = (window as any).tt;;  //字节跳动
+        SDKMgr.bannerCheckTime = 1577121839000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
         if(SDKMgr.TT != null){   //字节跳动小程序
             SDKMgr.isSDK = true;
@@ -105,7 +105,7 @@ class SDKManager_class  {
     shareGame(titleStr: string, callback:any = null, callTarget:any = null){
         this.shareCallback = callback;
         this.shareCallTarget = callTarget;
-        if(SDKMgr.TT != null){   //qq小程序
+        if(SDKMgr.TT != null){   //小程序
             sdkTT.share(titleStr);
         }
         else if(SDKMgr.WeiChat != null){   //微信小游戏
@@ -128,7 +128,6 @@ class SDKManager_class  {
     //Banner管理
     createrBannerAd(){
         if(SDKMgr.TT != null){   
-            
             let curTime = new Date().getTime();
             if(curTime > SDKMgr.bannerCheckTime){
                 sdkTT.createBannerWithWidth("33a5n4jxb5h23h07h7");  //Banner广告
@@ -159,7 +158,7 @@ class SDKManager_class  {
             succCallback();
         }
 
-        if(SDKMgr.TT != null){   //qq小程序
+        if(SDKMgr.TT != null){   //小程序
             sdkTT.playVideoAd(adkey, ()=>{
                 failCallback();
             }, (succ:boolean)=>{

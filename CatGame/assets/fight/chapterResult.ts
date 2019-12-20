@@ -78,7 +78,7 @@ export default class ChapterResult extends cc.Component {
         ROOT_NODE.showTipsText("获得钻石："+diamond);
 
         if(times > 1){
-            GameMgr.showRewardsDialog(0, 0, ()=>{
+            GameMgr.showRewardsDialog(gold, diamond, ()=>{
                 GameMgr.gotoMainScene();
             });
         }else{

@@ -118,14 +118,19 @@ export default class FightScene extends cc.Component {
         }
     }
 
-    onDestroy(){
+    //从战场退出到大厅，有时候回报Cannot read property '_activeInHierarchy' of null;at setTimeout callback function
+    preDestory(){
+        console.log("fightScene preDestory")
         FightMgr.clearFightMgrData();
         FightMgr.qipanSc = null;   //棋盘
+        this.brickPool.clear();
 
         this.node.targetOff(this);
         NotificationMy.offAll(this);
+    }
 
-        this.brickPool.clear();
+    onDestroy(){
+        console.log("fightScene destory")
     }
 
     onLoad () {

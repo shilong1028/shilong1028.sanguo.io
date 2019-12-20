@@ -51,6 +51,11 @@ export default class FightResult extends cc.Component {
     onLoad () {
         this.levelLabel.string = "";
         this.failTips.active = false;
+        this.okBtnNode.active = false;
+    }
+
+    onDestroy(){
+        console.log("fightresult destory")
     }
 
     start () {
@@ -64,6 +69,7 @@ export default class FightResult extends cc.Component {
 
             let levelCfg = FightMgr.level_info.levelCfg;
             this.rewardGold = Math.ceil(levelCfg.gold * 0.5 * FightMgr.stars); //1星为75%，3星为150%
+            ROOT_NODE.showTipsText("获得金币："+this.rewardGold);
 
             let nextLevelCfg = CfgMgr.getLevelConf(FightMgr.level_id + 1);
             if(nextLevelCfg && nextLevelCfg.chapterId > levelCfg.chapterId){   //章节最后一关
@@ -109,7 +115,6 @@ export default class FightResult extends cc.Component {
         }
         this.rewardLabel.string = "+"+GameMgr.num2e(this.rewardGold);
         MyUserDataMgr.updateUserGold(this.rewardGold);
-        ROOT_NODE.showTipsText("获得金币："+this.rewardGold);
 
         MyUserDataMgr.saveLevelFightInfo(FightMgr.level_id, FightMgr.win, FightMgr.stars);
 
@@ -146,9 +151,7 @@ export default class FightResult extends cc.Component {
                 this.node.removeFromParent(true);
                 FightMgr.loadLevel(FightMgr.level_id+1, false);      //下一关
             }else{
-                this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
-                    GameMgr.gotoMainScene();
-                })))
+                GameMgr.gotoMainScene();
             }
         }
     }
@@ -160,9 +163,7 @@ export default class FightResult extends cc.Component {
             GameMgr.showLayer(this.pfChapterResult);
             this.node.removeFromParent(true);
         }else{
-            this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
-                GameMgr.gotoMainScene();
-            })))
+            GameMgr.gotoMainScene();
         }
     }
 }
