@@ -41,7 +41,6 @@ export class SceneShake extends cc.Component {
             }else{
                 let randx = this._fgRangeRand(-this.strength_x, this.strength_x);
                 let randy = this._fgRangeRand(-this.strength_y, this.strength_y);
-                //cc.log("update(), randx = "+randx+"; randy = "+randy);
             
                 // move the target to a shaked position  
                 this.target.setPosition(cc.v2(this._initial_x + randx, this._initial_y + randy));
@@ -70,7 +69,6 @@ export class SceneShake extends cc.Component {
 class ShakeManager {
     /**由x和y振幅创建一个持续震屏动作 */
     runToSceneShakeByStrength(duration:number, strength:number, strength_y:number=-1000){
-        //cc.log("runToSceneShakeByStrength(), duration = "+duration+"; strength = "+strength);
         let curSceneNode = cc.director.getScene().getChildByName('Canvas');
         if(curSceneNode){
             let mainCamera = curSceneNode.getChildByName("Main Camera");

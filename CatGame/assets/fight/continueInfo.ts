@@ -46,20 +46,20 @@ export default class FightRenew extends cc.Component {
         this.diamondLable.string = this.goldCost.toString();
     }
 
-    update (dt) {
-        if(this.proTime > 0){
-            this.proTime -= dt;
-            if(this.proTime < 0){
-                this.proTime = 0;
-                if(this.bVideoPlaying == false){
-                    this.handleNormal(false);  //复活或显示结算
-                }
-                return;
-            }
-            this.progressLabel.string = ""+Math.ceil(this.proTime)+"s";
-            this.progressBar.progress = this.proTime/5.0;
-        }
-    }
+    // update (dt) {
+    //     if(this.proTime > 0){
+    //         this.proTime -= dt;
+    //         if(this.proTime < 0){
+    //             this.proTime = 0;
+    //             if(this.bVideoPlaying == false){
+    //                 this.handleNormal(false);  //复活或显示结算
+    //             }
+    //             return;
+    //         }
+    //         this.progressLabel.string = ""+Math.ceil(this.proTime)+"s";
+    //         this.progressBar.progress = this.proTime/5.0;
+    //     }
+    // }
 
     /**钻石复活 */
     onGoldBtn(){
@@ -95,10 +95,14 @@ export default class FightRenew extends cc.Component {
     //复活或显示结算
     handleNormal(bReNew:boolean){
         if(bReNew == true){
+            ROOT_NODE.showTipsText("复活生效，最下三层砖块已消除！");
             NotificationMy.emit(NoticeType.GemaRevive, null);   //复活，将最下三层砖块消除   
+            this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
+                this.node.removeFromParent(true);
+            }.bind(this))));
         }else{
             FightMgr.getFightScene().showFightOverInfo();   //结算界面
+            this.node.removeFromParent(true);
         }
-        this.node.removeFromParent(true);
     }
 }

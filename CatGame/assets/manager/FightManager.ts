@@ -101,7 +101,6 @@ class FightManager {
      * (第一次进入战斗或者以后从结算界面继续战斗，都是由FightMgr.loadLevel触发战斗的，故需要清空并初始化战斗场景数据)
      */
     loadLevel(levelId:number, bReNew: boolean = false){
-        cc.log("FightMgr:loadLevel(), levelId = "+levelId+"; bReNew = "+bReNew);
         this.bReNewLevel = bReNew;   //是否重新开始游戏
         if(bReNew == false){
             this.bUserReset = false;  //本次是否使用了复活（每关限一次，重新开始不重置）
@@ -130,6 +129,12 @@ class FightManager {
         this.getFightScene().showBrickProgerss();
     }
 
+    //因砖块重生而增加的砖块目标数
+    updateBrickAimNum(){
+        this.brickBreakAim ++;   //本场目标块数
+        this.getFightScene().showBrickProgerss();
+    }
+
     /**关卡配置加载完毕后的回调 */
     setBricks(){
         // 每次加载清空之前的bricks
@@ -151,7 +156,6 @@ class FightManager {
             for(let i=levelCfg.enemy_ids[0]; i<= levelCfg.enemy_ids[1]; i++){
                 enemyIds.push(i);
             }
-            //cc.log("enemyCount = "+enemyCount+"; enemyLines = "+enemyLines+"; enemyIds = "+JSON.stringify(enemyIds));
 
             for(let i=0; i<levelCfg.total_lines; i++){
                 enemyLines -= i;   //砖块还剩余行数
@@ -168,7 +172,6 @@ class FightManager {
                 enemyCount -= count;
 
                 let columnArr = this.getRandomNumsByCount(count, 7, 0);   //在指定序列中[min, max)产生count个随机数
-                //cc.log("enemyCount = "+enemyCount+"; enemyLines = "+enemyLines+"; count = "+count+"; columnArr = "+JSON.stringify(columnArr));
                 let linebricks: BrickInfo[] = [];
                 for(let j=0; j<count; ++j){
                     let randomIdx = Math.floor(Math.random()*(enemyIds.length-0.0001));
@@ -402,7 +405,6 @@ class FightManager {
     */
     getRayPathFromArray(startPos: cc.Vec2, dir: cc.Vec2, brickIds: number[], hitType:number){
         if(this.roundPathArr.length > 0 && hitType != 6 && hitType != 7){
-            //cc.log("getRayPathFromArray(), 复用回合路径集合中的路径数据 this.roundPathArr.length = "+this.roundPathArr.length);
             for(let i=0; i<this.roundPathArr.length; ++i){
                 let path: IntersectRay = this.roundPathArr[i];
                 if(path && path.oldDir.x == dir.x && path.oldDir.y == dir.y){   //射线方向一致
@@ -414,8 +416,6 @@ class FightManager {
                                 }
                             }
                         }
-
-                        //cc.log("复用回合路径集合中的路径数据, 起点相同，hitType = "+hitType+"; startPos = "+startPos+"; dir = "+dir);
                         return path;   //复用回合路径集合中的路径数据
                     }else{
                         let tempDir = startPos.sub(path.srcPos).normalize();
@@ -427,8 +427,6 @@ class FightManager {
                                     }
                                 }
                             }
-
-                            //cc.log("复用回合路径集合中的路径数据, 起点在已规划路径上 hitType = "+hitType+"; startPos = "+startPos+"; dir = "+dir);
                             return path;   //复用回合路径集合中的路径数据
                         }
                     }
@@ -452,25 +450,21 @@ class FightManager {
     
     /**检查新射线是否在规划中 */
     checkTempCastRayArr(startPos: cc.Vec2, dir: cc.Vec2, hitType:number){
-        //cc.log("正在规划的路径数量太多，延迟后再次请求 this.tempCastRayArr.length = "+this.tempCastRayArr.length);
         if(hitType == 6 || hitType == 7){
             return false;
         }else{
             if(this.tempCastRayArr.length > 0 ){  //每回合正在规划的临时射线数据集合（仅保存起始点和方向等射线数据）
-                if(this.tempCastRayArr.length > 3){
-                    //cc.log("正在规划的路径数量太多，延迟后再次请求");
+                if(this.tempCastRayArr.length > 3){  //正在规划的路径数量太多，延迟后再次请求
                     return true;
                 }
                 for(let i=0; i<this.tempCastRayArr.length; ++i){
                     let path: IntersectRay = this.tempCastRayArr[i];
                     if(path && path.oldDir.x == dir.x && path.oldDir.y == dir.y && hitType == path.hitType){   //射线方向一致
                         if(path.srcPos.x == startPos.x && path.srcPos.y == startPos.y){   //射线起点一致
-                            //cc.log("新射线是否在规划中， 射线起点一致 dir = "+dir+"; startPos = "+startPos+"; hitType = "+hitType);
                             return true;
                         }else{
                             let tempDir = startPos.sub(path.srcPos).normalize();
                             if(tempDir.x == dir.x && tempDir.y == dir.y){   //射线起点在已规划路径上
-                                //cc.log("新射线是否在规划中， 射线起点在已规划路径上 dir = "+dir+"; startPos = "+startPos+"; hitType = "+hitType);
                                 return true;
                             }
                         }
@@ -478,7 +472,6 @@ class FightManager {
                 }
             }
     
-            //cc.log("添加新射线到规划中 dir = "+dir+"; startPos = "+startPos+"; hitType = "+hitType);
             let tempData: IntersectRay = new IntersectRay();
             tempData.srcPos = startPos.clone();   //射线起点
             tempData.oldDir = dir.clone();   //射线方向
@@ -496,13 +489,11 @@ class FightManager {
                 let path: IntersectRay = this.tempCastRayArr[i];
                 if(path && path.oldDir.x == dir.x && path.oldDir.y == dir.y && hitType == path.hitType){   //射线方向一致
                     if(path.srcPos.x == startPos.x && path.srcPos.y == startPos.y){   //射线起点一致
-                        //cc.log("清除正在规划中的射线数据 射线起点一致");
                         this.tempCastRayArr.splice(i, 1);
                         i--;
                     }else{
                         let tempDir = startPos.sub(path.srcPos).normalize();
                         if(tempDir.x == dir.x && tempDir.y == dir.y){   //射线起点在已规划路径上
-                            //cc.log("清除正在规划中的射线数据 射线起点在已规划路径上");
                             this.tempCastRayArr.splice(i, 1);
                             i--;
                         }
@@ -510,13 +501,11 @@ class FightManager {
                 }
             }
         }
-        //cc.log("清除正在规划中的射线数据 dir = "+dir+"; startPos = "+startPos+"; hitType = "+hitType+"; this.tempCastRayArr.length = "+this.tempCastRayArr.length);
     }
 
 
     /**射出射线（多条折线），并返回第一条折线的末点坐标 */
     castMultiRay(startPos: cc.Vec2, dir: cc.Vec2, rayCount: number): IntersectRay{
-        //cc.log("castMultiRay(), startPos = "+startPos+"; dir = "+dir+"; rayCount = "+rayCount);
         this.roundPathArr = [];   //每回合射线路径数据集合，用于路径复用
         this.rayCount = rayCount;  //需要绘制的射线段数
         this.curBrickNodes = this.qipanSc.nBricks.children;   //当前绘制有效的砖块集合
@@ -539,7 +528,6 @@ class FightManager {
         if(rayDir == null){
             return null;
         }else{
-            //cc.log("resetCastRay(), dir = "+dir+"; startPos = "+startPos+"; hitType = "+hitType+"; brickIds = "+JSON.stringify(brickIds));
             //非指示线情况下可以考虑小球的复用 
             let retData = this.getRayPathFromArray(startPos, dir, brickIds, hitType);
             if(retData){
@@ -548,7 +536,6 @@ class FightManager {
 
             let bCasting = this.checkTempCastRayArr(startPos, dir, hitType);  //检查新射线是否在规划中
             if(bCasting == true){
-                cc.log("resetCastRay(), 新射线是否在规划中 dir = "+dir+"; startPos = "+startPos+"; startPos = "+startPos+"; hitType = "+hitType+"; brickIds = "+JSON.stringify(brickIds));
                 if(callback){
                     callback();
                 }
@@ -570,7 +557,6 @@ class FightManager {
      * Can't get angle between zero vector
      */
     castRay(startPos: cc.Vec2, dir: cc.Vec2, rayCount:number = 1, bShowDot:boolean, brickIds: number[], hitType:number=0): IntersectRay{
-        //cc.log("castRay(), startPos = "+startPos+"; dir = "+dir+"; rayCount = "+rayCount+"; bShowDot = "+bShowDot+"; hitType = "+hitType);
         this.tempItemNodes = [];   //射线规划时，临时存储某条射线经过的道具集合
         if(rayCount <= 0){  //需要绘制的射线段数
             return null;
@@ -579,9 +565,6 @@ class FightManager {
         let endPos = startPos.add(dir.mul(this.rayLineMaxLen));  // 3000 2000 1000等数值是为了生成一个很长的，可能和所有节点、边界相交的线段
         // 遍历当前的砖块找到和射线相交的砖块
         let intersectArr: IntersectData[] = this.checkIntersectionWithBricks(startPos.clone(), dir, endPos, bShowDot, hitType, brickIds);     
-        if(intersectArr == null || intersectArr.length == 0){
-            //cc.log("没有相交的砖块 startPos: " + startPos + ", dir: " + dir+"; endPos = "+endPos);
-        }
         intersectArr = this.checkIntersectionWithGameBroders(intersectArr, startPos, endPos, dir);
         if(intersectArr == null || intersectArr.length == 0){
             //console.log("warning, 没有相交的砖块或边界 startPos: " + startPos + ", dir: " + dir+"; endPos = "+endPos);
@@ -840,7 +823,6 @@ class FightManager {
             }else if(multiX < 0){  //沿dir方向寻找新的startPos
                 startPos.y += scale_x * dir.y;
             }
-            //cc.log("X轴越界, new startPos = "+startPos+"; pos = "+pos);
         }
 
         if(Math.abs(startPos.y) >= max_Y){   //Y轴越界
@@ -854,7 +836,6 @@ class FightManager {
             }else if(multiY < 0){  //沿dir方向寻找新的startPos
                 startPos.x += scale_y * dir.x;
             }
-            //cc.log("Y轴越界, new startPos = "+startPos+"; pos = "+pos);
         }
 
         if(Math.abs(startPos.x) >= max_X){  //X轴依然越界
@@ -865,7 +846,7 @@ class FightManager {
         }
 
         if(Math.abs(startPos.x) >= max_X || Math.abs(startPos.y) >= max_Y){  //依然越界
-            console.log("依然越界, startPos = "+startPos+"; dir = "+dir+"; pos = "+pos);
+            //console.log("依然越界, startPos = "+startPos+"; dir = "+dir+"; pos = "+pos);
             return this.adaptPosByGameBorders(startPos, dir);
         }else{
             return startPos;
@@ -901,7 +882,6 @@ class FightManager {
                 if(dist > 0 && bCheckIntersection == true){
                     let len = startPos.sub(nodePos).mag();
                     if(len > (dist + 100)){   //砖块位置和已知的交点距离太远，不可能会有更近的交点产生
-                        //cc.log("砖块位置和已知的交点距离太远，不可能会有更近的交点产生, dist = "+dist+"; len = "+len+"; brickId = "+brick.brickId);
                         bCheckIntersection = false;
                     }
                 }
@@ -914,7 +894,6 @@ class FightManager {
                     }else{
                         let lenData = this.pointLineDistance(nodePos, startPos, endPos);   //返回点到直线的距离、垂点、对称点
                         if(lenData == null || lenData.len > 100){   //砖块和线段相距太远
-                            //cc.log("砖块和线段相距太远, lenData.len = "+lenData.len+"; brickId = "+brick.brickId);
                             bCheckIntersection = false;
                         }
                     }
@@ -1154,8 +1133,7 @@ class FightManager {
         }
         if(tempData && tempData.intersectPoint){
             tempData.borders = borders;
-        }else{
-            //cc.log("砖块没有和射线相交， brickId = "+brick.brickId+"; startPos = "+startPos+"; endPos = "+endPos+"; brickPos = "+brick.node.position);
+        }else{   //砖块没有和射线相交
             tempData = null;
         }
 
@@ -1400,8 +1378,6 @@ class FightManager {
             }
         }
 
-        // cc.log("checkInnerBrickInterect(), 检查射线起点在砖块内的反射方向 startPos = "+startPos+"; rayDir = "+rayDir+"; borders = "+JSON.stringify(borders));
-        // cc.log("borderIdx = "+borderIdx+"; intersectPoint = "+intersectPoint);
         if(borderIdx >= 0 && intersectPoint){
             let tempPos = intersectPoint.add(dir.mul(10));
             let newDir = this.getReflectDir(tempPos, intersectPoint, borders[borderIdx], borders[(borderIdx+1)%4]);  //获取发射线与镜面线段的反射后新方向
@@ -1486,7 +1462,6 @@ class FightManager {
         let B = start.x - end.x;
 
         if(Math.abs(A)<0.00000001 && Math.abs(B)<0.00000001){
-            console.log("warning, pointLineDistance(), 线段长度为零，start = "+start+"; end = "+end+"; point = "+point);
             //return {len: 0, point: start};
             return null;
         }

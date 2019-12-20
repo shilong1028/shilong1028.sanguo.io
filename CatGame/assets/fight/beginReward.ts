@@ -4,6 +4,7 @@ import { GameMgr } from "../manager/GameManager";
 import { SkillInfo } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
 import { SDKMgr } from "../manager/SDKManager";
+import { ROOT_NODE } from "../common/rootNode";
 
 //开局奖励
 const {ccclass, property} = cc._decorator;
@@ -43,7 +44,7 @@ export default class NewClass extends cc.Component {
     // update (dt) {}
 
 
-    /**看视频复活 */
+    /**看视频 */
     onVedioBtn(){
         AudioMgr.playEffect("effect/ui_click");
         this.vedioBtn.interactable = false; 
@@ -64,6 +65,12 @@ export default class NewClass extends cc.Component {
         let skillId = Math.floor(Math.random()*GameMgr.SkillCount*0.99)+1;
         FightMgr.getFightScene().addFightSkillById(skillId);
         FightMgr.getFightScene().handleStartFight();
+
+        if(bVedio == true){
+            let skillInfo = new SkillInfo(skillId);
+            ROOT_NODE.showTipsText("获得开局技能："+skillInfo.skillCfg.name);
+            GameMgr.showRewardsDialog(0, 0, null, null, null, [skillInfo]);
+        }
 
         this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
             this.node.removeFromParent(true);

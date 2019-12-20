@@ -61,6 +61,15 @@ export default class Block extends cc.Component {
         this.handleTouchSelModel();   //处理选中并拖动
     }
 
+    getBlockModelDesc(){
+        if(this.ballInfo){
+            return this.ballInfo.cannonCfg.desc;
+        }else if(this.itemInfo){
+            return this.itemInfo.itemCfg.desc;
+        }
+        return "";
+    }
+
     /**处理选中并拖动 */
     handleTouchSelModel(bSel: boolean = true){
         if(bSel){

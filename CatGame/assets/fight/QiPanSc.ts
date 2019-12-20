@@ -182,7 +182,6 @@ export default class QiPanSc extends cc.Component {
         if(this.bBricksDownOver == true && this.bBallsDropOver == true && this.bMultiLineMove == false){  //砖块加载完或下落完毕, 小球下落完毕，且非多行下移
             return true;
         }else{
-            //cc.log("触摸无效， this.bBricksDownOver = "+this.bBricksDownOver+"; this.bBallsDropOver = "+this.bBallsDropOver+"; this.bMultiLineMove = "+this.bMultiLineMove);
             return false;
         }
     }
@@ -212,7 +211,6 @@ export default class QiPanSc extends cc.Component {
             if(win == false){   //复活
                 FightMgr.getFightScene().gameOver(false);
             }else{
-                //cc.log("gameOver DelayTime");
                 let gameoverDelay = cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
                     FightMgr.getFightScene().gameOver(true);
                 }.bind(this)));
@@ -224,7 +222,6 @@ export default class QiPanSc extends cc.Component {
   
     /**初始化棋盘对象 */
     initQiPanObjs(fightScene: FightScene){
-        cc.log("initQiPanObjs(), 初始化棋盘对象")
         this.fightScene = fightScene;
         this.levelInitLineNum = FightMgr.level_info.levelCfg.init_lines;  //初始显示的行数
 
@@ -236,7 +233,6 @@ export default class QiPanSc extends cc.Component {
     /********************************** 以下部分为小球处理  **************************************** */
     /**初始化小球 */
     initBalls(){
-        cc.log("initBalls(), FightMgr.fightAddCount = "+FightMgr.fightAddCount);
         this.nBalls.removeAllChildren(true);
         for(let i=0; i<FightMgr.fightBallTotal; ++i){
             let ball: Ball = this.addBallToList(i, new BallInfo(FightMgr.usedPlayerInfo.ballId));   //添加小球到攻击列表中
@@ -324,13 +320,11 @@ export default class QiPanSc extends cc.Component {
                 skillState.kuangBaoPro = probability;
             } 
         }
-        //cc.log("发射小球概率 skillState = "+JSON.stringify(skillState));
         return skillState;
     }
 
     /**处理所有小球都下落完毕，之后小球排序，检查回合结束 */
     handleBallsDropOver(){
-        //cc.log("handleBallsDropOver(), 小球都下落完毕")
         this.bBallsDropOver = true;   //小球是否全部落地
         this.setNoEnemyTime(false);   //设置是否开启视图内没有敌人后N秒弧度加速回落
 
@@ -347,7 +341,6 @@ export default class QiPanSc extends cc.Component {
     /********************************* 以下部分为指示线  ******************************* */
     //射线教程
     showIndicatorTeach(){
-        console.log("showIndicatorTeach 射线教程")
         //if(FightMgr.level_id == 1 && MyUserData.curLevelId == 0 && this.launchCount == 0){   //第一关前两个回合强制引导线  //本次战斗发射次数
             this.fixGuideStep = 0;  //第一关固定指示线（移动步数）
             this.fixGuideOffDir = 1;  //第一关固定指示线当前偏移(方向)
@@ -488,18 +481,17 @@ export default class QiPanSc extends cc.Component {
 
     /**根据行属性（是否随机）产生一行砖块 */
     createBrickNodesOneLine(bFightInit:boolean = false){
-        //cc.log("createBrickNodesOneLine(), bFightInit = "+bFightInit+"; this.curRow = "+this.curRow);
         let bricksCfg = FightMgr.bricksCfg;  //初始关卡信息Map<number, Array<BrickCfg> number：某行 Array<BrickCfg>某行对应的砖块 ,下标从(0,0)开始，左下角第一个为(0,0)
         let objs: BrickInfo[] = bricksCfg[this.curRow-1];
         if(objs == null || objs == undefined){
             //cc.warn("objs == null || objs == undefined, this.curRow = "+this.curRow+"; bricksCfg = "+JSON.stringify(bricksCfg));
         }else{
             if(this.curRow > FightMgr.level_info.levelCfg.total_lines){
-                //console.log("新行已经超出了配置最大行数限制，故不再显示");
+                //console.log("新行已经超出了配置最大行数限制，故不再显示 , maxLines = "+FightMgr.level_info.levelCfg.total_lines+"; this.curRow = "+this.curRow);
                 return;
             }
 
-            //cc.log("objs = "+JSON.stringify(objs));
+            //console.log("this.curRow = "+this.curRow+"; objs = "+JSON.stringify(objs));
             for(let j=0; j<objs.length; j++){
                 let brickNode: cc.Node = this.fightScene.createBrickFromPool();   //从缓存池中获取或创建砖块
                 this.nBricks.addChild(brickNode, -this.curRow);
@@ -508,6 +500,7 @@ export default class QiPanSc extends cc.Component {
                 if(bFightInit == true){   //初始下移的砖块直接显示，不再有下移过程
                     brickNode.y = this.node.height/2 - FightMgr.tileHeight*(this.levelInitLineNum - this.curRow + 1.5);  //棋盘边界矩形（中心点+宽高）
                 } 
+                brickNode.active = true;
             }
             NotificationMy.emit(NoticeType.BrickLineCreateOver, null);  //砖块行创建完毕
         }
@@ -515,7 +508,6 @@ export default class QiPanSc extends cc.Component {
 
     /**创建新的一行砖块*/
     createNewRoundLineBricks(bFightInit:boolean = false){
-        //cc.log("createNewRoundLineBricks(), FightMgr.bGameOver = "+FightMgr.bGameOver+"; bFightInit = "+bFightInit);
         if(FightMgr.bGameOver == true){
             return;
         }
@@ -578,13 +570,11 @@ export default class QiPanSc extends cc.Component {
     /**砖块消失检查是否还有敌方砖块 */
     handleBrickDeadAndCheckEnemy(bBrickDead: boolean = true){
         //检测屏幕内是否有敌人，无则待小球发射后2.0s加速抛物线回落
-        //cc.log("handleBrickDeadAndCheckEnemy(), this.nBricks.children.length = "+this.nBricks.children.length);
         if(this.nBricks.children.length == 0 || this.checkHasEnemyCurView() == false){   //当前视图内没有敌人了
             this.nextTotal = 0;
             for(let i=1; i<=5; ++i){
                 let bricksCfg = FightMgr.bricksCfg;  //初始关卡信息Map<number, Array<BrickCfg> number：某行 Array<BrickCfg>某行对应的砖块 ,下标从(0,0)开始，左下角第一个为(0,0)
                 let objs = bricksCfg[this.curRow+i-1];
-                //cc.log("objs = "+JSON.stringify(objs));
                 if(objs){
                     this.nextTotal = i;  //下一回合需要下降的总行数（默认为1，当视图中无敌人砖块时，下降三行）
                 }
@@ -592,7 +582,6 @@ export default class QiPanSc extends cc.Component {
                     break;
                 }
             }
-            //cc.log("没有敌人, this.nextTotal = "+this.nextTotal+"; this.bBallsDropOver = "+this.bBallsDropOver);
             if(this.nextTotal == 0){   //没有敌人且没有后续砖块，游戏结束
                 if(this.bBallsDropOver == true){
                     this.hanldeGameOver(true);
@@ -709,13 +698,10 @@ export default class QiPanSc extends cc.Component {
      * @param cloneType 类型，复活（随机复活1，自身复活2)， 分裂3，复制4 (不包含5传染和6平等)，5复活指定ID砖块
     */
     addBrickCloneBrick(pos: cc.Vec2, bottomLine: number, hp: number, cloneType:number, monsterIds:number[]){
-        //cc.log("addBrickCloneBrick(), 复活（随机复活1，自身复活2)， 分裂3，复制4, cloneType = "+cloneType);
         if(pos == null){
-            cc.log("warning, addBrickCloneBrick(), brick is null");
             return;
         }
-        if(bottomLine <= 1){
-            cc.log("在死亡层之上一层(倒数第二行）不能触发事件");
+        if(bottomLine <= 1){   //在死亡层之上一层(倒数第二行）不能触发事件
             return;
         }
         hp = Math.floor(hp);
@@ -752,7 +738,6 @@ export default class QiPanSc extends cc.Component {
                             }
                         }
                     } 
-                    //cc.log("添加新砖块， pos = "+pos+"; revivePos = "+revivePos);
                     if(revivePos){
                         if(Math.abs(revivePos.x) > this.node.width/2){   //超出屏幕，倒数第二行的砖块不会复制或复活          
                         }else if(Math.abs(revivePos.y) > (this.node.height/2 - FightMgr.tileHeight)){
@@ -771,7 +756,6 @@ export default class QiPanSc extends cc.Component {
                             }else if(cloneType == 5){
                                 monsterType = monsterIds[0];
                             }
-                            //cc.log("monsterType = "+monsterType+"; monsterIds = "+JSON.stringify(monsterIds));
                             let brickInfo = new BrickInfo(monsterType);
                             if(cloneType != 5){
                                 brickInfo.curHp = hp;
@@ -784,6 +768,7 @@ export default class QiPanSc extends cc.Component {
                                 brickNode.setPosition(revivePos);
                                 this.nBricks.addChild(brickNode);
 
+                                FightMgr.updateBrickAimNum();   //因砖块重生而增加的砖块目标数
                                 brickNode.getComponent(Brick).initBricvkAndMoveToPos(brickInfo, cloneType, pos);   //砖块初始化并移动到指定位置
     
                                 FightMgr.clearRoundPathArr();   //清除复用数据
@@ -862,7 +847,6 @@ export default class QiPanSc extends cc.Component {
 
     /** 砖块下落后回合事件处理完毕*/
     handleBricksLineRoundOver(){
-        //cc.log("handleBricksLineRoundOver(), 砖块下落后回合事件处理完毕 bGameOver = "+FightMgr.bGameOver+"; this.bMultiLineMove = "+this.bMultiLineMove);
         this.nBricks.stopActionByTag(this.BricksLineDelayActionTag);  //砖块下移完毕新回合开始延迟
         if(FightMgr.bGameOver == false){  //该局游戏是否结束
             if(this.bMultiLineMove == true){   //多行下移过程中
@@ -870,7 +854,6 @@ export default class QiPanSc extends cc.Component {
             }else{
                 if(this.bCreateNextRound == false){  //是否在检查完回合事件后进行新行砖块创建并下移
                     //多行下移的最后一行不再创建新层
-                    //cc.log("不再创建新层")
                     this.bBricksDownOver = true;    //砖块加载完或下落完毕
                 }else{
                     if(this.nBricks.children.length == 0 || this.checkHasEnemyCurView() == false){   //当前视图内没有敌人了
@@ -898,7 +881,6 @@ export default class QiPanSc extends cc.Component {
 
     /**砖块准备下移, 停滞状态不下移 */
     NotifyBricksMoveDown(bMove:boolean){
-        //cc.log("NotifyBricksMoveDown() 发送砖块下移消息, ballsLen = "+this.nBricks.children.length+"; bMove = "+bMove);
         this.roundDownBrickCount = 0;   //当前回合下移的砖块总量
         this.bBricksDownOver = false;    //砖块加载完或下落完毕
 
@@ -915,7 +897,6 @@ export default class QiPanSc extends cc.Component {
     handleBrickMoveDownOver(){
         this.roundDownBrickCount ++;   //当前回合下移的砖块总量
         let count = this.nBricks.children.length;
-        //cc.log("handleBrickMoveDownOver() num = "+this.roundDownBrickCount+"; count = "+count);
         if(this.roundDownBrickCount >= count){
             this.roundDownBrickCount = 0;   //当前回合下移的砖块总量
             this.bricksMoveOverAndCheckAttr();   //砖块下落完毕并检查属性
@@ -926,7 +907,6 @@ export default class QiPanSc extends cc.Component {
     handleBrickMoveDownAndCheckAttr(){
         this.roundDownBrickCount ++;   //当前回合下移的砖块总量
         let count = this.nBricks.children.length;
-        //cc.log("handleBrickMoveDownAndCheckAttr()，处理砖块回合下落完毕(检查事件) num = "+this.roundDownBrickCount+"; count = "+count+"; this.bBallsDropOver = "+this.bBallsDropOver);
         if(this.roundDownBrickCount >= count){
             if(this.bBallsDropOver == true){   //砖块下落完毕，小球下落完毕
                 this.handleBricksLineRoundOver();   //砖块下落后回合事件处理完毕
@@ -936,7 +916,6 @@ export default class QiPanSc extends cc.Component {
 
     /**砖块下落完毕并检查属性 */
     bricksMoveOverAndCheckAttr(){
-        //cc.log("bricksMoveOverAndCheckAttr(), 砖块下落完毕并检查属性");
         //回合下移前，砖块事件的优先级是砖块对齐、砖块传染、砖块吞噬、砖块复制
         this.nBricks.stopActionByTag(this.BricksRoundDelayActionTag);  //回合结束砖块下移前回合事件处理动作
 

@@ -177,7 +177,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 358.5345171667576
+      "z": 424.352447854375
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -1728,6 +1728,9 @@
     },
     "pfTipsDialog": {
       "__uuid__": "1ee5ac88-10ed-4572-9c88-582f9a8a5e33"
+    },
+    "pfRewardDialog": {
+      "__uuid__": "c01f8e4e-0f57-48a1-bca4-b9a480d7968c"
     },
     "pfLoading": {
       "__uuid__": "3ed33617-369d-4862-9a61-589dc1fc17ba"

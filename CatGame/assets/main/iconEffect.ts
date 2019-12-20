@@ -28,7 +28,6 @@ export default class IconEffect extends cc.Component {
     // update (dt) {}
 
     initIconEffectAni(startPos: cc.Vec2, destPos: cc.Vec2, type: number){
-        //cc.log("initIconEffectAni(), startPos = "+startPos+"; destPos = "+destPos+"; type = "+type);
         startPos = this.node.convertToNodeSpaceAR(startPos);
         destPos = this.node.convertToNodeSpaceAR(destPos);
         let len = destPos.sub(startPos).mag();

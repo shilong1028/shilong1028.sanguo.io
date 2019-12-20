@@ -34,7 +34,7 @@ export default class TipsText extends cc.Component {
 
     /**移除自身 */
     handleRemoveMySelf(){
-        ROOT_NODE.removeTipsToPool(this.node);   //将砖块回收到缓存池
+        this.node.removeFromParent(true);
     }
 
     initTipsText(tips: string, bRichText: boolean=false){

@@ -4,6 +4,7 @@ import { FightMgr } from "../manager/FightManager";
 import { ChapterInfo } from "../manager/Enum";
 import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
 import { SDKMgr } from "../manager/SDKManager";
+import { ROOT_NODE } from "../common/rootNode";
 
 //章节奖励
 const {ccclass, property} = cc._decorator;
@@ -68,11 +69,22 @@ export default class ChapterResult extends cc.Component {
     }
 
     handleReward(times: number=1){
-        MyUserDataMgr.updateUserGold(this.chapterInfo.chapterCfg.gold * times);
-        MyUserDataMgr.updateUserDiamond(this.diamondReward * times);
+        let gold = this.chapterInfo.chapterCfg.gold * times;
+        MyUserDataMgr.updateUserGold(gold);
+        let diamond = this.diamondReward * times;
+        MyUserDataMgr.updateUserDiamond(diamond);
 
-        this.node.runAction(cc.sequence(cc.delayTime(0.1* times), cc.callFunc(function(){
-            GameMgr.gotoMainScene();
-        })));
+        ROOT_NODE.showTipsText("获得金币："+gold);
+        ROOT_NODE.showTipsText("获得钻石："+diamond);
+
+        if(times > 1){
+            GameMgr.showRewardsDialog(0, 0, ()=>{
+                GameMgr.gotoMainScene();
+            });
+        }else{
+            this.node.runAction(cc.sequence(cc.delayTime(0.1* times), cc.callFunc(function(){
+                GameMgr.gotoMainScene();
+            })));
+        }
     }
 }

@@ -93,7 +93,7 @@ class MyUserManager {
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
 
         MyUserData.DiamondCount = 50;
-        MyUserData.GoldCount = 200;
+        MyUserData.GoldCount = 500;
 
         //cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
@@ -179,8 +179,13 @@ class MyUserManager {
     saveLevelList(){
         let LevelList = [];
         for(let i=0; i<MyUserData.levelList.length; ++i){
-            let tempItem = MyUserData.levelList[i].cloneNoCfg();
-            LevelList.push(tempItem);
+            let levelInfo: LevelInfo = MyUserData.levelList[i];
+            if(levelInfo){
+                let tempItem = levelInfo.cloneNoCfg();
+                LevelList.push(tempItem);
+            }else{
+                cc.log("warn levelInfo = null, i = "+i+"; MyUserData.levelList = "+JSON.stringify(MyUserData.levelList))
+            }
         }
         LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(LevelList));
     }
@@ -197,8 +202,7 @@ class MyUserManager {
         if(win == false){
             return;
         }else{
-            if(MyUserData.curLevelId+1 > levelId){
-                //cc.log("跳关不保存");
+            if(MyUserData.curLevelId+1 > levelId){   //跳关不保存
                 return;
             }else{
                 let info = new LevelInfo(levelId, stars);
@@ -272,6 +276,8 @@ class MyUserManager {
     }
     /**更新炮台到拥有的炮列表 */
     updatePlayerFromList(playerInfo: PlayerInfo){
+        NotificationMy.emit(NoticeType.UpdatePlayerList, playerInfo);   //更新炮台
+
         for(let i=0; i<MyUserData.playerList.length; ++i){
             if(MyUserData.playerList[i].playerId == playerInfo.playerId){
                 MyUserData.playerList[i] = playerInfo;

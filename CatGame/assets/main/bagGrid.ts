@@ -23,6 +23,11 @@ export default class BagGrid extends cc.Component {
     @property(cc.Node)
     delNode: cc.Node = null;   //删除节点
 
+    @property(cc.Node)
+    itemDescNode: cc.Node = null;   //道具描述
+    @property(cc.Label)
+    itemDesc: cc.Label = null;
+
     @property(cc.Sprite)
     equipBtnSpr: cc.Sprite = null;
     @property(cc.Sprite)
@@ -56,6 +61,7 @@ export default class BagGrid extends cc.Component {
         NotificationMy.on(NoticeType.Guide_TouchMove, this.hanldeGuideTouchMove, this);   //新手引导触摸移动
 
         this.delNode.active= false;  //回收站
+        this.itemDescNode.active = false;   //道具描述
     }
 
     onDestroy(){
@@ -108,6 +114,9 @@ export default class BagGrid extends cc.Component {
     guideSort(step: GuideStepEnum){
         GuideMgr.showGuideLayer(null, ()=>{
             GuideMgr.endGuide_NewPlayer(step);
+            if(MyUserData.GoldCount < 100){
+                MyUserData.GoldCount = 100;
+            }
             this.onSortBtn();
             this.node.runAction(cc.sequence(cc.delayTime(0.2), cc.callFunc(function(){
                 if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.ItemUp_Guide_Step, this.guideItemBtn, this) == false){ 
@@ -173,6 +182,9 @@ export default class BagGrid extends cc.Component {
 
     onTouchStart(event: cc.Event.EventTouch) {  
         if(this.selectBlock){
+            this.itemDescNode.active = true;   //道具描述
+            this.itemDesc.string = this.selectBlock.getBlockModelDesc();
+
             this.delNode.active= true;  //回收站
             let touchPos = GameMgr.adaptTouchPosByNode(this.node, event.getLocation());
             this.updateSelectBlock(touchPos);   //拖动更新选中的地块模型的位置
@@ -303,8 +315,7 @@ export default class BagGrid extends cc.Component {
                                 equipBallInfo = new BallInfo(this.showPlayerInfo.ballId);
                             }
                             this.showPlayerInfo.ballId = this.selectBlock.ballInfo.cannonId;
-
-                            NotificationMy.emit(NoticeType.UpdatePlayerList, this.showPlayerInfo);   //更新炮台
+                            ROOT_NODE.showTipsText("更新装备");
 
                             MyUserDataMgr.updatePlayerFromList(this.showPlayerInfo);   //更新炮台到拥有的炮列表
                             MyUserDataMgr.equipBallToPlayer(this.selectBlock.ballInfo.clone(), equipBallInfo);
@@ -324,6 +335,7 @@ export default class BagGrid extends cc.Component {
                         if(rect3.contains(pos3)){ 
                             let sellGold = this.selectBlock.handleSellBall();  
                             GameMgr.showDelGainAni(sellGold);   //显示售卖士兵收益 
+                            ROOT_NODE.showTipsText("装备回收，获得金币："+sellGold);
                             this.nSelectModel.setPosition(-3000, -3000);
                         }else{
                             this.selectBlock.onRecoverSelf();   //复原本地块模型
@@ -350,8 +362,7 @@ export default class BagGrid extends cc.Component {
                                 equipItemInfo = new ItemInfo(this.showPlayerInfo.itemId);
                             }
                             this.showPlayerInfo.itemId = this.selectBlock.itemInfo.itemId;
-
-                            NotificationMy.emit(NoticeType.UpdatePlayerList, this.showPlayerInfo);   //更新炮台
+                            ROOT_NODE.showTipsText("更新饰品");
 
                             MyUserDataMgr.updatePlayerFromList(this.showPlayerInfo);   //更新炮台到拥有的炮列表
                             MyUserDataMgr.equipItemToPlayer(this.selectBlock.itemInfo.clone(), equipItemInfo);
@@ -371,6 +382,7 @@ export default class BagGrid extends cc.Component {
                         if(rect3.contains(pos3)){ 
                             let sellGold = this.selectBlock.handleSellItem();  
                             GameMgr.showDelGainAni(sellGold);   //显示售卖收益 
+                            ROOT_NODE.showTipsText("饰品回收，获得金币："+sellGold);
                             this.nSelectModel.setPosition(-3000, -3000);
                         }else{
                             this.selectBlock.onRecoverSelf();   //复原本地块模型
@@ -382,6 +394,7 @@ export default class BagGrid extends cc.Component {
             this.selectBlock = null;   //拖动的地块数据
             this.nSelectModel.setPosition(-3000, -3000);
             this.delNode.active= false;  //小球解雇和升级节点
+            this.itemDescNode.active = false;   //道具描述
         }
     }
 

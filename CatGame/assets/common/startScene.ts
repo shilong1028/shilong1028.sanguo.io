@@ -79,7 +79,6 @@ export default class StartScene extends cc.Component {
 
     /**加载配置数据完毕 */
     handleLoadConfigOver(){
-        //cc.log("handleLoadConfigOver()");
         GameMgr.goToSceneWithLoading("loginScene", false); 
     }
 

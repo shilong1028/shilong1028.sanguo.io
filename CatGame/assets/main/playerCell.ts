@@ -156,6 +156,7 @@ export default class PlayerCell extends cc.Component {
                 this.playerInfo.useState = 1;
                 MyUserDataMgr.updatePlayerFromList(this.playerInfo);   //添加新炮台到拥有的炮列表
                 this.initPlayerInfo(this.playerInfo);
+                ROOT_NODE.showTipsText("获得新萌宠");
             }else{
                 GameMgr.showGoldAddDialog();  //获取金币提示框
             }
@@ -171,6 +172,7 @@ export default class PlayerCell extends cc.Component {
             }else{
                 MyUserDataMgr.updateCurPlayerById(this.playerInfo.playerId);
                 this.initPlayerInfo(this.playerInfo);
+                ROOT_NODE.showTipsText("更换出战萌宠");
 
                 if(this.bagLayer){
                     this.bagLayer.usedPlayerPage.updateStateLabel();  //当前使用的炮台
@@ -186,7 +188,7 @@ export default class PlayerCell extends cc.Component {
         //换装炮台
         if(this.playerInfo && this.playerInfo.useState == 1){
             if(this.playerInfo.level >= GameMgr.PlayerMaxLv){   //最大等级
-                
+                ROOT_NODE.showTipsText("最大等级！");
             }else{
                 if(this.playerInfo.playerCfg.update_vedio > 0){
                     SDKMgr.showVedioAd("UpLvVedioId", ()=>{
@@ -216,6 +218,7 @@ export default class PlayerCell extends cc.Component {
     }
 
     handleUpdate(){
+        ROOT_NODE.showTipsText("宠物升级成功！");
         this.playerInfo.level ++;
         MyUserDataMgr.updatePlayerFromList(this.playerInfo);  //更新炮台到拥有的炮列表
         this.initPlayerInfo(this.playerInfo);

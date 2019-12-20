@@ -47,7 +47,6 @@ class StorageManager_class  {
 
     getItemFloat(key:string, defaultVal:number=0) : number{
         let val = cc.sys.localStorage.getItem(key);
-        //console.log("getItemFloat(), key = "+key+"; val = "+val+"; isNaN(val) = "+isNaN(val));
         if(isNaN(val) == true || val == null || val == undefined || val == ""){  
             val = defaultVal;
             this.setItem(key, defaultVal);
@@ -90,7 +89,6 @@ class StorageManager_class  {
     //检查一个string是否为Json并返回string或json对象
     getJsonItem(key: string) {
         let str = cc.sys.localStorage.getItem(key);
-        //cc.log("getJsonItem(), str = "+str);
         if(str == null || str == undefined || str == ""){
             return null;
         }
@@ -100,16 +98,13 @@ class StorageManager_class  {
                 if(typeof obj == 'object' && obj ){
                     return obj;
                 }else{
-                    cc.log('It is not a json!')
                     return null;
                 }
     
             } catch(e) {
-                console.log('error：'+str+'!!!'+e);
                 return null;
             }
         }
-        cc.log('It is not a string!')
         return null;
     }
 }

@@ -4,7 +4,8 @@ import LoadingLayer from "../common/LoadingLayer";
 import TipsDialog from "../common/tipsDialog";
 import { MyUserDataMgr } from "./MyUserData";
 import { AudioMgr } from "./AudioMgr";
-import { TipsStrDef } from "./Enum";
+import { TipsStrDef, ItemInfo, BallInfo, SkillInfo } from "./Enum";
+import TipsReward from "../common/tipsReward";
 
 
 //游戏菜单管理器
@@ -14,7 +15,7 @@ const {ccclass, property} = cc._decorator;
 class GameManager {
     BagGridCount: number = 20;  //背包空间
     PlayerCount: number = 3;   //炮台萌猫数量
-    PlayerMaxLv: number = 5;  //炮台最大等级
+    PlayerMaxLv: number = 10;  //炮台最大等级
     ChapterCount: number = 7;  //章节数量
     QualityCount: number = 5;  //品质最大等级
     ShopCount: number = 4;   //商品种类
@@ -23,7 +24,6 @@ class GameManager {
     /************************  以下为UI接口  ************** */
 
     goToSceneWithLoading(sceneName:string, bShowLoading: boolean = true){
-        cc.log("goToSceneWithLoading(), sceneName = "+sceneName);
         if(bShowLoading){
             let layer = this.showLayer(ROOT_NODE.pfLoading);
             layer.zIndex = cc.macro.MAX_ZINDEX - 10;
@@ -186,6 +186,12 @@ class GameManager {
         tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback);
     }
 
+    //通用奖励提示框
+    showRewardsDialog(gold:number, diamond: number, callback: any = null, items:ItemInfo[]=null, balls: BallInfo[]=null, skills: SkillInfo[]=null){
+        let rewardDialog = this.showLayer(ROOT_NODE.pfRewardDialog);
+        rewardDialog.getComponent(TipsReward).setRewards(gold, diamond, callback, items, balls, skills);
+    }
+
     //获取金币提示框
     showGoldAddDialog(){
         this.showLayer(ROOT_NODE.pfGoldAdd);
@@ -259,8 +265,6 @@ class GameManager {
             //E是指数的意思，比如7.823E5=782300 这里E5表示10的5次方
             var p = Math.floor(Math.log(num) / Math.LN10);   //p是10的几次方
             var n = num * Math.pow(10, -p);   //n为最终显示的小数
-            //return n + 'e' + p;
-            //cc.log("num = "+num +"; p = "+p+"; n = "+n);
 
             let factor = Math.pow(10, fixNum);
             if (p < 6) {
@@ -296,8 +300,6 @@ class GameManager {
             //E是指数的意思，比如7.823E5=782300 这里E5表示10的5次方
             var p = Math.floor(Math.log(num) / Math.LN10);   //p是10的几次方
             var n = num * Math.pow(10, -p);   //n为最终显示的小数
-            //return n + 'e' + p;
-            //cc.log("num = "+num +"; p = "+p+"; n = "+n);
 
             let factor = Math.pow(10, fixNum);
             if (p < 3) {
@@ -335,7 +337,6 @@ class GameManager {
                                 let secondChar = String.fromCharCode(97 + last_j);
                                 n = n * Math.pow(10, (pp % 3));
                                 let nStr = (Math.floor(n * factor) / factor).toFixed(fixNum);
-                                //cc.log("nStr = "+nStr +"; firstChar = "+firstChar+"; secondChar = "+secondChar);
                                 return nStr + firstChar + secondChar;
                             }
                         }
@@ -348,7 +349,6 @@ class GameManager {
 
     /**判定给定时间和现在是否同一天 */
     isSameDayWithCurTime(lastTime: number){
-        //console.log("isSameDayWithTime(), lastTime = "+lastTime);
         if(lastTime < 10000){
             return false;
         }

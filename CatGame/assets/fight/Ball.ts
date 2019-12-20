@@ -263,7 +263,6 @@ export default class Ball extends cc.Component {
     /**反弹特性 */
     openGroundBounce(){
         this.bGroundBounce = true;
-        cc.log("openGroundBounce(), 反弹特性");
         let effAni = this.effectNode.getChildByName("fantan_effect_1");
         if(effAni == null){
             effAni = FightMgr.qipanSc.createEffectLoopAniNode(FightMgr.getFightScene().ballFantanAtlas);
@@ -338,7 +337,6 @@ export default class Ball extends cc.Component {
         }
 
         let newDir = this.ballFlyDir.rotate(randRad);
-        cc.log("randomRotateDir(), 小球偏转， this.ballId = "+this.ballId+"; oldDir = "+this.ballFlyDir+"; newDir = "+newDir);
         this.resetBallFlyDir(newDir);  //重新设定飞行方向
         this.resetLaunchEndData([], 2);  //重新设定弹射方向和目标点 //0碰撞，1无碰撞, 2偏转，3穿透, 4砖块死亡通知, 5地面反弹， 6移动反弹
     }
@@ -396,7 +394,6 @@ export default class Ball extends cc.Component {
             let len = endPos.sub(this.node.position).mag();
 
             let speedUpRatio = FightMgr.speedUpRatio;  //战斗加速倍数，0-2分别表示1-3倍加速
-            //cc.log("球加速飞行, this.ballId = "+this.ballId+"; this.lastBallState = "+this.lastBallState+"; speedUpRatio = "+speedUpRatio);
             let moveTime = len/(this.MoveSpeed_Const * speedUpRatio);
             let moveSeq = cc.sequence(cc.moveTo(moveTime, endPos), cc.callFunc(function(){
                 this.checkAndResetPath(endPos);   //移动到末点后重新规划路径
@@ -418,7 +415,6 @@ export default class Ball extends cc.Component {
         if(this.ballFlyDir){  
             if(Math.abs(this.ballFlyDir.x) <= 0.0001 && (1-Math.abs(this.ballFlyDir.y)) <= 0.0001){
                 this.node.angle = 0;
-                //cc.log("setBallRotation(), 设置小球角度 射线垂直向上， this.ballFlyDir = "+this.ballFlyDir);
             }else{
                 let rad = cc.v2(this.ballFlyDir.x, this.ballFlyDir.y).signAngle(cc.v2(0,1));
                 let angle = cc.misc.radiansToDegrees(rad);
@@ -474,7 +470,6 @@ export default class Ball extends cc.Component {
         if(this.bDropState == true){  //曲线下落状态（飞行中下落，地面的不再弹射）
             this.showDropBezierAni();   //曲线下落动画
         }else if(itemBrick){ 
-            //cc.log("球碰道具， this.ballId = "+this.ballId+"; itemId = "+itemBrick.brickId);
             itemBrick.hit(this.getBallAttack(), this);
         }
     }
@@ -482,7 +477,6 @@ export default class Ball extends cc.Component {
     /**处理移动砖块与小球的碰撞 */
     handleMoveBrickColliderBall(moveBrick: Brick){
         if(moveBrick && moveBrick.isBrickDead() == false){
-            //cc.log("handleMoveBrickColliderBall(), this.ballId = "+this.ballId+"; moveBrickId = "+moveBrick.brickId+"; this.launchEndData.point = "+this.launchEndData.point); 
             if(this.bDropState == true){  //曲线下落状态（飞行中下落，地面的不再弹射）
                 this.node.stopActionByTag(this.MoveFlyActionTag);   //停止飞行动作
                 this.showDropBezierAni();   //曲线下落动画
@@ -491,19 +485,14 @@ export default class Ball extends cc.Component {
                     this.node.stopActionByTag(this.MoveFlyActionTag);   //停止飞行动作
 
                     let startPos: cc.Vec2 = this.checkIsBrickContainBall(moveBrick.node, this.node.position.clone(), this.ballFlyDir);  //检测砖块（扩展边界）是否包含了小球 ,并返回校正坐标
-                    //cc.log("handleMoveBrickColliderBall(), 校正坐标 ballPos = "+this.node.position+"; startPos = "+startPos);
                     let endPos: cc.Vec2 = startPos.add(this.ballFlyDir.mul(200));
                     //获取移动砖块的碰撞反射
                     let data: IntersectData = FightMgr.checkIntersectionOneBrick(startPos, endPos, moveBrick);  //获取射线和单个砖块的碰撞及反射
                     if(data){
-                        //cc.log("获取移动砖块的碰撞反射(), this.ballId = "+this.ballId+"; data.newDir = "+data.newDir+"; data.point = "+data.point);
                         this.resetBallFlyDir(data.newDir);  //重新设定飞行方向    
                         this.resetLaunchEndData([moveBrick.brickId], 6);  //重新设定弹射方向和目标点 //0碰撞，1无碰撞, 2偏转，3穿透, 4砖块死亡通知, 5地面反弹， 6移动反弹
                     }else{
                         this.moveAndReadyFly();   //小球移动并准备发射
-                        //cc.log("warning, handleMoveBrickColliderBall(), 未获取射线和移动砖块的反射 按原方向飞行; this.ballId = "+this.ballId);
-                        // cc.log("ballPos = "+this.node.position+"; startPos = "+startPos+"; endPos = "+endPos);
-                        // cc.log("brickId = "+brick.brickId+"; brickPos = "+brick.node.position);
                     }
                 }
 
@@ -634,14 +623,14 @@ export default class Ball extends cc.Component {
     resetBallFlyDir(flyDir: cc.Vec2){
         let rayDir = FightMgr.normalDir(flyDir);
         if(rayDir == null){
-            cc.warn("resetBallFlyDir(), 小球射线方向不合格，this.ballId = "+this.ballId+"; this.ballFlyDir = "+this.ballFlyDir+"; flyDir = "+flyDir);
             if(this.launchEndData && this.launchEndData.newDir){
-                //cc.log("this.launchEndData.point = "+this.launchEndData.point+";ballPos = "+this.node.position+"; this.launchEndData.newDir = "+this.launchEndData.newDir);
                 rayDir = this.launchEndData.newDir;
             }else{
                 rayDir = this.ballFlyDir.neg();
             }
-            this.ballFlyDir = this.checkInnerBrickNewDir(rayDir).dir;
+            let reRayDir = this.checkInnerBrickNewDir(rayDir).dir;
+            cc.log("resetBallFlyDir(), 小球射线方向不合格，this.ballId = "+this.ballId+"; this.ballFlyDir = "+this.ballFlyDir+"; flyDir = "+flyDir+"; reRayDir = "+reRayDir);
+            this.ballFlyDir = reRayDir;
         }else{
             this.ballFlyDir = rayDir;
         }
@@ -654,16 +643,10 @@ export default class Ball extends cc.Component {
         let enemyBrick = FightMgr.qipanSc.checkHasEnemyByPos(pos);
         let brickId = -1;
         if(enemyBrick){
-            if(nId){
-                //cc.log("第二次规避");
-            }
-            //cc.log("偏转后小球将在砖块内部， this.ballId = "+this.ballId+"; enemyBrickId = "+enemyBrick.brickId+"; ballPos = "+ballPos+"; dir = "+dir+"; this.ballFlyDir = "+this.ballFlyDir);
             let newDir = FightMgr.checkInnerBrickInterect(pos, dir, enemyBrick);
             if(newDir){
-                //cc.log("球在砖块内部, 改变方向，this.ballFlyDir = "+this.ballFlyDir+"; retData.newDir = "+newDir);
                 dir = newDir;
             }else{
-                //cc.warn("小球在砖块内部, 但是没有找到抛出的新方向, 小球让按照反方向前进");
                 dir = dir.neg();
                 if(nId){
                     cc.log("第二次规避 小球在砖块内部, 但是没有找到抛出的新方向, 小球让按照原来方向前进");
@@ -699,7 +682,6 @@ export default class Ball extends cc.Component {
                 this.hitBrickIdArr = [];   //小球碰撞的砖块ID集合，避免异步砖块死亡死，再次寻路
             }
 
-            //cc.log("resetLaunchEndData(), this.ballId = "+this.ballId+"; this.ballFlyDir = "+this.ballFlyDir+"; hitType = "+hitType);
             let startPos: cc.Vec2 = FightMgr.adaptPosByGameBorders(this.node.position.clone(), this.ballFlyDir);   //根据游戏边界来微调点坐标，从而使得点在边界矩形内
             this.node.position = startPos;
 
@@ -709,16 +691,9 @@ export default class Ball extends cc.Component {
 
             if(this.launchEndData && this.launchEndData.point){
                 if(this.launchEndData.point.x == startPos.x && startPos.y == this.launchEndData.point.y){
-                    //cc.log("endPos = "+this.launchEndData.point+"; startPos = "+startPos+"; this.ballFlyDir = "+this.ballFlyDir+"; this.launchEndData.newDir = "+this.launchEndData.newDir);
-                    //cc.log("warning, resetLaunchEndData() 新线段的反射点和起点相同, 但已经校正; this.ballId = "+this.ballId);
                     this.launchEndData.point.x += 1;  
                     this.launchEndData.point.y += 1;   
                 }
-
-                // let enemyBrick = FightMgr.qipanSc.checkHasEnemyByPos(this.launchEndData.point);
-                // if(enemyBrick){
-                //     cc.log("射线末端在砖块内部， this.ballId = "+this.ballId+"; enemyBrickId = "+enemyBrick.brickId+"; this.launchEndData.point = "+this.launchEndData.point+"; startPos = "+startPos);
-                // }
 
                 let tempDir = this.launchEndData.point.sub(startPos);   //发射方向, 注意，startPos在线路规划时会经过处理而可能变化，因此使用小球坐标来计算新方向
                 if(hitType == 3){
@@ -729,12 +704,10 @@ export default class Ball extends cc.Component {
                         }
                     }
                 }
-                //cc.log("新方向， tempDir = "+tempDir+"; this.launchEndData.point = "+this.launchEndData.point);
                 this.resetBallFlyDir(tempDir);  //重新设定飞行方向
                 this.moveAndReadyFly();   //小球移动并准备发射
                 
             }else{
-                //console.warn("warning, resetLaunchEndData() 重新设定弹射方向和目标点 this.launchEndData is null  稍后重新规划; this.ballId = "+this.ballId+"; this.ballFlyDir = "+this.ballFlyDir);
                 if(this.resetBallFlyDir(this.ballFlyDir) == null){   //重新设定飞行方向
                     let nextPos = this.node.position.clone();
                     if(FightMgr.qipanSc.checkHasBrickByPos(cc.v2(nextPos.x, nextPos.y - 20)) == false){
@@ -756,7 +729,6 @@ export default class Ball extends cc.Component {
     delayHandleRayPath(brickIds: number[], hitType: number){
         this.node.stopActionByTag(this.PathDelayActionTag);  //路径规划中延迟
         let pathDelay = cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
-            //cc.log("延迟后重新规划, this.ballId = "+this.ballId+"; this.ballFlyDir = "+this.ballFlyDir+"; hitType = "+hitType);
             this.resetLaunchEndData(brickIds, hitType);
         }.bind(this)));
         pathDelay.setTag(this.PathDelayActionTag);
@@ -915,7 +887,6 @@ export default class Ball extends cc.Component {
     /**球加速 */
     handleBallSpeedUp(){
         if(this.adsorBrickId > 0 || this.bDropState == true){  //小球被吸附的砖块ID   //曲线下落状态（飞行中下落，地面的不再弹射）
-            cc.log("球加速, 吸附或抛物下落状态  this.ballId = "+this.ballId+"; this.bDropState = "+this.bDropState+"; this.adsorBrickId = "+this.adsorBrickId);
             return;
         }  
         if(this.lastBallState > BallState.readySort){ 
@@ -955,7 +926,6 @@ export default class Ball extends cc.Component {
             //     }
             // }
 
-            //cc.log("randomRotateDir(), 小球偏转， this.ballId = "+this.ballId+"; oldDir = "+this.ballFlyDir+"; newDir = "+retData.dir);
             this.resetBallFlyDir(retData.dir);  //重新设定飞行方向
             this.resetLaunchEndData(ids, 2);  //重新设定弹射方向和目标点 //0碰撞，1无碰撞, 2偏转，3穿透, 4砖块死亡通知, 5地面反弹， 6移动反弹
         }

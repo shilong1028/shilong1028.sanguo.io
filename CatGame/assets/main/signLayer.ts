@@ -98,12 +98,17 @@ export default class SignLayer extends cc.Component {
     }
 
     handleReward(times: number=1){
+        let gold = 0;
+        let diamond = 0;
+        let itemInfo = null;
+        let ballInfo = null;
+
         if(this.curSelCell.signData.type == 1){   //金币
-            let gold = this.curSelCell.signData.num *times;
+            gold = this.curSelCell.signData.num *times;
             ROOT_NODE.showTipsText("获得金币："+gold);
             MyUserDataMgr.updateUserGold(gold);
         }else if(this.curSelCell.signData.type == 2){   //钻石
-            let diamond = this.curSelCell.signData.num *times;
+            diamond = this.curSelCell.signData.num *times;
             ROOT_NODE.showTipsText("获得钻石："+diamond);
             MyUserDataMgr.updateUserDiamond(diamond);
         }else if(this.curSelCell.signData.type == 3){   //饰品道具
@@ -111,9 +116,10 @@ export default class SignLayer extends cc.Component {
             let itemCfg = CfgMgr.getItemConf(itemId);
             if(itemCfg){
                 ROOT_NODE.showTipsText("获得："+itemCfg.name);
-                MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
+                itemInfo = new ItemInfo(itemId);
+                MyUserDataMgr.addItemToItemList(itemInfo.clone(), true);  //修改用户背包物品列表
                 if(times > 1){
-                    MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
+                    MyUserDataMgr.addItemToItemList(itemInfo.clone(), true);  //修改用户背包物品列表
                 }
             }
         }else if(this.curSelCell.signData.type == 4){   //武器
@@ -121,12 +127,16 @@ export default class SignLayer extends cc.Component {
             let weaponCfg = CfgMgr.getCannonConf(weaponId);
             if(weaponCfg){
                 ROOT_NODE.showTipsText("获得："+weaponCfg.name);
-                let ballInfo = new BallInfo(weaponId);
+                ballInfo = new BallInfo(weaponId);
                 MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
                 if(times > 1){
                     MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
                 }
             }
+        }
+
+        if(times > 1){
+            GameMgr.showRewardsDialog(gold, diamond, null, itemInfo?[itemInfo, itemInfo]:null, ballInfo?[ballInfo, ballInfo]:null);
         }
 
         MyUserDataMgr.updateUserSign(this.curSelCell.signIdx, new Date().getTime());   ////更新签到数据

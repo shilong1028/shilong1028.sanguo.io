@@ -64,7 +64,6 @@ export default class ChapterLayer extends cc.Component {
         if (eventType !== cc.PageView.EventType.PAGE_TURNING) {
             return;
         }
-        //console.log("当前所在的页面索引:" + sender.getCurrentPageIndex());
         this.curChapterIdx = sender.getCurrentPageIndex();   //当前章节索引
         this.showChapterUI();  //显示当前章节信息
     }

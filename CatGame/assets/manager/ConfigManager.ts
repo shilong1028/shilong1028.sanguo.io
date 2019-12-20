@@ -615,14 +615,13 @@ class CfgManager_class {
                 }
 
                 self[name] = retObj;
-                cc.log("load config " + name + " finsih! length:" + str.length);
+                //cc.log("load config " + name + " finsih! length:" + str.length);
             }
         }
 
         self.index--;
         if (self.index <= 0) {
-            cc.log("load all config finsih!");
-
+            //cc.log("load all config finsih!");
             if(this.overCallBack && this.overTarget){
                 this.overCallBack.call(this.overTarget, null);
             }

@@ -18,13 +18,15 @@ class SDKManager_class  {
     sdkCheckSuccCallBack: any = null;   //SDK用户数据校验成功回调
     callBackTarget: any = null;
 
+    bannerCheckTime: number = 1577116800000;   //字节跳动屏蔽Banner时间戳
+
     /** 检查和初始化可用的SDK */
     initSDK(){
-        //console.log("initSDK()");
         SDKMgr.initAdDayCount();
 
-        //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
-        SDKMgr.TT = (window as any).tt;;  //字节跳动
+        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        //SDKMgr.TT = (window as any).tt;;  //字节跳动
+        SDKMgr.bannerCheckTime = 1577116800;  //2019-12-24 00:00:00
 
         if(SDKMgr.TT != null){   //字节跳动小程序
             SDKMgr.isSDK = true;
@@ -36,7 +38,7 @@ class SDKManager_class  {
             sdkWechat.initSDK();
         }
         else {
-            cc.log("没有找到SDK对应信息");
+            //cc.log("没有找到SDK对应信息");
         }
     }
 
@@ -65,13 +67,10 @@ class SDKManager_class  {
         SDKMgr.adDayCounts["ShopVedioId"] = LDMgr.getItemInt("ShopVedioId");
         SDKMgr.adDayCounts["GoldVedioId"] = LDMgr.getItemInt("GoldVedioId");
         SDKMgr.adDayCounts["SignVedioId"] = LDMgr.getItemInt("SignVedioId");
-
-        //console.log("SDKMgr.adDayCounts = "+JSON.stringify(SDKMgr.adDayCounts))
     }
 
     //设定SDK用户数据校验成功回调
     loginWithSDK(callback: any, target: any){
-        //console.log("loginWithSDK")
         this.sdkCheckSuccCallBack = callback;
         this.callBackTarget = target;
 
@@ -82,7 +81,6 @@ class SDKManager_class  {
             sdkWechat.loginWeiChat();
         }
         else{
-            cc.log("没有找到SDK平台")
             SDKMgr.SDK_Login();
         }
     }
@@ -115,33 +113,35 @@ class SDKManager_class  {
         }
     }
 
-    handleShareSucc(){
-        if(this.shareCallback && this.shareCallTarget){
-            setTimeout(()=>{
-                if(this.shareCallback && this.shareCallTarget){
-                    this.shareCallback.call(this.shareCallTarget, true);
-                }else{
-                    //console.log("分享回调错误");
-                }
-            }, 500)
-        }else{
-            //console.log("无分享回调");
-        }
-    }
+    // handleShareSucc(){
+    //     if(this.shareCallback && this.shareCallTarget){
+    //         setTimeout(()=>{
+    //             if(this.shareCallback && this.shareCallTarget){
+    //                 this.shareCallback.call(this.shareCallTarget, true);
+    //             }else{
+    //             }
+    //         }, 500)
+    //     }else{
+    //     }
+    // }
 
     //Banner管理
     createrBannerAd(){
         if(SDKMgr.TT != null){   
-            sdkTT.createBannerWithWidth("33a5n4jxb5h23h07h7");  //Banner广告
-            setInterval(()=>{
-                sdkTT.createBannerWithWidth("33a5n4jxb5h23h07h7");
-            }, 200000);   //每隔固定时间被调用一次
+            
+            let curTime = new Date().getTime();
+            if(curTime > SDKMgr.bannerCheckTime){
+                sdkTT.createBannerWithWidth("33a5n4jxb5h23h07h7");  //Banner广告
+                setInterval(()=>{
+                    sdkTT.createBannerWithWidth("33a5n4jxb5h23h07h7");
+                }, 100000);   //每隔固定时间被调用一次
+            }
         }
         else if(SDKMgr.WeiChat != null){
             sdkWechat.createBannerWithWidth("adunit-0895b0ed4218bdfd");  //Banner广告
             setInterval(()=>{
                 sdkWechat.createBannerWithWidth("adunit-0895b0ed4218bdfd");
-            }, 200000);   //每隔固定时间被调用一次
+            }, 100000);   //每隔固定时间被调用一次
         }
     }
 
@@ -161,10 +161,8 @@ class SDKManager_class  {
 
         if(SDKMgr.TT != null){   //qq小程序
             sdkTT.playVideoAd(adkey, ()=>{
-                //console.log("reset 激励视频广告显示失败");
                 failCallback();
             }, (succ:boolean)=>{
-                //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
                 if(succ){
                     succCallFunc();
                 }else{
@@ -174,10 +172,8 @@ class SDKManager_class  {
         }
         else if(SDKMgr.WeiChat != null){
             sdkWechat.playVideoAd(adkey, ()=>{
-                //console.log("reset 激励视频广告显示失败");
                 failCallback();
             }, (succ:boolean)=>{
-                //console.log("reset 激励视频广告正常播放结束， succ = "+succ+"; self.proTime = "+self.proTime);
                 if(succ){
                     succCallFunc();
                 }else{

@@ -1,6 +1,7 @@
 import { SDKMgr } from "./SDKManager";
 import { GameMgr } from "./GameManager";
-import RootNode, { ROOT_NODE } from "../common/rootNode";
+import { ROOT_NODE } from "../common/rootNode";
+import { FightMgr } from "./FightManager";
 
 var TT_VedioIds = {
     ChapterVedioId: "lmjod6cnnq13f9uahs",   //章节奖励  》15
@@ -343,7 +344,6 @@ export class SDK_TT  {
 
         tt.getSetting({  //获取用户的当前设置。返回值中只会出现小程序已经向用户请求过的权限。
             success(res) {
-                //console.log('res.authSetting = ' + JSON.stringify(res.authSetting));
                 if (res.authSetting['scope.userInfo']) {   //已经授权
                     sdkTT.getUserInfoFunc();   //获取用户信息
                 } else {
@@ -437,7 +437,6 @@ export class SDK_TT  {
         });
 
         bannerAd.onError(err => {
-            //console.log(err)
         });
 
         bannerAd.onResize(size => {   //如果在 onResize 的回调函数中重设 width 且总是与上一次缩放后的 width 不同，那么可能会导致 onResize 的回调函数一直触发，并卡死在 onResize 的回调函数中。
@@ -457,7 +456,6 @@ export class SDK_TT  {
                 self.curBanner = bannerAd;
               })
               .catch(err => {
-                //console.log("广告组件出现问题", err);
               });
           });
     }
@@ -475,7 +473,6 @@ export class SDK_TT  {
 
     /**预加载或播放视频广告 */
     playVideoAd(adkey: string, errorCallBack:any, videoCallBack:any, callTarget:any){
-        //console.log('preLoadAndPlayVideoAd, 预加载或播放视频广告 bPreLoad = '+bPreLoad);
         let tt = (window as any).tt;  
         if (tt == null) {
             return;
@@ -487,7 +484,6 @@ export class SDK_TT  {
 
         let self = this;
         let adId = TT_VedioIds[adkey];
-        //console.log("adId = "+adId);
         var rewardedVideoAd = tt.createRewardedVideoAd({
             adUnitId: adId
         });
@@ -496,15 +492,16 @@ export class SDK_TT  {
                 rewardedVideoAd.offLoad()
             }
         });
-        rewardedVideoAd.show()
-        .then(() => {
-            //console.log("广告显示成功");
+        rewardedVideoAd.show().then(() => {
         })
         .catch(err => {
             // 可以手动加载一次
             rewardedVideoAd.load().then(() => {
                 // 加载成功后需要再显示广告
                 return rewardedVideoAd.show();
+            })
+            .catch(err => {
+                ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
             });
         });
         rewardedVideoAd.onClose(res => {
@@ -512,18 +509,12 @@ export class SDK_TT  {
                 rewardedVideoAd.offClose()//防止多次回调
             }
             if (res && res.isEnded) {
-                //console.log("激励视频广告正常播放结束，可以下发游戏奖励， res = "+JSON.stringify(res));
                 if(self.videoCallBack && self.callTarget){
                     self.videoCallBack.call(self.callTarget, true);
-                }else{
-                    //console.log("播放成功回调错误");
                 }
             } else {
-                //console.log("激励视频广告播放中途退出，不下发游戏奖励， res = "+JSON.stringify(res));
                 if(self.videoCallBack && self.callTarget){
                     self.videoCallBack.call(self.callTarget, false);
-                }else{
-                    //console.log("播放失败回调错误");
                 }
             }
         });
@@ -531,7 +522,7 @@ export class SDK_TT  {
             if (rewardedVideoAd){
                 rewardedVideoAd.offError()
             }
-            //console.log("今日观看视频数量已达上限, err = "+err);
+            ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
         });
     }
 
@@ -628,14 +619,17 @@ export class SDK_TT  {
         this.game_recorder.onStart(res => {
             sdkTT.is_recording_video = true;
             sdkTT.startRecordTime = new Date().getTime();
+            FightMgr.getFightScene().showRecordSpr();
         });
         this.game_recorder.onStop(res => {
             sdkTT.is_recording_video = false;
             sdkTT.stopRecordTime = new Date().getTime();
             sdkTT.dealRecordVideoStopHandler(res.videoPath);
+            FightMgr.getFightScene().showRecordSpr();
         });
         this.game_recorder.onError(res => {
             sdkTT.is_recording_video = false;
+            FightMgr.getFightScene().showRecordSpr();
         });
 
         this.game_recorder.start({
@@ -671,6 +665,11 @@ export class SDK_TT  {
                 }
             });
         });
+    }
+    stopGameRecord() {
+        if (this.game_recorder) {
+            this.game_recorder.stop();
+        }
     }
 
     toutiao_startRecord_mp3() {

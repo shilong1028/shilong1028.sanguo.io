@@ -167,8 +167,9 @@ export default class ShopCell extends viewCell {
     handleBuyShop(){
         let tipsStr = "";
         //随机获取的金币值（0.5-1.0倍之间）
+        let gold = 0;
         if(this.cellData.gold > 0){
-            let gold = Math.floor((Math.random()*0.5 + 0.5)*this.cellData.gold);
+            gold = Math.floor((Math.random()*0.5 + 0.5)*this.cellData.gold);
             if(gold > 0){
                 tipsStr += ("获得金币："+gold);
                 //ROOT_NODE.showTipsText("获得金币："+gold);
@@ -176,8 +177,9 @@ export default class ShopCell extends viewCell {
             }
         }
         //随机获取的金币值（0.3-1.0倍之间）
+        let diamond = 0;
         if(this.cellData.diamond > 0){
-            let diamond = Math.floor((Math.random()*0.5 + 0.5)*this.cellData.diamond);
+            diamond = Math.floor((Math.random()*0.5 + 0.5)*this.cellData.diamond);
             if(diamond > 0){
                 if(tipsStr.length > 0){
                     tipsStr += ("   获得钻石："+diamond);
@@ -190,6 +192,7 @@ export default class ShopCell extends viewCell {
         }
         let bGetWeaopn = false;
         //随机获取武器的概率
+        let ballInfo = null;
         if(this.cellData.weapon > 0 && Math.random() <= this.cellData.weapon){
             let keys = Object.getOwnPropertyNames(CfgMgr.C_cannon_info);
             let bRandom = true;
@@ -210,10 +213,11 @@ export default class ShopCell extends viewCell {
                     //ROOT_NODE.showTipsText("获得："+weaponCfg.name);
                 }
             }
-            let ballInfo = new BallInfo(weaponId);
+            ballInfo = new BallInfo(weaponId);
             MyUserDataMgr.addBallToBallList(ballInfo.clone(), true);  //添加小球到未出战列表
         }
         //随机获取道具的概率
+        let itemInfo = null;
         if(this.cellData.item > 0 && Math.random() <= this.cellData.item){
             let keys = Object.getOwnPropertyNames(CfgMgr.C_item_info);
             let bRandom = true;
@@ -237,8 +241,11 @@ export default class ShopCell extends viewCell {
                     //ROOT_NODE.showTipsText("获得："+itemCfg.name);
                 }
             }
-            MyUserDataMgr.addItemToItemList(new ItemInfo(itemId), true);  //修改用户背包物品列表
+            itemInfo = new ItemInfo(itemId);
+            MyUserDataMgr.addItemToItemList(itemInfo.clone(), true);  //修改用户背包物品列表
         }
-        ROOT_NODE.showTipsText(tipsStr);
+        //ROOT_NODE.showTipsText(tipsStr);
+
+        GameMgr.showRewardsDialog(gold, diamond, null, itemInfo?[itemInfo]:null, ballInfo?[ballInfo]:null);
     }
 }

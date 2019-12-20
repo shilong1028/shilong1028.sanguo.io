@@ -57,7 +57,6 @@ export default class LoadingLayer extends cc.Component {
     // update (dt) {}
 
     onProgress(count, total, item) {
-        //cc.log("Loading... this.sceneName = "+this.sceneName+"; count = "+count+"; total = "+total);
         let p = 1;
         if(total != 0){
             p = count/total;
@@ -81,7 +80,7 @@ export default class LoadingLayer extends cc.Component {
         console.log("loadFinish")
         this.loadProBar.progress = 1;  
         this.node.stopAllActions();
-        this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
+        this.node.runAction(cc.sequence(cc.delayTime(0.2), cc.callFunc(function(){
             cc.director.loadScene(this.sceneName);
         }.bind(this))));  
     }

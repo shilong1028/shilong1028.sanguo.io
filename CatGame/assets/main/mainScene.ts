@@ -60,7 +60,6 @@ export default class MainScene extends cc.Component {
     curMidUIType: number = -1;   //显示中间UI，0地图关卡、1背包炮台、2商店
 
     onLoad(){
-        console.log("mainScene.onLoad")
         GameMgr.adaptBgByScene(this.topNode, this.bottomNode);   //场景背景图适配
         
         this.bLoadRoleDataFinish = false;  //是否已经加载完毕用户数据
@@ -78,7 +77,6 @@ export default class MainScene extends cc.Component {
     }
 
     onDestroy(){
-        console.log("mainScene.onDestroy")
         NotificationMy.offAll(this);
         this.node.targetOff(this);
     }
@@ -224,9 +222,6 @@ export default class MainScene extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
 
         SDKMgr.shareGame(TipsStrDef.KEY_Share, (succ:boolean)=>{
-            console.log("loginScene 分享 succ = "+succ);
-            if(succ == true){
-            }
         }, this);
     }
 

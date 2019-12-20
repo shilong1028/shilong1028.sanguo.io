@@ -116,11 +116,18 @@ export default class Brick extends cc.Component {
     clearBrickActions(){
         this.node.stopAllActions();   //用于渐变出现，下移等动作
         this.node.scale = 1.0;
+        this.node.opacity = 255;  //砖块重生时设置了opaciy = 0;
 
         if(this.brickNode){
             this.brickNode.stopAllActions();   //用于抖动，放缩，复制移动等动作目标
             this.brickNode.scale = 1.0;
             this.brickNode.position = cc.v2(0, 0);
+            this.brickNode.angle = 0;
+
+            let effNode = this.brickSpr.node.getChildByName("BrickSprEffectChild");
+            if(effNode){
+                effNode.removeFromParent(true);
+            }
         }
     }
 
@@ -187,7 +194,7 @@ export default class Brick extends cc.Component {
     }
 
     /**初始化砖块数据 */
-    initBrickInfo(brickInfo: BrickInfo){
+    initBrickInfo(brickInfo: BrickInfo, reborn: boolean=false){
         //cc.log("brick.initBrickInfo(), brickInfo = "+JSON.stringify(brickInfo))
         this.collider.points = null;
         this.collider.enabled = false;
@@ -205,8 +212,11 @@ export default class Brick extends cc.Component {
         this.setBrickHpLabel();
         this.setBrickInvincibleSpr();   //根据无敌状态设置砖块纹理
 
-        let gameBorderRect = FightMgr.gameBordersRect;   //棋盘边界矩形（中心点+宽高）
-        this.node.setPosition(-gameBorderRect.width/2 + (this.brick_info.column+0.5)*FightMgr.tileWidth,  gameBorderRect.height/2 - FightMgr.tileHeight/2);
+        if(reborn == false){
+            let gameBorderRect = FightMgr.gameBordersRect;   //棋盘边界矩形（中心点+宽高）
+            this.node.setPosition(-gameBorderRect.width/2 + (this.brick_info.column+0.5)*FightMgr.tileWidth,  gameBorderRect.height/2 - FightMgr.tileHeight/2);
+            //console.log(" brickId = "+this.brickId+"; posX = "+this.node.x+"; opt = "+this.node.opacity+"; sprOpt = "+this.brickNode.opacity+"; active = "+this.node.active+"; sprActive = "+this.brickNode.active);
+        }
 
         this.initBrickSpecialInfo();   //初始化特殊砖块的一些属性，比如移动等
     }
@@ -225,6 +235,7 @@ export default class Brick extends cc.Component {
      * @param cloneType 类型，复活（随机复活1，自身复活2)， 分裂3，复制4， 5平等或6传染
     */
     initBricvkAndMoveToPos(brickInfo: BrickInfo, cloneType:number, srcPos: cc.Vec2){
+        //console.log("initBricvkAndMoveToPos  cloneType = "+cloneType+"; srcPos = "+srcPos+"; brickInfo = "+JSON.stringify(brickInfo))
         if(this.isMoveBrick() == true){   //移动怪变成其他砖块后，移动碰撞属性暂时不消失（即变成不能移动的MoveBrick)
             this.moveToPosX = null;
             this.node.stopActionByTag(this.moveBrickActionTag);  //移动砖块的水平移动
@@ -234,7 +245,7 @@ export default class Brick extends cc.Component {
 
         this.bInvincible = false;   //每回合，受到的第一次伤害不减HP
 
-        this.initBrickInfo(brickInfo);
+        this.initBrickInfo(brickInfo, true);
         
         if(this.brickId <= 0){
             this.brickId = FightMgr.getNewBrickId();   //每个砖块分配一个唯一ID
@@ -253,6 +264,7 @@ export default class Brick extends cc.Component {
                 }.bind(this))));
             }
         }
+        this.node.opacity = 255;  //砖块重生时设置了opaciy = 0;
 
         NotificationMy.emit(NoticeType.BrickAddEvent, this);    //添加新砖块，用于移动砖块检测
     }
@@ -289,7 +301,6 @@ export default class Brick extends cc.Component {
             return;
         }
         let brickEventType = this.brick_info.monsterCfg.event;  //事件 0无 1-间隔回合无敌 2-回合第一次盾牌 3-重生。当砖块死亡时，原地复活一个y移动砖块（Id=7)
-        //cc.log("brick.setBrickInvincibleSpr(), brickEventType = "+brickEventType);
         if(this.bInvincible == true){  //是否无敌状态
             if(brickEventType == 2){ 
                 let effNode = this.brickSpr.node.getChildByName("BrickSprEffectChild");
@@ -336,7 +347,6 @@ export default class Brick extends cc.Component {
     initBrickSpecialInfo(){
         if(this.brick_info){
             let monster_ai = this.brick_info.monsterCfg.ai;   //行为 0无 1：左右往复移动 2：间隔吸附 3.坠落两行
-            //cc.log("brick.initBrickSpecialInfo(), monster_ai = "+monster_ai);
             if(monster_ai == 1){   //1：左右往复移动
                 //this.brickBgSpr.spriteFrame = this.bgFrames[1];
 
@@ -567,6 +577,7 @@ export default class Brick extends cc.Component {
                     this.handleAdsorbEffect();
                 }else{
                     this.bAdsorb = true;   //是否吸附小球
+                    this.brickNode.angle = 0;
                 }
             }
         }
@@ -740,7 +751,6 @@ export default class Brick extends cc.Component {
             this.moveBrickAction(false);   //移动砖块的水平移动
         }
 
-        //cc.log("handleBrickMoveDown(), 下移操作, this.brickId = "+this.brickId+"; data.bMove = "+data.bMove);
         if(data.bMove == false){   //停滞
             FightMgr.qipanSc.handleBrickMoveDownOver();   
         }else{
@@ -767,7 +777,6 @@ export default class Brick extends cc.Component {
 
     /**处理砖块无敌/盾牌 */
     handleBrickInvincible(){
-        //cc.log("brick.handleBrickInvincible()");
         if(this.isBrickDead() == false){
             let brickEventType = this.brick_info.monsterCfg.event;  //事件 0无 1-间隔回合无敌 2-回合第一次盾牌 3-重生。当砖块死亡时，原地复活一个y移动砖块（Id=7)
             if(brickEventType == 1){

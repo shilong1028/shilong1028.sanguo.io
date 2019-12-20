@@ -1,5 +1,5 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, SkillInfo, BallInfo } from "../manager/Enum";
+import { NoticeType, SkillInfo, BallInfo, ChapterInfo } from "../manager/Enum";
 import { AudioMgr } from "../manager/AudioMgr";
 import { FightMgr } from "../manager/FightManager";
 import QiPanSc from "./QiPanSc";
@@ -7,6 +7,8 @@ import { GameMgr } from "../manager/GameManager";
 import WenZi from "../effectAni/Wenzi";
 import Brick from "./Brick";
 import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
+import { SDKMgr } from "../manager/SDKManager";
+import { sdkTT } from "../manager/SDK_TT";
 
 const {ccclass, property} = cc._decorator;
 
@@ -24,11 +26,25 @@ export default class FightScene extends cc.Component {
     @property(cc.Label)
     levelLabel: cc.Label = null;  //第几关
 
+    @property(cc.Label)
+    chapterLabel: cc.Label = null;  //第几章
+    @property(cc.Label)
+    levelsText: cc.Label = null;   
+
+    @property(cc.Sprite)
+    recordSpr: cc.Sprite = null;   //录屏控制按钮图标
+    @property(cc.SpriteFrame)
+    recordStartFrame: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    recordEndFrame: cc.SpriteFrame = null;
+
     @property(cc.Node)
     stagnationImg: cc.Node = null;   //停滞冰冻图片
     @property(cc.Node)
     qipanNode: cc.Node = null;   //棋盘节点
 
+    @property(cc.Node)
+    speedNode: cc.Node = null;   //加速节点
     @property(cc.Sprite)
     SpeedSpr: cc.Sprite = null;  //加速
     @property([cc.SpriteFrame])
@@ -89,7 +105,6 @@ export default class FightScene extends cc.Component {
 
     /**初始化一些关键的战斗场景数据 */
     clearSceneData(bInit:boolean = false){
-        cc.log("clearSceneData")
         this.bBallSpeedDropState = false;   //小球是否已经处于抛物下落加速
         this.bTouched = false;   //用户当前是否触屏
         this.fingerPos = null;   //手指触摸位置，用于移动砖块等处的指示线绘制
@@ -104,7 +119,6 @@ export default class FightScene extends cc.Component {
     }
 
     onDestroy(){
-        console.log("fightScene.onDestroy")
         FightMgr.clearFightMgrData();
         FightMgr.qipanSc = null;   //棋盘
 
@@ -115,8 +129,12 @@ export default class FightScene extends cc.Component {
     }
 
     onLoad () {
-        console.log("fightScene.onLoad")
         GameMgr.adaptBgByScene(this.topNode);   //场景背景图适配
+
+        this.stagnationImg.opacity = 0;   //停滞冰冻图片
+        this.chapterLabel.string = ""  //第几章
+        this.levelsText.string = "";  
+        this.speedNode.active = false;
 
         AudioMgr.playEffect("effect/enterfight");
 
@@ -132,6 +150,8 @@ export default class FightScene extends cc.Component {
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
 
         this.skillList = [];   //章节技能列表，每一关累计，章节内有效
+        
+        this.showRecordSpr();
     }
 
     start () {
@@ -141,6 +161,11 @@ export default class FightScene extends cc.Component {
         FightMgr.qipanSc = this.qipanNode.getComponent(QiPanSc);   //棋盘
 
         FightMgr.loadLevel(FightMgr.level_id, false);      // 根据选择的关卡传值    
+
+        let chapterId = FightMgr.level_info.levelCfg.chapterId;
+        let chapterInfo = new ChapterInfo(chapterId);
+        this.chapterLabel.string = chapterId.toString();  //第几章
+        this.levelsText.string = "("+chapterInfo.chapterCfg.levels[0]+"-"+chapterInfo.chapterCfg.levels[1]+"关)";  
 
         if(FightMgr.level_id == 1){
             if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step2, this.guideFightMove, this) == false){  //左右拖动手指，改变发射轨迹。
@@ -217,7 +242,7 @@ export default class FightScene extends cc.Component {
 
     /**后台切回前台 */
     onShow() {
-        cc.log("************* onShow() 后台切回前台 ***********************")
+        //cc.log("************* onShow() 后台切回前台 ***********************")
         if(this.node){
             this.node.stopActionByTag(this.GameHideShowDelayActionTag);   //后台切回延迟动作Tag
             let delayAction = cc.sequence(cc.delayTime(0.05), cc.callFunc(function(){
@@ -232,7 +257,7 @@ export default class FightScene extends cc.Component {
 
     /**游戏切入后台 */
     onHide() {
-        cc.log("_____________  onHide()游戏切入后台  _____________________")
+        //cc.log("_____________  onHide()游戏切入后台  _____________________")
         //this.node.stopAllActions();   //偶尔报TypeError: Cannot read property 'stopAllActions' of null
         cc.game.pause();
     }
@@ -294,13 +319,11 @@ export default class FightScene extends cc.Component {
      *  (第一次进入战斗或者以后从结算界面继续战斗，都是由FightMgr.loadLevel触发战斗的，故需要在handleSetBricksFinish以后清空并初始化战斗场景数据)
     */
     handleSetBricksFinish(){
-        cc.log("handleSetBricksFinish");
         this.levelLabel.string = FightMgr.level_id.toString();  //第几关
 
         this.showBrickProgerss();  //显示关卡砖块进度
 
         FightMgr.bReNewLevel = false;   //是否重新开始游戏
-
         FightMgr.qipanSc.initQiPanObjs(this);   //初始化棋盘对象
 
         this.handleStartFight();
@@ -363,7 +386,6 @@ export default class FightScene extends cc.Component {
                 return false;
             }
         }else{
-            //cc.log("触摸无效 FightMgr.bGameOver = "+FightMgr.bGameOver+"; FightMgr.bFightBeginEffect = "+FightMgr.bFightBeginEffect);
             return false;
         }
     }
@@ -397,7 +419,6 @@ export default class FightScene extends cc.Component {
     onSpeedUpBtn() {   
         //(event: TouchEvent, customEventData: any)
         //这里 event 是一个 Touch Event 对象，你可以通过 event.target 取到事件的发送节点
-        //cc.log("onSpeedUpBtn(), customEventData = "+JSON.stringify(customEventData));
         AudioMgr.playEffect("effect/ui_click");
 
         this.showSpeedUpBtn();
@@ -423,7 +444,6 @@ export default class FightScene extends cc.Component {
 
     /**游戏结束 */
     gameOver(win:boolean){
-        //console.log("gameOver(), gameOver = "+FightMgr.bGameOver+"; win = "+win+"; FightMgr.bUserReset = "+FightMgr.bUserReset);
         if(FightMgr.bGameOver == true){  //该局游戏是否结束
             if(win == true || FightMgr.bUserReset == true){ //本次是否使用了复活（每关限一次，重新开始不重置）
                 this.showFightOverInfo();  //结算界面
@@ -443,7 +463,6 @@ export default class FightScene extends cc.Component {
     showStagnationImg(bShow:boolean, showRow: number=-1){
         this.stagnationImg.stopAllActions();
         if(bShow == true){
-            console.log("showStagnationImg");
             this.stagnationRow = showRow;  //显示冰冻的回合
             //this.stagnationImg.opacity = 0;   //停滞冰冻图片
             this.stagnationImg.runAction(cc.fadeIn(1.0));
@@ -486,6 +505,27 @@ export default class FightScene extends cc.Component {
                     return;
                 }
             }
+        }
+    }
+
+    onRecordBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        if(sdkTT.is_recording_video == true){     //录屏中
+            sdkTT.stopGameRecord();
+        }else{ 
+            sdkTT.createGameRecordManager();
+        }
+    }
+
+    showRecordSpr(){
+        if(SDKMgr.isSDK == true && SDKMgr.TT){
+            if(sdkTT.is_recording_video == true){     //录屏中
+                this.recordSpr.spriteFrame = this.recordEndFrame;
+            }else{ 
+                this.recordSpr.spriteFrame = this.recordStartFrame;
+            }
+        }else{
+            this.recordSpr.node.active = false;
         }
     }
 }

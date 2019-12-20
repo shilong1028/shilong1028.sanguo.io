@@ -12,6 +12,8 @@ export default class RootNode extends cc.Component {
     @property(cc.Prefab)
     pfTipsDialog: cc.Prefab = null;  //提示框
     @property(cc.Prefab)
+    pfRewardDialog: cc.Prefab = null;  //奖励提示框
+    @property(cc.Prefab)
     pfLoading: cc.Prefab = null;  //加载进度层
     @property(cc.Prefab)
     pfGoldAdd: cc.Prefab = null;  //获取金币提示框
@@ -27,7 +29,6 @@ export default class RootNode extends cc.Component {
     
     // LIFE-CYCLE CALLBACKS:
 
-    tipsPool: cc.NodePool =  null;   //缓存池
     tipsArr: string[] = [];   //提示文本数组
     tipsStep: number = 0;   //提示步骤
 
@@ -38,12 +39,9 @@ export default class RootNode extends cc.Component {
     }
 
     start () {
-        this.tipsPool =  new cc.NodePool(TipsText);   //砖块缓存池
-        //只有在new cc.NodePool(Dot)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
     }
 
     onDestroy(){
-        this.tipsPool.clear();
     }
 
     update (dt) {
@@ -56,20 +54,6 @@ export default class RootNode extends cc.Component {
                 this.createTipsText();  //创建并提示文本
             }
         }
-    }
-
-    /**从缓存池中获取或创建 */
-    createTipsFromPool(): cc.Node{
-        if (this.tipsPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
-            return this.tipsPool.get();
-        } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
-            return cc.instantiate(this.pfTipsText);
-        }
-    }
-
-    /**回收到缓存池 */
-    removeTipsToPool(brick: cc.Node){
-        this.tipsPool.put(brick); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
     }
 
     /**显示提示文本 */
@@ -94,6 +78,10 @@ export default class RootNode extends cc.Component {
             cc.director.getScene().addChild(tips);
             tips.getComponent(TipsText).initTipsText(tipStr);
         }
+    }
+
+    clearTipsText(){
+        this.tipsArr = [];
     }
 }
 

@@ -109,6 +109,7 @@ export default class FightResult extends cc.Component {
         }
         this.rewardLabel.string = "+"+GameMgr.num2e(this.rewardGold);
         MyUserDataMgr.updateUserGold(this.rewardGold);
+        ROOT_NODE.showTipsText("获得金币："+this.rewardGold);
 
         MyUserDataMgr.saveLevelFightInfo(FightMgr.level_id, FightMgr.win, FightMgr.stars);
 
@@ -145,7 +146,9 @@ export default class FightResult extends cc.Component {
                 this.node.removeFromParent(true);
                 FightMgr.loadLevel(FightMgr.level_id+1, false);      //下一关
             }else{
-                GameMgr.gotoMainScene();
+                this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
+                    GameMgr.gotoMainScene();
+                })))
             }
         }
     }
@@ -157,7 +160,9 @@ export default class FightResult extends cc.Component {
             GameMgr.showLayer(this.pfChapterResult);
             this.node.removeFromParent(true);
         }else{
-            GameMgr.gotoMainScene();
+            this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
+                GameMgr.gotoMainScene();
+            })))
         }
     }
 }

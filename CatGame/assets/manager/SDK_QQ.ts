@@ -62,18 +62,6 @@ export class SDK_QQ  {
         //平台上的分享图片编号
         let imgIds = ['JYY2Z/rRTJ2U9IeEVGSwgw=='];
 
-        qq.updateShareMenu({
-            withShareTicket: true,
-            success(res) {
-                //console.log("分享成功", res);
-                SDKMgr.handleShareSucc();
-            },
-            fail(res) {
-                //console.log("分享失败", res);
-
-            }
-        })
-
         qq.shareAppMessage({
             title: titleStr,
             imageUrlId: imgIds[0],
@@ -113,7 +101,6 @@ export class SDK_QQ  {
         });
 
         bannerAd.onError(err => {
-            //console.log(err)
         });
 
         bannerAd.onResize(res => {   //如果在 onResize 的回调函数中重设 width 且总是与上一次缩放后的 width 不同，那么可能会导致 onResize 的回调函数一直触发，并卡死在 onResize 的回调函数中。
@@ -139,7 +126,6 @@ export class SDK_QQ  {
 
     /**预加载或播放视频广告 */
     playVideoAd(adkey: string, errorCallBack:any, videoCallBack:any, callTarget:any){
-        //console.log('preLoadAndPlayVideoAd, 预加载或播放视频广告 bPreLoad = '+bPreLoad);
         let qq = (window as any).qq;  
         if (qq == null) {
             return;
@@ -151,7 +137,6 @@ export class SDK_QQ  {
 
         let self = this;
         let adId = QQ_VedioIds[adkey];
-        //console.log("adId = "+adId);
         var rewardedVideoAd = qq.createRewardedVideoAd({
             adUnitId: adId
         });
@@ -176,18 +161,12 @@ export class SDK_QQ  {
                 rewardedVideoAd.offClose()//防止多次回调
             }
             if (res && res.isEnded) {
-                //console.log("激励视频广告正常播放结束，可以下发游戏奖励， res = "+JSON.stringify(res));
                 if(self.videoCallBack && self.callTarget){
                     self.videoCallBack.call(self.callTarget, true);
-                }else{
-                    //console.log("播放成功回调错误");
                 }
             } else {
-                //console.log("激励视频广告播放中途退出，不下发游戏奖励， res = "+JSON.stringify(res));
                 if(self.videoCallBack && self.callTarget){
                     self.videoCallBack.call(self.callTarget, false);
-                }else{
-                    //console.log("播放失败回调错误");
                 }
             }
         });
@@ -195,7 +174,6 @@ export class SDK_QQ  {
             if (rewardedVideoAd){
                 rewardedVideoAd.offError()
             }
-            //console.log("今日观看视频数量已达上限, err = "+err);
         });
 
     }
@@ -213,14 +191,8 @@ export class SDK_QQ  {
         //微信账号登录
         qq.login({
             success(res) {
-                //console.log('登录！res = ' + JSON.stringify(res));
-                //res = {"errMsg":"login:ok","code":"023uNqjb1xlyMw0yYDjb1Vy5jb1uNqjQ"}
-                //发送 res.code 到后台换取 openId, sessionKey, unionId
                 if (res.code) {
-                    //console.log('登录成功！' + res.code);
                     self.getUserInfo();  //请求用户信息或授权请求
-                } else {
-                    //console.log('获取用户登录态失败！' + res.errMsg)
                 }
             }
         })
@@ -235,7 +207,6 @@ export class SDK_QQ  {
         let self = this;
         qq.getSetting({  //获取用户的当前设置。返回值中只会出现小程序已经向用户请求过的权限。
             success(res) {
-                //console.log('res.authSetting = ' + JSON.stringify(res.authSetting));
                 if (res.authSetting['scope.userInfo']) {   //已经授权
                     self.getUserInfoFunc();   //获取用户信息
                 } else {
@@ -260,12 +231,10 @@ export class SDK_QQ  {
         // 必须是在用户已经授权的情况下调用
         qq.getUserInfo({  //获取用户信息,自从微信接口有了新的调整之后 这个wx.getUserInfo（）便不再出现授权弹窗了，需要使用button做引导
             success(res) {
-                //console.log('getUserInfoFunc() res = ' + JSON.stringify(res));
                 self.onLoginOK(res);
             },
             fail(res) {
                 // 获取失败的去引导用户授权
-                //console.log('获取用户信息失败！res = ' + JSON.stringify(res));
                 //不授权登录
                 self.onLoginOK(null);
             }
