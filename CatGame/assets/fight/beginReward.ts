@@ -50,7 +50,8 @@ export default class NewClass extends cc.Component {
         this.vedioBtn.interactable = false; 
 
         SDKMgr.showVedioAd("KaijuVedioId", ()=>{
-            this.handleReward();   //失败
+            this.vedioBtn.interactable = true; 
+            //this.handleReward();   //失败
         }, ()=>{
             this.handleReward(true);    //成功
         });  

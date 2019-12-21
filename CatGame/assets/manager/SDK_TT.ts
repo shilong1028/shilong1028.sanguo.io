@@ -473,6 +473,7 @@ export class SDK_TT  {
 
     /**预加载或播放视频广告 */
     playVideoAd(adkey: string, errorCallBack:any, videoCallBack:any, callTarget:any){
+        console.log("playVideoAd adkey = "+adkey)
         let tt = (window as any).tt;  
         if (tt == null) {
             return;
@@ -482,47 +483,62 @@ export class SDK_TT  {
         this.videoCallBack = videoCallBack;   //播放视频成功回调
         this.errorCallBack = errorCallBack;   //加载视频失败回调
 
-        let self = this;
         let adId = TT_VedioIds[adkey];
+        console.log("playVideoAd adId = "+adId)
         var rewardedVideoAd = tt.createRewardedVideoAd({
             adUnitId: adId
         });
+        rewardedVideoAd.canHandleCallBack = true;
+
         rewardedVideoAd.onLoad(() =>{
-            if (rewardedVideoAd){
-                rewardedVideoAd.offLoad()
-            }
+            // if (rewardedVideoAd){
+            //     rewardedVideoAd.offLoad()
+            // }
         });
         rewardedVideoAd.show().then(() => {
+            console.log("视频显示")
         })
         .catch(err => {
             // 可以手动加载一次
+            console.log("视频显示失败， 手动拉去一次")
             rewardedVideoAd.load().then(() => {
                 // 加载成功后需要再显示广告
                 return rewardedVideoAd.show();
             })
             .catch(err => {
                 ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
+                if(rewardedVideoAd.canHandleCallBack && sdkTT.videoCallBack && sdkTT.callTarget){
+                    rewardedVideoAd.canHandleCallBack = false;
+                    sdkTT.videoCallBack.call(sdkTT.callTarget, false);
+                }
             });
         });
         rewardedVideoAd.onClose(res => {
-            if (rewardedVideoAd){
-                rewardedVideoAd.offClose()//防止多次回调
-            }
-            if (res && res.isEnded) {
-                if(self.videoCallBack && self.callTarget){
-                    self.videoCallBack.call(self.callTarget, true);
-                }
-            } else {
-                if(self.videoCallBack && self.callTarget){
-                    self.videoCallBack.call(self.callTarget, false);
+            // if (rewardedVideoAd){
+            //     rewardedVideoAd.offClose()//防止多次回调
+            // }
+            if(rewardedVideoAd.canHandleCallBack == true){
+                rewardedVideoAd.canHandleCallBack = false;
+                if (res && res.isEnded) {
+                    if(sdkTT.videoCallBack && sdkTT.callTarget){
+                        sdkTT.videoCallBack.call(sdkTT.callTarget, true);
+                    }
+                } else {
+                    if(sdkTT.videoCallBack && sdkTT.callTarget){
+                        sdkTT.videoCallBack.call(sdkTT.callTarget, false);
+                    }
                 }
             }
         });
         rewardedVideoAd.onError(err => {
-            if (rewardedVideoAd){
-                rewardedVideoAd.offError()
-            }
+            // if (rewardedVideoAd){
+            //     rewardedVideoAd.offError()
+            // }
             ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
+            if(rewardedVideoAd.canHandleCallBack && sdkTT.videoCallBack && sdkTT.callTarget){
+                rewardedVideoAd.canHandleCallBack = false;
+                sdkTT.videoCallBack.call(sdkTT.callTarget, false);
+            }
         });
     }
 

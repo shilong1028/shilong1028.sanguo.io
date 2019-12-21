@@ -24,8 +24,8 @@ class SDKManager_class  {
     initSDK(){
         SDKMgr.initAdDayCount();
 
-        //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
-        SDKMgr.TT = (window as any).tt;;  //字节跳动
+        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        //SDKMgr.TT = (window as any).tt;;  //字节跳动
         SDKMgr.bannerCheckTime = 1577121839000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
         if(SDKMgr.TT != null){   //字节跳动小程序
@@ -35,6 +35,7 @@ class SDKManager_class  {
         }
         else if(SDKMgr.WeiChat != null){   //微信小游戏
             SDKMgr.isSDK = true;
+            SDKMgr.TT = null;
             sdkWechat.initSDK();
         }
         else {

@@ -57,7 +57,8 @@ export default class ChapterResult extends cc.Component {
         this.vedioBtn.interactable = false; 
 
         SDKMgr.showVedioAd("ChapterVedioId", ()=>{
-            this.handleReward();   //失败
+            this.vedioBtn.interactable = true;
+            //this.handleReward();   //失败
         }, ()=>{
             this.handleReward(2);    //成功
         });  
@@ -79,11 +80,11 @@ export default class ChapterResult extends cc.Component {
 
         if(times > 1){
             GameMgr.showRewardsDialog(gold, diamond, ()=>{
-                GameMgr.gotoMainScene();
+                FightMgr.getFightScene().exitFightScene();
             });
         }else{
             this.node.runAction(cc.sequence(cc.delayTime(0.1* times), cc.callFunc(function(){
-                GameMgr.gotoMainScene();
+                FightMgr.getFightScene().exitFightScene();
             })));
         }
     }

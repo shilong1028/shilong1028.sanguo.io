@@ -84,8 +84,6 @@ export default class PauseInfo extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
         NotificationMy.emit(NoticeType.GameReStart, null);  //重新开始游戏
 
-        this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
-            GameMgr.gotoMainScene();
-        })))
+        FightMgr.getFightScene().exitFightScene();
     }
 }

@@ -80,7 +80,9 @@ export default class FightRenew extends cc.Component {
         this.bVideoPlaying = true;   //视频播放中
 
         SDKMgr.showVedioAd("FuhuoVedioId", ()=>{
-            this.handleNormal(false);   //失败
+            this.vedioBtn.interactable = true; 
+            this.bVideoPlaying = false;   //视频播放中
+            //this.handleNormal(false);   //失败
         }, ()=>{
             this.handleNormal(true);  //成功
         }); 

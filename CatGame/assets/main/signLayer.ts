@@ -90,7 +90,8 @@ export default class SignLayer extends cc.Component {
             this.curSelCell.onSigned();
             
             SDKMgr.showVedioAd("SignVedioId", ()=>{
-                this.handleReward();   //失败
+                this.setBtnGray(false);
+                //this.handleReward();   //失败
             }, ()=>{
                 this.handleReward(2);    //成功
             });  

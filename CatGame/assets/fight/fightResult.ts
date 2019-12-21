@@ -151,7 +151,7 @@ export default class FightResult extends cc.Component {
                 this.node.removeFromParent(true);
                 FightMgr.loadLevel(FightMgr.level_id+1, false);      //下一关
             }else{
-                GameMgr.gotoMainScene();
+                FightMgr.getFightScene().exitFightScene();
             }
         }
     }
@@ -163,7 +163,7 @@ export default class FightResult extends cc.Component {
             GameMgr.showLayer(this.pfChapterResult);
             this.node.removeFromParent(true);
         }else{
-            GameMgr.gotoMainScene();
+            FightMgr.getFightScene().exitFightScene();
         }
     }
 }

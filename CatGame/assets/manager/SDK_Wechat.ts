@@ -144,10 +144,12 @@ export class SDK_Wechat  {
         var rewardedVideoAd = wx.createRewardedVideoAd({
             adUnitId: adId
         });
+        rewardedVideoAd.canHandleCallBack = true;
+
         rewardedVideoAd.onLoad(() =>{
-            if (rewardedVideoAd){
-                rewardedVideoAd.offLoad()
-            }
+            // if (rewardedVideoAd){
+            //     rewardedVideoAd.offLoad()
+            // }
         });
         rewardedVideoAd.show().then(() => {
         })
@@ -159,27 +161,39 @@ export class SDK_Wechat  {
             })
             .catch(err => {
                 ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
+                if(rewardedVideoAd.canHandleCallBack && sdkWechat.videoCallBack && sdkWechat.callTarget){
+                    rewardedVideoAd.canHandleCallBack = false;
+                    sdkWechat.videoCallBack.call(sdkWechat.callTarget, false);
+                }
             });
         });
         rewardedVideoAd.onClose(res => {
-            if (rewardedVideoAd){
-                rewardedVideoAd.offClose()//防止多次回调
-            }
-            if (res && res.isEnded) {
-                if(self.videoCallBack && self.callTarget){
-                    self.videoCallBack.call(self.callTarget, true);
-                }
-            } else {
-                if(self.videoCallBack && self.callTarget){
-                    self.videoCallBack.call(self.callTarget, false);
+            // if (rewardedVideoAd){
+            //     rewardedVideoAd.offClose()//防止多次回调
+            // }
+            console.log("onClose canHandleCallBack = "+rewardedVideoAd.canHandleCallBack)
+            if(rewardedVideoAd.canHandleCallBack == true){
+                rewardedVideoAd.canHandleCallBack = false;
+                if (res && res.isEnded) {
+                    if(self.videoCallBack && self.callTarget){
+                        self.videoCallBack.call(self.callTarget, true);
+                    }
+                } else {
+                    if(self.videoCallBack && self.callTarget){
+                        self.videoCallBack.call(self.callTarget, false);
+                    }
                 }
             }
         });
         rewardedVideoAd.onError(err => {
-            if (rewardedVideoAd){
-                rewardedVideoAd.offError()
-            }
+            // if (rewardedVideoAd){
+            //     rewardedVideoAd.offError()
+            // }
             ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
+            if(rewardedVideoAd.canHandleCallBack && sdkWechat.videoCallBack && sdkWechat.callTarget){
+                rewardedVideoAd.canHandleCallBack = false;
+                sdkWechat.videoCallBack.call(sdkWechat.callTarget, false);
+            }
         });
 
     }

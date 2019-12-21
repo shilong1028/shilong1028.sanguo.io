@@ -113,9 +113,21 @@ export default class QiPanSc extends cc.Component {
         this.clearQiPanData();
     }
 
-    onDestroy(){
+    preDestory(){
+        console.log("qipan preDestory")
         this.node.stopAllActions();
         NotificationMy.offAll(this);
+
+        this.nBricks.removeAllChildren(true);
+        this.nBalls.removeAllChildren(true);
+        this.nEffect.removeAllChildren(true);
+        this.node.removeAllChildren(true);
+    }
+
+    onDestroy(){
+        console.log("qipan destory")
+        // this.node.stopAllActions();
+        // NotificationMy.offAll(this);
     }
 
     start () {

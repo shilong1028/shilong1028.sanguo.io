@@ -6,7 +6,6 @@ import { MyUserDataMgr } from "./MyUserData";
 import { AudioMgr } from "./AudioMgr";
 import { TipsStrDef, ItemInfo, BallInfo, SkillInfo } from "./Enum";
 import TipsReward from "../common/tipsReward";
-import { FightMgr } from "./FightManager";
 
 
 //游戏菜单管理器
@@ -136,11 +135,6 @@ class GameManager {
 
     //切换到主场景
     gotoMainScene(){	
-        let fightScene = FightMgr.getFightScene();
-        if(fightScene){
-            fightScene.preDestory();
-        }
-
         this.goToSceneWithLoading("mainScene", true);
     } 
 

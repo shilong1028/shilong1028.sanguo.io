@@ -118,11 +118,22 @@ export default class FightScene extends cc.Component {
         }
     }
 
+    exitFightScene(){
+        console.log("fightScene exitFightScene")
+        this.preDestory();
+        this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
+            GameMgr.gotoMainScene();   //进入主场景
+        })))
+    }
+
     //从战场退出到大厅，有时候回报Cannot read property '_activeInHierarchy' of null;at setTimeout callback function
     preDestory(){
         console.log("fightScene preDestory")
         FightMgr.clearFightMgrData();
+        FightMgr.qipanSc.clearQiPanData();
+        FightMgr.qipanSc.preDestory();
         FightMgr.qipanSc = null;   //棋盘
+        this.qipanNode.removeFromParent(true);
         this.brickPool.clear();
 
         this.node.targetOff(this);
