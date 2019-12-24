@@ -121,6 +121,7 @@ export const LDKey = {
     KEY_TotalLineTime: "KEY_TotalLineTime",   //总的在线时长（每500s更新记录一次）
     KEY_LastGoldTaxTime: "KEY_LastGoldTaxTime",   //上一次收税金时间
     KEY_SignTime: "KEY_SignTime",   //当前签到索引和上一次签到时间
+    KEY_VedioTime: "KEY_VedioTime",   //当天看视频次数和上一次视频时间
 
     KEY_BallList: "KEY_BallList",  //未出战小球列表
     KEY_CurPlayerId: "KEY_CurPlayerId",    //当前使用炮索引

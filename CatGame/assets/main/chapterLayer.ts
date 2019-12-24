@@ -5,6 +5,7 @@ import { AudioMgr } from "../manager/AudioMgr";
 import { PlayerInfo, TipsStrDef, ChapterInfo } from "../manager/Enum";
 import { ROOT_NODE } from "../common/rootNode";
 import { FightMgr } from "../manager/FightManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -30,7 +31,7 @@ export default class ChapterLayer extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    curChapterIdx: number = -1;   //当前章节索引
+    curChapterIdx: number = -1;   //当前章节索引 
 
     onLoad () {
         this.chapterLabel.string = "";
@@ -109,6 +110,18 @@ export default class ChapterLayer extends cc.Component {
     onFightBtn(){
         AudioMgr.playEffect("effect/ui_click");
 
+        let costGold = (this.curChapterIdx+1) * 100;
+        if(MyUserData.GoldCount >= costGold){
+            MyUserDataMgr.updateUserGold(-costGold); 
+            this.handleStartFightBtn();
+        }else{
+            ROOT_NODE.showTipsText("进入章节需要花费"+costGold+"金币！");
+            GameMgr.showGoldAddDialog();  //获取金币提示框
+            ROOT_NODE.showTipsText("进入章节需要花费"+costGold+"金币！");
+        }
+    }
+
+    handleStartFightBtn(){
         let curPlayerInfo: PlayerInfo = MyUserDataMgr.getCurPlayerInfo();
         if(curPlayerInfo){  
             if(curPlayerInfo.ballId == 0){
@@ -129,6 +142,13 @@ export default class ChapterLayer extends cc.Component {
                     ROOT_NODE.showTipsText("章节信息有误！");
                 }
             }
+        }
+    }
+
+    onBoxBtn(){
+        GameMgr.boxTouchCount ++;
+        if(GameMgr.boxTouchCount == 10 && SDKMgr.bAutoPlayVedio == false){
+            SDKMgr.autoPlayAdVedio();
         }
     }
 }

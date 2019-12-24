@@ -36,13 +36,13 @@ export default class FightRenew extends cc.Component {
     }
 
     start () {
-        let curChapterInfo = new ChapterInfo(FightMgr.level_info.levelCfg.chapterId);
-        if(curChapterInfo){
-            let levelNum = curChapterInfo.chapterCfg.levels[1]-curChapterInfo.chapterCfg.levels[0];
-            let val = Math.ceil(curChapterInfo.chapterCfg.diamond/levelNum);
-            this.goldCost = Math.ceil(val/5)*5;
-        }
-        
+        // let curChapterInfo = new ChapterInfo(FightMgr.level_info.levelCfg.chapterId);
+        // if(curChapterInfo){
+        //     let levelNum = curChapterInfo.chapterCfg.levels[1]-curChapterInfo.chapterCfg.levels[0];
+        //     let val = Math.ceil(curChapterInfo.chapterCfg.diamond/levelNum);
+        //     this.goldCost = Math.ceil(val/5)*5;
+        // }
+        this.goldCost = FightMgr.level_info.levelCfg.chapterId * 10;
         this.diamondLable.string = this.goldCost.toString();
     }
 

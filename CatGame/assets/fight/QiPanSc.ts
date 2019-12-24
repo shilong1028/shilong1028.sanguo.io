@@ -213,6 +213,7 @@ export default class QiPanSc extends cc.Component {
 
     /**处理游戏结束，有时候需要延迟 */
     hanldeGameOver(win: boolean){
+        FightMgr.getFightScene().stopGameWinwDelayAction();
         if(FightMgr.bGameOver == false){  //该局游戏是否结束
             FightMgr.bGameOver = true;   
             FightMgr.win = win;

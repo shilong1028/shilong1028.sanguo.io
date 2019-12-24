@@ -19,6 +19,8 @@ export var MyUserData = {
 
     lastSignIdx: 0,   //上一次签到索引 1-7
     lastSignTime: 0,   //上一次签到时间
+    lastVedioTime: 0,   //上一次看视频时间
+    vedioCount: 0,   //当天看视频次数
 
     ballList: [],   //未出战小球列表 
     
@@ -57,6 +59,10 @@ class MyUserManager {
         MyUserData.lastSignIdx = 0;   //上一次签到索引 1-7
         MyUserData.lastSignTime = 0;   //上一次签到时间
         LDMgr.setItem(LDKey.KEY_SignTime, "0-0");
+
+        MyUserData.vedioCount = 0;   //当天看视频次数
+        MyUserData.lastVedioTime = 0;  //上一次看视频时间
+        LDMgr.setItem(LDKey.KEY_VedioTime, "0-0");
 
         MyUserData.ballList = [];  //未出战小球列表 
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
@@ -115,6 +121,15 @@ class MyUserManager {
             MyUserData.lastSignTime = parseInt(signData.val);
         }
 
+        let vedioData = LDMgr.getItemKeyVal(LDKey.KEY_VedioTime); //当天看视频次数和上一次视频时间
+        if(vedioData == null){
+            MyUserData.vedioCount = 0;   //当天看视频次数
+            MyUserData.lastVedioTime = 0;  //上一次看视频时间
+        }else{
+            MyUserData.vedioCount = parseInt(vedioData.key);
+            MyUserData.lastVedioTime = parseInt(vedioData.val);
+        }
+
         MyUserData.ballList = this.getBallListByLD();    //未出战小球列表 
 
         MyUserData.curPlayerId = LDMgr.getItemInt(LDKey.KEY_CurPlayerId, 0);  //当前使用的炮索引
@@ -151,6 +166,17 @@ class MyUserManager {
         MyUserData.lastSignTime = signTime;
 
         LDMgr.setItem(LDKey.KEY_SignTime, MyUserData.lastSignIdx.toString()+"-"+MyUserData.lastSignTime);
+    }
+
+    //更新当天看视频次数和上一次视频时间
+    updateVedioTime(count: number, vedioTime: number){
+        if(MyUserData.vedioCount == count && MyUserData.lastVedioTime == vedioTime){
+            return;
+        }
+        MyUserData.vedioCount = count;   //当天看视频次数
+        MyUserData.lastVedioTime = vedioTime;  //上一次看视频时间
+
+        LDMgr.setItem(LDKey.KEY_VedioTime, MyUserData.vedioCount.toString()+"-"+MyUserData.lastVedioTime);
     }
 
     //当前章节id

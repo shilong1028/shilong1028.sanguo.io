@@ -21,6 +21,8 @@ class GameManager {
     ShopCount: number = 4;   //商品种类
     SkillCount: number = 9;   //技能数量
 
+    boxTouchCount: number = 0;  
+
     /************************  以下为UI接口  ************** */
 
     goToSceneWithLoading(sceneName:string, bShowLoading: boolean = true){

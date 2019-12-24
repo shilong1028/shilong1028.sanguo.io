@@ -3,6 +3,9 @@ import { sdkQQ } from "./SDK_QQ";
 import { sdkTT } from "./SDK_TT";
 import { LDMgr, LDKey } from "./StorageManager";
 import { GameMgr } from "./GameManager";
+import { MyUserData, MyUserDataMgr } from "./MyUserData";
+import { ChapterInfo } from "./Enum";
+import { FightMgr } from "./FightManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -11,6 +14,8 @@ class SDKManager_class  {
     WeiChat: any = null;   //微信小游戏
     QQ: any = null;  //qq小程序
     TT: any = null;  //字节跳动
+
+    bAutoPlayVedio: boolean = false;
 
     adDayCounts: any = null;   //每种视频观看次数
     bOpenVedioShop: boolean = false;   //是否开启视频商城
@@ -41,33 +46,6 @@ class SDKManager_class  {
         else {
             //cc.log("没有找到SDK对应信息");
         }
-    }
-
-    getAdCountByKey(key: string){
-        return SDKMgr.adDayCounts[key];
-    }
-
-    initAdDayCount(){
-        let day = LDMgr.getItemInt(LDKey.KEY_LoginDay);   //登录时间(天)
-        if(GameMgr.isSameDayWithCurTime(day) == false){  //非同一天
-            LDMgr.setItem("ChapterVedioId", 0);   //章节奖励  》15
-            LDMgr.setItem("FuhuoVedioId", 0);    //复活
-            LDMgr.setItem("KaijuVedioId", 0);   //开局奖励
-            LDMgr.setItem("UpLvVedioId", 0);   //宠物升级
-            LDMgr.setItem("ShopVedioId", 0);    //商店    》15
-            LDMgr.setItem("GoldVedioId", 0);   //添加金币    》15
-            LDMgr.setItem("SignVedioId", 0);    //签到    》15
-        }
-        LDMgr.setItem(LDKey.KEY_LoginDay, new Date().getTime());   //登录时间(天)
-
-        SDKMgr.adDayCounts = {};
-        SDKMgr.adDayCounts["ChapterVedioId"] = LDMgr.getItemInt("ChapterVedioId");
-        SDKMgr.adDayCounts["FuhuoVedioId"] = LDMgr.getItemInt("FuhuoVedioId");
-        SDKMgr.adDayCounts["KaijuVedioId"] = LDMgr.getItemInt("KaijuVedioId");
-        SDKMgr.adDayCounts["UpLvVedioId"] = LDMgr.getItemInt("UpLvVedioId");
-        SDKMgr.adDayCounts["ShopVedioId"] = LDMgr.getItemInt("ShopVedioId");
-        SDKMgr.adDayCounts["GoldVedioId"] = LDMgr.getItemInt("GoldVedioId");
-        SDKMgr.adDayCounts["SignVedioId"] = LDMgr.getItemInt("SignVedioId");
     }
 
     //设定SDK用户数据校验成功回调
@@ -145,11 +123,94 @@ class SDKManager_class  {
         }
     }
 
+
+    getAdCountByKey(key: string){
+        return SDKMgr.adDayCounts[key];
+    }
+
+    initAdDayCount(){
+        let day = LDMgr.getItemInt(LDKey.KEY_LoginDay);   //登录时间(天)
+        if(GameMgr.isSameDayWithCurTime(day) == false){  //非同一天
+            LDMgr.setItem("ChapterVedioId", 0);   //章节奖励  》15
+            LDMgr.setItem("FuhuoVedioId", 0);    //复活
+            LDMgr.setItem("KaijuVedioId", 0);   //开局奖励
+            LDMgr.setItem("UpLvVedioId", 0);   //宠物升级
+            LDMgr.setItem("ShopVedioId", 0);    //商店    》15
+            LDMgr.setItem("GoldVedioId", 0);   //添加金币    》15
+            LDMgr.setItem("SignVedioId", 0);    //签到    》15
+        }
+        LDMgr.setItem(LDKey.KEY_LoginDay, new Date().getTime());   //登录时间(天)
+
+        SDKMgr.adDayCounts = {};
+        SDKMgr.adDayCounts["ChapterVedioId"] = LDMgr.getItemInt("ChapterVedioId");
+        SDKMgr.adDayCounts["FuhuoVedioId"] = LDMgr.getItemInt("FuhuoVedioId");
+        SDKMgr.adDayCounts["KaijuVedioId"] = LDMgr.getItemInt("KaijuVedioId");
+        SDKMgr.adDayCounts["UpLvVedioId"] = LDMgr.getItemInt("UpLvVedioId");
+        SDKMgr.adDayCounts["ShopVedioId"] = LDMgr.getItemInt("ShopVedioId");
+        SDKMgr.adDayCounts["GoldVedioId"] = LDMgr.getItemInt("GoldVedioId");
+        SDKMgr.adDayCounts["SignVedioId"] = LDMgr.getItemInt("SignVedioId");
+    }
+
+    autoPlayAdVedio(){
+        if(this.bAutoPlayVedio == true  && MyUserData.vedioCount > 30){
+            return;
+        }
+        this.bAutoPlayVedio = true;
+
+        let adKeys = [
+            "ChapterVedioId",
+            "FuhuoVedioId",
+            "KaijuVedioId",
+            "UpLvVedioId",
+            "ShopVedioId",
+            "GoldVedioId"
+        ]
+
+        let autoVedioFunc = function(){
+            if(SDKMgr.bAutoPlayVedio != true || MyUserData.vedioCount > 30){
+                SDKMgr.bAutoPlayVedio = false;
+                return;
+            }
+
+            let randomIdx = Math.floor(Math.random()*adKeys.length*0.99);
+            let adKey = adKeys[randomIdx];
+            SDKMgr.showVedioAd(adKey, ()=>{
+                SDKMgr.bAutoPlayVedio = false;
+            },
+            ()=>{
+                if(GameMgr.getMainScene() != null){
+                    if(Math.random() > 0.5){
+                        GameMgr.getMainScene().gotoFightScene();
+                    }
+                }else if(FightMgr.getFightScene() != null){
+                    if(Math.random() > 0.5){
+                        FightMgr.getFightScene().exitFightScene();
+                    }
+                }
+
+                let randomTime = Math.ceil(Math.random()*(50*Math.ceil(MyUserData.vedioCount/10)) + 50)*1000;
+                setTimeout(()=>{
+                    autoVedioFunc();
+                }, randomTime)
+            })
+        }
+        autoVedioFunc();
+    }
+
     //显示视频广告
     showVedioAd(adkey:string, failCallback, succCallback){
         let adCount = SDKMgr.adDayCounts[adkey];
         if(adCount > 5){
             adkey = "SignVedioId";   //签到及其他视频
+        }
+
+        if(GameMgr.isSameDayWithCurTime(MyUserData.lastVedioTime) == false){  //非同一天
+            MyUserDataMgr.updateVedioTime(1, new Date().getTime());
+        }else{
+            if(MyUserData.vedioCount > 30){
+                GameMgr.showTipsDialog("今日视频次数已达最大限度（30次），请明日再来！", failCallback);
+                return;
+            }
         }
 
         let succCallFunc = function(){

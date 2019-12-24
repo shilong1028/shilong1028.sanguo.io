@@ -91,6 +91,7 @@ export default class FightScene extends cc.Component {
     brickPool: cc.NodePool =  null;   //砖块缓存池
 
     GameHideShowDelayActionTag: 2222;   //后台切回延迟动作Tag
+    GameWinwDelayActionTag: 1001;   //砖块全部死亡
     
     bBallSpeedDropState: boolean = false;   //小球是否已经处于抛物下落加速
     bTouched: boolean = false;  //用户当前是否触屏
@@ -355,10 +356,21 @@ export default class FightScene extends cc.Component {
         let progress = tempNum / FightMgr.brickBreakAim;
         if(progress < 0){
             progress = 0;
+
+            let delayAction = cc.sequence(cc.delayTime(0.2), cc.callFunc(function(){
+                this.qipanSc.hanldeGameOver(true);
+            }.bind(this)));
+            delayAction.setTag(this.GameWinwDelayActionTag);
+            this.stopGameWinwDelayAction();
+            this.node.runAction(delayAction);
         }else if(progress > 1){
             progress = 1;
         }
         this.pbRoundBar.progress = progress;
+    }
+
+    stopGameWinwDelayAction(){
+        this.node.stopActionByTag(this.GameWinwDelayActionTag);
     }
 
     touchStart(event: cc.Touch){

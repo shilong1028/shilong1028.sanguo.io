@@ -75,6 +75,7 @@ export default class MainScene extends cc.Component {
         if(SDKMgr.isSDK == true){
             this.shareBtn.active = true;  //分享
         }
+        GameMgr.boxTouchCount = 0;
     }
 
     onDestroy(){
@@ -138,8 +139,13 @@ export default class MainScene extends cc.Component {
     guideFight(step: GuideStepEnum){
         GuideMgr.showGuideLayer(null, ()=>{
             GuideMgr.endGuide_NewPlayer(step);
-            this.chapterNode.getComponent(ChapterLayer).onFightBtn();
+            this.gotoFightScene();
         }, cc.size(300, 120), cc.v2(0, -240));
+    }
+    gotoFightScene(){
+        if(this.chapterNode){
+            this.chapterNode.getComponent(ChapterLayer).handleStartFightBtn();
+        }
     }
 
     // update (dt) {
@@ -184,6 +190,7 @@ export default class MainScene extends cc.Component {
         if(this.curMidUIType == uiType){
             return;
         }
+        GameMgr.boxTouchCount = 0;
 
         this.showBtnSprFrame(false);
         this.curMidUIType = uiType;   //显示中间UI，0地图关卡、1背包炮台、2商店
