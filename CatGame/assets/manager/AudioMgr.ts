@@ -101,6 +101,14 @@ class AudioMgr_class {
         }
     }
 
+    playYinfu(){
+       let idx = Math.ceil(Math.random()*20);
+       if(idx == 0){
+           idx = 1;
+       }
+       AudioMgr.playEffect("effect/yinfu"+idx);    //砖块碰撞音效
+    }
+
 }
 
 export var AudioMgr = new AudioMgr_class();

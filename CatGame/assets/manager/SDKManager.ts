@@ -1,11 +1,10 @@
 import { sdkWechat } from "./SDK_Wechat";
-import { sdkQQ } from "./SDK_QQ";
 import { sdkTT } from "./SDK_TT";
 import { LDMgr, LDKey } from "./StorageManager";
 import { GameMgr } from "./GameManager";
 import { MyUserData, MyUserDataMgr } from "./MyUserData";
-import { ChapterInfo } from "./Enum";
 import { FightMgr } from "./FightManager";
+import { ROOT_NODE } from "../common/rootNode";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -16,7 +15,7 @@ class SDKManager_class  {
     TT: any = null;  //字节跳动
 
     bAutoPlayVedio: boolean = false;
-
+    adVedioPlaying: boolean = false;
     adDayCounts: any = null;   //每种视频观看次数
     bOpenVedioShop: boolean = false;   //是否开启视频商城
 
@@ -151,11 +150,20 @@ class SDKManager_class  {
         SDKMgr.adDayCounts["SignVedioId"] = LDMgr.getItemInt("SignVedioId");
     }
 
+    closeAutoPlayAdVedio(){
+        SDKMgr.bAutoPlayVedio = false;
+        ROOT_NODE.showTipsText("自动视频播放已关闭")
+        if(GameMgr.getMainScene()){
+            GameMgr.getMainScene().openAutoAdShow(false);
+        }
+    }
+
     autoPlayAdVedio(){
-        if(this.bAutoPlayVedio == true  && MyUserData.vedioCount > 30){
+        if(SDKMgr.bAutoPlayVedio == true  && MyUserData.vedioCount > 30){
+            SDKMgr.closeAutoPlayAdVedio();
             return;
         }
-        this.bAutoPlayVedio = true;
+        SDKMgr.bAutoPlayVedio = true;
 
         let adKeys = [
             "ChapterVedioId",
@@ -166,46 +174,49 @@ class SDKManager_class  {
             "GoldVedioId"
         ]
 
+        let handleAdOver = function(){
+            if(GameMgr.getMainScene() != null){
+                if(Math.random() > 0.5){
+                    GameMgr.getMainScene().gotoFightScene();
+                }
+            }else if(FightMgr.getFightScene() != null){
+                if(Math.random() > 0.5){
+                    FightMgr.getFightScene().exitFightScene();
+                }
+            }
+
+            let randomTime = Math.ceil(Math.random()*(30*Math.ceil(MyUserData.vedioCount/10)) + 50)*1000;
+            console.log("handleAdOver randomTime = "+randomTime)
+            setTimeout(()=>{
+                autoVedioFunc();
+            }, randomTime)
+        }
+
         let autoVedioFunc = function(){
             if(SDKMgr.bAutoPlayVedio != true || MyUserData.vedioCount > 30){
-                SDKMgr.bAutoPlayVedio = false;
+                SDKMgr.closeAutoPlayAdVedio();
                 return;
             }
 
             let randomIdx = Math.floor(Math.random()*adKeys.length*0.99);
             let adKey = adKeys[randomIdx];
-            SDKMgr.showVedioAd(adKey, ()=>{
-                SDKMgr.bAutoPlayVedio = false;
-            },
-            ()=>{
-                if(GameMgr.getMainScene() != null){
-                    if(Math.random() > 0.5){
-                        GameMgr.getMainScene().gotoFightScene();
-                    }
-                }else if(FightMgr.getFightScene() != null){
-                    if(Math.random() > 0.5){
-                        FightMgr.getFightScene().exitFightScene();
-                    }
-                }
-
-                let randomTime = Math.ceil(Math.random()*(50*Math.ceil(MyUserData.vedioCount/10)) + 50)*1000;
-                setTimeout(()=>{
-                    autoVedioFunc();
-                }, randomTime)
+            SDKMgr.showVedioAd(adKey, handleAdOver, handleAdOver,()=>{
+                SDKMgr.closeAutoPlayAdVedio();
             })
         }
         autoVedioFunc();
     }
 
     //显示视频广告
-    showVedioAd(adkey:string, failCallback, succCallback){
+    showVedioAd(adkey:string, failCallback, succCallback, errorCallback=null){
         let adCount = SDKMgr.adDayCounts[adkey];
+        console.log("showVedioAd adkey = "+adkey+"; adCount = "+adCount)
         if(adCount > 5){
             adkey = "SignVedioId";   //签到及其他视频
         }
 
         if(GameMgr.isSameDayWithCurTime(MyUserData.lastVedioTime) == false){  //非同一天
-            MyUserDataMgr.updateVedioTime(1, new Date().getTime());
+            MyUserDataMgr.updateVedioTime(true);
         }else{
             if(MyUserData.vedioCount > 30){
                 GameMgr.showTipsDialog("今日视频次数已达最大限度（30次），请明日再来！", failCallback);
@@ -213,32 +224,56 @@ class SDKManager_class  {
             }
         }
 
+        SDKMgr.adVedioPlaying = true;
+
         let succCallFunc = function(){
+            MyUserDataMgr.updateVedioTime(false);
             SDKMgr.adDayCounts[adkey] ++;
             LDMgr.setItem(adkey, SDKMgr.adDayCounts[adkey]); 
 
+            SDKMgr.adVedioPlaying = false;
+
             succCallback();
+
+            if(GameMgr.getMainScene()){
+                GameMgr.getMainScene().updateAdCount();
+            }
+        }
+
+        let errorCallFunc = function(){
+            SDKMgr.adVedioPlaying = false;
+
+            if(errorCallback){
+                errorCallback();
+            }else{
+                failCallback();
+            }
+        }
+
+        let failCallFunc = function(){
+            SDKMgr.adVedioPlaying = false;
+            failCallback();
         }
 
         if(SDKMgr.TT != null){   //小程序
             sdkTT.playVideoAd(adkey, ()=>{
-                failCallback();
+                errorCallFunc();
             }, (succ:boolean)=>{
                 if(succ){
                     succCallFunc();
                 }else{
-                    failCallback()
+                    failCallFunc()
                 }
             }, this);   //播放下载的视频广告 
         }
         else if(SDKMgr.WeiChat != null){
             sdkWechat.playVideoAd(adkey, ()=>{
-                failCallback();
+                errorCallFunc();
             }, (succ:boolean)=>{
                 if(succ){
                     succCallFunc();
                 }else{
-                    failCallback()
+                    failCallFunc()
                 }
             }, this);   //播放下载的视频广告 
         }

@@ -20,7 +20,6 @@ export default class WenZi extends cc.Component {
     // onLoad () {}
 
     start () {
-        AudioMgr.playEffect("effect/cheer");
     }
 
     // update (dt) {}

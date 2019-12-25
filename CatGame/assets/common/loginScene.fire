@@ -177,7 +177,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 424.352447854375
+      "z": 404.4338635673329
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -1541,7 +1541,7 @@
       "__id__": 2
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_level": 1,
     "_components": [
       {
@@ -1570,7 +1570,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -400,
+      "y": -380,
       "z": 0
     },
     "_scale": {
@@ -1589,7 +1589,7 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "98E85fEvxN1KPXc1ZyUY0Y"
+    "_id": "a0Ui1xhQtD7qd2VLM197AT"
   },
   {
     "__type__": "cc.Label",
@@ -1605,8 +1605,8 @@
       }
     ],
     "_useOriginalSize": true,
-    "_string": "软著登字第4283273号   登记号 2019SR0862516",
-    "_N$string": "软著登字第4283273号   登记号 2019SR0862516",
+    "_string": "软著登字第4572476号   登记号 2019SR1151719",
+    "_N$string": "软著登字第4572476号   登记号 2019SR1151719",
     "_fontSize": 20,
     "_lineHeight": 30,
     "_enableWrapText": true,
@@ -1619,7 +1619,7 @@
     "_N$fontFamily": "Microsoft YaHei",
     "_N$overflow": 3,
     "_N$cacheMode": 0,
-    "_id": "85uSoxESdEUIeSkj0b5WVz"
+    "_id": "4baupHPUVEhrhGFpzmSONl"
   },
   {
     "__type__": "cc.Canvas",

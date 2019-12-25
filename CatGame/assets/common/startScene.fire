@@ -168,7 +168,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 358.5345171667576
+      "z": 404.4338635673329
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -587,7 +587,7 @@
       "__id__": 2
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_level": 1,
     "_components": [
       {
@@ -616,7 +616,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -400,
+      "y": -380,
       "z": 0
     },
     "_scale": {
@@ -651,8 +651,8 @@
       }
     ],
     "_useOriginalSize": true,
-    "_string": "软著登字第4283273号   登记号 2019SR0862516",
-    "_N$string": "软著登字第4283273号   登记号 2019SR0862516",
+    "_string": "软著登字第4572476号   登记号 2019SR1151719",
+    "_N$string": "软著登字第4572476号   登记号 2019SR1151719",
     "_fontSize": 20,
     "_lineHeight": 30,
     "_enableWrapText": true,

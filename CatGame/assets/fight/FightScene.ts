@@ -153,7 +153,7 @@ export default class FightScene extends cc.Component {
         this.levelsText.string = "";  
         this.speedNode.active = false;
 
-        AudioMgr.playEffect("effect/enterfight");
+        //AudioMgr.playEffect("effect/enterfight");
 
         var manager = cc.director.getCollisionManager();
         manager.enabled = true;
@@ -494,7 +494,7 @@ export default class FightScene extends cc.Component {
             this.stagnationRow = showRow;  //显示冰冻的回合
             //this.stagnationImg.opacity = 0;   //停滞冰冻图片
             this.stagnationImg.runAction(cc.fadeIn(1.0));
-            AudioMgr.playEffect("effect/bingdong");
+            //AudioMgr.playEffect("effect/bingdong");
         }else{
             this.stagnationRow = -1;  //显示冰冻的回合
             this.stagnationImg.runAction(cc.fadeOut(1.0));

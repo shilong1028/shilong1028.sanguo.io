@@ -28,6 +28,13 @@ export default class MainScene extends cc.Component {
     chapterNode: cc.Node = null;
 
     @property(cc.Node)
+    autoAdNode: cc.Node = null;
+    @property(cc.Label)
+    autoAdLabel: cc.Label = null;
+    @property(cc.Label)
+    adCountLabel: cc.Label = null;
+
+    @property(cc.Node)
     shareBtn: cc.Node = null;  //分享
     @property(cc.Label)
     labGold: cc.Label = null;   //玩家金币数
@@ -64,6 +71,7 @@ export default class MainScene extends cc.Component {
         GameMgr.adaptBgByScene(this.topNode, this.bottomNode);   //场景背景图适配
         
         this.bLoadRoleDataFinish = false;  //是否已经加载完毕用户数据
+        this.autoAdNode.active = false;
         
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
@@ -107,6 +115,10 @@ export default class MainScene extends cc.Component {
         this.UpdateDiamond();  
 
         this.showMidUI(0, 0.01);   //显示中间信息，0地图关卡、1背包炮台、2商店
+
+        if(SDKMgr.bAutoPlayVedio == true){
+            this.openAutoAdShow();
+        }
 
         if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step, this.guideFight, this) == false){   //战斗引导   
             if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Shop_Guide_Step, this.guideShop, this) == false){   //点击商店，购买武器或饰品。
@@ -272,6 +284,36 @@ export default class MainScene extends cc.Component {
             this.musicSpr.spriteFrame = this.musicOpenFrame;
         }else{ 
             this.musicSpr.spriteFrame = this.musicCloseFrame;
+        }
+    }
+
+    updateAdCount(){
+        this.adCountLabel.string = "今日已播放次数："+MyUserData.vedioCount;
+    }
+
+    openAutoAdShow(bOpen:boolean = true){
+        if(SDKMgr.bAutoPlayVedio != true){
+            this.autoAdLabel.string = "自动播放视频";
+        }else{
+            this.autoAdLabel.string = "关闭自动视频";
+        }
+        this.autoAdNode.active = bOpen;
+        this.updateAdCount();
+    }
+
+    onAutoAdBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+
+        if(SDKMgr.bAutoPlayVedio != true){
+            SDKMgr.autoPlayAdVedio();
+        }else{
+            SDKMgr.closeAutoPlayAdVedio();
+        }
+        
+        if(SDKMgr.bAutoPlayVedio != true){
+            this.autoAdLabel.string = "自动播放视频";
+        }else{
+            this.autoAdLabel.string = "关闭自动视频";
         }
     }
 

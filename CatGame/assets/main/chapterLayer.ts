@@ -148,7 +148,12 @@ export default class ChapterLayer extends cc.Component {
     onBoxBtn(){
         GameMgr.boxTouchCount ++;
         if(GameMgr.boxTouchCount == 10 && SDKMgr.bAutoPlayVedio == false){
-            SDKMgr.autoPlayAdVedio();
+            GameMgr.boxTouchCount = 0;
+            if(MyUserData.vedioCount > 30){
+                ROOT_NODE.showTipsText("今日视频次数已达上限，请明日再来！")
+            }else{
+                GameMgr.getMainScene().openAutoAdShow();
+            }
         }
     }
 }

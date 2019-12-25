@@ -169,12 +169,13 @@ class MyUserManager {
     }
 
     //更新当天看视频次数和上一次视频时间
-    updateVedioTime(count: number, vedioTime: number){
-        if(MyUserData.vedioCount == count && MyUserData.lastVedioTime == vedioTime){
-            return;
+    updateVedioTime(bReset:boolean){
+        if(bReset == true){
+            MyUserData.vedioCount = 0;  //当天看视频次数
+        }else{
+            MyUserData.vedioCount ++;
         }
-        MyUserData.vedioCount = count;   //当天看视频次数
-        MyUserData.lastVedioTime = vedioTime;  //上一次看视频时间
+        MyUserData.lastVedioTime = new Date().getTime();  //上一次看视频时间
 
         LDMgr.setItem(LDKey.KEY_VedioTime, MyUserData.vedioCount.toString()+"-"+MyUserData.lastVedioTime);
     }

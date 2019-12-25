@@ -354,7 +354,7 @@ export default class Ball extends cc.Component {
                         this.changeBallWithState(BallState.readySort);
                         this.handleFirstDropBall(this.node.x);   //小球还未发射出去
                     }else{
-                        AudioMgr.playEffect("effect/launch");  //小球弹射音效
+                        //AudioMgr.playEffect("effect/launch");  //小球弹射音效
 
                         if(this.ballSplitProbability > 0 && Math.random() <= this.ballSplitProbability){   //分裂技能概率
                             //ROOT_NODE.showTipsText("触发分裂技能，武器分裂为三份。");
@@ -548,7 +548,7 @@ export default class Ball extends cc.Component {
             }
 
             if(tempEndData.newDir == null){  //触底
-                AudioMgr.playEffect("effect/pengzhuang");    //小球碰撞音效
+                AudioMgr.playYinfu();    //小球碰撞音效
                 this.preHandleGroundBall(tempEndData);  //处理落地的球
                 return;
             }
@@ -577,7 +577,7 @@ export default class Ball extends cc.Component {
                 hitType = 0;   //撞墙碰撞
                 this.resetBallFlyDir(tempEndData.newDir);  //重新设定飞行方向
 
-                AudioMgr.playEffect("effect/pengzhuang");    //小球碰撞音效
+                AudioMgr.playYinfu();    //小球碰撞音效
             }
 
             if(bHit == true){

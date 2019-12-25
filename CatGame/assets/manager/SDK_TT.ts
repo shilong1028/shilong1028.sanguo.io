@@ -484,7 +484,7 @@ export class SDK_TT  {
         this.errorCallBack = errorCallBack;   //加载视频失败回调
 
         let adId = TT_VedioIds[adkey];
-        console.log("playVideoAd adId = "+adId)
+       // console.log("playVideoAd adId = "+adId)
         var rewardedVideoAd = tt.createRewardedVideoAd({
             adUnitId: adId
         });
@@ -496,20 +496,20 @@ export class SDK_TT  {
             // }
         });
         rewardedVideoAd.show().then(() => {
-            console.log("视频显示")
+            //console.log("视频显示")
         })
         .catch(err => {
             // 可以手动加载一次
-            console.log("视频显示失败， 手动拉去一次")
+            //console.log("视频显示失败， 手动拉去一次")
             rewardedVideoAd.load().then(() => {
                 // 加载成功后需要再显示广告
                 return rewardedVideoAd.show();
             })
             .catch(err => {
                 ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
-                if(rewardedVideoAd.canHandleCallBack && sdkTT.videoCallBack && sdkTT.callTarget){
+                if(rewardedVideoAd.canHandleCallBack && sdkTT.errorCallBack && sdkTT.callTarget){
                     rewardedVideoAd.canHandleCallBack = false;
-                    sdkTT.videoCallBack.call(sdkTT.callTarget, false);
+                    sdkTT.errorCallBack.call(sdkTT.callTarget, false);
                 }
             });
         });
@@ -535,9 +535,9 @@ export class SDK_TT  {
             //     rewardedVideoAd.offError()
             // }
             ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
-            if(rewardedVideoAd.canHandleCallBack && sdkTT.videoCallBack && sdkTT.callTarget){
+            if(rewardedVideoAd.canHandleCallBack && sdkTT.errorCallBack && sdkTT.callTarget){
                 rewardedVideoAd.canHandleCallBack = false;
-                sdkTT.videoCallBack.call(sdkTT.callTarget, false);
+                sdkTT.errorCallBack.call(sdkTT.callTarget, false);
             }
         });
     }

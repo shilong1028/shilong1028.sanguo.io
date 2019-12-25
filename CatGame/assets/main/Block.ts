@@ -215,7 +215,7 @@ export default class Block extends cc.Component {
         this.node.addChild(aniItem2, 90);
         aniItem2.getComponent(Item).initItemByData(oldInfo);  //设置地块模型数据
 
-        AudioMgr.playEffect("effect/compound");
+        AudioMgr.playEffect("effect/cheer");
         
         aniItem.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(-100, 0)), cc.moveBy(0.1, cc.v2(100, 0)), cc.hide(), cc.removeSelf(true)));
         aniItem2.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(100, 0)), cc.moveBy(0.1, cc.v2(-100, 0)), cc.hide(), cc.callFunc(function(){
@@ -318,7 +318,7 @@ export default class Block extends cc.Component {
         this.node.addChild(aniStuff2, 90);
         aniStuff2.getComponent(Stuff).setStuffData(oldInfo);  //设置地块小球模型数据
 
-        AudioMgr.playEffect("effect/compound");
+        AudioMgr.playEffect("effect/cheer");
         
         aniStuff.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(-100, 0)), cc.moveBy(0.1, cc.v2(100, 0)), cc.hide(), cc.removeSelf(true)));
         aniStuff2.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(100, 0)), cc.moveBy(0.1, cc.v2(-100, 0)), cc.hide(), cc.callFunc(function(){
