@@ -2,7 +2,6 @@ import { sdkWechat } from "./SDK_Wechat";
 import { sdkTT } from "./SDK_TT";
 import { LDMgr, LDKey } from "./StorageManager";
 import { GameMgr } from "./GameManager";
-import { MyUserData, MyUserDataMgr } from "./MyUserData";
 import { FightMgr } from "./FightManager";
 import { ROOT_NODE } from "../common/rootNode";
 const {ccclass, property} = cc._decorator;
@@ -16,6 +15,8 @@ class SDKManager_class  {
 
     bAutoPlayVedio: boolean = false;
     adVedioPlaying: boolean = false;
+
+    adTotalCount: number = 0;   //今日总的视频次数
     adDayCounts: any = null;   //每种视频观看次数
     bOpenVedioShop: boolean = false;   //是否开启视频商城
 
@@ -128,7 +129,7 @@ class SDKManager_class  {
     }
 
     initAdDayCount(){
-        let day = LDMgr.getItemInt(LDKey.KEY_LoginDay);   //登录时间(天)
+        let day = LDMgr.getItemInt(LDKey.KEY_VedioTime);   //上一个视频时间
         if(GameMgr.isSameDayWithCurTime(day) == false){  //非同一天
             LDMgr.setItem("ChapterVedioId", 0);   //章节奖励  》15
             LDMgr.setItem("FuhuoVedioId", 0);    //复活
@@ -138,28 +139,39 @@ class SDKManager_class  {
             LDMgr.setItem("GoldVedioId", 0);   //添加金币    》15
             LDMgr.setItem("SignVedioId", 0);    //签到    》15
         }
-        LDMgr.setItem(LDKey.KEY_LoginDay, new Date().getTime());   //登录时间(天)
 
         SDKMgr.adDayCounts = {};
+        SDKMgr.adTotalCount = 0;
         SDKMgr.adDayCounts["ChapterVedioId"] = LDMgr.getItemInt("ChapterVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["ChapterVedioId"];
         SDKMgr.adDayCounts["FuhuoVedioId"] = LDMgr.getItemInt("FuhuoVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["FuhuoVedioId"];
         SDKMgr.adDayCounts["KaijuVedioId"] = LDMgr.getItemInt("KaijuVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["KaijuVedioId"];
         SDKMgr.adDayCounts["UpLvVedioId"] = LDMgr.getItemInt("UpLvVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["UpLvVedioId"];
         SDKMgr.adDayCounts["ShopVedioId"] = LDMgr.getItemInt("ShopVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["ShopVedioId"];
         SDKMgr.adDayCounts["GoldVedioId"] = LDMgr.getItemInt("GoldVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["GoldVedioId"];
         SDKMgr.adDayCounts["SignVedioId"] = LDMgr.getItemInt("SignVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["SignVedioId"];
+    }
+
+    canPlayAdByCount(){
+        return SDKMgr.adTotalCount < 30;
     }
 
     closeAutoPlayAdVedio(){
         SDKMgr.bAutoPlayVedio = false;
         ROOT_NODE.showTipsText("自动视频播放已关闭")
         if(GameMgr.getMainScene()){
-            GameMgr.getMainScene().openAutoAdShow(false);
+            GameMgr.getMainScene().showAutoAdNode();
         }
     }
 
     autoPlayAdVedio(){
-        if(SDKMgr.bAutoPlayVedio == true  && MyUserData.vedioCount > 30){
+        if(SDKMgr.bAutoPlayVedio == true  && SDKMgr.canPlayAdByCount() == false){
             SDKMgr.closeAutoPlayAdVedio();
             return;
         }
@@ -185,7 +197,7 @@ class SDKManager_class  {
                 }
             }
 
-            let randomTime = Math.ceil(Math.random()*(30*Math.ceil(MyUserData.vedioCount/10)) + 50)*1000;
+            let randomTime = Math.ceil(Math.random()*(30*Math.ceil(SDKMgr.adTotalCount/10)) + 50)*1000;
             console.log("handleAdOver randomTime = "+randomTime)
             setTimeout(()=>{
                 autoVedioFunc();
@@ -193,7 +205,7 @@ class SDKManager_class  {
         }
 
         let autoVedioFunc = function(){
-            if(SDKMgr.bAutoPlayVedio != true || MyUserData.vedioCount > 30){
+            if(SDKMgr.bAutoPlayVedio != true || SDKMgr.canPlayAdByCount() == false){
                 SDKMgr.closeAutoPlayAdVedio();
                 return;
             }
@@ -215,19 +227,15 @@ class SDKManager_class  {
             adkey = "SignVedioId";   //签到及其他视频
         }
 
-        if(GameMgr.isSameDayWithCurTime(MyUserData.lastVedioTime) == false){  //非同一天
-            MyUserDataMgr.updateVedioTime(true);
-        }else{
-            if(MyUserData.vedioCount > 30){
-                GameMgr.showTipsDialog("今日视频次数已达最大限度（30次），请明日再来！", failCallback);
-                return;
-            }
+        if(SDKMgr.canPlayAdByCount() == false){
+            GameMgr.showTipsDialog("今日视频次数已达最大限度（30次），请明日再来！", failCallback);
+            return;
         }
 
         SDKMgr.adVedioPlaying = true;
 
         let succCallFunc = function(){
-            MyUserDataMgr.updateVedioTime(false);
+            SDKMgr.adTotalCount ++;
             SDKMgr.adDayCounts[adkey] ++;
             LDMgr.setItem(adkey, SDKMgr.adDayCounts[adkey]); 
 

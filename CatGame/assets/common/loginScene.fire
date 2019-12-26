@@ -1741,6 +1741,9 @@
     "guidePrefab": {
       "__uuid__": "1e17b5e4-fd96-4a05-9f3a-8aac03c343d0"
     },
+    "adResultPrefab": {
+      "__uuid__": "d0349b37-6491-4e73-8f8a-437697950079"
+    },
     "pfItem": {
       "__uuid__": "870f3bdf-34a2-43f8-924d-94c2b9f4c007"
     },

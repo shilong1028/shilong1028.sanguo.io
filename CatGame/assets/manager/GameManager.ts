@@ -22,6 +22,7 @@ class GameManager {
     SkillCount: number = 9;   //技能数量
 
     boxTouchCount: number = 0;  
+    bShowAdNode: boolean = false;
 
     /************************  以下为UI接口  ************** */
 
@@ -371,6 +372,10 @@ class GameManager {
     }
 
     //********************  以下为应用接口函数  ********************* */
+
+    ShowAdResultDialog(){
+        this.showLayer(ROOT_NODE.adResultPrefab);
+    }
     
     /**显示售卖收益 */
     showDelGainAni(sellGold: number){

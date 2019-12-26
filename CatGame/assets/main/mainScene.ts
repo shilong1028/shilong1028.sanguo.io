@@ -116,8 +116,8 @@ export default class MainScene extends cc.Component {
 
         this.showMidUI(0, 0.01);   //显示中间信息，0地图关卡、1背包炮台、2商店
 
-        if(SDKMgr.bAutoPlayVedio == true){
-            this.openAutoAdShow();
+        if(GameMgr.bShowAdNode == true){
+            this.showAutoAdNode();
         }
 
         if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step, this.guideFight, this) == false){   //战斗引导   
@@ -288,16 +288,16 @@ export default class MainScene extends cc.Component {
     }
 
     updateAdCount(){
-        this.adCountLabel.string = "今日已播放次数："+MyUserData.vedioCount;
+        this.adCountLabel.string = "今日已播放次数："+SDKMgr.adTotalCount;
     }
 
-    openAutoAdShow(bOpen:boolean = true){
+    showAutoAdNode(){
         if(SDKMgr.bAutoPlayVedio != true){
             this.autoAdLabel.string = "自动播放视频";
         }else{
             this.autoAdLabel.string = "关闭自动视频";
         }
-        this.autoAdNode.active = bOpen;
+        this.autoAdNode.active = true;
         this.updateAdCount();
     }
 
@@ -305,16 +305,17 @@ export default class MainScene extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
 
         if(SDKMgr.bAutoPlayVedio != true){
+            this.autoAdLabel.string = "关闭自动视频";
             SDKMgr.autoPlayAdVedio();
         }else{
             SDKMgr.closeAutoPlayAdVedio();
         }
-        
-        if(SDKMgr.bAutoPlayVedio != true){
-            this.autoAdLabel.string = "自动播放视频";
-        }else{
-            this.autoAdLabel.string = "关闭自动视频";
-        }
+    }
+
+    onAdResultBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+
+        GameMgr.ShowAdResultDialog();
     }
 
 }

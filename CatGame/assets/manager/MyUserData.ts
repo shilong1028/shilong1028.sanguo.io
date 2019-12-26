@@ -11,6 +11,8 @@ const { ccclass, property } = cc._decorator;
 
 export var MyUserData = {
     /**以下数据需要更新到服务器 */
+    UserName: "",   //用户名
+
     GoldCount: 0,   //用户金币
     DiamondCount: 0,  //用户钻石
 
@@ -19,8 +21,6 @@ export var MyUserData = {
 
     lastSignIdx: 0,   //上一次签到索引 1-7
     lastSignTime: 0,   //上一次签到时间
-    lastVedioTime: 0,   //上一次看视频时间
-    vedioCount: 0,   //当天看视频次数
 
     ballList: [],   //未出战小球列表 
     
@@ -59,10 +59,6 @@ class MyUserManager {
         MyUserData.lastSignIdx = 0;   //上一次签到索引 1-7
         MyUserData.lastSignTime = 0;   //上一次签到时间
         LDMgr.setItem(LDKey.KEY_SignTime, "0-0");
-
-        MyUserData.vedioCount = 0;   //当天看视频次数
-        MyUserData.lastVedioTime = 0;  //上一次看视频时间
-        LDMgr.setItem(LDKey.KEY_VedioTime, "0-0");
 
         MyUserData.ballList = [];  //未出战小球列表 
         LDMgr.setItem(LDKey.KEY_BallList, JSON.stringify(MyUserData.ballList));
@@ -106,6 +102,13 @@ class MyUserManager {
 
     /**初始化用户信息 */
     initUserData(){
+        MyUserData.UserName = LDMgr.getItem(LDKey.KEY_UserName);    //用户名
+        if(MyUserData.UserName && MyUserData.UserName.length > 3){
+        }else{
+            MyUserData.UserName = "萌宠_"+Math.ceil(Math.random()*99)+"_"+(new Date().getTime());
+            LDMgr.setItem(LDKey.KEY_UserName, MyUserData.UserName);
+        }
+
         MyUserData.GoldCount = LDMgr.getItemInt(LDKey.KEY_GoldCount);   //用户金币
         MyUserData.DiamondCount = LDMgr.getItemInt(LDKey.KEY_DiamondCount);  //用户钻石
 
@@ -119,15 +122,6 @@ class MyUserManager {
         }else{
             MyUserData.lastSignIdx = parseInt(signData.key);
             MyUserData.lastSignTime = parseInt(signData.val);
-        }
-
-        let vedioData = LDMgr.getItemKeyVal(LDKey.KEY_VedioTime); //当天看视频次数和上一次视频时间
-        if(vedioData == null){
-            MyUserData.vedioCount = 0;   //当天看视频次数
-            MyUserData.lastVedioTime = 0;  //上一次看视频时间
-        }else{
-            MyUserData.vedioCount = parseInt(vedioData.key);
-            MyUserData.lastVedioTime = parseInt(vedioData.val);
         }
 
         MyUserData.ballList = this.getBallListByLD();    //未出战小球列表 
@@ -166,18 +160,6 @@ class MyUserManager {
         MyUserData.lastSignTime = signTime;
 
         LDMgr.setItem(LDKey.KEY_SignTime, MyUserData.lastSignIdx.toString()+"-"+MyUserData.lastSignTime);
-    }
-
-    //更新当天看视频次数和上一次视频时间
-    updateVedioTime(bReset:boolean){
-        if(bReset == true){
-            MyUserData.vedioCount = 0;  //当天看视频次数
-        }else{
-            MyUserData.vedioCount ++;
-        }
-        MyUserData.lastVedioTime = new Date().getTime();  //上一次看视频时间
-
-        LDMgr.setItem(LDKey.KEY_VedioTime, MyUserData.vedioCount.toString()+"-"+MyUserData.lastVedioTime);
     }
 
     //当前章节id
