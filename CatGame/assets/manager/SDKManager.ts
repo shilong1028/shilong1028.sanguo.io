@@ -167,6 +167,8 @@ class SDKManager_class  {
         ROOT_NODE.showTipsText("自动视频播放已关闭")
         if(GameMgr.getMainScene()){
             GameMgr.getMainScene().showAutoAdNode();
+        }else{
+            FightMgr.getFightScene().exitFightScene();
         }
     }
 
