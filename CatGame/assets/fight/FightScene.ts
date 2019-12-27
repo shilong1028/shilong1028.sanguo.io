@@ -27,6 +27,9 @@ export default class FightScene extends cc.Component {
     levelLabel: cc.Label = null;  //第几关
 
     @property(cc.Label)
+    adTimeLabel: cc.Label = null;
+
+    @property(cc.Label)
     chapterLabel: cc.Label = null;  //第几章
     @property(cc.Label)
     levelsText: cc.Label = null;   
@@ -145,6 +148,18 @@ export default class FightScene extends cc.Component {
         console.log("fightScene destory")
     }
 
+    update(dt){
+        if(SDKMgr.autoAdTime > 0){
+            SDKMgr.autoAdTime -= dt;
+            if(SDKMgr.autoAdTime <= 0){
+                SDKMgr.autoAdTime = 0;
+                this.adTimeLabel.string = "";
+            }else{
+                this.adTimeLabel.string = SDKMgr.autoAdTime.toFixed(3);
+            }
+        }
+    }
+
     onLoad () {
         GameMgr.adaptBgByScene(this.topNode);   //场景背景图适配
 
@@ -152,6 +167,7 @@ export default class FightScene extends cc.Component {
         this.chapterLabel.string = ""  //第几章
         this.levelsText.string = "";  
         this.speedNode.active = false;
+        this.adTimeLabel.string = "";
 
         //AudioMgr.playEffect("effect/enterfight");
 
@@ -172,6 +188,8 @@ export default class FightScene extends cc.Component {
     }
 
     start () {
+        GameMgr.bToMainPetPage = false;   //主界面是否跳转至宠物界面
+
         this.brickPool = new cc.NodePool(Brick);   //砖块缓存池
         //只有在new cc.NodePool(Dot)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
 
@@ -186,12 +204,12 @@ export default class FightScene extends cc.Component {
 
         if(FightMgr.level_id == 1){
             if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step2, this.guideFightMove, this) == false){  //左右拖动手指，改变发射轨迹。
-                if(this.bShowBeginReward == true){   //章节开局奖励
+                if(this.bShowBeginReward == true && SDKMgr.bAutoPlayVedio != true){   //章节开局奖励
                     GameMgr.showLayer(this.pfBeginReward);
                 }
             }
         }else{
-            if(this.bShowBeginReward == true){   //章节开局奖励
+            if(this.bShowBeginReward == true && SDKMgr.bAutoPlayVedio != true){   //章节开局奖励
                 GameMgr.showLayer(this.pfBeginReward);
             }else{
                 this.handleStartFight();
@@ -277,9 +295,6 @@ export default class FightScene extends cc.Component {
         //cc.log("_____________  onHide()游戏切入后台  _____________________")
         //this.node.stopAllActions();   //偶尔报TypeError: Cannot read property 'stopAllActions' of null
         cc.game.pause();
-    }
-
-    update (dt) {
     }
 
     /**返回按钮 */

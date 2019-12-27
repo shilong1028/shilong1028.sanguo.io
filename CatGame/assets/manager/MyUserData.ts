@@ -103,6 +103,7 @@ class MyUserManager {
     /**初始化用户信息 */
     initUserData(){
         MyUserData.UserName = LDMgr.getItem(LDKey.KEY_UserName);    //用户名
+        console.log("MyUserData.UserName = "+MyUserData.UserName);
         if(MyUserData.UserName && MyUserData.UserName.length > 3){
         }else{
             MyUserData.UserName = "萌宠_"+Math.ceil(Math.random()*99)+"_"+(new Date().getTime());

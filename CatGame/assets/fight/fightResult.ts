@@ -106,6 +106,8 @@ export default class FightResult extends cc.Component {
                 }
             }
         }else{
+            GameMgr.bToMainPetPage = true;   //主界面是否跳转至宠物界面
+
             this.titleSpr.spriteFrame = this.failFrame;
             FightMgr.stars = 0;
             this.skillNode.active = false;

@@ -33,6 +33,8 @@ export default class MainScene extends cc.Component {
     autoAdLabel: cc.Label = null;
     @property(cc.Label)
     adCountLabel: cc.Label = null;
+    @property(cc.Label)
+    adTimeLabel: cc.Label = null;
 
     @property(cc.Node)
     shareBtn: cc.Node = null;  //分享
@@ -72,6 +74,7 @@ export default class MainScene extends cc.Component {
         
         this.bLoadRoleDataFinish = false;  //是否已经加载完毕用户数据
         this.autoAdNode.active = false;
+        this.adTimeLabel.string = "";
         
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
@@ -89,6 +92,18 @@ export default class MainScene extends cc.Component {
     onDestroy(){
         NotificationMy.offAll(this);
         this.node.targetOff(this);
+    }
+
+    update(dt){
+        if(SDKMgr.autoAdTime > 0){
+            SDKMgr.autoAdTime -= dt;
+            if(SDKMgr.autoAdTime <= 0){
+                SDKMgr.autoAdTime = 0;
+                this.adTimeLabel.string = "";
+            }else{
+                this.adTimeLabel.string = SDKMgr.autoAdTime.toFixed(3);
+            }
+        }
     }
 
     /**后台切回前台 */
@@ -114,16 +129,25 @@ export default class MainScene extends cc.Component {
         this.UpdateGold();  
         this.UpdateDiamond();  
 
-        this.showMidUI(0, 0.01);   //显示中间信息，0地图关卡、1背包炮台、2商店
+        if(GameMgr.bToMainPetPage == true){  //主界面是否跳转至宠物界面
+            this.showMidUI(1, 0.01); 
+        }else{
+            this.showMidUI(0, 0.01);   //显示中间信息，0地图关卡、1背包炮台、2商店
+        }
+        GameMgr.bToMainPetPage = false;
 
-        if(GameMgr.bShowAdNode == true){
+        if(GameMgr.bShowAdNode == true){   //是否显示自动视频节点
             this.showAutoAdNode();
         }
+
+        if(GameMgr.bShowAdResultDialog == true){  //是否显示自动视频结算界面
+            GameMgr.ShowAdResultDialog();
+        }  
 
         if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step, this.guideFight, this) == false){   //战斗引导   
             if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Shop_Guide_Step, this.guideShop, this) == false){   //点击商店，购买武器或饰品。
                 if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Player_Guide_Step, this.guidePlayer, this) == false){   //点击萌宠，查看萌宝信息。
-                    if(GameMgr.isSameDayWithCurTime(MyUserData.lastSignTime) == false){  //同一天
+                    if(GameMgr.isSameDayWithCurTime(MyUserData.lastSignTime) == false && SDKMgr.bAutoPlayVedio != true){  //同一天
                         this.onSignBtn();
                     }
                 }

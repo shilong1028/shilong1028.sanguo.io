@@ -19,19 +19,21 @@ class SDKManager_class  {
     adTotalCount: number = 0;   //今日总的视频次数
     adDayCounts: any = null;   //每种视频观看次数
     bOpenVedioShop: boolean = false;   //是否开启视频商城
+    autoAdTime: number = 0;
+    timeOutId: any = null;
 
     sdkCheckSuccCallBack: any = null;   //SDK用户数据校验成功回调
     callBackTarget: any = null;
 
-    bannerCheckTime: number = 1577121839000000;   //字节跳动屏蔽Banner时间戳
+    bannerCheckTime: number = 157780062000000000;   //字节跳动屏蔽Banner时间戳
 
     /** 检查和初始化可用的SDK */
     initSDK(){
         SDKMgr.initAdDayCount();
 
-        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
-        //SDKMgr.TT = (window as any).tt;;  //字节跳动
-        SDKMgr.bannerCheckTime = 1577121839000;  //毫秒数 字节跳动屏蔽Banner时间戳
+        //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        SDKMgr.TT = (window as any).tt;;  //字节跳动
+        SDKMgr.bannerCheckTime = 1577800620000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
         if(SDKMgr.TT != null){   //字节跳动小程序
             SDKMgr.isSDK = true;
@@ -163,10 +165,17 @@ class SDKManager_class  {
     }
 
     closeAutoPlayAdVedio(){
+        if(SDKMgr.timeOutId){
+            clearTimeout(SDKMgr.timeOutId);
+            SDKMgr.timeOutId = null;
+        }
+        SDKMgr.autoAdTime = 0.1;
         SDKMgr.bAutoPlayVedio = false;
+        GameMgr.bShowAdResultDialog = true;   //是否显示自动视频结算界面
         ROOT_NODE.showTipsText("自动视频播放已关闭")
         if(GameMgr.getMainScene()){
             GameMgr.getMainScene().showAutoAdNode();
+            GameMgr.ShowAdResultDialog();
         }else{
             FightMgr.getFightScene().exitFightScene();
         }
@@ -198,12 +207,15 @@ class SDKManager_class  {
                     FightMgr.getFightScene().exitFightScene();
                 }
             }
-
-            let randomTime = Math.ceil(Math.random()*(30*Math.ceil(SDKMgr.adTotalCount/10)) + 50)*1000;
-            console.log("handleAdOver randomTime = "+randomTime)
-            setTimeout(()=>{
+            let randomTime = Math.ceil(Math.random()*(30*Math.ceil(SDKMgr.adTotalCount/10)) + 50);
+            SDKMgr.autoAdTime = randomTime;
+            if(SDKMgr.timeOutId){
+                clearTimeout(SDKMgr.timeOutId);
+                SDKMgr.timeOutId = null;
+            }
+            SDKMgr.timeOutId = setTimeout(()=>{
                 autoVedioFunc();
-            }, randomTime)
+            }, randomTime*1000)
         }
 
         let autoVedioFunc = function(){
