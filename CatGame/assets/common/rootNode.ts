@@ -1,5 +1,6 @@
 import TipsText from "./tipsText";
 import { MyUserDataMgr } from "../manager/MyUserData";
+import AdResultDialog from "./adResultDialog";
 
 //游戏常驻节点
 const {ccclass, property} = cc._decorator;
@@ -47,8 +48,6 @@ export default class RootNode extends cc.Component {
     }
 
     update (dt) {
-        MyUserDataMgr.updateLineTime(dt);  //总的在线时长（每500s更新记录一次）
-
         if(this.tipsStep > 0){
             this.tipsStep --;
             if(this.tipsStep <= 0){
@@ -75,15 +74,34 @@ export default class RootNode extends cc.Component {
 
             let tipStr = this.tipsArr.shift();
             let tips = cc.instantiate(this.pfTipsText);
-            tips.y = 700;
-            tips.x = cc.winSize.width/2;
-            cc.director.getScene().addChild(tips);
+            // tips.y = 700;
+            // tips.x = cc.winSize.width/2;
+            // cc.director.getScene().addChild(tips);
+            this.node.addChild(tips);
             tips.getComponent(TipsText).initTipsText(tipStr);
         }
     }
 
     clearTipsText(){
         this.tipsArr = [];
+    }
+
+    ShowAdResultDialog(){
+        let dialog = this.node.getChildByName("adResultPrefab");
+        if(dialog){
+            return;
+        }
+        dialog = cc.instantiate(this.adResultPrefab);
+        dialog.name = "adResultPrefab"
+        // tips.y = cc.winSize.height/2;
+        // tips.x = cc.winSize.width/2;
+        this.node.addChild(dialog);
+    }
+    updateAdResultDialog(){
+        let dialog = this.node.getChildByName("adResultPrefab");
+        if(dialog){
+            dialog.getComponent(AdResultDialog).updateAdDataLabel();
+        }
     }
 }
 

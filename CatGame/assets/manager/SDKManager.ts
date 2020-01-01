@@ -25,15 +25,15 @@ class SDKManager_class  {
     sdkCheckSuccCallBack: any = null;   //SDK用户数据校验成功回调
     callBackTarget: any = null;
 
-    bannerCheckTime: number = 157780062000000000;   //字节跳动屏蔽Banner时间戳
+    bannerCheckTime: number = 15781541870000000000;   //字节跳动屏蔽Banner时间戳
 
     /** 检查和初始化可用的SDK */
     initSDK(){
-        SDKMgr.initAdDayCount();
-
         //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
         SDKMgr.TT = (window as any).tt;;  //字节跳动
-        SDKMgr.bannerCheckTime = 1577800620000;  //毫秒数 字节跳动屏蔽Banner时间戳
+        SDKMgr.bannerCheckTime = 1578154187000;  //毫秒数 字节跳动屏蔽Banner时间戳
+
+        SDKMgr.initAdDayCount();
 
         if(SDKMgr.TT != null){   //字节跳动小程序
             SDKMgr.isSDK = true;
@@ -131,7 +131,7 @@ class SDKManager_class  {
     }
 
     initAdDayCount(){
-        let day = LDMgr.getItemInt(LDKey.KEY_VedioTime);   //上一个视频时间
+        let day = LDMgr.getItemInt(LDKey.KEY_LoginTime);   //上一个登录时间
         if(GameMgr.isSameDayWithCurTime(day) == false){  //非同一天
             LDMgr.setItem("ChapterVedioId", 0);   //章节奖励  》15
             LDMgr.setItem("FuhuoVedioId", 0);    //复活
@@ -140,6 +140,7 @@ class SDKManager_class  {
             LDMgr.setItem("ShopVedioId", 0);    //商店    》15
             LDMgr.setItem("GoldVedioId", 0);   //添加金币    》15
             LDMgr.setItem("SignVedioId", 0);    //签到    》15
+            LDMgr.setItem(LDKey.KEY_LoginTime, new Date().getTime());
         }
 
         SDKMgr.adDayCounts = {};
@@ -171,14 +172,8 @@ class SDKManager_class  {
         }
         SDKMgr.autoAdTime = 0.1;
         SDKMgr.bAutoPlayVedio = false;
-        GameMgr.bShowAdResultDialog = true;   //是否显示自动视频结算界面
-        ROOT_NODE.showTipsText("自动视频播放已关闭")
-        if(GameMgr.getMainScene()){
-            GameMgr.getMainScene().showAutoAdNode();
-            GameMgr.ShowAdResultDialog();
-        }else{
-            FightMgr.getFightScene().exitFightScene();
-        }
+
+        ROOT_NODE.updateAdResultDialog();
     }
 
     autoPlayAdVedio(){
@@ -253,13 +248,11 @@ class SDKManager_class  {
             SDKMgr.adDayCounts[adkey] ++;
             LDMgr.setItem(adkey, SDKMgr.adDayCounts[adkey]); 
 
+            ROOT_NODE.updateAdResultDialog();
+
             SDKMgr.adVedioPlaying = false;
 
             succCallback();
-
-            if(GameMgr.getMainScene()){
-                GameMgr.getMainScene().updateAdCount();
-            }
         }
 
         let errorCallFunc = function(){
@@ -298,6 +291,17 @@ class SDKManager_class  {
                     failCallFunc()
                 }
             }, this);   //播放下载的视频广告 
+        }
+    }
+
+    //上传开放域数据
+    setUserCloudStorage(key: string, val: string) {
+        console.log("setUserCloudStorage(), key = "+key+"; val = "+val);
+        if(SDKMgr.TT != null){   //头条小程序
+
+        }
+        else if(SDKMgr.WeiChat != null){
+            sdkWechat.setUserCloudStorage(key, val);
         }
     }
 

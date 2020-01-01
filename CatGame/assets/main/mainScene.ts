@@ -28,15 +28,6 @@ export default class MainScene extends cc.Component {
     chapterNode: cc.Node = null;
 
     @property(cc.Node)
-    autoAdNode: cc.Node = null;
-    @property(cc.Label)
-    autoAdLabel: cc.Label = null;
-    @property(cc.Label)
-    adCountLabel: cc.Label = null;
-    @property(cc.Label)
-    adTimeLabel: cc.Label = null;
-
-    @property(cc.Node)
     shareBtn: cc.Node = null;  //分享
     @property(cc.Label)
     labGold: cc.Label = null;   //玩家金币数
@@ -73,8 +64,6 @@ export default class MainScene extends cc.Component {
         GameMgr.adaptBgByScene(this.topNode, this.bottomNode);   //场景背景图适配
         
         this.bLoadRoleDataFinish = false;  //是否已经加载完毕用户数据
-        this.autoAdNode.active = false;
-        this.adTimeLabel.string = "";
         
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
@@ -92,18 +81,6 @@ export default class MainScene extends cc.Component {
     onDestroy(){
         NotificationMy.offAll(this);
         this.node.targetOff(this);
-    }
-
-    update(dt){
-        if(SDKMgr.autoAdTime > 0){
-            SDKMgr.autoAdTime -= dt;
-            if(SDKMgr.autoAdTime <= 0){
-                SDKMgr.autoAdTime = 0;
-                this.adTimeLabel.string = "";
-            }else{
-                this.adTimeLabel.string = SDKMgr.autoAdTime.toFixed(3);
-            }
-        }
     }
 
     /**后台切回前台 */
@@ -135,14 +112,6 @@ export default class MainScene extends cc.Component {
             this.showMidUI(0, 0.01);   //显示中间信息，0地图关卡、1背包炮台、2商店
         }
         GameMgr.bToMainPetPage = false;
-
-        if(GameMgr.bShowAdNode == true){   //是否显示自动视频节点
-            this.showAutoAdNode();
-        }
-
-        if(GameMgr.bShowAdResultDialog == true){  //是否显示自动视频结算界面
-            GameMgr.ShowAdResultDialog();
-        }  
 
         if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step, this.guideFight, this) == false){   //战斗引导   
             if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Shop_Guide_Step, this.guideShop, this) == false){   //点击商店，购买武器或饰品。
@@ -309,37 +278,6 @@ export default class MainScene extends cc.Component {
         }else{ 
             this.musicSpr.spriteFrame = this.musicCloseFrame;
         }
-    }
-
-    updateAdCount(){
-        this.adCountLabel.string = "今日已播放次数："+SDKMgr.adTotalCount;
-    }
-
-    showAutoAdNode(){
-        if(SDKMgr.bAutoPlayVedio != true){
-            this.autoAdLabel.string = "自动播放视频";
-        }else{
-            this.autoAdLabel.string = "关闭自动视频";
-        }
-        this.autoAdNode.active = true;
-        this.updateAdCount();
-    }
-
-    onAutoAdBtn(){
-        AudioMgr.playEffect("effect/ui_click");
-
-        if(SDKMgr.bAutoPlayVedio != true){
-            this.autoAdLabel.string = "关闭自动视频";
-            SDKMgr.autoPlayAdVedio();
-        }else{
-            SDKMgr.closeAutoPlayAdVedio();
-        }
-    }
-
-    onAdResultBtn(){
-        AudioMgr.playEffect("effect/ui_click");
-
-        GameMgr.ShowAdResultDialog();
     }
 
 }

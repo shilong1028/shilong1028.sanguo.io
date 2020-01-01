@@ -152,8 +152,7 @@ export default class ChapterLayer extends cc.Component {
             if(SDKMgr.canPlayAdByCount() == false){
                 ROOT_NODE.showTipsText("今日视频次数已达上限，请明日再来！")
             }else{
-                GameMgr.bShowAdNode = true;
-                GameMgr.getMainScene().showAutoAdNode();
+                ROOT_NODE.ShowAdResultDialog();
             }
         }
     }

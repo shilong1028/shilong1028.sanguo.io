@@ -7,6 +7,8 @@ class StorageManager_class  {
 
     setItem(key:string, value:any) {
         cc.sys.localStorage.setItem(key, value);
+
+        //SDKMgr.setUserCloudStorage(key, ""+value);
     }
 
     getItem(key:string) : string{
@@ -112,17 +114,15 @@ export  const LDMgr = new StorageManager_class();
 
 export const LDKey = {
     KEY_UserName: "KEY_UserName",
-    KEY_NewUser: "KEY_NewUser_1221",   //是否新用户
+    KEY_NewUser: "KEY_NewUser_0101",   //是否新用户
     KEY_Music_onOff: "KEY_Music_onOff",  //音乐或音效开关(开启)
     KEY_Music_Volume: "KEY_Music_Volume",     //本地音乐音量
     KEY_Sound_Volume: "KEY_Sound_Volume",   //本地音效音量
 
     KEY_GoldCount: "KEY_GoldCount",   //金币数量
     KEY_DiamondCount: "KEY_DiamondCount",   //钻石数量
-    KEY_TotalLineTime: "KEY_TotalLineTime",   //总的在线时长（每500s更新记录一次）
-    KEY_LastGoldTaxTime: "KEY_LastGoldTaxTime",   //上一次收税金时间
     KEY_SignTime: "KEY_SignTime",   //当前签到索引和上一次签到时间
-    KEY_VedioTime: "KEY_VedioTime",   //当天看视频次数和上一次视频时间
+    KEY_LoginTime: "KEY_LoginTime",   //当天登录时间
 
     KEY_BallList: "KEY_BallList",  //未出战小球列表
     KEY_CurPlayerId: "KEY_CurPlayerId",    //当前使用炮索引

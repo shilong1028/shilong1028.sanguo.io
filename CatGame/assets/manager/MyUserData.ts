@@ -16,9 +16,6 @@ export var MyUserData = {
     GoldCount: 0,   //用户金币
     DiamondCount: 0,  //用户钻石
 
-    totalLineTime: 0,   //总的在线时长（每100s更新记录一次）
-    lastGoldTaxTime: 0,   //上一次收税金时间
-
     lastSignIdx: 0,   //上一次签到索引 1-7
     lastSignTime: 0,   //上一次签到时间
 
@@ -51,11 +48,6 @@ class MyUserManager {
         MyUserData.DiamondCount = 0;   //用户钻石
         LDMgr.setItem(LDKey.KEY_DiamondCount, 0);
 
-        MyUserData.totalLineTime = 0;  //总的在线时长（每100s更新记录一次）
-        LDMgr.setItem(LDKey.KEY_TotalLineTime, 0);
-        MyUserData.lastGoldTaxTime = 0;   //上一次收税金时间
-        LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, 0);
-
         MyUserData.lastSignIdx = 0;   //上一次签到索引 1-7
         MyUserData.lastSignTime = 0;   //上一次签到时间
         LDMgr.setItem(LDKey.KEY_SignTime, "0-0");
@@ -71,7 +63,7 @@ class MyUserManager {
         this.updateCurChapterId(1); //当前章节Id
         this.updateCurLevelId(0);  //当前通关的最大id
         MyUserData.levelList = []; //通关列表
-        LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(MyUserData.levelList));
+        //LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(MyUserData.levelList));
 
         MyUserData.ItemList = [];   //背包物品列表
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
@@ -113,9 +105,6 @@ class MyUserManager {
         MyUserData.GoldCount = LDMgr.getItemInt(LDKey.KEY_GoldCount);   //用户金币
         MyUserData.DiamondCount = LDMgr.getItemInt(LDKey.KEY_DiamondCount);  //用户钻石
 
-        MyUserData.totalLineTime = LDMgr.getItemInt(LDKey.KEY_TotalLineTime);   //总的在线时长（每500s更新记录一次）
-        MyUserData.lastGoldTaxTime = LDMgr.getItemInt(LDKey.KEY_LastGoldTaxTime);   //上一次收税金时间
-
         let signData = LDMgr.getItemKeyVal(LDKey.KEY_SignTime);  //当前签到索引和上一次签到时间
         if(signData == null){
             MyUserData.lastSignIdx = 0;   //上一次签到索引 1-7
@@ -142,7 +131,6 @@ class MyUserManager {
         if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
             this.initNewUserData();  //新玩家初始化
         }
-
         //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
@@ -197,7 +185,7 @@ class MyUserManager {
                 cc.log("warn levelInfo = null, i = "+i+"; MyUserData.levelList = "+JSON.stringify(MyUserData.levelList))
             }
         }
-        LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(LevelList));
+        //LDMgr.setItem(LDKey.KEY_LevelList, JSON.stringify(LevelList));
     }
     /**获取已经通关的关卡数据 */
     getLevelInfoFromList(levelId: number){
@@ -524,16 +512,6 @@ class MyUserManager {
         return tempArr;
     }
 
-    //更新在线总时长
-    updateLineTime(dt:number){
-        MyUserData.totalLineTime += dt;   //总的在线时长（每100s更新记录一次）
-
-        let intTime = Math.floor(MyUserData.totalLineTime);
-        if(intTime%100 == 0){
-            LDMgr.setItem(LDKey.KEY_TotalLineTime, intTime);
-        }
-    }
-
     getIdsToStr(ids: number[], sp: string = "|"){
         let str = ""
         for(let i=0; i<ids.length; ++i){
@@ -545,6 +523,9 @@ class MyUserManager {
     /**修改用户金币 */
     updateUserGold(val:number){
         MyUserData.GoldCount += val;
+        if(MyUserData.GoldCount < 0 ){
+            MyUserData.GoldCount = 0;
+        }
         LDMgr.setItem(LDKey.KEY_GoldCount, MyUserData.GoldCount);
         NotificationMy.emit(NoticeType.UpdateGold, null);
     }
@@ -552,6 +533,9 @@ class MyUserManager {
     /**修改用户钻石 */
     updateUserDiamond(val:number){
         MyUserData.DiamondCount += val;
+        if(MyUserData.DiamondCount < 0 ){
+            MyUserData.DiamondCount = 0;
+        }
         LDMgr.setItem(LDKey.KEY_DiamondCount, MyUserData.DiamondCount);
         NotificationMy.emit(NoticeType.UpdateDiamond, null);
     }

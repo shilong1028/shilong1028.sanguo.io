@@ -27,9 +27,6 @@ export default class FightScene extends cc.Component {
     levelLabel: cc.Label = null;  //第几关
 
     @property(cc.Label)
-    adTimeLabel: cc.Label = null;
-
-    @property(cc.Label)
     chapterLabel: cc.Label = null;  //第几章
     @property(cc.Label)
     levelsText: cc.Label = null;   
@@ -148,18 +145,6 @@ export default class FightScene extends cc.Component {
         console.log("fightScene destory")
     }
 
-    update(dt){
-        if(SDKMgr.autoAdTime > 0){
-            SDKMgr.autoAdTime -= dt;
-            if(SDKMgr.autoAdTime <= 0){
-                SDKMgr.autoAdTime = 0;
-                this.adTimeLabel.string = "";
-            }else{
-                this.adTimeLabel.string = SDKMgr.autoAdTime.toFixed(3);
-            }
-        }
-    }
-
     onLoad () {
         GameMgr.adaptBgByScene(this.topNode);   //场景背景图适配
 
@@ -167,7 +152,6 @@ export default class FightScene extends cc.Component {
         this.chapterLabel.string = ""  //第几章
         this.levelsText.string = "";  
         this.speedNode.active = false;
-        this.adTimeLabel.string = "";
 
         //AudioMgr.playEffect("effect/enterfight");
 

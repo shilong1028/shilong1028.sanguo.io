@@ -334,6 +334,25 @@ export class SDK_Wechat  {
     onLoginOK(res: any) {
         SDKMgr.SDK_Login();
     }
+
+    //上传开放域数据
+    setUserCloudStorage(keyStr: string, valStr: string) {
+        let wx = SDKMgr.WeiChat;
+        if (wx == null) {
+            return;
+        }
+        wx.setUserCloudStorage({
+            KVDataList: [
+                { key: keyStr, value: valStr },
+            ],
+            success: (res) => {
+                console.log("setUserCloudStorage success:res=>", res)
+            },
+            fail: (res) => {
+                console.log("setUserCloudStorage fail:res=>", res)
+            }
+        })
+    }
 }
 
 export var sdkWechat = new SDK_Wechat();

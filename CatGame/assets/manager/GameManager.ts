@@ -22,10 +22,8 @@ class GameManager {
     SkillCount: number = 9;   //技能数量
 
     bToMainPetPage: boolean = false;   //主界面是否跳转至宠物界面
-    bShowAdResultDialog: boolean = false;   //是否显示自动视频结算界面
 
     boxTouchCount: number = 0;  
-    bShowAdNode: boolean = false;  //是否显示自动视频节点
 
     /************************  以下为UI接口  ************** */
 
@@ -367,6 +365,8 @@ class GameManager {
         let lastDay = lastDate.getDay();
         let lastMonth = lastDate.getMonth();
 
+        //console.log("lastTime = "+lastTime+"; lastDay = "+lastDay+"; lastMonth = "+lastMonth+"; curDay = "+curDay+"; curMonth = "+curMonth)
+
         if(curMonth == lastMonth && curDay == lastDay){
             return true;
         }else{
@@ -376,11 +376,6 @@ class GameManager {
 
     //********************  以下为应用接口函数  ********************* */
 
-    ShowAdResultDialog(){
-        GameMgr.bShowAdResultDialog = false;   //是否显示自动视频结算界面
-        this.showLayer(ROOT_NODE.adResultPrefab);
-    }
-    
     /**显示售卖收益 */
     showDelGainAni(sellGold: number){
         if(sellGold >= 0){
