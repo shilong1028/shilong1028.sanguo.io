@@ -32,6 +32,12 @@ export default class AdResultDialog extends cc.Component {
 
 
     onLoad () {
+        let maskBg = this.node.getChildByName("maskBg");
+        if(maskBg){
+            maskBg.width = cc.winSize.width;
+            maskBg.height = cc.winSize.height;
+        }
+
         this.timeLabel.string = "";
         this.nameLabel.string = "";
         this.countLabel.string = "";
@@ -43,8 +49,14 @@ export default class AdResultDialog extends cc.Component {
 
     start () {
         let dataStr = new Date().toDateString();
-        this.timeLabel.string = "日期："+dataStr;   //toUTCString
-        this.timeEncode.string = Md5.str_md5(dataStr);   //btoa加密
+        if(SDKMgr.WeiChat){
+            this.timeLabel.string = "TT日期："+dataStr;   //toUTCString
+        }else if(SDKMgr.TT){
+            this.timeLabel.string = "WX日期："+dataStr;   //toUTCString
+        }else{
+            this.timeLabel.string = "日期："+dataStr;   //toUTCString
+        }
+        this.timeEncode.string = Md5.MD5_NEW(dataStr);   //btoa加密
         this.nameLabel.string = "昵称："+MyUserData.UserName;
 
         this.updateAdDataLabel();
@@ -70,7 +82,7 @@ export default class AdResultDialog extends cc.Component {
         }
 
         this.countLabel.string = "总次数："+SDKMgr.adTotalCount;
-        this.countEncode.string = Md5.str_md5(SDKMgr.adTotalCount.toString());
+        this.countEncode.string = Md5.MD5_NEW(SDKMgr.adTotalCount.toString());
 
         let adKeys = [
             "ChapterVedioId",
@@ -78,10 +90,11 @@ export default class AdResultDialog extends cc.Component {
             "KaijuVedioId",
             "UpLvVedioId",
             "ShopVedioId",
-            "GoldVedioId"
+            "GoldVedioId",
+            "SignVedioId"
         ]
 
-        for(let i=0; i<6; ++i){
+        for(let i=0; i<adKeys.length; ++i){
             let adkey = adKeys[i];
             this.adLabels[i].string = adkey+"视频次数："+SDKMgr.adDayCounts[adkey];
         }

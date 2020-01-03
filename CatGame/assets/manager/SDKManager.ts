@@ -10,7 +10,6 @@ const {ccclass, property} = cc._decorator;
 class SDKManager_class  {
     isSDK : boolean = false;
     WeiChat: any = null;   //微信小游戏
-    QQ: any = null;  //qq小程序
     TT: any = null;  //字节跳动
 
     bAutoPlayVedio: boolean = false;
@@ -29,8 +28,8 @@ class SDKManager_class  {
 
     /** 检查和初始化可用的SDK */
     initSDK(){
-        //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
-        SDKMgr.TT = (window as any).tt;;  //字节跳动
+        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        //SDKMgr.TT = (window as any).tt;;  //字节跳动
         SDKMgr.bannerCheckTime = 1578154187000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
         SDKMgr.initAdDayCount();
