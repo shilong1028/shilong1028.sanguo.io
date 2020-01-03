@@ -129,7 +129,7 @@ class MyUserManager {
         GuideMgr.setFinishGuideStep(MyUserData.guideStepStrs);   //设置完成的引导步骤（开始）字符串  "1000-1100-1200-..."
 
         if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
-            this.initNewUserData();  //新玩家初始化
+            this.clearUserData();  //新玩家初始化
         }
         //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
