@@ -7,54 +7,54 @@
             <key>general2_attack1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{154,154},{150,150}}</string>
+                <string>{{104,104},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
+                <string>{{0,0},{100,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>general2_attack2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{154,2},{150,150}}</string>
+                <string>{{104,2},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
+                <string>{{0,0},{100,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>general2_attack3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,154},{150,150}}</string>
+                <string>{{2,104},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
+                <string>{{0,0},{100,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>general2_attack4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{150,150}}</string>
+                <string>{{2,2},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
+                <string>{{0,0},{100,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -64,9 +64,9 @@
             <key>realTextureFileName</key>
             <string>general2_attack.png</string>
             <key>size</key>
-            <string>{306,306}</string>
+            <string>{206,206}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:6d413210e85353ffa27e854f79e1b095:583d67f9bd4ab25c0ab45f8547efc9c5:7f435bb946643fb3efce6fff57dbef71$</string>
+            <string>$TexturePacker:SmartUpdate:b5ff444cadd6238efecdf9b40298b440:ed7796309183404d765104fce61d005a:7f435bb946643fb3efce6fff57dbef71$</string>
             <key>textureFileName</key>
             <string>general2_attack.png</string>
         </dict>

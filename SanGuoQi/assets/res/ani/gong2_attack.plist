@@ -7,80 +7,80 @@
             <key>gong2_attack_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{53,143},{41,72}}</string>
+                <string>{{150,54},{50,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{41,72}}</string>
+                <string>{{0,0},{50,72}}</string>
                 <key>sourceSize</key>
-                <string>{41,72}</string>
+                <string>{50,72}</string>
             </dict>
             <key>gong2_attack_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{53,2},{47,70}}</string>
+                <string>{{76,54},{50,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{47,70}}</string>
+                <string>{{0,0},{50,72}}</string>
                 <key>sourceSize</key>
-                <string>{47,70}</string>
+                <string>{50,72}</string>
             </dict>
             <key>gong2_attack_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,73},{49,69}}</string>
+                <string>{{2,54},{50,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{49,69}}</string>
+                <string>{{0,0},{50,72}}</string>
                 <key>sourceSize</key>
-                <string>{49,69}</string>
+                <string>{50,72}</string>
             </dict>
             <key>gong2_attack_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{49,69}}</string>
+                <string>{{150,2},{50,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{49,69}}</string>
+                <string>{{0,0},{50,72}}</string>
                 <key>sourceSize</key>
-                <string>{49,69}</string>
+                <string>{50,72}</string>
             </dict>
             <key>gong2_attack_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{53,74},{45,67}}</string>
+                <string>{{76,2},{50,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{45,67}}</string>
+                <string>{{0,0},{50,72}}</string>
                 <key>sourceSize</key>
-                <string>{45,67}</string>
+                <string>{50,72}</string>
             </dict>
             <key>gong2_attack_6.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,144},{48,66}}</string>
+                <string>{{2,2},{50,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{48,66}}</string>
+                <string>{{0,0},{50,72}}</string>
                 <key>sourceSize</key>
-                <string>{48,66}</string>
+                <string>{50,72}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -90,9 +90,9 @@
             <key>realTextureFileName</key>
             <string>gong2_attack.png</string>
             <key>size</key>
-            <string>{102,217}</string>
+            <string>{224,106}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:bccd0cc812a576c2c955e5e413b1ad19:52e03edc6b598b4997f252c7e35b2903:785a67280edf8c28ef67239ddd22adbb$</string>
+            <string>$TexturePacker:SmartUpdate:0e1b9d2ff32b4b4be4a00671c4658870:fead0e4c51a7a3280e0ab7aadb743c64:785a67280edf8c28ef67239ddd22adbb$</string>
             <key>textureFileName</key>
             <string>gong2_attack.png</string>
         </dict>

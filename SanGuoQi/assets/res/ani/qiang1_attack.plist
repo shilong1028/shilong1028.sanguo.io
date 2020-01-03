@@ -7,93 +7,93 @@
             <key>qiang1_attack_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{79,156},{55,75}}</string>
+                <string>{{206,79},{100,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{55,75}}</string>
+                <string>{{0,0},{100,75}}</string>
                 <key>sourceSize</key>
-                <string>{55,75}</string>
+                <string>{100,75}</string>
             </dict>
             <key>qiang1_attack_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{136,156},{39,75}}</string>
+                <string>{{104,79},{100,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{39,75}}</string>
+                <string>{{0,0},{100,75}}</string>
                 <key>sourceSize</key>
-                <string>{39,75}</string>
+                <string>{100,75}</string>
             </dict>
             <key>qiang1_attack_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,156},{76,75}}</string>
+                <string>{{2,79},{100,75}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{100,75}}</string>
+                <key>sourceSize</key>
+                <string>{100,75}</string>
+            </dict>
+            <key>qiang1_attack_4.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{308,2},{100,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{76,75}}</string>
+                <string>{{0,0},{100,75}}</string>
                 <key>sourceSize</key>
-                <string>{76,75}</string>
-            </dict>
-            <key>qiang1_attack_4.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{101,79},{74,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{74,75}}</string>
-                <key>sourceSize</key>
-                <string>{74,75}</string>
+                <string>{100,75}</string>
             </dict>
             <key>qiang1_attack_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,79},{97,75}}</string>
+                <string>{{206,2},{100,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{97,75}}</string>
+                <string>{{0,0},{100,75}}</string>
                 <key>sourceSize</key>
-                <string>{97,75}</string>
+                <string>{100,75}</string>
             </dict>
             <key>qiang1_attack_6.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{104,75}}</string>
+                <string>{{104,2},{100,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{104,75}}</string>
+                <string>{{0,0},{100,75}}</string>
                 <key>sourceSize</key>
-                <string>{104,75}</string>
+                <string>{100,75}</string>
             </dict>
             <key>qiang1_attack_7.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{108,2},{65,75}}</string>
+                <string>{{2,2},{100,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{65,75}}</string>
+                <string>{{0,0},{100,75}}</string>
                 <key>sourceSize</key>
-                <string>{65,75}</string>
+                <string>{100,75}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -103,9 +103,9 @@
             <key>realTextureFileName</key>
             <string>qiang1_attack.png</string>
             <key>size</key>
-            <string>{177,254}</string>
+            <string>{385,156}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:356ac3899c77e62d22d976cd4d6fb7b5:b206705339e3cb695b7c6ca2fad496c3:5d93f5b8979351ac24f89c8b00985332$</string>
+            <string>$TexturePacker:SmartUpdate:8fd48fe789d58d0437ee54d424f8292c:e8af398ebb20e1f6843167aea6fd567a:5d93f5b8979351ac24f89c8b00985332$</string>
             <key>textureFileName</key>
             <string>qiang1_attack.png</string>
         </dict>

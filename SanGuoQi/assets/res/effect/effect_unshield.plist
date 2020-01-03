@@ -7,80 +7,80 @@
             <key>effect_unshield_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{126,262},{58,58}}</string>
+                <string>{{104,48},{38,38}}</string>
                 <key>offset</key>
-                <string>{-3,28}</string>
+                <string>{-2,18}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{43,18},{58,58}}</string>
+                <string>{{29,13},{38,38}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>effect_unshield_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{154,88},{68,66}}</string>
+                <string>{{104,2},{44,44}}</string>
                 <key>offset</key>
-                <string>{1,27}</string>
+                <string>{1,18}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{42,15},{68,66}}</string>
+                <string>{{29,10},{44,44}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>effect_unshield_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{154,2},{88,84}}</string>
+                <string>{{84,176},{60,56}}</string>
                 <key>offset</key>
-                <string>{-1,20}</string>
+                <string>{-1,13}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{30,13},{88,84}}</string>
+                <string>{{19,9},{60,56}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>effect_unshield_04.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{126,156},{106,104}}</string>
+                <string>{{84,104},{70,70}}</string>
                 <key>offset</key>
-                <string>{3,12}</string>
+                <string>{2,8}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{25,11},{106,104}}</string>
+                <string>{{17,7},{70,70}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>effect_unshield_05.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,154},{118,122}}</string>
+                <string>{{2,104},{80,82}}</string>
                 <key>offset</key>
-                <string>{7,6}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{23,8},{118,122}}</string>
+                <string>{{14,5},{80,82}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>effect_unshield_06.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{150,150}}</string>
+                <string>{{2,2},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
+                <string>{{0,0},{100,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -90,9 +90,9 @@
             <key>realTextureFileName</key>
             <string>effect_unshield.png</string>
             <key>size</key>
-            <string>{244,322}</string>
+            <string>{156,234}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:4efc97287e1e5f770ccfc2c761b4335c:bc0ab7a7b36a6f5943b97a9c53cbd9f0:e441594cbff42d33a97643c014390901$</string>
+            <string>$TexturePacker:SmartUpdate:8a9c925dbf9b052de6ab5581dedf358d:59d9fb9a58f0fedae3a843ae0bdbf891:e441594cbff42d33a97643c014390901$</string>
             <key>textureFileName</key>
             <string>effect_unshield.png</string>
         </dict>

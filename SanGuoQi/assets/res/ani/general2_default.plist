@@ -7,54 +7,54 @@
             <key>general2_default1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{154,154},{150,150}}</string>
+                <string>{{104,104},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
+                <string>{{0,0},{100,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>general2_default2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{154,2},{150,150}}</string>
+                <string>{{104,2},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
+                <string>{{0,0},{100,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>general2_default3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,154},{150,150}}</string>
+                <string>{{2,104},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
+                <string>{{0,0},{100,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>general2_default4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{150,150}}</string>
+                <string>{{2,2},{100,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
+                <string>{{0,0},{100,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -64,9 +64,9 @@
             <key>realTextureFileName</key>
             <string>general2_default.png</string>
             <key>size</key>
-            <string>{306,306}</string>
+            <string>{206,206}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d5b25d15f7fd1bdec1461daa26d6a13d:c89792f5f7d704d912726f5d5355d19c:1f30f5ace42c977a6a289e4a0e26bda1$</string>
+            <string>$TexturePacker:SmartUpdate:f29f4f53a9081dfd6de3423e00940bda:62e73fdac9ba05a53bfe28ca64d17b7e:1f30f5ace42c977a6a289e4a0e26bda1$</string>
             <key>textureFileName</key>
             <string>general2_default.png</string>
         </dict>

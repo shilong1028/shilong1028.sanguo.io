@@ -7,20 +7,20 @@
             <key>dao2_default_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{130,2},{48,75}}</string>
+                <string>{{71,79},{67,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{48,75}}</string>
+                <string>{{0,0},{67,75}}</string>
                 <key>sourceSize</key>
-                <string>{48,75}</string>
+                <string>{67,75}</string>
             </dict>
             <key>dao2_default_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{67,75}}</string>
+                <string>{{71,2},{67,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,41 +33,41 @@
             <key>dao2_default_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{71,2},{57,75}}</string>
+                <string>{{2,156},{67,75}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{67,75}}</string>
+                <key>sourceSize</key>
+                <string>{67,75}</string>
+            </dict>
+            <key>dao2_default_4.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,79},{67,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{57,75}}</string>
+                <string>{{0,0},{67,75}}</string>
                 <key>sourceSize</key>
-                <string>{57,75}</string>
-            </dict>
-            <key>dao2_default_4.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,79},{44,75}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{44,75}}</string>
-                <key>sourceSize</key>
-                <string>{44,75}</string>
+                <string>{67,75}</string>
             </dict>
             <key>dao2_default_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{79,79},{42,75}}</string>
+                <string>{{2,2},{67,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{42,75}}</string>
+                <string>{{0,0},{67,75}}</string>
                 <key>sourceSize</key>
-                <string>{42,75}</string>
+                <string>{67,75}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -77,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>dao2_default.png</string>
             <key>size</key>
-            <string>{180,125}</string>
+            <string>{140,225}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:ec3cf419032c5b3453469126b54dfadd:52825c808a35e3b81bb1a2f0794c70f5:310e826972b34a76b7a2377aba64ecc3$</string>
+            <string>$TexturePacker:SmartUpdate:a93d657ec0ab5af8d930e1de67b30e3b:f54535f736313181966b7091463a4c5b:310e826972b34a76b7a2377aba64ecc3$</string>
             <key>textureFileName</key>
             <string>dao2_default.png</string>
         </dict>

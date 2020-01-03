@@ -7,67 +7,67 @@
             <key>shield_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,306},{140,150}}</string>
+                <string>{{308,2},{94,100}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{4,0},{140,150}}</string>
+                <string>{{2,0},{94,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>shield_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,458},{140,148}}</string>
+                <string>{{206,2},{94,100}}</string>
                 <key>offset</key>
-                <string>{-1,-1}</string>
+                <string>{-1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{4,2},{140,148}}</string>
+                <string>{{2,0},{94,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>shield_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,608},{132,136}}</string>
+                <string>{{410,2},{88,90}}</string>
                 <key>offset</key>
-                <string>{0,1}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{9,6},{132,136}}</string>
+                <string>{{6,5},{88,90}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>shield_04.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,154},{140,150}}</string>
+                <string>{{104,2},{94,100}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{4,0},{140,150}}</string>
+                <string>{{2,0},{94,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>shield_05.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{140,150}}</string>
+                <string>{{2,2},{94,100}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{4,0},{140,150}}</string>
+                <string>{{2,0},{94,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -77,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>effect_shield.png</string>
             <key>size</key>
-            <string>{144,742}</string>
+            <string>{500,98}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:9593e2141f07d24ff6b15c0c8c9636b7:79930bea880bb8711922c7c64001faa5:763407e39468735f26900ff508c99c64$</string>
+            <string>$TexturePacker:SmartUpdate:79f595ac12519de194e86ea19dcf796a:e502e7a8c017453d8648fcc7007a5f90:763407e39468735f26900ff508c99c64$</string>
             <key>textureFileName</key>
             <string>effect_shield.png</string>
         </dict>

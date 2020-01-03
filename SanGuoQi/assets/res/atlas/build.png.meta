@@ -1,10 +1,12 @@
 {
-  "ver": "2.3.1",
+  "ver": "2.3.3",
   "uuid": "8a53eb2a-bb5c-4b66-8721-dfea08a60b01",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "build": {
@@ -18,10 +20,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 1511,
-      "height": 971,
-      "rawWidth": 1511,
-      "rawHeight": 971,
+      "width": 394,
+      "height": 253,
+      "rawWidth": 394,
+      "rawHeight": 253,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

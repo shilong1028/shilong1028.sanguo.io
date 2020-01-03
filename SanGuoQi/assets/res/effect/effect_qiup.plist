@@ -7,67 +7,67 @@
             <key>qiup_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{142,132},{114,126}}</string>
+                <string>{{164,88},{76,84}}</string>
                 <key>offset</key>
-                <string>{0,-9}</string>
+                <string>{0,-6}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{18,21},{114,126}}</string>
+                <string>{{12,14},{76,84}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>qiup_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,132},{114,138}}</string>
+                <string>{{2,88},{76,92}}</string>
                 <key>offset</key>
-                <string>{1,3}</string>
+                <string>{1,2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{19,3},{114,138}}</string>
+                <string>{{13,2},{76,92}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>qiup_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{148,2},{140,128}}</string>
+                <string>{{100,2},{94,84}}</string>
                 <key>offset</key>
-                <string>{5,8}</string>
+                <string>{3,5}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{10,3},{140,128}}</string>
+                <string>{{6,3},{94,84}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>qiup_04.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{144,128}}</string>
+                <string>{{2,2},{96,84}}</string>
                 <key>offset</key>
-                <string>{-2,8}</string>
+                <string>{-1,5}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{1,3},{144,128}}</string>
+                <string>{{1,3},{96,84}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>qiup_05.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{290,2},{122,136}}</string>
+                <string>{{80,88},{82,90}}</string>
                 <key>offset</key>
-                <string>{6,4}</string>
+                <string>{4,2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{20,3},{122,136}}</string>
+                <string>{{13,3},{82,90}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -77,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>effect_qiup.png</string>
             <key>size</key>
-            <string>{414,248}</string>
+            <string>{242,182}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:db059fb780f16fc9804351b23a6c49d6:146169ecf06cd365044118155e8a8112:c33138dd1c276c73b0df6d1f0050c17d$</string>
+            <string>$TexturePacker:SmartUpdate:33460e8272ba2fd3c2818d813af3f371:7e09d7379f110fccd38b9d037af948f2:c33138dd1c276c73b0df6d1f0050c17d$</string>
             <key>textureFileName</key>
             <string>effect_qiup.png</string>
         </dict>

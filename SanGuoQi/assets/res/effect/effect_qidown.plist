@@ -7,41 +7,41 @@
             <key>qidwn_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,100},{88,94}}</string>
+                <string>{{100,2},{88,94}}</string>
                 <key>offset</key>
                 <string>{1,-1}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{32,29},{88,94}}</string>
+                <string>{{7,4},{88,94}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>qidwn_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,196},{86,100}}</string>
+                <string>{{196,2},{86,100}}</string>
                 <key>offset</key>
                 <string>{1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{33,25},{86,100}}</string>
+                <string>{{8,0},{86,100}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>qidwn_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,298},{84,98}}</string>
+                <string>{{298,2},{84,98}}</string>
                 <key>offset</key>
                 <string>{1,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{34,26},{84,98}}</string>
+                <string>{{9,1},{84,98}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>qidwn_04.png</key>
             <dict>
@@ -50,24 +50,24 @@
                 <key>offset</key>
                 <string>{1,1}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{32,26},{88,96}}</string>
+                <string>{{7,1},{88,96}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
             <key>qidwn_05.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,398},{84,92}}</string>
+                <string>{{398,2},{84,92}}</string>
                 <key>offset</key>
                 <string>{2,-1}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{35,30},{84,92}}</string>
+                <string>{{10,5},{84,92}}</string>
                 <key>sourceSize</key>
-                <string>{150,150}</string>
+                <string>{100,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -77,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>effect_qidown.png</string>
             <key>size</key>
-            <string>{92,492}</string>
+            <string>{492,92}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:fcc5745371ff5394828a85026f10495c:50a166b3c844c935092af0db48677ecc:59a899193b769206f6cd63df2eb58a34$</string>
+            <string>$TexturePacker:SmartUpdate:c33df3729efe9dee696fe37032c2ad84:60da2c5979357391597b1b0ff3aa95de:59a899193b769206f6cd63df2eb58a34$</string>
             <key>textureFileName</key>
             <string>effect_qidown.png</string>
         </dict>

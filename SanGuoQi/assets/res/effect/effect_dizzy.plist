@@ -7,67 +7,67 @@
             <key>effect_dizzy_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,64},{100,66}}</string>
+                <string>{{90,2},{98,66}}</string>
                 <key>offset</key>
-                <string>{12,-4}</string>
+                <string>{-1,-4}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{26,18},{100,66}}</string>
+                <string>{{0,18},{98,66}}</string>
                 <key>sourceSize</key>
-                <string>{128,94}</string>
+                <string>{100,94}</string>
             </dict>
             <key>effect_dizzy_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,280},{90,80}}</string>
+                <string>{{2,2},{86,80}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{7,7}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{28,0},{90,80}}</string>
+                <string>{{14,0},{86,80}}</string>
                 <key>sourceSize</key>
-                <string>{128,94}</string>
+                <string>{100,94}</string>
             </dict>
             <key>effect_dizzy_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{106,60}}</string>
+                <string>{{190,2},{100,60}}</string>
                 <key>offset</key>
-                <string>{-4,3}</string>
+                <string>{0,3}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{7,14},{106,60}}</string>
+                <string>{{0,14},{100,60}}</string>
                 <key>sourceSize</key>
-                <string>{128,94}</string>
+                <string>{100,94}</string>
             </dict>
             <key>effect_dizzy_04.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,132},{92,76}}</string>
+                <string>{{94,70},{88,76}}</string>
                 <key>offset</key>
-                <string>{-8,-8}</string>
+                <string>{-6,-8}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{10,17},{92,76}}</string>
+                <string>{{0,17},{88,76}}</string>
                 <key>sourceSize</key>
-                <string>{128,94}</string>
+                <string>{100,94}</string>
             </dict>
             <key>effect_dizzy_05.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,210},{92,68}}</string>
+                <string>{{2,84},{90,68}}</string>
                 <key>offset</key>
-                <string>{-7,-9}</string>
+                <string>{-5,-9}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{11,22},{92,68}}</string>
+                <string>{{0,22},{90,68}}</string>
                 <key>sourceSize</key>
-                <string>{128,94}</string>
+                <string>{100,94}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -77,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>effect_dizzy.png</string>
             <key>size</key>
-            <string>{110,362}</string>
+            <string>{252,154}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:6a8eb6f551913cd6f334cb183bd5d95d:eb50137b50e2f1fa4296421390988f73:62b0106e09ba6c8f1443bcf1e3bbf23c$</string>
+            <string>$TexturePacker:SmartUpdate:3a1090af2eda0f8e53f40ea4e1a259e7:ff585542c9cfc6707bc5f85f66dffd1f:62b0106e09ba6c8f1443bcf1e3bbf23c$</string>
             <key>textureFileName</key>
             <string>effect_dizzy.png</string>
         </dict>

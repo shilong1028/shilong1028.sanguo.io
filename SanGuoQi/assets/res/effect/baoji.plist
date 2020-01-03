@@ -7,54 +7,54 @@
             <key>baoda1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{204,209},{176,184}}</string>
+                <string>{{102,2},{86,92}}</string>
                 <key>offset</key>
-                <string>{3,-1}</string>
+                <string>{2,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{15,11},{176,184}}</string>
+                <string>{{9,4},{86,92}}</string>
                 <key>sourceSize</key>
-                <string>{200,204}</string>
+                <string>{100,100}</string>
             </dict>
             <key>baoda2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{200,220}}</string>
+                <string>{{2,104},{92,100}}</string>
+                <key>offset</key>
+                <string>{-1,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{3,0},{92,100}}</string>
+                <key>sourceSize</key>
+                <string>{100,100}</string>
+            </dict>
+            <key>baoda3.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,2},{98,100}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{1,0},{98,100}}</string>
+                <key>sourceSize</key>
+                <string>{100,100}</string>
+            </dict>
+            <key>baoda4.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{96,104},{100,92}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{200,220}}</string>
+                <string>{{0,4},{100,92}}</string>
                 <key>sourceSize</key>
-                <string>{200,220}</string>
-            </dict>
-            <key>baoda3.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{224,2},{200,205}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{200,205}}</string>
-                <key>sourceSize</key>
-                <string>{200,205}</string>
-            </dict>
-            <key>baoda4.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,204},{200,184}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{200,184}}</string>
-                <key>sourceSize</key>
-                <string>{200,184}</string>
+                <string>{100,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -64,9 +64,9 @@
             <key>realTextureFileName</key>
             <string>baoji.png</string>
             <key>size</key>
-            <string>{426,390}</string>
+            <string>{190,206}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:b0c0a07cd591aed7e027966b286964d7:de9a3d5241f7918c214a1898756b36a8:28355f43c368b67a3d144ec53e497e78$</string>
+            <string>$TexturePacker:SmartUpdate:b4944a9519b5b2b13da9ce3eb576ad27:dbaa851bcbef9372f22f29fe280fef92:28355f43c368b67a3d144ec53e497e78$</string>
             <key>textureFileName</key>
             <string>baoji.png</string>
         </dict>

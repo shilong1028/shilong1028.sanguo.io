@@ -7,54 +7,54 @@
             <key>gong2_default_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{39,38},{43,62}}</string>
+                <string>{{69,49},{45,65}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{43,62}}</string>
+                <string>{{0,0},{45,65}}</string>
                 <key>sourceSize</key>
-                <string>{43,62}</string>
+                <string>{45,65}</string>
             </dict>
             <key>gong2_default_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{35,64}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{35,64}}</string>
-                <key>sourceSize</key>
-                <string>{35,64}</string>
-            </dict>
-            <key>gong2_default_3.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{39,2},{34,63}}</string>
+                <string>{{49,2},{45,65}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{34,63}}</string>
+                <string>{{0,0},{45,65}}</string>
                 <key>sourceSize</key>
-                <string>{34,63}</string>
+                <string>{45,65}</string>
+            </dict>
+            <key>gong2_default_3.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,69},{45,65}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{45,65}}</string>
+                <key>sourceSize</key>
+                <string>{45,65}</string>
             </dict>
             <key>gong2_default_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{84,38},{36,62}}</string>
+                <string>{{2,2},{45,65}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{36,62}}</string>
+                <string>{{0,0},{45,65}}</string>
                 <key>sourceSize</key>
-                <string>{36,62}</string>
+                <string>{45,65}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -64,9 +64,9 @@
             <key>realTextureFileName</key>
             <string>gong2_default.png</string>
             <key>size</key>
-            <string>{122,102}</string>
+            <string>{116,116}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:3d5f5a46dd38dd4813beff4c43a08df6:228c292336f7fc26d3adc8152c8a0485:acc3d2218a903891a4d97b9c4775253c$</string>
+            <string>$TexturePacker:SmartUpdate:98466889a11c3a03c9d69b8b01dcc42f:e98bc42f062a181125c22476cb355757:acc3d2218a903891a4d97b9c4775253c$</string>
             <key>textureFileName</key>
             <string>gong2_default.png</string>
         </dict>

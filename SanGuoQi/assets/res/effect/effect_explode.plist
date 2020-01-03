@@ -7,67 +7,67 @@
             <key>effect_explode_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{356,76},{72,40}}</string>
+                <string>{{98,71},{72,41}}</string>
                 <key>offset</key>
-                <string>{-12,-30}</string>
+                <string>{-12,-12}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{27,63},{72,40}}</string>
+                <string>{{2,27},{72,41}}</string>
                 <key>sourceSize</key>
-                <string>{150,106}</string>
+                <string>{100,71}</string>
             </dict>
             <key>effect_explode_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{250,76},{104,42}}</string>
+                <string>{{2,67},{94,41}}</string>
                 <key>offset</key>
-                <string>{-9,-27}</string>
+                <string>{-3,-10}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{14,59},{104,42}}</string>
+                <string>{{0,25},{94,41}}</string>
                 <key>sourceSize</key>
-                <string>{150,106}</string>
+                <string>{100,71}</string>
             </dict>
             <key>effect_explode_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{250,2},{142,72}}</string>
+                <string>{{186,2},{94,49}}</string>
                 <key>offset</key>
-                <string>{-4,-17}</string>
+                <string>{-3,-11}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,34},{142,72}}</string>
+                <string>{{0,22},{94,49}}</string>
                 <key>sourceSize</key>
-                <string>{150,106}</string>
+                <string>{100,71}</string>
             </dict>
             <key>effect_explode_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{146,92}}</string>
+                <string>{{2,2},{98,63}}</string>
                 <key>offset</key>
-                <string>{2,-7}</string>
+                <string>{1,-4}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{4,14},{146,92}}</string>
+                <string>{{2,8},{98,63}}</string>
                 <key>sourceSize</key>
-                <string>{150,106}</string>
+                <string>{100,71}</string>
             </dict>
             <key>effect_explode_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{150,2},{122,98}}</string>
+                <string>{{102,2},{82,67}}</string>
                 <key>offset</key>
-                <string>{-6,4}</string>
+                <string>{-4,2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{8,0},{122,98}}</string>
+                <string>{{5,0},{82,67}}</string>
                 <key>sourceSize</key>
-                <string>{150,106}</string>
+                <string>{100,71}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -77,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>effect_explode.png</string>
             <key>size</key>
-            <string>{430,126}</string>
+            <string>{237,114}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:6b4e309b9f42f10f978797e82dd1cb19:4c0d34e7545b4a123c2d61f624ac50ce:e65dce9cedeb0f79384cda066eb0066f$</string>
+            <string>$TexturePacker:SmartUpdate:f10a24f23e9f08c4c28850e11556dc5c:44d05d6c6e0420fe788cd32607d23acd:e65dce9cedeb0f79384cda066eb0066f$</string>
             <key>textureFileName</key>
             <string>effect_explode.png</string>
         </dict>

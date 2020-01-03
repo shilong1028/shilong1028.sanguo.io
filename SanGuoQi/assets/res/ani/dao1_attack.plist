@@ -7,59 +7,59 @@
             <key>dao1_attack_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{159,2},{57,75}}</string>
+                <string>{{186,104},{90,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{57,75}}</string>
+                <string>{{0,0},{90,100}}</string>
                 <key>sourceSize</key>
-                <string>{57,75}</string>
+                <string>{90,100}</string>
             </dict>
             <key>dao1_attack_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,2},{63,75}}</string>
+                <string>{{94,104},{90,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{63,75}}</string>
+                <string>{{0,0},{90,100}}</string>
                 <key>sourceSize</key>
-                <string>{63,75}</string>
+                <string>{90,100}</string>
             </dict>
             <key>dao1_attack_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,104},{36,75}}</string>
+                <string>{{186,2},{90,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{36,75}}</string>
+                <string>{{0,0},{90,100}}</string>
                 <key>sourceSize</key>
-                <string>{36,75}</string>
+                <string>{90,100}</string>
             </dict>
             <key>dao1_attack_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,79},{61,75}}</string>
+                <string>{{94,2},{90,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{61,75}}</string>
+                <string>{{0,0},{90,100}}</string>
                 <key>sourceSize</key>
-                <string>{61,75}</string>
+                <string>{90,100}</string>
             </dict>
             <key>dao1_attack_5.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{90,100}}</string>
+                <string>{{2,104},{90,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -72,15 +72,15 @@
             <key>dao1_attack_6.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{171,79},{56,75}}</string>
+                <string>{{2,2},{90,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{56,75}}</string>
+                <string>{{0,0},{90,100}}</string>
                 <key>sourceSize</key>
-                <string>{56,75}</string>
+                <string>{90,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -90,9 +90,9 @@
             <key>realTextureFileName</key>
             <string>dao1_attack.png</string>
             <key>size</key>
-            <string>{248,142}</string>
+            <string>{278,206}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:34d10fd2a0d9d331f4b7ed1df63ebda8:5b256d7178f8f123fee04a034d454c72:bce09449e01873bb66e4eec6e10f1cea$</string>
+            <string>$TexturePacker:SmartUpdate:f62401ab0594f76a32a07a22f8877b33:320c8957f512c944d77ce6465dd6eed3:bce09449e01873bb66e4eec6e10f1cea$</string>
             <key>textureFileName</key>
             <string>dao1_attack.png</string>
         </dict>

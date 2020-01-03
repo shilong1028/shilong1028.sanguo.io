@@ -7,54 +7,54 @@
             <key>qiang1_default_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{183,2},{55,75}}</string>
+                <string>{{79,64},{60,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{55,75}}</string>
+                <string>{{0,0},{60,75}}</string>
                 <key>sourceSize</key>
-                <string>{55,75}</string>
+                <string>{60,75}</string>
             </dict>
             <key>qiang1_default_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{124,2},{57,75}}</string>
+                <string>{{2,64},{60,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{57,75}}</string>
+                <string>{{0,0},{60,75}}</string>
                 <key>sourceSize</key>
-                <string>{57,75}</string>
+                <string>{60,75}</string>
             </dict>
             <key>qiang1_default_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{63,2},{59,75}}</string>
+                <string>{{79,2},{60,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{59,75}}</string>
+                <string>{{0,0},{60,75}}</string>
                 <key>sourceSize</key>
-                <string>{59,75}</string>
+                <string>{60,75}</string>
             </dict>
             <key>qiang1_default_4.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{59,75}}</string>
+                <string>{{2,2},{60,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{59,75}}</string>
+                <string>{{0,0},{60,75}}</string>
                 <key>sourceSize</key>
-                <string>{59,75}</string>
+                <string>{60,75}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -64,9 +64,9 @@
             <key>realTextureFileName</key>
             <string>qiang1_default.png</string>
             <key>size</key>
-            <string>{240,79}</string>
+            <string>{156,126}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:c5926cf99b0c0dcc1f6ac6a30ecb2f9e:4a54070f05194f408cfaee93e598d40f:2c67bf0e5216d662770f72b7d4d28fdd$</string>
+            <string>$TexturePacker:SmartUpdate:903d7116ed4a9fa08eba5a3cf09f67a5:85552f2969e1bdb7096953b5184b2930:2c67bf0e5216d662770f72b7d4d28fdd$</string>
             <key>textureFileName</key>
             <string>qiang1_default.png</string>
         </dict>

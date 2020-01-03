@@ -34,8 +34,6 @@ class MyUserManager {
 
     /**清除所有用户数据 */
     clearUserData(){
-        LDMgr.setItem(LDKey.KEY_NewUser, 0);  //是否新用户
-
         MyUserData.GoldCount = 0;   //用户金币
         LDMgr.setItem(LDKey.KEY_GoldCount, 0);
         MyUserData.DiamondCount = 0;   //用户钻石(金锭）数
@@ -73,9 +71,12 @@ class MyUserManager {
 
     /**初始新用户赋值 */
     initNewUserData(){
-        if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
-            LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
-        }
+        let caocao = new GeneralInfo(3001);
+        this.addGeneralToList(caocao, true)
+
+        this.updateRoleLv(1);  //更新主角等级
+
+        LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
     }
 
     /**初始化用户信息 */
@@ -104,6 +105,10 @@ class MyUserManager {
 
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
         MyUserData.GeneralList = this.getGeneralListByLD();  //武将列表
+
+        if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
+            this.clearUserData();
+        }
 
         //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
@@ -358,12 +363,7 @@ class MyUserManager {
                 tempList.push(tempItem);
             }
         }
-        if(tempList.length == 0){   //初始加入曹操
-            let caocao = new GeneralInfo(3001);
-            tempList.push(caocao);
 
-            this.updateRoleLv(1);  //更新主角等级
-        }
         return tempList;
     }
 

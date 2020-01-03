@@ -7,80 +7,80 @@
             <key>upgrade_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,306},{90,150}}</string>
+                <string>{{188,2},{60,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{90,150}}</string>
+                <string>{{0,0},{60,100}}</string>
                 <key>sourceSize</key>
-                <string>{90,150}</string>
+                <string>{60,100}</string>
             </dict>
             <key>upgrade_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,306},{90,150}}</string>
+                <string>{{126,2},{60,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{90,150}}</string>
+                <string>{{0,0},{60,100}}</string>
                 <key>sourceSize</key>
-                <string>{90,150}</string>
+                <string>{60,100}</string>
             </dict>
             <key>upgrade_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,154},{90,150}}</string>
+                <string>{{104,104},{60,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{90,150}}</string>
+                <string>{{0,0},{60,100}}</string>
                 <key>sourceSize</key>
-                <string>{90,150}</string>
+                <string>{60,100}</string>
             </dict>
             <key>upgrade_04.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,154},{90,150}}</string>
+                <string>{{64,2},{60,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{90,150}}</string>
+                <string>{{0,0},{60,100}}</string>
                 <key>sourceSize</key>
-                <string>{90,150}</string>
+                <string>{60,100}</string>
             </dict>
             <key>upgrade_05.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,2},{90,150}}</string>
+                <string>{{2,104},{60,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{90,150}}</string>
+                <string>{{0,0},{60,100}}</string>
                 <key>sourceSize</key>
-                <string>{90,150}</string>
+                <string>{60,100}</string>
             </dict>
             <key>upgrade_06.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{90,150}}</string>
+                <string>{{2,2},{60,100}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{90,150}}</string>
+                <string>{{0,0},{60,100}}</string>
                 <key>sourceSize</key>
-                <string>{90,150}</string>
+                <string>{60,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -90,9 +90,9 @@
             <key>realTextureFileName</key>
             <string>upgrade.png</string>
             <key>size</key>
-            <string>{186,458}</string>
+            <string>{250,166}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:eaccadf3a9885334ee361447ded95ab4:4722bdffda9d875e5caf5a5479594c70:6e00fead66101ccdae7adde190701643$</string>
+            <string>$TexturePacker:SmartUpdate:e81ddb71ced9e961bb27ee93aee1328a:48e545751d85157ea7ddb150f01e1a14:6e00fead66101ccdae7adde190701643$</string>
             <key>textureFileName</key>
             <string>upgrade.png</string>
         </dict>

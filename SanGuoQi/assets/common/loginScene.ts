@@ -19,11 +19,7 @@ export default class LoginScene extends cc.Component {
     }
 
     start () {
-        if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
-            MyUserMgr.clearUserData();
-        }else{
-            MyUserMgr.initUserData();    //初始化用户信息
-        }
+        MyUserMgr.initUserData();    //初始化用户信息
         this.btnNode.active = true;
     }
 
