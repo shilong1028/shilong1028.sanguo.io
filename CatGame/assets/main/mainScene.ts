@@ -8,6 +8,7 @@ import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
 import ChapterLayer from "./chapterLayer";
 import ShopLayer from "./shopLayer";
 import BagLayer from "./bagLayer";
+import { ROOT_NODE } from "../common/rootNode";
 
 const {ccclass, property} = cc._decorator;
 

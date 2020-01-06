@@ -102,7 +102,7 @@ class AudioMgr_class {
     }
 
     playYinfu(){
-       let idx = Math.ceil(Math.random()*25);
+       let idx = Math.ceil(Math.random()*5);
        if(idx == 0){
            idx = 1;
        }

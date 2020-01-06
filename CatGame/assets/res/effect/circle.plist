@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>display_pao_aimat_0_00.png</key>
+            <key>circle_01.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,2},{76,80}}</string>
@@ -17,7 +17,7 @@
                 <key>sourceSize</key>
                 <string>{76,80}</string>
             </dict>
-            <key>display_pao_aimat_0_01.png</key>
+            <key>circle_02.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{80,2},{74,78}}</string>
@@ -30,7 +30,7 @@
                 <key>sourceSize</key>
                 <string>{74,78}</string>
             </dict>
-            <key>display_pao_aimat_0_02.png</key>
+            <key>circle_03.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,84},{78,78}}</string>
@@ -43,7 +43,7 @@
                 <key>sourceSize</key>
                 <string>{78,78}</string>
             </dict>
-            <key>display_pao_aimat_0_03.png</key>
+            <key>circle_04.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,164},{78,74}}</string>
@@ -66,7 +66,7 @@
             <key>size</key>
             <string>{256,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:95115354e85c1214954952906fe858c0:ecfc54f08224fcfd4943012d7b84d0dd:c8995fa6cb8242346e0efa701995bfc4$</string>
+            <string>$TexturePacker:SmartUpdate:207c19085e55d25d13e37f83008094d5:ecfc54f08224fcfd4943012d7b84d0dd:c8995fa6cb8242346e0efa701995bfc4$</string>
             <key>textureFileName</key>
             <string>circle.png</string>
         </dict>

@@ -15,6 +15,7 @@ class SDKManager_class  {
     bAutoPlayVedio: boolean = false;
     adVedioPlaying: boolean = false;
 
+    adMaxCount: number = 20;
     adTotalCount: number = 0;   //今日总的视频次数
     adDayCounts: any = null;   //每种视频观看次数
     bOpenVedioShop: boolean = false;   //是否开启视频商城
@@ -24,24 +25,26 @@ class SDKManager_class  {
     sdkCheckSuccCallBack: any = null;   //SDK用户数据校验成功回调
     callBackTarget: any = null;
 
-    bannerCheckTime: number = 15781541870000000000;   //字节跳动屏蔽Banner时间戳
+    bannerCheckTime: number = 15781541870000000000000000;   //字节跳动屏蔽Banner时间戳
 
     /** 检查和初始化可用的SDK */
     initSDK(){
-        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
-        //SDKMgr.TT = (window as any).tt;;  //字节跳动
-        SDKMgr.bannerCheckTime = 1578154187000;  //毫秒数 字节跳动屏蔽Banner时间戳
+        //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        SDKMgr.TT = (window as any).tt;;  //字节跳动   
+        SDKMgr.bannerCheckTime = 1578491562000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
         SDKMgr.initAdDayCount();
 
         if(SDKMgr.TT != null){   //字节跳动小程序
             SDKMgr.isSDK = true;
             SDKMgr.WeiChat = null;
+            SDKMgr.adMaxCount = 20;   //头条最多20次
             sdkTT.initSDK();
         }
         else if(SDKMgr.WeiChat != null){   //微信小游戏
             SDKMgr.isSDK = true;
             SDKMgr.TT = null;
+            SDKMgr.adMaxCount = 25 + Math.floor(Math.random()*10);   //微信25-35次
             sdkWechat.initSDK();
         }
         else {
@@ -161,7 +164,7 @@ class SDKManager_class  {
     }
 
     canPlayAdByCount(){
-        return SDKMgr.adTotalCount < 30;
+        return SDKMgr.adTotalCount < SDKMgr.adMaxCount;
     }
 
     closeAutoPlayAdVedio(){
@@ -169,10 +172,11 @@ class SDKManager_class  {
             clearTimeout(SDKMgr.timeOutId);
             SDKMgr.timeOutId = null;
         }
-        SDKMgr.autoAdTime = 0.1;
-        SDKMgr.bAutoPlayVedio = false;
-
-        ROOT_NODE.updateAdResultDialog();
+        SDKMgr.autoAdTime = 0;
+        if(SDKMgr.bAutoPlayVedio == true){
+            SDKMgr.bAutoPlayVedio = false;
+            ROOT_NODE.updateAdResultDialog();
+        }
     }
 
     autoPlayAdVedio(){
@@ -203,20 +207,20 @@ class SDKManager_class  {
             }
             let randomTime = Math.ceil(Math.random()*(30*Math.ceil(SDKMgr.adTotalCount/10)) + 50);
             SDKMgr.autoAdTime = randomTime;
-            if(SDKMgr.timeOutId){
-                clearTimeout(SDKMgr.timeOutId);
-                SDKMgr.timeOutId = null;
-            }
-            SDKMgr.timeOutId = setTimeout(()=>{
-                autoVedioFunc();
-            }, randomTime*1000)
+            // if(SDKMgr.timeOutId){
+            //     clearTimeout(SDKMgr.timeOutId);
+            //     SDKMgr.timeOutId = null;
+            // }
+            // SDKMgr.timeOutId = setTimeout(()=>{
+            //     autoVedioFunc();
+            // }, randomTime*1000)
         }
 
         let autoVedioFunc = function(){
-            if(SDKMgr.bAutoPlayVedio != true || SDKMgr.canPlayAdByCount() == false){
-                SDKMgr.closeAutoPlayAdVedio();
-                return;
-            }
+            // if(SDKMgr.bAutoPlayVedio != true || SDKMgr.canPlayAdByCount() == false){
+            //     SDKMgr.closeAutoPlayAdVedio();
+            //     return;
+            // }
 
             let randomIdx = Math.floor(Math.random()*adKeys.length*0.99);
             let adKey = adKeys[randomIdx];
@@ -236,7 +240,7 @@ class SDKManager_class  {
         }
 
         if(SDKMgr.canPlayAdByCount() == false){
-            GameMgr.showTipsDialog("今日视频次数已达最大限度（30次），请明日再来！", failCallback);
+            GameMgr.showTipsDialog("今日视频次数已达最大限度（20-30次），请明日再来！", failCallback);
             return;
         }
 
@@ -256,6 +260,7 @@ class SDKManager_class  {
 
         let errorCallFunc = function(){
             SDKMgr.adVedioPlaying = false;
+            SDKMgr.closeAutoPlayAdVedio();
 
             if(errorCallback){
                 errorCallback();

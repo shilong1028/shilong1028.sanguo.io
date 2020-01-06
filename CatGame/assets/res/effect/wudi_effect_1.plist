@@ -7,7 +7,7 @@
             <key>shield_00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{310,2},{75,75}}</string>
+                <string>{{156,2},{75,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>shield_01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{233,2},{75,75}}</string>
+                <string>{{79,79},{75,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>shield_02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{156,2},{75,75}}</string>
+                <string>{{79,2},{75,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,7 +46,7 @@
             <key>shield_03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{79,2},{75,75}}</string>
+                <string>{{2,79},{75,75}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -77,9 +77,9 @@
             <key>realTextureFileName</key>
             <string>wudi_effect_1.png</string>
             <key>size</key>
-            <string>{387,79}</string>
+            <string>{233,156}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:dc0eae6068b0ce622c72073c96fa951b:81d415c9085e38e7201a1fe49b210958:1ddc0615b1fb4be9645d9555b121b5b4$</string>
+            <string>$TexturePacker:SmartUpdate:ca53f1df15450b39735e4d8bd562de88:81d415c9085e38e7201a1fe49b210958:1ddc0615b1fb4be9645d9555b121b5b4$</string>
             <key>textureFileName</key>
             <string>wudi_effect_1.png</string>
         </dict>

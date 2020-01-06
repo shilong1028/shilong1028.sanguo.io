@@ -20,6 +20,8 @@ export default class AdResultDialog extends cc.Component {
     @property(cc.Label)
     adTimeLabel: cc.Label = null;
 
+    @property(cc.Node)
+    autobtnNode: cc.Node = null;
     @property(cc.Label)
     autoAdLabel: cc.Label = null;
     @property(cc.Label)
@@ -50,9 +52,9 @@ export default class AdResultDialog extends cc.Component {
     start () {
         let dataStr = new Date().toDateString();
         if(SDKMgr.WeiChat){
-            this.timeLabel.string = "TT日期："+dataStr;   //toUTCString
-        }else if(SDKMgr.TT){
             this.timeLabel.string = "WX日期："+dataStr;   //toUTCString
+        }else if(SDKMgr.TT){
+            this.timeLabel.string = "TT日期："+dataStr;   //toUTCString
         }else{
             this.timeLabel.string = "日期："+dataStr;   //toUTCString
         }
@@ -65,9 +67,10 @@ export default class AdResultDialog extends cc.Component {
     update(dt){
         if(SDKMgr.autoAdTime > 0){
             SDKMgr.autoAdTime -= dt;
-            if(SDKMgr.autoAdTime <= 0){
+            if(SDKMgr.autoAdTime <= 0.1){
                 SDKMgr.autoAdTime = 0;
                 this.adTimeLabel.string = "";
+                SDKMgr.autoPlayAdVedio();
             }else{
                 this.adTimeLabel.string = SDKMgr.autoAdTime.toFixed(3);
             }
@@ -76,9 +79,16 @@ export default class AdResultDialog extends cc.Component {
 
     updateAdDataLabel(){
         if(SDKMgr.bAutoPlayVedio != true){
-            this.autoAdLabel.string = "自动播放视频";
+            if(SDKMgr.canPlayAdByCount() == false){
+                this.autoAdLabel.string = "今日视频次数已达最大限度，请明日再来！";
+                this.autobtnNode.active = false;
+            }else{
+                this.autoAdLabel.string = "";
+                this.autobtnNode.active = true;
+            }
         }else{
-            this.autoAdLabel.string = "关闭自动视频";
+            this.autoAdLabel.string = "自动视频播放中...";
+            this.autobtnNode.active = false;
         }
 
         this.countLabel.string = "总次数："+SDKMgr.adTotalCount;
@@ -104,7 +114,8 @@ export default class AdResultDialog extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
 
         if(SDKMgr.bAutoPlayVedio != true){
-            this.autoAdLabel.string = "关闭自动视频";
+            this.autoAdLabel.string = "自动视频播放中...";
+            this.autobtnNode.active = false;
             SDKMgr.autoPlayAdVedio();
         }else{
             SDKMgr.closeAutoPlayAdVedio();

@@ -514,7 +514,10 @@
         "__id__": 11
       },
       {
-        "__id__": 41
+        "__id__": 39
+      },
+      {
+        "__id__": 46
       },
       {
         "__id__": 48
@@ -604,16 +607,13 @@
       },
       {
         "__id__": 34
-      },
-      {
-        "__id__": 38
       }
     ],
     "_active": true,
     "_level": 2,
     "_components": [
       {
-        "__id__": 40
+        "__id__": 38
       }
     ],
     "_prefab": null,
@@ -689,7 +689,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 130,
+      "width": 400,
       "height": 33
     },
     "_anchorPoint": {
@@ -723,7 +723,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "titleSpr",
+    "_name": "tipTitle",
     "_objFlags": 0,
     "_parent": {
       "__id__": 12
@@ -740,15 +740,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 120,
+      "g": 78,
+      "b": 66,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 82,
-      "height": 25
+      "width": 360,
+      "height": 31.5
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -777,10 +777,10 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "499rai4AxISbgOy/3/iTMc"
+    "_id": "a3cxpTG3NIWZvk/c3w5k2P"
   },
   {
-    "__type__": "cc.Sprite",
+    "__type__": "cc.Label",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -792,26 +792,22 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "02fd25f6-66cb-45f0-8b63-fa08bf9b1b47"
-    },
-    "_type": 0,
-    "_sizeMode": 1,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_atlas": {
-      "__uuid__": "92063fb8-9a5c-4f9a-9908-7c2030fa14d4"
-    },
-    "_id": "03nMWjxihCPb5FAXUZzlul"
+    "_useOriginalSize": false,
+    "_string": "提示：点击按钮可添加、更换或查看信息",
+    "_N$string": "提示：点击按钮可添加、更换或查看信息",
+    "_fontSize": 20,
+    "_lineHeight": 25,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Microsoft YaHei",
+    "_N$overflow": 0,
+    "_N$cacheMode": 0,
+    "_id": "acSq/gBghBqaN7RBXbfY1U"
   },
   {
     "__type__": "cc.Sprite",
@@ -831,7 +827,7 @@
     "_spriteFrame": {
       "__uuid__": "a347c587-8934-4dab-9ce2-38d9c7cf8ff1"
     },
-    "_type": 0,
+    "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
@@ -1829,94 +1825,6 @@
     "customEventData": ""
   },
   {
-    "__type__": "cc.Node",
-    "_name": "tip",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 11
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 3,
-    "_components": [
-      {
-        "__id__": 39
-      }
-    ],
-    "_prefab": null,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 120,
-      "g": 78,
-      "b": 66,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 360,
-      "height": 31.5
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": -90,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "groupIndex": 0,
-    "_id": "9cshUYkTlPJIe05+4MngeB"
-  },
-  {
-    "__type__": "cc.Label",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 38
-    },
-    "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_useOriginalSize": false,
-    "_string": "提示：点击按钮可添加、更换或查看信息",
-    "_N$string": "提示：点击按钮可添加、更换或查看信息",
-    "_fontSize": 20,
-    "_lineHeight": 25,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Microsoft YaHei",
-    "_N$overflow": 0,
-    "_N$cacheMode": 0,
-    "_id": "7ejePAmTJEkryGi/IhxRzj"
-  },
-  {
     "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
@@ -1959,14 +1867,14 @@
     },
     "_children": [
       {
-        "__id__": 42
+        "__id__": 40
       }
     ],
     "_active": true,
     "_level": 2,
     "_components": [
       {
-        "__id__": 46
+        "__id__": 44
       }
     ],
     "_prefab": null,
@@ -1991,7 +1899,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -80,
+      "y": -100,
       "z": 0
     },
     "_scale": {
@@ -2017,18 +1925,18 @@
     "_name": "view",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 41
+      "__id__": 39
     },
     "_children": [
       {
-        "__id__": 43
+        "__id__": 41
       }
     ],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 45
+        "__id__": 43
       }
     ],
     "_prefab": null,
@@ -2079,14 +1987,14 @@
     "_name": "content",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 42
+      "__id__": 40
     },
     "_children": [],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 44
+        "__id__": 42
       }
     ],
     "_prefab": null,
@@ -2137,7 +2045,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 43
+      "__id__": 41
     },
     "_enabled": true,
     "_layoutSize": {
@@ -2170,7 +2078,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 42
+      "__id__": 40
     },
     "_enabled": true,
     "_materials": [
@@ -2190,7 +2098,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 41
+      "__id__": 39
     },
     "_enabled": true,
     "horizontal": true,
@@ -2202,10 +2110,10 @@
     "scrollEvents": [],
     "cancelInnerEvents": true,
     "_N$content": {
-      "__id__": 43
+      "__id__": 41
     },
     "content": {
-      "__id__": 43
+      "__id__": 41
     },
     "scrollThreshold": 0.5,
     "autoPageTurningThreshold": 100,
@@ -2213,7 +2121,7 @@
     "pageTurningSpeed": 0.3,
     "pageEvents": [
       {
-        "__id__": 47
+        "__id__": 45
       }
     ],
     "_N$sizeMode": 0,
@@ -2230,6 +2138,94 @@
     "_componentId": "f4cf4PWK35L24lkauTRAFal",
     "handler": "onPageEvent",
     "customEventData": ""
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "tip",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 10
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 47
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 243,
+      "g": 35,
+      "b": 85,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 525,
+      "height": 97.8
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 1
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": -300,
+      "y": 200,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_id": "9cshUYkTlPJIe05+4MngeB"
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 46
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_useOriginalSize": false,
+    "_string": "听说更换饰品可以增加战斗金币和钻石产出哟！\n听说更换武器或升级可以增加萌宠战斗力哟！\n听说更换宠物可以更快通关胜利哟！",
+    "_N$string": "听说更换饰品可以增加战斗金币和钻石产出哟！\n听说更换武器或升级可以增加萌宠战斗力哟！\n听说更换宠物可以更快通关胜利哟！",
+    "_fontSize": 25,
+    "_lineHeight": 30,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_N$horizontalAlign": 0,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Microsoft YaHei",
+    "_N$overflow": 0,
+    "_N$cacheMode": 0,
+    "_id": "7ejePAmTJEkryGi/IhxRzj"
   },
   {
     "__type__": "cc.Node",
@@ -2271,7 +2267,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": -280,
-      "y": -80,
+      "y": -100,
       "z": 0
     },
     "_scale": {
@@ -2446,7 +2442,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 280,
-      "y": -80,
+      "y": -100,
       "z": 0
     },
     "_scale": {
@@ -2618,7 +2614,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -350,
+      "y": -370,
       "z": 0
     },
     "_scale": {
@@ -2678,7 +2674,7 @@
     },
     "_enabled": true,
     "pageView": {
-      "__id__": 46
+      "__id__": 44
     },
     "equipNode": {
       "__id__": 18
