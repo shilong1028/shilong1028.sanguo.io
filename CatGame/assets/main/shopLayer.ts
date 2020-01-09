@@ -63,7 +63,7 @@ export default class ShopLayer extends cc.Component {
 
     onCloseBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     //点击商店，购买武器或饰品。

@@ -53,7 +53,7 @@
       "enable": false
     }
   },
-  "fit-height": false,
+  "fit-height": true,
   "fit-width": true,
   "group-list": [
     "default",
@@ -62,7 +62,7 @@
     "MoveBrick",
     "Brick"
   ],
-  "last-module-event-record-time": 1577884383333,
+  "last-module-event-record-time": 1578498613643,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,

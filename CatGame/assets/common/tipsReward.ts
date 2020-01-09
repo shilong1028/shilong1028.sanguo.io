@@ -36,7 +36,7 @@ export default class TipsReward extends cc.Component {
         if(this.callback){
             this.callback();
         }
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     setRewards(gold:number, diamond: number, callback: any = null, items:ItemInfo[]=null, balls: BallInfo[]=null, skills: SkillInfo[]=null){

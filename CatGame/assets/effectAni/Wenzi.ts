@@ -28,7 +28,7 @@ export default class WenZi extends cc.Component {
         this.titleSpr.spriteFrame = this.titleFrames[idx];
         
         this.aniNode.on("stop", function () {
-            this.node.removeFromParent(true);
+            this.node.destroy();
         }.bind(this));
 
         let clips = this.aniNode.getClips();

@@ -126,7 +126,7 @@ export default class AdResultDialog extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
         
         SDKMgr.closeAutoPlayAdVedio();
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
 }

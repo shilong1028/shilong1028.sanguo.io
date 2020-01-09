@@ -39,14 +39,14 @@ export default class TipsDialog extends cc.Component {
     }
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     onOkBtn(){
         if(this.callback){
             this.callback();
         }
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     setTipStr(str: string, okCallback: any){

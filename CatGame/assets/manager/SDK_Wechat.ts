@@ -189,7 +189,7 @@ export class SDK_Wechat  {
             // if (rewardedVideoAd){
             //     rewardedVideoAd.offError()
             // }
-            ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
+            ROOT_NODE.showTipsText("视频获取失败，"+err.errCode+"; "+err.errMsg)
             if(rewardedVideoAd.canHandleCallBack && sdkWechat.errorCallBack && sdkWechat.callTarget){
                 rewardedVideoAd.canHandleCallBack = false;
                 sdkWechat.errorCallBack.call(sdkWechat.callTarget, false);

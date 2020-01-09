@@ -68,7 +68,7 @@ export default class PauseInfo extends cc.Component {
     onContinueBtn(){
         AudioMgr.playEffect("effect/ui_click");
         NotificationMy.emit(NoticeType.GameResume, null);  //继续游戏
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     /**重新开始 */
@@ -76,7 +76,7 @@ export default class PauseInfo extends cc.Component {
         AudioMgr.playEffect("effect/ui_click");
         NotificationMy.emit(NoticeType.GameReStart, null);  //重新开始游戏
         FightMgr.loadLevel(FightMgr.level_id, true);
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     /**退出战斗 */

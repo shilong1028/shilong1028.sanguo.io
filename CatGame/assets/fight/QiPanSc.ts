@@ -1,14 +1,12 @@
-import { IntersectRay, NoticeType, BallInfo, BallState, BrickInfo, ItemInfo, LaunchSkillState } from "../manager/Enum";
+import { IntersectRay, NoticeType, BallInfo, BallState, BrickInfo, LaunchSkillState } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
 import Brick from "./Brick";
 import { FightMgr } from "../manager/FightManager";
 import Cat from "./Cat";
 import Ball from "./Ball";
-import { MyUserData } from "../manager/MyUserData";
 import { AudioMgr } from "../manager/AudioMgr";
 import Dot from "./Dot";
 import { GameMgr } from "../manager/GameManager";
-import FightScene from "./FightScene";
 
 //棋盘
 const {ccclass, property} = cc._decorator;
@@ -28,8 +26,6 @@ export default class QiPanSc extends cc.Component {
     nCat: cc.Node = null;  //投手角色节点
     @property(cc.Node)
     nEffect: cc.Node = null;   //特效节点
-
-    fightScene: FightScene = null;
 
     drawGraphics: cc.Graphics = null;   //测试，画出相交线
     dotInterval: number = 30;   //射线点间距
@@ -74,8 +70,8 @@ export default class QiPanSc extends cc.Component {
         this.node.stopAllActions();
         this.nBricks.stopAllActions();
 
-        this.nEffect.removeAllChildren(true);
-        this.nFixIndicator.removeAllChildren(true); 
+        this.nEffect.destroyAllChildren();
+        this.nFixIndicator.destroyAllChildren(); 
         
         this.bCreateNextRound = false;  //是否在检查完回合事件后进行新行砖块创建并下移
         this.bMultiLineMove = false;   //多行下移（初始或无敌块）
@@ -118,10 +114,10 @@ export default class QiPanSc extends cc.Component {
         this.node.stopAllActions();
         NotificationMy.offAll(this);
 
-        this.nBricks.removeAllChildren(true);
-        this.nBalls.removeAllChildren(true);
-        this.nEffect.removeAllChildren(true);
-        this.node.removeAllChildren(true);
+        this.nBricks.destroyAllChildren();
+        this.nBalls.destroyAllChildren();
+        this.nEffect.destroyAllChildren();
+        this.node.destroyAllChildren();
     }
 
     onDestroy(){
@@ -234,8 +230,8 @@ export default class QiPanSc extends cc.Component {
     }
   
     /**初始化棋盘对象 */
-    initQiPanObjs(fightScene: FightScene){
-        this.fightScene = fightScene;
+    initQiPanObjs(){
+        console.log("initQiPanObjs")
         this.levelInitLineNum = FightMgr.level_info.levelCfg.init_lines;  //初始显示的行数
 
         this.setPlayerPos();   //设置角色位置
@@ -246,7 +242,7 @@ export default class QiPanSc extends cc.Component {
     /********************************** 以下部分为小球处理  **************************************** */
     /**初始化小球 */
     initBalls(){
-        this.nBalls.removeAllChildren(true);
+        this.nBalls.destroyAllChildren();
         for(let i=0; i<FightMgr.fightBallTotal; ++i){
             let ball: Ball = this.addBallToList(i, new BallInfo(FightMgr.usedPlayerInfo.ballId));   //添加小球到攻击列表中
             let destVec3 = FightMgr.getBallNodeDefaultPos();
@@ -258,7 +254,7 @@ export default class QiPanSc extends cc.Component {
 
     /**添加小球到攻击列表中 */
     addBallToList(idx: number, ballInfo: BallInfo){
-        let BallNode: cc.Node = cc.instantiate(this.fightScene.pfBall);   //创建小球 
+        let BallNode: cc.Node = cc.instantiate(FightMgr.getFightScene().pfBall);   //创建小球 
         this.nBalls.addChild(BallNode);
         let ball = BallNode.getComponent(Ball);
         ball.setBallId(idx, ballInfo);
@@ -388,8 +384,8 @@ export default class QiPanSc extends cc.Component {
     /**关闭指示线 */
     offIndicator(){
         FightMgr.offRay();
-        this.nIndicator.removeAllChildren(true); 
-        this.nFixIndicator.removeAllChildren(true);   //第一关固定指示线使用
+        this.nIndicator.destroyAllChildren(); 
+        this.nFixIndicator.destroyAllChildren();   //第一关固定指示线使用
     }
 
     /**显示指示线 */
@@ -434,7 +430,7 @@ export default class QiPanSc extends cc.Component {
 
         let lastDotPos: cc.Vec2 = startPos;
         for(let i=1; i<=num; i++){
-            let dot = cc.instantiate(this.fightScene.pfDot);   //从缓存池中获取或创建小球
+            let dot = cc.instantiate(FightMgr.getFightScene().pfDot);   //从缓存池中获取或创建小球
             if(this.bShowFixGuideDot == true){  //是否显示第一关固定指示线
                 this.nFixIndicator.addChild(dot);  //第一关固定指示线使用
             }else{
@@ -506,7 +502,7 @@ export default class QiPanSc extends cc.Component {
 
             //console.log("this.curRow = "+this.curRow+"; objs = "+JSON.stringify(objs));
             for(let j=0; j<objs.length; j++){
-                let brickNode: cc.Node = this.fightScene.createBrickFromPool();   //从缓存池中获取或创建砖块
+                let brickNode: cc.Node = FightMgr.getFightScene().createBrickFromPool();   //从缓存池中获取或创建砖块
                 this.nBricks.addChild(brickNode, -this.curRow);
                 brickNode.getComponent(Brick).initBrickInfo(objs[j]); 
 
@@ -776,7 +772,7 @@ export default class QiPanSc extends cc.Component {
                             }
 
                             if(this.checkHasBrickByPos(revivePos, pos) == false){   //检测指定坐标位置是否已经有砖块了
-                                let brickNode: cc.Node = this.fightScene.createBrickFromPool();   //从缓存池中获取或创建砖块
+                                let brickNode: cc.Node = FightMgr.getFightScene().createBrickFromPool();   //从缓存池中获取或创建砖块
                                 brickNode.opacity = 0;  //注意不要用active，因为重置为true后一些脚本属性会消失
                                 brickNode.setPosition(revivePos);
                                 this.nBricks.addChild(brickNode);
@@ -808,9 +804,12 @@ export default class QiPanSc extends cc.Component {
                 let len = Math.abs(pos.x - node.x);  //node.position.sub(pos).mag();
                 if(len < 50){ 
                     return true;
-                }else if(len <= 100 && node.group == "MoveBrick" && srcPos){   //判定移动怪
-                    if((pos.x - srcPos.x)*(node.x - srcPos.x) >= 0){   //同侧
-                        return true;
+                }else if(len <= 100 && srcPos){   //判定移动怪
+                    let moveBrickCollider = node.getChildByName("MoveBrickCollider");
+                    if(moveBrickCollider){
+                        if((pos.x - srcPos.x)*(node.x - srcPos.x) >= 0){   //同侧
+                            return true;
+                        }
                     }
                 }
             }
@@ -945,7 +944,7 @@ export default class QiPanSc extends cc.Component {
     /*******************************以下为特效处理************************************* */
     /**显示飘血动画 */
     showHpAction(harm: number, pos: cc.Vec2){
-        let harmNode = cc.instantiate(this.fightScene.pfharmHp);
+        let harmNode = cc.instantiate(FightMgr.getFightScene().pfharmHp);
         //harmNode.color = cc.color(253, 255, 45);
 
         let harmLabel = harmNode.getComponent(cc.Label);
@@ -959,12 +958,14 @@ export default class QiPanSc extends cc.Component {
         let x = dir.x * Math.abs(y/dir.y);
 
         harmNode.runAction(cc.sequence(cc.spawn(cc.moveBy(0.1, cc.v2(x, y)), cc.scaleTo(0.05, 1.0)), cc.moveBy(0.05, cc.v2(0, 20)), cc.moveBy(0.025, cc.v2(0, -10)),
-            cc.spawn(cc.moveBy(0.1, cc.v2(0, 50)), cc.fadeTo(0.1, 0)), cc.removeSelf(true)));
+            cc.spawn(cc.moveBy(0.1, cc.v2(0, 50)), cc.fadeTo(0.1, 0)), cc.callFunc(function(){
+                harmNode.destroy();
+            })));
     }
 
     /**砖块死亡特效 */
     showBrickDeadAni(pos: cc.Vec2){
-        let aniNode = GameMgr.createAtlasAniNode(this.fightScene.deadAtlas, 12, cc.WrapMode.Default);
+        let aniNode = GameMgr.createAtlasAniNode(FightMgr.getFightScene().deadAtlas, 12, cc.WrapMode.Default);
         aniNode.scale = 2.0;
         aniNode.setPosition(pos);
         this.nEffect.addChild(aniNode, 80);
@@ -972,7 +973,7 @@ export default class QiPanSc extends cc.Component {
 
     /**砖块受击特效 */
     showBrickHitAni(pos: cc.Vec2){
-        let aniNode = GameMgr.createAtlasAniNode(this.fightScene.bumpAtlas, 12, cc.WrapMode.Default);
+        let aniNode = GameMgr.createAtlasAniNode(FightMgr.getFightScene().bumpAtlas, 12, cc.WrapMode.Default);
         aniNode.scale = 2.0;
         aniNode.setPosition(pos);
         this.nEffect.addChild(aniNode, 110);
@@ -980,7 +981,7 @@ export default class QiPanSc extends cc.Component {
 
     /**砖块吸附特效 */
     showBrickAdsorbEffect(pos: cc.Vec2){
-        let aniNode = GameMgr.createAtlasAniNode(this.fightScene.shuyeAtlas, 12, cc.WrapMode.Default);
+        let aniNode = GameMgr.createAtlasAniNode(FightMgr.getFightScene().shuyeAtlas, 12, cc.WrapMode.Default);
         aniNode.scale = 2.0;
         aniNode.setPosition(pos);
         this.nEffect.addChild(aniNode, 100);

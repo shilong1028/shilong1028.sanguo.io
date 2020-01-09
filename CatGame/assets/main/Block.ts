@@ -167,7 +167,7 @@ export default class Block extends cc.Component {
 
         if(itemInfo == null){
             if(this.nModel){
-                this.nModel.removeFromParent(true);
+                this.nModel.destroy();
                 this.nModel = null;
             }
             this.itemInfo = null;
@@ -217,10 +217,14 @@ export default class Block extends cc.Component {
 
         AudioMgr.playEffect("effect/cheer");
         
-        aniItem.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(-100, 0)), cc.moveBy(0.1, cc.v2(100, 0)), cc.hide(), cc.removeSelf(true)));
+        aniItem.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(-100, 0)), cc.moveBy(0.1, cc.v2(100, 0)), cc.hide(), cc.callFunc(function(){
+            aniItem.destroy();
+        })));
         aniItem2.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(100, 0)), cc.moveBy(0.1, cc.v2(-100, 0)), cc.hide(), cc.callFunc(function(){
             this.showUpdateAni();
-        }.bind(this), cc.removeSelf(true))));
+        }.bind(this), cc.callFunc(function(){
+            aniItem2.destroy();
+        }))));
     }
 
     //////////////  以下为地块小球接口  /////////////////////////////
@@ -270,7 +274,7 @@ export default class Block extends cc.Component {
 
         if(ballInfo == null){
             if(this.nModel){
-                this.nModel.removeFromParent(true);
+                this.nModel.destroy();
                 this.nModel = null;
             }
             this.ballInfo = null;
@@ -320,10 +324,14 @@ export default class Block extends cc.Component {
 
         AudioMgr.playEffect("effect/cheer");
         
-        aniStuff.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(-100, 0)), cc.moveBy(0.1, cc.v2(100, 0)), cc.hide(), cc.removeSelf(true)));
+        aniStuff.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(-100, 0)), cc.moveBy(0.1, cc.v2(100, 0)), cc.hide(), cc.callFunc(function(){
+            aniStuff.destroy();
+        })));
         aniStuff2.runAction(cc.sequence(cc.moveBy(0.2, cc.v2(100, 0)), cc.moveBy(0.1, cc.v2(-100, 0)), cc.hide(), cc.callFunc(function(){
             this.showUpdateAni();
-        }.bind(this), cc.removeSelf(true))));
+        }.bind(this), cc.callFunc(function(){
+            aniStuff2.destroy();
+        }))));
     }
 
     /**显示升级动画 */

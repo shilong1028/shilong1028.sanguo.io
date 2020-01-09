@@ -18,6 +18,7 @@ var shareImageUrl= 'https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksJB5QHQ8anlZGWd
 export class SDK_TT  {
 
     ///////////////////////初始化SDK 更新和分享按钮
+    systemInfo: any = null;
     launch_option: any = null;
     isConnected: boolean = true;
     networkType: any = null;
@@ -76,6 +77,8 @@ export class SDK_TT  {
             this.checkToutiaoUpdate();
             this.getSetting();
         });
+
+        this.systemInfo = tt.getSystemInfoSync();
 
         // 显示转发按钮
         tt.showShareMenu({
@@ -424,14 +427,12 @@ export class SDK_TT  {
         let adWidth = GameMgr.GetBannerWidth();
         let frameSize = cc.view.getFrameSize();
 
-        var info = tt.getSystemInfoSync();
-
         let adHeight = (adWidth / 16) * 9; // 根据系统约定尺寸计算出广告高度
         let bannerAd = tt.createBannerAd({
             adUnitId: adUnitId,
             style: {
-                left: (info.windowWidth - adWidth) * 0.5 + 0.1,
-                top: (info.windowHeight - adHeight) + 0.1,
+                left: (sdkTT.systemInfo.windowWidth - adWidth) * 0.5 + 0.1,
+                top: (sdkTT.systemInfo.windowHeight - adHeight) + 0.1,
                 width: adWidth,   //在组件内部会以此值为基准，根据 Banner 广告的标准尺寸，进行缩放。
             }
         });
@@ -440,8 +441,8 @@ export class SDK_TT  {
         });
 
         bannerAd.onResize(size => {   //如果在 onResize 的回调函数中重设 width 且总是与上一次缩放后的 width 不同，那么可能会导致 onResize 的回调函数一直触发，并卡死在 onResize 的回调函数中。
-            bannerAd.style.left = (info.windowWidth - size.width) * 0.5 + 0.1;
-            bannerAd.style.top = (info.windowHeight - size.height) + 0.1;   //left和top都加上0.1，不加就会被iphonex该死的底部bar给顶上去，而且时而顶上去，时而又是正常
+            bannerAd.style.left = (sdkTT.systemInfo.windowWidth - size.width) * 0.5 + 0.1;
+            bannerAd.style.top = (sdkTT.systemInfo.windowHeight - size.height) + 0.1;   //left和top都加上0.1，不加就会被iphonex该死的底部bar给顶上去，而且时而顶上去，时而又是正常
         });
 
         // 在适合的场景显示 Banner 广告
@@ -506,7 +507,7 @@ export class SDK_TT  {
                 return rewardedVideoAd.show();
             })
             .catch(err => {
-                ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
+                ROOT_NODE.showTipsText("视频获取失败，"+err.errCode+"; "+err.errMsg)
                 if(rewardedVideoAd.canHandleCallBack && sdkTT.errorCallBack && sdkTT.callTarget){
                     rewardedVideoAd.canHandleCallBack = false;
                     sdkTT.errorCallBack.call(sdkTT.callTarget, false);

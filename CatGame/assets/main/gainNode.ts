@@ -32,6 +32,8 @@ export default class GainGoldNode extends cc.Component {
         this.gainLabel.string = "+"+valStr;
 
         this.node.runAction(cc.sequence(cc.spawn(cc.moveBy(0.1, cc.v2(0, 20)), cc.scaleTo(0.05, 1.0)), 
-            cc.moveBy(0.1, cc.v2(0, 40)), cc.delayTime(0.5), cc.fadeTo(0.2, 0), cc.removeSelf(true)));
+            cc.moveBy(0.1, cc.v2(0, 40)), cc.delayTime(0.5), cc.fadeTo(0.2, 0), cc.callFunc(function(){
+                this.node.destroy();
+            }.bind(this))));
     }
 }

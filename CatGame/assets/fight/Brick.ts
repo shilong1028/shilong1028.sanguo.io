@@ -32,8 +32,6 @@ export default class Brick extends cc.Component {
     @property([cc.SpriteFrame])
     bgFrames: cc.SpriteFrame[] = new Array(2);  //砖块背景图片
 
-    @property(cc.PolygonCollider)
-    collider: cc.PolygonCollider = null;
     @property(cc.SpriteAtlas)
     bricksAtlas: cc.SpriteAtlas = null;
     @property(cc.SpriteAtlas)
@@ -61,8 +59,6 @@ export default class Brick extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     clearBrickData(){
-        this.node.group = "Brick";
-
         this.brickId = -1;   //每个砖块分配一个唯一ID
         this.brick_info = null;
 
@@ -71,8 +67,6 @@ export default class Brick extends cc.Component {
         this.bInvincible = false;  //是否无敌状态（盾牌怪抵挡每回合第一次攻击）
         this.bRoundHited = false;   //该回合内是否被碰撞过
     
-        this.collider.enabled = false;
-        this.collider.points = null;
         this.colliderRayData = null;   //与移动砖块碰撞的射线
 
         this.effectNodeArr = [];   //事件特效节点
@@ -83,6 +77,11 @@ export default class Brick extends cc.Component {
         this.labPH.string = "";
         this.hpBar.progress = 0;
         this.hpNode.active = false;
+
+        let moveBrickCollider = this.node.getChildByName("MoveBrickCollider");
+        if(moveBrickCollider){
+            moveBrickCollider.destroy();
+        }
 
         this.brickSpr.node.color = cc.color(255, 255, 255);
         this.clearBrickActions();   //清除砖块或纹理的所有动画
@@ -126,15 +125,16 @@ export default class Brick extends cc.Component {
 
             let effNode = this.brickSpr.node.getChildByName("BrickSprEffectChild");
             if(effNode){
-                effNode.removeFromParent(true);
+                effNode.destroy();
             }
         }
     }
 
     clearData(){
-        this.collider.enabled = false;
-        this.collider.points = null;
-        
+        let moveBrickCollider = this.node.getChildByName("MoveBrickCollider");
+        if(moveBrickCollider){
+            moveBrickCollider.destroy();
+        }
         NotificationMy.offAll(this);
     }
 
@@ -142,12 +142,12 @@ export default class Brick extends cc.Component {
     handleRemoveMySelf(bForceRemove: boolean){
         let ballChild = this.brickNode.getChildByName("BrickBallChild");
         if(ballChild){
-            ballChild.removeFromParent(true);
+            ballChild.destroy();
         }
 
         let sprChild = this.brickSpr.node.getChildByName("BrickSprEffectChild");
         if(sprChild){
-            sprChild.removeFromParent(true);
+            sprChild.destroy();
         }
 
         FightMgr.updateBrickDeadNum();   //更新砖块死亡数据
@@ -196,8 +196,6 @@ export default class Brick extends cc.Component {
     /**初始化砖块数据 */
     initBrickInfo(brickInfo: BrickInfo, reborn: boolean=false){
         //cc.log("brick.initBrickInfo(), brickInfo = "+JSON.stringify(brickInfo))
-        this.collider.points = null;
-        this.collider.enabled = false;
         this.moveLineBricks = [];   //移动砖块所在行的其他砖块集合
         this.moveCollisionBall = [];   //移动砖块和小球碰撞的临时集合
 
@@ -337,7 +335,7 @@ export default class Brick extends cc.Component {
             }else{
                 let effNode = this.brickSpr.node.getChildByName("BrickSprEffectChild");
                 if(effNode){
-                    effNode.removeFromParent(true);
+                    effNode.destroy();
                 }
             }
         }
@@ -349,20 +347,16 @@ export default class Brick extends cc.Component {
             let monster_ai = this.brick_info.monsterCfg.ai;   //行为 0无 1：左右往复移动 2：间隔吸附 3.坠落两行
             if(monster_ai == 1){   //1：左右往复移动
                 //this.brickBgSpr.spriteFrame = this.bgFrames[1];
-
-                this.node.group = "MoveBrick";
                 let gameBorderRect = FightMgr.gameBordersRect;   //棋盘边界矩形（中心点+宽高）
                 this.moveToPosX = gameBorderRect.width/2 - this.node.width/2;   //移动砖块的水平移动
 
-                let sprSize = cc.size(98, 98);    //this.brickSpr.node.getContentSize();
-                let colliderPoints = [];
-                colliderPoints.push(cc.v2(-sprSize.width/2, -sprSize.height/2));
-                colliderPoints.push(cc.v2(-sprSize.width/2, sprSize.height/2));
-                colliderPoints.push(cc.v2(sprSize.width/2, sprSize.height/2));
-                colliderPoints.push(cc.v2(sprSize.width/2, -sprSize.height/2));
-                this.collider.points = colliderPoints;
-                this.collider.enabled = true;
-
+                let moveBrickCollider = this.node.getChildByName("MoveBrickCollider");
+                if(moveBrickCollider){
+                }else{
+                    moveBrickCollider = cc.instantiate(FightMgr.getFightScene().pfMoveCollider);
+                    moveBrickCollider.name = "MoveBrickCollider"
+                    this.node.addChild(moveBrickCollider);
+                }
             }else if(monster_ai == 2){   //4 吸附 每回合，间隔吸附士兵，即吸附、不吸附、吸附...循环
                 this.bAdsorb = true;   //是否吸附小球
             }else if(monster_ai == 3){  // 3 急速 每次下移2行；若下行有砖块，下移一行
@@ -400,27 +394,6 @@ export default class Brick extends cc.Component {
             }
         }
         return false;
-    }
-
-    //移动砖块碰撞处理（与砖块碰撞，与小球碰撞，与指示线碰撞）
-    onCollisionEnter(other, self){
-        if(this.isBrickDead() == false && this.isMoveBrick() == true){  //是否放置好准备移动或改变（移等动砖块），放置初始化或下移时update调用
-            let otherGroup = other.node.group;
-            if(otherGroup == "Ball"){  //与小球相撞
-                let ball = other.node.getComponent(Ball);
-                if(ball && ball.isBallFlying() == true && this.checkHasHandleCollisionBall(ball.ballId) == false){  //检测移动砖块碰撞的小球是否已经处理过碰撞了
-                    this.moveCollisionBall.push(other.node);   //移动砖块和小球碰撞的临时集合
-                    ball.handleMoveBrickColliderBall(this);   //处理移动砖块与小球的碰撞
-                }
-            }else if(otherGroup == "Dot"){   //与指示线
-                let dot = other.node.getComponent(Dot);
-                this.colliderRayData = null;
-                if(dot && dot.rayStartPos){
-                    this.colliderRayData = {startPos: dot.rayStartPos.clone(), endPos: dot.rayEndPos.clone(), dir: dot.rayDir.clone()};   //与移动砖块碰撞的射线
-                }
-                this.reShowIndicator();     //移动砖块导致的重绘指示线
-            } 
-        }
     }
 
     /**移动砖块导致的重绘指示线 */
@@ -489,7 +462,7 @@ export default class Brick extends cc.Component {
 
     /**是否移动砖块 */
     isMoveBrick(){
-        if(this.moveToPosX  && this.node.group == "MoveBrick" && this.brick_info && this.brick_info.monsterCfg.ai == 1){    //移动怪变成其他砖块后，移动碰撞属性暂时不消失（即变成不能移动的MoveBrick)
+        if(this.moveToPosX && this.brick_info && this.brick_info.monsterCfg.ai == 1){    //移动怪变成其他砖块后，移动碰撞属性暂时不消失（即变成不能移动的MoveBrick)
             return true;
         }else{
             return false;
@@ -663,7 +636,7 @@ export default class Brick extends cc.Component {
                     img.opacity = 255;
                     img.runAction(cc.sequence(cc.spawn(cc.moveTo(0.1, this.node.position), cc.sequence(cc.scaleTo(0.05, 1.5), cc.scaleTo(0.05, 0.8))), cc.callFunc(function(){
                         this.hitDamage(parseInt(this.labPH.string), null, true);
-                        img.removeFromParent(true);
+                        img.destroy();
                     }.bind(this))));
                 }
             }
@@ -702,7 +675,7 @@ export default class Brick extends cc.Component {
                     img.opacity = 255;
                     img.runAction(cc.sequence(cc.spawn(cc.moveTo(0.1, this.node.position), cc.sequence(cc.scaleTo(0.05, 1.5), cc.scaleTo(0.05, 0.8))), cc.callFunc(function(){
                         this.hitDamage(harm, null, true);
-                        img.removeFromParent(true);
+                        img.destroy();
                     }.bind(this))));
                 }
             }
@@ -850,6 +823,23 @@ export default class Brick extends cc.Component {
         }else{
             return 100;
         }
+    }
+
+    handleBallCollisionEnter(ballNode){
+        let ball = ballNode.getComponent(Ball);
+        if(ball && ball.isBallFlying() == true && this.checkHasHandleCollisionBall(ball.ballId) == false){  //检测移动砖块碰撞的小球是否已经处理过碰撞了
+            this.moveCollisionBall.push(ballNode);   //移动砖块和小球碰撞的临时集合
+            ball.handleMoveBrickColliderBall(this);   //处理移动砖块与小球的碰撞
+        }
+    }
+
+    handleDotCollisionEnter(dotNode){
+        let dot = dotNode.getComponent(Dot);
+        this.colliderRayData = null;
+        if(dot && dot.rayStartPos){
+            this.colliderRayData = {startPos: dot.rayStartPos.clone(), endPos: dot.rayEndPos.clone(), dir: dot.rayDir.clone()};   //与移动砖块碰撞的射线
+        }
+        this.reShowIndicator();     //移动砖块导致的重绘指示线
     }
     
 }

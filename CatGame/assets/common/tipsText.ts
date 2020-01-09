@@ -34,7 +34,7 @@ export default class TipsText extends cc.Component {
 
     /**移除自身 */
     handleRemoveMySelf(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     initTipsText(tips: string, bRichText: boolean=false){

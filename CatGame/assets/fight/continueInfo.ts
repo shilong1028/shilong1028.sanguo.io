@@ -100,11 +100,11 @@ export default class FightRenew extends cc.Component {
             ROOT_NODE.showTipsText("复活生效，最下三层砖块已消除！");
             NotificationMy.emit(NoticeType.GemaRevive, null);   //复活，将最下三层砖块消除   
             this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
-                this.node.removeFromParent(true);
+                this.node.destroy();
             }.bind(this))));
         }else{
             FightMgr.getFightScene().showFightOverInfo();   //结算界面
-            this.node.removeFromParent(true);
+            this.node.destroy();
         }
     }
 }

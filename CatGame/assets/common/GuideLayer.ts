@@ -121,7 +121,7 @@ export default class GuideLayer extends cc.Component {
         if(this.maskCallback){
             this.maskCallback();
         }
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     setMoveGuideData(beginPos, endPos){

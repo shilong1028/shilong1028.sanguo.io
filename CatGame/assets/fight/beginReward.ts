@@ -74,7 +74,7 @@ export default class NewClass extends cc.Component {
         }
 
         this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
-            this.node.removeFromParent(true);
+            this.node.destroy();
         }.bind(this))));
     }
 }

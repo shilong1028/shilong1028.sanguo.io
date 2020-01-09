@@ -40,7 +40,7 @@ export default class GoldAdd extends cc.Component {
     /**跳过 */
     onSkipBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     //复活或显示结算
@@ -59,6 +59,6 @@ export default class GoldAdd extends cc.Component {
         ROOT_NODE.showTipsText("获得钻石："+diamond);
 
         GameMgr.showRewardsDialog(gold, diamond);
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 }

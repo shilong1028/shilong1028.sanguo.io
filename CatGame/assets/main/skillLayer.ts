@@ -33,6 +33,6 @@ export default class SkillLayer extends cc.Component {
 
     onCloseBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 }

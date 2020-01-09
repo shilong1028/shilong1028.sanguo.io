@@ -162,7 +162,7 @@ export default class BagGrid extends cc.Component {
 
     onCloseBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     /**新手引导触摸移动 */
@@ -221,7 +221,7 @@ export default class BagGrid extends cc.Component {
 
         this.gridNode.removeAllChildren();
         if(this.nSelectModel){
-            this.nSelectModel.removeFromParent(true);
+            this.nSelectModel.destroy();
         }
         this.nSelectModel = null;
 

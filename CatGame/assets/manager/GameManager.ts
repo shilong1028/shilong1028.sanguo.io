@@ -215,7 +215,7 @@ class GameManager {
 
             if (wrapMode == cc.WrapMode.Default) {
                 animation.on("stop", function () {
-                    effNode.removeFromParent(true);
+                    effNode.destroy();
                 });
             }
 
@@ -245,7 +245,7 @@ class GameManager {
             
             if (wrapMode == cc.WrapMode.Default) {
                 animation.on("stop", function () {
-                    effNode.removeFromParent(true);
+                    effNode.destroy();
                 });
             }
 

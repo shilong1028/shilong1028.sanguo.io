@@ -58,6 +58,8 @@ export default class FightScene extends cc.Component {
     pfContinue: cc.Prefab = null;   //复活界面
     @property(cc.Prefab)
     pfWenziAni: cc.Prefab = null;   //帅特效预制体
+    @property(cc.Prefab)
+    pfMoveCollider: cc.Prefab = null;    //移动砖块碰撞节点
 
     @property(cc.Prefab)
     pfBrick: cc.Prefab = null;   //砖块预制体
@@ -134,7 +136,7 @@ export default class FightScene extends cc.Component {
         FightMgr.qipanSc.clearQiPanData();
         FightMgr.qipanSc.preDestory();
         FightMgr.qipanSc = null;   //棋盘
-        this.qipanNode.removeFromParent(true);
+        this.qipanNode.destroy();
         this.brickPool.clear();
 
         this.node.targetOff(this);
@@ -340,7 +342,7 @@ export default class FightScene extends cc.Component {
         this.showBrickProgerss();  //显示关卡砖块进度
 
         FightMgr.bReNewLevel = false;   //是否重新开始游戏
-        FightMgr.qipanSc.initQiPanObjs(this);   //初始化棋盘对象
+        FightMgr.qipanSc.initQiPanObjs();   //初始化棋盘对象
 
         this.handleStartFight();
     }
@@ -508,7 +510,7 @@ export default class FightScene extends cc.Component {
                 if(countArr[i] == count){
                     let oldEff = this.node.getChildByName("RoundBrickDeadEffAni");
                     if(oldEff){
-                        oldEff.removeFromParent(true);
+                        oldEff.destroy();
                     }
                     let effNode = cc.instantiate(this.pfWenziAni);   //帅特效预制体
                     effNode.scale = 0.5;

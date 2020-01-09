@@ -150,7 +150,7 @@ export default class FightResult extends cc.Component {
             if(this.bNextLevel == true){
                 FightMgr.getFightScene().addFightSkillById(skillId);
                 
-                this.node.removeFromParent(true);
+                this.node.destroy();
                 FightMgr.loadLevel(FightMgr.level_id+1, false);      //下一关
             }else{
                 FightMgr.getFightScene().exitFightScene();
@@ -163,7 +163,7 @@ export default class FightResult extends cc.Component {
         
         if(FightMgr.win == true && this.bNextLevel == false){
             GameMgr.showLayer(this.pfChapterResult);
-            this.node.removeFromParent(true);
+            this.node.destroy();
         }else{
             FightMgr.getFightScene().exitFightScene();
         }

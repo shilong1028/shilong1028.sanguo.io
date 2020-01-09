@@ -101,7 +101,7 @@ class GuideMgr_class {
     removeGuideLayer(){
         let guideLayer = cc.director.getScene().getChildByName("Guide_Layer");
         if(guideLayer){
-            guideLayer.removeFromParent(true);
+            guideLayer.destroy();
         }
     }
 

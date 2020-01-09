@@ -31,7 +31,7 @@ class SDKManager_class  {
     initSDK(){
         //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
         SDKMgr.TT = (window as any).tt;;  //字节跳动   
-        SDKMgr.bannerCheckTime = 1578491562000;  //毫秒数 字节跳动屏蔽Banner时间戳
+        SDKMgr.bannerCheckTime = 1578754065000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
         SDKMgr.initAdDayCount();
 
@@ -205,7 +205,10 @@ class SDKManager_class  {
                     FightMgr.getFightScene().exitFightScene();
                 }
             }
-            let randomTime = Math.ceil(Math.random()*(30*Math.ceil(SDKMgr.adTotalCount/10)) + 50);
+            let randomTime = Math.ceil(Math.random()*(30*Math.ceil(SDKMgr.adTotalCount/10)+1) + 50);
+            if(SDKMgr.TT != null ){
+                randomTime += Math.ceil(Math.random()*50 + 50);
+            }
             SDKMgr.autoAdTime = randomTime;
             // if(SDKMgr.timeOutId){
             //     clearTimeout(SDKMgr.timeOutId);

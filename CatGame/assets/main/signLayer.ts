@@ -70,7 +70,7 @@ export default class SignLayer extends cc.Component {
 
     onCloseBtn(){
         AudioMgr.playEffect("effect/ui_click");
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     onSignBtn(){
@@ -143,7 +143,7 @@ export default class SignLayer extends cc.Component {
         MyUserDataMgr.updateUserSign(this.curSelCell.signIdx, new Date().getTime());   ////更新签到数据
 
         this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
-            this.node.removeFromParent(true);
+            this.node.destroy();
         }.bind(this))));
     }
 }

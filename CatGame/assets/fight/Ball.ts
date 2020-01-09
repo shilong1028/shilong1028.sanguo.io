@@ -128,7 +128,7 @@ export default class Ball extends cc.Component {
         this.node.scale = 1.0;
         this.node.angle = 0;
         this.node.stopAllActions();
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     /**复活，将最下三层砖块消除 */
@@ -604,7 +604,7 @@ export default class Ball extends cc.Component {
 
                 let effectAni = this.effectNode.getChildByName("fantan_effect_1");
                 if(effectAni){
-                    effectAni.removeFromParent(true);
+                    effectAni.destroy();
                 }
 
                 let goundX = cc.winSize.width/2 - FightMgr.ballRadiusConf;
@@ -812,7 +812,7 @@ export default class Ball extends cc.Component {
     /**处理落地的球 */
     handleFirstDropBall(posX: number, bResetCat: boolean= true, bAddBall:boolean=false){
         if(this.ballId > 1000){  //分裂产生的小球
-            this.node.removeFromParent(true);
+            this.node.destroy();
         }else{
             this.setBallOpacity(255);
             this.initBallStateData();  //清除球的状态信息，初始化或发射前会调用
@@ -822,7 +822,7 @@ export default class Ball extends cc.Component {
                 //FightMgr.getFightScene().showAddBallEffect(posX);   //添加小球落地特效
             }
             if(this.effectNode){
-                this.effectNode.removeAllChildren(true);
+                this.effectNode.destroyAllChildren();
             }
         }
     }
