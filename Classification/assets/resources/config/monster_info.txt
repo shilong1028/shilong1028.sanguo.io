@@ -1,0 +1,179 @@
+[1]
+name = 汉奸
+hp = 1
+event = 0
+ai = 0
+quality = 1
+res = 1
+desc = 
+
+[2]
+name = 大头兵
+hp = 3
+event = 0
+ai = 1
+quality = 2
+res = 1
+desc = 具有移动功能
+
+[3]
+name = 三等兵
+hp = 5
+event = 0
+ai = 3
+quality = 1
+res = 2
+desc = 具有急速下坠功能
+
+[4]
+name = 二等兵
+hp = 7
+event = 2
+ai = 2
+quality = 2
+res = 2
+desc = 第一次伤害无效，具有吸附功能
+
+[5]
+name = 一等兵
+hp = 10
+event = 1
+ai = 0
+quality = 3
+res = 2
+desc = 间隔无敌功能
+
+[6]
+name = 上等兵
+hp = 15
+event = 3
+ai = 3
+quality = 1
+res = 3
+desc = 死亡后重生，急速下坠功能
+
+[7]
+name = 伍长
+hp = 20
+event = 2
+ai = 0
+quality = 2
+res = 3
+desc = 第一次伤害无效
+
+[8]
+name = 军曹
+hp = 25
+event = 1
+ai = 1
+quality = 1
+res = 4
+desc = 间隔无敌功能，具有移动功能
+
+[9]
+name = 曹长
+hp = 30
+event = 3
+ai = 0
+quality = 2
+res = 4
+desc = 死亡后重生，急速下坠功能
+
+[10]
+name = 准尉
+hp = 40
+event = 0
+ai = 1
+quality = 3
+res = 4
+desc = 具有移动功能
+
+[11]
+name = 少尉
+hp = 50
+event = 2
+ai = 0
+quality = 1
+res = 5
+desc = 第一次伤害无效
+
+[12]
+name = 中尉
+hp = 60
+event = 1
+ai = 3
+quality = 2
+res = 5
+desc = 间隔无敌功能，急速下坠功能
+
+[13]
+name = 大尉
+hp = 70
+event = 3
+ai = 2
+quality = 1
+res = 6
+desc = 死亡后重生，具有吸附功能
+
+[14]
+name = 少佐
+hp = 80
+event = 2
+ai = 1
+quality = 2
+res = 6
+desc = 第一次伤害无效，具有移动功能
+
+[15]
+name = 中佐
+hp = 90
+event = 1
+ai = 3
+quality = 3
+res = 6
+desc = 间隔无敌功能，急速下坠功能
+
+[16]
+name = 大佐
+hp = 100
+event = 3
+ai = 2
+quality = 1
+res = 7
+desc = 死亡后重生，具有吸附功能
+
+[17]
+name = 少将
+hp = 120
+event = 0
+ai = 3
+quality = 2
+res = 7
+desc = 具有急速下坠功能
+
+[18]
+name = 中将
+hp = 150
+event = 2
+ai = 1
+quality = 3
+res = 7
+desc = 第一次伤害无效，具有移动功能
+
+[19]
+name = 大将
+hp = 200
+event = 1
+ai = 3
+quality = 1
+res = 8
+desc = 间隔无敌功能，急速下坠功能
+
+[20]
+name = 元帅
+hp = 300
+event = 3
+ai = 2
+quality = 2
+res = 8
+desc = 死亡后重生，具有吸附功能

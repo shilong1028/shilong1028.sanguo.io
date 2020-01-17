@@ -2,7 +2,32 @@
   "assets-sort-type": "name",
   "collision-matrix": [
     [
+      false
+    ],
+    [
+      false,
+      false,
+      null,
       true
+    ],
+    [
+      false,
+      false,
+      false,
+      true
+    ],
+    [
+      false,
+      true,
+      true,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 1334,
@@ -12,15 +37,11 @@
     "TiledMap",
     "Spine Skeleton",
     "DragonBones",
-    "RichText",
-    "MotionStreak",
-    "Toggle",
-    "PageView",
-    "PageViewIndicator",
     "VideoPlayer",
-    "Collider",
-    "Physics",
-    "StudioComponent"
+    "WebView",
+    "StudioComponent",
+    "3D",
+    "3D Primitive"
   ],
   "facebook": {
     "appID": "",
@@ -32,18 +53,22 @@
       "enable": false
     }
   },
-  "fit-height": false,
+  "fit-height": true,
   "fit-width": true,
   "group-list": [
-    "default"
+    "default",
+    "Dot",
+    "Ball",
+    "MoveBrick",
+    "Brick"
   ],
-  "last-module-event-record-time": 1566792530618,
+  "last-module-event-record-time": 1579187316480,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,
     "width": 960
   },
-  "start-scene": "91eb9626-fe75-4f2c-a64e-6ad2b2480260",
+  "start-scene": "327246fb-352e-4d8c-b426-2f5a0221e9b1",
   "use-customize-simulator": true,
   "use-project-simulator-setting": false
 }

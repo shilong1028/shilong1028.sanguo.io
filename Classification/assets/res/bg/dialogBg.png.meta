@@ -1,10 +1,13 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.3",
   "uuid": "7f61559e-9d46-44e7-a3ea-7a403fdd3afb",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
   "subMetas": {
     "dialogBg": {
       "ver": "1.0.4",
@@ -21,10 +24,10 @@
       "height": 736,
       "rawWidth": 717,
       "rawHeight": 762,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
+      "borderTop": 274,
+      "borderBottom": 74,
+      "borderLeft": 99.5,
+      "borderRight": 99.5,
       "subMetas": {}
     }
   }

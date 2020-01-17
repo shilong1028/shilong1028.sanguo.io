@@ -1,0 +1,62 @@
+[1]
+name = 冰冻
+probability = 5
+attack_up = 0
+baoji_up = 0
+desc = 初级5%概率使得某回合暂停下移，每升一级技能触发概率增加50%
+
+[2]
+name = 强化
+probability = 20
+attack_up = 50
+baoji_up = 0
+desc = 初级20%概率提升50%攻击力，每升一级技能触发概率增加50%
+
+[3]
+name = 分裂
+probability = 10
+attack_up = 0
+baoji_up = 0
+desc = 初级10%概率使得武器分裂为三个武器，每升一级技能触发概率增加50%
+
+[4]
+name = 反弹
+probability = 20
+attack_up = 0
+baoji_up = 0
+desc = 初级20%概率使得武器落地后重新反弹攻击，每升一级技能触发概率增加50%
+
+[5]
+name = 扩散
+probability = 10
+attack_up = 0
+baoji_up = 0
+desc = 初级10%概率使得武器扩散打击四周多个砖块，每升一级技能触发概率增加50%
+
+[6]
+name = 爆炸
+probability = 5
+attack_up = 0
+baoji_up = 0
+desc = 初级5%概率击毁敌人后炸死四周的敌人，每升一级技能触发概率增加50%
+
+[7]
+name = 指示
+probability = 20
+attack_up = 0
+baoji_up = 0
+desc = 初级20%概率增加指视线段数量，每升一级技能触发概率增加50%
+
+[8]
+name = 加球
+probability = 10
+attack_up = 0
+baoji_up = 0
+desc = 初级10%概率增加可发射的武器数量，每升一级技能触发概率增加50%
+
+[9]
+name = 狂暴
+probability = 10
+attack_up = 0
+baoji_up = 50
+desc = 初级10%概率提升50%暴击率，每升一级技能触发概率增加50%
