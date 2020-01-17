@@ -16,9 +16,6 @@ export default class SkillCell extends viewCell {
     @property(cc.Label)
     descLabel: cc.Label = null;
 
-    @property([cc.SpriteFrame])
-    bgFrames: cc.SpriteFrame[] = new Array(2);
-
     data : any = null;
     cellData : SkillInfo = null;  
     cellIdx : number = -1;  
@@ -44,12 +41,6 @@ export default class SkillCell extends viewCell {
         //}
 
         this.onSelected(this._selectState);
-
-        if(this.cellIdx%2 == 0){
-            this.cellBg.spriteFrame = this.bgFrames[0];
-        }else{
-            this.cellBg.spriteFrame = this.bgFrames[1];
-        }
 
         if(this.SkillSc == null){
             let skillNode = cc.instantiate(ROOT_NODE.pfSkill);

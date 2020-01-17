@@ -73,6 +73,7 @@ class MyUserManager {
         let playerInfo = new PlayerInfo(1);
         playerInfo.useState = 1;  //使用状态，0未拥有，1已拥有
         playerInfo.ballId = 1;  //默认炮台拥有1级小球
+        playerInfo.itemId = 1; 
         this.updateCurPlayerById(1);  
         this.updatePlayerFromList(playerInfo);   //拥有的炮列表
 
