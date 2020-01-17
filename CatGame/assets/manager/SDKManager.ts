@@ -29,8 +29,8 @@ class SDKManager_class  {
 
     /** 检查和初始化可用的SDK */
     initSDK(){
-        //SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
-        SDKMgr.TT = (window as any).tt;;  //字节跳动   
+        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        //SDKMgr.TT = (window as any).tt;;  //字节跳动   
         SDKMgr.bannerCheckTime = 1578754065000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
         SDKMgr.initAdDayCount();
@@ -120,9 +120,9 @@ class SDKManager_class  {
             }
         }
         else if(SDKMgr.WeiChat != null){
-            sdkWechat.createBannerWithWidth("adunit-0895b0ed4218bdfd");  //Banner广告
+            sdkWechat.createBannerWithWidth("adunit-311e568f40c7b724");  //Banner广告
             setInterval(()=>{
-                sdkWechat.createBannerWithWidth("adunit-0895b0ed4218bdfd");
+                sdkWechat.createBannerWithWidth("adunit-311e568f40c7b724");
             }, 100000);   //每隔固定时间被调用一次
         }
     }

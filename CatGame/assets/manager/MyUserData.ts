@@ -86,8 +86,8 @@ class MyUserManager {
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
 
-        MyUserData.DiamondCount = 50;
-        MyUserData.GoldCount = 500;
+        this.updateUserGold(500);
+        this.updateUserDiamond(50);
 
         //cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }

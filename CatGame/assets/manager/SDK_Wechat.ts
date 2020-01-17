@@ -3,13 +3,13 @@ import { GameMgr } from "./GameManager";
 import { ROOT_NODE } from "../common/rootNode";
 
 var WeChat_VedioIds = {
-    ChapterVedioId: "adunit-7938468818a49805",   //章节奖励  》15
-    FuhuoVedioId:   "adunit-c66c8322a1391f90",    //复活
-    KaijuVedioId:   "adunit-f09c92332a0c1a78",   //开局奖励
-    UpLvVedioId:    "adunit-06bb99420f5a9799",   //宠物升级
-    ShopVedioId:    "adunit-ff57491503401a14",    //商店    》15
-    GoldVedioId:    "adunit-65bb70d7557e085f",    //添加金币    》15
-    SignVedioId:    "adunit-40458eb80d6b2cd3",    //签到    》15
+    ChapterVedioId: "adunit-6ec807cbe470c213",   //章节奖励  》15
+    FuhuoVedioId:   "adunit-7505f4b340540021",    //复活
+    KaijuVedioId:   "adunit-80d169035974b323",   //开局奖励
+    UpLvVedioId:    "adunit-ab72dd32b2400263",   //宠物升级
+    ShopVedioId:    "adunit-6b823e3a6e8787b3",    //商店    》15
+    GoldVedioId:    "adunit-3f7122a44141289f",    //添加金币    》15
+    SignVedioId:    "adunit-2bf5e3c24f054824",    //签到    》15
 }
 
 export class SDK_Wechat  {
@@ -56,24 +56,11 @@ export class SDK_Wechat  {
         if (wx == null) {
             return;
         }
-        //平台上的分享图片链接地址
-        let imgUrls = ['https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksJB5QHQ8anlZGWdicrK3Cllk7a8XOPCD2jicENfrRR9XVQaKZOV1VyfnZ/0'];
-        //平台上的分享图片编号
-        let imgIds = ['JYY2Z/rRTJ2U9IeEVGSwgw=='];
-
-        // wx.updateShareMenu({
-        //     withShareTicket: true,
-        //     success(res) {
-        //         SDKMgr.handleShareSucc();
-        //     },
-        //     fail(res) {
-        //     }
-        // })
 
         wx.shareAppMessage({
             title: titleStr,
-            imageUrlId: imgIds[0],
-            imageUrl: imgUrls[0],
+            imageUrlId: "1IqtE4CzQUyV5TP0MTxYCw",
+            imageUrl: "https://mmocgame.qpic.cn/wechatgame/ap8QGBf5gXg4n7Ese58NnzS4saYJf4THM3aOx394fcRVHKrp9bSgDjjrsyYL1gbS/0",
         });
     }
 

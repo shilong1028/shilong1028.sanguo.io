@@ -114,7 +114,7 @@ export  const LDMgr = new StorageManager_class();
 
 export const LDKey = {
     KEY_UserName: "KEY_UserName",
-    KEY_NewUser: "KEY_NewUser_0109",   //是否新用户
+    KEY_NewUser: "KEY_NewUser_0116",   //是否新用户
     KEY_Music_onOff: "KEY_Music_onOff",  //音乐或音效开关(开启)
     KEY_Music_Volume: "KEY_Music_Volume",     //本地音乐音量
     KEY_Sound_Volume: "KEY_Sound_Volume",   //本地音效音量
