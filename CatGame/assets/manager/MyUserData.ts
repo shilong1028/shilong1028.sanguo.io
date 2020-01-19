@@ -76,6 +76,9 @@ class MyUserManager {
 
     //新玩家初始化
     initNewUserData(){
+        MyUserData.UserName = "";
+        this.checkUserName();
+        
         let playerInfo = new PlayerInfo(1);
         playerInfo.useState = 1;  //使用状态，0未拥有，1已拥有
         playerInfo.ballId = 1;  //默认炮台拥有1级小球
@@ -84,23 +87,28 @@ class MyUserManager {
 
         this.updateCurLevelId(0);  //当前通关的最大id
 
-        LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
-
         this.updateUserGold(500);
         this.updateUserDiamond(50);
 
+        LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
+
         //cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+    }
+
+
+    checkUserName(){
+        console.log("MyUserData.UserName = "+MyUserData.UserName);
+        if(MyUserData.UserName && MyUserData.UserName.indexOf("萌宠") >= 0 && MyUserData.UserName.length > 10){
+        }else{
+            MyUserData.UserName = "萌宠_"+Math.ceil(Math.random()*99)+"_"+(new Date().getTime());
+            LDMgr.setItem(LDKey.KEY_UserName, MyUserData.UserName);
+        }
     }
 
     /**初始化用户信息 */
     initUserData(){
         MyUserData.UserName = LDMgr.getItem(LDKey.KEY_UserName);    //用户名
-        console.log("MyUserData.UserName = "+MyUserData.UserName);
-        if(MyUserData.UserName && MyUserData.UserName.length > 10){
-        }else{
-            MyUserData.UserName = "萌宠_"+Math.ceil(Math.random()*99)+"_"+(new Date().getTime());
-            LDMgr.setItem(LDKey.KEY_UserName, MyUserData.UserName);
-        }
+        this.checkUserName();
 
         MyUserData.GoldCount = LDMgr.getItemInt(LDKey.KEY_GoldCount);   //用户金币
         MyUserData.DiamondCount = LDMgr.getItemInt(LDKey.KEY_DiamondCount);  //用户钻石
