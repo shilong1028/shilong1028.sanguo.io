@@ -1,6 +1,8 @@
 import { ItemInfo } from "../manager/Enum";
 import TableView from "../tableView/tableView";
 import { ROOT_NODE } from "./rootNode";
+import { SDKMgr } from "../manager/SDKManager";
+import { GameMgr } from "../manager/GameManager";
 
 //领取奖励通用提示框
 const {ccclass, property} = cc._decorator;
@@ -54,7 +56,26 @@ export default class RewardLayer extends cc.Component {
         this.receiveCallback = null;
         this.receiveTarget = null;
 
-        this.node.removeFromParent(true);
+        this.node.destroy();
+    }
+
+
+    /**视频免费按钮 */
+    onVedioBtn(){
+        SDKMgr.showVedioAd("JiangLiVedioId", ()=>{
+              //失败
+        }, ()=>{
+            let str = "";
+            for(let i=0; i<this.rewardArr.length; ++i){
+                let item = this.rewardArr[i];
+                let itemStr = "获得"+item.itemCfg.name + " x " + item.count + "  ";
+                str += itemStr;
+            }
+            ROOT_NODE.showTipsText(str);
+
+            GameMgr.receiveRewards(this.rewardArr);   //领取奖励
+            this.onOkBtn();
+        }); 
     }
 
     //领取物品后回调

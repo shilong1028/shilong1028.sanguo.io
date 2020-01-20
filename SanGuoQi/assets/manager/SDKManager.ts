@@ -1,144 +1,59 @@
 import { sdkWechat } from "./SDK_Wechat";
-
-
+import { LDMgr, LDKey } from "./StorageManager";
+import { GameMgr } from "./GameManager";
+import { ROOT_NODE } from "../common/rootNode";
 const {ccclass, property} = cc._decorator;
-
-//平台SDK数据
-export class SDK_DATA {
-    appid = "";
-    appkey = "";
-    appsecret = "";
-    openid = "";
-    token = "";
-    packageName = "";
-
-    code = "";   //微信用
-    wid = "";   //微信用
-}
 
 @ccclass
 class SDKManager_class  {
     isSDK : boolean = false;
-    QGMark: string = "";   //用于区分oppo或vivo
-
-    QGOppo : any = null;    //Oppo快游戏
-    QGVivo: any = null;   //Vivo快游戏
     WeiChat: any = null;   //微信小游戏
+    TT: any = null;  //字节跳动
 
-    SdkData: SDK_DATA = null;  //平台数据
+    bAutoPlayVedio: boolean = false;
+    adVedioPlaying: boolean = false;
+
+    adMaxCount: number = 20;
+    adTotalCount: number = 0;   //今日总的视频次数
+    adDayCounts: any = null;   //每种视频观看次数
+    bOpenVedioShop: boolean = false;   //是否开启视频商城
+    autoAdTime: number = 0;
+    timeOutId: any = null;
 
     sdkCheckSuccCallBack: any = null;   //SDK用户数据校验成功回调
     callBackTarget: any = null;
 
+    bannerCheckTime: number = 15781541870000000000000000;   //字节跳动屏蔽Banner时间戳
+
     /** 检查和初始化可用的SDK */
     initSDK(){
-        console.log("initSDK()");
+        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏  
+        SDKMgr.bannerCheckTime = 1578754065000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
-        let QG = (window as any).qg;
-        SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
+        SDKMgr.initAdDayCount();
 
-        this.SdkData = new SDK_DATA();
-
-        if(QG != null){
-            if(this.QGMark == "OPPO_QG"){  //Oppo快游戏
-                SDKMgr.QGOppo = QG;
-                SDKMgr.isSDK = true;
-            }
-            else if(this.QGMark == "VIVO_QG"){   //Vivo 快游戏
-                SDKMgr.QGVivo = QG;
-                SDKMgr.isSDK = true;
-            }
-        }
-        else if(SDKMgr.WeiChat != null){   //微信小游戏
+        if(SDKMgr.WeiChat != null){   //微信小游戏
             SDKMgr.isSDK = true;
-
-            this.SdkData.appkey = "wx5d22862f5d66286f";
-            this.SdkData.appsecret = "66394f83ea585cb0e3fd5e6fb8975ff9";
-
+            SDKMgr.TT = null;
+            SDKMgr.adMaxCount = 25 + Math.floor(Math.random()*10);   //微信25-35次
             sdkWechat.initSDK();
-
-        }else{
-            cc.log("没有找到SDK对应信息");
+        }
+        else {
+            //cc.log("没有找到SDK对应信息");
         }
     }
 
     //设定SDK用户数据校验成功回调
     loginWithSDK(callback: any, target: any){
-        console.log("loginWithSDK")
         this.sdkCheckSuccCallBack = callback;
         this.callBackTarget = target;
 
-        if(this.QGOppo != null){
-            this.loginOppoQG();
-        }else if(this.QGVivo != null){
-            this.loginVivoQG();
-        }else if(this.WeiChat != null){
+        if(SDKMgr.WeiChat != null){
             sdkWechat.loginWeiChat();
         }
         else{
-            cc.log("没有找到SDK平台")
             SDKMgr.SDK_Login();
         }
-    }
-
-    //vivo快游戏登录
-    loginVivoQG(){
-        cc.log("loginVivoQG(), packageName = "+this.SdkData.packageName)
-        this.QGVivo.authorize({
-            type: "token",
-            success: function (obj) {
-                let obj_json = JSON.stringify(obj);
-                console.log("authorize(), obj_json = "+obj_json);
-                //authorize(), obj_json = {"state":"","code":"","accessToken":"9dddfcbf0db25671ed4ab628a2d54c18","tokenType":"","expiresIn":86400,"scope":"scope.baseProfile"}
-                this.SdkData.token = obj.accessToken;
-
-                SDKMgr.SDK_Login();
-
-                // SDKMgr.QGVivo.getProfile({
-                //     token: obj.accessToken,
-                //     success: function(data){
-                //         let data_json = JSON.stringify(data);
-                //         /**
-                //          * 用户的openid，可作为用户的唯一标识。id用户的user id，可能为空。unionid用户在开放平台上的唯一标示符，可能为空。
-                //          * getProfile(), obj_json = {"openid":"0Y3Hvizwq8S0TxNAHda-regKRvENpbC4rDquGPNetHs","id":"0Y3Hvizwq8S0TxNAHda-regKRvENpbC4rDquGPNetHs",
-                //          * "unionid":"","nickname":"vivo57680498171","avatar":"https://shequwsdl.vivo.com.cn/shequ/shequ/20181121/f684c045b2004dd785bf4a8a627f5446.jpg"}
-                //          */
-                //         SDKMgr.SDK_Login();
-                //     },
-                //     fail: function(data, code) {
-                //         HUD.showMessage("获取账号信息失败!");
-                //         // SDKMgr.QGVivo.showToast({
-                //         //     message: "handling fail, code=" + code
-                //         // })
-                //     }
-                // })
-            },
-            fail: function (data, code) {
-                console.log("loginVivoQG, authorize() fail. "+JSON.stringify(data));
-            }
-        })
-    }
-
-    //oppo快游戏登录
-    loginOppoQG(){
-        cc.log("loginOppoQG(), packageName = "+this.SdkData.packageName)
-        this.QGOppo.login({
-            pkgName: this.SdkData.packageName,
-            success: function(resp){
-                /**
-                 * uid用户唯一Id，avatar头像， location地理位置
-                 * {"age":"-1","avatar":"http://cdopic0.oppomobile.com/play/201811/12/7e7ca0f9-20dc-4ce9-a239-dff4c57b747f.jpg","birthday":"-1","constellation":"",
-                 * "location":"","nickName":"","phoneNum":"159******95","sex":"","sign":"","token":"c2fefe065ac79537b63556738691b8ce","uid":"394557060","code":0}
-                */
-                console.log("loginOppoQG(), resp = "+JSON.stringify(resp));
-                SDKMgr.SdkData.openid = resp.uid;
-                SDKMgr.SdkData.token = resp.token;
-
-                SDKMgr.SDK_Login();
-            },
-            fail: function(resp){
-            }
-        });
     }
 
     /**
@@ -153,7 +68,6 @@ class SDKManager_class  {
         this.callBackTarget = null;
     }
 
-
     //************************** 分享  ******************************** */
     shareCallTarget:any = null;
     shareCallback: any = null;
@@ -162,22 +76,191 @@ class SDKManager_class  {
     shareGame(titleStr: string, callback:any = null, callTarget:any = null){
         this.shareCallback = callback;
         this.shareCallTarget = callTarget;
+
         if(SDKMgr.WeiChat != null){   //微信小游戏
             sdkWechat.share(titleStr);
         }
     }
 
-    handleShareSucc(){
-        if(this.shareCallback && this.shareCallTarget){
-            setTimeout(()=>{
-                if(this.shareCallback && this.shareCallTarget){
-                    this.shareCallback.call(this.shareCallTarget, true);
+    //Banner管理
+    createrBannerAd(){
+        if(SDKMgr.WeiChat != null){
+            sdkWechat.createBannerWithWidth("adunit-92773c71282aae1f");  //Banner广告
+            // setInterval(()=>{
+            //     sdkWechat.createBannerWithWidth("adunit-92773c71282aae1f");
+            // }, 100000);   //每隔固定时间被调用一次
+        }
+    }
+
+    removeBannerAd(){
+        if(SDKMgr.WeiChat != null){
+            sdkWechat.removeBanner();
+        }
+    }
+
+
+    getAdCountByKey(key: string){
+        return SDKMgr.adDayCounts[key];
+    }
+
+    initAdDayCount(){
+        let day = LDMgr.getItemInt(LDKey.KEY_LoginTime);   //上一个登录时间
+        if(GameMgr.isSameDayWithCurTime(day) == false){  //非同一天
+            LDMgr.setItem("MuBingVedioId", 0);  
+            LDMgr.setItem("GouBingVedioId", 0);   
+            LDMgr.setItem("JiangLiVedioId", 0);  
+            LDMgr.setItem("GuanKaVedioId", 0);  
+            LDMgr.setItem("JiNengVedioId", 0);   
+            LDMgr.setItem("GoldVedioId", 0);  
+            LDMgr.setItem("PanVedioId", 0);   
+            LDMgr.setItem(LDKey.KEY_LoginTime, new Date().getTime());
+        }
+
+        SDKMgr.adDayCounts = {};
+        SDKMgr.adTotalCount = 0;
+        SDKMgr.adDayCounts["MuBingVedioId"] = LDMgr.getItemInt("MuBingVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["MuBingVedioId"];
+        SDKMgr.adDayCounts["GouBingVedioId"] = LDMgr.getItemInt("GouBingVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["GouBingVedioId"];
+        SDKMgr.adDayCounts["JiangLiVedioId"] = LDMgr.getItemInt("JiangLiVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["JiangLiVedioId"];
+        SDKMgr.adDayCounts["GuanKaVedioId"] = LDMgr.getItemInt("GuanKaVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["GuanKaVedioId"];
+        SDKMgr.adDayCounts["JiNengVedioId"] = LDMgr.getItemInt("JiNengVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["JiNengVedioId"];
+        SDKMgr.adDayCounts["GoldVedioId"] = LDMgr.getItemInt("GoldVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["GoldVedioId"];
+        SDKMgr.adDayCounts["PanVedioId"] = LDMgr.getItemInt("PanVedioId");
+        SDKMgr.adTotalCount += SDKMgr.adDayCounts["PanVedioId"];
+    }
+
+    canPlayAdByCount(){
+        return SDKMgr.adTotalCount < SDKMgr.adMaxCount;
+    }
+
+    closeAutoPlayAdVedio(){
+        if(SDKMgr.timeOutId){
+            clearTimeout(SDKMgr.timeOutId);
+            SDKMgr.timeOutId = null;
+        }
+        SDKMgr.autoAdTime = 0;
+        if(SDKMgr.bAutoPlayVedio == true){
+            SDKMgr.bAutoPlayVedio = false;
+            ROOT_NODE.updateAdResultDialog();
+        }
+    }
+
+    autoPlayAdVedio(){
+        if(SDKMgr.bAutoPlayVedio == true  && SDKMgr.canPlayAdByCount() == false){
+            SDKMgr.closeAutoPlayAdVedio();
+            return;
+        }
+        SDKMgr.bAutoPlayVedio = true;
+
+        let adKeys = [
+            "MuBingVedioId",
+            "GouBingVedioId",
+            "JiangLiVedioId",
+            "GuanKaVedioId",
+            "JiNengVedioId",
+            "GoldVedioId",
+            "PanVedioId"
+        ]
+
+        let handleAdOver = function(){
+            let randomTime = Math.ceil(Math.random()*(30*Math.ceil(SDKMgr.adTotalCount/10)+1) + 50);
+            if(SDKMgr.TT != null ){
+                randomTime += Math.ceil(Math.random()*50 + 50);
+            }
+            SDKMgr.autoAdTime = randomTime;
+            // if(SDKMgr.timeOutId){
+            //     clearTimeout(SDKMgr.timeOutId);
+            //     SDKMgr.timeOutId = null;
+            // }
+            // SDKMgr.timeOutId = setTimeout(()=>{
+            //     autoVedioFunc();
+            // }, randomTime*1000)
+        }
+
+        let autoVedioFunc = function(){
+            // if(SDKMgr.bAutoPlayVedio != true || SDKMgr.canPlayAdByCount() == false){
+            //     SDKMgr.closeAutoPlayAdVedio();
+            //     return;
+            // }
+
+            let randomIdx = Math.floor(Math.random()*adKeys.length*0.99);
+            let adKey = adKeys[randomIdx];
+            SDKMgr.showVedioAd(adKey, handleAdOver, handleAdOver,()=>{
+                SDKMgr.closeAutoPlayAdVedio();
+            })
+        }
+        autoVedioFunc();
+    }
+
+    //显示视频广告
+    showVedioAd(adkey:string, failCallback, succCallback, errorCallback=null){
+        let adCount = SDKMgr.adDayCounts[adkey];
+        console.log("showVedioAd adkey = "+adkey+"; adCount = "+adCount)
+        if(adCount > 5){
+            adkey = "SignVedioId";   //签到及其他视频
+        }
+
+        if(SDKMgr.canPlayAdByCount() == false){
+            ROOT_NODE.showTipsDialog("今日视频次数已达最大限度（20-30次），请明日再来！", failCallback);
+            return;
+        }
+
+        SDKMgr.adVedioPlaying = true;
+
+        let succCallFunc = function(){
+            SDKMgr.adTotalCount ++;
+            SDKMgr.adDayCounts[adkey] ++;
+            LDMgr.setItem(adkey, SDKMgr.adDayCounts[adkey]); 
+
+            ROOT_NODE.updateAdResultDialog();
+
+            SDKMgr.adVedioPlaying = false;
+
+            succCallback();
+        }
+
+        let errorCallFunc = function(){
+            SDKMgr.adVedioPlaying = false;
+            SDKMgr.closeAutoPlayAdVedio();
+
+            if(errorCallback){
+                errorCallback();
+            }else{
+                failCallback();
+            }
+        }
+
+        let failCallFunc = function(){
+            SDKMgr.adVedioPlaying = false;
+            failCallback();
+        }
+
+        if(SDKMgr.WeiChat != null){
+            sdkWechat.playVideoAd(adkey, ()=>{
+                errorCallFunc();
+            }, (succ:boolean)=>{
+                if(succ){
+                    succCallFunc();
                 }else{
-                    console.log("分享回调错误");
+                    failCallFunc()
                 }
-            }, 500)
-        }else{
-            console.log("无分享回调");
+            }, this);   //播放下载的视频广告 
+        }
+    }
+
+    //上传开放域数据
+    setUserCloudStorage(key: string, val: string) {
+        console.log("setUserCloudStorage(), key = "+key+"; val = "+val);
+        if(SDKMgr.TT != null){   //头条小程序
+
+        }
+        else if(SDKMgr.WeiChat != null){
+            sdkWechat.setUserCloudStorage(key, val);
         }
     }
 

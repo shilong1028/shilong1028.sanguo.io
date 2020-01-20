@@ -7,6 +7,7 @@ import Item from "../common/item";
 import { GameMgr } from "../manager/GameManager";
 import { NoticeMgr } from "../manager/NoticeManager";
 import GeneralCell from "../common/generalCell";
+import { SDKMgr } from "../manager/SDKManager";
 
 //武将来投
 const {ccclass, property} = cc._decorator;
@@ -25,13 +26,9 @@ export default class GeneralUnit extends cc.Component {
     bagItemNode: cc.Node = null;
     @property(cc.Label)
     bagNumLabel: cc.Label = null;  //背包数量
-    @property(cc.Label)
-    buyNumLabel: cc.Label = null;   //钻石（金锭）数量
 
     @property(cc.Button)
     bagBtn: cc.Button = null;
-    @property(cc.Button)
-    buyBtn: cc.Button = null;
 
     // LIFE-CYCLE CALLBACKS:
     selCellIdx: number = -1;   //选中的Cell索引
@@ -62,7 +59,7 @@ export default class GeneralUnit extends cc.Component {
     // update (dt) {}
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     /**点击武将 */
@@ -80,11 +77,9 @@ export default class GeneralUnit extends cc.Component {
         this.bingNumLabel.string = "部曲兵力：";
         this.descLabel.string = "";
         this.bagNumLabel.string = "x0";
-        this.buyNumLabel.string = "";
-        this.bagItemNode.removeAllChildren();
+        this.bagItemNode.destroyAllChildren();
 
         this.bagBtn.interactable = false;
-        this.buyBtn.interactable = false;
     }
 
     showSelGeneralUI(){
@@ -104,19 +99,12 @@ export default class GeneralUnit extends cc.Component {
             if(this.selBingItem.count > 0){
                 this.bagBtn.interactable = true;
             }
-
-            let cost = Math.ceil(this.selBingItem.itemCfg.cost*2/1000);
-            this.buyNumLabel.string = cost.toString();
-            if(MyUserData.DiamondCount >= cost){
-                this.buyBtn.interactable = true;
-            }
         }
 
         let maxBingCount = GameMgr.getMaxBingCountByLv(selGeneralInfo.generalLv);
         this.bingNumLabel.string = "部曲兵力："+selGeneralInfo.bingCount+"/"+maxBingCount;
         if(selGeneralInfo.bingCount >= maxBingCount){   //部曲满员
             this.bagBtn.interactable = false;
-            this.buyBtn.interactable = false;
         }
     }
 
@@ -139,8 +127,17 @@ export default class GeneralUnit extends cc.Component {
             MyUserMgr.updateUserDiamond(-cost);  //修改用户背包物品列表
             this.updateGeneralBingCount();   //更新武将部曲士兵数量
         }else{
-            ROOT_NODE.showTipsText("金锭不足！");
+            GameMgr.showGoldAddDialog();  //获取金币提示框
         }
+    }
+
+    /**视频免费按钮 */
+    onVedioBtn(){
+        SDKMgr.showVedioAd("GouBingVedioId", ()=>{
+              //失败
+        }, ()=>{
+            this.updateGeneralBingCount();   //更新武将部曲士兵数量
+        }); 
     }
 
     //更新武将部曲士兵数量

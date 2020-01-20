@@ -39,6 +39,8 @@ export default class LoginScene extends cc.Component {
         }
         this.bUpdateStr = true;
         this.beginNode.active = true;
+
+        SDKMgr.createrBannerAd();   //创建Banner
     }
 
     update (dt) {

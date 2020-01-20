@@ -17,6 +17,7 @@ export default class TipsDialog extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     callback: any = null;
+    cancelCall: any = null;
     costNum: number = 0;
 
     onLoad () {
@@ -39,18 +40,26 @@ export default class TipsDialog extends cc.Component {
     }
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
+    }
+
+    onCancelBtn(){
+        if(this.cancelCall){
+            this.cancelCall();
+        }
+        this.node.destroy();
     }
 
     onOkBtn(){
         if(this.callback){
             this.callback();
         }
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
-    setTipStr(str: string, okCallback: any){
+    setTipStr(str: string, okCallback: any, cancelCallback: any=null){
         this.callback = okCallback;
+        this.cancelCall = cancelCallback;
         this.descLabel.string = str;
     }
 }

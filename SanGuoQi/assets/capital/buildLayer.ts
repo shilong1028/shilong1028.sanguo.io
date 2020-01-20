@@ -58,7 +58,7 @@ export default class BuildLayer extends cc.Component {
     }
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
 }

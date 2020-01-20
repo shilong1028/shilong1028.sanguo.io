@@ -14,6 +14,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 class GameManager {
 
+    boxTouchCount : number = 0;
+
     curTaskConf: st_story_info = null;   //当前任务配置
 
     CityNearsMap : Map<number, number[]> = new Map<number, number[]>();  //邻近城池Map
@@ -296,7 +298,56 @@ class GameManager {
         }
     }
 
+    GetBannerWidth(){
+        let designSize = cc.view.getDesignResolutionSize();
+        let frameSize = cc.view.getFrameSize();
+        let frameScale = frameSize.height/frameSize.width; 
+        let hScale = frameSize.height/(designSize.height/2);
+        let adWidth = 300;   //最小宽度   //414*144, 315*109.6 349*121.4  300*104.4 369*128.4    高为宽的0.348
+        if(frameScale >= 1.8){   //等宽放缩，背景高拉伸，顶底按钮位移
+            adWidth = Math.min(Math.floor(315 * (1+(hScale-1)/2)), frameSize.width);
+        }else{
+            if(hScale < 1.0){   //小屏幕缩小
+                adWidth = 300
+            }else{
+                if(frameSize.width > 315){  
+                    adWidth = 315
+                }else{
+                    adWidth = frameSize.width;
+                }
+            }
+        }
+        adWidth = Math.max(adWidth, 300);
+        return adWidth;
+    }
 
+    /**判定给定时间和现在是否同一天 */
+    isSameDayWithCurTime(lastTime: number){
+        if(lastTime < 10000){
+            return false;
+        }
+        let curDate = new Date();
+        let curDay = curDate.getDay();
+        let curMonth = curDate.getMonth();
+    
+        let lastDate = new Date();
+        lastDate.setTime(lastTime);
+        let lastDay = lastDate.getDay();
+        let lastMonth = lastDate.getMonth();
+
+        //console.log("lastTime = "+lastTime+"; lastDay = "+lastDay+"; lastMonth = "+lastMonth+"; curDay = "+curDay+"; curMonth = "+curMonth)
+
+        if(curMonth == lastMonth && curDay == lastDay){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //获取金币提示框
+    showGoldAddDialog(){
+        this.showLayer(ROOT_NODE.pfGoldAdd);
+    }
 
 }
 export var GameMgr = new GameManager();

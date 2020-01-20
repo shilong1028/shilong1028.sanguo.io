@@ -6,6 +6,7 @@ import { CardInfo, NoticeType, SoliderType } from "../manager/Enum";
 import { NoticeMgr } from "../manager/NoticeManager";
 import { MyUserData } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
+import { SDKMgr } from "../manager/SDKManager";
 
 //战斗场景
 const {ccclass, property} = cc._decorator;
@@ -52,6 +53,7 @@ export default class FightScene extends cc.Component {
     }
 
     onDestroy(){
+        SDKMgr.removeBannerAd();  
         this.node.targetOff(this);
         NoticeMgr.offAll(this);
     }
@@ -60,7 +62,7 @@ export default class FightScene extends cc.Component {
         if(MyUserData.roleLv <= 3){   //主角小于三级开启战斗帮助说明
             this.onHelpBtn();
         }
-
+        SDKMgr.createrBannerAd();   //创建Banner
         this.createDefaultCards();
     }
 
@@ -105,7 +107,7 @@ export default class FightScene extends cc.Component {
     createDefaultCards(){
         this.showRoundDesc();
 
-        this.gridNode.removeAllChildren(true);
+        this.gridNode.destroyAllChildren();
         //FightMgr.getAllRandomGenerals();   //获取全部随机武将数据
 
         let totalCardCount = FightMgr.cardsCol*FightMgr.cardsRow;

@@ -45,7 +45,7 @@ export default class BagLayer extends cc.Component {
     // update (dt) {}
 
     initBagGrid(){
-        this.grid.removeAllChildren();
+        this.grid.destroyAllChildren();
         let defaultSelItem = null;
         for(let i=0; i<MyUserData.ItemList.length && i<9; ++i){
             let bagItem: ItemInfo = MyUserData.ItemList[i].clone();
@@ -91,7 +91,7 @@ export default class BagLayer extends cc.Component {
     }
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     /**

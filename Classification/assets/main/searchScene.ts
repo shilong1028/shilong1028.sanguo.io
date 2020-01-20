@@ -90,8 +90,6 @@ export default class SearchScene extends cc.Component {
         this.showMusicSpr();
         this.UpdateGold();  
         this.gameHandActions();
-
-        SDKMgr.createrBannerAd();   //创建Banner
     }
 
     /**更新金币数量 */

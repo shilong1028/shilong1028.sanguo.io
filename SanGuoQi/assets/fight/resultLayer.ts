@@ -3,6 +3,7 @@ import { GameMgr } from "../manager/GameManager";
 import TableView from "../tableView/tableView";
 import { MyUserMgr } from "../manager/MyUserData";
 import { ItemInfo } from "../manager/Enum";
+import { SDKMgr } from "../manager/SDKManager";
 
 //战斗结算
 const {ccclass, property} = cc._decorator;
@@ -12,6 +13,8 @@ export default class ResultLayer extends cc.Component {
 
     @property(cc.Sprite)
     icon: cc.Sprite = null;
+    @property(cc.Button)
+    vedioBtn: cc.Button = null;
 
     @property(cc.SpriteFrame)
     winFrames: cc.SpriteFrame = null;
@@ -25,11 +28,15 @@ export default class ResultLayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     totalKillCount: number = 0;   //杀敌总数
     balancedExp: number = 0;   //均衡经验值（总杀敌数的一半用于每个武将均衡经验增加，武将杀敌的另一半用于自己经验增加）
+    rewardItems: ItemInfo[] = null;
 
-    onLoad () {}
+    onLoad () {
+        this.vedioBtn.node.active = false;
+    }
 
     start () {
         if(FightMgr.FightWin == true){  //战斗胜利或失败
+            this.vedioBtn.node.active = true;
             this.icon.spriteFrame = this.winFrames;
 
             if(FightMgr.fightCityInfo){   //攻占城池
@@ -81,6 +88,7 @@ export default class ResultLayer extends cc.Component {
         }
 
         let rewards: ItemInfo[] = GameMgr.getItemArrByKeyVal(items);   //通过配置keyVal数据砖块道具列表
+        this.rewardItems = rewards;
         this.rewardTableView.initTableView(rewards.length, { array: rewards, target: this }); 
 
         GameMgr.receiveRewards(rewards);   //领取奖励
@@ -91,5 +99,17 @@ export default class ResultLayer extends cc.Component {
             GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
         }
         GameMgr.gotoMainScene();   //进入主场景
+    }
+
+    /**视频免费按钮 */
+    onVedioBtn(){
+        this.vedioBtn.interactable = false;
+
+        SDKMgr.showVedioAd("GuanKaVedioId", ()=>{
+            this.vedioBtn.interactable = true;   //失败
+        }, ()=>{
+            GameMgr.receiveRewards(this.rewardItems);   //领取奖励  //成功
+            this.onBackBtn();
+        }); 
     }
 }

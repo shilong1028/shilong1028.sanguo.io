@@ -38,6 +38,6 @@ export default class BeautifulLayer extends cc.Component {
     // update (dt) {}
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 }

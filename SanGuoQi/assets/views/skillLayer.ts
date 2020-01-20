@@ -104,6 +104,6 @@ export default class SkillLayer extends cc.Component {
     }
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 }

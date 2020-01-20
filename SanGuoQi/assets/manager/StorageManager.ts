@@ -104,7 +104,9 @@ class StorageManager_class  {
 export  const LDMgr = new StorageManager_class();
 
 export const LDKey = {
-    KEY_NewUser: "KEY_NewUser_0102",  //是否新用户
+    KEY_NewUser: "KEY_NewUser_0120",  //是否新用户
+    KEY_UserName: "KEY_UserName",  //用户名
+    KEY_LoginTime: "KEY_LoginTime",   //上一个登录时间
     KEY_GoldCount: "KEY_GoldCount",   //金币数量
     KEY_DiamondCount: "KEY_DiamondCount",//钻石（金锭）数量
     KEY_FoodCount: "KEY_FoodCount",   //粮食数量

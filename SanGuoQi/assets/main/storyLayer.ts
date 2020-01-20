@@ -134,7 +134,7 @@ export default class StoryLayer extends cc.Component {
                 }
             }
 
-            this.node.removeFromParent(true);
+            this.node.destroy();
         }
     }
 

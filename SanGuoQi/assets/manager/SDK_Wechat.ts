@@ -1,5 +1,16 @@
 import { SDKMgr } from "./SDKManager";
+import { GameMgr } from "./GameManager";
+import { ROOT_NODE } from "../common/rootNode";
 
+var WeChat_VedioIds = {
+    MuBingVedioId: "adunit-1e1502996973b419",   //募兵
+    GouBingVedioId:   "adunit-0d83e908456cef13",    //购兵
+    JiangLiVedioId:   "adunit-24e657f67e8d8eb6",   //奖励1
+    GuanKaVedioId:    "adunit-7356d260fb20b2b8",   //关卡1
+    JiNengVedioId:    "adunit-48b659a625c42e7f",    //技能
+    GoldVedioId:    "adunit-f8c4f2990acea731",    //金币1
+    PanVedioId:    "adunit-7eac8e36c9b19c6e",    //转盘  1
+}
 
 export class SDK_Wechat  {
 
@@ -10,7 +21,7 @@ export class SDK_Wechat  {
 
         updateManager.onCheckForUpdate(function (res) {
             // 请求完新版本信息的回调
-            console.log(res.hasUpdate);
+            //console.log(res.hasUpdate);
         });
 
         updateManager.onUpdateReady(function () {
@@ -45,127 +56,17 @@ export class SDK_Wechat  {
         if (wx == null) {
             return;
         }
-        //平台上的分享图片链接地址
-        let imgUrls = ['https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksLSx0JGX2iby3NPcENLfOHxZZF2zqUWvrDUQlfm29k09LwHZZLQXxur9/0'];
-        //平台上的分享图片编号
-        let imgIds = ['DwOUCqh7Q-uO9i2EkbyBQw'];
-
-        wx.updateShareMenu({
-            withShareTicket: true,
-            success(res) {
-                console.log("分享成功", res);
-                SDKMgr.handleShareSucc();
-            },
-            fail(res) {
-                console.log("分享失败", res);
-
-            }
-        })
-
         wx.shareAppMessage({
             title: titleStr,
-            imageUrlId: imgIds[0],
-            imageUrl: imgUrls[0],
-        });
-    }
-
-    //**************************  反馈和客服 ********************** */
-    feedbackBtn: any = null;
-    customerBtn: any = null;
-
-    //反馈
-    createFeedbackBtn(worldPos: cc.Vec2, size: cc.Size){
-        let wx = SDKMgr.WeiChat;
-        if (wx == null) {
-            return;
-        }
-
-        let sceneSize = cc.size(750, 1334);
-        let sysInfo = wx.getSystemInfoSync();
-        //console.log("反馈 sysInfo = "+JSON.stringify(sysInfo)+"; cc.winSize = "+JSON.stringify(cc.winSize));
-        //console.log("worldPos = "+worldPos+"; size = "+JSON.stringify(size));
-        let w = sysInfo.screenWidth/cc.winSize.width * size.width * cc.winSize.height/sceneSize.height;
-        let h = sysInfo.screenHeight/cc.winSize.height * size.height * cc.winSize.width/sceneSize.width;
-        let t  = sysInfo.screenHeight/cc.winSize.height * (sceneSize.height - worldPos.y) * cc.winSize.height/sceneSize.height -h/2;
-        let l  = sysInfo.screenWidth/cc.winSize.width * worldPos.x * cc.winSize.width/sceneSize.width - w/2;
-        //console.log("w = "+w+"; h = "+h+"; t = "+t+"; l = "+l);
-
-        this.feedbackBtn = wx.createFeedbackButton({
-            type: 'text',    //text, image
-            image: '',   //按钮的背景图片，仅当 type 为 image 时有效
-            text: '',   //按钮上的文本，仅当 type 为 text 时有效
-            style: {
-                left: l,   //左上角横坐标
-                top: t,   //左上角纵坐标
-                width: w,   //宽度
-                height: h,   //高度
-                // lineHeight: 40,   //文本的行高
-                // backgroundColor: '#ff0000',   //背景颜色
-                // color: '#ffffff',
-                // textAlign: 'center',   //文本的水平居中方式
-                // fontSize: 16,    //字号
-                // borderRadius: 4   //边框圆角
-            }
-        });
-    }
-    removeFeedbackBtn(){
-        if(this.feedbackBtn){
-            this.feedbackBtn.destroy();
-        }
-    }
-
-    //游戏圈
-    createGameClubBtn(worldPos: cc.Vec2, size: cc.Size){
-        let wx = SDKMgr.WeiChat;
-        if (wx == null) {
-            return;
-        }
-
-        let sceneSize = cc.size(750, 1334);
-        let sysInfo = wx.getSystemInfoSync();
-        //console.log("客服 sysInfo = "+JSON.stringify(sysInfo)+"; cc.winSize = "+JSON.stringify(cc.winSize));
-        //console.log("worldPos = "+worldPos+"; size = "+JSON.stringify(size));
-        let w = sysInfo.screenWidth/cc.winSize.width * size.width * cc.winSize.height/sceneSize.height;
-        let h = sysInfo.screenHeight/cc.winSize.height * size.height * cc.winSize.width/sceneSize.width;
-        let t  = sysInfo.screenHeight/cc.winSize.height * (sceneSize.height - worldPos.y) * cc.winSize.height/sceneSize.height -h/2;
-        let l  = sysInfo.screenWidth/cc.winSize.width * worldPos.x * cc.winSize.width/sceneSize.width - w/2;
-        //console.log("w = "+w+"; h = "+h+"; t = "+t+"; l = "+l);
-
-        this.customerBtn = wx.createGameClubButton({
-            type: 'image',
-            icon: 'light',   //游戏圈按钮的图标，仅当 type 参数为 image 时有效  green 绿色的图标 white 白色的图标 dark 有黑色圆角背景的白色图标 light 有白色圆角背景的绿色图标
-            image: '',
-            text: '',
-            style: {
-                left: l,
-                top: t,
-                width: w,
-                height: h
-            }
-        });
-    }
-    removeCurstomerBtn(){
-        if(this.customerBtn){
-            this.customerBtn.destroy();
-        }
-    }
-
-    openConversation(){
-        console.log("openConversation");
-        let wx = SDKMgr.WeiChat;
-        if (wx == null) {
-            return;
-        }
-
-        wx.openCustomerServiceConversation({
-            sendMessageTitle:"测试"
+            imageUrlId: "DwOUCqh7Q-uO9i2EkbyBQw",
+            imageUrl: "https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksLSx0JGX2iby3NPcENLfOHxZZF2zqUWvrDUQlfm29k09LwHZZLQXxur9/0",
         });
     }
 
     ////////////////////////////广告相关功能  ////////////////////////////////////////////
     curBanner:any = null;
     
-    createBannerWithWidth(bannerId:string, adWidth: number=300){
+    createBannerWithWidth(adUnitId){   //414*144, 315*109.6 349*121.4  300*104.4     高为宽的0.348
         let wx = (window as any).wx;
         if(wx == null){
             return;
@@ -176,26 +77,25 @@ export class SDK_Wechat  {
             this.curBanner = null;
         }
 
-        const info = wx.getSystemInfoSync();
-        console.log("info = "+JSON.stringify(info));
-
+        //const info = wx.getSystemInfoSync();
+        let adWidth = GameMgr.GetBannerWidth();
+        let frameSize = cc.view.getFrameSize();
+        
         let bannerAd = wx.createBannerAd({
-            adUnitId: bannerId,
+            adUnitId: adUnitId,
             style: {
                 left: 0,
                 top: 0,
-                width: adWidth,   //当 style.width 小于 300 时，会取作 300。 当 style.width 大于屏幕宽度时，会取作屏幕宽度。 在组件内部会以此值为基准，根据 Banner 广告的标准尺寸，进行缩放。
+                width: adWidth,   //在组件内部会以此值为基准，根据 Banner 广告的标准尺寸，进行缩放。
             }
         });
 
         bannerAd.onError(err => {
-            console.log(err)
         });
 
         bannerAd.onResize(res => {   //如果在 onResize 的回调函数中重设 width 且总是与上一次缩放后的 width 不同，那么可能会导致 onResize 的回调函数一直触发，并卡死在 onResize 的回调函数中。
-            console.log("bannerAd.style = "+JSON.stringify(bannerAd.style));
-            bannerAd.style.left = (info.windowWidth - bannerAd.style.realWidth) * 0.5;
-            bannerAd.style.top = (info.windowHeight - bannerAd.style.realHeight);
+            bannerAd.style.left = (frameSize.width - bannerAd.style.realWidth) * 0.5 + 0.1;
+            bannerAd.style.top = (frameSize.height - bannerAd.style.realHeight) + 0.1;   //left和top都加上0.1，不加就会被iphonex该死的底部bar给顶上去，而且时而顶上去，时而又是正常
         });
 
         // 在适合的场景显示 Banner 广告
@@ -214,12 +114,10 @@ export class SDK_Wechat  {
     videoCallBack: any = null;   //播放视频成功回调
     errorCallBack: any = null;   //加载视频失败回调
 
-    preLoadVideoAd: any = null;   //提前预加载完毕了视频广告
     /**预加载或播放视频广告 */
-    preLoadAndPlayVideoAd(adId:string, bPreLoad:boolean, errorCallBack:any, videoCallBack:any, callTarget:any){
-        //console.log('preLoadAndPlayVideoAd, 预加载或播放视频广告 bPreLoad = '+bPreLoad);
+    playVideoAd(adkey: string, errorCallBack:any, videoCallBack:any, callTarget:any){
         let wx = (window as any).wx;
-        if(wx == null){
+        if(wx == null ){
             return;
         }
 
@@ -228,73 +126,65 @@ export class SDK_Wechat  {
         this.errorCallBack = errorCallBack;   //加载视频失败回调
 
         let self = this;
-        var rewardedVideoAd = null;
-        if(bPreLoad == true){   //预下载
-            this.preLoadVideoAd = null;
-            rewardedVideoAd = wx.createRewardedVideoAd({
-                adUnitId: adId
-            });
+        let adId = WeChat_VedioIds[adkey];
+        var rewardedVideoAd = wx.createRewardedVideoAd({
+            adUnitId: adId,
+            multiton: true
 
-            rewardedVideoAd.load()
-            .then(() => {
-                //console.log('预加载激励视频广告成功');
-                self.preLoadVideoAd = rewardedVideoAd;
+        });
+        rewardedVideoAd.canHandleCallBack = true;
+
+        rewardedVideoAd.onLoad(() =>{
+            // if (rewardedVideoAd){
+            //     rewardedVideoAd.offLoad()
+            // }
+        });
+        rewardedVideoAd.show().then(() => {
+        })
+        .catch(err => {
+            // 可以手动加载一次
+            rewardedVideoAd.load().then(() => {
+                // 加载成功后需要再显示广告
+                return rewardedVideoAd.show();
             })
             .catch(err => {
-                //console.log('激励视频广告显示失败, err = '+err);
-                self.preLoadVideoAd = null;
-                if(self.errorCallBack && self.callTarget){
-                    self.errorCallBack.call(self.callTarget, "无法观看视频");
-                }else{
-                    //console.log("预显示回调错误");
+                ROOT_NODE.showTipsText("视频获取失败，请稍后重试或重新登录游戏。")
+                if(rewardedVideoAd.canHandleCallBack && sdkWechat.errorCallBack && sdkWechat.callTarget){
+                    rewardedVideoAd.canHandleCallBack = false;
+                    sdkWechat.errorCallBack.call(sdkWechat.callTarget, false);
                 }
-            })
-        }else{
-            rewardedVideoAd = this.preLoadVideoAd;
-            if(rewardedVideoAd == null){
-                rewardedVideoAd = wx.createRewardedVideoAd({
-                    adUnitId: adId
-                });
-
-            }
-
-            rewardedVideoAd.onClose(res => {
+            });
+        });
+        rewardedVideoAd.onClose(res => {
+            // if (rewardedVideoAd){
+            //     rewardedVideoAd.offClose()//防止多次回调
+            // }
+            //console.log("onClose canHandleCallBack = "+rewardedVideoAd.canHandleCallBack)
+            if(rewardedVideoAd.canHandleCallBack == true){
+                rewardedVideoAd.canHandleCallBack = false;
                 if (res && res.isEnded) {
-                    //console.log("激励视频广告正常播放结束，可以下发游戏奖励， res = "+JSON.stringify(res));
                     if(self.videoCallBack && self.callTarget){
                         self.videoCallBack.call(self.callTarget, true);
-                    }else{
-                        //console.log("播放成功回调错误");
                     }
                 } else {
-                    //console.log("激励视频广告播放中途退出，不下发游戏奖励， res = "+JSON.stringify(res));
                     if(self.videoCallBack && self.callTarget){
                         self.videoCallBack.call(self.callTarget, false);
-                    }else{
-                        //console.log("播放失败回调错误");
                     }
                 }
-            })
-
-            rewardedVideoAd.show().catch(() => {
-                // 失败重试
-                rewardedVideoAd.load()
-                .then(() => {
-                    //console.log('经过预下载后，但仍需要加载视频');
-                    rewardedVideoAd.show();
-                })
-                .catch(err => {
-                    //console.log('经过预下载后，激励视频广告仍然显示失败, err = '+err);
-                })
-            });
-        }
-
+            }
+        });
         rewardedVideoAd.onError(err => {
-            //console.log("今日观看视频数量已达上限, err = "+err);
+            // if (rewardedVideoAd){
+            //     rewardedVideoAd.offError()
+            // }
+            ROOT_NODE.showTipsText("视频获取失败，"+err.errCode+"; "+err.errMsg)
+            if(rewardedVideoAd.canHandleCallBack && sdkWechat.errorCallBack && sdkWechat.callTarget){
+                rewardedVideoAd.canHandleCallBack = false;
+                sdkWechat.errorCallBack.call(sdkWechat.callTarget, false);
+            }
         });
 
     }
-
 
     //****************************登录和用户信息  *********************** */
     wxAuthBtn:any = null;
@@ -314,7 +204,6 @@ export class SDK_Wechat  {
         let self = this;
         wx.getSetting({  //获取用户的当前设置。返回值中只会出现小程序已经向用户请求过的权限。
             success(res) {
-                console.log('res.authSetting = ' + JSON.stringify(res.authSetting));
                 if (res.authSetting['scope.userInfo']) {   //已经授权
                 }else {
                     self.showAuthorizeBtn();   //显示微信授权界面和获取用户信息按钮
@@ -332,34 +221,6 @@ export class SDK_Wechat  {
         if(wx == null){
             return;
         }
-        console.log('showAuthorizeBtn');
-
-        let sysInfo = wx.getSystemInfoSync();
-        // let screenW = sysInfo.screenWidth;
-        // let screenH = sysInfo.screenHeight;
-
-        // let rate = sysInfo.screenWidth/750;
-        // let h = rate * 385;
-        // let screenW = sysInfo.screenWidth*0.5 - 10;
-        // let screenH = 75*rate;
-        // let t  = sysInfo.screenHeight * 0.5 - screenH - h;
-        // let l  = sysInfo.screenWidth * 0.5;
-        // let button = wx.createUserInfoButton({
-        //     type: 'text',
-        //     text: '   ',
-        //     style: {
-        //         left: l,
-        //         top: t,
-        //         width: screenW,
-        //         height: screenH,
-        //         lineHeight: 40,
-        //         backgroundColor: '',
-        //         color: '#ffffff',
-        //         textAlign: 'center',
-        //         fontSize: 25,
-        //         borderRadius: 4
-        //     }
-        // });
 
         let button = wx.createUserInfoButton({
             type: 'text',
@@ -385,14 +246,11 @@ export class SDK_Wechat  {
                 // 必须是在用户已经授权的情况下调用
                 wx.getUserInfo({  //获取用户信息,自从微信接口有了新的调整之后 这个wx.getUserInfo（）便不再出现授权弹窗了，需要使用button做引导
                     success(res) {
-                        self.onAuthorizeOK(res);
                         self.removeAuthorizeBtn();
                     },
                     fail(res) {
                         // 获取失败的去引导用户授权
-                        console.log('获取用户信息失败！res = ' + JSON.stringify(res));
                         //不授权登录
-                        self.onAuthorizeOK(null);
                         self.removeAuthorizeBtn();
                     }
                 })
@@ -402,10 +260,6 @@ export class SDK_Wechat  {
             }
         });
         this.wxAuthBtn = button;
-    }
-
-    onAuthorizeOK(res){
-        console.log('onAuthorizeOK() res = ' + JSON.stringify(res));
     }
 
     //登录
@@ -419,16 +273,9 @@ export class SDK_Wechat  {
         //微信账号登录
         wx.login({
             success(res) {
-                console.log('微信登录！res = ' + JSON.stringify(res));
-                //res = {"errMsg":"login:ok","code":"023uNqjb1xlyMw0yYDjb1Vy5jb1uNqjQ"}
-                //发送 res.code 到后台换取 openId, sessionKey, unionId
                 if (res.code) {
-                    console.log('登录成功！' + res.code);
-                    SDKMgr.SdkData.code = res.code;
-
                     self.getUserInfo();  //请求用户信息或授权请求
                 } else {
-                    console.log('获取用户登录态失败！' + res.errMsg)
                 }
             }
         })
@@ -440,7 +287,6 @@ export class SDK_Wechat  {
         let self = this;
         wx.getSetting({  //获取用户的当前设置。返回值中只会出现小程序已经向用户请求过的权限。
             success(res) {
-                console.log('res.authSetting = ' + JSON.stringify(res.authSetting));
                 if (res.authSetting['scope.userInfo']) {   //已经授权
                     self.getUserInfoFunc();   //获取用户信息
                 } else {
@@ -462,26 +308,10 @@ export class SDK_Wechat  {
         // 必须是在用户已经授权的情况下调用
         wx.getUserInfo({  //获取用户信息,自从微信接口有了新的调整之后 这个wx.getUserInfo（）便不再出现授权弹窗了，需要使用button做引导
             success(res) {
-                console.log('getUserInfoFunc() res = ' + JSON.stringify(res));
-                /**
-                 * res = {"errMsg":"getUserInfo:ok",
-                 * "rawData":"{\"nickName\":\"shilong1028\",\"gender\":1,\"language\":\"zh_CN\",\"city\":\"Xuhui\",\"province\":\"Shanghai\",\"country\":\"China\",
-                 * \"avatarUrl\":\"https://wx.qlogo.cn/mmopen/vi_32/lcib9AaFmzOfTZHoKHaDF42h6nHCpE4lj7SP1icCt9R185kic3jLyc7EydDkLhAlFAYFK0KuztVa1kibIaOiabscbrQ/132\"}",
-                 * "userInfo":{"nickName":"shilong1028","gender":1,"language":"zh_CN","city":"Xuhui","province":"Shanghai","country":"China",
-                 * "avatarUrl":"https://wx.qlogo.cn/mmopen/vi_32/lcib9AaFmzOfTZHoKHaDF42h6nHCpE4lj7SP1icCt9R185kic3jLyc7EydDkLhAlFAYFK0KuztVa1kibIaOiabscbrQ/132"},
-                 * "signature":"741eb561136150a1189ba679d3e9e53f1ee4099d",
-                 * "encryptedData":"k+mbVAXDT1A0325Flt6e+GZ309QK/iv1KR8HYyJOrQ2T7GyWIc6zvR4hVLmv+2BgQKWT8M89dlMygyTYSbt6JLb7jjbVlEAF8ElwKUSUdwS7qlegQ4h1IaBARxRCSJd8
-                    * JwraTGSDn6mAAzQsKIFUeP2bNxMq40LMrWtfekv2ZoKmpG+jvrhufUtRkIS70UsF3uFEMr85ZjV0cXcn/hi14CeF7AM/BSyZYpF3KoPB9ZBqmlWIX3SstdjK324Ra5O3a5A7TfXnOk+T7uWWU5mVlb
-                    * FsS9vDbwAWxXZjFsqXnTUonNkTNWACRMdYZhBd64Xl3LeHbZrelo9BliqDYHz2PuhP1aEt2umqWJKJHLoX7CB5JzqdQMx2sfeQvWvdU8DVan9+xGpBsYVkFT6H8xiLWU8mJIcaZ1Iv3uEACvnlICt
-                    * CftaMRkGR0lRGM8TQQg0fEVnA1yPkIYitSZBvad3uVX2hqdBv+JaDWHqr7tSA0Lw=",
-                * "iv":"MKNFdyMEyjS/SgErvzeFXg=="}
-                */
-
                 self.onLoginOK(res);
             },
             fail(res) {
                 // 获取失败的去引导用户授权
-                console.log('获取用户信息失败！res = ' + JSON.stringify(res));
                 //不授权登录
                 self.onLoginOK(null);
             }
@@ -491,6 +321,25 @@ export class SDK_Wechat  {
     //处理微信登录并获取用户信息成功
     onLoginOK(res: any) {
         SDKMgr.SDK_Login();
+    }
+
+    //上传开放域数据
+    setUserCloudStorage(keyStr: string, valStr: string) {
+        let wx = SDKMgr.WeiChat;
+        if (wx == null) {
+            return;
+        }
+        wx.setUserCloudStorage({
+            KVDataList: [
+                { key: keyStr, value: valStr },
+            ],
+            success: (res) => {
+                console.log("setUserCloudStorage success:res=>", res)
+            },
+            fail: (res) => {
+                console.log("setUserCloudStorage fail:res=>", res)
+            }
+        })
     }
 }
 

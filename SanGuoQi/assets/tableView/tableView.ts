@@ -900,8 +900,8 @@ export default class TableView extends cc.ScrollView {
         }
     }
     _getBoundingBoxToWorld (node) {
-        var p = node.convertToWorldSpace(cc.v2(0, 0));
-        return cc.rect(p.x, p.y, node.width, node.height);
+        var p = node.convertToWorldSpaceAR(cc.v2(0, 0));
+        return cc.rect(p.x-node.width/2, p.y-node.height/2, node.width, node.height);
     }
     _updateCells () {
         if (this.ScrollModel === ScrollModel.Horizontal) {

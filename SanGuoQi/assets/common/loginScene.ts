@@ -3,6 +3,7 @@ import { MyUserMgr } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
 import { ROOT_NODE } from "./rootNode";
 import { LDKey, LDMgr } from "../manager/StorageManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 //初始场景，用于初始化加载数据
 const {ccclass, property} = cc._decorator;
@@ -19,7 +20,11 @@ export default class LoginScene extends cc.Component {
     }
 
     start () {
-        MyUserMgr.initUserData();    //初始化用户信息
+        if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
+            MyUserMgr.clearUserData();
+        }else{
+            MyUserMgr.initUserData();    //初始化用户信息
+        }
         this.btnNode.active = true;
     }
 

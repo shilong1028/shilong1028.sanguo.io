@@ -1,6 +1,7 @@
 import TipsText from "./tipsText";
 import TipsDialog from "./tipsDialog";
 import { MyUserMgr } from "../manager/MyUserData";
+import AdResultDialog from "./adResultDialog";
 
 //游戏常驻节点
 const {ccclass, property} = cc._decorator;
@@ -23,6 +24,11 @@ export default class RootNode extends cc.Component {
     pfTipsDialog: cc.Prefab = null;  //提示框
     @property(cc.Prefab)
     pfLoading: cc.Prefab = null;  //加载进度层
+
+    @property(cc.Prefab)
+    adResultPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    pfGoldAdd: cc.Prefab = null;  //获取金币提示框
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -105,12 +111,30 @@ export default class RootNode extends cc.Component {
     }
 
     //通用提示框
-    showTipsDialog(tipStr: string, okCallback: any=null){
+    showTipsDialog(tipStr: string, okCallback: any=null, cancelCall: any=null){
         let tips = cc.instantiate(this.pfTipsDialog);
         tips.y = cc.winSize.height/2;
         tips.x = cc.winSize.width/2;
         cc.director.getScene().addChild(tips);
-        tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback);
+        tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback, cancelCall);
+    }
+
+    ShowAdResultDialog(){
+        let dialog = this.node.getChildByName("adResultPrefab");
+        if(dialog){
+            return;
+        }
+        dialog = cc.instantiate(this.adResultPrefab);
+        dialog.name = "adResultPrefab"
+        // tips.y = cc.winSize.height/2;
+        // tips.x = cc.winSize.width/2;
+        this.node.addChild(dialog);
+    }
+    updateAdResultDialog(){
+        let dialog = this.node.getChildByName("adResultPrefab");
+        if(dialog){
+            dialog.getComponent(AdResultDialog).updateAdDataLabel();
+        }
     }
 }
 

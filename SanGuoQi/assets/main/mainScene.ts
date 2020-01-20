@@ -72,6 +72,9 @@ export default class MainScene extends cc.Component {
     @property(cc.Prefab)
     pfSkill: cc.Prefab = null;  //技能界面
 
+    @property(cc.Prefab)
+    pfPan: cc.Prefab = null;
+
     @property(cc.SpriteAtlas)
     cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
     @property(cc.SpriteAtlas)
@@ -282,13 +285,13 @@ export default class MainScene extends cc.Component {
         }else{
             let pos = cc.v2(320, -cc.winSize.height/2 + 30);  //默认位置（任务详情或奖励） cc.v2(320, -640)
             if(showTaskType == 2){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
-                pos = cc.v2(cc.winSize.width/2 - 30, cc.winSize.height/2 - 140);   //引导主城   640+posY cc.v2(350, 530)
+                pos = cc.v2(-cc.winSize.width/2 + 70, cc.winSize.height/2 - 180);   //引导主城   640+posY cc.v2(350, 530)
             }else if(showTaskType == 3){
-                pos = cc.v2(cc.winSize.width/2 - 30, cc.winSize.height/2 - 250);  //引导招募  cc.v2(350, 420)
+                pos = cc.v2(cc.winSize.width/2 - 30, cc.winSize.height/2 - 300);  //引导招募  cc.v2(350, 420)
             }else if(showTaskType == 4){
-                pos = cc.v2(cc.winSize.width/2 - 30, cc.winSize.height/2 - 360);  //引导部曲  cc.v2(350, 310)
+                pos = cc.v2(cc.winSize.width/2 - 30, cc.winSize.height/2 - 400);  //引导部曲  cc.v2(350, 310)
             }else if(showTaskType == 6){
-                pos = cc.v2(-cc.winSize.width/2 + 70, cc.winSize.height/2 - 360);    //引导技能  cc.v2(-300, 310)
+                pos = cc.v2(-cc.winSize.width/2 + 70, cc.winSize.height/2 - 400);    //引导技能  cc.v2(-300, 310)
             }else if(showTaskType == 0){   //默认位置（任务详情或奖励）
 
             }
@@ -433,30 +436,20 @@ export default class MainScene extends cc.Component {
         GameMgr.showLayer(this.pfUnit);   //武将部曲
     }
 
-    onRoleBtn(){
-        
+    onZhuanPanBtn(){
+        GameMgr.showLayer(this.pfPan); 
     }
 
-    onShopBtn(){
-
+    onAddGoldBtn(){
+        GameMgr.showGoldAddDialog();  //获取金币提示框
     }
 
-    onSignBtn(){
-
+    onBoxBtn(){
+        GameMgr.boxTouchCount ++;
+        if(GameMgr.boxTouchCount == 10 && SDKMgr.bAutoPlayVedio == false){
+            GameMgr.boxTouchCount = 0;
+            
+            ROOT_NODE.ShowAdResultDialog();
+        }
     }
-
-    onRankBtn(){
-
-    }
-
-    onMoreBtn(){
-
-    }
-
-    onSetBtn(){
-
-    }
-
-
-
 }

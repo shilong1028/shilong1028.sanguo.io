@@ -42,7 +42,7 @@ export default class SkillLearnCell extends viewCell {
         this.targetSc = data.target;
         this.onSelected(this._selectState);
 
-        this.skillsNode.removeAllChildren();
+        this.skillsNode.destroyAllChildren();
 
         //if(reload){
             this.cellIdx = index;  

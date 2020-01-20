@@ -192,7 +192,7 @@ export default class FightShow extends cc.Component {
             this.showLeftAniUi(1);  //显示主动方(左侧)动画 1默认动作，2攻击动作
             this.showRightAniUi(1);  //显示被动方（右侧）(被攻击者或被合成吸收者)动画  1默认动作，2攻击动作
         }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
-            this.node.removeFromParent(true);
+            this.node.destroy();
             FightMgr.nextRoundOpt();  //下回合处理
         }.bind(this))))
     }
@@ -714,7 +714,7 @@ export default class FightShow extends cc.Component {
                 FightMgr.getFightScene().setEnemyOpenBlock(true, this.rightBlock);   //设置敌方已经开启的卡牌
             }
         }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
-            this.node.removeFromParent(true);
+            this.node.destroy();
             FightMgr.nextRoundOpt();  //下回合处理
         }.bind(this))))
     }

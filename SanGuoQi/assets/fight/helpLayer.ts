@@ -16,6 +16,6 @@ export default class HelpLayer extends cc.Component {
     // update (dt) {}
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 }

@@ -5,6 +5,7 @@ import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import { ItemInfo } from "../manager/Enum";
 import { ROOT_NODE } from "../common/rootNode";
 import { GameMgr } from "../manager/GameManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 //用于tableView的itemCell
 const {ccclass, property} = cc._decorator;
@@ -84,8 +85,23 @@ export default class RecruitCell extends viewCell {
                 GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
             }
         }else{
-            ROOT_NODE.showTipsText("金币不足！");
+            GameMgr.showGoldAddDialog();  //获取金币提示框
         }
+    }
+
+    /**视频免费按钮 */
+    onVedioBtn(){
+        SDKMgr.showVedioAd("MuBingVedioId", ()=>{
+              //失败
+        }, ()=>{
+            MyUserMgr.updateItemList(this.cellData, true);   //修改用户背包物品列表
+
+            ROOT_NODE.showTipsText("招募"+this.cellData.itemCfg.name +" x "+this.cellData.count);
+
+            if(GameMgr.curTaskConf.type == 3){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
+                GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
+            }
+        }); 
     }
 
 }

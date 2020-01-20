@@ -67,7 +67,7 @@ export default class FightReady extends cc.Component {
     // update (dt) {}
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     //故事剧情战斗入口
@@ -260,7 +260,7 @@ export default class FightReady extends cc.Component {
             if(selGeneralInfo.bingCount <= 200){
                 ROOT_NODE.showTipsDialog("武将领兵太少，不能出战！是否跳转部曲界面？", ()=>{
                     GameMgr.showLayer(this.pfUnit);
-                    this.node.removeFromParent(true);
+                    this.node.destroy();
                 });
             }else if(this.fightArr.length >= 5){
                 ROOT_NODE.showTipsText("出战名额（五个）已满!");

@@ -3,6 +3,7 @@ import SkillLayer from "./skillLayer";
 import { MyUserMgr, MyUserData } from "../manager/MyUserData";
 import { ROOT_NODE } from "../common/rootNode";
 import { GameMgr } from "../manager/GameManager";
+import { SDKMgr } from "../manager/SDKManager";
 
 
 //技能展示卡
@@ -97,18 +98,32 @@ export default class SkillCard extends cc.Component {
         let skillInfo = this.targetSc.selSkillInfo;
         if(skillInfo && skillInfo.skillCfg){
             if(MyUserData.DiamondCount >= skillInfo.skillCfg.cost){
-                ROOT_NODE.showTipsDialog("是否花费"+skillInfo.skillCfg.cost+"金锭来学习技能"+skillInfo.skillCfg.name, ()=>{
-                    let optOK = this.handleChangeGeneralSkill(skillInfo, true);
-                    if(optOK == true){
-                        this.initGeneralSkill(skillInfo, this.targetSc, this.generalInfo);
-    
-                        if(GameMgr.curTaskConf.type == 6){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
-                            GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
-                        }
-                    }
+                let tipsStr = "是否观看视频来来学习技能"+skillInfo.skillCfg.name+", 或者点击取消花费"+skillInfo.skillCfg.cost+"金锭学习技能。";
+                ROOT_NODE.showTipsDialog(tipsStr, ()=>{
+                    SDKMgr.showVedioAd("JiNengVedioId", ()=>{
+                        //失败
+                  }, ()=>{
+                    this.handelLearnSkill();
+                  }); 
+                }, ()=>{
+                    this.handelLearnSkill();
                 });
             }else{
-                ROOT_NODE.showTipsText("金锭不足！");
+                GameMgr.showGoldAddDialog();  //获取金币提示框
+            }
+        }
+    }
+
+    handelLearnSkill(){
+        let skillInfo = this.targetSc.selSkillInfo;
+        if(skillInfo && skillInfo.skillCfg){
+            let optOK = this.handleChangeGeneralSkill(skillInfo, true);
+            if(optOK == true){
+                this.initGeneralSkill(skillInfo, this.targetSc, this.generalInfo);
+
+                if(GameMgr.curTaskConf.type == 6){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
+                    GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务宣读(第一阶段）完毕处理
+                }
             }
         }
     }

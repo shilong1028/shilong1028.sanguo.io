@@ -173,11 +173,11 @@ export default class CityLayer extends cc.Component {
     }
 
     onCloseBtn(){
-        this.node.removeFromParent(true);
+        this.node.destroy();
     }
 
     onBuyBtn(){
-        //this.node.removeFromParent(true);
+        //this.node.destroy();
         this.handleCityPath();
     }
 
@@ -189,7 +189,7 @@ export default class CityLayer extends cc.Component {
             let layer = GameMgr.showLayer(this.pfFightReady);
             layer.getComponent(FightReady).initCityFight(this.cityInfo, this.campCfg);
 
-            this.node.removeFromParent(true);
+            this.node.destroy();
         }
     }
 }

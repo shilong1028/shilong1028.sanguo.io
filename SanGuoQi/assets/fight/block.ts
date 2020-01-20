@@ -63,7 +63,7 @@ export default class Block extends cc.Component {
     // update (dt) {}
     //下一个回合准备
     handlePerNextRound(){
-        this.effNode.removeAllChildren();
+        this.effNode.destroyAllChildren();
         if(FightMgr.fightRoundCount > 0){
             this.handleShiqiChange(-1, false);  //每回合降低士气
         }
@@ -86,7 +86,9 @@ export default class Block extends cc.Component {
                     effNode = FightMgr.showFramesAniAndRemove(this.effNode, cc.v2(0, 0), this.qidownAtlas, false);
                 }
                 if(effNode){
-                    effNode.runAction(cc.sequence(cc.delayTime(0.5), cc.removeSelf(true)));
+                    effNode.runAction(cc.sequence(cc.delayTime(0.5), cc.callFunc(function(){
+                        effNode.destroy();
+                    })));
                 }
             }
 

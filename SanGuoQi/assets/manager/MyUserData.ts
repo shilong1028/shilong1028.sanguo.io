@@ -8,6 +8,8 @@ const { ccclass, property } = cc._decorator;
 
 export var MyUserData = {
     /**以下数据需要更新到服务器 */
+    UserName: "",   //用户名
+
     GoldCount: 0,   //用户金币
     DiamondCount: 0,   //用户钻石(金锭）数
     FoodCount: 0,  //用户粮食数量
@@ -34,6 +36,8 @@ class MyUserManager {
 
     /**清除所有用户数据 */
     clearUserData(){
+        LDMgr.setItem(LDKey.KEY_NewUser, 0);  //是否新用户
+
         MyUserData.GoldCount = 0;   //用户金币
         LDMgr.setItem(LDKey.KEY_GoldCount, 0);
         MyUserData.DiamondCount = 0;   //用户钻石(金锭）数
@@ -71,16 +75,34 @@ class MyUserManager {
 
     /**初始新用户赋值 */
     initNewUserData(){
+        MyUserData.UserName = "";
+        this.checkUserName();
+
         let caocao = new GeneralInfo(3001);
         this.addGeneralToList(caocao, true)
 
         this.updateRoleLv(1);  //更新主角等级
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
+
+        //console.log("初始新用户赋值 MyUserData = "+JSON.stringify(MyUserData));
+    }
+
+
+    checkUserName(){
+        console.log("MyUserData.UserName = "+MyUserData.UserName);
+        if(MyUserData.UserName && MyUserData.UserName.indexOf("汉末") >= 0 && MyUserData.UserName.length > 10){
+        }else{
+            MyUserData.UserName = "汉末_"+Math.ceil(Math.random()*99)+"_"+(new Date().getTime());
+            LDMgr.setItem(LDKey.KEY_UserName, MyUserData.UserName);
+        }
     }
 
     /**初始化用户信息 */
     initUserData(){
+        MyUserData.UserName = LDMgr.getItem(LDKey.KEY_UserName);    //用户名
+        this.checkUserName();
+        
         MyUserData.GoldCount = LDMgr.getItemInt(LDKey.KEY_GoldCount);   //用户金币
         MyUserData.DiamondCount = LDMgr.getItemInt(LDKey.KEY_DiamondCount);   //用户钻石(金锭）数
         MyUserData.FoodCount = LDMgr.getItemInt(LDKey.KEY_FoodCount);   //用户粮食数量
@@ -110,7 +132,7 @@ class MyUserManager {
             this.clearUserData();
         }
 
-        //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+        //console.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
     //更新在线总时长
@@ -389,6 +411,9 @@ class MyUserManager {
     /**修改用户金币 */
     updateUserGold(val:number){
         MyUserData.GoldCount += val;
+        if(MyUserData.GoldCount <= 0){
+            MyUserData.GoldCount = 0;
+        }
         LDMgr.setItem(LDKey.KEY_GoldCount, MyUserData.GoldCount);
         NoticeMgr.emit(NoticeType.UpdateGold, null);
     }
@@ -396,6 +421,9 @@ class MyUserManager {
     /**修改用户钻石(金锭) */
     updateUserDiamond(val:number){
         MyUserData.DiamondCount += val;
+        if(MyUserData.DiamondCount <= 0){
+            MyUserData.DiamondCount = 0;
+        }
         LDMgr.setItem(LDKey.KEY_DiamondCount, MyUserData.DiamondCount);
         NoticeMgr.emit(NoticeType.UpdateDiamond, null);
     }
@@ -403,6 +431,9 @@ class MyUserManager {
     /**修改用户粮食 */
     updateUserFood(val:number){
         MyUserData.FoodCount += val;
+        if(MyUserData.FoodCount <= 0){
+            MyUserData.FoodCount = 0;
+        }
         LDMgr.setItem(LDKey.KEY_FoodCount, MyUserData.FoodCount);
         NoticeMgr.emit(NoticeType.UpdateFood, null);
     }
