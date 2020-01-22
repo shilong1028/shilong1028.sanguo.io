@@ -2587,8 +2587,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        20.213,
-        -219.614,
+        20,
+        -220,
         0,
         0,
         0,
@@ -2895,8 +2895,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "titleSpr": null,
-    "failFrame": null,
+    "titleLabel": {
+      "__id__": 8
+    },
     "levelLabel": {
       "__id__": 15
     },

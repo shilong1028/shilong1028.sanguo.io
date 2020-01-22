@@ -126,9 +126,16 @@ export default class RootNode extends cc.Component {
         }
         dialog = cc.instantiate(this.adResultPrefab);
         dialog.name = "adResultPrefab"
-        // tips.y = cc.winSize.height/2;
-        // tips.x = cc.winSize.width/2;
-        this.node.addChild(dialog);
+        dialog.y = cc.winSize.height/2;
+        dialog.x = cc.winSize.width/2;
+
+        let bg = dialog.getChildByName("bg");
+        if(bg){
+            bg.width = cc.winSize.width;
+            bg.height = cc.winSize.height;
+        }
+
+        cc.director.getScene().addChild(dialog);
     }
     updateAdResultDialog(){
         let dialog = this.node.getChildByName("adResultPrefab");

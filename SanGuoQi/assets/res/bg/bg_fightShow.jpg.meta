@@ -1,6 +1,6 @@
 {
   "ver": "2.3.3",
-  "uuid": "2e87a0a4-359f-48c2-afce-ebaa60a0ad3e",
+  "uuid": "684cae7e-1c8b-41a9-94ff-a3966aece155",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -11,8 +11,8 @@
   "subMetas": {
     "bg_fightShow": {
       "ver": "1.0.4",
-      "uuid": "71df1b96-b3da-4d33-8fad-81afa290c2e4",
-      "rawTextureUuid": "2e87a0a4-359f-48c2-afce-ebaa60a0ad3e",
+      "uuid": "f007e46e-18fe-4920-80c9-a57989b8140c",
+      "rawTextureUuid": "684cae7e-1c8b-41a9-94ff-a3966aece155",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,

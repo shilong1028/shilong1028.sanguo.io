@@ -1370,8 +1370,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "钻石x20",
-    "_N$string": "钻石x20",
+    "_string": "金锭x20",
+    "_N$string": "金锭x20",
     "_fontSize": 22,
     "_lineHeight": 25,
     "_enableWrapText": true,
@@ -1580,8 +1580,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "钻石x60",
-    "_N$string": "钻石x60",
+    "_string": "金锭x60",
+    "_N$string": "金锭x60",
     "_fontSize": 22,
     "_lineHeight": 25,
     "_enableWrapText": true,
@@ -1790,8 +1790,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "钻石x100",
-    "_N$string": "钻石x100",
+    "_string": "金锭x100",
+    "_N$string": "金锭x100",
     "_fontSize": 22,
     "_lineHeight": 25,
     "_enableWrapText": true,
@@ -3000,7 +3000,7 @@
     },
     "_enabled": true,
     "panNode": {
-      "__id__": 12
+      "__id__": 51
     },
     "_id": ""
   },

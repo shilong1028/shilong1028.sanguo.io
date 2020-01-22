@@ -12,10 +12,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class FightResult extends cc.Component {
 
-    @property(cc.Sprite)
-    titleSpr: cc.Sprite = null;
-    @property(cc.SpriteFrame)
-    failFrame: cc.SpriteFrame = null;
+    @property(cc.Label)
+    titleLabel: cc.Label = null;
     @property(cc.Label)
     levelLabel: cc.Label = null;
     @property(cc.Label)
@@ -48,6 +46,7 @@ export default class FightResult extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.titleLabel.string = "";
         this.levelLabel.string = "";
         this.failTips.active = false;
         this.okBtnNode.active = false;
@@ -62,6 +61,7 @@ export default class FightResult extends cc.Component {
 
         this.rewardGold = 0;   //奖励金币
         if(FightMgr.win == true){
+            this.titleLabel.string = "闯关成功";
             if(FightMgr.stars < 1){
                 FightMgr.stars = 1;
             }
@@ -102,14 +102,13 @@ export default class FightResult extends cc.Component {
                 }
             }
         }else{
+            this.titleLabel.string = "闯关失败";
             GameMgr.bToMainPetPage = true;   //主界面是否跳转至宠物界面
 
-            this.titleSpr.spriteFrame = this.failFrame;
             FightMgr.stars = 0;
             this.skillNode.active = false;
             this.failTips.active = true;
             this.okBtnNode.active = true;
-            this.okBtnNode.y = -180;
         }
         this.rewardLabel.string = "+"+GameMgr.num2e(this.rewardGold);
         MyUserDataMgr.updateUserGold(this.rewardGold);

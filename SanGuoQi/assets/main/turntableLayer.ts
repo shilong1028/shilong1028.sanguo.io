@@ -73,7 +73,7 @@ export default class TurnTable extends cc.Component {
                 MyUserMgr.updateUserGold(gold);
             }else if(selIdx == 1 || selIdx == 3 || selIdx == 5){   //钻石
                 let diamond = 20*selIdx;
-                ROOT_NODE.showTipsText("获得钻石："+diamond);
+                ROOT_NODE.showTipsText("获得金锭："+diamond);
                 MyUserMgr.updateUserDiamond(diamond);
             }
         }

@@ -1276,7 +1276,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 262.25,
+      "width": 280,
       "height": 63
     },
     "_anchorPoint": {
@@ -1327,8 +1327,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "看视频得1千兵",
-    "_N$string": "看视频得1千兵",
+    "_string": "看视频获得千兵",
+    "_N$string": "看视频获得千兵",
     "_fontSize": 40,
     "_lineHeight": 50,
     "_enableWrapText": true,
@@ -2079,8 +2079,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 250,
-      "height": 100
+      "width": 200,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2155,15 +2155,15 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -80,
+        -49.656,
         0,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
+        0.8,
+        0.8,
         1
       ]
     },
@@ -2252,7 +2252,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
+      "width": 80,
       "height": 63
     },
     "_anchorPoint": {
@@ -2303,8 +2303,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "视频翻倍",
-    "_N$string": "视频翻倍",
+    "_string": "视频",
+    "_N$string": "视频",
     "_fontSize": 40,
     "_lineHeight": 50,
     "_enableWrapText": true,

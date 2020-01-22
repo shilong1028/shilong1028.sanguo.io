@@ -31,9 +31,7 @@ export default class AdResultDialog extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-
-    bannerTime: number = 1000;
-
+    bannerTime: number = 500;
 
     onLoad () {
         let maskBg = this.node.getChildByName("maskBg");
@@ -83,7 +81,7 @@ export default class AdResultDialog extends cc.Component {
         if(this.bannerTime > 0){
             this.bannerTime -= dt;
             if(this.bannerTime < 0.1){
-                this.bannerTime = 1000;
+                this.bannerTime = 500;
                 SDKMgr.createrBannerAd();   //创建Banner
             }
         }
@@ -134,7 +132,7 @@ export default class AdResultDialog extends cc.Component {
 
     onCloseBtn(){   
         SDKMgr.closeAutoPlayAdVedio();
-        this.bannerTime = 1000;
+        this.bannerTime = 500;
         SDKMgr.removeBannerAd();   
         this.node.destroy();
     }
