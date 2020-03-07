@@ -138,7 +138,7 @@ export default class RootNode extends cc.Component {
         cc.director.getScene().addChild(dialog);
     }
     updateAdResultDialog(){
-        let dialog = this.node.getChildByName("adResultPrefab");
+        let dialog = cc.director.getScene().getChildByName("adResultPrefab");
         if(dialog){
             dialog.getComponent(AdResultDialog).updateAdDataLabel();
         }

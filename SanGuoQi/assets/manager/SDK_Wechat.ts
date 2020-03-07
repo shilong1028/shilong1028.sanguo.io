@@ -129,7 +129,7 @@ export class SDK_Wechat  {
         let adId = WeChat_VedioIds[adkey];
         var rewardedVideoAd = wx.createRewardedVideoAd({
             adUnitId: adId,
-            multiton: true
+            multiton: false
 
         });
         rewardedVideoAd.canHandleCallBack = true;
