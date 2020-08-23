@@ -20,7 +20,7 @@
             <key>main_glod_icon.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{80,132},{74,52}}</string>
+                <string>{{176,132},{74,52}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,11 +46,11 @@
             <key>main_hm_down.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{216,47},{20,12}}</string>
+                <string>{{238,33},{20,12}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{20,12}}</string>
                 <key>sourceSize</key>
@@ -72,7 +72,7 @@
             <key>main_liang_icon.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,132},{76,58}}</string>
+                <string>{{98,132},{76,58}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -82,14 +82,27 @@
                 <key>sourceSize</key>
                 <string>{76,58}</string>
             </dict>
-            <key>main_task_icon.png</key>
+            <key>main_reward.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{156,132},{48,64}}</string>
+                <string>{{2,132},{44,65}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{44,65}}</string>
+                <key>sourceSize</key>
+                <string>{44,65}</string>
+            </dict>
+            <key>main_task_icon.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{48,132},{48,64}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{48,64}}</string>
                 <key>sourceSize</key>
@@ -103,9 +116,9 @@
             <key>realTextureFileName</key>
             <string>main.png</string>
             <key>size</key>
-            <string>{247,192}</string>
+            <string>{252,199}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:250cbae80d4bedb5619ed8e6ab7f64f0:3b75a54f56447dc2bbae732217e172bc:693584bbba79ecadf35d6b2cf3a849c9$</string>
+            <string>$TexturePacker:SmartUpdate:9bc7e64db636d0d736546ef4419e24f7:56b14aa3f1333bd50bffd8a6024c1537:693584bbba79ecadf35d6b2cf3a849c9$</string>
             <key>textureFileName</key>
             <string>main.png</string>
         </dict>

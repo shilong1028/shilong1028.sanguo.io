@@ -1,5 +1,5 @@
 import { LDMgr, LDKey } from "./StorageManager";
-import { GeneralInfo, ItemInfo } from "./ConfigManager";
+import { GeneralInfo, ItemInfo, CfgMgr } from "./ConfigManager";
 import { NoticeMgr, NoticeType } from "./NoticeManager";
 import { GuideMgr } from "./GuideMgr";
 
@@ -20,7 +20,7 @@ export var MyUserData = {
     roleLv: 1,  //主角等级
     capitalLv: 0,   //主城等级，0则未开启
 
-    TaskId: 1,   //当前任务ID
+    TaskId: "1001",   //当前任务ID
     TaskState: 0,    //当前任务状态 0未完成，1完成未领取，2已领取
 
     myCityIds: [],   //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
@@ -57,7 +57,7 @@ class MyUserManager {
         MyUserData.capitalLv = 0;   //主城等级，0则未开启
         LDMgr.setItem(LDKey.KEY_CapitalLv, 0);
 
-        MyUserData.TaskId = 1;   //当前任务ID
+        MyUserData.TaskId = "1001";   //当前任务ID
         MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
         LDMgr.setItem(LDKey.KEY_StoryData, "1-0");
 
@@ -119,10 +119,10 @@ class MyUserManager {
 
         let taskInfo = LDMgr.getItemKeyVal(LDKey.KEY_StoryData);  //当前任务ID
         if(taskInfo == null){
-            MyUserData.TaskId = 1;   //当前任务ID
+            MyUserData.TaskId = "1001";   //当前任务ID
             MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
         }else{
-            MyUserData.TaskId = parseInt(taskInfo.key);
+            MyUserData.TaskId = taskInfo.key;
             MyUserData.TaskState = taskInfo.val;
         }
 
@@ -139,7 +139,7 @@ class MyUserManager {
             this.clearUserData();
         }
 
-        //console.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+        console.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
     //更新在线总时长
@@ -443,7 +443,7 @@ class MyUserManager {
     }
 
     /**修改用户任务 0未完成，1完成未领取，2已领取 */
-    updateTaskState(taskId: number, state: number){
+    updateTaskState(taskId: string, state: number){
         if(MyUserData.TaskId == taskId && MyUserData.TaskState == state){
             return;
         }
@@ -451,8 +451,11 @@ class MyUserManager {
         MyUserData.TaskState = state;
 
         if(state == 2){   //2已领取，下一个任务
-            MyUserData.TaskId ++;
-            MyUserData.TaskState = 0;
+            let story_conf = CfgMgr.getTaskConf(MyUserData.TaskId);
+            if(story_conf && story_conf.next_id){
+                MyUserData.TaskId = story_conf.next_id;
+                MyUserData.TaskState = 0;
+            }
         }
 
         LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString()+"-"+MyUserData.TaskState);

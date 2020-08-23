@@ -1,9 +1,10 @@
 import { st_story_info, ItemInfo } from "./ConfigManager";
 import { MyUserMgr, MyUserData } from "./MyUserData";
-import { SpecialStory } from "./Enum";
+import { FunMgr } from "./Enum";
 import { ROOT_NODE } from "../login/rootNode";
 import LoadingLayer from "../login/loadingLayer";
 import TipsDialog from "../login/tipsDialog";
+import MainScene from "../hall/mainScene";
 
 
 //游戏管理器
@@ -46,15 +47,15 @@ class GameManager {
         this.goToSceneWithLoading("mainScene", true);
     } 
 
-    // /**获取主场景 */
-    // getMainScene(): MainScene {
-    //     let mainScene: MainScene = null;
-    //     let layer = cc.director.getScene().getChildByName("Canvas");
-    //     if (layer != null) {
-    //         mainScene = layer.getComponent(MainScene);
-    //     }
-    //     return mainScene;
-    // }
+    /**获取主场景 */
+    getMainScene(): MainScene {
+        let mainScene: MainScene = null;
+        let layer = cc.director.getScene().getChildByName("Canvas");
+        if (layer != null) {
+            mainScene = layer.getComponent(MainScene);
+        }
+        return mainScene;
+    }
 
     // /**获取主城场景 */
     // getCapitalScene(): CapitalScene {
@@ -151,8 +152,31 @@ class GameManager {
         return effNode;
     }
 
+    //加载单张图标初始化精灵纹理
+    setSpriteFrameByImg(path:string, sprnode:cc.Node, callback:Function=null){
+        cc.loader.loadRes(path, cc.SpriteFrame, function (err, asset) {
+            sprnode.getComponent(cc.Sprite).spriteFrame = asset;
+            if(callback){
+                callback(sprnode);
+            }
+        });
+    }
+
     //********************  以下为应用接口函数  ********************* */
-    
+        
+    /**通过Str解析获取道具列表 */
+    getItemArrByStr(itemstr: string): Array<ItemInfo>{
+        let rewardArr: ItemInfo[] = new Array();
+        let rewards = FunMgr.getKeyValAry(itemstr, ";", "-"); 
+        for(let i=0; i<rewards.length; ++i){
+            let itemId = parseInt(rewards[i].key);
+            let count = rewards[i].val;
+            let item = new ItemInfo(itemId, count);
+            rewardArr.push(item);
+        }
+        return rewardArr;
+    }
+
     /**通过配置keyVal数据砖块道具列表 */
     getItemArrByKeyVal(rewards: any[]): Array<ItemInfo>{
         //cc.log("getItemArrByKeyVal(), rewards = "+JSON.stringify(rewards));
@@ -202,14 +226,14 @@ class GameManager {
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
         }
 
-        if(MyUserData.TaskId == SpecialStory.taishouOpen){   //东郡太守
-            MyUserMgr.updateMyCityIds(316, true);  
-        }else if(MyUserData.TaskId == SpecialStory.zhoumuOpen){   //兖州牧
-            let ruleCitys = new Array();
-            ruleCitys = [312, 313, 314, 315, 9006, 9008]
-            MyUserMgr.addRuleCitys(ruleCitys);
-            MyUserMgr.updateMyCityIds(315, true); 
-        }
+        // if(MyUserData.TaskId == SpecialStory.taishouOpen){   //东郡太守
+        //     MyUserMgr.updateMyCityIds(316, true);  
+        // }else if(MyUserData.TaskId == SpecialStory.zhoumuOpen){   //兖州牧
+        //     let ruleCitys = new Array();
+        //     ruleCitys = [312, 313, 314, 315, 9006, 9008]
+        //     MyUserMgr.addRuleCitys(ruleCitys);
+        //     MyUserMgr.updateMyCityIds(315, true); 
+        // }
     }
 
     GetBannerWidth(){

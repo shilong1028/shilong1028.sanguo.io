@@ -2,6 +2,8 @@
 import { MyUserMgr } from "../manager/MyUserData";
 import TipsText from "./tipsText";
 import TipsDialog from "./tipsDialog";
+import { ItemInfo } from "../manager/ConfigManager";
+import Item from "../comui/item";
 
 //游戏常驻节点
 const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
@@ -38,7 +40,12 @@ export default class RootNode extends cc.Component {
     @property(cc.Prefab)
     pfGoldAdd: cc.Prefab = null;  //获取金币提示框
 
+    @property(cc.SpriteAtlas)
+    iconAtlas: cc.SpriteAtlas = null;
+
     // LIFE-CYCLE CALLBACKS:
+
+    itemsPool: cc.NodePool =  null;   //道具缓存池
 
     tipsPool: cc.NodePool =  null;   //缓存池
     tipsArr: string[] = new Array();   //提示文本数组
@@ -53,12 +60,20 @@ export default class RootNode extends cc.Component {
     start () {
         //this.tipsPool =  new cc.NodePool(TipsText);   //砖块缓存池
         //只有在new cc.NodePool(Dot)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
+        this.itemsPool =  new cc.NodePool(Item);   //道具缓存池
+        for(let i=0; i<3; i++){
+            let item = cc.instantiate(this.pfItem);
+            this.itemsPool.put(item);
+        }
     }
 
     onDestroy(){
         // if(this.tipsPool){
         //     this.tipsPool.clear();
         // }
+        if(this.itemsPool){
+            this.itemsPool.clear();
+        }
     }
 
     update (dt) {
@@ -152,6 +167,21 @@ export default class RootNode extends cc.Component {
         if(dialog){
             //dialog.getComponent(AdResultDialog).updateAdDataLabel();
         }
+    }
+
+    //创建道具
+    createrItem(info: ItemInfo, selCallBack:any=null, selCallTarget:any=null){
+        let item: cc.Node = null;
+        if (this.tipsPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
+            item = this.tipsPool.get();
+        } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
+            item = cc.instantiate(this.pfItem);
+        }
+        item.getComponent(Item).initItemData(info, selCallBack, selCallTarget);
+        return item;
+    }
+    removeItem(item: cc.Node){
+        this.itemsPool.put(item); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
     }
 }
 

@@ -1,0 +1,780 @@
+[101]
+id_str = 101
+city = 101
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 东汉末年
+desc = 东汉末年政局不稳，外戚专政，宦官专权，对西羌战争持续数十年，花费巨大，徭役兵役繁重。加之土地兼并现象严重，民不聊生。
+
+[102]
+id_str = 102
+city = 312
+type = 1
+head = 13
+generals = 
+official = 
+skip = 1
+date = 光和七年·二月
+desc = 汉灵帝光和七年（公元184年）二月，巨鹿人张角自称天公将军，张宝、张梁分别为地公将军、人公将军，高喊“苍天已死，黄天当立，岁在甲子，天下大吉”在北方冀州一带起事。
+
+[103]
+id_str = 103
+city = 112
+type = 1
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 雁门黄巾贼众趁势而起，声势浩大，雁门郡各级官吏争相逃离，使得黄巾贼轻易攻占郡治阴馆、县城马邑、平城、雁门关等城池，并在雁门全境劫掠烧杀。
+
+[104]
+id_str = 104
+city = 101
+type = 0
+head = 11
+generals = 
+official = 
+skip = 1
+date = 光和七年·三月
+desc = 一个月内，全国七州二十八郡都发生战事，黄巾军势如破竹，烧毁官府杀害吏士、劫掠州郡，震动京都。三月，汉灵帝命何进为大将军，率左右羽林五营士屯于都亭，镇守京师。
+
+[105]
+id_str = 105
+city = 201
+type = 2
+head = 4001
+generals = 
+official = 
+skip = 1
+date = 
+desc = 汉灵帝命卢植领副将宗员率北军五校士负责北方战线，与张角主力周旋。又命皇甫嵩及朱儁各领一军，控制五校、三河骑士及刚募来的精兵勇士共四万多人，讨伐颍川一带的黄巾军。
+
+[106]
+id_str = 106
+city = 701
+type = 1
+head = 11
+generals = 
+official = 
+skip = 1
+date = 
+desc = 三月，张曼成攻杀南阳郡守褚贡，响应张角。汉灵帝下诏各地严防，命各州郡准备作战、训练士兵、整点武器、召集义军。
+
+[107]
+id_str = 107
+city = 217
+type = 3
+head = 6101
+generals = 
+official = 
+skip = 1
+date = 
+desc = 朱儁上表招募下邳的孙坚为佐军司马，孙坚带同乡里少年和淮水、泗水精兵，共千多人出发与朱儁军连军。
+
+[108]
+id_str = 108
+city = 201
+type = 2
+head = 4003
+generals = 
+official = 
+skip = 1
+date = 光和七年·四月
+desc = 四月，朱儁军就被黄巾波才所败而撤退，皇甫嵩唯有与他一起进驻长社防守，被波才率大军围城，汉军人少，士气低落。
+
+[109]
+id_str = 109
+city = 504
+type = 1
+head = 13
+generals = 
+official = 
+skip = 1
+date = 
+desc = 汝南黄巾军在邵陵打败太守赵谦，广阳黄巾军杀死幽州刺史郭勋及太守刘卫。
+
+[110]
+id_str = 110
+city = 112
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 庄主，黄巾蛾贼在雁门境内杀害乡绅、抢掠百姓，奴以为庄主应响应朝廷号召，聚集家财以供招募义军，保家杀贼。
+
+[111]
+id_str = 111
+city = 6001
+type = 3
+head = 1
+generals = 1102;1103
+official = 101
+skip = 0
+date = 
+desc = 嗯...爱妾言之有理。身为雁门豪强、代王刘参（西汉文帝刘恒之子）孙刘嘉之后，吾当有所作为，方对得起祖宗。汝速去集聚家财，命刘胜刘武招募义兵。
+
+[112]
+id_str = 112
+city = 201
+type = 2
+head = 2101
+generals = 
+official = 
+skip = 1
+date = 光和七年·五月
+desc = 五月，京师见皇甫嵩被围，派骑都尉曹操率军救援。援军未到，皇甫嵩用火攻大破黄巾军，黄巾贼四处奔走，被皇甫嵩、朱儁和曹操三面夹击，斩杀数万人，汉军大胜。
+
+[113]
+id_str = 113
+city = 6001
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 庄主，平城黄巾贼大部外出劫掠，城中守军不足千人，麻痹大意，防范不足。庄主可夺得平城县城，缴获城中辎重，以壮大我军。
+
+[114]
+id_str = 114
+city = 6001
+type = 2
+head = 1
+generals = 
+official = 
+skip = 0
+date = 
+desc = 嗯...爱妾速去准备，先置内应于城中，于三日后夜晚攻取城门，攻占平城。
+
+[115]
+id_str = 115
+city = 6001
+type = 0
+head = 10
+generals = 
+official = 102
+skip = 0
+date = 
+desc = 恭喜庄主，我军攻占平城，为维护县城秩序和运转，请主公暂代县令一职。
+
+[116]
+id_str = 116
+city = 6001
+type = 4
+head = 1
+generals = 
+official = 
+skip = 0
+date = 
+desc = 嗯...如此，吾当不便推脱，先暂领县令一职。命刘胜刘武可分别授予县丞、县尉官职
+
+[117]
+id_str = 117
+city = 6001
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 庄主，我军缴获大量军用辎重（粮草、甲铠、武器和马匹）。为了防备城外黄巾军反扑，请庄主招募城中精壮，补足我军损失。
+
+[118]
+id_str = 118
+city = 6001
+type = 3
+head = 1
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...爱妾提醒及时，来人，张贴告示，招募士卒，补充部曲。
+
+[119]
+id_str = 119
+city = 6001
+type = 2
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 报...庄主，雁门黄巾杨凤率军五千已经包围平城，刘胜刘武已经率兵前往城墙防备，请庄主速上城楼指挥战斗。
+
+[120]
+id_str = 120
+city = 6001
+type = 4
+head = 10
+generals = 1104
+official = 
+skip = 1
+date = 
+desc = 报...庄主，黄巾贼杨凤已败退，刘义作战勇敢，请庄主提拔重用。
+
+[121]
+id_str = 121
+city = 6001
+type = 3
+head = 1104
+generals = 
+official = 
+skip = 1
+date = 
+desc = 庄主，雁门黄巾贼依然众多，请庄主补充损失，继续募兵备战，为刘义组部曲，招募枪戟兵五百人。
+
+[122]
+id_str = 122
+city = 701
+type = 2
+head = 13
+generals = 
+official = 
+skip = 1
+date = 光和七年·六月
+desc = 六月，南阳太守秦颉与张曼成战斗，斩杀了张曼成。黄巾军以赵弘为帅，以十多万人占据宛城。
+
+[123]
+id_str = 123
+city = 202
+type = 2
+head = 4001
+generals = 
+official = 
+skip = 1
+date = 
+desc = 皇甫嵩与朱儁军继续进击汝南、陈国的黄巾，追击波才到阳翟，最后在西华大败彭脱，余军想逃到宛城，但孙坚登城先入，大破敌军，成功讨平豫州一带的黄巾军。
+
+[124]
+id_str = 124
+city = 312
+type = 2
+head = 4002
+generals = 
+official = 
+skip = 1
+date = 
+desc = 卢植数战张角，斩杀黄巾军万余人。张角唯有撤到广宗，卢植建筑拦挡、挖掘壕沟，制造云梯，围困城池。
+
+[125]
+id_str = 125
+city = 6002
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 庄主，新募士兵已训练完毕，我军应趁黄巾士气低落，围攻临近的马邑县城。
+
+[126]
+id_str = 126
+city = 6002
+type = 2
+head = 1
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...正合我意，命刘胜刘武刘义整军随我出征。
+
+[127]
+id_str = 127
+city = 6002
+type = 4
+head = 1105
+generals = 1105
+official = 
+skip = 1
+date = 
+desc = 恭喜庄主，马邑黄巾贼突围失败，在刘文的劝说下，向我军投降。请庄主提拔重用刘文。
+
+[128]
+id_str = 128
+city = 6002
+type = 3
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 报...庄主，马邑城中搜获马匹众多，请补足部曲，招募骑兵五百、枪戟兵五百、弓弩兵五百。
+
+[129]
+id_str = 129
+city = 312
+type = 0
+head = 1301
+generals = 
+official = 
+skip = 1
+date = 光和七年·七月
+desc = 七月，正值灵帝派左丰视察河北军情，卢植不肯贿赂左丰，被诬告作战不力。卢植被囚回京，汉灵帝以董卓代替卢植，命皇甫嵩北上东郡，朱隽攻南阳的赵弘。
+
+[130]
+id_str = 130
+city = 713
+type = 1
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 五斗米道张修在巴郡叛变，攻打郡县，时人谓之米贼。 交趾百姓起兵反汉，朝廷改以贾琮为交趾刺史。贾琮免除徭役，一年之间交趾平定。
+
+[131]
+id_str = 131
+city = 112
+type = 0
+head = 1
+generals = 
+official = 
+skip = 1
+date = 
+desc = 雁门黄巾贼士气低落，退守郡治阴馆城。刘亭率军围困阴馆，因兵少，便扩大防围、建筑阵垒，堆砌土山观望城内。
+
+[132]
+id_str = 132
+city = 701
+type = 2
+head = 4003
+generals = 
+official = 
+skip = 1
+date = 光和七年·八月
+desc = 八月，朱儁与荆州刺史徐璆及秦颉共一万八千兵围攻南阳赵弘，但三月未克。灵帝不悦，朱儁乃急攻赵弘，赵弘被杀，由韩忠代替。后韩忠被杀，黄巾军又推孙夏为帅屯兵宛城。
+
+[133]
+id_str = 133
+city = 9016
+type = 2
+head = 4001
+generals = 
+official = 
+skip = 1
+date = 
+desc = 皇甫嵩到达东郡仓亭，大破、生擒卜己，斩杀七千多人。而董卓进攻张角不成功，无功而还，朝廷要求皇甫嵩继续北上进攻冀州黄巾军。
+
+[134]
+id_str = 134
+city = 112
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 报...庄主，黄巾军受挫，士气低迷，向我军乞降。奴以为接受的话，会给百姓有利为贼，无利乞降的错误观念。
+
+[135]
+id_str = 135
+city = 112
+type = 2
+head = 1
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...爱妾言之有理，斩杀那个黄巾信人，命刘胜刘武刘义刘文准备攻城杀敌。
+
+[136]
+id_str = 136
+city = 112
+type = 0
+head = 2
+generals = 
+official = 105
+skip = 1
+date = 
+desc = 恭喜庄主，雁门郡境内黄巾贼基本被我军剿灭。请庄主暂领雁门太守，选取士族豪强充当各县官吏，召置皂吏充当各县防卫，并派遣使者向京师洛阳报捷请封。
+
+[137]
+id_str = 137
+city = 9012
+type = 4
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 报...太守大人，我军报捷使者在雁门关被黄巾贼张燕截杀，财物被抢。请大人暂行任免属官，使得雁门政令通行正常，百姓安居乐业。
+
+[138]
+id_str = 138
+city = 112
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 太守大人，我军应选取雁门精壮，补充各部曲士卒，壮大我军势力。
+
+[139]
+id_str = 139
+city = 112
+type = 3
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...的确如此，汝速去发布公告，选取精壮，补足士卒，训练部曲，扩大军力。
+
+[140]
+id_str = 140
+city = 6003
+type = 0
+head = 13
+generals = 
+official = 
+skip = 1
+date = 光和七年·九月
+desc = 九月，张角病死，冀州黄巾军在其弟张梁领导屯于广宗。
+
+[141]
+id_str = 141
+city = 112
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 太守大人，我军以扩充完毕，现在士气高涨、军力强盛。大人当为使者报仇，攻占雁门关，打开通向洛阳的道路，向京师报捷请封。
+
+[142]
+id_str = 142
+city = 9012
+type = 2
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...报仇雪恨，时不我待。命刘胜留守雁门，其余部曲随我杀向雁门关。
+
+[143]
+id_str = 143
+city = 9012
+type = 0
+head = 1204
+generals = 
+official = 
+skip = 1
+date = 
+desc = 恭喜太守大人，雁门关黄巾贼张燕不敌我军，撤出雁门关，遁入太行山深林之中。
+
+[144]
+id_str = 144
+city = 101
+type = 3
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 太守大人，请补充部曲，择一将留守雁门关，并立即派遣新使者前往京师洛阳报捷，请求朝廷的正式封赏。
+
+[145]
+id_str = 145
+city = 112
+type = 0
+head = 2
+generals = 
+official = 105;201
+skip = 1
+date = 
+desc = 恭喜主公，朝廷鉴于主公雁门平贼有功，册封主公为雁门太守兼领雁门关校尉。
+
+[146]
+id_str = 146
+city = 112
+type = 5
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 主公，作为一郡太守，请主公即刻开府理事，安民护境。
+
+[147]
+id_str = 147
+city = 112
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 报...主公，城中酒肆出现在野名士武将，请主公前往结交招募。
+
+[148]
+id_str = 148
+city = 112
+type = 6
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...爱妾深知我心，替我沐浴更衣，吾当前去酒肆求贤。
+
+[149]
+id_str = 149
+city = 6003
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 恭喜主公，名士卢植被主公恩义感化，前来投靠。朝廷命主公率军前往冀州，支援皇甫嵩围攻广宗张梁黄巾军。请主公为刘石部曲补充士卒，训练成军，以随主公征战平乱。
+
+[150]
+id_str = 150
+city = 112
+type = 3
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...就依爱妾所言，即刻发布公告，招募士卒，训练部曲。半月后，大军前往河北冀州。
+
+[151]
+id_str = 151
+city = 6003
+type = 2
+head = 4001
+generals = 
+official = 
+skip = 1
+date = 光和七年·十月
+desc = 十月，皇甫嵩于广宗和张梁战斗，首战不能攻克。后黄巾军战意稍为松懈，皇甫嵩便乘夜率兵，在黎明突袭敌阵，战至下午，成功大破敌军，斩杀三万多人，黄巾军四处逃散。
+
+[152]
+id_str = 152
+city = 6003
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 报...主公，前方火光冲天、烟尘滚滚、杀喊四起，应为官军与叛军在厮杀，我军应做好战斗准备。
+
+[153]
+id_str = 153
+city = 6003
+type = 2
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...传令全军备战，沿着河堤徐徐前进。令斥候四处探清敌情，并联络皇甫嵩将军。
+
+[154]
+id_str = 154
+city = 6003
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 恭喜主公，我军大胜，斩杀张梁。黄巾军被杀溺死五万多人，缴获车辎三万多辆，虏获人数甚多。
+
+[155]
+id_str = 155
+city = 6004
+type = 0
+head = 4001
+generals = 
+official = 
+skip = 1
+date = 
+desc = 启禀主公，张角被皇甫嵩破棺戮尸，运首级回京师。皇甫嵩命令各军前往下曲阳。
+
+[156]
+id_str = 156
+city = 905
+type = 1
+head = 9101
+generals = 
+official = 
+skip = 1
+date = 光和七年·十一月
+desc = 十一月，羌人北宫伯玉反叛，斩杀金城郡太守陈懿，胁迫凉州督军从事边章、凉州从事韩遂入伙，推举边章为首领。边章率军包围州治冀县，左昌向盖勋求援，边章等人退去。
+
+[157]
+id_str = 157
+city = 701
+type = 2
+head = 4003
+generals = 
+official = 
+skip = 1
+date = 
+desc = 宛城孙夏败走，朱儁军追至西鄂精山，斩杀孙夏及万多人，黄巾军解散，朱儁随平定宛城一带，班师回京。
+
+[158]
+id_str = 158
+city = 6004
+type = 0
+head = 4001
+generals = 
+official = 
+skip = 1
+date = 
+desc = 皇甫嵩乘胜进击，与巨鹿太守郭典、雁门太守刘亭合围下曲阳。
+
+[159]
+id_str = 159
+city = 6004
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 报...主公，皇甫嵩率中军攻南门，命巨鹿太守郭典攻西门、我军攻东门。
+
+[160]
+id_str = 160
+city = 6004
+type = 2
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...传令各将，召集士卒，整理器械，准备攻城。
+
+[161]
+id_str = 161
+city = 6004
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 报...大胜，我军已攻占下曲阳，斩首十余万级，张宝战死。
+
+[162]
+id_str = 162
+city = 112
+type = 0
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 哈哈哈...痛快，黄巾主力已被剿灭，天下将很会恢复安宁吧。汝速去准备礼品，吾拜别皇甫嵩后，各部整军回驻雁门。
+
+[163]
+id_str = 163
+city = 101
+type = 0
+head = 4001
+generals = 
+official = 
+skip = 1
+date = 中平元年·十二月
+desc = 报...主公，黄巾叛乱已平息，汉灵帝刘宏为表天下安宁，改元中平。皇甫嵩以功拜左车骑将军，领冀州牧、封槐里侯。
+
+[164]
+id_str = 164
+city = 112
+type = 0
+head = 10
+generals = 
+official = 105;202
+skip = 1
+date = 
+desc = 恭喜主公，朝廷以功拜主公雁门太守、讨逆将军，兼守雁门关。请主公任免太守及将军属官，以奖励将士，激发士气。
+
+[165]
+id_str = 165
+city = 112
+type = 4
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...言之有理，汝速去召集各部来太守府议事，加封武将，封赏士卒。
+
+[166]
+id_str = 166
+city = 112
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 主公，将士封赏已完毕，我军士气如虹。请主公招兵买马，扩充部曲，训练士卒，以备朝廷征召凉州平乱。
+
+[167]
+id_str = 167
+city = 112
+type = 3
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...理应如此，汝速去准备财帛，张贴告诉，招募精壮入军。
+
+[168]
+id_str = 168
+city = 112
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 报...主公，我军城池残破，不足以容纳更多军民百姓。请主公征调能工巧匠，修建升级城中建筑。
+
+[169]
+id_str = 169
+city = 112
+type = 5
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...爱妾言之有理，雁门破旧，确实应该修缮升级。
+
+[170]
+id_str = 170
+city = 112
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 恭喜主公，城池修葺一新，城中百姓安居乐业，商贸繁荣。城中酒肆出现大量在野贤士名将，请主公前往结交并招入我军。
+
+[171]
+id_str = 171
+city = 112
+type = 6
+head = 2
+generals = 
+official = 
+skip = 1
+date = 
+desc = 嗯...爱妾为吾更衣，随吾同去酒肆，广结豪杰。

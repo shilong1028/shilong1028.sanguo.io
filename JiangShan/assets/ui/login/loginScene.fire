@@ -186,7 +186,7 @@
       "array": [
         0,
         0,
-        493.9051130958127,
+        502.29473419497447,
         0,
         0,
         0,
@@ -1420,7 +1420,9 @@
       "__id__": 30
     },
     "_enabled": true,
-    "pfItem": null,
+    "pfItem": {
+      "__uuid__": "64b4b0ea-ab06-45f6-b627-c1769b662603"
+    },
     "pfCard": null,
     "pfMoney": null,
     "pfReward": null,
@@ -1438,6 +1440,9 @@
     },
     "adResultPrefab": null,
     "pfGoldAdd": null,
+    "iconAtlas": {
+      "__uuid__": "e52aa502-9b5e-4757-a520-b8e4b5deb7ad"
+    },
     "_id": "98cSpGbhRI34FR86o16S+K"
   }
 ]

@@ -1,0 +1,48 @@
+[1001]
+id_str = 1001
+name = 平城之战
+generals = 
+soldiers = 
+enemys = 
+
+[1002]
+id_str = 1002
+name = 平城守卫战
+generals = 
+soldiers = 
+enemys = 1212
+
+[1003]
+id_str = 1003
+name = 马邑之战
+generals = 
+soldiers = 
+enemys = 1212
+
+[1004]
+id_str = 1004
+name = 阴馆之战
+generals = 
+soldiers = 
+enemys = 1212;1213
+
+[1005]
+id_str = 1005
+name = 雁门关之战
+generals = 
+soldiers = 
+enemys = 1204;1205;1209
+
+[1006]
+id_str = 1006
+name = 广宗之战
+generals = 
+soldiers = 
+enemys = 1202;1206;1207
+
+[1007]
+id_str = 1007
+name = 曲阳之战
+generals = 
+soldiers = 
+enemys = 1201;1202;1203;1204;1205

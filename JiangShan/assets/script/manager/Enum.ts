@@ -30,7 +30,7 @@ export class EnemyAIResult{
 
 //特殊故事节点
 export const SpecialStory = {
-    huangjinover: 4,  //黄巾之乱结束(黄巾叛军占据城池旗帜复原)
+    huangjinover: 1022,  //黄巾之乱结束(黄巾叛军占据城池旗帜复原)
     dongzhuoOver: 13,  //董卓之乱结束(董卓叛军占据城池旗帜复原)
     taishouOpen: 10,  //东郡太守（占据东郡）
     zhoumuOpen: 11,  //兖州牧（占据山阳昌邑，治下兖州）
@@ -63,6 +63,15 @@ class FunManager {
         let objStr = JSON.stringify(this);
         let temp = JSON.parse(objStr); 
         return temp;
+    }
+    
+    //配置中有效的string字段是否有效
+    checkConfStrVal(str){
+        if(!str || str == "" || str == "0"){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     /**二维坐标转三维 */
@@ -213,7 +222,7 @@ class FunManager {
     }
 
     /**解析字符串，获取整形数组 */
-	getIntAry(str: string, sp: string = "|"): Array<number> {
+	getIntAry(str: string, sp: string = ";"): Array<number> {
         let ret: Array<number> = [];
         if(str == "" || str == "0"){
             return ret;
@@ -228,7 +237,7 @@ class FunManager {
     }
 
     /**解析复杂的字符串，获取整形数组 */
-	getKeyValAry(str: string, sp: string = "|", sp2: string = "-"): Array<any> {
+	getKeyValAry(str: string, sp: string = ";", sp2: string = "-"): Array<any> {
         let ret: Array<any> = [];
         if(str == "" || str == "0"){
             return ret;
@@ -246,7 +255,7 @@ class FunManager {
     }
     
 	/**解析字符串，获取字符串数组 */
-	getStringAry(str: string, sp: string = "|"): Array<string> {
+	getStringAry(str: string, sp: string = ";"): Array<string> {
         let ret: Array<string> = [];
         if(str == "" || str == "0"){
             return ret;
@@ -263,6 +272,20 @@ class FunManager {
 
 }
 export var FunMgr = new FunManager();
+
+
+//----------------------------- 一些枚举定义  ----------------------------------
+export enum TaskType{
+    Story = 1,   //剧情
+    Fight = 2,   //战斗
+    Recruit = 3,   //招募士兵
+    Offical = 4,   //封官拜将
+    Capital = 5,   //主城建设
+    General = 6,   //招募武将
+    Garrison = 7,   //驻守
+}
+
+
 
 
 

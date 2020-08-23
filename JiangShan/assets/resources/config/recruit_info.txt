@@ -1,0 +1,55 @@
+[1]
+id_str = 1
+name = 壮丁
+gold = 100
+probability = 100
+desc = 
+
+[2]
+id_str = 2
+name = 团民
+gold = 200
+probability = 100
+desc = 
+
+[3]
+id_str = 3
+name = 乡勇
+gold = 500
+probability = 100
+desc = 
+
+[4]
+id_str = 4
+name = 义兵
+gold = 1000
+probability = 100
+desc = 
+
+[401]
+id_str = 401
+name = 骑兵
+gold = 5000
+probability = 15
+desc = 
+
+[402]
+id_str = 402
+name = 刀兵
+gold = 3000
+probability = 30
+desc = 
+
+[403]
+id_str = 403
+name = 枪兵
+gold = 3000
+probability = 30
+desc = 
+
+[404]
+id_str = 404
+name = 弓兵
+gold = 4000
+probability = 25
+desc = 

@@ -240,6 +240,7 @@ export class st_chapter_info{
 //剧情配置数据
 export class st_story_info{
     id_str;
+    next_id;  //下一剧情，空则+1
     chapterId;
     type;   //剧情类型 任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗  6学习技能
     targetCity;   //目标城池
@@ -279,6 +280,7 @@ export class st_talk_info{
     transType(){
         this.city = parseInt(this.city);
         this.type = parseInt(this.type);
+        this.head = parseInt(this.head);
         this.generals = FunMgr.getIntAry(this.generals, ";");
         this.official = FunMgr.getIntAry(this.official, ";");
         this.skip = parseInt(this.skip);

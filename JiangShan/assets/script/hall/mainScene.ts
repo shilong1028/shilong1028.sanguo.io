@@ -1,8 +1,8 @@
 import { NoticeMgr, NoticeType } from "../manager/NoticeManager";
-import { FunMgr } from "../manager/Enum";
+import { FunMgr, TaskType } from "../manager/Enum";
 import { MyUserData } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
-import { st_story_info, ItemInfo } from "../manager/ConfigManager";
+import { st_story_info, ItemInfo, CfgMgr } from "../manager/ConfigManager";
 import { SDKMgr } from "../manager/SDKManager";
 import { ROOT_NODE } from "../login/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
@@ -47,12 +47,14 @@ export default class MainScene extends cc.Component {
 
     @property(cc.Node)
     taskNode: cc.Node = null;  //任务节点
+    @property(cc.Node)
+    taskReward: cc.Node = null;  //任务奖励
     @property(cc.Label)
-    taskTitleLabel: cc.Node = null;  //任务章节
+    taskTitleLabel: cc.Label = null;  //任务章节
     @property(cc.Label)
-    taskNameLabel: cc.Node = null;  //任务名称
+    taskNameLabel: cc.Label = null;  //任务名称
     @property(cc.Label)
-    taskDescLabel: cc.Node = null;  //任务描述
+    taskDescLabel: cc.Label = null;  //任务描述
 
     @property(cc.Prefab)
     pfTask: cc.Prefab = null;  //任务界面
@@ -160,17 +162,72 @@ export default class MainScene extends cc.Component {
         return destPos;
     }
 
+    //根据任务进度是否显示募兵、部曲、技能、主城等按钮
+    showMenuBtnByTask(chapterId){
+        // if(MyUserData.TaskId <= SpecialStory.huangjinover){   //黄巾之乱结束
+        //     NoticeMgr.emit(NoticeType.CityFlagStory, 1);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
+        // }else if(MyUserData.TaskId <= SpecialStory.dongzhuoOver){   //董卓之乱结束
+        //     NoticeMgr.emit(NoticeType.CityFlagStory, 2);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
+        // }
+
+        // if(MyUserData.TaskId >= SpecialStory.mubingOpen){  //开启募兵
+        //     this.mubingBtnNode.active = true; 
+        //     if(MyUserData.TaskId >= SpecialStory.unitOpen){  //开启部曲
+        //         this.unitBtnNode.active = true; 
+        //         if(MyUserData.TaskId >= SpecialStory.skillOpen){  //开启技能
+        //             this.skillBtnNode.active = true; 
+        //             if(MyUserData.TaskId >= SpecialStory.capitalOpen){  //开启主城
+        //                 this.homeBtnNode.active = true; 
+        //             }else{
+        //                 this.homeBtnNode.active = false;
+        //             }
+        //         }else{
+        //             this.skillBtnNode.active = false;
+        //             this.homeBtnNode.active = false;
+        //         }
+        //     }else{
+        //         this.unitBtnNode.active = false;
+        //         this.skillBtnNode.active = false;
+        //         this.homeBtnNode.active = false;
+        //     }
+        // }else{
+        //     this.mubingBtnNode.active = false;
+        //     this.unitBtnNode.active = false;
+        //     this.skillBtnNode.active = false;
+        //     this.homeBtnNode.active = false;
+        // }
+    }
+
     //初始化任务
     initTaskInfo(){
+        GameMgr.curTaskConf = null;  //当前任务配置
+        this.taskReward.active = false; //任务奖励
+        let taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
+        if(taskConf){
+            GameMgr.curTaskConf = taskConf;  //当前任务配置
+            this.showMenuBtnByTask(taskConf.chapterId);   //根据任务进度是否显示募兵、部曲、技能、主城等按钮
 
+            this.taskTitleLabel.string = `第${taskConf.chapterId}章`  //任务章节
+            this.taskNameLabel.string = taskConf.name;  //任务名称
+            this.taskDescLabel.string = taskConf.desc;  //任务描述
+
+            if(MyUserData.TaskState == 1){   //已完成未领取
+                this.taskReward.active = true;
+                ROOT_NODE.showTipsText(`任务${taskConf.name}奖励可领取`);
+            }
+
+            if(taskConf.type == TaskType.Story){   //剧情故事自动展开
+                this.onTaskBtn();
+            }
+        }
     }
     
     //*******************  以下为各种事件处理方法  ************ */
     
     /** 将地图移动到指定目标点
-     *  @param talkType 故事类型，0默认（摇旗）1起义暴乱（火） 2 战斗（双刀）
+     *  @param talkType 故事类型
     */
-    handleMapMoveByCityPos(cityPos: cc.Vec2, talkType:number=0){
+    handleMapMoveByCityPos(cityPos: cc.Vec2, talkType:TaskType=0){
         this.mapNode.stopAllActions();
 
         let midPos = this.mapNode.position.neg();    //当前视图中心在地图上的坐标
@@ -246,7 +303,7 @@ export default class MainScene extends cc.Component {
         AudioMgr.playBtnClickEffect();
     }
 
-    onHomeBtn(){
+    onCapitalBtn(){
         AudioMgr.playBtnClickEffect();
         //GameMgr.goToSceneWithLoading("capitalScene");  //点击主城
     }
@@ -269,6 +326,14 @@ export default class MainScene extends cc.Component {
 
     onTaskBtn(){
         AudioMgr.playBtnClickEffect();
+
+        if(MyUserData.TaskState == 0){   //未完成
+            // let layer = GameMgr.showLayer(this.pfStoryLayer);
+            // layer.getComponent(StoryLayer).initStoryConf(GameMgr.curTaskConf);
+
+        }else if(MyUserData.TaskState == 1){   //已完成未领取
+
+        }
     } 
 
     onAddGoldBtn(){

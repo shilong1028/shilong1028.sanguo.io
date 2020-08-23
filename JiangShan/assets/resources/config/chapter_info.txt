@@ -1,0 +1,13 @@
+[1]
+id_str = 1
+name = 平定黄巾
+rewards = 
+stories = 1001-1027
+desc = 平定黄巾
+
+[2]
+id_str = 2
+name = 凉州平乱
+rewards = 
+stories = 
+desc = 凉州平乱
