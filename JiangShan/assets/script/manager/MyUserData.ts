@@ -38,7 +38,7 @@ class MyUserManager {
 
     /**清除所有用户数据 */
     clearUserData(){
-        console.log("清除所有用户数据")
+        cc.log("清除所有用户数据")
         LDMgr.setItem(LDKey.KEY_NewUser, 0);  //是否新用户
 
         MyUserData.GoldCount = 0;   //用户金币
@@ -90,7 +90,7 @@ class MyUserManager {
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
 
-        console.log("初始新用户赋值 MyUserData = "+JSON.stringify(MyUserData));
+        cc.log("初始新用户赋值 MyUserData = "+JSON.stringify(MyUserData));
     }
 
 

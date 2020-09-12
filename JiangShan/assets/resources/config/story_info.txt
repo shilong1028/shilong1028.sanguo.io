@@ -6,7 +6,7 @@ type = 1
 targetCity = 312
 name = 黄巾暴乱
 battleId = 
-rewards = 
+rewards = 101-500;201-500
 talks = 101;102;103;104;105;106;107;108;109
 desc = 光和七年二月，全国七州二十八郡内黄巾军烧毁官府劫掠州郡，震动京都。
 
@@ -18,7 +18,7 @@ type = 3
 targetCity = 112
 name = 刘亭募兵
 battleId = 
-rewards = 
+rewards = 101-500
 talks = 110;111
 desc = 刘亭集聚家财以招募骑兵五百、刀盾兵五百、枪戟兵五百。
 
@@ -30,7 +30,7 @@ type = 2
 targetCity = 6001
 name = 夜袭平城
 battleId = 1001
-rewards = 
+rewards = 101-100
 talks = 112;113;114
 desc = 刘亭夜袭平城县，攻取县城，缴获辎重。
 
@@ -42,7 +42,7 @@ type = 4
 targetCity = 6001
 name = 暂代县令
 battleId = 
-rewards = 
+rewards = 101-500;201-500
 talks = 115;116
 desc = 李亭暂代平城县令，刘胜刘武领县丞、县尉一职。
 
@@ -54,7 +54,7 @@ type = 3
 targetCity = 6001
 name = 平城募兵
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 117;118
 desc = 刘亭补充义军，并招募五百刀盾兵、五百枪戟兵，防备黄巾贼反扑平城。
 
@@ -66,7 +66,7 @@ type = 2
 targetCity = 6001
 name = 守卫平城
 battleId = 1002
-rewards = 
+rewards = 101-100;201-200
 talks = 119
 desc = 雁门黄巾贼五千人反扑平城，刘亭率军抵抗并击败贼军。
 
@@ -78,7 +78,7 @@ type = 3
 targetCity = 6001
 name = 平城扩兵
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 120;121
 desc = 刘亭继续募兵备战，招募枪戟兵五百人。
 
@@ -90,7 +90,7 @@ type = 1
 targetCity = 202
 name = 汉军反击
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 122;123;124
 desc = 皇甫嵩与朱儁军成功讨平豫州黄巾军。卢植数战张角，斩杀万余人。
 
@@ -102,7 +102,7 @@ type = 2
 targetCity = 6002
 name = 围攻马邑
 battleId = 1003
-rewards = 
+rewards = 101-200;201-300
 talks = 125;126
 desc = 刘亭围攻马邑县城。
 
@@ -114,7 +114,7 @@ type = 3
 targetCity = 6002
 name = 马邑募兵
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 127;128
 desc = 刘亭扩充部曲，招募骑兵五百组千人队，招募枪戟兵五百、弓弩兵五百。
 
@@ -126,7 +126,7 @@ type = 1
 targetCity = 9016
 name = 汉军北上
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 129;130;131;132;133
 desc = 巴郡、交趾叛乱，朱儁攻杀南阳赵弘，刘亭围困雁门黄巾贼，皇甫嵩北上冀州。
 
@@ -138,7 +138,7 @@ type = 2
 targetCity = 112
 name = 攻占阴馆
 battleId = 1004
-rewards = 
+rewards = 101-300
 talks = 134;135
 desc = 刘亭围城半月，拒绝黄巾贼投降，急攻阴馆城。
 
@@ -150,7 +150,7 @@ type = 4
 targetCity = 112
 name = 雁门太守
 battleId = 
-rewards = 
+rewards = 101-500;201-500
 talks = 136;137
 desc = 刘亭自领雁门太守，任免属官，选取士族充当各县官吏。
 
@@ -162,7 +162,7 @@ type = 3
 targetCity = 112
 name = 雁门募兵
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 138;139
 desc = 刘亭雁门招募精壮，补充部曲士卒，训练部曲，壮大军力。
 
@@ -174,7 +174,7 @@ type = 2
 targetCity = 9012
 name = 占雁门关
 battleId = 1005
-rewards = 
+rewards = 101-100
 talks = 140;141;142
 desc = 刘亭率军攻占雁门关，打通道路。
 
@@ -186,7 +186,7 @@ type = 7
 targetCity = 101
 name = 京师报捷
 battleId = 
-rewards = 
+rewards = 101-100;201-100
 talks = 143;144
 desc = 刘亭补充士卒，选派武将驻守雁门关，派遣使者向朝廷报捷请封。
 
@@ -198,7 +198,7 @@ type = 5
 targetCity = 112
 name = 开启主城
 battleId = 
-rewards = 
+rewards = 101-1000;201-1000;301-10
 talks = 145;146
 desc = 朝廷正式任命刘亭为雁门太守，刘亭开府理事。
 
@@ -210,7 +210,7 @@ type = 6
 targetCity = 112
 name = 酒肆招将
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 147;148
 desc = 城中酒肆出现在野名士武将，刘亭前往招募贤才。
 
@@ -222,7 +222,7 @@ type = 3
 targetCity = 112
 name = 招将募兵
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 149;150
 desc = 新武将刘石投靠，刘亭招募士卒，训练军队，前往河北冀州支援皇甫嵩。
 
@@ -234,7 +234,7 @@ type = 2
 targetCity = 6003
 name = 广宗杀贼
 battleId = 1006
-rewards = 
+rewards = 101-100
 talks = 151;152;153
 desc = 皇甫嵩大战张梁，黄巾贼四方逃散。刘亭遭遇张梁余部，力战而胜。
 
@@ -246,7 +246,7 @@ type = 1
 targetCity = 6004
 name = 合围曲阳
 battleId = 
-rewards = 
+rewards = 101-500;201-500
 talks = 154;155;156;157;158
 desc = 朱儁剿灭南阳黄巾军，皇甫嵩与巨鹿太守郭典、雁门太守刘亭合围下曲阳。
 
@@ -258,7 +258,7 @@ type = 2
 targetCity = 6004
 name = 曲阳灭贼
 battleId = 1007
-rewards = 
+rewards = 101-100
 talks = 159;160
 desc = 皇甫嵩与巨鹿太守郭典、雁门太守刘亭合兵攻打下曲阳。
 
@@ -270,7 +270,7 @@ type = 1
 targetCity = 101
 name = 改元中平
 battleId = 
-rewards = 
+rewards = 101-500
 talks = 161;162;163
 desc = 黄巾叛乱已平，汉灵帝为表天下安宁，改元中平。
 
@@ -282,7 +282,7 @@ type = 4
 targetCity = 112
 name = 封官拜将
 battleId = 
-rewards = 
+rewards = 101-1000;201-1000;302-10
 talks = 164;165
 desc = 朝廷拜刘亭为雁门太守、讨逆将军，兼守雁门关，刘亭任免太守及将军属官。
 
@@ -294,7 +294,7 @@ type = 3
 targetCity = 112
 name = 太守扩兵
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 166;167
 desc = 刘亭招兵买马，扩充部曲，以备朝廷征召凉州平乱。
 
@@ -306,7 +306,7 @@ type = 5
 targetCity = 112
 name = 修缮城池
 battleId = 
-rewards = 
+rewards = 101-200
 talks = 168;169
 desc = 雁门残破，不足以容纳更多军民百姓。刘亭征调能工巧匠，升级城中建筑。
 
@@ -318,6 +318,6 @@ type = 6
 targetCity = 112
 name = 广结豪杰
 battleId = 
-rewards = 
+rewards = 101-100
 talks = 170;171
 desc = 雁门城中现在野贤士名将，刘亭前往结交并招入麾下。

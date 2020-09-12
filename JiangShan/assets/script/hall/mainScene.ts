@@ -170,7 +170,7 @@ export default class MainScene extends cc.Component {
         GameMgr.curTaskConf = null;  //当前任务配置
         this.taskReward.active = false; //任务奖励
         let taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
-        console.log("initTaskInfo 初始化任务 taskConf = "+JSON.stringify(taskConf))
+        cc.log("initTaskInfo 初始化任务 taskConf = "+JSON.stringify(taskConf))
         if(taskConf){
             GameMgr.curTaskConf = taskConf;  //当前任务配置
 

@@ -4,32 +4,6 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>main_add.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{216,2},{29,29}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{29,29}}</string>
-                <key>sourceSize</key>
-                <string>{29,29}</string>
-            </dict>
-            <key>main_glod_icon.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{176,132},{74,52}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{74,52}}</string>
-                <key>sourceSize</key>
-                <string>{74,52}</string>
-            </dict>
             <key>main_headMask.png</key>
             <dict>
                 <key>frame</key>
@@ -37,7 +11,7 @@
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{212,128}}</string>
                 <key>sourceSize</key>
@@ -46,11 +20,11 @@
             <key>main_hm_down.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{238,33},{20,12}}</string>
+                <string>{{154,68},{20,12}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{20,12}}</string>
                 <key>sourceSize</key>
@@ -59,7 +33,7 @@
             <key>main_hm_up.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{216,33},{20,12}}</string>
+                <string>{{132,68},{20,12}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -69,36 +43,10 @@
                 <key>sourceSize</key>
                 <string>{20,12}</string>
             </dict>
-            <key>main_liang_icon.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{98,132},{76,58}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{76,58}}</string>
-                <key>sourceSize</key>
-                <string>{76,58}</string>
-            </dict>
-            <key>main_reward.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,132},{44,65}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{44,65}}</string>
-                <key>sourceSize</key>
-                <string>{44,65}</string>
-            </dict>
             <key>main_task_icon.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{48,132},{48,64}}</string>
+                <string>{{132,2},{48,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -116,9 +64,9 @@
             <key>realTextureFileName</key>
             <string>main.png</string>
             <key>size</key>
-            <string>{252,199}</string>
+            <string>{182,216}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:9bc7e64db636d0d736546ef4419e24f7:56b14aa3f1333bd50bffd8a6024c1537:693584bbba79ecadf35d6b2cf3a849c9$</string>
+            <string>$TexturePacker:SmartUpdate:2886d9553842dcf38af11427a6a89318:2dc84fa94dba1a99f6a5bb5f96936fc9:693584bbba79ecadf35d6b2cf3a849c9$</string>
             <key>textureFileName</key>
             <string>main.png</string>
         </dict>

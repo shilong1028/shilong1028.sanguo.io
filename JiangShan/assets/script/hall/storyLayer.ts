@@ -17,6 +17,10 @@ export default class StoryLayer extends cc.Component {
     rightHeadSpr: cc.Node = null;
     @property(cc.Node)
     rewardLayout: cc.Node = null;
+    @property(cc.Label)
+    taskTitleLabel: cc.Label = null;  //任务章节
+    @property(cc.Label)
+    taskNameLabel: cc.Label = null;  //任务名称
 
     @property(cc.Label)
     talkLabel: cc.Label = null;
@@ -58,13 +62,16 @@ export default class StoryLayer extends cc.Component {
     /**初始化主线任务 */
     initStoryConf(taskConf: st_story_info){
         if(taskConf){
-            console.log("initStoryConf taskConf = "+JSON.stringify(taskConf))
+            cc.log("initStoryConf taskConf = "+JSON.stringify(taskConf))
             this.taskConf = taskConf;
             this.curTalkIdx = -1;
+            this.taskTitleLabel.string = `第${taskConf.chapterId}章`  //任务章节
+            this.taskNameLabel.string = taskConf.name;  //任务名称
+            
             this.setTalkStr();   //设置话本内容
 
             this.removeRewardItems();
-            let rewards: Array<ItemInfo> = GameMgr.getItemArrByStr(this.taskConf.rewards);
+            let rewards: Array<ItemInfo> = GameMgr.getItemArrByKeyVal(this.taskConf.rewards);
             for(let i=0; i<rewards.length; ++i){
                 let item = ROOT_NODE.createrItem(rewards[i]);
                 this.rewardLayout.addChild(item);

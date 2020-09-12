@@ -180,8 +180,8 @@ export default class RootNode extends cc.Component {
     //创建道具
     createrItem(info: ItemInfo, selCallBack:any=null, selCallTarget:any=null){
         let item: cc.Node = null;
-        if (this.tipsPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
-            item = this.tipsPool.get();
+        if (this.itemsPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
+            item = this.itemsPool.get();
         } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
             item = cc.instantiate(this.pfItem);
         }
