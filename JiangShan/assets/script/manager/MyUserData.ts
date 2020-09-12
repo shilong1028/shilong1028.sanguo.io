@@ -445,6 +445,7 @@ class MyUserManager {
 
     /**修改用户任务 0未完成，1完成未领取，2已领取 */
     updateTaskState(taskId: string, state: number){
+        cc.log("updateTaskState 更新任务状态 taskId = "+taskId+"; state = "+state)
         if(MyUserData.TaskId == taskId && MyUserData.TaskState == state){
             return;
         }

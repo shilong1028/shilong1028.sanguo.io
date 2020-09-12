@@ -15,6 +15,7 @@ class SDKManager_class  {
     WeChat: any = null;   //微信小游戏
     TT: any = null;  //字节跳动
 
+    bOpenAdBtn: boolean = true;   //是否开启视频按钮
     bAutoPlayVedio: boolean = false;
     adVedioPlaying: boolean = false;
 

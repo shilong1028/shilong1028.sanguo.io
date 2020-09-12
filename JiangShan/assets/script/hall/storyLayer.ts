@@ -6,9 +6,15 @@ import { ROOT_NODE } from "../login/rootNode";
 
 
 //剧情阐述
-const {ccclass, property} = cc._decorator;
+const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
 
 @ccclass
+@menu("Hall/storyLayer")
+@executionOrder(0)  
+//脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
+@disallowMultiple 
+// 当本组件添加到节点上后，禁止同类型（含子类）的组件再添加到同一个节点
+
 export default class StoryLayer extends cc.Component {
 
     @property(cc.Node)

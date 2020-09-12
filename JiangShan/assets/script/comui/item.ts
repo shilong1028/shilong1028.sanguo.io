@@ -3,9 +3,15 @@ import RootNode, { ROOT_NODE } from "../login/rootNode";
 
 
 //道具
-const {ccclass, property} = cc._decorator;
+const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
 
 @ccclass
+@menu("ComUI/item")
+@executionOrder(-1)  
+//脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
+@disallowMultiple 
+// 当本组件添加到节点上后，禁止同类型（含子类）的组件再添加到同一个节点
+
 export default class Item extends cc.Component {
 
     @property(cc.Node)
@@ -78,7 +84,7 @@ export default class Item extends cc.Component {
      * 注意，item是通过rootNode缓存池获取后调用initItemData，后添加到响应父节点（即调动onLoad之类的）
     */
     initItemData(info: ItemInfo, selCallBack:any=null, selCallTarget:any=null){
-        cc.log("initItemData(), info = "+JSON.stringify(info));
+        //cc.log("initItemData(), info = "+JSON.stringify(info));
         this.selCallBack = selCallBack;   //响应点击选中回调
         this.selCallTarget = selCallTarget;
         this.itemInfo = info;   //道具数据

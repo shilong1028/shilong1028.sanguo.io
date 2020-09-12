@@ -80,11 +80,7 @@ export default class MainScene extends cc.Component {
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
 
-        NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this); 
-        NoticeMgr.on(NoticeType.UpdateFood, this.UpdateFoodCount, this); 
-        NoticeMgr.on(NoticeType.UpdateRoleLvOffical, this.updateRoleLvLabel, this);  //更新主角等级
-        
-        NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
+        this.initNotice();
 
         this.mapNode.setPosition(cc.v2(0, -600));   //初始显示洛阳 
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
@@ -95,6 +91,15 @@ export default class MainScene extends cc.Component {
 
         this.initTaskInfo();   //初始化任务
         this.showLineTime();   //显示在线时长
+    }
+
+    initNotice(){
+        NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this); 
+        NoticeMgr.on(NoticeType.UpdateFood, this.UpdateFoodCount, this); 
+        NoticeMgr.on(NoticeType.UpdateRoleLvOffical, this.updateRoleLvLabel, this);  //更新主角等级
+        NoticeMgr.on(NoticeType.UpdateTaskState, this.updateTaskInfo, this);  //更新任务
+        
+        NoticeMgr.on(NoticeType.MapMoveByCity, this.handleMapMoveByCityPos, this);   //话本目标通知（地图移动）
     }
 
     start () {
@@ -165,7 +170,7 @@ export default class MainScene extends cc.Component {
         return destPos;
     }
 
-    //初始化任务
+    /** 初始化任务 */
     initTaskInfo(){
         GameMgr.curTaskConf = null;  //当前任务配置
         this.taskReward.active = false; //任务奖励
@@ -187,6 +192,11 @@ export default class MainScene extends cc.Component {
                 this.onTaskBtn();
             }
         }
+    }
+
+    /**更新任务 */
+    updateTaskInfo(){
+        this.initTaskInfo();
     }
     
     //*******************  以下为各种事件处理方法  ************ */

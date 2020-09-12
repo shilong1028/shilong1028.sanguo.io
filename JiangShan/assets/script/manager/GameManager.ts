@@ -5,6 +5,7 @@ import { ROOT_NODE } from "../login/rootNode";
 import LoadingLayer from "../login/loadingLayer";
 import TipsDialog from "../login/tipsDialog";
 import MainScene from "../hall/mainScene";
+import RewardLayer from "../comui/rewardLayer";
 
 
 //游戏管理器
@@ -69,31 +70,28 @@ class GameManager {
 
     /**显示子层 */
     showLayer(prefab: cc.Prefab, parent: cc.Node = null){
-        let layer = cc.instantiate(prefab);
-        layer.width = cc.winSize.width;
-        layer.height = cc.winSize.height;
-        
-        let bg = layer.getChildByName("bg");
-        if(bg){
-            bg.width = cc.winSize.width;
-            bg.height = cc.winSize.height;
-        }
-
+        let layerPos = cc.v2(0, 0)
         if(parent == null){
             parent = cc.director.getScene();
-            layer.setPosition(cc.v2(cc.winSize.width/2, cc.winSize.height/2));
+            layerPos = cc.v2(cc.winSize.width/2, cc.winSize.height/2);
         }
-        parent.addChild(layer);
-        return layer;
-    }
-
-    /**显示通用奖励提示框 */
-    showRewardLayer(rewardList:any, callback: any=null, target: any=null){
-        let layer = this.showLayer(ROOT_NODE.pfReward);
-        // let rewardSc = layer.getComponent(RewardLayer);
-        // if(rewardSc){
-        //     rewardSc.setRewardCallback(callback, target);
-        // }
+        let layer = parent.getChildByName(prefab.name);
+        if(layer){
+            cc.warn("已经存在界面 "+prefab.name)
+        }else{
+            layer = cc.instantiate(prefab);
+            layer.name = prefab.name;
+            layer.setPosition(layerPos);
+            layer.width = cc.winSize.width;
+            layer.height = cc.winSize.height;
+            
+            let bg = layer.getChildByName("bg");
+            if(bg){
+                bg.width = cc.winSize.width;
+                bg.height = cc.winSize.height;
+            }
+            parent.addChild(layer);
+        }
         return layer;
     }
 
@@ -191,22 +189,23 @@ class GameManager {
     }
 
     /** 领取奖励*/
-    receiveRewards(rewards: ItemInfo[]){
+    receiveRewards(rewards: ItemInfo[], multi: number=1){
         //cc.log("receiveRewards(), rewards = "+JSON.stringify(rewards));
         if(rewards){
             let bSaveList = false;
             for(let i=0; i<rewards.length; ++i){
                 let itemInfo: ItemInfo = rewards[i];
                 if(itemInfo.itemId == 6001){   //金币
-                    MyUserMgr.updateUserGold(itemInfo.count);
+                    MyUserMgr.updateUserGold(itemInfo.count * multi);
                 }else if(itemInfo.itemId == 6002){   //钻石
-                    MyUserMgr.updateUserDiamond(itemInfo.count);
+                    MyUserMgr.updateUserDiamond(itemInfo.count * multi);
                 }else if(itemInfo.itemId == 6003){   //粮草
-                    MyUserMgr.updateUserFood(itemInfo.count);
+                    MyUserMgr.updateUserFood(itemInfo.count * multi);
                 }else if(itemInfo.itemId == 6101){   //主角（武将）经验
-                    MyUserMgr.updateRoleExp(itemInfo.count);
+                    MyUserMgr.updateRoleExp(itemInfo.count * multi);
                 }else{   //其他道具
                     bSaveList = true;
+                    itemInfo.count *= multi;
                     MyUserMgr.updateItemList(itemInfo, false);
                 }
             }
@@ -216,14 +215,37 @@ class GameManager {
         }
     }
 
-    //打开任务奖励领取界面
+    /**显示通用奖励提示框 */
+    showRewardLayer(rewardList:any, callback: any=null, target: any=null){
+        let layer = this.showLayer(ROOT_NODE.pfReward);
+        // let rewardSc = layer.getComponent(RewardLayer);
+        // if(rewardSc){
+        //     rewardSc.setRewardCallback(callback, target);
+        // }
+        return layer;
+    }
+
+    /** 打开任务奖励领取界面 */
     openTaskRewardsLayer(storyConf: st_story_info){
-        cc.log("openTaskRewardsLayer(), 任务奖励 storyConf = "+JSON.stringify(storyConf));
+        //cc.log("openTaskRewardsLayer(), 任务奖励 storyConf = "+JSON.stringify(storyConf));
         if(storyConf == null || storyConf == undefined){
             return;
         }
 
-        
+        let rewards: Array<ItemInfo> = GameMgr.getItemArrByKeyVal(storyConf.rewards);
+        if(rewards.length > 0){
+            let layer = GameMgr.showLayer(ROOT_NODE.pfReward);
+            layer.getComponent(RewardLayer).showRewardList(rewards, ()=>{
+                if(storyConf.type > 0){ 
+                    MyUserMgr.updateTaskState(MyUserData.TaskId, 2);  //修改用户任务 0未完成，1完成未领取，2已领取 
+                }
+            }, this);
+        }else{   
+            cc.log("没有任务奖励")
+            if(storyConf.type > 0){ 
+                MyUserMgr.updateTaskState(MyUserData.TaskId, 2);  //修改用户任务 0未完成，1完成未领取，2已领取 
+            }
+        }
     }
 
     /**任务第一阶段操作完毕处理 */
