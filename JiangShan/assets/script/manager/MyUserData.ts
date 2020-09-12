@@ -38,6 +38,7 @@ class MyUserManager {
 
     /**清除所有用户数据 */
     clearUserData(){
+        console.log("清除所有用户数据")
         LDMgr.setItem(LDKey.KEY_NewUser, 0);  //是否新用户
 
         MyUserData.GoldCount = 0;   //用户金币
@@ -59,7 +60,7 @@ class MyUserManager {
 
         MyUserData.TaskId = "1001";   //当前任务ID
         MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
-        LDMgr.setItem(LDKey.KEY_StoryData, "1-0");
+        LDMgr.setItem(LDKey.KEY_StoryData, "1001-0");
 
         MyUserData.myCityIds = new Array();  //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
         LDMgr.setItem(LDKey.KEY_MyCityIds, "");
@@ -89,12 +90,11 @@ class MyUserManager {
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
 
-        //console.log("初始新用户赋值 MyUserData = "+JSON.stringify(MyUserData));
+        console.log("初始新用户赋值 MyUserData = "+JSON.stringify(MyUserData));
     }
 
 
     checkUserName(){
-        console.log("MyUserData.UserName = "+MyUserData.UserName);
         if(MyUserData.UserName && MyUserData.UserName.indexOf("豪杰") >= 0 && MyUserData.UserName.length > 10){
         }else{
             MyUserData.UserName = "豪杰_"+Math.ceil(Math.random()*99)+"_"+(new Date().getTime());
@@ -121,6 +121,7 @@ class MyUserManager {
         if(taskInfo == null){
             MyUserData.TaskId = "1001";   //当前任务ID
             MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
+            LDMgr.setItem(LDKey.KEY_StoryData, "1001-0");
         }else{
             MyUserData.TaskId = taskInfo.key;
             MyUserData.TaskState = taskInfo.val;

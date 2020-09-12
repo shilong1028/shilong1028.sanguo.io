@@ -58,6 +58,7 @@ export default class StoryLayer extends cc.Component {
     /**初始化主线任务 */
     initStoryConf(taskConf: st_story_info){
         if(taskConf){
+            console.log("initStoryConf taskConf = "+JSON.stringify(taskConf))
             this.taskConf = taskConf;
             this.curTalkIdx = -1;
             this.setTalkStr();   //设置话本内容

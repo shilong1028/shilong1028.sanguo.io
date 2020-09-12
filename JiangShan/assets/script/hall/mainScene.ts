@@ -6,6 +6,7 @@ import { st_story_info, ItemInfo, CfgMgr } from "../manager/ConfigManager";
 import { SDKMgr } from "../manager/SDKManager";
 import { ROOT_NODE } from "../login/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
+import StoryLayer from "./storyLayer";
 
 
 //大厅场景
@@ -55,6 +56,8 @@ export default class MainScene extends cc.Component {
     taskNameLabel: cc.Label = null;  //任务名称
     @property(cc.Label)
     taskDescLabel: cc.Label = null;  //任务描述
+    @property(cc.Prefab)
+    pfStory: cc.Prefab = null;  //剧情故事界面
 
     @property(cc.Prefab)
     pfTask: cc.Prefab = null;  //任务界面
@@ -162,50 +165,14 @@ export default class MainScene extends cc.Component {
         return destPos;
     }
 
-    //根据任务进度是否显示募兵、部曲、技能、主城等按钮
-    showMenuBtnByTask(chapterId){
-        // if(MyUserData.TaskId <= SpecialStory.huangjinover){   //黄巾之乱结束
-        //     NoticeMgr.emit(NoticeType.CityFlagStory, 1);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
-        // }else if(MyUserData.TaskId <= SpecialStory.dongzhuoOver){   //董卓之乱结束
-        //     NoticeMgr.emit(NoticeType.CityFlagStory, 2);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知
-        // }
-
-        // if(MyUserData.TaskId >= SpecialStory.mubingOpen){  //开启募兵
-        //     this.mubingBtnNode.active = true; 
-        //     if(MyUserData.TaskId >= SpecialStory.unitOpen){  //开启部曲
-        //         this.unitBtnNode.active = true; 
-        //         if(MyUserData.TaskId >= SpecialStory.skillOpen){  //开启技能
-        //             this.skillBtnNode.active = true; 
-        //             if(MyUserData.TaskId >= SpecialStory.capitalOpen){  //开启主城
-        //                 this.homeBtnNode.active = true; 
-        //             }else{
-        //                 this.homeBtnNode.active = false;
-        //             }
-        //         }else{
-        //             this.skillBtnNode.active = false;
-        //             this.homeBtnNode.active = false;
-        //         }
-        //     }else{
-        //         this.unitBtnNode.active = false;
-        //         this.skillBtnNode.active = false;
-        //         this.homeBtnNode.active = false;
-        //     }
-        // }else{
-        //     this.mubingBtnNode.active = false;
-        //     this.unitBtnNode.active = false;
-        //     this.skillBtnNode.active = false;
-        //     this.homeBtnNode.active = false;
-        // }
-    }
-
     //初始化任务
     initTaskInfo(){
         GameMgr.curTaskConf = null;  //当前任务配置
         this.taskReward.active = false; //任务奖励
         let taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
+        console.log("initTaskInfo 初始化任务 taskConf = "+JSON.stringify(taskConf))
         if(taskConf){
             GameMgr.curTaskConf = taskConf;  //当前任务配置
-            this.showMenuBtnByTask(taskConf.chapterId);   //根据任务进度是否显示募兵、部曲、技能、主城等按钮
 
             this.taskTitleLabel.string = `第${taskConf.chapterId}章`  //任务章节
             this.taskNameLabel.string = taskConf.name;  //任务名称
@@ -234,11 +201,13 @@ export default class MainScene extends cc.Component {
         let offset = midPos.sub(FunMgr.v2Tov3(cityPos));
         let destPos = this.preCheckMapDestPos(FunMgr.v3Tov2(offset));   //预处理地图将要移动的目标坐标，放置移动过大地图出现黑边
 
-        let moveTime = destPos.sub(midPos).mag()/1000;
+        let moveTime = destPos.sub(midPos).mag()/800;
         this.mapNode.runAction(cc.sequence(cc.moveTo(moveTime, FunMgr.v3Tov2(destPos)), cc.callFunc(function(){
-            let aniNode = GameMgr.createAtlasAniNode(this.cicleAtlas, 12, cc.WrapMode.Default);
-            aniNode.setPosition(cityPos);
-            this.mapNode.addChild(aniNode, 100);
+            // let aniNode = GameMgr.createAtlasAniNode(this.cicleAtlas, 12, cc.WrapMode.Default);
+            // if(aniNode){
+            //     aniNode.setPosition(cityPos);
+            //     this.mapNode.addChild(aniNode, 100);
+            // }
         }.bind(this))));
     }
 
@@ -328,11 +297,10 @@ export default class MainScene extends cc.Component {
         AudioMgr.playBtnClickEffect();
 
         if(MyUserData.TaskState == 0){   //未完成
-            // let layer = GameMgr.showLayer(this.pfStoryLayer);
-            // layer.getComponent(StoryLayer).initStoryConf(GameMgr.curTaskConf);
-
+            let layer = GameMgr.showLayer(this.pfStory);
+            layer.getComponent(StoryLayer).initStoryConf(GameMgr.curTaskConf);
         }else if(MyUserData.TaskState == 1){   //已完成未领取
-
+            GameMgr.openTaskRewardsLayer(GameMgr.curTaskConf);
         }
     } 
 

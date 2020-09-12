@@ -66,7 +66,7 @@ export default class Item extends cc.Component {
 
     /**初始化道具数据 */
     initItemData(info: ItemInfo, selCallBack:any=null, selCallTarget:any=null){
-        //cc.log("initItemData(), info = "+JSON.stringify(info));
+        cc.log("initItemData(), info = "+JSON.stringify(info));
         this.selCallBack = selCallBack;   //响应点击选中回调
         this.selCallTarget = selCallTarget;
         this.itemInfo = info;   //道具数据

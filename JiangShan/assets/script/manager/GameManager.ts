@@ -216,14 +216,25 @@ class GameManager {
         }
     }
 
+    //打开任务奖励领取界面
+    openTaskRewardsLayer(storyConf: st_story_info){
+        cc.log("openTaskRewardsLayer(), 任务奖励 storyConf = "+JSON.stringify(storyConf));
+        if(storyConf == null || storyConf == undefined){
+            return;
+        }
+
+        
+    }
+
     /**任务第一阶段操作完毕处理 */
     handleStoryShowOver(storyConf: st_story_info){
-        //cc.log("handleStoryShowOver(), storyConf = "+JSON.stringify(storyConf));
+        cc.log("handleStoryShowOver(), 任务操作完毕 storyConf = "+JSON.stringify(storyConf));
         if(storyConf == null || storyConf == undefined){
             return;
         }
         if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
             MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
+            this.openTaskRewardsLayer(storyConf);  //打开任务领奖界面
         }
 
         // if(MyUserData.TaskId == SpecialStory.taishouOpen){   //东郡太守

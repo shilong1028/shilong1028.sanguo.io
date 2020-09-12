@@ -34,7 +34,6 @@ export default class TipsText extends cc.Component {
     }
 
     start () {
-
     }
 
     // update (dt) {}
@@ -55,7 +54,7 @@ export default class TipsText extends cc.Component {
             richText.string = tips;
         }
         this.node.opacity = 255;   //初始透明
-        this.node.runAction(cc.sequence(cc.moveBy(0.5, cc.v2(0, 200)), cc.delayTime(0.2), cc.spawn(cc.fadeOut(0.5), cc.moveBy(0.3, cc.v2(0, 200))), cc.callFunc(function(){
+        this.node.runAction(cc.sequence(cc.moveBy(0.5, cc.v2(0, 200)), cc.delayTime(1.0), cc.spawn(cc.fadeOut(0.5), cc.moveBy(0.3, cc.v2(0, 200))), cc.callFunc(function(){
             this.handleRemoveMySelf();
         }.bind(this))));
     }

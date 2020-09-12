@@ -52,13 +52,21 @@ export default class RootNode extends cc.Component {
     tipsStep: number = 0;   //提示步骤
 
     onLoad () {
-        (cc.game as any).addPersistRootNode(this.node);
+        if(!cc.game.isPersistRootNode(this.node)){
+            cc.game.addPersistRootNode(this.node);
+            //该组件所在节点标记为「常驻节点」，使它在场景切换时不被自动销毁，常驻内存。注意，是内存，而不是添加到新场景。
+            //如此组件可以在场景之间持续作用，可以用来储存玩家信息，或下一个场景初始化时需要的各种数据。
+        }
         //在creator的引擎里面只有根节点才能够被成功的设置为常驻节点，这一点貌似官方文档是没用提到的
         ROOT_NODE = this;
     }
 
     start () {
-        //this.tipsPool =  new cc.NodePool(TipsText);   //砖块缓存池
+        this.tipsPool =  new cc.NodePool(TipsText);   //提示缓存池
+        for(let i=0; i<3; i++){
+            let tip = cc.instantiate(this.pfTipsText);
+            this.tipsPool.put(tip);
+        }
         //只有在new cc.NodePool(Dot)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
         this.itemsPool =  new cc.NodePool(Item);   //道具缓存池
         for(let i=0; i<3; i++){
@@ -68,9 +76,9 @@ export default class RootNode extends cc.Component {
     }
 
     onDestroy(){
-        // if(this.tipsPool){
-        //     this.tipsPool.clear();
-        // }
+        if(this.tipsPool){
+            this.tipsPool.clear();
+        }
         if(this.itemsPool){
             this.itemsPool.clear();
         }
@@ -105,8 +113,8 @@ export default class RootNode extends cc.Component {
     }
 
     /**回收到缓存池 */
-    removeTipsToPool(brick: cc.Node){
-        this.tipsPool.put(brick); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
+    removeTipsToPool(tip: cc.Node){
+        this.tipsPool.put(tip); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
     }
 
     /**显示提示文本 */
@@ -127,7 +135,7 @@ export default class RootNode extends cc.Component {
 
             let tipStr = this.tipsArr.shift();
 
-            let tips = cc.instantiate(this.pfTipsText);
+            let tips = this.createTipsFromPool();  //cc.instantiate(this.pfTipsText);
             tips.y = 700;
             tips.x = cc.winSize.width/2;
             cc.director.getScene().addChild(tips);
