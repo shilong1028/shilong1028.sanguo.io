@@ -22,6 +22,8 @@ export default class StoryLayer extends cc.Component {
     @property(cc.Node)
     rightHeadSpr: cc.Node = null;
     @property(cc.Node)
+    rewardNode: cc.Node = null;
+    @property(cc.Node)
     rewardLayout: cc.Node = null;
     @property(cc.Label)
     taskTitleLabel: cc.Label = null;  //任务章节
@@ -48,6 +50,7 @@ export default class StoryLayer extends cc.Component {
         this.skipNode.active = false;
         this.leftHeadSpr.active = false;
         this.rightHeadSpr.active = false;
+        this.rewardNode.active = false;
     }
 
     onDestroy(){
@@ -72,15 +75,19 @@ export default class StoryLayer extends cc.Component {
             this.taskConf = taskConf;
             this.curTalkIdx = -1;
             this.taskTitleLabel.string = `第${taskConf.chapterId}章`  //任务章节
-            this.taskNameLabel.string = taskConf.name;  //任务名称
+            let level = `第${parseInt(taskConf.id_str)%100}节 `
+            this.taskNameLabel.string = level + taskConf.name;  //任务名称
             
             this.setTalkStr();   //设置话本内容
 
             this.removeRewardItems();
             let rewards: Array<ItemInfo> = GameMgr.getItemArrByKeyVal(this.taskConf.rewards);
-            for(let i=0; i<rewards.length; ++i){
-                let item = ROOT_NODE.createrItem(rewards[i]);
-                this.rewardLayout.addChild(item);
+            if(rewards.length > 0){
+                this.rewardNode.active = true;
+                for(let i=0; i<rewards.length; ++i){
+                    let item = ROOT_NODE.createrItem(rewards[i]);
+                    this.rewardLayout.addChild(item);
+                }
             }
         }
     }
@@ -92,6 +99,7 @@ export default class StoryLayer extends cc.Component {
             this.curTalkIdx ++;
             this.curTalkConf = null;
             this.curTalkStrIdx = 0;
+            this.rewardNode.active = false;
 
             if(this.curTalkIdx < this.taskConf.talks.length){
                 if(this.curTalkIdx == this.taskConf.talks.length-1){

@@ -186,7 +186,7 @@
       "array": [
         0,
         0,
-        510.0889628290344,
+        502.29473419497447,
         0,
         0,
         0,
@@ -1444,6 +1444,9 @@
     "pfGoldAdd": null,
     "iconAtlas": {
       "__uuid__": "e52aa502-9b5e-4757-a520-b8e4b5deb7ad"
+    },
+    "cicleAtlas": {
+      "__uuid__": "b525faae-bcef-4df8-a4ce-0b5b26faa37b"
     },
     "_id": "98cSpGbhRI34FR86o16S+K"
   }

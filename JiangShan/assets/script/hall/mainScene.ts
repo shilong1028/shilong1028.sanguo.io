@@ -4,9 +4,9 @@ import { MyUserData } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
 import { st_story_info, ItemInfo, CfgMgr } from "../manager/ConfigManager";
 import { SDKMgr } from "../manager/SDKManager";
-import { ROOT_NODE } from "../login/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
 import StoryLayer from "./storyLayer";
+import { ROOT_NODE } from "../login/rootNode";
 
 
 //大厅场景
@@ -180,15 +180,15 @@ export default class MainScene extends cc.Component {
             GameMgr.curTaskConf = taskConf;  //当前任务配置
 
             this.taskTitleLabel.string = `第${taskConf.chapterId}章`  //任务章节
-            this.taskNameLabel.string = taskConf.name;  //任务名称
+            let level = `第${parseInt(taskConf.id_str)%100}节 `
+            this.taskNameLabel.string = level + taskConf.name;  //任务名称
             this.taskDescLabel.string = taskConf.desc;  //任务描述
 
             if(MyUserData.TaskState == 1){   //已完成未领取
                 this.taskReward.active = true;
-                ROOT_NODE.showTipsText(`任务${taskConf.name}奖励可领取`);
-            }
-
-            if(taskConf.type == TaskType.Story){   //剧情故事自动展开
+                //ROOT_NODE.showTipsText(`任务${taskConf.name}奖励可领取`);
+                GameMgr.openTaskRewardsLayer(GameMgr.curTaskConf);
+            }else if(taskConf.type == TaskType.Story){   //剧情故事自动展开
                 this.onTaskBtn();
             }
         }
@@ -213,11 +213,11 @@ export default class MainScene extends cc.Component {
 
         let moveTime = destPos.sub(midPos).mag()/800;
         this.mapNode.runAction(cc.sequence(cc.moveTo(moveTime, FunMgr.v3Tov2(destPos)), cc.callFunc(function(){
-            // let aniNode = GameMgr.createAtlasAniNode(this.cicleAtlas, 12, cc.WrapMode.Default);
-            // if(aniNode){
-            //     aniNode.setPosition(cityPos);
-            //     this.mapNode.addChild(aniNode, 100);
-            // }
+            let aniNode = GameMgr.createAtlasAniNode(ROOT_NODE.cicleAtlas, 12, cc.WrapMode.Default);
+            if(aniNode){
+                aniNode.setPosition(cityPos);
+                this.mapNode.addChild(aniNode, 100);
+            }
         }.bind(this))));
     }
 

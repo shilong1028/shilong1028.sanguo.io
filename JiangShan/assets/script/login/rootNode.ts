@@ -42,6 +42,8 @@ export default class RootNode extends cc.Component {
 
     @property(cc.SpriteAtlas)
     iconAtlas: cc.SpriteAtlas = null;
+    @property(cc.SpriteAtlas)
+    cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
 
     // LIFE-CYCLE CALLBACKS:
 

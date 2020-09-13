@@ -59,7 +59,7 @@ export default class RewardLayer extends cc.Component {
     // update (dt) {}
 
     /**展示奖励列表 */
-    showRewardList(rewards: ItemInfo[], callback?: any, target?: any){  
+    showRewardList(rewards: ItemInfo[], title:string = null, callback?: any, target?: any){  
         //cc.log("showRewardList(), rewards = "+JSON.stringify(rewards));
         this.rewardArr = rewards;
         this.receiveCallback = callback;
@@ -132,15 +132,17 @@ export default class RewardLayer extends cc.Component {
             str += itemStr;
         }
         ROOT_NODE.showTipsText(str);
-        GameMgr.receiveRewards(this.rewardArr);   //领取奖励
+        GameMgr.receiveRewards(this.rewardArr, 2);   //领取奖励
         this.closeLayer();
     }
 
 
     /**视频免费按钮 */
     onVedioBtn(){
-        SDKMgr.showVedioAd("JiangLiVedioId", ()=>{
-              //失败
+        SDKMgr.showVedioAd(()=>{  
+            //失败
+            this.vedioBtn.active = false;
+            ROOT_NODE.showTipsText("抱歉，视频获取异常")
         }, ()=>{
             let str = "";
             for(let i=0; i<this.rewardArr.length; ++i){
