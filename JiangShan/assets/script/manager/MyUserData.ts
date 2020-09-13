@@ -2,6 +2,8 @@ import { LDMgr, LDKey } from "./StorageManager";
 import { GeneralInfo, ItemInfo, CfgMgr } from "./ConfigManager";
 import { NoticeMgr, NoticeType } from "./NoticeManager";
 import { GuideMgr } from "./GuideMgr";
+import { TaskState } from "./Enum";
+import { GameMgr } from "./GameManager";
 
 //用户数据管理
 const { ccclass, property } = cc._decorator;
@@ -28,6 +30,7 @@ export var MyUserData = {
 
     ItemList: [],   //背包物品列表
     GeneralList:[],   //武将列表
+    officalIds:[],   //当前官职（可身兼数职）
 
     guideStepStrs: "",   //新手引导步骤"1000-1100-1200-..."
     
@@ -62,16 +65,19 @@ class MyUserManager {
         MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
         LDMgr.setItem(LDKey.KEY_StoryData, "1001-0");
 
-        MyUserData.myCityIds = new Array();  //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
+        MyUserData.myCityIds = [];  //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
         LDMgr.setItem(LDKey.KEY_MyCityIds, "");
-        MyUserData.ruleCityIds = new Array();   //己方统治下未被占领或叛乱的城池ID集合
+        MyUserData.ruleCityIds = [];   //己方统治下未被占领或叛乱的城池ID集合
         LDMgr.setItem(LDKey.KEY_RuleCityIds, "");
 
-        MyUserData.ItemList = new Array();   //背包物品列表
+        MyUserData.ItemList = [];   //背包物品列表
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
 
-        MyUserData.GeneralList = new Array();  //武将列表
+        MyUserData.GeneralList = [];  //武将列表
         LDMgr.setItem(LDKey.KEY_GeneralList, JSON.stringify(MyUserData.GeneralList));
+
+        MyUserData.officalIds = [];  //当前官职（可身兼数职）
+        LDMgr.setItem(LDKey.KEY_OfficalIds, "");
 
         MyUserData.guideStepStrs = "";   //新手引导步骤"1000-1100-1200-..."
 
@@ -133,6 +139,8 @@ class MyUserManager {
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
         MyUserData.GeneralList = this.getGeneralListByLD();  //武将列表
 
+        MyUserData.officalIds = LDMgr.getItemIntAry(LDKey.KEY_OfficalIds);  //当前官职（可身兼数职）
+
         MyUserData.guideStepStrs = LDMgr.getItem(LDKey.KEY_GuideSteps);   //新手引导步骤"1000-1100-1200-..."
         GuideMgr.setFinishGuideStep(MyUserData.guideStepStrs);   //设置完成的引导步骤（开始）字符串  "1000-1100-1200-..."
 
@@ -143,7 +151,7 @@ class MyUserManager {
         console.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
-    //更新在线总时长
+    /**更新在线总时长 */
     updateLineTime(dt:number){
         MyUserData.totalLineTime += dt;   //总的在线时长（每100s更新记录一次）
 
@@ -153,7 +161,7 @@ class MyUserManager {
         }
     }
 
-    //更新收税金时间
+    /**更新收税金时间 */
     updateGoldTaxTime(){
         let intTime = Math.floor(MyUserData.totalLineTime);
 
@@ -162,7 +170,7 @@ class MyUserManager {
         LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, MyUserData.lastGoldTaxTime);
     }
 
-    //更新主城等级
+    /**更新主城等级 */
     updateCapitalLv(capitalLv: number){
         MyUserData.capitalLv = capitalLv;
         if(MyUserData.capitalLv > 100){
@@ -171,7 +179,7 @@ class MyUserManager {
         LDMgr.setItem(LDKey.KEY_CapitalLv, MyUserData.capitalLv);   //主城等级，0则未开启
     }
 
-    //更新主角等级
+    /**更新主角等级 */
     updateRoleLv(roleLv: number){
         let oldRoleLv = 0;
         if(roleLv > 0){
@@ -183,7 +191,25 @@ class MyUserManager {
         NoticeMgr.emit(NoticeType.UpdateRoleLvOffical, oldRoleLv);  //更新主角等级或官职
     }
 
-    //根据城池ID判定是否为我方已占据的城池
+    /**将Int数组转化为分隔符字符串 */
+    getIdsToStr(ids: number[], sp: string = "|"){
+        let str = ""
+        for(let i=0; i<ids.length; ++i){
+            str += (ids[i].toString()+sp);
+        }
+        return str;
+    }
+
+    /**更新主角官职（可身兼数职） */
+    updateOfficalIds(officalIds: number[]){
+        cc.log("updateOfficalIds(), officalIds = "+officalIds);
+        MyUserData.officalIds = officalIds;
+        LDMgr.setItem(LDKey.KEY_OfficalIds, this.getIdsToStr(MyUserData.officalIds));
+
+        NoticeMgr.emit(NoticeType.UpdateRoleLvOffical, 0);  //更新主角等级或官职
+    }
+
+    /**根据城池ID判定是否为我方已占据的城池 */
     isMyCityById(cityId: number){
         for(let i=0; i<MyUserData.myCityIds.length; ++i){
             if(cityId == MyUserData.myCityIds[i]){
@@ -193,7 +219,7 @@ class MyUserManager {
         return false;
     }
 
-    //更新我方占领的城池列表
+    /**更新我方占领的城池列表 */
     updateMyCityIds(cityId: number, bAdd: boolean= true){
         cc.log("updateMyCityIds(), cityId = "+cityId+"; bAdd = "+bAdd);
         if(bAdd == true){
@@ -226,20 +252,12 @@ class MyUserManager {
         NoticeMgr.emit(NoticeType.CityFlagStory, 100);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知, 100我我方城池
     }
 
-    //新增我方治下但是未被占领的城池列表
+    /**新增我方治下但是未被占领的城池列表 */
     addRuleCitys(ids: number[]){
         for(let i=0; i<ids.length; ++i){
             MyUserData.ruleCityIds.push(ids[i]);
         }
         //LDMgr.setItem(LDKey.KEY_RuleCityIds, this.getIdsToStr(MyUserData.ruleCityIds));
-    }
-
-    getIdsToStr(ids: number[], sp: string = "|"){
-        let str = ""
-        for(let i=0; i<ids.length; ++i){
-            str += (ids[i].toString()+sp);
-        }
-        return str;
     }
 
     /**修改用户背包物品列表 */
@@ -290,7 +308,7 @@ class MyUserManager {
             this.saveItemList();
         }
     }
-    //获取背包中物品数据
+    /**获取背包中物品数据 */
     getItemFromList(itemId: number):ItemInfo{
         for(let i=0; i<MyUserData.ItemList.length; ++i){
             let bagItem: ItemInfo = MyUserData.ItemList[i];
@@ -302,7 +320,7 @@ class MyUserManager {
     }
     /**保存背包物品列表 */
     saveItemList(){
-        let tempList = new Array();
+        let tempList = [];
         for(let i=0; i<MyUserData.ItemList.length; ++i){
             let tempItem = MyUserData.ItemList[i].cloneNoCfg();
             tempList.push(tempItem);
@@ -313,7 +331,7 @@ class MyUserManager {
     /**从本地存储中获取物品列表 */
     getItemListByLD(){
         let ItemList = LDMgr.getJsonItem(LDKey.KEY_ItemList);  //背包物品列表
-        let tempList = new Array();
+        let tempList = [];
         if(ItemList){
             for(let i=0; i<ItemList.length; ++i){
                 let tempItem = new ItemInfo(ItemList[i].itemId, ItemList[i].count);
@@ -323,7 +341,7 @@ class MyUserManager {
         return tempList;
     }
 
-    //获取武将列表克隆
+    /**获取武将列表克隆 */
     getGeneralListClone(){
         let objStr = JSON.stringify(MyUserData.GeneralList);
         let temp = JSON.parse(objStr); 
@@ -370,7 +388,7 @@ class MyUserManager {
     }
     /**保存武将列表 */
     saveGeneralList(){
-        let GeneralList = new Array();
+        let GeneralList = [];
         for(let i=0; i<MyUserData.GeneralList.length; ++i){
             let tempItem = MyUserData.GeneralList[i].cloneNoCfg();
             GeneralList.push(tempItem);
@@ -381,7 +399,7 @@ class MyUserManager {
     /**从本地存储中获取武将列表 */
     getGeneralListByLD(){
         let GeneralList = LDMgr.getJsonItem(LDKey.KEY_GeneralList);  //武将列表
-        let tempList: GeneralInfo[] = new Array();
+        let tempList: GeneralInfo[] = [];
         let curTime = new Date().getTime();
         if(GeneralList){
             for(let i=0; i<GeneralList.length; ++i){
@@ -394,7 +412,7 @@ class MyUserManager {
         return tempList;
     }
 
-    //更新主角经验
+    /**更新主角经验 */
     updateRoleExp(exp:number){
         for(let i=0; i<MyUserData.GeneralList.length; ++i){
             let tempItem: GeneralInfo = MyUserData.GeneralList[i];
@@ -444,7 +462,7 @@ class MyUserManager {
     }
 
     /**修改用户任务 0未完成，1完成未领取，2已领取 */
-    updateTaskState(taskId: string, state: number){
+    updateTaskState(taskId: string, state: TaskState){
         cc.log("updateTaskState 更新任务状态 taskId = "+taskId+"; state = "+state)
         if(MyUserData.TaskId == taskId && MyUserData.TaskState == state){
             return;
@@ -452,7 +470,7 @@ class MyUserManager {
         MyUserData.TaskId = taskId;
         MyUserData.TaskState = state;
 
-        if(state == 2){   //2已领取，下一个任务
+        if(state == TaskState.Over){   //2已领取，下一个任务
             let story_conf = CfgMgr.getTaskConf(MyUserData.TaskId);
             if(story_conf && story_conf.next_id){
                 MyUserData.TaskId = story_conf.next_id;
@@ -461,6 +479,7 @@ class MyUserManager {
         }
 
         LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString()+"-"+MyUserData.TaskState);
+        GameMgr.saveCurTaskOfficesAndGenerals();  //存储根据当前任务剧情保存的新官职和新武将
         NoticeMgr.emit(NoticeType.UpdateTaskState, null);   //任务状态更新
     }
 

@@ -20,7 +20,7 @@ export default class RootNode extends cc.Component {
     @property(cc.Prefab)
     pfItem: cc.Prefab = null;   //背包道具通用显示
     @property(cc.Prefab)
-    pfCard: cc.Prefab =  null;   //武将卡牌
+    pfGeneral: cc.Prefab =  null;   //武将卡牌
     @property(cc.Prefab)
     pfMoney: cc.Prefab = null;   //一级界面上的金币钻石粮草公用控件
 
@@ -36,21 +36,23 @@ export default class RootNode extends cc.Component {
     guidePrefab: cc.Prefab = null;   //引导层
 
     @property(cc.Prefab)
-    adResultPrefab: cc.Prefab = null;
-    @property(cc.Prefab)
     pfGoldAdd: cc.Prefab = null;  //获取金币提示框
 
     @property(cc.SpriteAtlas)
-    iconAtlas: cc.SpriteAtlas = null;
-    @property(cc.SpriteAtlas)
     cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
+    @property(cc.SpriteAtlas)
+    commonAtlas: cc.SpriteAtlas = null;   //通用图集
+    @property(cc.SpriteAtlas)
+    iconAtlas: cc.SpriteAtlas = null;   //道具图集
+    @property(cc.SpriteAtlas)
+    officeAtlas: cc.SpriteAtlas = null;  //官职图集
 
     // LIFE-CYCLE CALLBACKS:
 
     itemsPool: cc.NodePool =  null;   //道具缓存池
 
     tipsPool: cc.NodePool =  null;   //缓存池
-    tipsArr: string[] = new Array();   //提示文本数组
+    tipsArr: string[] = [];   //提示文本数组
     tipsStep: number = 0;   //提示步骤
 
     onLoad () {
@@ -140,7 +142,7 @@ export default class RootNode extends cc.Component {
             let tips = this.createTipsFromPool();  //cc.instantiate(this.pfTipsText);
             tips.y = 700;
             tips.x = cc.winSize.width/2;
-            cc.director.getScene().addChild(tips);
+            cc.director.getScene().addChild(tips, 10000);
             tips.getComponent(TipsText).initTipsText(tipStr);
         }
     }
@@ -154,24 +156,24 @@ export default class RootNode extends cc.Component {
         tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback, cancelCall);
     }
 
-    ShowAdResultDialog(){
-        let dialog = this.node.getChildByName("adResultPrefab");
-        if(dialog){
-            return;
-        }
-        dialog = cc.instantiate(this.adResultPrefab);
-        dialog.name = "adResultPrefab"
-        dialog.y = cc.winSize.height/2;
-        dialog.x = cc.winSize.width/2;
+    // ShowAdResultDialog(){
+    //     let dialog = this.node.getChildByName("adResultPrefab");
+    //     if(dialog){
+    //         return;
+    //     }
+    //     dialog = cc.instantiate(this.adResultPrefab);
+    //     dialog.name = "adResultPrefab"
+    //     dialog.y = cc.winSize.height/2;
+    //     dialog.x = cc.winSize.width/2;
 
-        let bg = dialog.getChildByName("bg");
-        if(bg){
-            bg.width = cc.winSize.width;
-            bg.height = cc.winSize.height;
-        }
+    //     let bg = dialog.getChildByName("bg");
+    //     if(bg){
+    //         bg.width = cc.winSize.width;
+    //         bg.height = cc.winSize.height;
+    //     }
 
-        cc.director.getScene().addChild(dialog);
-    }
+    //     cc.director.getScene().addChild(dialog);
+    // }
     updateAdResultDialog(){
         let dialog = cc.director.getScene().getChildByName("adResultPrefab");
         if(dialog){
@@ -180,14 +182,14 @@ export default class RootNode extends cc.Component {
     }
 
     //创建道具
-    createrItem(info: ItemInfo, selCallBack:any=null, selCallTarget:any=null){
+    createrItem(info: ItemInfo, selCallBack:any=null){
         let item: cc.Node = null;
         if (this.itemsPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             item = this.itemsPool.get();
         } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
             item = cc.instantiate(this.pfItem);
         }
-        item.getComponent(Item).initItemData(info, selCallBack, selCallTarget);
+        item.getComponent(Item).initItemData(info, selCallBack);
         return item;
     }
     removeItem(item: cc.Node){

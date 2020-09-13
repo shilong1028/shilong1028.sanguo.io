@@ -1423,7 +1423,9 @@
     "pfItem": {
       "__uuid__": "64b4b0ea-ab06-45f6-b627-c1769b662603"
     },
-    "pfCard": null,
+    "pfGeneral": {
+      "__uuid__": "811598c3-fe57-4626-b158-2c587df99319"
+    },
     "pfMoney": null,
     "pfReward": {
       "__uuid__": "f88e3428-6254-4991-91a2-8db0dbf02b00"
@@ -1440,13 +1442,18 @@
     "guidePrefab": {
       "__uuid__": "6619140a-6e9b-41e0-bcb2-2058ea95a26f"
     },
-    "adResultPrefab": null,
     "pfGoldAdd": null,
+    "cicleAtlas": {
+      "__uuid__": "b525faae-bcef-4df8-a4ce-0b5b26faa37b"
+    },
+    "commonAtlas": {
+      "__uuid__": "a769d82d-0767-41d1-bb25-76ca2a414269"
+    },
     "iconAtlas": {
       "__uuid__": "e52aa502-9b5e-4757-a520-b8e4b5deb7ad"
     },
-    "cicleAtlas": {
-      "__uuid__": "b525faae-bcef-4df8-a4ce-0b5b26faa37b"
+    "officeAtlas": {
+      "__uuid__": "a61d15cf-b4b8-47a4-9024-acd2d3f745fd"
     },
     "_id": "98cSpGbhRI34FR86o16S+K"
   }

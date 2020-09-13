@@ -3,6 +3,7 @@ import { NoticeMgr, NoticeType } from "../manager/NoticeManager";
 import { TaskType } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import { ROOT_NODE } from "../login/rootNode";
+import { AudioMgr } from "../manager/AudioMgr";
 
 
 //剧情阐述
@@ -102,7 +103,7 @@ export default class StoryLayer extends cc.Component {
             this.rewardNode.active = false;
 
             if(this.curTalkIdx < this.taskConf.talks.length){
-                if(this.curTalkIdx == this.taskConf.talks.length-1){
+                if(this.curTalkIdx >= this.taskConf.talks.length-1){
                     this.skipLabel.string = "结   束";
                 }else{
                     this.skipLabel.string = "继   续";
@@ -143,10 +144,7 @@ export default class StoryLayer extends cc.Component {
             if(this.curTalkStrIdx >= this.curTalkConf.desc.length){
                 this.talkLabel.string = this.curTalkConf.desc;
                 this.bUpdateStr = false;
-
-                if(this.curTalkIdx == this.taskConf.talks.length-1){   //最后一个对话
-                    this.skipNode.active = true;
-                }
+                this.skipNode.active = true;   //继续或结束
             }else{
                 let str = this.curTalkConf.desc.substr(0, this.curTalkStrIdx);  
                 //substr(start,length)表示从start位置开始，截取length长度的字符串。
@@ -161,18 +159,49 @@ export default class StoryLayer extends cc.Component {
     }
 
     onSkipBtn(){
+        AudioMgr.playBtnClickEffect();
+        if(this.isShowNewOffical()){ //新官职
+            return;
+        }else if(this.isShowNewGeneral()){  //武将来投
+            return;
+        }
+        this.handleNextTalk();
+    }
+
+    isShowNewOffical(){
+        if(this.curTalkConf.official.length > 0){ //新官职
+            GameMgr.showOfficalLayer(this.curTalkConf.official, false, ()=>{
+                cc.log("新官职展示结束，后续处理")
+                GameMgr.addCurTaskNewOffices(this.curTalkConf.official);
+                if(this.isShowNewGeneral()){  //武将来投
+                }else{
+                    this.handleNextTalk();
+                }
+            });
+            return true;
+        }
+        return false;
+    }
+
+    isShowNewGeneral(){
+        if(this.curTalkConf.generals.length > 0){ //新武将
+            GameMgr.showGeneralJoinLayer(this.curTalkConf.generals, false, ()=>{
+                cc.log("武将来投展示结束，后续处理")
+                GameMgr.addCurTaskNewGenerals(this.curTalkConf.generals);
+                this.handleNextTalk();
+            });
+            return true;
+        }
+        return false;
+    }
+
+    handleNextTalk(){
+        cc.log("下一段剧情对话")
         this.skipNode.active = false;
         if(this.curTalkConf && this.curTalkIdx < this.taskConf.talks.length-1){   //跳过
             this.setTalkStr();   //设置话本内容
         }else{  //结束
-            if(this.taskConf.type == TaskType.Story){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
-                GameMgr.handleStoryShowOver(this.taskConf);   //任务宣读(第一阶段）完毕处理
-            }else if(this.taskConf.type == TaskType.Fight){
-                let mainScene = GameMgr.getMainScene();
-                if(mainScene){
-                    mainScene.openFightByTask(this.taskConf);   //战斗选将准备界面
-                }
-            }
+            GameMgr.handleStoryShowOver(this.taskConf);   //任务宣读(第一阶段）完毕处理
             this.node.destroy();
         }
     }

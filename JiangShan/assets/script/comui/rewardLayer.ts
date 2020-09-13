@@ -1,5 +1,6 @@
 import List from "../control/List";
 import { ROOT_NODE } from "../login/rootNode";
+import { AudioMgr } from "../manager/AudioMgr";
 import { ItemInfo } from "../manager/ConfigManager";
 import { GameMgr } from "../manager/GameManager";
 import { SDKMgr } from "../manager/SDKManager";
@@ -20,9 +21,9 @@ export default class RewardLayer extends cc.Component {
 
     @property(List)
     list: List = null;
-    @property(cc.ScrollView)
-    scrollView: cc.ScrollView = null;
 
+    @property(cc.Label)
+    titleLabel: cc.Label = null;
     @property(cc.Node)
     infoNode: cc.Node = null;
     @property(cc.Sprite)
@@ -40,9 +41,8 @@ export default class RewardLayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     receiveCallback: any = null;    //领取回调
-    receiveTarget: any = null;
 
-    rewardArr: ItemInfo[] = new Array();   //奖励
+    rewardArr: ItemInfo[] = [];   //奖励
 
     onLoad () {
         this.list.numItems = 0;
@@ -59,28 +59,27 @@ export default class RewardLayer extends cc.Component {
     // update (dt) {}
 
     /**展示奖励列表 */
-    showRewardList(rewards: ItemInfo[], title:string = null, callback?: any, target?: any){  
+    showRewardList(rewards: ItemInfo[], title:string = null, callback?: any){  
         //cc.log("showRewardList(), rewards = "+JSON.stringify(rewards));
         this.rewardArr = rewards;
         this.receiveCallback = callback;
-        this.receiveTarget = target;
+        if(title){
+            this.titleLabel.string = title;
+        }else{
+            this.titleLabel.string = "获取奖励";
+        }
 
         this.list.numItems = this.rewardArr.length;
         this.infoNode.active = false;
         this.descLabel.string = "";
         this.updateSelItemInfo(this.rewardArr[0]);  //显示底部选中道具信息
-
-        if(this.scrollView.content.width > 500){
-            this.scrollView.node.width = 500;
-        }
     }
 
     //列表渲染器
     onListRender(item: cc.Node, idx: number) {
         let info = this.rewardArr[idx];
-        item.getComponent(Item).initItemData(info, (target, itemCell)=>{
-
-        }, this);
+        item.getComponent(Item).initItemData(info, (cell)=>{
+        });
     }
 
     //当列表项被选择...
@@ -125,6 +124,7 @@ export default class RewardLayer extends cc.Component {
     }
 
     onOkBtn(){
+        AudioMgr.playBtnClickEffect();
         let str = "";
         for(let i=0; i<this.rewardArr.length; ++i){
             let item = this.rewardArr[i];
@@ -139,6 +139,7 @@ export default class RewardLayer extends cc.Component {
 
     /**视频免费按钮 */
     onVedioBtn(){
+        AudioMgr.playBtnClickEffect();
         SDKMgr.showVedioAd(()=>{  
             //失败
             this.vedioBtn.active = false;
@@ -157,11 +158,10 @@ export default class RewardLayer extends cc.Component {
     }
 
     closeLayer(){
-        if(this.receiveCallback && this.receiveTarget){
-            this.receiveCallback.call(this.receiveTarget, this.rewardArr);
+        if(this.receiveCallback){
+            this.receiveCallback();
         }
         this.receiveCallback = null;
-        this.receiveTarget = null;
 
         this.node.destroy();
     }

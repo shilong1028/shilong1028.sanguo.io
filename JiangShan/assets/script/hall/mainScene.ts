@@ -1,5 +1,5 @@
 import { NoticeMgr, NoticeType } from "../manager/NoticeManager";
-import { FunMgr, TaskType } from "../manager/Enum";
+import { ComItemType, FunMgr, TaskState, TaskType } from "../manager/Enum";
 import { MyUserData } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
 import { st_story_info, ItemInfo, CfgMgr } from "../manager/ConfigManager";
@@ -57,10 +57,13 @@ export default class MainScene extends cc.Component {
     @property(cc.Label)
     taskDescLabel: cc.Label = null;  //任务描述
     @property(cc.Prefab)
-    pfStory: cc.Prefab = null;  //剧情故事界面
+    pfStoryLayer: cc.Prefab = null;  //剧情故事界面
 
     @property(cc.Prefab)
-    pfTask: cc.Prefab = null;  //任务界面
+    pfOfficalLayer: cc.Prefab = null;   //官职详情界面
+    @property(cc.Prefab)
+    pfGeneralJoin: cc.Prefab = null;  //武将来投界面
+
     @property(cc.Prefab)
     pfBag: cc.Prefab = null;   //背包界面
     @property(cc.Prefab)
@@ -143,6 +146,8 @@ export default class MainScene extends cc.Component {
         this.lvLabel.string = MyUserData.roleLv.toString();
         if(oldRoleLv > 0){   //主角等级提升
             ROOT_NODE.showTipsText("主角等级提升!");
+        }else{   //升官
+            ROOT_NODE.showTipsText("主角官职提升!");
         }
     }
 
@@ -172,23 +177,25 @@ export default class MainScene extends cc.Component {
 
     /** 初始化任务 */
     initTaskInfo(){
-        GameMgr.curTaskConf = null;  //当前任务配置
+        GameMgr.setGameCurTask(null);  //当前任务配置
         this.taskReward.active = false; //任务奖励
         let taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
         cc.log("initTaskInfo 初始化任务 taskConf = "+JSON.stringify(taskConf))
         if(taskConf){
-            GameMgr.curTaskConf = taskConf;  //当前任务配置
+            GameMgr.setGameCurTask(taskConf);  //当前任务配置
 
             this.taskTitleLabel.string = `第${taskConf.chapterId}章`  //任务章节
             let level = `第${parseInt(taskConf.id_str)%100}节 `
             this.taskNameLabel.string = level + taskConf.name;  //任务名称
             this.taskDescLabel.string = taskConf.desc;  //任务描述
 
-            if(MyUserData.TaskState == 1){   //已完成未领取
+            if(MyUserData.TaskState == TaskState.Finish){   //已完成未领取
                 this.taskReward.active = true;
                 //ROOT_NODE.showTipsText(`任务${taskConf.name}奖励可领取`);
                 GameMgr.openTaskRewardsLayer(GameMgr.curTaskConf);
             }else if(taskConf.type == TaskType.Story){   //剧情故事自动展开
+                this.onTaskBtn();
+            }else if(MyUserData.TaskState == TaskState.Ready){
                 this.onTaskBtn();
             }
         }
@@ -210,8 +217,7 @@ export default class MainScene extends cc.Component {
         let midPos = this.mapNode.position.neg();    //当前视图中心在地图上的坐标
         let offset = midPos.sub(FunMgr.v2Tov3(cityPos));
         let destPos = this.preCheckMapDestPos(FunMgr.v3Tov2(offset));   //预处理地图将要移动的目标坐标，放置移动过大地图出现黑边
-
-        let moveTime = destPos.sub(midPos).mag()/800;
+        let moveTime = destPos.sub(midPos).mag()/1000;
         this.mapNode.runAction(cc.sequence(cc.moveTo(moveTime, FunMgr.v3Tov2(destPos)), cc.callFunc(function(){
             let aniNode = GameMgr.createAtlasAniNode(ROOT_NODE.cicleAtlas, 12, cc.WrapMode.Default);
             if(aniNode){
@@ -256,22 +262,14 @@ export default class MainScene extends cc.Component {
         this.touchBeginPos = null;
     }
 
-    /**任务战斗准备 */
-    openFightByTask(taskConf: st_story_info){
-        if(taskConf.type == 5 && taskConf.battleId > 0){  //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
-            // let layer = GameMgr.showLayer(this.pfFightReady);
-            // layer.getComponent(FightReady).initBattleInfo(taskConf.battleId);
-        }
-    }
-
     onShareBtn(){
         AudioMgr.playBtnClickEffect();
         SDKMgr.shareGame("快来和我一起征战天下，弹指江山吧！", (succ:boolean)=>{
             console.log("分享 succ = "+succ);
             if(succ == true){
-                let items = new Array();
-                items.push({"key":6001, "val":1000});   //金币
-                items.push({"key":6003, "val":500});   //粮草
+                let items = [];
+                items.push({"key":ComItemType.Gold, "val":1000});   //金币
+                items.push({"key":ComItemType.Food, "val":500});   //粮草
                 let rewards: ItemInfo[] = GameMgr.getItemArrByKeyVal(items);   //通过配置keyVal数据砖块道具列表
                 GameMgr.receiveRewards(rewards);   //领取奖励
             }
@@ -307,7 +305,7 @@ export default class MainScene extends cc.Component {
         AudioMgr.playBtnClickEffect();
 
         if(MyUserData.TaskState == 0){   //未完成
-            let layer = GameMgr.showLayer(this.pfStory);
+            let layer = GameMgr.showLayer(this.pfStoryLayer);
             layer.getComponent(StoryLayer).initStoryConf(GameMgr.curTaskConf);
         }else if(MyUserData.TaskState == 1){   //已完成未领取
             GameMgr.openTaskRewardsLayer(GameMgr.curTaskConf);
@@ -325,7 +323,8 @@ export default class MainScene extends cc.Component {
         if(GameMgr.boxTouchCount == 10 && SDKMgr.bAutoPlayVedio == false){
             GameMgr.boxTouchCount = 0;
             
-            ROOT_NODE.ShowAdResultDialog();
+            //ROOT_NODE.ShowAdResultDialog();
         }
     }
+
 }

@@ -5768,10 +5768,15 @@
     "taskDescLabel": {
       "__id__": 45
     },
-    "pfStory": {
+    "pfStoryLayer": {
       "__uuid__": "c67646fa-578f-4688-b527-260c530df1bd"
     },
-    "pfTask": null,
+    "pfOfficalLayer": {
+      "__uuid__": "c9724568-b62b-408d-af41-c74de24008ed"
+    },
+    "pfGeneralJoin": {
+      "__uuid__": "fec1c9f9-1633-49bb-9f28-b846da0d99f5"
+    },
     "pfBag": null,
     "pfRecruit": null,
     "_id": "88E7HvKgJOJpyrQARVzFfn"

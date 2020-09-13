@@ -1,5 +1,6 @@
 import { ItemInfo, st_item_info } from "../manager/ConfigManager";
 import RootNode, { ROOT_NODE } from "../login/rootNode";
+import { AudioMgr } from "../manager/AudioMgr";
 
 
 //道具
@@ -26,7 +27,6 @@ export default class Item extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     selCallBack: any = null;   //响应点击选中回调
-    selCallTarget: any = null;
 
     itemInfo: ItemInfo = null;   //道具数据
 
@@ -34,21 +34,21 @@ export default class Item extends cc.Component {
     //只有在new cc.NodePool(XX)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
     //使用 Pool.put() 回收节点后，会调用unuse 方法
     unuse() {
-        cc.log("item unuse ")
+        //cc.log("item unuse ")
         this.initView();
     }
     //使用 Pool.get() 获取节点后，就会调用reuse 方法
     reuse() {
-        cc.log("item reuse ")
+        //cc.log("item reuse ")
         this.initView();
     }
 
     onLoad () {
-        cc.log("item onLoad ")
+        //cc.log("item onLoad ")
     }
 
     initView(){
-        this.selImg.active = false;  //默认物品点击不会显示选中框，只有设定回调函数才会点击显示选中框
+        this.selImg.active = false;  //默认点击不会显示选中框，只有设定回调函数才会点击显示选中框
 
         this.iconSpr.spriteFrame = null;
         this.nameLabel.string = "";
@@ -62,11 +62,12 @@ export default class Item extends cc.Component {
     // update (dt) {}
     /**选中状态切换 */
     onClicked(){
+        AudioMgr.playBtnClickEffect();
         //默认物品点击弹出道具详情，如有设定回调，则点击响应回调函数
-        if(this.selCallBack && this.selCallTarget){
-            if(this.selImg.active == false){
+        if(this.selCallBack){
+            if(this.selImg.active == false){    //防止多次点击多次回调
                 this.showSelState(true)
-                this.selCallBack.call(this.selCallTarget, this);   //选中回调
+                this.selCallBack(this);   //选中回调
             }
         }else{
             if(this.itemInfo && this.itemInfo.itemCfg){
@@ -82,11 +83,11 @@ export default class Item extends cc.Component {
 
     /**初始化道具数据 
      * 注意，item是通过rootNode缓存池获取后调用initItemData，后添加到响应父节点（即调动onLoad之类的）
+     * 调用顺序为 reuse  ->  initItemData  ->  onLoad
     */
-    initItemData(info: ItemInfo, selCallBack:any=null, selCallTarget:any=null){
+    initItemData(info: ItemInfo, selCallBack:any=null){
         //cc.log("initItemData(), info = "+JSON.stringify(info));
         this.selCallBack = selCallBack;   //响应点击选中回调
-        this.selCallTarget = selCallTarget;
         this.itemInfo = info;   //道具数据
         
         if(info){

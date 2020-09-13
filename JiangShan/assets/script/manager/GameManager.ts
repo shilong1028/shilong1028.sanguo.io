@@ -1,11 +1,13 @@
-import { st_story_info, ItemInfo } from "./ConfigManager";
+import { st_story_info, ItemInfo, GeneralInfo } from "./ConfigManager";
 import { MyUserMgr, MyUserData } from "./MyUserData";
-import { FunMgr } from "./Enum";
+import { ComItemType, FunMgr, TaskState, TaskType } from "./Enum";
 import { ROOT_NODE } from "../login/rootNode";
 import LoadingLayer from "../login/loadingLayer";
 import TipsDialog from "../login/tipsDialog";
 import MainScene from "../hall/mainScene";
 import RewardLayer from "../comui/rewardLayer";
+import OfficalLayer from "../hall/officalLayer";
+import GeneralJoin from "../hall/generalJoin";
 
 
 //游戏管理器
@@ -17,6 +19,8 @@ class GameManager {
     boxTouchCount : number = 0;
 
     curTaskConf: st_story_info = null;   //当前任务配置
+    curTask_NewOffices: number[] = null;   //当前任务剧情对话获取的新官职集合
+    curTask_NewGenerals: number[] = null;   //当前任务剧情对话获取的新武将集合
 
     CityNearsMap : Map<number, number[]> = new Map<number, number[]>();  //邻近城池Map
 
@@ -164,7 +168,7 @@ class GameManager {
         
     /**通过Str解析获取道具列表 */
     getItemArrByStr(itemstr: string): Array<ItemInfo>{
-        let rewardArr: ItemInfo[] = new Array();
+        let rewardArr: ItemInfo[] = [];
         let rewards = FunMgr.getKeyValAry(itemstr, ";", "-"); 
         for(let i=0; i<rewards.length; ++i){
             let itemId = parseInt(rewards[i].key);
@@ -178,7 +182,7 @@ class GameManager {
     /**通过配置keyVal数据砖块道具列表 */
     getItemArrByKeyVal(rewards: any[]): Array<ItemInfo>{
         //cc.log("getItemArrByKeyVal(), rewards = "+JSON.stringify(rewards));
-        let rewardArr: ItemInfo[] = new Array();
+        let rewardArr: ItemInfo[] = [];
         for(let i=0; i<rewards.length; ++i){
             let itemId = parseInt(rewards[i].key);
             let count = rewards[i].val;
@@ -186,87 +190,6 @@ class GameManager {
             rewardArr.push(item);
         }
         return rewardArr;
-    }
-
-    /** 领取奖励*/
-    receiveRewards(rewards: ItemInfo[], multi: number=1){
-        //cc.log("receiveRewards(), rewards = "+JSON.stringify(rewards));
-        if(rewards){
-            let bSaveList = false;
-            for(let i=0; i<rewards.length; ++i){
-                let itemInfo: ItemInfo = rewards[i];
-                if(itemInfo.itemId == 6001){   //金币
-                    MyUserMgr.updateUserGold(itemInfo.count * multi);
-                }else if(itemInfo.itemId == 6002){   //钻石
-                    MyUserMgr.updateUserDiamond(itemInfo.count * multi);
-                }else if(itemInfo.itemId == 6003){   //粮草
-                    MyUserMgr.updateUserFood(itemInfo.count * multi);
-                }else if(itemInfo.itemId == 6101){   //主角（武将）经验
-                    MyUserMgr.updateRoleExp(itemInfo.count * multi);
-                }else{   //其他道具
-                    bSaveList = true;
-                    itemInfo.count *= multi;
-                    MyUserMgr.updateItemList(itemInfo, false);
-                }
-            }
-            if(bSaveList == true){
-                MyUserMgr.saveItemList();   //保存背包物品列表
-            }
-        }
-    }
-
-    /**显示通用奖励提示框 */
-    showRewardLayer(rewardList:any, callback: any=null, target: any=null){
-        let layer = this.showLayer(ROOT_NODE.pfReward);
-        // let rewardSc = layer.getComponent(RewardLayer);
-        // if(rewardSc){
-        //     rewardSc.setRewardCallback(callback, target);
-        // }
-        return layer;
-    }
-
-    /** 打开任务奖励领取界面 */
-    openTaskRewardsLayer(storyConf: st_story_info){
-        //cc.log("openTaskRewardsLayer(), 任务奖励 storyConf = "+JSON.stringify(storyConf));
-        if(storyConf == null || storyConf == undefined){
-            return;
-        }
-
-        let rewards: Array<ItemInfo> = GameMgr.getItemArrByKeyVal(storyConf.rewards);
-        if(rewards.length > 0){
-            let layer = GameMgr.showLayer(ROOT_NODE.pfReward);
-            layer.getComponent(RewardLayer).showRewardList(rewards, ()=>{
-                if(storyConf.type > 0){ 
-                    MyUserMgr.updateTaskState(MyUserData.TaskId, 2);  //修改用户任务 0未完成，1完成未领取，2已领取 
-                }
-            }, this);
-        }else{   
-            cc.log("没有任务奖励")
-            if(storyConf.type > 0){ 
-                MyUserMgr.updateTaskState(MyUserData.TaskId, 2);  //修改用户任务 0未完成，1完成未领取，2已领取 
-            }
-        }
-    }
-
-    /**任务第一阶段操作完毕处理 */
-    handleStoryShowOver(storyConf: st_story_info){
-        cc.log("handleStoryShowOver(), 任务操作完毕 storyConf = "+JSON.stringify(storyConf));
-        if(storyConf == null || storyConf == undefined){
-            return;
-        }
-        if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
-            MyUserMgr.updateTaskState(MyUserData.TaskId, 1);  //修改用户任务 0未完成，1完成未领取，2已领取 
-            this.openTaskRewardsLayer(storyConf);  //打开任务领奖界面
-        }
-
-        // if(MyUserData.TaskId == SpecialStory.taishouOpen){   //东郡太守
-        //     MyUserMgr.updateMyCityIds(316, true);  
-        // }else if(MyUserData.TaskId == SpecialStory.zhoumuOpen){   //兖州牧
-        //     let ruleCitys = new Array();
-        //     ruleCitys = [312, 313, 314, 315, 9006, 9008]
-        //     MyUserMgr.addRuleCitys(ruleCitys);
-        //     MyUserMgr.updateMyCityIds(315, true); 
-        // }
     }
 
     GetBannerWidth(){
@@ -309,12 +232,12 @@ class GameManager {
     getNearCitysLine(srcCityId: number, destCityId: number){
         cc.log("getNearCitysLine(), srcCityId = "+srcCityId+"; destCityId = "+destCityId);
 
-        let retpathArr = new Array();   //多条路径的集合
-        let srcIdsArr = new Array();
+        let retpathArr = [];   //多条路径的集合
+        let srcIdsArr = [];
         srcIdsArr.push([srcCityId]);  //源头深度探索路径
 
         for(let t=0; t<10; t++){
-            let tempSrcIds = new Array();
+            let tempSrcIds = [];
             for(let s=0; s<srcIdsArr.length; ++s){
                 let tempSrcArr = srcIdsArr[s];   //某一条源头深度探索路径
                 let lastSrcId = tempSrcArr[tempSrcArr.length-1];
@@ -332,7 +255,7 @@ class GameManager {
                             }
                         }
                         if(bInPath == false){
-                            let tempArr = new Array();
+                            let tempArr = [];
                             for(let j=0; j<tempSrcArr.length; ++j){   //继续遍历某一条源头深度探索路径，从而增加深度城池
                                 tempArr.push(tempSrcArr[j]);
                             }
@@ -356,6 +279,209 @@ class GameManager {
             return retpathArr;
         }
     }
+
+    /** 领取奖励*/
+    receiveRewards(rewards: ItemInfo[], multi: number=1){
+        cc.log("receiveRewards(), 领取奖励 rewards = "+JSON.stringify(rewards));
+        if(rewards){
+            let bSaveList = false;
+            for(let i=0; i<rewards.length; ++i){
+                let itemInfo: ItemInfo = rewards[i];
+                if(itemInfo.itemId == ComItemType.Gold){   //金币
+                    MyUserMgr.updateUserGold(itemInfo.count * multi);
+                }else if(itemInfo.itemId == ComItemType.Diamond){   //钻石
+                    MyUserMgr.updateUserDiamond(itemInfo.count * multi);
+                }else if(itemInfo.itemId == ComItemType.Food){   //粮草
+                    MyUserMgr.updateUserFood(itemInfo.count * multi);
+                }else if(itemInfo.itemId == ComItemType.Exp0){   //主角（武将）经验(直接添加到主角身上)
+                    MyUserMgr.updateRoleExp(itemInfo.count * multi);
+                }else{   //其他道具
+                    bSaveList = true;
+                    itemInfo.count *= multi;
+                    MyUserMgr.updateItemList(itemInfo, false);
+                }
+            }
+            if(bSaveList == true){
+                MyUserMgr.saveItemList();   //保存背包物品列表
+            }
+        }
+    }
+
+    /**显示通用奖励提示框 */
+    showRewardLayer(rewardList:any, callback: any=null, target: any=null){
+        let layer = this.showLayer(ROOT_NODE.pfReward);
+        // let rewardSc = layer.getComponent(RewardLayer);
+        // if(rewardSc){
+        //     rewardSc.setRewardCallback(callback, target);
+        // }
+        return layer;
+    }
+
+    /** 打开任务奖励领取界面 */
+    openTaskRewardsLayer(storyConf: st_story_info){
+        //cc.log("openTaskRewardsLayer(), 任务奖励 storyConf = "+JSON.stringify(storyConf));
+        if(storyConf == null || storyConf == undefined){
+            return;
+        }
+
+        let rewards: Array<ItemInfo> = GameMgr.getItemArrByKeyVal(storyConf.rewards);
+        if(rewards.length > 0){
+            let layer = GameMgr.showLayer(ROOT_NODE.pfReward);
+            layer.getComponent(RewardLayer).showRewardList(rewards, "剧情任务奖励", ()=>{
+                if(storyConf.type > 0){ 
+                    MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Over);  //修改用户任务 0未完成，1完成未领取，2已领取 
+                }
+            });
+        }else{   
+            cc.log("没有任务奖励")
+            if(storyConf.type > 0){ 
+                MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Over);  //修改用户任务 0未完成，1完成未领取，2已领取 
+            }
+        }
+    }
+
+    /**任务第一阶段操作完毕处理 */
+    handleStoryShowOver(storyConf: st_story_info){
+        cc.log("handleStoryShowOver(), 任务操作完毕 storyConf = "+JSON.stringify(storyConf));
+        if(storyConf == null || storyConf == undefined){
+            return;
+        }
+        if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
+            MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Finish);  //修改用户任务 0未完成，1完成未领取，2已领取 
+        }
+
+        if(storyConf.type == TaskType.Story){ 
+            this.openTaskRewardsLayer(storyConf);  //打开任务领奖界面
+        }else if(storyConf.type == TaskType.Fight){  
+            this.openFightByTask(storyConf);   //战斗选将准备界面
+        }
+
+        // if(MyUserData.TaskId == SpecialStory.taishouOpen){   //东郡太守
+        //     MyUserMgr.updateMyCityIds(316, true);  
+        // }else if(MyUserData.TaskId == SpecialStory.zhoumuOpen){   //兖州牧
+        //     let ruleCitys = [];
+        //     ruleCitys = [312, 313, 314, 315, 9006, 9008]
+        //     MyUserMgr.addRuleCitys(ruleCitys);
+        //     MyUserMgr.updateMyCityIds(315, true); 
+        // }
+    }
+
+    /**任务战斗准备 */
+    openFightByTask(taskConf: st_story_info){
+        if(taskConf && taskConf.battleId > 0){  //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
+            let mainScene = GameMgr.getMainScene();
+            if(mainScene){
+                // let layer = GameMgr.showLayer(mainScene.pfFightReady);  //战斗选将准备界面
+                // layer.getComponent(FightReady).initBattleInfo(taskConf.battleId);
+            }
+        }
+    }
+
+    /**显示官职详情界面 */
+    showOfficalLayer(officalIds: number[], bSave:boolean=false, callback?:Function){
+        let mainScene = this.getMainScene();
+        if(officalIds.length > 0 && mainScene){
+            let layer = GameMgr.showLayer(mainScene.pfOfficalLayer);
+            layer.getComponent(OfficalLayer).initOfficalByIds(officalIds, bSave, callback);
+        }else{   
+            cc.log("没有新官职")
+            if(callback){ 
+                callback();
+            }
+        }
+    }
+
+    /**显示武将来投界面 */
+    showGeneralJoinLayer(generalIds: number[], bSave:boolean=false, callback?:Function){
+        let mainScene = this.getMainScene();
+        if(generalIds.length > 0 && mainScene){
+            let layer = GameMgr.showLayer(mainScene.pfGeneralJoin);
+            layer.getComponent(GeneralJoin).initGeneralByIds(generalIds, bSave, callback);
+        }else{   
+            cc.log("没有新武将")
+            if(callback){ 
+                callback();
+            }
+        }
+    }
+
+    //------------------  以下为游戏逻辑处理  -----------------------------
+
+    /**设置游戏当前的剧情任务 */
+    setGameCurTask(taskConf: st_story_info){
+        this.curTaskConf = taskConf;   //当前任务配置
+        this.curTask_NewOffices = null;   //当前任务剧情对话获取的新官职集合
+        this.curTask_NewGenerals = null;   //当前任务剧情对话获取的新武将集合
+    }
+    /**重置当前任务的官职和武将奖励 */
+    resetCurTaskOfficesAndGenerals(){
+        this.curTask_NewOffices = null;   //当前任务剧情对话获取的新官职集合
+        this.curTask_NewGenerals = null;   //当前任务剧情对话获取的新武将集合
+    }
+    /**存储根据当前任务剧情保存的新官职和新武将 */
+    saveCurTaskOfficesAndGenerals(){
+        cc.log("存储根据当前任务剧情保存的新官职和新武将")
+        if(this.curTask_NewOffices && this.curTask_NewOffices.length > 0){
+            MyUserMgr.updateOfficalIds(this.curTask_NewOffices);  //更新主角官职（可身兼数职）
+        }
+        this.curTask_NewOffices = null;   //当前任务剧情对话获取的新官职集合
+        
+        if(this.curTask_NewGenerals){
+            for(let i=0; i<this.curTask_NewGenerals.length; ++i){
+                let generalId = this.curTask_NewGenerals[i]
+                let info = new GeneralInfo(generalId.toString());
+                if(i < this.curTask_NewGenerals.length-1){
+                    MyUserMgr.addGeneralToList(info, false);   //添加武将到列表
+                }else{
+                    MyUserMgr.addGeneralToList(info, true);   //添加武将到列表
+                }
+            }
+        }
+        this.curTask_NewGenerals = null;   //当前任务剧情对话获取的新武将集合
+    }
+    /**添加当前剧情获得的新官职ID */
+    addCurTaskNewOffices(officeIds:number[]){
+        if(!this.curTask_NewOffices){
+            this.curTask_NewOffices = officeIds;
+        }else{
+            for(let i=0; i<officeIds.length; i++){
+                let newId = officeIds[i];
+                let bHad = false;
+                for(let j=0; j<this.curTask_NewOffices.length; j++){
+                    if(this.curTask_NewOffices[j] == newId){
+                        bHad = true;
+                        break;
+                    }
+                }
+                if(bHad != true){
+                    this.curTask_NewOffices.push(newId);
+                }
+            }
+        }
+    }
+    /**添加当前剧情获得的新武将ID */
+    addCurTaskNewGenerals(generalIds:number[]){
+        if(!this.curTask_NewGenerals){
+            this.curTask_NewGenerals = generalIds;
+        }else{
+            for(let i=0; i<generalIds.length; i++){
+                let newId = generalIds[i];
+                let bHad = false;
+                for(let j=0; j<this.curTask_NewGenerals.length; j++){
+                    if(this.curTask_NewGenerals[j] == newId){
+                        bHad = true;
+                        break;
+                    }
+                }
+                if(bHad != true){
+                    this.curTask_NewGenerals.push(newId);
+                }
+            }
+        }
+    }
+
+
+
 
 }
 export var GameMgr = new GameManager();

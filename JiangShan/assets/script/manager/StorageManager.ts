@@ -20,6 +20,7 @@ export const LDKey = {
     KEY_StoryData : "KEY_StoryData",  //当前进行的剧情故事  {key=id, val=state}  0未完成，1完成未领取，2已领取
     KEY_ItemList: "KEY_ItemList",     //背包道具列表
     KEY_GeneralList: "KEY_GeneralList",     //武将列表
+    KEY_OfficalIds: "KEY_OfficalIds",     //官职列表
     KEY_MyCityIds: "KEY_MyCityIds",     //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
     KEY_RuleCityIds: "KEY_RuleCityIds",     //己方统治下未被占领或叛乱的城池ID集合
     KEY_GuideSteps: "KEY_GuideSteps",   //新手引导步骤"1000-1100-1200-..."

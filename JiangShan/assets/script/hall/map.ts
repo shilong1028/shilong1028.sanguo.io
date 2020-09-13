@@ -36,7 +36,7 @@ export default class Map extends cc.Component {
         let keys = Object.getOwnPropertyNames(CfgMgr.C_city_info);
         for (let k of keys) {
             let cityId = parseInt(k);
-            let cityInfo = new CityInfo(cityId);
+            let cityInfo = new CityInfo(cityId.toString());
 
             GameMgr.CityNearsMap[cityId] = cityInfo.cityCfg.near_citys;   //邻近城池Map
 

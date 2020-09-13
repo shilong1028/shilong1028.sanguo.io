@@ -285,7 +285,22 @@ export enum TaskType{
     Garrison = 7,   //驻守
 }
 
+export enum TaskState{
+    Ready = 0,   //准备开始
+    Finish = 1,   //引导完成
+    Over = 2,   //奖励领取完毕
+}
 
+export enum ComItemType{
+    Gold = 101,    //金锭（金币）
+    Diamond = 102,   
+    Food = 201,    //粮草
+    Drug = 202,    //药草
+    Exp0 = 300,   //直接添加到主角身上的经验
+    Exp1 = 301,   //经验丹
+    Exp2 = 302,   //经验丹
+    Exp3 = 303,   //经验丹
+}
 
 
 

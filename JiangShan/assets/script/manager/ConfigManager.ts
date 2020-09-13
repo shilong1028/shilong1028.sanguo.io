@@ -72,13 +72,13 @@ export class GeneralInfo{
     generalExp: number = 0;   //武将经验
     bingCount: number = 0;   //部曲士兵数量
     tempFightInfo: TempFightInfo = null;  //武将战斗临时数据类
-    skills: SkillInfo[] = new Array();
+    skills: SkillInfo[] = [];
     generalCfg: st_general_info = null;   //卡牌配置信息
 
     constructor(generalId:string, info:any=null){   
         this.timeId = new Date().getTime();
         this.generalId = generalId;
-        this.skills = new Array();
+        this.skills = [];
         if(info){  //只有从本地存储读取数据是会传递info
             this.generalLv = info.generalLv;
             this.generalExp = info.generalExp; 
@@ -103,7 +103,7 @@ export class GeneralInfo{
         //不必写入本地存储的变量
         temp.timeId = 0;
         temp.generalCfg = null;
-        temp.skills = new Array();
+        temp.skills = [];
         for(let i=0; i<this.skills.length; ++i){
             let tempSkill = this.skills[i].cloneNoCfg();
             temp.skills.push(tempSkill);
@@ -173,6 +173,7 @@ export class st_general_info {
         return temp;
     }
 }
+
 //官职配置数据
 export class st_official_info{
     id_str;
@@ -294,31 +295,6 @@ export class st_talk_info{
     }
 }
 
-
-
-//战斗配置数据
-export class st_battle_info{
-    id_str;
-    name;     //战斗名称
-    generals;   //友军
-    soldiers;  //士兵集合
-    enemys;   //敌方部曲（武将ID-等级） 1004-1;6001-3
-    
-    transType(){
-        this.generals = FunMgr.getKeyValAry(this.generals, ";");   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
-        this.soldiers = FunMgr.getKeyValAry(this.soldiers, ";"); 
-        this.enemys = FunMgr.getKeyValAry(this.enemys, ";"); 
-    }
-
-    constructor(){
-    }
-    clone(){
-        let objStr = JSON.stringify(this);
-        let temp = JSON.parse(objStr); 
-        return temp;
-    }
-}
-
 //道具背包信息
 export class ItemInfo{
     itemId: number = 0;   
@@ -368,6 +344,33 @@ export class st_item_info{
         return temp;
     }
 }
+
+
+
+//战斗配置数据
+export class st_battle_info{
+    id_str;
+    name;     //战斗名称
+    generals;   //友军
+    soldiers;  //士兵集合
+    enemys;   //敌方部曲（武将ID-等级） 1004-1;6001-3
+    
+    transType(){
+        this.generals = FunMgr.getKeyValAry(this.generals, ";");   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
+        this.soldiers = FunMgr.getKeyValAry(this.soldiers, ";"); 
+        this.enemys = FunMgr.getKeyValAry(this.enemys, ";"); 
+    }
+
+    constructor(){
+    }
+    clone(){
+        let objStr = JSON.stringify(this);
+        let temp = JSON.parse(objStr); 
+        return temp;
+    }
+}
+
+
 
 //招兵配置数据
 export class st_recruit_info{
@@ -552,14 +555,16 @@ class CfgManager_class {
     //对话配置表
     C_talk_info : Map<number, st_talk_info> = new Map<number, st_talk_info>();
     SC_talk_info = st_talk_info;
+    //物品配置表
+    C_item_info : Map<number, st_item_info> = new Map<number, st_item_info>();
+    SC_item_info = st_item_info;
+
 
     //战斗配置表
     C_battle_info : Map<number, st_battle_info> = new Map<number, st_battle_info>();
     SC_battle_info = st_battle_info;
 
-    //物品配置表
-    C_item_info : Map<number, st_item_info> = new Map<number, st_item_info>();
-    SC_item_info = st_item_info;
+
 
     //招兵配置表
     C_recruit_info : Map<number, st_recruit_info> = new Map<number, st_recruit_info>();
@@ -590,6 +595,18 @@ class CfgManager_class {
         }else{
             return null;
         }
+    }
+    /**获取官职配置数据 */
+    getOfficalConf(officeId: string): st_official_info{
+        let obj = this.C_official_info[officeId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+    getAllOfficalConf(){
+        return this.C_official_info;
     }
     /**获取武将配置数据 */
     getGeneralConf(generalId: string): st_general_info{
