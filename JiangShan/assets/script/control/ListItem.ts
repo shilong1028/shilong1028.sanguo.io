@@ -1,5 +1,11 @@
-
-//列表Item组件.此组件须配合List组件使用。
+/******************************************
+ * @author kL <klk0@qq.com>
+ * @date 2019/6/6
+ * @doc 列表Item组件.
+ * 说明：
+ *      1、此组件须配合List组件使用。（配套的配套的..）
+ * @end
+ ******************************************/
 const { ccclass, property, disallowMultiple, menu, executionOrder } = cc._decorator;
 
 import List from './List';
@@ -12,9 +18,8 @@ enum SelectedType {
 
 @ccclass
 @disallowMultiple()
-@menu('Control/List Item')
+@menu('自定义组件/List Item')
 @executionOrder(-5001)          //先于List
-
 export default class ListItem extends cc.Component {
     //图标
     @property({ type: cc.Sprite, tooltip: CC_DEV && '图标' })
@@ -93,20 +98,18 @@ export default class ListItem extends cc.Component {
     }
 
     onDestroy() {
-        let t: any = this;
-        t.node.off(cc.Node.EventType.SIZE_CHANGED, t._onSizeChange, t);
+        this.node.off(cc.Node.EventType.SIZE_CHANGED, this._onSizeChange, this);
     }
 
     _registerEvent() {
-        let t: any = this;
-        if (!t._eventReg) {
-            if (t.btnCom && t.list.selectedMode > 0) {
-                t.btnCom.clickEvents.unshift(t.createEvt(t, 'onClickThis'));
+        if (!this._eventReg) {
+            if (this.btnCom && this.list.selectedMode > 0) {
+                this.btnCom.clickEvents.unshift(this.createEvt(this, 'onClickThis'));
             }
-            if (t.adaptiveSize) {
-                t.node.on(cc.Node.EventType.SIZE_CHANGED, t._onSizeChange, t);
+            if (this.adaptiveSize) {
+                this.node.on(cc.Node.EventType.SIZE_CHANGED, this._onSizeChange, this);
             }
-            t._eventReg = true;
+            this._eventReg = true;
         }
     }
 

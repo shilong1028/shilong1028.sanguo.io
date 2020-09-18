@@ -1,4 +1,9 @@
-
+/******************************************
+ * @author kL <klk0@qq.com>
+ * @date 2019/6/6
+ * @doc 列表组件.
+ * @end
+ ******************************************/
 const { ccclass, property, disallowMultiple, menu, executionOrder, requireComponent } = cc._decorator;
 
 import ListItem from './ListItem';
@@ -22,11 +27,10 @@ enum SelectedType {
 
 @ccclass
 @disallowMultiple()
-@menu('Control/List')
+@menu('自定义组件/List')
 @requireComponent(cc.ScrollView)
 //脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
 @executionOrder(-5000)
-
 export default class List extends cc.Component {
     //模板类型
     @property({ type: cc.Enum(TemplateType), tooltip: CC_DEV && '模板类型', })
@@ -150,6 +154,10 @@ export default class List extends cc.Component {
         tooltip: CC_DEV && '渲染事件（渲染器）',
     })
     private renderEvent: cc.Component.EventHandler = new cc.Component.EventHandler();
+    private renderCallBack: Function = null;
+    private destroyCallBack: Function = null;
+    private scroll_renderCallBack: Function = null;   //滑动时可见区域Cell做的特殊处理回调
+    private list_touch_CallBack: Function = null;   
     //选择模式
     @property({
         type: cc.Enum(SelectedType),
@@ -168,6 +176,7 @@ export default class List extends cc.Component {
         visible() { return this.selectedMode > SelectedType.NONE; }
     })
     private selectedEvent: cc.Component.EventHandler = null//new cc.Component.EventHandler();
+    private selectedCallBack: Function = null;
     //当前选择id
     private _selectedId: number = -1;
     private _lastSelectedId: number;
@@ -199,7 +208,10 @@ export default class List extends cc.Component {
                     }
                 }
                 if (t.selectedEvent) {
-                    cc.Component.EventHandler.emitEvents([t.selectedEvent], item, t._lastSelectedId == null ? null : (t._lastSelectedId % this._actualNumItems));
+                    cc.Component.EventHandler.emitEvents([t.selectedEvent], item, val % this._actualNumItems, t._lastSelectedId == null ? null : (t._lastSelectedId % this._actualNumItems));
+                }
+                if(this.selectedCallBack){
+                    this.selectedCallBack(item, val % this._actualNumItems, t._lastSelectedId == null ? null : (t._lastSelectedId % this._actualNumItems));
                 }
                 break;
             }
@@ -220,7 +232,10 @@ export default class List extends cc.Component {
                     t.multSelected.splice(sub, 1);
                 }
                 if (t.selectedEvent) {
-                    cc.Component.EventHandler.emitEvents([t.selectedEvent], item, t._lastSelectedId == null ? null : (t._lastSelectedId % this._actualNumItems), bool);
+                    cc.Component.EventHandler.emitEvents([t.selectedEvent], item, val % this._actualNumItems, t._lastSelectedId == null ? null : (t._lastSelectedId % this._actualNumItems), bool);
+                }
+                if(this.selectedCallBack){
+                    this.selectedCallBack(item, val % this._actualNumItems, t._lastSelectedId == null ? null : (t._lastSelectedId % this._actualNumItems), bool);
                 }
                 break;
             }
@@ -362,6 +377,18 @@ export default class List extends cc.Component {
 
     //----------------------------------------------------------------------------
 
+    setSelectedCallBack(callback: Function){
+        this.selectedCallBack = callback;
+    }
+    setRenderCallBack(callback: Function){
+        this.renderCallBack = callback;
+    }
+    setScrollRenderCallBack(callback: Function){
+        this.scroll_renderCallBack = callback;   //滑动时可见区域Cell做的特殊处理回调
+    }
+    setListTouchCallBack(callback: Function){
+        this.list_touch_CallBack = callback;   
+    }
     onLoad() {
         this._init();
     }
@@ -924,6 +951,11 @@ export default class List extends cc.Component {
             this.firstListId = this.displayData[0].id;
             this.displayItemNum = this.displayData.length;
 
+            if(this.scroll_renderCallBack && this.displayItemNum>0){  //滑动时可见区域Cell做的特殊处理回调
+                for (let c = 0; c < this.displayItemNum; c++) {
+                    this._scrollUpdateItem(this.displayData[c]);
+                }
+            }
             let len: number = this._lastDisplayData.length;
 
             let haveDataChange: boolean = this.displayItemNum != len;
@@ -1291,6 +1323,10 @@ export default class List extends cc.Component {
             while (itemNode._listId == null && itemNode.parent)
                 itemNode = itemNode.parent;
             this._scrollItem = itemNode._listId != null ? itemNode : ev.target;
+        }else{
+            if(this.list_touch_CallBack){
+                this.list_touch_CallBack();
+            }
         }
     }
     //触摸抬起时..
@@ -1337,30 +1373,30 @@ export default class List extends cc.Component {
     }
     //当Item自适应
     _onItemAdaptive(item) {
-        if (this.checkInited(false)) {
-            if (
-                (!this._sizeType && item.width != this._itemSize.width)
-                || (this._sizeType && item.height != this._itemSize.height)
-            ) {
-                if (!this._customSize)
-                    this._customSize = {};
-                let val = this._sizeType ? item.height : item.width;
-                if (this._customSize[item._listId] != val) {
-                    this._customSize[item._listId] = val;
-                    this._resizeContent();
-                    // this.content.children.forEach((child: cc.Node) => {
-                    //     this._updateItemPos(child);
-                    // });
-                    this.updateAll();
-                    // 如果当前正在运行 scrollTo，肯定会不准确，在这里做修正
-                    if (!isNaN(this._scrollToListId)) {
-                        this._scrollPos = null;
-                        this.unschedule(this._scrollToSo);
-                        this.scrollTo(this._scrollToListId, Math.max(0, this._scrollToEndTime - ((new Date()).getTime() / 1000)));
-                    }
+        // if (this.checkInited(false)) {
+        if (
+            (!this._sizeType && item.width != this._itemSize.width)
+            || (this._sizeType && item.height != this._itemSize.height)
+        ) {
+            if (!this._customSize)
+                this._customSize = {};
+            let val = this._sizeType ? item.height : item.width;
+            if (this._customSize[item._listId] != val) {
+                this._customSize[item._listId] = val;
+                this._resizeContent();
+                // this.content.children.forEach((child: cc.Node) => {
+                //     this._updateItemPos(child);
+                // });
+                this.updateAll();
+                // 如果当前正在运行 scrollTo，肯定会不准确，在这里做修正
+                if (this._scrollToListId != null) {
+                    this._scrollPos = null;
+                    this.unschedule(this._scrollToSo);
+                    this.scrollTo(this._scrollToListId, Math.max(0, this._scrollToEndTime - ((new Date()).getTime() / 1000)));
                 }
             }
         }
+        // }
     }
     //PAGE粘附
     _pageAdhere() {
@@ -1456,6 +1492,15 @@ export default class List extends cc.Component {
             }
         }
     }
+    //滑动时可见区域Cell做的特殊处理回调
+    _scrollUpdateItem(data: any) {
+        if(this.scroll_renderCallBack && data){  //滑动时可见区域Cell做的特殊处理回调
+            let item: any = this.getItemByListId(data.id);
+            if (item) { 
+                this.scroll_renderCallBack(item, data.id % this._actualNumItems);
+            }
+        }
+    }
     /**
      * 创建或更新Item（虚拟列表用）
      * @param {Object} data 数据
@@ -1495,6 +1540,9 @@ export default class List extends cc.Component {
             if (this.renderEvent) {
                 cc.Component.EventHandler.emitEvents([this.renderEvent], item, data.id % this._actualNumItems);
             }
+	    else if(this.renderCallBack){
+                this.renderCallBack(item, data.id % this._actualNumItems);
+            }
         } else if (this._forceUpdate && this.renderEvent) { //强制更新
             item.setPosition(cc.v2(data.x, data.y));
             this._resetItemSize(item);
@@ -1502,6 +1550,9 @@ export default class List extends cc.Component {
             if (this.renderEvent) {
                 cc.Component.EventHandler.emitEvents([this.renderEvent], item, data.id % this._actualNumItems);
             }
+	    else if(this.renderCallBack){
+	    	this.renderCallBack(item, data.id % this._actualNumItems);
+	    }
         }
         this._resetItemSize(item);
 
@@ -1528,12 +1579,18 @@ export default class List extends cc.Component {
             if (this.renderEvent) {
                 cc.Component.EventHandler.emitEvents([this.renderEvent], item, listId);
             }
+	    else if(this.renderCallBack){
+                this.renderCallBack(item, listId);
+            }
         } else if (this._forceUpdate && this.renderEvent) { //强制更新
             item._listId = listId;
             if (listItem)
                 listItem.listId = listId;
             if (this.renderEvent) {
                 cc.Component.EventHandler.emitEvents([this.renderEvent], item, listId);
+            }
+	    else if(this.renderCallBack){
+                this.renderCallBack(item, listId);
             }
         }
         this._updateListItem(listItem);
@@ -1636,8 +1693,15 @@ export default class List extends cc.Component {
         for (let n: number = 0, len: number = args.length; n < len; n++) {
             let listId: number = args[n];
             let item: any = this.getItemByListId(listId);
-            if (item)
-                cc.Component.EventHandler.emitEvents([this.renderEvent], item, listId % this._actualNumItems);
+            if (item){
+                if(this.renderEvent){
+                    cc.Component.EventHandler.emitEvents([this.renderEvent], item, listId % this._actualNumItems);
+                }else{
+                    if(this.renderCallBack){
+                        this.renderCallBack(item, listId % this._actualNumItems);
+                    }
+                }
+            }  
         }
     }
     /**
@@ -1654,11 +1718,14 @@ export default class List extends cc.Component {
      * @returns
      */
     getItemByListId(listId: number) {
-        for (let n: number = this.content.childrenCount - 1; n >= 0; n--) {
-            let item: any = this.content.children[n];
-            if (item._listId == listId)
-                return item;
+        if (this.content) {
+            for (let n: number = this.content.childrenCount - 1; n >= 0; n--) {
+                let item: any = this.content.children[n];
+                if (item._listId == listId)
+                    return item;
+            }
         }
+        return null;
     }
     /**
      * 获取在显示区域外的Item
@@ -1925,40 +1992,42 @@ export default class List extends cc.Component {
         let breakFor: boolean = false;
         for (let n = 0; n < t.content.childrenCount && !breakFor; n += t._colLineNum) {
             data = t._virtual ? t.displayData[n] : t._calcExistItemPos(n);
-            center = t._sizeType ? ((data.top + data.bottom) / 2) : (center = (data.left + data.right) / 2);
-            switch (t._alignCalcType) {
-                case 1://单行HORIZONTAL（LEFT_TO_RIGHT）、网格VERTICAL（LEFT_TO_RIGHT）
-                    if (data.right >= vLeft) {
-                        t.nearestListId = data.id;
-                        if (vLeft > center)
-                            t.nearestListId += t._colLineNum;
-                        breakFor = true;
-                    }
-                    break;
-                case 2://单行HORIZONTAL（RIGHT_TO_LEFT）、网格VERTICAL（RIGHT_TO_LEFT）
-                    if (data.left <= vRight) {
-                        t.nearestListId = data.id;
-                        if (vRight < center)
-                            t.nearestListId += t._colLineNum;
-                        breakFor = true;
-                    }
-                    break;
-                case 3://单列VERTICAL（TOP_TO_BOTTOM）、网格HORIZONTAL（TOP_TO_BOTTOM）
-                    if (data.bottom <= vTop) {
-                        t.nearestListId = data.id;
-                        if (vTop < center)
-                            t.nearestListId += t._colLineNum;
-                        breakFor = true;
-                    }
-                    break;
-                case 4://单列VERTICAL（BOTTOM_TO_TOP）、网格HORIZONTAL（BOTTOM_TO_TOP）
-                    if (data.top >= vBottom) {
-                        t.nearestListId = data.id;
-                        if (vBottom > center)
-                            t.nearestListId += t._colLineNum;
-                        breakFor = true;
-                    }
-                    break;
+            if (data) {
+                center = t._sizeType ? ((data.top + data.bottom) / 2) : (center = (data.left + data.right) / 2);
+                switch (t._alignCalcType) {
+                    case 1://单行HORIZONTAL（LEFT_TO_RIGHT）、网格VERTICAL（LEFT_TO_RIGHT）
+                        if (data.right >= vLeft) {
+                            t.nearestListId = data.id;
+                            if (vLeft > center)
+                                t.nearestListId += t._colLineNum;
+                            breakFor = true;
+                        }
+                        break;
+                    case 2://单行HORIZONTAL（RIGHT_TO_LEFT）、网格VERTICAL（RIGHT_TO_LEFT）
+                        if (data.left <= vRight) {
+                            t.nearestListId = data.id;
+                            if (vRight < center)
+                                t.nearestListId += t._colLineNum;
+                            breakFor = true;
+                        }
+                        break;
+                    case 3://单列VERTICAL（TOP_TO_BOTTOM）、网格HORIZONTAL（TOP_TO_BOTTOM）
+                        if (data.bottom <= vTop) {
+                            t.nearestListId = data.id;
+                            if (vTop < center)
+                                t.nearestListId += t._colLineNum;
+                            breakFor = true;
+                        }
+                        break;
+                    case 4://单列VERTICAL（BOTTOM_TO_TOP）、网格HORIZONTAL（BOTTOM_TO_TOP）
+                        if (data.top >= vBottom) {
+                            t.nearestListId = data.id;
+                            if (vBottom > center)
+                                t.nearestListId += t._colLineNum;
+                            breakFor = true;
+                        }
+                        break;
+                }
             }
         }
         //判断最后一个Item。。。（哎，这些判断真心恶心，判断了前面的还要判断最后一个。。。一开始呢，就只有一个布局（单列布局），那时候代码才三百行，后来就想着完善啊，艹..这坑真深，现在这行数都一千五了= =||）
