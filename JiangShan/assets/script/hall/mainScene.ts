@@ -1,12 +1,16 @@
 import { NoticeMgr, NoticeType } from "../manager/NoticeManager";
 import { ComItemType, FunMgr, TaskState, TaskType } from "../manager/Enum";
-import { MyUserData } from "../manager/MyUserData";
+import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
-import { st_story_info, ItemInfo, CfgMgr } from "../manager/ConfigManager";
+import { ItemInfo, CfgMgr, st_story_info } from "../manager/ConfigManager";
 import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import StoryLayer from "./storyLayer";
 import { ROOT_NODE } from "../login/rootNode";
+import OfficalLayer from "./officalLayer";
+import GeneralJoin from "./generalJoin";
+import RewardLayer from "../comui/rewardLayer";
+import GeneralLayer from "./generalLayer";
 
 
 //大厅场景
@@ -22,10 +26,6 @@ const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorato
 export default class MainScene extends cc.Component {
 
     @property(cc.Label)
-    goldLabel: cc.Label = null;   //金币
-    @property(cc.Label)
-    foodLabel: cc.Label = null;   //粮草
-    @property(cc.Label)
     lvLabel: cc.Label = null;   //主角等级
     @property(cc.Label)
     lineTimeLabel: cc.Label = null;   //在线时长
@@ -34,17 +34,8 @@ export default class MainScene extends cc.Component {
 
     @property(cc.Node)
     mapNode: cc.Node = null;   //地图总节点
-
     @property(cc.Node)
-    homeBtnNode: cc.Node = null;  //主城按钮
-    @property(cc.Node)
-    bagBtnNode: cc.Node = null;  //背包按钮
-    @property(cc.Node)
-    recruitBtnNode: cc.Node = null;  //募兵按钮
-    @property(cc.Node)
-    welfareBtnNode: cc.Node = null;  //福利按钮
-    @property(cc.Node)
-    cityBtnNode: cc.Node = null;  //城池按钮
+    captialNode: cc.Node = null;  //主城节点
 
     @property(cc.Node)
     taskNode: cc.Node = null;  //任务节点
@@ -56,18 +47,23 @@ export default class MainScene extends cc.Component {
     taskNameLabel: cc.Label = null;  //任务名称
     @property(cc.Label)
     taskDescLabel: cc.Label = null;  //任务描述
+
+    @property(cc.Label)
+    mainBtnLbl: cc.Label = null;   //主城或全舆
+    @property([cc.Toggle])
+    radioButton: cc.Toggle[] = [];    //福利，武将，主城/全舆, 仓库，城池
+
     @property(cc.Prefab)
     pfStoryLayer: cc.Prefab = null;  //剧情故事界面
-
     @property(cc.Prefab)
     pfOfficalLayer: cc.Prefab = null;   //官职详情界面
     @property(cc.Prefab)
     pfGeneralJoin: cc.Prefab = null;  //武将来投界面
+    @property(cc.Prefab)
+    pfGeneralLayer: cc.Prefab = null;  //武将界面
 
     @property(cc.Prefab)
     pfBag: cc.Prefab = null;   //背包界面
-    @property(cc.Prefab)
-    pfRecruit: cc.Prefab = null;  //招募界面
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -87,18 +83,19 @@ export default class MainScene extends cc.Component {
 
         this.mapNode.setPosition(cc.v2(0, -600));   //初始显示洛阳 
         this.MapLimitPos = cc.v2(this.MapLimitPos.x - cc.winSize.width/2, this.MapLimitPos.y - cc.winSize.height/2);
-
-        this.UpdateGoldCount();
-        this.UpdateFoodCount();
+        
         this.updateRoleLvLabel();  //更新主角等级
 
         this.initTaskInfo();   //初始化任务
         this.showLineTime();   //显示在线时长
+
+        this.radioButton[2].check();   //福利，武将，主城/全舆, 仓库，城池
     }
 
     initNotice(){
-        NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this); 
-        NoticeMgr.on(NoticeType.UpdateFood, this.UpdateFoodCount, this); 
+        NoticeMgr.on(NoticeType.ShowMainMap, ()=>{  //显示大厅场景的全局地图
+            this.radioButton[2].check();   //福利，武将，主城/全舆, 仓库，城池
+        }, this); 
         NoticeMgr.on(NoticeType.UpdateRoleLvOffical, this.updateRoleLvLabel, this);  //更新主角等级
         NoticeMgr.on(NoticeType.UpdateTaskState, this.updateTaskInfo, this);  //更新任务
         
@@ -144,19 +141,14 @@ export default class MainScene extends cc.Component {
     //更新主角等级
     updateRoleLvLabel(oldRoleLv: number=0){
         this.lvLabel.string = MyUserData.roleLv.toString();
-        if(oldRoleLv > 0){   //主角等级提升
-            ROOT_NODE.showTipsText("主角等级提升!");
-        }else{   //升官
-            ROOT_NODE.showTipsText("主角官职提升!");
+        if(MyUserData.roleLv > 1){
+            if(oldRoleLv > 0){   //主角等级提升
+                ROOT_NODE.showTipsText("主角等级提升!");
+
+            }else{   //升官
+                ROOT_NODE.showTipsText("主角官职提升!");
+            }
         }
-    }
-
-    UpdateGoldCount(){
-        this.goldLabel.string = MyUserData.GoldCount.toString();
-    }
-
-    UpdateFoodCount(){
-        this.foodLabel.string = MyUserData.FoodCount.toString();
     }
 
     /**预处理地图将要移动的目标坐标，防止移动过大地图出现黑边 */
@@ -180,7 +172,7 @@ export default class MainScene extends cc.Component {
         GameMgr.setGameCurTask(null);  //当前任务配置
         this.taskReward.active = false; //任务奖励
         let taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
-        cc.log("initTaskInfo 初始化任务 taskConf = "+JSON.stringify(taskConf))
+        cc.log("initTaskInfo 初始化任务 MyUserData.TaskState = "+MyUserData.TaskState+"; taskConf = "+JSON.stringify(taskConf))
         if(taskConf){
             GameMgr.setGameCurTask(taskConf);  //当前任务配置
 
@@ -189,13 +181,14 @@ export default class MainScene extends cc.Component {
             this.taskNameLabel.string = level + taskConf.name;  //任务名称
             this.taskDescLabel.string = taskConf.desc;  //任务描述
 
-            if(MyUserData.TaskState == TaskState.Finish){   //已完成未领取
+            //任务状态 0未完成，1对话完成，2完成未领取，2已领取
+            if(MyUserData.TaskState == TaskState.Reward){   //已完成未领取
                 this.taskReward.active = true;
                 //ROOT_NODE.showTipsText(`任务${taskConf.name}奖励可领取`);
-                GameMgr.openTaskRewardsLayer(GameMgr.curTaskConf);
-            }else if(taskConf.type == TaskType.Story){   //剧情故事自动展开
-                this.onTaskBtn();
+                this.openTaskRewardsLayer(GameMgr.curTaskConf);
             }else if(MyUserData.TaskState == TaskState.Ready){
+                this.onTaskBtn();
+            }else if(taskConf.type == TaskType.Story){   //剧情故事自动展开
                 this.onTaskBtn();
             }
         }
@@ -262,6 +255,7 @@ export default class MainScene extends cc.Component {
         this.touchBeginPos = null;
     }
 
+    /**分享 */
     onShareBtn(){
         AudioMgr.playBtnClickEffect();
         SDKMgr.shareGame("快来和我一起征战天下，弹指江山吧！", (succ:boolean)=>{
@@ -276,46 +270,56 @@ export default class MainScene extends cc.Component {
         }, this);
     }
 
+    /**底部页签点击 */
+    onRadioButtonClicked(toggle) {
+        AudioMgr.playBtnClickEffect();
+        let index = this.radioButton.indexOf(toggle);
+        if(toggle.isChecked) {
+            switch(index) {   // //福利，武将，主城/全舆, 仓库，城池
+                case 0:
+                    break;
+                case 1:
+                    this.openGeneralLayer(1);
+                    break;
+                case 2:
+                    if(this.captialNode && this.captialNode.active){   //主城
+                        this.mainBtnLbl.string = "主城"
+                    }else{
+                        this.mainBtnLbl.string = "全舆"
+                    }
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**玩家头像 */
     onHeadBtn(){
         AudioMgr.playBtnClickEffect();
     }
 
-    onCapitalBtn(){
-        AudioMgr.playBtnClickEffect();
-        //GameMgr.goToSceneWithLoading("capitalScene");  //点击主城
-    }
-    onBagBtn(){
-        AudioMgr.playBtnClickEffect();
-        //GameMgr.showLayer(this.pfBag);  //背包（武库）界面
-    } 
-    onRecruitBtn(){
-        AudioMgr.playBtnClickEffect();
-        //GameMgr.showLayer(this.pfRecruit);   //招募界面
-    }
-
-    onWelfareBtn(){
-        AudioMgr.playBtnClickEffect();
-    }
-
-    onCityBtn(){
-        AudioMgr.playBtnClickEffect();
-    }
-
+    /**任务 */
     onTaskBtn(){
         AudioMgr.playBtnClickEffect();
-
-        if(MyUserData.TaskState == 0){   //未完成
+        //任务状态 0未完成，1对话完成，2完成未领取，2已领取
+        if(MyUserData.TaskState == TaskState.Ready){   //未完成
             let layer = GameMgr.showLayer(this.pfStoryLayer);
             layer.getComponent(StoryLayer).initStoryConf(GameMgr.curTaskConf);
-        }else if(MyUserData.TaskState == 1){   //已完成未领取
-            GameMgr.openTaskRewardsLayer(GameMgr.curTaskConf);
+        }else if(MyUserData.TaskState == TaskState.Finish){   //对话完成
+            if(GameMgr.curTaskConf.type == TaskType.Story){  
+                GameMgr.handleStoryShowOver(GameMgr.curTaskConf, true);
+            }else{
+                GameMgr.handleStoryShowOver(GameMgr.curTaskConf, false);
+            }
+        }else if(MyUserData.TaskState == TaskState.Reward){   //已完成未领取
+            this.openTaskRewardsLayer(GameMgr.curTaskConf);
         }
     } 
-
-    onAddGoldBtn(){
-        AudioMgr.playBtnClickEffect();
-        GameMgr.showGoldAddDialog();  //获取金币提示框
-    }
 
     onAdBoxBtn(){
         AudioMgr.playBtnClickEffect();
@@ -326,5 +330,79 @@ export default class MainScene extends cc.Component {
             //ROOT_NODE.ShowAdResultDialog();
         }
     }
+
+
+
+    //---------------  打开一些通用功能界面  --------------------
+
+    /**显示官职详情界面 */
+    showOfficalLayer(officalIds: number[], bSave:boolean=false, callback?:Function){
+        if(officalIds.length > 0){
+            let layer = GameMgr.showLayer(this.pfOfficalLayer);
+            layer.getComponent(OfficalLayer).initOfficalByIds(officalIds, bSave, callback);
+        }else{   
+            cc.log("没有新官职")
+            if(callback){ 
+                callback();
+            }
+        }
+    }
+
+    /**显示武将来投界面 */
+    showGeneralJoinLayer(generalIds: number[], bSave:boolean=false, callback?:Function){
+        if(generalIds.length > 0){
+            let layer = GameMgr.showLayer(this.pfGeneralJoin);
+            layer.getComponent(GeneralJoin).initGeneralByIds(generalIds, bSave, callback);
+        }else{   
+            cc.log("没有新武将")
+            if(callback){ 
+                callback();
+            }
+        }
+    }
+
+    /** 打开任务奖励领取界面 */
+    openTaskRewardsLayer(storyConf: st_story_info){
+        //cc.log("openTaskRewardsLayer(), 任务奖励 storyConf = "+JSON.stringify(storyConf));
+        if(storyConf == null || storyConf == undefined){
+            return;
+        }
+
+        let rewards: Array<ItemInfo> = GameMgr.getItemArrByKeyVal(storyConf.rewards);
+        if(rewards.length > 0){
+            let layer = GameMgr.showLayer(ROOT_NODE.pfReward);
+            layer.getComponent(RewardLayer).showRewardList(rewards, "剧情任务奖励", ()=>{
+                if(storyConf.type > 0){ 
+                    MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Over); 
+                }
+            });
+        }else{   
+            cc.log("没有任务奖励")
+            if(storyConf.type > 0){ 
+                //任务状态 0未完成，1对话完成，2完成未领取，2已领取
+                MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Over); 
+            }
+        }
+    }
+
+    /** 打开武将界面 tabIdx =0招募 1升级 2技能, generalId指定武将 */
+    openGeneralLayer(tabIdx: number=0, generalId?: string){
+        cc.log("openGeneralLayer 打开武将界面 tabIdx = "+tabIdx+"; generalId = "+generalId)
+        let mainScene = GameMgr.getMainScene();
+        if(mainScene){
+            let layer = GameMgr.showLayer(mainScene.pfGeneralLayer);
+            layer.getComponent(GeneralLayer).showGeneralInfoByTab(tabIdx, generalId);
+        }
+    }
+
+
+    /**任务战斗准备 */
+    openFightByTask(taskConf: st_story_info){
+        if(taskConf && taskConf.battleId > 0){  
+            // let layer = GameMgr.showLayer(mainScene.pfFightReady);  //战斗选将准备界面
+            // layer.getComponent(FightReady).initBattleInfo(taskConf.battleId);
+        }
+    }
+
 
 }

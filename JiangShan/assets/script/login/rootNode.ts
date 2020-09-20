@@ -22,7 +22,7 @@ export default class RootNode extends cc.Component {
     @property(cc.Prefab)
     pfGeneral: cc.Prefab =  null;   //武将卡牌
     @property(cc.Prefab)
-    pfMoney: cc.Prefab = null;   //一级界面上的金币钻石粮草公用控件
+    pfComTop: cc.Prefab = null;   //一级界面上的金币钻石粮草公用控件
 
     @property(cc.Prefab)
     pfReward: cc.Prefab = null;   //获取奖励通用提示框
@@ -101,8 +101,8 @@ export default class RootNode extends cc.Component {
     }
 
     //一级界面上的金币钻石粮草公用控件
-    showLayerMoney(parent: cc.Node, pos: cc.Vec2, zIndex:number=10){
-        let topMoney = cc.instantiate(this.pfMoney);
+    showComTopNode(parent: cc.Node, pos: cc.Vec2, zIndex:number=10){
+        let topMoney = cc.instantiate(this.pfComTop);
         topMoney.setPosition(pos);
         parent.addChild(topMoney, zIndex);
     }

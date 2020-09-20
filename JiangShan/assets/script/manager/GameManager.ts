@@ -6,8 +6,6 @@ import LoadingLayer from "../login/loadingLayer";
 import TipsDialog from "../login/tipsDialog";
 import MainScene from "../hall/mainScene";
 import RewardLayer from "../comui/rewardLayer";
-import OfficalLayer from "../hall/officalLayer";
-import GeneralJoin from "../hall/generalJoin";
 
 
 //游戏管理器
@@ -215,6 +213,17 @@ class GameManager {
         return adWidth;
     }
 
+    /**判定金币是否充足 */
+    checkGoldEnoughOrTips(cost: number, bTips: boolean=false){
+        if(MyUserData.GoldCount >= cost){
+            return true;
+        }else{
+            if(bTips){
+                this.showGoldAddDialog();
+            }
+            return false;
+        }
+    }
 
     //获取金币提示框
     showGoldAddDialog(){
@@ -317,45 +326,58 @@ class GameManager {
         return layer;
     }
 
-    /** 打开任务奖励领取界面 */
-    openTaskRewardsLayer(storyConf: st_story_info){
-        //cc.log("openTaskRewardsLayer(), 任务奖励 storyConf = "+JSON.stringify(storyConf));
-        if(storyConf == null || storyConf == undefined){
+    /**任务第一阶段操作完毕处理 */
+    handleStoryShowOver(storyConf: st_story_info, bUpdateState:boolean=true){
+        cc.log("handleStoryShowOver(), 任务操作完毕 MyUserData.TaskState = "+MyUserData.TaskState+"; storyConf = "+JSON.stringify(storyConf));
+        if(storyConf == null || storyConf == undefined || storyConf.type == 0){
             return;
         }
 
-        let rewards: Array<ItemInfo> = GameMgr.getItemArrByKeyVal(storyConf.rewards);
-        if(rewards.length > 0){
-            let layer = GameMgr.showLayer(ROOT_NODE.pfReward);
-            layer.getComponent(RewardLayer).showRewardList(rewards, "剧情任务奖励", ()=>{
-                if(storyConf.type > 0){ 
-                    MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Over);  //修改用户任务 0未完成，1完成未领取，2已领取 
-                }
-            });
-        }else{   
-            cc.log("没有任务奖励")
-            if(storyConf.type > 0){ 
-                MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Over);  //修改用户任务 0未完成，1完成未领取，2已领取 
+        let mainScene = GameMgr.getMainScene();
+        if(MyUserData.TaskState == TaskState.Ready){   //任务对话（第一阶段）处理完毕
+            cc.log("任务对话（第一阶段）处理完毕")
+            if(bUpdateState){
+                GameMgr.saveCurTaskOfficesAndGenerals();  //存储根据当前任务剧情保存的新官职和新武将
+                MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Finish); 
+            }
+            //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
+            switch(storyConf.type){ 
+                case TaskType.Story:
+                    this.handleStoryShowOver(storyConf);
+                    break;
+                case TaskType.Fight:
+                    if(mainScene){
+                        mainScene.openFightByTask(storyConf);   //战斗选将准备界面
+                    }
+                    break;
+                case TaskType.Recruit:
+                    if(mainScene){
+                        mainScene.openGeneralLayer(0);   //武将招募
+                    }
+                    break;
+                case TaskType.Offical:
+                    break;
+                case TaskType.Capital:
+                    break;
+                case TaskType.General:
+                    break;
+                case TaskType.Garrison:
+                    break;
+                case TaskType.Skill:
+                    break;
+                case TaskType.War:
+                    break;
+            }
+        }else if(MyUserData.TaskState == TaskState.Finish){   //任务操作（第二阶段）处理完毕
+            cc.log("任务操作（第二阶段）处理完毕")
+            if(bUpdateState){
+                MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Reward); 
+            }
+            if(mainScene){
+                mainScene.openTaskRewardsLayer(storyConf);  //打开任务领奖界面
             }
         }
-    }
-
-    /**任务第一阶段操作完毕处理 */
-    handleStoryShowOver(storyConf: st_story_info){
-        cc.log("handleStoryShowOver(), 任务操作完毕 storyConf = "+JSON.stringify(storyConf));
-        if(storyConf == null || storyConf == undefined){
-            return;
-        }
-        if(storyConf.type > 0){   //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
-            MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Finish);  //修改用户任务 0未完成，1完成未领取，2已领取 
-        }
-
-        if(storyConf.type == TaskType.Story){ 
-            this.openTaskRewardsLayer(storyConf);  //打开任务领奖界面
-        }else if(storyConf.type == TaskType.Fight){  
-            this.openFightByTask(storyConf);   //战斗选将准备界面
-        }
-
+        
         // if(MyUserData.TaskId == SpecialStory.taishouOpen){   //东郡太守
         //     MyUserMgr.updateMyCityIds(316, true);  
         // }else if(MyUserData.TaskId == SpecialStory.zhoumuOpen){   //兖州牧
@@ -366,44 +388,6 @@ class GameManager {
         // }
     }
 
-    /**任务战斗准备 */
-    openFightByTask(taskConf: st_story_info){
-        if(taskConf && taskConf.battleId > 0){  //任务类型 1 视频剧情 2主城建设 3招募士兵 4组建部曲 5参加战斗 6学习技能 7攻城掠地
-            let mainScene = GameMgr.getMainScene();
-            if(mainScene){
-                // let layer = GameMgr.showLayer(mainScene.pfFightReady);  //战斗选将准备界面
-                // layer.getComponent(FightReady).initBattleInfo(taskConf.battleId);
-            }
-        }
-    }
-
-    /**显示官职详情界面 */
-    showOfficalLayer(officalIds: number[], bSave:boolean=false, callback?:Function){
-        let mainScene = this.getMainScene();
-        if(officalIds.length > 0 && mainScene){
-            let layer = GameMgr.showLayer(mainScene.pfOfficalLayer);
-            layer.getComponent(OfficalLayer).initOfficalByIds(officalIds, bSave, callback);
-        }else{   
-            cc.log("没有新官职")
-            if(callback){ 
-                callback();
-            }
-        }
-    }
-
-    /**显示武将来投界面 */
-    showGeneralJoinLayer(generalIds: number[], bSave:boolean=false, callback?:Function){
-        let mainScene = this.getMainScene();
-        if(generalIds.length > 0 && mainScene){
-            let layer = GameMgr.showLayer(mainScene.pfGeneralJoin);
-            layer.getComponent(GeneralJoin).initGeneralByIds(generalIds, bSave, callback);
-        }else{   
-            cc.log("没有新武将")
-            if(callback){ 
-                callback();
-            }
-        }
-    }
 
     //------------------  以下为游戏逻辑处理  -----------------------------
 

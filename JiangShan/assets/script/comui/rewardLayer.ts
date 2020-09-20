@@ -85,7 +85,7 @@ export default class RewardLayer extends cc.Component {
     onListSelected(item: any, selectedId: number, lastSelectedId: number, val: number) {
         if (!item)
             return;
-        cc.log('当前选择的是：' + selectedId + '，上一次选择的是：' + lastSelectedId);
+        //cc.log('当前选择的是：' + selectedId + '，上一次选择的是：' + lastSelectedId);
         this.updateSelItemInfoByIdx(selectedId);  //显示底部选中道具信息
     }   
 
@@ -93,7 +93,7 @@ export default class RewardLayer extends cc.Component {
     updateSelItemInfoByIdx(cellIdx:number){
         let item = this.rewardArr[cellIdx];
         if(item && item.itemCfg){
-            cc.log("item.itemCfg = "+JSON.stringify(item.itemCfg))
+            //cc.log("item.itemCfg = "+JSON.stringify(item.itemCfg))
             this.numLabel.string = "数量："+item.count;
             this.nameLabel.string = item.itemCfg.name;
             this.iconSpr.spriteFrame = ROOT_NODE.iconAtlas.getSpriteFrame(item.itemId.toString());

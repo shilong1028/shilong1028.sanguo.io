@@ -3,7 +3,6 @@ import { GeneralInfo, ItemInfo, CfgMgr } from "./ConfigManager";
 import { NoticeMgr, NoticeType } from "./NoticeManager";
 import { GuideMgr } from "./GuideMgr";
 import { TaskState } from "./Enum";
-import { GameMgr } from "./GameManager";
 
 //用户数据管理
 const { ccclass, property } = cc._decorator;
@@ -62,7 +61,7 @@ class MyUserManager {
         LDMgr.setItem(LDKey.KEY_CapitalLv, 0);
 
         MyUserData.TaskId = "1001";   //当前任务ID
-        MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
+        MyUserData.TaskState = TaskState.Ready;   //任务状态 0未完成，1对话完成，2完成未领取，2已领取
         LDMgr.setItem(LDKey.KEY_StoryData, "1001-0");
 
         MyUserData.myCityIds = [];  //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
@@ -126,8 +125,8 @@ class MyUserManager {
         let taskInfo = LDMgr.getItemKeyVal(LDKey.KEY_StoryData);  //当前任务ID
         if(taskInfo == null){
             MyUserData.TaskId = "1001";   //当前任务ID
-            MyUserData.TaskState = 0;    //当前任务状态 0未完成，1完成未领取，2已领取
-            LDMgr.setItem(LDKey.KEY_StoryData, "1001-0");
+            MyUserData.TaskState = TaskState.Ready;   //任务状态 0未完成，1对话完成，2完成未领取，2已领取
+            LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString()+"-"+MyUserData.TaskState);
         }else{
             MyUserData.TaskId = taskInfo.key;
             MyUserData.TaskState = taskInfo.val;
@@ -393,7 +392,7 @@ class MyUserManager {
             let tempItem = MyUserData.GeneralList[i].cloneNoCfg();
             GeneralList.push(tempItem);
         }
-        //cc.log("GeneralList = "+JSON.stringify(GeneralList));
+        cc.log("GeneralList = "+JSON.stringify(GeneralList));
         LDMgr.setItem(LDKey.KEY_GeneralList, JSON.stringify(GeneralList));
     }
     /**从本地存储中获取武将列表 */
@@ -461,9 +460,9 @@ class MyUserManager {
         NoticeMgr.emit(NoticeType.UpdateFood, null);
     }
 
-    /**修改用户任务 0未完成，1完成未领取，2已领取 */
+    /**修改用户任务  0未完成，1对话完成，2完成未领取，2已领取 */
     updateTaskState(taskId: string, state: TaskState){
-        cc.log("updateTaskState 更新任务状态 taskId = "+taskId+"; state = "+state)
+        cc.log("updateTaskState 更新任务状态 taskId = "+taskId+"; state = "+state+"; MyUserData.TaskState = "+MyUserData.TaskState)
         if(MyUserData.TaskId == taskId && MyUserData.TaskState == state){
             return;
         }
@@ -474,12 +473,11 @@ class MyUserManager {
             let story_conf = CfgMgr.getTaskConf(MyUserData.TaskId);
             if(story_conf && story_conf.next_id){
                 MyUserData.TaskId = story_conf.next_id;
-                MyUserData.TaskState = 0;
+                MyUserData.TaskState = TaskState.Ready;   //任务状态 0未完成，1对话完成，2完成未领取，2已领取
             }
         }
 
         LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString()+"-"+MyUserData.TaskState);
-        GameMgr.saveCurTaskOfficesAndGenerals();  //存储根据当前任务剧情保存的新官职和新武将
         NoticeMgr.emit(NoticeType.UpdateTaskState, null);   //任务状态更新
     }
 

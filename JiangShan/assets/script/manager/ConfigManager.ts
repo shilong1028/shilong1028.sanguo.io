@@ -1,8 +1,6 @@
 import { FunMgr, TempFightInfo } from "./Enum";
 
 
-const { ccclass } = cc._decorator;
-
 /*** 类型定义 */
 type double = number;       //64位
 type int = number;          //32位
@@ -115,32 +113,27 @@ export class GeneralInfo{
         let temp = JSON.parse(objStr); 
         return temp;
     }
-    //更新士兵数量
-    updateBingCount(num: number){
-        this.bingCount += num;
-        if(this.bingCount < 0){
-            this.bingCount = 0;
-        }else{
-            let maxCount = CfgMgr.getMaxBingCountByLv(this.generalLv);
-            if(this.bingCount > maxCount){
-                this.bingCount = maxCount;
-            }
-        }
-    }
-    //根据经验更新等级
-    updateLvByExp(){
-        if(this.generalLv >= 100){
-            this.generalLv = 100;
-            this.generalExp = 0;
-        }else{
-            let maxExp = CfgMgr.getMaxGeneralExpByLv(this.generalLv);
-            while(this.generalExp >= maxExp){
-                this.generalLv ++;
-                this.generalExp -= maxExp;
-                maxExp = CfgMgr.getMaxGeneralExpByLv(this.generalLv);
-            }
-        }
-    }
+    // //更新士兵数量
+    // updateBingCount(num: number){
+    //     this.bingCount += num;
+    //     if(this.bingCount < 0){
+    //         this.bingCount = 0;
+    //     }
+    // }
+    // //根据经验更新等级
+    // updateLvByExp(){
+    //     if(this.generalLv >= 100){
+    //         this.generalLv = 100;
+    //         this.generalExp = 0;
+    //     }else{
+    //         let maxExp = CfgMgr.getMaxGeneralExpByLv(this.generalLv);
+    //         while(this.generalExp >= maxExp){
+    //             this.generalLv ++;
+    //             this.generalExp -= maxExp;
+    //             maxExp = CfgMgr.getMaxGeneralExpByLv(this.generalLv);
+    //         }
+    //     }
+    // }
 }
 //武将配置数据
 export class st_general_info {
@@ -165,6 +158,28 @@ export class st_general_info {
         this.recruit = parseInt(this.recruit);
         this.skillNum = parseInt(this.skillNum);
     }
+    constructor(){
+    }
+    clone(){
+        let objStr = JSON.stringify(this);
+        let temp = JSON.parse(objStr); 
+        return temp;
+    }
+}
+
+//招兵配置数据
+export class st_recruit_info{
+    id_str;
+    name;
+    gold;   //百兵招募花费金币
+    food;   //百兵行军每月消耗粮草
+    desc;   //对话内容
+    
+    transType(){
+        this.gold = parseInt(this.gold);
+        this.food = parseInt(this.food);
+    }
+
     constructor(){
     }
     clone(){
@@ -372,27 +387,7 @@ export class st_battle_info{
 
 
 
-//招兵配置数据
-export class st_recruit_info{
-    id_str;
-    name;
-    gold;
-    probability;
-    desc;   //对话内容
-    
-    transType(){
-        this.gold = parseInt(this.gold);
-        this.probability = parseInt(this.probability);
-    }
 
-    constructor(){
-    }
-    clone(){
-        let objStr = JSON.stringify(this);
-        let temp = JSON.parse(objStr); 
-        return temp;
-    }
-}
 
 //技能信息
 export class SkillInfo{
@@ -525,7 +520,7 @@ export class st_guide_info{
 
 
 //*********************  以下为接口类定义 *********************************** */
-
+const { ccclass } = cc._decorator;
 @ccclass
 class CfgManager_class {
 
@@ -540,6 +535,9 @@ class CfgManager_class {
     //武将配置表
     C_general_info : Map<number, st_general_info> = new Map<number, st_general_info>();
     SC_general_info = st_general_info;
+    //招兵配置表
+    C_recruit_info : Map<number, st_recruit_info> = new Map<number, st_recruit_info>();
+    SC_recruit_info = st_recruit_info;
     //官职配置表
     C_official_info : Map<number, st_official_info> = new Map<number, st_official_info>();
     SC_official_info = st_official_info;
@@ -566,9 +564,7 @@ class CfgManager_class {
 
 
 
-    //招兵配置表
-    C_recruit_info : Map<number, st_recruit_info> = new Map<number, st_recruit_info>();
-    SC_recruit_info = st_recruit_info;
+
 
     //技能配置表
     C_skill_info : Map<number, st_skill_info> = new Map<number, st_skill_info>();
@@ -611,6 +607,15 @@ class CfgManager_class {
     /**获取武将配置数据 */
     getGeneralConf(generalId: string): st_general_info{
         let obj = this.C_general_info[generalId];
+        if(obj){
+            return obj.clone();
+        }else{
+            return null;
+        }
+    }
+    /**获取招募配置数据 */
+    getRecruitConf(soldierId: string): st_recruit_info{
+        let obj = this.C_recruit_info[soldierId];
         if(obj){
             return obj.clone();
         }else{
@@ -817,31 +822,6 @@ class CfgManager_class {
     setOverCallback(callback: any, target: any){
         this.overCallBack = callback;
         this.overTarget = target;
-    }
-
-    //由武将等级得到最大带兵数
-    getMaxBingCountByLv(generalLv:number){
-        if(generalLv == 1){
-            return 1000;
-        }else if(generalLv <= 3){
-            return 2000;
-        }else if(generalLv <= 8){
-            return 3000;
-        }else if(generalLv <= 15){
-            return 4000;
-        }else if(generalLv <= 30){
-            return 5000;
-        }else if(generalLv <= 50){
-            return 6000;
-        }else if(generalLv < 70){
-            return 7000;
-        }else if(generalLv < 85){
-            return 8000;
-        }else if(generalLv < 95){
-            return 9000;
-        }else{
-            return 10000;
-        }
     }
 
     //根据武将等级获得升级经验

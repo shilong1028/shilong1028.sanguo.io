@@ -11,6 +11,7 @@ export const NoticeType = {
     UpdateDiamond: "UpdateDiamond",   //更新钻石（金锭）显示
     UpdateFood: "UpdateFood",   //更新粮食显示
     UpdateRoleLvOffical: "UpdateRoleLvOffical",   //更新主角等级或官职
+    ShowMainMap: "ShowMainMap",  //显示大厅场景的全局地图
 
     UpdateBagItem: "UpdateBagItem",  //更新单个背包物品
     UpdateGeneral: "UpdateGeneral",  //更新单个武将

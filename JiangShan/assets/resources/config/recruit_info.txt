@@ -1,55 +1,55 @@
 [1]
 id_str = 1
 name = 壮丁
-gold = 100
-probability = 100
-desc = 
+gold = 1
+food = 10
+desc = 壮丁
 
 [2]
 id_str = 2
 name = 团民
-gold = 200
-probability = 100
-desc = 
+gold = 2
+food = 10
+desc = 团民
 
 [3]
 id_str = 3
 name = 乡勇
-gold = 500
-probability = 100
-desc = 
+gold = 3
+food = 10
+desc = 乡勇
 
 [4]
 id_str = 4
 name = 义兵
-gold = 1000
-probability = 100
-desc = 
+gold = 5
+food = 10
+desc = 义兵
 
 [401]
 id_str = 401
 name = 骑兵
-gold = 5000
-probability = 15
-desc = 
+gold = 12
+food = 10
+desc = 骑兵百名，骑兵装备战马和马刀，高移动力，防御力一般，攻击力一般。克制刀兵，但被枪兵克制。
 
 [402]
 id_str = 402
 name = 刀兵
-gold = 3000
-probability = 30
-desc = 
+gold = 11
+food = 10
+desc = 刀兵百名，刀兵装备大盾和钢刀，移动力一般，防御力高，攻击力一般。克制枪兵，但被骑兵克制。
 
 [403]
 id_str = 403
 name = 枪兵
-gold = 3000
-probability = 30
-desc = 
+gold = 10
+food = 10
+desc = 枪兵百名，枪兵装备厚甲和长枪，移动力一般，防御力一般，攻击力高。克制骑兵，但被刀兵克制。
 
 [404]
 id_str = 404
 name = 弓兵
-gold = 4000
-probability = 25
-desc = 
+gold = 10
+food = 10
+desc = 弓兵百名，弓兵装备长弓或连弩，可以远程攻击，但移动力一般，防御力弱，攻击力弱。

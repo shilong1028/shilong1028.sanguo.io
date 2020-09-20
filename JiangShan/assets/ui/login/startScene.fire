@@ -183,7 +183,7 @@
       "array": [
         0,
         0,
-        502.29473419497447,
+        501.73993667067504,
         0,
         0,
         0,
@@ -384,9 +384,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 215,
+      "g": 45,
+      "b": 61,
       "a": 255
     },
     "_contentSize": {
@@ -444,8 +444,8 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_useOriginalSize": false,
-    "_string": "弹指江山",
-    "_N$string": "弹指江山",
+    "_string": "弹指九州",
+    "_N$string": "弹指九州",
     "_fontSize": 130,
     "_lineHeight": 200,
     "_enableWrapText": true,
@@ -480,9 +480,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 215,
+      "g": 45,
+      "b": 61,
       "a": 255
     },
     "_contentSize": {
@@ -672,9 +672,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 99,
+      "g": 25,
+      "b": 32,
       "a": 255
     },
     "_contentSize": {

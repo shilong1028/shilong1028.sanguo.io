@@ -95,6 +95,7 @@ export default class GeneralCell extends cc.Component {
         }
     }
 
+    /**点击官职 */
     onOfficeClick(){
         AudioMgr.playBtnClickEffect();
         if(this.generalInfo && this.generalInfo.officialId){
@@ -104,7 +105,7 @@ export default class GeneralCell extends cc.Component {
             }
         }
     }
-
+    /**点击兵种 */
     onTypeClick(){
         AudioMgr.playBtnClickEffect();
         if(this.generalInfo && this.generalInfo.generalCfg){

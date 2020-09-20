@@ -168,31 +168,46 @@ export default class StoryLayer extends cc.Component {
         this.handleNextTalk();
     }
 
+    /**显示新官职界面 */
     isShowNewOffical(){
         if(this.curTalkConf.official.length > 0){ //新官职
-            GameMgr.showOfficalLayer(this.curTalkConf.official, false, ()=>{
-                cc.log("新官职展示结束，后续处理")
-                GameMgr.addCurTaskNewOffices(this.curTalkConf.official);
-                if(this.isShowNewGeneral()){  //武将来投
-                }else{
-                    this.handleNextTalk();
-                }
-            });
-            return true;
+            let mainScene = GameMgr.getMainScene();
+            if(mainScene){
+                mainScene.showOfficalLayer(this.curTalkConf.official, false, ()=>{
+                    this.handleOfficalNext();
+                });
+                return true;
+            }
         }
         return false;
     }
-
+    /**处理官职展示后续操作 */
+    handleOfficalNext(){
+        cc.log("新官职展示结束，后续处理")
+        GameMgr.addCurTaskNewOffices(this.curTalkConf.official);
+        if(this.isShowNewGeneral()){  //武将来投
+        }else{
+            this.handleNextTalk();
+        }
+    }
+    /**展示武将来投界面 */
     isShowNewGeneral(){
         if(this.curTalkConf.generals.length > 0){ //新武将
-            GameMgr.showGeneralJoinLayer(this.curTalkConf.generals, false, ()=>{
-                cc.log("武将来投展示结束，后续处理")
-                GameMgr.addCurTaskNewGenerals(this.curTalkConf.generals);
-                this.handleNextTalk();
-            });
-            return true;
+            let mainScene = GameMgr.getMainScene();
+            if(mainScene){
+                mainScene.showGeneralJoinLayer(this.curTalkConf.generals, false, ()=>{
+                    this.handleGeneralNext();
+                });
+                return true;
+            }
         }
         return false;
+    }
+    /**处理武将来投后续操作 */
+    handleGeneralNext(){
+        cc.log("武将来投展示结束，后续处理")
+        GameMgr.addCurTaskNewGenerals(this.curTalkConf.generals);
+        this.handleNextTalk();
     }
 
     handleNextTalk(){

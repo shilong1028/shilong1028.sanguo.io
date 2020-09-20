@@ -4,54 +4,6 @@
 
 import { GeneralInfo, st_general_info } from "./ConfigManager";
 
-//游戏平台
-export const ChannelDef = {
-    Default: "Default", 
-    Wechat: "Wechat", 
-    TouTiao: "TouTiao"
-}
-
-//敌方AI处理结果
-export class EnemyAIResult{
-    runAwayEnemy = null;    //敌方预逃走的单位
-    runAwayWeight = 0;   //逃走权重
-    hitEnemy = null;   //敌方出手的单位
-    hitMy = null;    //我方预被击杀的单位
-    hitWeight = 0;   //击杀权重
-
-    constructor(runAwayEnemy, runAwayWeight, hitEnemy, hitMy, hitWeight){
-        this.runAwayEnemy = runAwayEnemy;  
-        this.runAwayWeight = runAwayWeight;   
-        this.hitEnemy = hitEnemy;  
-        this.hitMy = hitMy;  
-        this.hitWeight = hitWeight;   
-    }
-}
-
-//特殊故事节点
-export const SpecialStory = {
-    huangjinover: 1022,  //黄巾之乱结束(黄巾叛军占据城池旗帜复原)
-    dongzhuoOver: 13,  //董卓之乱结束(董卓叛军占据城池旗帜复原)
-    taishouOpen: 10,  //东郡太守（占据东郡）
-    zhoumuOpen: 11,  //兖州牧（占据山阳昌邑，治下兖州）
-    mubingOpen: 2,  //开启募兵
-    unitOpen: 3,   //开启部曲
-    skillOpen: 9,   //开启技能
-    capitalOpen: 12,  //开启主城
-}
-
-
-/**士兵类型 */
-export const SoliderType = {
-    qibing: 401,    //骑兵装备战马和马刀，高移动力，防御力一般，攻击力一般。克制刀兵，但被枪兵克制。
-    daobing: 402,   //刀兵装备大盾和钢刀，移动力一般，防御力高，攻击力一般。克制枪兵，但被骑兵克制。
-    qiangbing: 403, //枪兵装备厚甲和长枪，移动力一般，防御力一般，攻击力高。克制骑兵，但被刀兵克制。
-    gongbing: 404   //弓兵装备长弓或连弩，可以远程攻击，但移动力一般，防御力弱，攻击力弱。
-}
-
-
-
-
 //公用方法管理器
 const {ccclass, property} = cc._decorator;
 
@@ -275,7 +227,22 @@ export var FunMgr = new FunManager();
 
 
 //----------------------------- 一些枚举定义  ----------------------------------
-export enum TaskType{
+//游戏平台
+export const ChannelDef = {
+    Default: "Default", 
+    Wechat: "Wechat", 
+    TouTiao: "TouTiao"
+}
+
+/**士兵类型 */
+export const SoliderType = {
+    qibing: 401,    //骑兵装备战马和马刀，高移动力，防御力一般，攻击力一般。克制刀兵，但被枪兵克制。
+    daobing: 402,   //刀兵装备大盾和钢刀，移动力一般，防御力高，攻击力一般。克制枪兵，但被骑兵克制。
+    qiangbing: 403, //枪兵装备厚甲和长枪，移动力一般，防御力一般，攻击力高。克制骑兵，但被刀兵克制。
+    gongbing: 404   //弓兵装备长弓或连弩，可以远程攻击，但移动力一般，防御力弱，攻击力弱。
+}
+
+export enum TaskType{  
     Story = 1,   //剧情
     Fight = 2,   //战斗
     Recruit = 3,   //招募士兵
@@ -283,12 +250,15 @@ export enum TaskType{
     Capital = 5,   //主城建设
     General = 6,   //招募武将
     Garrison = 7,   //驻守
+    Skill = 8,   //技能
+    War = 9,  //攻城略地
 }
 
 export enum TaskState{
     Ready = 0,   //准备开始
     Finish = 1,   //引导完成
-    Over = 2,   //奖励领取完毕
+    Reward = 2,   //任务完成，可领奖
+    Over = 3,   //奖励领取完毕
 }
 
 export enum ComItemType{
@@ -302,7 +272,34 @@ export enum ComItemType{
     Exp3 = 303,   //经验丹
 }
 
+//敌方AI处理结果
+export class EnemyAIResult{
+    runAwayEnemy = null;    //敌方预逃走的单位
+    runAwayWeight = 0;   //逃走权重
+    hitEnemy = null;   //敌方出手的单位
+    hitMy = null;    //我方预被击杀的单位
+    hitWeight = 0;   //击杀权重
 
+    constructor(runAwayEnemy, runAwayWeight, hitEnemy, hitMy, hitWeight){
+        this.runAwayEnemy = runAwayEnemy;  
+        this.runAwayWeight = runAwayWeight;   
+        this.hitEnemy = hitEnemy;  
+        this.hitMy = hitMy;  
+        this.hitWeight = hitWeight;   
+    }
+}
+
+//特殊故事节点
+export const SpecialStory = {
+    huangjinover: 1022,  //黄巾之乱结束(黄巾叛军占据城池旗帜复原)
+    dongzhuoOver: 13,  //董卓之乱结束(董卓叛军占据城池旗帜复原)
+    taishouOpen: 10,  //东郡太守（占据东郡）
+    zhoumuOpen: 11,  //兖州牧（占据山阳昌邑，治下兖州）
+    mubingOpen: 2,  //开启募兵
+    unitOpen: 3,   //开启部曲
+    skillOpen: 9,   //开启技能
+    capitalOpen: 12,  //开启主城
+}
 
 //-------------------------------  以下为数据类结构体定义  ------------------------------------
 
