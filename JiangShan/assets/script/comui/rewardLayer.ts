@@ -70,16 +70,15 @@ export default class RewardLayer extends cc.Component {
         }
 
         this.list.numItems = this.rewardArr.length;
-        this.infoNode.active = false;
-        this.descLabel.string = "";
-        this.updateSelItemInfo(this.rewardArr[0]);  //显示底部选中道具信息
+        this.list.selectedId = 0;
+        this.infoNode.active = true;
+        this.updateSelItemInfoByIdx(0);  //显示底部选中道具信息
     }
 
     //列表渲染器
     onListRender(item: cc.Node, idx: number) {
         let info = this.rewardArr[idx];
-        item.getComponent(Item).initItemData(info, (cell)=>{
-        });
+        item.getComponent(Item).initItemData(info);
     }
 
     //当列表项被选择...
@@ -87,39 +86,23 @@ export default class RewardLayer extends cc.Component {
         if (!item)
             return;
         cc.log('当前选择的是：' + selectedId + '，上一次选择的是：' + lastSelectedId);
-        //this.updateSelItemInfoByIdx(selectedId);  //显示底部选中道具信息
+        this.updateSelItemInfoByIdx(selectedId);  //显示底部选中道具信息
     }   
 
     /**显示底部选中道具信息 */
-    updateSelItemInfo(info:ItemInfo){
-        this.iconSpr.spriteFrame = null;
-        this.nameLabel.string = "";
-        this.numLabel.string = "";
-        this.descLabel.string = "";
-        this.infoNode.active = true;
-
-        if(info && info.itemCfg){
-            this.numLabel.string = "数量："+info.count;
-            this.nameLabel.string = info.itemCfg.name;
-            this.iconSpr.spriteFrame = ROOT_NODE.iconAtlas.getSpriteFrame(info.itemId.toString());
-            this.descLabel.string = info.itemCfg.desc;
-        }
-    }
-
-    /**显示底部选中道具信息 */
     updateSelItemInfoByIdx(cellIdx:number){
-        this.iconSpr.spriteFrame = null;
-        this.nameLabel.string = "";
-        this.numLabel.string = "";
-        this.descLabel.string = "";
-        this.infoNode.active = true;
-
         let item = this.rewardArr[cellIdx];
         if(item && item.itemCfg){
+            cc.log("item.itemCfg = "+JSON.stringify(item.itemCfg))
             this.numLabel.string = "数量："+item.count;
             this.nameLabel.string = item.itemCfg.name;
             this.iconSpr.spriteFrame = ROOT_NODE.iconAtlas.getSpriteFrame(item.itemId.toString());
             this.descLabel.string = item.itemCfg.desc;
+        }else{
+            this.iconSpr.spriteFrame = null;
+            this.nameLabel.string = "";
+            this.numLabel.string = "";
+            this.descLabel.string = "";
         }
     }
 

@@ -27,7 +27,7 @@ export default class Item extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     selCallBack: any = null;   //响应点击选中回调
-
+    bShowTip: boolean = false;   //点击Cell是否弹出描述提示
     itemInfo: ItemInfo = null;   //道具数据
 
     
@@ -69,7 +69,7 @@ export default class Item extends cc.Component {
                 this.showSelState(true)
                 this.selCallBack(this);   //选中回调
             }
-        }else{
+        }else if(this.bShowTip){
             if(this.itemInfo && this.itemInfo.itemCfg){
                 ROOT_NODE.showTipsText(this.itemInfo.itemCfg.desc);
             }
@@ -85,8 +85,9 @@ export default class Item extends cc.Component {
      * 注意，item是通过rootNode缓存池获取后调用initItemData，后添加到响应父节点（即调动onLoad之类的）
      * 调用顺序为 reuse  ->  initItemData  ->  onLoad
     */
-    initItemData(info: ItemInfo, selCallBack:any=null){
+    initItemData(info: ItemInfo, bShowTip:boolean=false, selCallBack:any=null){
         //cc.log("initItemData(), info = "+JSON.stringify(info));
+        this.bShowTip = bShowTip;
         this.selCallBack = selCallBack;   //响应点击选中回调
         this.itemInfo = info;   //道具数据
         

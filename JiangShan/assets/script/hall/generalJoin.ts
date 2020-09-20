@@ -20,6 +20,8 @@ export default class GeneralJoin extends cc.Component {
     list: List = null;
 
     @property(cc.Label)
+    infoLabel: cc.Label = null;
+    @property(cc.Label)
     descLabel: cc.Label = null;
 
     // LIFE-CYCLE CALLBACKS:
@@ -79,16 +81,35 @@ export default class GeneralJoin extends cc.Component {
                 }
             }
         }
-        nameStr +="武将来投";
-        this.descLabel.string = nameStr;
+        nameStr +="来投";
+        this.infoLabel.string = nameStr;
 
         this.list.numItems = this.generalArr.length;
+        this.list.selectedId = 0;
+        this.updateSelItemInfoByIdx(0)
     }
 
     //列表渲染器
     onListRender(item: cc.Node, idx: number) {
         let info = this.generalArr[idx];
         item.getComponent(GeneralCell).initGeneralData(info);
+    }
+
+    //当列表项被选择...
+    onListSelected(item: any, selectedId: number, lastSelectedId: number, val: number) {
+        if (!item)
+            return;
+        this.updateSelItemInfoByIdx(selectedId);  //显示底部选中道具信息
+    }  
+
+    /**显示底部选中道具信息 */
+    updateSelItemInfoByIdx(cellIdx:number){
+        let info = this.generalArr[cellIdx];
+        if(info && info.generalCfg){
+            this.descLabel.string = info.generalCfg.desc;
+        }else{
+            this.descLabel.string = "";
+        }
     }
     
 }

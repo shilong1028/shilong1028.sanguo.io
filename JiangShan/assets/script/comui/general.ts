@@ -33,7 +33,7 @@ export default class GeneralCell extends cc.Component {
     lvLabel: cc.Label = null;
 
     generalInfo : GeneralInfo = null;  
-
+    bShowTip: boolean = false;   //点击Cell是否弹出描述提示
     selCallBack: any = null;   //响应点击选中回调
 
     onLoad () {
@@ -55,8 +55,9 @@ export default class GeneralCell extends cc.Component {
     }
 
     /**初始化武将头像 */
-    initGeneralData(info: GeneralInfo, selCallBack:any=null){
+    initGeneralData(info: GeneralInfo, bShowTip: boolean = false, selCallBack:any=null){
         //cc.log("initItemData(), info = "+JSON.stringify(info));
+        this.bShowTip = bShowTip;   //点击Cell是否弹出描述提示
         this.selCallBack = selCallBack;   //响应点击选中回调
         this.generalInfo = info;   //武将数据
         
@@ -87,7 +88,7 @@ export default class GeneralCell extends cc.Component {
                 this.showSelState(true)
                 this.selCallBack(this);   //选中回调
             }
-        }else{
+        }else if(this.bShowTip){
             if(this.generalInfo && this.generalInfo.generalCfg){
                 ROOT_NODE.showTipsText(this.generalInfo.generalCfg.desc);
             }

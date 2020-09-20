@@ -21,12 +21,6 @@ enum SelectedType {
 @menu('自定义组件/List Item')
 @executionOrder(-5001)          //先于List
 export default class ListItem extends cc.Component {
-    //图标
-    @property({ type: cc.Sprite, tooltip: CC_DEV && '图标' })
-    icon: cc.Sprite = null;
-    //标题
-    @property({ type: cc.Node, tooltip: CC_DEV && '标题' })
-    title: cc.Node = null;
     //选择模式
     @property({
         type: cc.Enum(SelectedType),

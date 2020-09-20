@@ -2,7 +2,7 @@ import OfficalCell from "../comui/offical";
 import List from "../control/List";
 import { AudioMgr } from "../manager/AudioMgr";
 import { CfgMgr, st_official_info } from "../manager/ConfigManager";
-import { MyUserMgr } from "../manager/MyUserData";
+import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 
 
 //官职详情
@@ -24,6 +24,8 @@ export default class OfficalLayer extends cc.Component {
     descLabel: cc.Label = null;
     @property(cc.Label)
     titleLabel: cc.Label = null;
+    @property(cc.Label)
+    infoLabel: cc.Label = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -73,7 +75,18 @@ export default class OfficalLayer extends cc.Component {
             }
         }else{
             this.titleLabel.string = "官职详情"
+            idArr = MyUserData.officalIds
         }
+
+        let nameStr = "当前官职为"
+        for(let i=0; i<idArr.length; ++i){
+            let conf = CfgMgr.getOfficalConf(idArr[i].toString());
+            nameStr += conf.name;
+            if(i < idArr.length-1){
+                nameStr +="、";
+            }
+        }
+        this.infoLabel.string = nameStr;
         
         //let allConf = CfgMgr.getAllOfficalConf();
         //allConf.forEach(function(conf, key){
@@ -92,6 +105,7 @@ export default class OfficalLayer extends cc.Component {
 　　　　 };
 
         this.list.numItems = this.officalArr.length;
+        this.list.selectedId = showIdx;
 
         this.list.scrollTo(showIdx);
         let showConf = this.officalArr[showIdx];
@@ -105,14 +119,24 @@ export default class OfficalLayer extends cc.Component {
     //列表渲染器
     onListRender(item: cc.Node, idx: number) {
         let info = this.officalArr[idx];
-        item.getComponent(OfficalCell).initOfficalData(info, (cell)=>{
-            let showConf = cell.officalConf;
-            if(showConf){
-                this.descLabel.string = showConf.desc;
-            }else{
-                this.descLabel.string = "";
-            }
-        }, this.showOfficalIds);
+        item.getComponent(OfficalCell).initOfficalData(info, this.showOfficalIds);
+    }
+
+    //当列表项被选择...
+    onListSelected(item: any, selectedId: number, lastSelectedId: number, val: number) {
+        if (!item)
+            return;
+        this.updateSelItemInfoByIdx(selectedId);  //显示底部选中道具信息
+    }  
+
+    /**显示底部选中道具信息 */
+    updateSelItemInfoByIdx(cellIdx:number){
+        let showConf = this.officalArr[cellIdx];
+        if(showConf){
+            this.descLabel.string = showConf.desc;
+        }else{
+            this.descLabel.string = "";
+        }
     }
     
 }

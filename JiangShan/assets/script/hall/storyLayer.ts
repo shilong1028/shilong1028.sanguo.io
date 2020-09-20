@@ -86,7 +86,7 @@ export default class StoryLayer extends cc.Component {
             if(rewards.length > 0){
                 this.rewardNode.active = true;
                 for(let i=0; i<rewards.length; ++i){
-                    let item = ROOT_NODE.createrItem(rewards[i]);
+                    let item = ROOT_NODE.createrItem(rewards[i], true);
                     this.rewardLayout.addChild(item);
                 }
             }

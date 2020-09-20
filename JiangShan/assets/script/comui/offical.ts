@@ -29,6 +29,7 @@ export default class OfficalCell extends cc.Component {
     lvLabel: cc.Label = null;
 
     officalConf : st_official_info = null;  
+    bShowTip: boolean = false;   //点击Cell是否弹出描述提示
     selCallBack: any = null;   //响应点击选中回调
 
     onLoad () {
@@ -48,8 +49,9 @@ export default class OfficalCell extends cc.Component {
     }
 
     /**初始化官职头像 */
-    initOfficalData(conf: st_official_info, selCallBack:any=null, showIds?:number[]){
+    initOfficalData(conf: st_official_info, idArr: number[], bShowTip: boolean = false, selCallBack:any=null){
         //cc.log("initItemData(), info = "+JSON.stringify(info));
+        this.bShowTip = bShowTip;   //点击Cell是否弹出描述提示
         this.selCallBack = selCallBack;   //响应点击选中回调
         this.officalConf = conf;   //武将数据
 
@@ -62,9 +64,9 @@ export default class OfficalCell extends cc.Component {
         }
 
         this.stateImg.active = false;
-        for(let i=0; i<showIds.length; i++){
-            if(this.officalConf.id_str == showIds[i].toString()){
-                this.stateImg.active = true;
+        for(let i=0; i<idArr.length; i++){
+            if(parseInt(conf.id_str) == idArr[i]){
+                this.stateImg.active = true;   //当前装备使用中的官职
                 break;
             }
         }
@@ -72,7 +74,7 @@ export default class OfficalCell extends cc.Component {
 
     /**显示选中状态 */
     showSelState(bShow:boolean = false){
-        //this.selImg.active = bShow;
+        this.selImg.active = bShow;
     }
 
     /**选中状态切换 */
@@ -84,7 +86,7 @@ export default class OfficalCell extends cc.Component {
                 this.showSelState(true)
                 this.selCallBack(this);   //选中回调
             }
-        }else{
+        }else if(this.bShowTip){
             if(this.officalConf){
                 ROOT_NODE.showTipsText(this.officalConf.desc);
             }
