@@ -95,6 +95,18 @@ export class GeneralInfo{
         this.tempFightInfo = null;
         this.generalCfg = CfgMgr.getGeneralConf(generalId);
     }
+    //通过json对象值来重置武将数据,（因为为了防止数据无意篡改，有些引用使用json转换导致对象无法调用成员方法）
+    updateGeneralInfoByCopyJson(jsonObj: GeneralInfo, bCopyTempFight:boolean=false){
+        this.officialId = jsonObj.officialId;  //官职ID
+        this.generalLv = jsonObj.generalLv;   //武将等级
+        this.generalExp = jsonObj.generalExp;   //武将经验
+        this.bingCount = jsonObj.bingCount;   //部曲士兵数量
+        this.tempFightInfo = null;  //武将战斗临时数据类
+        if(bCopyTempFight){
+            this.tempFightInfo = jsonObj.tempFightInfo;
+        }
+        this.skills= jsonObj.skills;
+    }
     cloneNoCfg(){
         let objStr = JSON.stringify(this);
         let temp = JSON.parse(objStr); 
@@ -113,27 +125,6 @@ export class GeneralInfo{
         let temp = JSON.parse(objStr); 
         return temp;
     }
-    // //更新士兵数量
-    // updateBingCount(num: number){
-    //     this.bingCount += num;
-    //     if(this.bingCount < 0){
-    //         this.bingCount = 0;
-    //     }
-    // }
-    // //根据经验更新等级
-    // updateLvByExp(){
-    //     if(this.generalLv >= 100){
-    //         this.generalLv = 100;
-    //         this.generalExp = 0;
-    //     }else{
-    //         let maxExp = CfgMgr.getMaxGeneralExpByLv(this.generalLv);
-    //         while(this.generalExp >= maxExp){
-    //             this.generalLv ++;
-    //             this.generalExp -= maxExp;
-    //             maxExp = CfgMgr.getMaxGeneralExpByLv(this.generalLv);
-    //         }
-    //     }
-    // }
 }
 //武将配置数据
 export class st_general_info {

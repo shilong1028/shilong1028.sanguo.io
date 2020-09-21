@@ -346,15 +346,74 @@ class MyUserManager {
         let temp = JSON.parse(objStr); 
         return temp;
     }
+ 
+    /** 根据经验更新等级 */
+    updateGeneralLvByExp(generalId: string, exp: number){
+        let general: GeneralInfo = null;
+        for(let i=0; i<MyUserData.GeneralList.length; ++i){
+            let tempItem: GeneralInfo = MyUserData.GeneralList[i];
+            if(tempItem.generalId == generalId){  
+                general = tempItem;
+                break;
+            }
+        }
+        if(general){
+            if(general.generalLv >= 100){   //已满级
+                general.generalLv = 100;
+                general.generalExp = 0;
+            }else{
+                general.generalExp += exp;
+                let oldLv = general.generalLv;
+                let maxExp = CfgMgr.getMaxGeneralExpByLv(general.generalLv);
+                while(general.generalExp >= maxExp){
+                    general.generalLv ++;
+                    general.generalExp -= maxExp;
+                    maxExp = CfgMgr.getMaxGeneralExpByLv(general.generalLv);
+                }
+
+                this.saveGeneralList();
+                if(generalId == "1101" && general.generalLv > oldLv){   //主角
+                    this.updateRoleLv(general.generalLv);
+                }
+            }
+            return general.clone();   //json拷贝对象
+        }else{
+            return null;
+        }
+    }
+
+    /** 更新武将兵力 */
+    updateGeneralSoliderCount(generalId: string, addNum: number, maxCount?:number){
+        let general: GeneralInfo = null;
+        for(let i=0; i<MyUserData.GeneralList.length; ++i){
+            let tempItem: GeneralInfo = MyUserData.GeneralList[i];
+            if(tempItem.generalId == generalId){  
+                general = tempItem;
+                break;
+            }
+        }
+        if(general){
+            let newCount = general.bingCount + addNum;
+            if(maxCount && newCount > newCount){
+                general.bingCount = maxCount;
+            }else{
+                general.bingCount = newCount;
+            }
+            this.saveGeneralList();
+            return general.clone();   //json拷贝对象
+        }else{
+            return null;
+        }
+    }
 
     /**修改用户武将列表 */
-    updateGeneralList(general: GeneralInfo, bSave:boolean=true){
+    updateGeneralList(jsonObj: GeneralInfo, bSave:boolean=true){
         for(let i=0; i<MyUserData.GeneralList.length; ++i){
             let info: GeneralInfo = MyUserData.GeneralList[i];
-            if(general.timeId == info.timeId){
-                MyUserData.GeneralList[i] = general;
-                MyUserData.GeneralList[i].tempFightInfo = null;
-                NoticeMgr.emit(NoticeType.UpdateGeneral, general);  //更新单个武将
+            if(jsonObj.timeId == info.timeId){
+                MyUserData.GeneralList[i].updateGeneralInfoByCopyJson(jsonObj);
+                //通过json对象值来重置武将数据,（因为为了防止数据无意篡改，有些引用使用json转换导致对象无法调用成员方法）
+                NoticeMgr.emit(NoticeType.UpdateGeneral, jsonObj);  //更新单个武将
                 if(bSave){
                     this.saveGeneralList();
                 }
@@ -413,21 +472,7 @@ class MyUserManager {
 
     /**更新主角经验 */
     updateRoleExp(exp:number){
-        for(let i=0; i<MyUserData.GeneralList.length; ++i){
-            let tempItem: GeneralInfo = MyUserData.GeneralList[i];
-            if(tempItem.generalId == "1101"){   //主角
-                tempItem.generalExp += exp;
-                let oldLv = tempItem.generalLv;
-                tempItem.updateLvByExp();
-                MyUserData.GeneralList[i] = tempItem;
-                this.saveGeneralList();
-
-                if(tempItem.generalLv > oldLv){
-                    this.updateRoleLv(tempItem.generalLv);
-                }
-                return;
-            }
-        }
+        this.updateGeneralLvByExp("1101", exp);   //主角
     }
 
     /**修改用户金币 */

@@ -57,7 +57,7 @@ export default class GeneralLayer extends cc.Component {
     radioButton: cc.Toggle[] = []; 
 
     // LIFE-CYCLE CALLBACKS:
-    generalArr: GeneralInfo[] = new Array();
+    generalArr: GeneralInfo[] = [];
     selGeneralIdx: number = -1;  //当前武将索引
     selTabIdx:number = -1;   //底部页签索引  tabIdx =0招募 1升级 2技能
 
@@ -309,11 +309,10 @@ export default class GeneralLayer extends cc.Component {
         let cost = this.recruitCostPrice*Math.ceil(this.recruitAddCount/100);
         if(GameMgr.checkGoldEnoughOrTips(cost, true)){
             MyUserMgr.updateUserGold(-cost);   //修改用户金币数量
-            //selGeneralInfo.updateBingCount(this.recruitAddCount);
-            selGeneralInfo.bingCount += this.recruitAddCount;
-            MyUserMgr.updateGeneralList(selGeneralInfo);   //修改用户武将列表
-
-            this.generalArr[this.selGeneralIdx] = selGeneralInfo;
+            let retInfo = MyUserMgr.updateGeneralSoliderCount(selGeneralInfo.generalId, this.recruitAddCount, this.recruitMaxCount);   //更新武将兵力
+            if(retInfo){
+                this.generalArr[this.selGeneralIdx] = retInfo;
+            }
             this.showRecruitInfo();
 
             if(GameMgr.curTaskConf.type == TaskType.Recruit){ 
