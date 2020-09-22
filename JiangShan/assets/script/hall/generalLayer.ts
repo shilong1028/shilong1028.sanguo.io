@@ -66,6 +66,8 @@ export default class GeneralLayer extends cc.Component {
     recruitAddCount: number = 0;    //当前招募的数量
     recruitCostPrice: number = 0;   //百兵售价
 
+    totalRecruitCount: number = 0;   //有效的招募数量
+
 
     onLoad () {
         this.list.numItems = 0;
@@ -76,6 +78,12 @@ export default class GeneralLayer extends cc.Component {
 
     onDestroy(){
         NoticeMgr.emit(NoticeType.ShowMainMap); //显示大厅场景的全局地图
+        if(this.totalRecruitCount > 0){  //有效的招募数量
+            if(GameMgr.curTaskConf && GameMgr.curTaskConf.type == TaskType.Recruit){ 
+                GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务操作(第二阶段）处理完毕
+            }
+        } 
+
         //this.node.targetOff(this);
         //NoticeMgr.offAll(this);
     }
@@ -313,11 +321,8 @@ export default class GeneralLayer extends cc.Component {
             if(retInfo){
                 this.generalArr[this.selGeneralIdx] = retInfo;
             }
+            this.totalRecruitCount += this.recruitAddCount;   //有效的招募数量
             this.showRecruitInfo();
-
-            if(GameMgr.curTaskConf.type == TaskType.Recruit){ 
-                GameMgr.handleStoryShowOver(GameMgr.curTaskConf);  //任务操作(第二阶段）处理完毕
-            }
         }
     }
 
