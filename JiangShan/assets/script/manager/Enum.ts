@@ -234,14 +234,31 @@ export const ChannelDef = {
     TouTiao: "TouTiao"
 }
 
+/** 通用道具类型 */
+export enum ComItemType{
+    Gold = 101,    //金锭（金币）
+    Diamond = 102,   
+    Food = 201,    //粮草
+    Drug = 202,    //药草
+    Exp0 = 300,   //直接添加到主角身上的经验
+    Exp1 = 301,   //经验丹
+    Exp2 = 302,   //经验丹
+    Exp3 = 303,   //经验丹
+}
+
 /**士兵类型 */
 export const SoliderType = {
     qibing: 401,    //骑兵装备战马和马刀，高移动力，防御力一般，攻击力一般。克制刀兵，但被枪兵克制。
+    //骑兵四方向前进两格，四方向攻击一格；攻击+2士气，回合-1士气；
     daobing: 402,   //刀兵装备大盾和钢刀，移动力一般，防御力高，攻击力一般。克制枪兵，但被骑兵克制。
+    //刀兵九方向前进一格，九方向攻击一格；攻击+1士气，回合-1士气；
     qiangbing: 403, //枪兵装备厚甲和长枪，移动力一般，防御力一般，攻击力高。克制骑兵，但被刀兵克制。
+    //枪兵四方向前进一格，四方向攻击一格；攻击+1士气，回合-0士气；
     gongbing: 404   //弓兵装备长弓或连弩，可以远程攻击，但移动力一般，防御力弱，攻击力弱。
+    //弓兵九方向前进一格，九方向攻击一格，四方向攻击两格；攻击+1士气，回合-1士气，受击-1士气；
 }
 
+/** 任务剧情类型 */
 export enum TaskType{  
     Story = 1,   //剧情
     Fight = 2,   //战斗
@@ -253,7 +270,7 @@ export enum TaskType{
     Skill = 8,   //技能
     War = 9,  //攻城略地
 }
-
+/** 任务剧情状态 */
 export enum TaskState{
     Ready = 0,   //准备开始
     Finish = 1,   //引导完成
@@ -261,16 +278,122 @@ export enum TaskState{
     Over = 3,   //奖励领取完毕
 }
 
-export enum ComItemType{
-    Gold = 101,    //金锭（金币）
-    Diamond = 102,   
-    Food = 201,    //粮草
-    Drug = 202,    //药草
-    Exp0 = 300,   //直接添加到主角身上的经验
-    Exp1 = 301,   //经验丹
-    Exp2 = 302,   //经验丹
-    Exp3 = 303,   //经验丹
+
+
+
+
+//-------------------------------  以下为战斗相关数据类结构体定义  ------------------------------------
+
+/** 战斗地块类型 */
+export enum BlockType{   
+    Mid = 0,   //0中间地带
+    Myself = 1,   //1我方范围
+    Enemy = 2,   //2敌方范围
 }
+
+/** 战斗建筑类型 */
+export enum BlockBuildType{ 
+    None = 0,   //0无
+    Barracks = 1,   //1营寨
+    Watchtower = 2,   //2箭楼
+    Granary = 3,   //3粮仓
+}
+
+/** 砖块之间的AI战斗联系 */
+export enum BlockRelation{ 
+    None = 0,   //0无（距离远）
+    Reach = 1,   //1可移动范围内
+    Attack = 2,   //2攻击范围内
+    ReachAndAtk = 3,  //3可移动可攻击
+    Obstruct = 4,  //4中间有阻碍
+}
+
+
+/** 出战武将卡牌类型 */
+export enum CardType{  
+    Normal = 0,   //0普通
+    Chief = 1,   //1主将
+    Forward = 2,   //2前锋
+    Guard = 3,     //3后卫
+}
+/** 出战武将卡牌状态 */
+export enum CardState{  //状态，0作战，1阵亡，2混乱，3逃逸，4被俘
+    Normal = 0,   //0作战
+    Dead = 1,   //1阵亡
+    Confusion = 2,   //2混乱
+    Flee = 3,   //3逃逸
+    Prisoner = 4,   //，4被俘
+}
+
+/** 游戏结束状态 */
+export enum GameOverState{ 
+    None = 0,   //0未结束
+    MyChiefDead = 1,   //1我方主将阵亡 逃逸 被俘
+    MyBarracksLose = 2,   //2我方本阵大营丢失
+    MyRetreat = 3,   //3我方总撤退
+    MyRoundOver = 4,  //4我方回合用完
+
+    EnemyChiefDead = 11,   //11敌方主将阵亡 逃逸 被俘
+    EnemyBarracksLose = 12,   //12敌方本阵大营丢失
+    EnemyRetreat = 13,   //13敌方总撤退
+    EnemyRoundOver = 14,  //14敌方回合用完
+}
+
+
+/** 士气改变事件 */
+export enum ShiqiEvent{ 
+    Node = 0,  //0默认
+    Round = 1,   //1回合结束
+    MyWatchtowerLose = 2,   //2我方箭楼被攻陷
+    MyGranaryLose = 3,   //3我方粮仓被攻陷
+    EnemyWatchtowerLose = 4,   //4敌方箭楼被攻陷
+    EnemyGranaryLose = 5,   //5敌方粮仓被攻陷
+}
+
+//武将卡牌战斗信息
+export class CardInfo{
+    campId: number = 0;   //阵营，0默认，1蓝方，2红方
+    type: CardType = CardType.Normal;   //类型，0普通，1主将，2前锋，3后卫
+    state: CardState = CardState.Normal;   //状态，0作战，1阵亡，2混乱，3逃逸，4被俘
+    shiqi: number = 100;   //士气值
+    bingzhong: number = 0;     //作战兵种 401骑兵402刀兵403枪兵404弓兵
+    generalInfo: GeneralInfo = null;   //武将信息
+
+    constructor(campId: number, generalInfo: GeneralInfo=null){
+        this.campId = campId;
+        this.type = CardType.Normal;
+        this.state = CardState.Normal;
+        this.shiqi = 100;
+        this.generalInfo = generalInfo;
+        if(generalInfo && generalInfo.generalCfg){
+            this.bingzhong = generalInfo.generalCfg.bingzhong
+        }
+    }
+
+    clone(){
+        let objStr = JSON.stringify(this);
+        let temp = JSON.parse(objStr); 
+        return temp;
+    }
+}
+
+
+
+//武将战斗临时数据类
+export class TempFightInfo{
+    bReadyFight: boolean = false;   //准备出战（临时数据不用保存）
+    killCount: number = 0;   //杀敌（士兵）数量（战斗后会转换为经验）
+    fightHp: number = 0;   //战斗时血量计算(战后复原)
+    fightMp: number = 0;   //战斗时智力计算(战后复原)
+
+    constructor(generalCfg: st_general_info){
+        this.bReadyFight = false;
+        this.killCount = 0;
+        this.fightHp = generalCfg.hp;
+        this.fightMp = generalCfg.mp;
+    }
+}
+
 
 //敌方AI处理结果
 export class EnemyAIResult{
@@ -300,48 +423,6 @@ export const SpecialStory = {
     skillOpen: 9,   //开启技能
     capitalOpen: 12,  //开启主城
 }
-
-//-------------------------------  以下为数据类结构体定义  ------------------------------------
-
-
-
-//武将战斗临时数据类
-export class TempFightInfo{
-    bReadyFight: boolean = false;   //准备出战（临时数据不用保存）
-    killCount: number = 0;   //杀敌（士兵）数量（战斗后会转换为经验）
-    fightHp: number = 0;   //战斗时血量计算(战后复原)
-    fightMp: number = 0;   //战斗时智力计算(战后复原)
-
-    constructor(generalCfg: st_general_info){
-        this.bReadyFight = false;
-        this.killCount = 0;
-        this.fightHp = generalCfg.hp;
-        this.fightMp = generalCfg.mp;
-    }
-}
-
-//武将卡牌战斗信息
-export class CardInfo{
-    flagId: number = 0;   //阵营，0默认，1蓝方，2红方
-    shiqi: number = 100;   //士气值
-    generalInfo: GeneralInfo = null;   //武将信息
-
-    constructor(flagId: number, generalInfo: GeneralInfo=null){
-        this.flagId = flagId;
-        this.shiqi = 100;
-        this.generalInfo = generalInfo;
-    }
-
-    clone(){
-        let temp = new CardInfo(this.flagId, this.generalInfo);
-        temp.shiqi = this.shiqi;
-
-        return temp;
-    }
-}
-
-
-
 
 
 

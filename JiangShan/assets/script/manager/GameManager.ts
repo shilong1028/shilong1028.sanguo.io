@@ -5,7 +5,6 @@ import { ROOT_NODE } from "../login/rootNode";
 import LoadingLayer from "../login/loadingLayer";
 import TipsDialog from "../login/tipsDialog";
 import MainScene from "../hall/mainScene";
-import RewardLayer from "../comui/rewardLayer";
 
 
 //游戏管理器
@@ -98,7 +97,7 @@ class GameManager {
     }
 
     /**通过内存图集创建序列帧动画 */
-    createAtlasAniNode(atlas: cc.SpriteAtlas, sample: number = 18, wrapMode: cc.WrapMode=cc.WrapMode.Default){
+    createAtlasAniNode(atlas: cc.SpriteAtlas, sample: number = 18, wrapMode: cc.WrapMode=cc.WrapMode.Default, parent?:cc.Node){
         if(atlas){
             let effNode = new cc.Node;
             effNode.addComponent(cc.Sprite);
@@ -117,6 +116,9 @@ class GameManager {
 
             animation.play(atlas.name);
 
+            if(parent){
+                parent.addChild(effNode)
+            }
             return effNode;
         }
         return null;
