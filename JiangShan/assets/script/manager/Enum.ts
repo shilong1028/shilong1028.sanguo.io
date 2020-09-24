@@ -2,7 +2,7 @@
 
 //常量或类定义
 
-import { GeneralInfo, st_general_info } from "./ConfigManager";
+import { GeneralInfo } from "./ConfigManager";
 
 //公用方法管理器
 const {ccclass, property} = cc._decorator;
@@ -316,13 +316,16 @@ export enum CardType{
     Forward = 2,   //2前锋
     Guard = 3,     //3后卫
 }
+export const CardTypeArr = [CardType.Chief, CardType.Forward, CardType.Forward, CardType.Guard,
+    CardType.Normal, CardType.Normal, CardType.Normal, CardType.Normal, CardType.Normal, CardType.Normal];
+
 /** 出战武将卡牌状态 */
 export enum CardState{  //状态，0作战，1阵亡，2混乱，3逃逸，4被俘
     Normal = 0,   //0作战
-    Dead = 1,   //1阵亡
-    Confusion = 2,   //2混乱
-    Flee = 3,   //3逃逸
-    Prisoner = 4,   //，4被俘
+    Dead = 1,   //1阵亡(武将血量<0)
+    Confusion = 2,   //2混乱(部曲士气过低<10)
+    Flee = 3,   //3逃逸(部曲士兵数量过少<100)
+    Prisoner = 4,   //4被俘
 }
 
 /** 游戏结束状态 */
@@ -330,13 +333,15 @@ export enum GameOverState{
     None = 0,   //0未结束
     MyChiefDead = 1,   //1我方主将阵亡 逃逸 被俘
     MyBarracksLose = 2,   //2我方本阵大营丢失
-    MyRetreat = 3,   //3我方总撤退
+    MyRetreat = 3,   //3我方总撤退()
     MyRoundOver = 4,  //4我方回合用完
+    MyUnitLose = 5,  //5我方部曲全部失效（混乱或消亡）
 
     EnemyChiefDead = 11,   //11敌方主将阵亡 逃逸 被俘
     EnemyBarracksLose = 12,   //12敌方本阵大营丢失
     EnemyRetreat = 13,   //13敌方总撤退
     EnemyRoundOver = 14,  //14敌方回合用完
+    EnemyUnitLose = 15,  //15敌方部曲全部失效（混乱或消亡）
 }
 
 
@@ -352,9 +357,11 @@ export enum ShiqiEvent{
 
 //武将卡牌战斗信息
 export class CardInfo{
-    campId: number = 0;   //阵营，0默认，1蓝方，2红方
+    cardIdStr: string = ""  //卡牌编号，用于定位 campId_generalId_bingzhong
+    campId: number = 0;   //阵营，0默认，1蓝方(我方），2红方
     type: CardType = CardType.Normal;   //类型，0普通，1主将，2前锋，3后卫
     state: CardState = CardState.Normal;   //状态，0作战，1阵亡，2混乱，3逃逸，4被俘
+    killCount: number = 0;   //杀敌（士兵）数量（战斗后会转换为经验）
     shiqi: number = 100;   //士气值
     bingzhong: number = 0;     //作战兵种 401骑兵402刀兵403枪兵404弓兵
     generalInfo: GeneralInfo = null;   //武将信息
@@ -363,52 +370,19 @@ export class CardInfo{
         this.campId = campId;
         this.type = CardType.Normal;
         this.state = CardState.Normal;
+        this.killCount = 0;
         this.shiqi = 100;
         this.generalInfo = generalInfo;
         if(generalInfo && generalInfo.generalCfg){
             this.bingzhong = generalInfo.generalCfg.bingzhong
         }
+        this.cardIdStr = `${this.campId}_${this.generalInfo.generalId}_${this.bingzhong}`
     }
 
     clone(){
         let objStr = JSON.stringify(this);
         let temp = JSON.parse(objStr); 
         return temp;
-    }
-}
-
-
-
-//武将战斗临时数据类
-export class TempFightInfo{
-    bReadyFight: boolean = false;   //准备出战（临时数据不用保存）
-    killCount: number = 0;   //杀敌（士兵）数量（战斗后会转换为经验）
-    fightHp: number = 0;   //战斗时血量计算(战后复原)
-    fightMp: number = 0;   //战斗时智力计算(战后复原)
-
-    constructor(generalCfg: st_general_info){
-        this.bReadyFight = false;
-        this.killCount = 0;
-        this.fightHp = generalCfg.hp;
-        this.fightMp = generalCfg.mp;
-    }
-}
-
-
-//敌方AI处理结果
-export class EnemyAIResult{
-    runAwayEnemy = null;    //敌方预逃走的单位
-    runAwayWeight = 0;   //逃走权重
-    hitEnemy = null;   //敌方出手的单位
-    hitMy = null;    //我方预被击杀的单位
-    hitWeight = 0;   //击杀权重
-
-    constructor(runAwayEnemy, runAwayWeight, hitEnemy, hitMy, hitWeight){
-        this.runAwayEnemy = runAwayEnemy;  
-        this.runAwayWeight = runAwayWeight;   
-        this.hitEnemy = hitEnemy;  
-        this.hitMy = hitMy;  
-        this.hitWeight = hitWeight;   
     }
 }
 

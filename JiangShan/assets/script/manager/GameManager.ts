@@ -97,10 +97,13 @@ class GameManager {
     }
 
     /**通过内存图集创建序列帧动画 */
-    createAtlasAniNode(atlas: cc.SpriteAtlas, sample: number = 18, wrapMode: cc.WrapMode=cc.WrapMode.Default, parent?:cc.Node){
+    createAtlasAniNode(atlas: cc.SpriteAtlas, sample: number = 18, wrapMode: cc.WrapMode=cc.WrapMode.Default, parent?:cc.Node, childName?:string){
         if(atlas){
             let effNode = new cc.Node;
             effNode.addComponent(cc.Sprite);
+            if(childName){
+                effNode.name = childName;
+            }
 
             let animation: cc.Animation = effNode.addComponent(cc.Animation);
             var clip = cc.AnimationClip.createWithSpriteFrames(atlas.getSpriteFrames(), sample);
@@ -217,7 +220,7 @@ class GameManager {
 
     /**判定金币是否充足 */
     checkGoldEnoughOrTips(cost: number, bTips: boolean=false){
-        if(MyUserData.GoldCount >= cost){
+        if(MyUserData.GoldCount >= cost && cost >= 0){
             return true;
         }else{
             if(bTips){

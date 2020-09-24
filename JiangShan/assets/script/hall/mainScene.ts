@@ -11,6 +11,7 @@ import OfficalLayer from "./officalLayer";
 import GeneralJoin from "./generalJoin";
 import RewardLayer from "../comui/rewardLayer";
 import GeneralLayer from "./generalLayer";
+import FightReady from "./fightReady";
 
 
 //大厅场景
@@ -61,6 +62,8 @@ export default class MainScene extends cc.Component {
     pfGeneralJoin: cc.Prefab = null;  //武将来投界面
     @property(cc.Prefab)
     pfGeneralLayer: cc.Prefab = null;  //武将界面
+    @property(cc.Prefab)
+    pfFightReady: cc.Prefab = null;  //武将出征界面
 
     @property(cc.Prefab)
     pfBag: cc.Prefab = null;   //背包界面
@@ -399,8 +402,8 @@ export default class MainScene extends cc.Component {
     /**任务战斗准备 */
     openFightByTask(taskConf: st_story_info){
         if(taskConf && taskConf.battleId > 0){  
-            // let layer = GameMgr.showLayer(mainScene.pfFightReady);  //战斗选将准备界面
-            // layer.getComponent(FightReady).initBattleInfo(taskConf.battleId);
+            let layer = GameMgr.showLayer(this.pfFightReady);  //战斗选将准备界面
+            layer.getComponent(FightReady).initBattleInfoByStory(taskConf);
         }
     }
 

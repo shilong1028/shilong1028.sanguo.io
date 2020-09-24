@@ -1,5 +1,5 @@
-import { FunMgr, TempFightInfo } from "./Enum";
 
+import { FunMgr } from "./Enum";
 
 /*** 类型定义 */
 type double = number;       //64位
@@ -69,18 +69,34 @@ export class GeneralInfo{
     generalLv: number = 1;   //武将等级
     generalExp: number = 0;   //武将经验
     bingCount: number = 0;   //部曲士兵数量
-    tempFightInfo: TempFightInfo = null;  //武将战斗临时数据类
+    state:number = 0;   //0默认，1出战中，2驻守中
     skills: SkillInfo[] = [];
     generalCfg: st_general_info = null;   //卡牌配置信息
+
+    //武将随等级变化的属性(Lv*随机范围*基础值)
+    fightHp: number = 0;    //血量，最大为1000
+    fightMp: number = 0;     //智力，最大100
+    fightAtk: number = 0;   //攻击，最大100
+    fightDef: number = 0;    //防御，最大100
 
     constructor(generalId:string, info:any=null){   
         this.timeId = new Date().getTime();
         this.generalId = generalId;
         this.skills = [];
+        this.generalCfg = CfgMgr.getGeneralConf(generalId);
+
         if(info){  //只有从本地存储读取数据是会传递info
+            this.officialId = info.officialId;  //官职ID
             this.generalLv = info.generalLv;
             this.generalExp = info.generalExp; 
             this.bingCount = info.bingCount;
+            this.state = 0;   //0默认，1出战中，2驻守中
+            //武将随等级变化的属性(Lv*随机范围*基础值)
+            this.fightHp = info.fightHp;    //血量，最大为1000
+            this.fightMp = info.fightMp;     //智力，最大100
+            this.fightAtk = info.fightAtk;   //攻击，最大100
+            this.fightDef = info.fightDef;    //防御，最大100
+
             if(info.skills){
                 for(let i=0; i<info.skills.length; ++i){
                     let tempSkill = new SkillInfo(info.skills[i].skillId, info.skills[i].skillLv);
@@ -88,12 +104,27 @@ export class GeneralInfo{
                 }
             }
         }else{
+            this.officialId = "101";  //官职ID
             this.generalLv = 1;
             this.generalExp = 0;  
             this.bingCount = 0;
+            this.state = 0;   //0默认，1出战中，2驻守中
+            //武将随等级变化的属性(Lv*随机范围*基础值)
+            this.fightHp = this.generalCfg.hp;    //血量，最大为1000
+            this.fightMp = this.generalCfg.mp;     //智力，最大100
+            this.fightAtk = this.generalCfg.atk;   //攻击，最大100
+            this.fightDef = this.generalCfg.def;    //防御，最大100
         }
-        this.tempFightInfo = null;
-        this.generalCfg = CfgMgr.getGeneralConf(generalId);
+    }
+    //武将随等级变化的属性(Lv*随机范围*基础值)
+    updateGeneralLv(lv:number){
+        this.generalLv = lv;
+        let scale = lv*0.1*(Math.random()*0.5+0.8) + 1.0;   //一般10级加一倍
+        //武将随等级变化的属性(Lv*随机范围*基础值)
+        this.fightHp = Math.floor(this.generalCfg.hp * scale);    //血量，最大为1000
+        this.fightMp = Math.floor(this.generalCfg.mp * scale);     //智力，最大100
+        this.fightAtk = Math.floor(this.generalCfg.atk * scale);   //攻击，最大100
+        this.fightDef = Math.floor(this.generalCfg.def * scale);    //防御，最大100
     }
     //通过json对象值来重置武将数据,（因为为了防止数据无意篡改，有些引用使用json转换导致对象无法调用成员方法）
     updateGeneralInfoByCopyJson(jsonObj: GeneralInfo, bCopyTempFight:boolean=false){
@@ -101,10 +132,11 @@ export class GeneralInfo{
         this.generalLv = jsonObj.generalLv;   //武将等级
         this.generalExp = jsonObj.generalExp;   //武将经验
         this.bingCount = jsonObj.bingCount;   //部曲士兵数量
-        this.tempFightInfo = null;  //武将战斗临时数据类
-        if(bCopyTempFight){
-            this.tempFightInfo = jsonObj.tempFightInfo;
-        }
+        //武将随等级变化的属性(Lv*随机范围*基础值)
+        this.fightHp = jsonObj.fightHp;    //血量，最大为1000
+        this.fightMp = jsonObj.fightMp;     //智力，最大100
+        this.fightAtk = jsonObj.fightAtk;   //攻击，最大100
+        this.fightDef = jsonObj.fightDef;    //防御，最大100
         this.skills= jsonObj.skills;
     }
     cloneNoCfg(){
@@ -358,7 +390,7 @@ export class st_battle_info{
     id_str;
     name;     //战斗名称
     generals;   //友军
-    soldiers;  //士兵集合
+    soldiers;  //士兵集合（士兵类型-兵力）
     enemys;   //敌方部曲（武将ID-等级） 1004-1;6001-3
     
     transType(){

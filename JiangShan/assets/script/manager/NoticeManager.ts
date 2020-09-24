@@ -22,7 +22,6 @@ export const NoticeType = {
     SelBlockMove: "SelBlockMove",   //准备拖动砖块
 
     PerNextRound: "PerNextRound",   //通知地块准备下一个回合
-    EnemyRoundOptAI: "EnemyRoundOptAI",   //敌方自动AI
 
     GameOverNotice: "GameOverNotice",   //游戏结束通知
     UpdateShiqiNotice: "UpdateShiqiNotice",   //士气改变通知

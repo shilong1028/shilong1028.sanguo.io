@@ -342,9 +342,15 @@ class MyUserManager {
 
     /**获取武将列表克隆 */
     getGeneralListClone(){
-        let objStr = JSON.stringify(MyUserData.GeneralList);
-        let temp = JSON.parse(objStr); 
-        return temp;
+        let retArr: GeneralInfo[] = [];
+        for(let i=0; i<MyUserData.GeneralList.length; ++i){
+            let tempItem: GeneralInfo = MyUserData.GeneralList[i].clone();
+            if(tempItem.state == 1){  //0默认，1出战中，2驻守中
+                tempItem.state = 0;
+            }  
+            retArr.push(tempItem)
+        }
+        return retArr;
     }
  
     /** 根据经验更新等级 */

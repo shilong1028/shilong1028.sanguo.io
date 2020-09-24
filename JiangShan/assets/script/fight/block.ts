@@ -1,5 +1,5 @@
 import { ROOT_NODE } from "../login/rootNode";
-import { BlockBuildType, BlockRelation, BlockType, CardInfo, CardState, CardType, EnemyAIResult, GameOverState, ShiqiEvent, SoliderType } from "../manager/Enum";
+import { BlockBuildType, BlockRelation, BlockType, CardInfo, CardState, CardType, GameOverState, ShiqiEvent, SoliderType } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
 import { NoticeMgr, NoticeType } from "../manager/NoticeManager";
@@ -31,6 +31,8 @@ export default class Block extends cc.Component {
     qiupAtlas: cc.SpriteAtlas = null;  //士气增加的特效
     @property(cc.SpriteAtlas)
     qidownAtlas: cc.SpriteAtlas = null;  //士气降低的特效
+    @property(cc.SpriteAtlas)
+    confusionAtlas: cc.SpriteAtlas = null;  //部曲混乱特效
 
     blockId: number = 0;   //地块ID
     blockRow: number = 0;   //地块行 Row 列 Column
@@ -40,23 +42,6 @@ export default class Block extends cc.Component {
 
     cardNode: cc.Node = null;
     cardInfo: CardInfo = null;   //注意，地块的cardInfo和卡牌的cardInfo是公用一块内存的。
-    /**
-     * CardInfo
-     *  flagId: number = 0;   //阵营，0默认，1蓝方(我方），2红方（敌方）
-        shiqi: number = 100;   //士气值
-        generalInfo: GeneralInfo = null;   //武将信息
-        [
-            timeId: number = 0;   //武将的时间ID，玩家武将唯一编号
-            generalId: string = "0";  
-            officialId: string = "101";  //官职ID
-            generalLv: number = 1;   //武将等级
-            generalExp: number = 0;   //武将经验
-            bingCount: number = 0;   //部曲士兵数量
-            tempFightInfo: TempFightInfo = null;  //武将战斗临时数据类
-            skills: SkillInfo[] = [];
-            generalCfg: st_general_info = null;   //卡牌配置信息
-        ]
-     */
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -65,7 +50,6 @@ export default class Block extends cc.Component {
 
         NoticeMgr.on(NoticeType.SelBlockMove, this.handleSelBlockMove, this);  //准备拖动砖块
         NoticeMgr.on(NoticeType.PerNextRound, this.handlePerNextRound, this);  //通知地块准备下一个回合
-        NoticeMgr.on(NoticeType.EnemyRoundOptAI, this.handleEnemyRoundOptAI, this);  //敌方自动AI
         NoticeMgr.on(NoticeType.UpdateShiqiNotice, this.handleUpdateShiqiNotice, this);  //士气改变通知
 
         this.boundNode.active = false;  //攻击或路径范围
@@ -138,16 +122,6 @@ export default class Block extends cc.Component {
             }
             this.cardNode.active = true; 
             this.cardNode.getComponent(Card).setCardData(info);
-        }
-    }
-
-    /**将本地块上的卡牌移走了 */
-    onRemoveCardNode(){
-        cc.log("onRemoveCardNode(), this.blockId = "+this.blockId);
-        if(this.cardNode){
-            this.cardNode.removeFromParent(true);
-            this.cardInfo = null;
-            this.cardNode = null;
         }
     }
 
@@ -268,7 +242,7 @@ export default class Block extends cc.Component {
         }
     }
 
-    /**参数地块上的卡牌攻击本地块上卡牌 */
+    /**参数地块上的卡牌攻击本地块上卡牌，根据结果需要同步卡牌数据 */
     onCardAttackBlock(optBlock: Block){
         cc.log("onCardAttackBlock(), this.blockId = "+this.blockId+"; optBlock.blockId = "+optBlock.blockId);
         if(optBlock.blockId == this.blockId){
@@ -282,24 +256,20 @@ export default class Block extends cc.Component {
                 cc.log("异常，同阵营攻击")
             }else{    //战斗
                 optBlock.handleUpdateShiqiByAtk();  //因攻击而改变士气 
-                FightMgr.showFightDetailLayer(optBlock, this, (atkCardInfo:CardInfo, defCardInfo:CardInfo, bWin:boolean)=>{
+                FightMgr.showFightDetailLayer(optBlock, this, (atkCardInfo:CardInfo, defCardInfo:CardInfo)=>{
                     cc.log("战斗结束")
-                    optBlock.handleDeadCardNode(atkCardInfo);  //处理阵亡，逃逸，被俘
-                    this.handleDeadCardNode(defCardInfo);  //处理阵亡，逃逸，被俘
-                    if(bWin){
-                        if(optBlock.cardInfo){  //还活着
-                            if(this.cardInfo){
-                                optBlock.onCardMoveBlock(optBlock);   //复原砖块
-                            }else{  //本砖块没有部曲了
-                                optBlock.handleUpdateShiqiByKillOther(true);   //因击溃对方部曲而改变士气 
-                                this.showBlockCard(optBlock.cardInfo);  //设置地块上的卡牌模型
-                                optBlock.onRemoveCardNode();   //将本地块上的卡牌移走了
-                            }
-                        }
-                    }else{
-                        if(optBlock.cardInfo){  //还活着
+                    optBlock.handleBlockCardFightResult(atkCardInfo);  //处理攻击方战斗后的卡牌数据
+                    this.handleBlockCardFightResult(defCardInfo);  //处理防守方战斗后的卡牌数据
+                    if(optBlock.cardInfo){  //攻击方还活着
+                        if(this.cardInfo){  //防守方也活着
                             optBlock.onCardMoveBlock(optBlock);   //复原砖块
-                        }else{
+                        }else{  //防守方消亡了
+                            optBlock.handleUpdateShiqiByKillOther(true);   //因击溃对方部曲而改变士气 
+                            this.showBlockCard(optBlock.cardInfo);  //设置地块上的卡牌模型
+                            //已经在handleBlockCardFightResult处理了消亡
+                        }
+                    }else{  //攻击方消亡了
+                        if(this.cardInfo){  //防守方活着
                             this.handleUpdateShiqiByKillOther(false);   //因击溃对方部曲而改变士气 
                         }
                     }
@@ -312,15 +282,29 @@ export default class Block extends cc.Component {
         }
     }
 
-    /**处理阵亡，逃逸，被俘 */
-    handleDeadCardNode(cardInfo: CardInfo){
-        cc.log("handleDeadCardNode(), this.blockId = "+this.blockId);
-        if(this.cardInfo && cardInfo){
-            if(cardInfo.state == CardState.Dead || cardInfo.state == CardState.Flee || cardInfo.state == CardState.Prisoner){  //阵亡，逃逸，被俘
-                this.cardInfo = cardInfo;
+    /**处理战斗后的卡牌数据 */
+    handleBlockCardFightResult(result_cardInfo: CardInfo){
+        cc.log("handleBlockCardFightResult(), this.blockId = "+this.blockId+"; result_cardInfo = "+JSON.stringify(result_cardInfo));
+        if(this.cardInfo && result_cardInfo){
+            if(result_cardInfo && result_cardInfo.generalInfo){
+                if(result_cardInfo.generalInfo.fightHp <= 0){  //阵亡(武将血量<0)
+                    result_cardInfo.state = CardState.Dead
+                }else if(result_cardInfo.generalInfo.bingCount < 100){  //逃逸(部曲士兵数量过少<100)
+                    result_cardInfo.state = CardState.Flee
+                }else if(result_cardInfo.shiqi < 10){  //混乱(部曲士气过低<10)
+                    result_cardInfo.state = CardState.Confusion
+                }
+            }
 
-                if(cardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
-                    if(cardInfo.campId == FightMgr.myCampId){  //阵营，0默认，1蓝方(我方），2红方
+            this.cardInfo = result_cardInfo;
+            FightMgr.handleUpdateBlockCardInfo(this.cardInfo);   //更新同步卡牌数据（战斗士气变动）
+
+            if(result_cardInfo.state == CardState.Confusion){
+                ROOT_NODE.showTipsText("部曲士气过低，处于混乱状态，不听调令")
+                GameMgr.createAtlasAniNode(this.confusionAtlas, 18, cc.WrapMode.Loop, this.effNode);
+            }else if(result_cardInfo.state == CardState.Dead || result_cardInfo.state == CardState.Flee || result_cardInfo.state == CardState.Prisoner){  //阵亡，逃逸，被俘
+                if(result_cardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
+                    if(result_cardInfo.campId == FightMgr.myCampId){  //阵营，0默认，1蓝方(我方），2红方
                         ROOT_NODE.showTipsText("我方主将阵亡")
                         NoticeMgr.emit(NoticeType.GameOverNotice, GameOverState.MyChiefDead);  //游戏结束通知
                     }else{
@@ -330,10 +314,29 @@ export default class Block extends cc.Component {
                 }else{
                     this.checkBlockBuildState();  //检测建筑(1营寨，2箭楼, 3粮仓)是否被攻占
                 } 
-                this.onRemoveCardNode();   //将本地块上的卡牌移走了
-                FightMgr.checkGameOverByDead();  //因部曲（阵亡，逃逸，被俘） 检查是否游戏结束 
+                this.onDeadRemoveCardNode();   //战斗消亡，需要同步卡牌数据
             }
         }
+    }
+
+    /**战斗消亡，需要同步卡牌数据 */
+    onDeadRemoveCardNode(){
+        cc.log("onDeadRemoveCardNode(), this.blockId = "+this.blockId);
+        if(this.cardInfo){
+            let deadCampId = this.cardInfo.campId;
+            this.onRemoveCardNode();
+            //FightMgr.checkGameOverByDead(deadCampId);  //因部曲（阵亡，逃逸，被俘） 检查是否游戏结束 
+        }
+    }
+
+    /**将本地块上的卡牌移走了，只是移动不同步卡牌数据 */
+    onRemoveCardNode(){
+        cc.log("onRemoveCardNode(), this.blockId = "+this.blockId);
+        if(this.cardNode){
+            this.cardNode.destroy();
+            this.cardNode = null;
+        }
+        this.cardInfo = null;
     }
 
     /**检测建筑(1营寨，2箭楼, 3粮仓)是否被攻占 */
@@ -373,9 +376,28 @@ export default class Block extends cc.Component {
         }
     }
 
-    /** 通知地块准备下一个回合*/
-    handlePerNextRound(){
-        this.effNode.destroyAllChildren();
+    /**是否驻守卡牌地块 */
+    isGarrisonBlock(){
+        if(this.cardInfo && this.buildNode.active){
+            // if(this.buildType == BlockBuildType.Barracks){   //建筑类型  0无，1营寨，2箭楼, 3粮仓
+            // }else if(this.buildType == BlockBuildType.Watchtower){  //箭楼
+            // }else if(this.buildType == BlockBuildType.Granary){  //粮仓
+            // }
+            return this.buildType;
+        } 
+        return 0;
+    }
+
+    /**检测当前砖块对目标卡牌的建筑关系 1空砖块 3对方空建筑 4我方空建筑 */
+    checkBuildRelationByCard(tarCard: CardInfo){
+        if(this.cardInfo == null && this.buildNode.active){
+            if(this.blockType == tarCard.campId){   //地块类型， 0中间地带，1我方范围，2敌方范围
+                return 4;    //4己方空建筑
+            }else{
+                return 3;   //3对方空建筑
+            }
+        }
+        return 1;  //1空砖块
     }
 
     /**士气改变通知 */
@@ -432,12 +454,15 @@ export default class Block extends cc.Component {
     }
     //士气变动
     changeCardShiqi(val: number, bShowAni:boolean = true){
-        if(this.cardInfo && this.cardNode){
+        if(this.cardInfo){
+            let oldShiqi = this.cardInfo.shiqi;
             this.cardInfo.shiqi += val;
             if(this.cardInfo.shiqi < 0){
                 this.cardInfo.shiqi = 0;
             }
-            this.cardNode.getComponent(Card).showCardShiqiLabel();   //显示士气值
+            if(this.cardNode){
+                this.cardNode.getComponent(Card).showCardShiqiLabel();   //显示士气值
+            }
 
             if(bShowAni){
                 if(val > 0){
@@ -447,83 +472,73 @@ export default class Block extends cc.Component {
                 }
             }
 
-            if(this.cardInfo.shiqi <= 10){  //士气过低，逃离战场
-                ROOT_NODE.showTipsText("士气过低，逃离战场!");
-                this.cardInfo.state = CardState.Flee;
+            if(oldShiqi > 0 && this.cardInfo.shiqi < 10){  //混乱(部曲士气过低<10)
+                this.cardInfo.state = CardState.Confusion
+                ROOT_NODE.showTipsText("部曲士气过低，处于混乱状态，不听调令")
+                let confusion_ani = this.effNode.getChildByName("confusion_ani");
+                if(!confusion_ani){
+                    GameMgr.createAtlasAniNode(this.confusionAtlas, 18, cc.WrapMode.Loop, this.effNode, "confusion_ani");
+                }
+            }else if(oldShiqi < 10 && this.cardInfo.shiqi >= 10){   //混乱恢复
+                if(this.cardInfo.state == CardState.Confusion){
+                    this.cardInfo.state = CardState.Normal
+                    ROOT_NODE.showTipsText("部曲士气从混乱状态恢复")
+                }
+                //this.effNode.destroyAllChildren();   //清除混乱特效
+                let confusion_ani = this.effNode.getChildByName("confusion_ani");
+                if(confusion_ani){
+                    confusion_ani.destroy();  //清除混乱特效
+                }
+            } 
 
-                this.onRemoveCardNode();   //将本地块上的卡牌移走了
-                FightMgr.checkGameOverByDead();  //因部曲（阵亡，逃逸，被俘） 检查是否游戏结束 
-            }
+            FightMgr.handleUpdateBlockCardInfo(this.cardInfo);   //更新同步卡牌数据（战斗士气变动）
         }
     }
 
+    /** 通知地块准备下一个回合*/
+    handlePerNextRound(){
+        this.handelShiqiChangeBySurround();  //处理回合开始部曲被包围而引起的士气变化
+    }
 
+    /** 处理回合开始部曲被包围而引起的士气变化*/
+    handelShiqiChangeBySurround(){
+        //围三缺一，士气-2；置之死地，士气+2；前后或左右夹击，士气-1
+        if(this.cardInfo && this.cardInfo.state != CardState.Confusion){  //非混乱部曲
+            FightMgr.checkBlocksRelation_AutoAtkAI(this);  //检测指定砖块周边情况，并AutoAI处理。如包围士气变化，敌军下一步自动攻击预处理等
+        }
+    }
 
-
-
-
-
-    /**敌方回合AI处理 */
-    handleEnemyRoundOptAI(){
-        cc.log("handleEnemyRoundOptAI(), 敌方自动AI FightMgr.EnemyAutoAi = "+FightMgr.EnemyAutoAi);
-        if(this.cardInfo == null || this.cardNode == null || FightMgr.EnemyAutoAi == false || this.cardInfo.campId == FightMgr.myCampId){   //敌方自动AI
+    /** 处理本砖块和目标砖块的移动，战斗等处理 */
+    handleBlockOptWithBlock(tarBlock: Block){
+        if(!tarBlock){
+            cc.log("异常，没有目标砖块")
             return;
         }
-
-        //1、预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；
-        // 同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。
-        let runAwayEnemy = null;    //敌方预逃走的单位
-        let runAwayWeight = 0;   //逃走权重
-        let hitEnemy = null;   //敌方出手的单位
-        let hitMy = null;    //我方预被击杀的单位
-        let hitWeight = 0;   //击杀权重
-
-        //cc.log("预判所有敌方单位是否收到我方严重威胁，并找出受威胁最严重的一个敌方单位；同时，找出敌方可击杀我方的敌方单位。判定逃跑或击杀权重从而选择操作。");
-        let myOpenBlocks = FightMgr.getFightScene().myOpenBlocks;
-
-        for(let j=0; j<myOpenBlocks.length; ++j){
-            let myBlock = myOpenBlocks[j];
-
-            let offX = Math.abs(this.node.x - myBlock.node.x);
-            let offY = Math.abs(this.node.y - myBlock.node.y);
-            if(offX < 20 || offY < 20){   //同行或同列
-                let blockLen = this.node.position.sub(myBlock.node.position).mag();
-                let enemyCardCfg = this.cardInfo.generalInfo.generalCfg;
-                if(blockLen <= 200 || (enemyCardCfg.bingzhong == SoliderType.gongbing && blockLen <= 400)){   //弓兵攻击两格
-                    let enemyNum = enemyCardCfg.atk + enemyCardCfg.def + enemyCardCfg.hp;
-
-                    let myCardCfg = myBlock.cardInfo.generalInfo.generalCfg;
-                    let myNum = myCardCfg.atk + myCardCfg.def + myCardCfg.hp;
-
-                    let hartScale = enemyNum/myNum;
-                    if(enemyCardCfg.bingzhong == SoliderType.gongbing && blockLen > 200){  //弓兵远距离权重增加
-                        hitWeight += 0.3;
-                    }
-
-                    if(hartScale >= 0.8){   //可能会取胜
-                        if(hartScale > hitWeight){
-                            hitWeight = hartScale;
-                            hitEnemy = this;
-                            hitMy = myBlock;
-                        }
-                    }
-                    else{   //可能战斗失败
-                        let runScale = myNum/enemyNum - 0.3;
-                        if(runScale >= 1.0){  //可能战斗失败
-                            if(runScale > runAwayWeight){
-                                runAwayWeight = runScale;
-                                runAwayEnemy = this;
-                            }
-                        }
-                    }
+        cc.log("this blockId = "+this.blockId + "tarBlock blockId = "+tarBlock.blockId);
+        if(this.boundNode.active != true){  //攻击或路径范围
+            cc.log("本地块不在目标的攻击或路径范围");
+            tarBlock.onCardMoveBlock(tarBlock);   //目标砖块复原
+        }else{
+            if(this.atkBg.active == true){  //本地块在目标砖块的攻击范围
+                this.onCardAttackBlock(tarBlock);   //参数地块上的卡牌攻击本地块上卡牌
+            }else if(this.runBg.active == true){  //本地块在目标砖块的路径范围
+                if(this.cardInfo){
+                    this.onCardSwapBlock(tarBlock);   //主将可以和同阵营临近部曲交换位置
+                }else{
+                    this.onCardMoveBlock(tarBlock);   //将目标地块上的卡牌移动到本空地块上
                 }
             }
         }
-
-        let AiResult: EnemyAIResult = new EnemyAIResult(runAwayEnemy, runAwayWeight, hitEnemy, hitMy, hitWeight);
-        FightMgr.handelEnemyAIResult(AiResult);
     }
 
-
+    /** 处理砖块AutoAI结果 */
+    handleBlockAutoAIResult(destBlock: Block){
+        if(!destBlock){
+            cc.log("处理砖块AutoAI结果 对方砖块 异常 ");
+        }
+        NoticeMgr.emit(NoticeType.SelBlockMove, this);  //准备拖动砖块,显示周边移动和攻击范围
+        destBlock.handleBlockOptWithBlock(this);   //处理本砖块和目标砖块的移动，战斗等处理
+        NoticeMgr.emit(NoticeType.SelBlockMove, null);  //取消显示周边移动和攻击范围
+    }
 
 }

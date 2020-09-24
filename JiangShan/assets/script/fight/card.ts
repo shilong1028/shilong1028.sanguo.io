@@ -79,9 +79,9 @@ export default class Card extends cc.Component {
             this.atkProgressBar.progress = cardCfg.atk/100;
             this.defProgressBar.progress = cardCfg.def/100;
 
-            if(this.cardInfo.generalInfo.tempFightInfo){  //战斗中
-                this.hpProgressBar.progress = this.cardInfo.generalInfo.tempFightInfo.fightHp/1000;
-                this.mpProgressBar.progress = this.cardInfo.generalInfo.tempFightInfo.fightMp/100;
+            if(this.cardInfo.generalInfo){  //战斗中
+                this.hpProgressBar.progress = this.cardInfo.generalInfo.fightHp/1000;
+                this.mpProgressBar.progress = this.cardInfo.generalInfo.fightMp/100;
             }else{
                 this.hpProgressBar.progress = cardCfg.hp/1000;
                 this.mpProgressBar.progress = cardCfg.mp/100;
