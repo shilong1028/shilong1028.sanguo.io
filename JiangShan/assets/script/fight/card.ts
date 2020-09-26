@@ -1,11 +1,18 @@
-import { GeneralInfo } from "../manager/ConfigManager";
-import { CardInfo } from "../manager/Enum";
 
+import GeneralCell from "../comui/general";
+import { ROOT_NODE } from "../login/rootNode";
+import { CardInfo, FunMgr } from "../manager/Enum";
 
 //卡牌节点
-const {ccclass, property} = cc._decorator;
+const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
 
 @ccclass
+@menu("Fight/card")
+@executionOrder(-1)  
+//脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
+@disallowMultiple 
+// 当本组件添加到节点上后，禁止同类型（含子类）的组件再添加到同一个节点
+
 export default class Card extends cc.Component {
 
     @property(cc.Node)
@@ -16,13 +23,12 @@ export default class Card extends cc.Component {
     @property([cc.SpriteFrame])
     campFrames: cc.SpriteFrame[] = [];
 
-    @property(cc.Label)
-    bingNumLabel: cc.Label = null;  //兵力
-    @property(cc.Label)
-    shiqiLabel: cc.Label = null;   //士气
-
     @property(cc.ProgressBar)
     hpProgressBar: cc.ProgressBar =  null;   //血量条（最大值1000）
+    @property(cc.ProgressBar)
+    bingProgressBar: cc.ProgressBar =  null;   //兵力(最大为3000)
+    @property(cc.ProgressBar)
+    qiProgressBar: cc.ProgressBar =  null;   //智力条（最大值100）
     @property(cc.ProgressBar)
     mpProgressBar: cc.ProgressBar =  null;   //智力条（最大值100）
     @property(cc.ProgressBar)
@@ -30,20 +36,47 @@ export default class Card extends cc.Component {
     @property(cc.ProgressBar)
     defProgressBar: cc.ProgressBar =  null;   //防御条（最大值100）
 
+    @property(cc.Label)
+    hpLabel: cc.Label = null;
+    @property(cc.Label)
+    bingLabel: cc.Label = null;
+    @property(cc.Label)
+    qiLabel: cc.Label = null;
+    @property(cc.Label)
+    mpLabel: cc.Label = null;
+    @property(cc.Label)
+    atkLabel: cc.Label = null;
+    @property(cc.Label)
+    defLabel: cc.Label = null;
+
     cardInfo: CardInfo = null;    //卡牌信息
 
     // LIFE-CYCLE CALLBACKS:
 
+    //只有在new cc.NodePool(XX)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
+    //使用 Pool.put() 回收节点后，会调用unuse 方法
+    unuse() {
+        cc.log("card onLoad ")
+    }
+    //使用 Pool.get() 获取节点后，就会调用reuse 方法
+    reuse() {
+        cc.log("card onLoad ")
+    }
+
     onLoad () {
+        cc.log("card onLoad ")
+        //如果是缓存池的节点，则调用顺序为 reuse -> initItemData-> onLoad，故如果在OnLoad.initView则会刷掉initItemData的数据
+    }
+
+    initView () {
         this.campSpr.node.active = false;
 
         this.hpProgressBar.progress = 0;
+        this.bingProgressBar.progress = 0;
+        this.qiProgressBar.progress = 0;
         this.mpProgressBar.progress = 0;
         this.atkProgressBar.progress = 0;
         this.defProgressBar.progress = 0;
-
-        this.bingNumLabel.string = "兵";
-        this.shiqiLabel.string = "士气";  
     }
 
     onDestroy(){
@@ -54,56 +87,75 @@ export default class Card extends cc.Component {
 
     // update (dt) {}
 
-    //显示士气值
-    showCardShiqiLabel(){
+    /** 更新士气值 */
+    updateCardShiqi(){
         if(this.cardInfo){
-            this.shiqiLabel.string = "士气"+this.cardInfo.shiqi.toString(); 
+            this.qiLabel.string = "气"+this.cardInfo.shiqi;
+            let progess = this.cardInfo.shiqi/100;
+            this.qiProgressBar.progress = FunMgr.num2progess(progess);
+        }
+    }
+    /** 更新士兵数量 */
+    updateCardBingCount(){
+        if(this.cardInfo){
+            this.bingLabel.string = "兵"+this.cardInfo.generalInfo.bingCount;
+            let progess = this.cardInfo.generalInfo.bingCount/3000;
+            this.bingProgressBar.progress = FunMgr.num2progess(progess);
+        }
+    }
+    /** 更新血量 */
+    updateCardHp(){
+        if(this.cardInfo){
+            this.hpLabel.string = "血"+this.cardInfo.generalInfo.fightHp;
+            let progess = this.cardInfo.generalInfo.fightHp/1000;
+            this.hpProgressBar.progress = FunMgr.num2progess(progess);
+        }
+    }
+    /** 更新智力 */
+    updateCardMp(){
+        if(this.cardInfo){
+            this.mpLabel.string = "智"+this.cardInfo.generalInfo.fightMp;
+            let progess = this.cardInfo.generalInfo.fightMp/100;
+            this.mpProgressBar.progress = FunMgr.num2progess(progess);
         }
     }
 
     /**设置卡牌数据(战斗) */
-    setCardData(info: CardInfo){
+    initCardData(info: CardInfo){
         this.cardInfo = info;
-        //cc.log("setCardData(), info = "+JSON.stringify(info));
+        this.initView();
+        //如果是缓存池的节点，则调用顺序为 reuse -> initItemData-> onLoad，故如果在OnLoad.initView则会刷掉initItemData的数据
+
+        cc.log("initCardData(), info = "+JSON.stringify(info));
         if(this.cardInfo.campId == 1){  //阵营，0默认，1蓝方(我方)，2红方
             this.campSpr.spriteFrame = this.campFrames[0];
         }else if(this.cardInfo.campId == 2){
             this.campSpr.spriteFrame = this.campFrames[1];
         }
 
-        this.bingNumLabel.string = "兵"+this.cardInfo.generalInfo.bingCount.toString();
-        this.showCardShiqiLabel();  //显示士气值
+        let progess = this.cardInfo.generalInfo.bingCount/3000;
+        this.bingProgressBar.progress = FunMgr.num2progess(progess);
+        this.updateCardShiqi();  //更新士气值
+        this.updateCardBingCount();  //更新士兵数量
+        this.updateCardHp();  //更新血量
+        this.updateCardMp();  //更新智力
 
         let cardCfg = this.cardInfo.generalInfo.generalCfg;
         if(cardCfg){
+            this.atkLabel.string = "攻"+cardCfg.atk
+            this.defLabel.string = "防"+cardCfg.def
             this.atkProgressBar.progress = cardCfg.atk/100;
             this.defProgressBar.progress = cardCfg.def/100;
-
-            if(this.cardInfo.generalInfo){  //战斗中
-                this.hpProgressBar.progress = this.cardInfo.generalInfo.fightHp/1000;
-                this.mpProgressBar.progress = this.cardInfo.generalInfo.fightMp/100;
-            }else{
-                this.hpProgressBar.progress = cardCfg.hp/1000;
-                this.mpProgressBar.progress = cardCfg.mp/100;
-            }
         }
-    }
 
-    /**显示武将头像信息 */
-    showGeneralCard(info: GeneralInfo){
-        cc.log("showGeneralCard(), info = "+JSON.stringify(info));
-
-        this.hpProgressBar.progress = info.generalCfg.hp/1000;
-        this.mpProgressBar.progress = info.generalCfg.mp/100;
-        this.atkProgressBar.progress = info.generalCfg.atk/100;
-        this.defProgressBar.progress = info.generalCfg.def/100;
-
-        if(info.bingCount > 0){
-            this.bingNumLabel.string = "兵"+info.bingCount.toString();
-        }else{
-            this.bingNumLabel.string = "兵???";
+        let generalChild = this.generalNode.getChildByName("generalChild");
+        if(!generalChild){
+            generalChild = cc.instantiate(ROOT_NODE.pfGeneral);
+            generalChild.name = "generalChild";
+            this.generalNode.addChild(generalChild);
         }
+        generalChild.getComponent(GeneralCell).setCellClickEnable(false);
+        generalChild.getComponent(GeneralCell).initGeneralData(this.cardInfo.generalInfo);
     }
-
 
 }

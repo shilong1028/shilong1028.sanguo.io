@@ -36,6 +36,16 @@ class FunManager {
         return cc.v2(pos.x, pos.y);
     }
 
+    /**数值转进度0.0-1.0 */
+    num2progess(num: number){
+        if(num < 0){
+            return 0;
+        }else if(num > 1.0){
+            return 1.0;
+        }
+        return num;
+    }
+
     /**数字科学显示 KMBT... 
      * @param num 要转换的数字
      * @param fixNum 小数点有效位数

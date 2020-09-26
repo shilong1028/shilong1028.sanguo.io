@@ -157,6 +157,9 @@ class SDKManager_class  {
 
     //Banner管理
     createrBannerAd(){
+        if(this.bOpenAdBtn != true){
+            return;
+        }
         if(SDKMgr.is_tt_platform() == true){   //头条小程序
             let curTime = new Date().getTime();
             if(curTime > SDKMgr.bannerCheckTime){

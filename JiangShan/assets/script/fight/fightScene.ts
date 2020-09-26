@@ -1,6 +1,8 @@
+import GeneralCell from "../comui/general";
+import List from "../control/List";
 import { ROOT_NODE } from "../login/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
-import { GameOverState, SoliderType } from "../manager/Enum";
+import { CardInfo, GameOverState } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserData } from "../manager/MyUserData";
@@ -11,15 +13,26 @@ import Card from "./card";
 
 
 //战斗场景
-const {ccclass, property} = cc._decorator;
+const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
 
 @ccclass
+@menu("Fight/fightScene")
+@executionOrder(0)  
+//脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
+@disallowMultiple 
+// 当本组件添加到节点上后，禁止同类型（含子类）的组件再添加到同一个节点
+
 export default class FightScene extends cc.Component {
 
     @property(cc.Node)
     qipanNode: cc.Node = null;   //棋盘节点
     @property(cc.Node)
     gridNode: cc.Node = null;   //棋盘网格节点
+
+    @property(List)
+    enemyList: List = null;
+    @property(List)
+    myList: List = null;
 
     @property(cc.Label)
     myDesc: cc.Label = null;  //敌方回合/我方回合
@@ -44,6 +57,8 @@ export default class FightScene extends cc.Component {
     selectBlock: Block = null;    //选中的将要移动的卡牌地块
     selCardNode: cc.Node = null;   //选中的卡牌对象（新创建）
 
+    cardPool: cc.NodePool =  null;   //卡牌缓存池
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -54,13 +69,39 @@ export default class FightScene extends cc.Component {
 
         NoticeMgr.on(NoticeType.GameOverNotice, this.handleGameOverNotice, this);  //游戏结束通知
 
+        this.cardPool =  new cc.NodePool(Card);   //武将卡牌缓存池
+        for(let i=0; i<15; i++){
+            let general = cc.instantiate(this.pfCard);
+            this.cardPool.put(general);
+        }
+
         this.createDefaultCards();  //初始化棋盘
     }
 
     onDestroy(){
+        if(this.cardPool){
+            this.cardPool.clear();
+        }
+
         SDKMgr.removeBannerAd();  
         this.node.targetOff(this);
         NoticeMgr.offAll(this);
+    }
+
+    /**缓存池创建卡牌节点 */
+    createrCard(info: CardInfo){
+        let card: cc.Node = null;
+        if (this.cardPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
+            card = this.cardPool.get();
+        } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
+            card = cc.instantiate(this.pfCard);
+        }
+        card.getComponent(Card).initCardData(info);
+        return card;
+    }
+    /**缓存池回收卡牌节点 */
+    removeCard(card: cc.Node){
+        this.cardPool.put(card); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
     }
 
     start () {
@@ -69,13 +110,57 @@ export default class FightScene extends cc.Component {
         }
         SDKMgr.createrBannerAd();   //创建Banner
         FightMgr.initGeneralToBlock();  //初始化双方武将初始布局
+
+        this.enemyList.numItems = FightMgr.battleEnemyArr.length;
+        this.myList.numItems = FightMgr.battleGeneralArr.length;
+
+        this.updateMySoliderTotalCount();   //更新我方士兵总数
+        this.updateEnemySoliderTotalCount();  //更新敌方士兵总数
+    }
+    // update (dt) {}
+
+    /** 更新我方士兵总数*/
+    updateMySoliderTotalCount(){
+        let total = 0;
+        for(let i=0; i<FightMgr.battleGeneralArr.length; i++){
+            let generalInfo = FightMgr.battleGeneralArr[i].generalInfo;
+            total += generalInfo.bingCount;
+        }
+        this.mySoliderLbl.string = "我方总兵力:"+total; 
+    }
+    /** 更新敌方士兵总数*/
+    updateEnemySoliderTotalCount(){
+        let total = 0;
+        for(let i=0; i<FightMgr.battleEnemyArr.length; i++){
+            let generalInfo = FightMgr.battleEnemyArr[i].generalInfo;
+            total += generalInfo.bingCount;
+        }
+        this.enemySoliderLbl.string = "敌方总兵力:"+total; 
     }
 
-    // update (dt) {}
+    //列表渲染器
+    onEnemyListRender(item: cc.Node, idx: number) {
+        if(!item) return;
+        let info = FightMgr.battleEnemyArr[idx];
+        item.getComponent(GeneralCell).initGeneralData(info.generalInfo);
+    }
+    //列表渲染器
+    onListRender(item: cc.Node, idx: number) {
+        if(!item) return;
+        let info = FightMgr.battleGeneralArr[idx];
+        item.getComponent(GeneralCell).initGeneralData(info.generalInfo);
+    }
 
     onHelpBtn(){
         AudioMgr.playBtnClickEffect();
-        GameMgr.showLayer(this.pfHelp);
+        //GameMgr.showLayer(this.pfHelp);
+    }
+
+    onBackBtn(){
+        AudioMgr.playBtnClickEffect();
+        ROOT_NODE.showTipsDialog("战斗还未结束，确定要强制撤军？", ()=>{
+            GameMgr.gotoMainScene();   //进入主场景
+        });
     }
 
     onResetBtn(){
@@ -172,17 +257,17 @@ export default class FightScene extends cc.Component {
             return;
         }
         if(this.selCardNode == null){   //选中的卡牌对象（新创建）
-            this.selCardNode = cc.instantiate(this.pfCard);
+            this.selCardNode = this.createrCard(this.selectBlock.cardInfo);
             //this.selCardNode.setPosition(-3000, -3000);
             this.node.addChild(this.selCardNode, 100);
+        }else{
+            let card = this.selCardNode.getComponent(Card);
+            card.initCardData(this.selectBlock.cardInfo);   //设置地块卡牌模型数据 
         }
-        this.selCardNode.active = true;
-        let card = this.selCardNode.getComponent(Card);
-        card.setCardData(this.selectBlock.cardInfo);   //设置地块卡牌模型数据 
-
         let pos = this.node.convertToNodeSpaceAR(touchPos);
         //pos.y += this.gridNode.y;
         this.selCardNode.setPosition(pos);
+        this.selCardNode.active = true;
     }
 
     /**放置选中的卡牌模型 */

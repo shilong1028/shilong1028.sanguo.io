@@ -56,7 +56,11 @@ class FightManager {
 
     //---------------------- 以下为方法接口 -------------------
 
-    /**清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组 */
+    /**清除并初始化战斗数据，
+     * enemyArr 敌方武将部曲卡牌数组
+     * generalArr 我方武将部曲卡牌数组
+     * fightCityInfo 任务，而是指定攻占某城池
+      */
     clearAndInitFightData(enemyArr:CardInfo[], generalArr: CardInfo[], fightCityInfo: CityInfo=null){
         this.battleEnemyArr_copy = enemyArr;   //出战敌方部曲（和士兵） ，注意，战斗中使用的是拷贝数据
         this.battleGeneralArr_copy = generalArr;   //出战我方部曲 ，注意，战斗中使用的是拷贝数据

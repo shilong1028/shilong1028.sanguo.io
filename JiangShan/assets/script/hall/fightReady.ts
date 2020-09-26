@@ -3,8 +3,9 @@ import List from "../control/List";
 import Radar from "../control/Radar";
 import { ROOT_NODE } from "../login/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
-import { CfgMgr, GeneralInfo, st_battle_info, st_story_info } from "../manager/ConfigManager";
+import { CfgMgr, CityInfo, GeneralInfo, st_battle_info, st_story_info } from "../manager/ConfigManager";
 import { CardInfo, CardTypeArr, CardTypeNameArr } from "../manager/Enum";
+import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 
@@ -70,6 +71,7 @@ export default class FightReady extends cc.Component {
 
     enemyCardArr: CardInfo[] = [];   //敌方卡牌集合
     myCardArr:CardInfo[] = [];  //我方出战卡牌集合
+    fightCityInfo: CityInfo = null;   //非任务，而是指定攻占某城池
 
     recruitMaxCount: number = 500;   //部曲最大兵力
     recruitCurCount: number = 0;    //当前部曲兵力
@@ -93,6 +95,7 @@ export default class FightReady extends cc.Component {
         this.enemyCardArr = [];   //敌方卡牌集合
         this.myCardArr = [];  //我方出战卡牌集合
         this.generalArr = [];
+        this.fightCityInfo = null;   //非任务，而是指定攻占某城池
 
         this.initZhenNode();
     }
@@ -106,6 +109,11 @@ export default class FightReady extends cc.Component {
     }
 
     // update (dt) {}
+
+    /**指定攻占某城池 */
+    initBattleInfoByCity(cityInfo: CityInfo){
+        this.fightCityInfo = cityInfo;   //非任务，而是指定攻占某城池
+    }
 
     /**读取故事剧情战斗 */
     initBattleInfoByStory(taskConf: st_story_info){
@@ -402,11 +410,9 @@ export default class FightReady extends cc.Component {
 
     /**回收武将头像到缓存池 默认全部回收*/
     removeZhenGeneral(idx:number=-1){
-        cc.log("removeZhenGeneral 回收武将头像到缓存池 idx = "+idx)
         if(idx == -1){   //全部
             for(let i=0; i<7; i++){
                 let zhenNode = this.zhenNode[i];
-                cc.log("i = "+i+"; zhenNode = "+zhenNode)
                 if(zhenNode){
                     let generalNode = zhenNode.getChildByName("generalNode");
                     if(generalNode){
@@ -747,7 +753,7 @@ export default class FightReady extends cc.Component {
         cc.log("this.myCardArr = "+JSON.stringify(this.myCardArr));
         this.removeZhenGeneral();  //回收武将头像到缓存池 默认全部回收  //不知为什么在onDestory循环会报错
 
-        //FightMgr.clearAndInitFightData(this.enmeyArr, this.fightArr, this.fightCityInfo);   //清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组
+        FightMgr.clearAndInitFightData(this.enemyCardArr, this.myCardArr, this.fightCityInfo);   //清除并初始化战斗数据，需要传递敌方武将数组和我方出战武将数组
     }
 
     onCloseBtn(){

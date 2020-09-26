@@ -7,11 +7,19 @@ import Card from "./card";
 
 
 //棋盘格子对象
-const {ccclass, property} = cc._decorator;
+const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
 
 @ccclass
+@menu("Fight/block")
+@executionOrder(-10)  
+//脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
+@disallowMultiple 
+// 当本组件添加到节点上后，禁止同类型（含子类）的组件再添加到同一个节点
+
 export default class Block extends cc.Component {
 
+    @property(cc.Label)
+    idLbl: cc.Label = null;
     @property(cc.Sprite)
     blockSpr: cc.Sprite = null;  //地块纹理
     @property(cc.Node)
@@ -52,6 +60,8 @@ export default class Block extends cc.Component {
         NoticeMgr.on(NoticeType.PerNextRound, this.handlePerNextRound, this);  //通知地块准备下一个回合
         NoticeMgr.on(NoticeType.UpdateShiqiNotice, this.handleUpdateShiqiNotice, this);  //士气改变通知
 
+        this.idLbl.node.active = true;   //地块编号
+
         this.boundNode.active = false;  //攻击或路径范围
         // this.runBg.active = false;    //路径范围显示图片
         // this.atkBg.active = false;   //攻击范围显示图片
@@ -70,6 +80,7 @@ export default class Block extends cc.Component {
     /**随机卡牌数据 */
     initBlockData(blockId: number){
         this.blockId = blockId;   //地块ID
+        this.idLbl.string = blockId.toString();
         this.blockRow = Math.floor(blockId/FightMgr.cardsCol);   //地块行(横向) Row  列（纵向） Column
         this.blockColumn = blockId%FightMgr.cardsCol;   //地块行 Row 列 Column
         this.blockType = BlockType.Mid;   //地块类型， 0中间地带，1我方范围，2敌方范围
@@ -81,17 +92,17 @@ export default class Block extends cc.Component {
 
         this.buildNode.active = false;  //建筑
         this.buildType = BlockBuildType.None;   //建筑类型  0无，1营寨，2箭楼, 3粮仓
-        if(blockId == 2 || blockId == 32){
+        if(blockId == 2 || blockId == 32){   //营寨
             this.buildType = BlockBuildType.Barracks
             this.buildNode.active = true;  //建筑
-        }else if(blockId == 0 || blockId == 34){
+        }else if(blockId == 0 || blockId == 34){  //粮仓
             this.buildType = BlockBuildType.Granary
             this.buildNode.active = true;  //建筑
-        }else if(blockId == 10 || blockId == 13){  //敌方箭楼
+        }else if(blockId == 9 || blockId == 11){  //敌方箭楼
             this.buildType = BlockBuildType.Watchtower
             this.blockType = BlockType.Enemy
             this.buildNode.active = true;  //建筑
-        }else if(blockId == 21 || blockId == 24){   //我方箭楼
+        }else if(blockId == 23 || blockId == 25){   //我方箭楼
             this.buildType = BlockBuildType.Watchtower
             this.blockType = BlockType.Myself
             this.buildNode.active = true;  //建筑
@@ -116,12 +127,13 @@ export default class Block extends cc.Component {
             this.cardInfo = info;
 
             if(this.cardNode == null){
-                let cardNode = cc.instantiate(FightMgr.getFightScene().pfCard);
+                let cardNode = cc.instantiate(FightMgr.getFightScene().createrCard(info));
                 this.headNode.addChild(cardNode);
                 this.cardNode = cardNode;
+            }else{
+                this.cardNode.getComponent(Card).initCardData(info);
             }
             this.cardNode.active = true; 
-            this.cardNode.getComponent(Card).setCardData(info);
         }
     }
 
@@ -331,9 +343,10 @@ export default class Block extends cc.Component {
 
     /**将本地块上的卡牌移走了，只是移动不同步卡牌数据 */
     onRemoveCardNode(){
-        cc.log("onRemoveCardNode(), this.blockId = "+this.blockId);
         if(this.cardNode){
-            this.cardNode.destroy();
+            cc.log("onRemoveCardNode(), this.blockId = "+this.blockId);
+            //this.cardNode.destroy();
+            FightMgr.getFightScene().removeCard(this.cardNode);   //缓存池回收卡牌节点
             this.cardNode = null;
         }
         this.cardInfo = null;
@@ -461,7 +474,7 @@ export default class Block extends cc.Component {
                 this.cardInfo.shiqi = 0;
             }
             if(this.cardNode){
-                this.cardNode.getComponent(Card).showCardShiqiLabel();   //显示士气值
+                this.cardNode.getComponent(Card).updateCardShiqi();   //更新士气值
             }
 
             if(bShowAni){
