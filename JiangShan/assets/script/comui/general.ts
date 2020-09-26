@@ -22,11 +22,11 @@ export default class GeneralCell extends cc.Component {
     @property(cc.Sprite)
     headSpr: cc.Sprite = null;
     @property(cc.Sprite)
-    officeSpr: cc.Sprite = null;
+    officeSpr: cc.Sprite = null;   //官职
     @property(cc.Sprite)
-    typeSpr: cc.Sprite = null;
+    typeSpr: cc.Sprite = null;   //兵种
     @property(cc.Sprite)
-    stateSpr: cc.Sprite = null;
+    stateSpr: cc.Sprite = null;   //0默认，1出战中，2驻守中
     @property(cc.Label)
     nameLabel: cc.Label = null;
     @property(cc.Label)
@@ -36,8 +36,19 @@ export default class GeneralCell extends cc.Component {
     bShowTip: boolean = false;   //点击Cell是否弹出描述提示
     selCallBack: any = null;   //响应点击选中回调
 
+    //只有在new cc.NodePool(XX)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
+    //使用 Pool.put() 回收节点后，会调用unuse 方法
+    unuse() {
+        cc.log("general onLoad ")
+    }
+    //使用 Pool.get() 获取节点后，就会调用reuse 方法
+    reuse() {
+        cc.log("general onLoad ")
+    }
+
     onLoad () {
-        this.initView();
+        cc.log("general onLoad ")
+        //如果是缓存池的节点，则调用顺序为 reuse -> initItemData-> onLoad，故如果在OnLoad.initView则会刷掉initItemData的数据
     }
 
     initView(){
@@ -54,20 +65,35 @@ export default class GeneralCell extends cc.Component {
 
     }
 
+    setCellClickEnable(bEnable:boolean){
+        //默认ListCell是开启的，当通过缓存池添加时，需要设定是否可点击
+        this.node.getComponent(cc.Button).enabled = bEnable
+    }
+
     /**初始化武将头像 */
+    //如果是缓存池的节点，则调用顺序为 reuse -> initItemData-> onLoad，故如果在OnLoad.initView则会刷掉initItemData的数据
     initGeneralData(info: GeneralInfo, bShowTip: boolean = false, selCallBack:any=null){
-        //cc.log("initItemData(), info = "+JSON.stringify(info));
+        //cc.log("initGeneralData(), info = "+JSON.stringify(info));
         this.bShowTip = bShowTip;   //点击Cell是否弹出描述提示
         this.selCallBack = selCallBack;   //响应点击选中回调
         this.generalInfo = info;   //武将数据
+
+        this.initView();
         
         if(info){
             this.lvLabel.string = "Lv "+info.generalLv;
+            this.officeSpr.spriteFrame = ROOT_NODE.officeAtlas.getSpriteFrame(info.officialId.toString());
+            if(info.state == 1){  //0默认，1出战中，2驻守中
+                this.stateSpr.spriteFrame = ROOT_NODE.commonAtlas.getSpriteFrame("common_fighting");
+            }else if(info.state == 2){
+                this.stateSpr.spriteFrame = ROOT_NODE.commonAtlas.getSpriteFrame("common_garrison");
+            }else{
+                this.stateSpr.spriteFrame = null;
+            }
 
             let generalConf: st_general_info = info.generalCfg;
             if(generalConf){
                 this.nameLabel.string = generalConf.name;
-                this.officeSpr.spriteFrame = ROOT_NODE.officeAtlas.getSpriteFrame(info.officialId.toString());
                 this.typeSpr.spriteFrame = ROOT_NODE.commonAtlas.getSpriteFrame("common_"+generalConf.bingzhong);
                 GameMgr.setSpriteFrameByImg("head/"+generalConf.id_str, this.headSpr.node);
             }

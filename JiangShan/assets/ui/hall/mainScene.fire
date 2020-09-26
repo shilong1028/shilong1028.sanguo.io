@@ -5907,6 +5907,9 @@
     "pfGeneralLayer": {
       "__uuid__": "3cbaec42-c2da-41c9-a3e8-4c23a65024ed"
     },
+    "pfFightReady": {
+      "__uuid__": "4b4ac958-ec1c-4c78-a5ec-56a350e3e36c"
+    },
     "pfBag": null,
     "_id": "88E7HvKgJOJpyrQARVzFfn"
   }

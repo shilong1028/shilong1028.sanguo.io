@@ -318,6 +318,7 @@ export enum CardType{
 }
 export const CardTypeArr = [CardType.Chief, CardType.Forward, CardType.Forward, CardType.Guard,
     CardType.Normal, CardType.Normal, CardType.Normal, CardType.Normal, CardType.Normal, CardType.Normal];
+export const CardTypeNameArr = ["主将", "左前锋", "右前锋", "后卫", "侧卫", "侧卫", "侧卫", "侧卫", "侧卫", "侧卫"];
 
 /** 出战武将卡牌状态 */
 export enum CardState{  //状态，0作战，1阵亡，2混乱，3逃逸，4被俘

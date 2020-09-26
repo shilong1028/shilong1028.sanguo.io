@@ -57,6 +57,7 @@ export default class StoryLayer extends cc.Component {
     onDestroy(){
         //this.node.targetOff(this);
         //NoticeMgr.offAll(this);
+        this.removeRewardItems();
     }
 
     removeRewardItems(){

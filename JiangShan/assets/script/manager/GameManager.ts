@@ -230,6 +230,18 @@ class GameManager {
         }
     }
 
+    /**判定粮草是否充足 */
+    checkFoodEnoughOrTips(cost: number, bTips: boolean=false){
+        if(MyUserData.FoodCount >= cost && cost >= 0){
+            return true;
+        }else{
+            if(bTips){
+                this.showGoldAddDialog();
+            }
+            return false;
+        }
+    }
+
     //获取金币提示框
     showGoldAddDialog(){
         this.showLayer(ROOT_NODE.pfGoldAdd);
@@ -332,7 +344,7 @@ class GameManager {
     }
 
     /**任务第一阶段操作完毕处理 */
-    handleStoryShowOver(storyConf: st_story_info, bUpdateState:boolean=true){
+    handleStoryShowOver(storyConf: st_story_info){
         cc.log("handleStoryShowOver(), 任务操作完毕 MyUserData.TaskState = "+MyUserData.TaskState+"; storyConf = "+JSON.stringify(storyConf));
         if(storyConf == null || storyConf == undefined || storyConf.type == 0){
             return;
@@ -341,46 +353,19 @@ class GameManager {
         let mainScene = GameMgr.getMainScene();
         if(MyUserData.TaskState == TaskState.Ready){   //任务对话（第一阶段）处理完毕
             cc.log("任务对话（第一阶段）处理完毕")
-            if(bUpdateState){
-                GameMgr.saveCurTaskOfficesAndGenerals();  //存储根据当前任务剧情保存的新官职和新武将
+            GameMgr.saveCurTaskOfficesAndGenerals();  //存储根据当前任务剧情保存的新官职和新武将
+
+            //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
+            if(storyConf.type == TaskType.Story){
+                MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Reward); 
+            }else{
                 MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Finish); 
             }
-            //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
-            switch(storyConf.type){ 
-                case TaskType.Story:
-                    this.handleStoryShowOver(storyConf);
-                    break;
-                case TaskType.Fight:
-                    if(mainScene){
-                        mainScene.openFightByTask(storyConf);   //战斗选将准备界面
-                    }
-                    break;
-                case TaskType.Recruit:
-                    if(mainScene){
-                        mainScene.openGeneralLayer(0);   //武将招募
-                    }
-                    break;
-                case TaskType.Offical:
-                    break;
-                case TaskType.Capital:
-                    break;
-                case TaskType.General:
-                    break;
-                case TaskType.Garrison:
-                    break;
-                case TaskType.Skill:
-                    break;
-                case TaskType.War:
-                    break;
-            }
+            //mainScene会通过消息监听同步任务状态处理
         }else if(MyUserData.TaskState == TaskState.Finish){   //任务操作（第二阶段）处理完毕
             cc.log("任务操作（第二阶段）处理完毕")
-            if(bUpdateState){
-                MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Reward); 
-            }
-            if(mainScene){
-                mainScene.openTaskRewardsLayer(storyConf);  //打开任务领奖界面
-            }
+            MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Reward); 
+            //mainScene会通过消息监听同步任务状态处理
         }
         
         // if(MyUserData.TaskId == SpecialStory.taishouOpen){   //东郡太守

@@ -507,7 +507,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 500,
-      "height": 158.2
+      "height": 250
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -573,7 +573,7 @@
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Microsoft YaHei",
-    "_N$overflow": 3,
+    "_N$overflow": 2,
     "_N$cacheMode": 0,
     "_id": ""
   },
@@ -829,7 +829,7 @@
       "ctor": "Float64Array",
       "array": [
         -130,
-        -130,
+        -160,
         0,
         0,
         0,
@@ -1136,7 +1136,7 @@
       "ctor": "Float64Array",
       "array": [
         130,
-        -130,
+        -160,
         0,
         0,
         0,

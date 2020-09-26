@@ -8,6 +8,35 @@ const { ccclass, property, disallowMultiple, menu, executionOrder, requireCompon
 
 import ListItem from './ListItem';
 
+/**
+ * ## 使用说明
+
+1. 在编辑器中，创建一个**ScrollView**（也就是**ScrollView->Mask->Content**这样层级结构的节点！）。
+2. 将 `List` 组件挂载到**ScrollView**节点上。
+3. 设置**模板 Item**，选择 `TemplateType` ，可切换**模板类型**，请按需选择。
+4. 设置**滑动模式（ `SlideMode` ）**， `NORMAL=通常` ， `ADHERING=粘附` ， `PAGE=分页` ，三选一。
+5. 设置是否为**虚拟列表（ `Virtual` ）**，默认为 `true` ，意思是仅在可视范围内渲染 `Item` 。反之，如果为 `false` ，则会渲染所有数量的 Item，一般不推荐这么做，但凡事总有个万一，所以预留了。
+6. （可选）设置**逐帧渲染（ `FrameByFrameRenderNum` ）**，该数量为**每帧渲染的数量**。
+7. 设置**渲染器（ `RenderEvent` ）**，在**View**中写一个函数，将该函数指向**RenderEvent**，运行时，设置 List 数量，Item 将会**通过该函数进行回调**，开发者在该函数中实现**Item 的刷新**。
+8. （可选）设置**选择模式（ `SelectedMode` ）**，选择模式有 `SINGLE（单选）` 、 `MULT（多选）` 两种，须将`cc.Button`和`ListItem` 挂载到**模板 Item**上。在**View**中写一个函数，将该函数指向 `SelectedEvent` ，运行时，当**选择变更**，将会通过该函数**回调**。
+
+> 在**View**中，若是**单选**模式，用 `list.selectedId=Number` 来改变**当前选择**。若是**多选**模式，则调用 `list.setMultSelected(args, boolean)` 接口来设置多选数据。
+
+9. 完成以上设置后，在**View**中调用 `list.numItems=Number` 设置列表数量，本组件就会通过**渲染器（即 `RenderEvent` ）**进行**回调**了！
+
+## 小贴士
+
+1. 每一个 `Item-Node` 都会被赋值一个 `_listId` ，即该 `Item` 在 `List` 中的 `下标` 。假如你的 `Item` 是个 `按钮` ，在该 `按钮` 的 `回调事件` 中，通过 `event.currentTarget._listId` 就能取得该 `Item的下标` 了，这非常方便。（ `TS版` 比较特殊， 通过 `event.currentTarget['_listId']` 来获得。）
+2. 如果是虚拟列表（即 `virtual`属性为`true`），勾选`ListItem`的`adaptiveSize`属性，能实现`动态Item宽/高`。
+
+## 注意
+
+1. 本组件所依赖的**ScrollView 节点**、**Mask 节点**以及**Content 节点**，这三个节点的**锚点**需要**按方向**去设置。比如**从顶到底单列排列**，就需要设置锚点为（0.5, 1）。如果是**从左到右网格排列**，就需要设置锚点为（0, 1）。始终将锚点设置到**首个 Item**那一边。
+2. 理论上**设为虚拟列表后不可再设回普通列表**（即 `virtual` 属性）。
+3. SlideMode 设为 `ADHERING（粘附）` 或 `PAGE（页面）` 后，组件将**强行屏蔽惯性滚动**。
+4. 设为`循环列表`时，`Content`的`cc.Layout`的`边缘距离（top/bottom/left/right）`要设置成与`spacingX/Y（间距）`一样。`（因为在循环列表中，边距=间距）`。
+ */
+
 enum TemplateType {
     NODE = 1,
     PREFAB = 2,
@@ -24,30 +53,6 @@ enum SelectedType {
     SINGLE = 1,//单选
     MULT = 2,//多选
 }
-
-/**
- * ## 使用说明
-1. 在编辑器中，创建一个**ScrollView**（也就是**ScrollView->Mask->Content**这样层级结构的节点！）。
-2. 将 `List` 组件挂载到**ScrollView**节点上。
-3. 设置**模板 Item**，选择 `TemplateType` ，可切换**模板类型**，请按需选择。
-4. 设置**滑动模式（ `SlideMode` ）**， `NORMAL=通常` ， `ADHERING=粘附` ， `PAGE=分页` ，三选一。
-5. 设置是否为**虚拟列表（ `Virtual` ）**，默认为 `true` ，意思是仅在可视范围内渲染 `Item` 。反之，如果为 `false` ，则会渲染所有数量的 Item，一般不推荐这么做，但凡事总有个万一，所以预留了。
-6. （可选）设置**逐帧渲染（ `FrameByFrameRenderNum` ）**，该数量为**每帧渲染的数量**。
-7. 设置**渲染器（ `RenderEvent` ）**，在**View**中写一个函数，将该函数指向**RenderEvent**，运行时，设置 List 数量，Item 将会**通过该函数进行回调**，开发者在该函数中实现**Item 的刷新**。
-8. （可选）设置**选择模式（ `SelectedMode` ）**，选择模式有 `SINGLE（单选）` 、 `MULT（多选）` 两种，须将`cc.Button`和`ListItem` 挂载到**模板 Item**上。在**View**中写一个函数，将该函数指向 `SelectedEvent` ，运行时，当**选择变更**，将会通过该函数**回调**。
-> 在**View**中，若是**单选**模式，用 `list.selectedId=Number` 来改变**当前选择**。若是**多选**模式，则调用 `list.setMultSelected(args, boolean)` 接口来设置多选数据。
-9. 完成以上设置后，在**View**中调用 `list.numItems=Number` 设置列表数量，本组件就会通过**渲染器（即 `RenderEvent` ）**进行**回调**了！
-
-## 小贴士
-1. 每一个 `Item-Node` 都会被赋值一个 `_listId` ，即该 `Item` 在 `List` 中的 `下标` 。假如你的 `Item` 是个 `按钮` ，在该 `按钮` 的 `回调事件` 中，通过 `event.currentTarget._listId` 就能取得该 `Item的下标` 了，这非常方便。（ `TS版` 比较特殊， 通过 `event.currentTarget['_listId']` 来获得。）
-2. 如果是虚拟列表（即 `virtual`属性为`true`），勾选`ListItem`的`adaptiveSize`属性，能实现`动态Item宽/高`。
-
-## 注意
-1. 本组件所依赖的**ScrollView 节点**、**Mask 节点**以及**Content 节点**，这三个节点的**锚点**需要**按方向**去设置。比如**从顶到底单列排列**，就需要设置锚点为（0.5, 1）。如果是**从左到右网格排列**，就需要设置锚点为（0, 1）。始终将锚点设置到**首个 Item**那一边。
-2. 理论上**设为虚拟列表后不可再设回普通列表**（即 `virtual` 属性）。
-3. SlideMode 设为 `ADHERING（粘附）` 或 `PAGE（页面）` 后，组件将**强行屏蔽惯性滚动**。
-4. 设为`循环列表`时，`Content`的`cc.Layout`的`边缘距离（top/bottom/left/right）`要设置成与`spacingX/Y（间距）`一样。`（因为在循环列表中，边距=间距）`。
- */
 
 @ccclass
 @disallowMultiple()
@@ -102,6 +107,7 @@ export default class List extends cc.Component {
         visible() { return this._slideMode == SlideType.PAGE; }
     })
     private pageChangeEvent: cc.Component.EventHandler = new cc.Component.EventHandler();
+    private pageRenderCallBack: Function = null;
     //是否为虚拟列表（动态列表）
     @property()
     private _virtual: boolean = true;
@@ -401,6 +407,10 @@ export default class List extends cc.Component {
 
     //----------------------------------------------------------------------------
 
+
+    setPageRenderCallBack(callback: Function){
+        this.pageRenderCallBack = callback;
+    }
     setSelectedCallBack(callback: Function){
         this.selectedCallBack = callback;
     }
@@ -1552,8 +1562,7 @@ export default class List extends cc.Component {
                 if (widget)
                     widget.updateAlignment();
             }
-            item.setSiblingIndex(this.content.childrenCount - 1);
-
+            item.setSiblingIndex(this.content.childrenCount - 1); 
             let listItem: ListItem = item.getComponent(ListItem);
             item['listItem'] = listItem;
             if (listItem) {
@@ -1564,7 +1573,7 @@ export default class List extends cc.Component {
             if (this.renderEvent) {
                 cc.Component.EventHandler.emitEvents([this.renderEvent], item, data.id % this._actualNumItems);
             }
-	    else if(this.renderCallBack){
+            if(this.renderCallBack){
                 this.renderCallBack(item, data.id % this._actualNumItems);
             }
         } else if (this._forceUpdate && this.renderEvent) { //强制更新
@@ -1574,7 +1583,7 @@ export default class List extends cc.Component {
             if (this.renderEvent) {
                 cc.Component.EventHandler.emitEvents([this.renderEvent], item, data.id % this._actualNumItems);
             }
-	    else if(this.renderCallBack){
+	    if(this.renderCallBack){
 	    	this.renderCallBack(item, data.id % this._actualNumItems);
 	    }
         }
@@ -1603,7 +1612,7 @@ export default class List extends cc.Component {
             if (this.renderEvent) {
                 cc.Component.EventHandler.emitEvents([this.renderEvent], item, listId);
             }
-	    else if(this.renderCallBack){
+            if(this.renderCallBack){
                 this.renderCallBack(item, listId);
             }
         } else if (this._forceUpdate && this.renderEvent) { //强制更新
@@ -1613,7 +1622,7 @@ export default class List extends cc.Component {
             if (this.renderEvent) {
                 cc.Component.EventHandler.emitEvents([this.renderEvent], item, listId);
             }
-	    else if(this.renderCallBack){
+            if(this.renderCallBack){
                 this.renderCallBack(item, listId);
             }
         }
@@ -1720,7 +1729,6 @@ export default class List extends cc.Component {
             if (item){
                 if(this.renderEvent){
                     cc.Component.EventHandler.emitEvents([this.renderEvent], item, listId % this._actualNumItems);
-                }else{
                     if(this.renderCallBack){
                         this.renderCallBack(item, listId % this._actualNumItems);
                     }
@@ -2108,6 +2116,9 @@ export default class List extends cc.Component {
         t.curPageNum = pageNum;
         if (t.pageChangeEvent) {
             cc.Component.EventHandler.emitEvents([t.pageChangeEvent], pageNum);
+        }
+        if(this.pageRenderCallBack){
+            this.pageRenderCallBack(pageNum);
         }
         t.scrollTo(pageNum, timeInSecond);
     }

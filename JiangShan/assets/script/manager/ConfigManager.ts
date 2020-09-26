@@ -84,6 +84,7 @@ export class GeneralInfo{
         this.generalId = generalId;
         this.skills = [];
         this.generalCfg = CfgMgr.getGeneralConf(generalId);
+        //cc.log("generalId = "+generalId+"; this.generalCfg = "+JSON.stringify(this.generalCfg))
 
         if(info){  //只有从本地存储读取数据是会传递info
             this.officialId = info.officialId;  //官职ID

@@ -89,7 +89,7 @@ export default class MainScene extends cc.Component {
         
         this.updateRoleLvLabel();  //更新主角等级
 
-        this.initTaskInfo();   //初始化任务
+        this.updateTaskInfo();   //初始化任务
         this.showLineTime();   //显示在线时长
 
         this.radioButton[2].check();   //福利，武将，主城/全舆, 仓库，城池
@@ -170,12 +170,12 @@ export default class MainScene extends cc.Component {
         return destPos;
     }
 
-    /** 初始化任务 */
-    initTaskInfo(){
+    /** 初始化或更新任务 */
+    updateTaskInfo(){
         GameMgr.setGameCurTask(null);  //当前任务配置
         this.taskReward.active = false; //任务奖励
         let taskConf = CfgMgr.getTaskConf(MyUserData.TaskId);
-        cc.log("initTaskInfo 初始化任务 MyUserData.TaskState = "+MyUserData.TaskState+"; taskConf = "+JSON.stringify(taskConf))
+        cc.log("updateTaskInfo 初始化或更新任务 MyUserData.TaskState = "+MyUserData.TaskState+"; taskConf = "+JSON.stringify(taskConf))
         if(taskConf){
             GameMgr.setGameCurTask(taskConf);  //当前任务配置
 
@@ -184,24 +184,10 @@ export default class MainScene extends cc.Component {
             this.taskNameLabel.string = level + taskConf.name;  //任务名称
             this.taskDescLabel.string = taskConf.desc;  //任务描述
 
-            //任务状态 0未完成，1对话完成，2完成未领取，2已领取
-            if(MyUserData.TaskState == TaskState.Reward){   //已完成未领取
-                this.taskReward.active = true;
-                //ROOT_NODE.showTipsText(`任务${taskConf.name}奖励可领取`);
-                this.openTaskRewardsLayer(GameMgr.curTaskConf);
-            }else if(MyUserData.TaskState == TaskState.Ready){
-                this.onTaskBtn();
-            }else if(taskConf.type == TaskType.Story){   //剧情故事自动展开
-                this.onTaskBtn();
-            }
+            this.handleTaskOptAfterTalk();  //根据任务的具体类型，在对话完毕后，处理具体操作
         }
     }
 
-    /**更新任务 */
-    updateTaskInfo(){
-        this.initTaskInfo();
-    }
-    
     //*******************  以下为各种事件处理方法  ************ */
     
     /** 将地图移动到指定目标点
@@ -309,20 +295,46 @@ export default class MainScene extends cc.Component {
     /**任务 */
     onTaskBtn(){
         AudioMgr.playBtnClickEffect();
+        this.handleTaskOptAfterTalk();   //根据任务的具体类型，在对话完毕后，处理具体操作
+    } 
+
+    /**根据任务的具体类型，在对话完毕后，处理具体操作 */
+    handleTaskOptAfterTalk(){
+        let storyConf: st_story_info = GameMgr.curTaskConf;
+        cc.log("handleTaskOptAfterTalk 对话完毕后的任务操作 storyConf = "+JSON.stringify(storyConf));
         //任务状态 0未完成，1对话完成，2完成未领取，2已领取
-        if(MyUserData.TaskState == TaskState.Ready){   //未完成
+        if(MyUserData.TaskState == TaskState.Reward){   //已完成未领取
+            this.taskReward.active = true;
+            //ROOT_NODE.showTipsText(`任务${taskConf.name}奖励可领取`);
+            this.openTaskRewardsLayer(GameMgr.curTaskConf);
+        }else if(MyUserData.TaskState == TaskState.Ready){   //任务初始情况，自动弹开对话
             let layer = GameMgr.showLayer(this.pfStoryLayer);
             layer.getComponent(StoryLayer).initStoryConf(GameMgr.curTaskConf);
         }else if(MyUserData.TaskState == TaskState.Finish){   //对话完成
-            if(GameMgr.curTaskConf.type == TaskType.Story){  
-                GameMgr.handleStoryShowOver(GameMgr.curTaskConf, true);
-            }else{
-                GameMgr.handleStoryShowOver(GameMgr.curTaskConf, false);
+            //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
+            cc.log("任务对话完成，后续操作 storyConf.type = "+storyConf.type)
+            switch(storyConf.type){ 
+                case TaskType.Fight:  //战斗
+                    this.openFightByTask(storyConf);   //战斗选将准备界面
+                    break;
+                case TaskType.Recruit:  // 招募
+                    this.openGeneralLayer(0);   //武将招募
+                    break;
+                case TaskType.Offical:  //封官拜将
+                    break;
+                case TaskType.Capital:  //主城建设
+                    break;
+                case TaskType.General:   //招武将
+                    break;
+                case TaskType.Garrison:  //驻守
+                    break;
+                case TaskType.Skill:  //技能
+                    break;
+                case TaskType.War:   //攻城略地
+                    break;
             }
-        }else if(MyUserData.TaskState == TaskState.Reward){   //已完成未领取
-            this.openTaskRewardsLayer(GameMgr.curTaskConf);
         }
-    } 
+    }
 
     onAdBoxBtn(){
         AudioMgr.playBtnClickEffect();
@@ -397,7 +409,6 @@ export default class MainScene extends cc.Component {
             layer.getComponent(GeneralLayer).showGeneralInfoByTab(tabIdx, generalId);
         }
     }
-
 
     /**任务战斗准备 */
     openFightByTask(taskConf: st_story_info){

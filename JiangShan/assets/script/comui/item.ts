@@ -34,17 +34,16 @@ export default class Item extends cc.Component {
     //只有在new cc.NodePool(XX)时传递poolHandlerComp，才能使用 Pool.put() 回收节点后，会调用unuse 方法
     //使用 Pool.put() 回收节点后，会调用unuse 方法
     unuse() {
-        //cc.log("item unuse ")
-        this.initView();
+        cc.log("item unuse ")
     }
     //使用 Pool.get() 获取节点后，就会调用reuse 方法
     reuse() {
-        //cc.log("item reuse ")
-        this.initView();
+        cc.log("item reuse ")
     }
 
     onLoad () {
-        //cc.log("item onLoad ")
+        cc.log("item onLoad ")
+        //如果是缓存池的节点，则调用顺序为 reuse -> initItemData-> onLoad，故如果在OnLoad.initView则会刷掉initItemData的数据
     }
 
     initView(){
@@ -90,6 +89,8 @@ export default class Item extends cc.Component {
         this.bShowTip = bShowTip;
         this.selCallBack = selCallBack;   //响应点击选中回调
         this.itemInfo = info;   //道具数据
+
+        this.initView();
         
         if(info){
             this.numLabel.string = "x"+info.count;

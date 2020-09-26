@@ -2,8 +2,9 @@
 import { MyUserMgr } from "../manager/MyUserData";
 import TipsText from "./tipsText";
 import TipsDialog from "./tipsDialog";
-import { ItemInfo } from "../manager/ConfigManager";
+import { GeneralInfo, ItemInfo } from "../manager/ConfigManager";
 import Item from "../comui/item";
+import GeneralCell from "../comui/general";
 
 //游戏常驻节点
 const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
@@ -50,6 +51,7 @@ export default class RootNode extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     itemsPool: cc.NodePool =  null;   //道具缓存池
+    generalPool: cc.NodePool =  null;   //武将卡牌缓存池
 
     tipsPool: cc.NodePool =  null;   //缓存池
     tipsArr: string[] = [];   //提示文本数组
@@ -77,6 +79,12 @@ export default class RootNode extends cc.Component {
             let item = cc.instantiate(this.pfItem);
             this.itemsPool.put(item);
         }
+
+        this.generalPool =  new cc.NodePool(GeneralCell);   //武将卡牌缓存池
+        for(let i=0; i<3; i++){
+            let general = cc.instantiate(this.pfGeneral);
+            this.generalPool.put(general);
+        }
     }
 
     onDestroy(){
@@ -85,6 +93,9 @@ export default class RootNode extends cc.Component {
         }
         if(this.itemsPool){
             this.itemsPool.clear();
+        }
+        if(this.generalPool){
+            this.generalPool.clear();
         }
     }
 
@@ -189,11 +200,29 @@ export default class RootNode extends cc.Component {
         } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
             item = cc.instantiate(this.pfItem);
         }
+        cc.log("创建道具 this.itemsPool.size() = "+this.itemsPool.size())
         item.getComponent(Item).initItemData(info, bShowTip, selCallBack);
         return item;
     }
     removeItem(item: cc.Node){
         this.itemsPool.put(item); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
+    }
+
+    //创建武将头像节点
+    createrGeneral(info: GeneralInfo, bClick:boolean=false, bShowTip:boolean=false, selCallBack:any=null){
+        let general: cc.Node = null;
+        if (this.generalPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
+            general = this.generalPool.get();
+        } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
+            general = cc.instantiate(this.pfGeneral);
+        }
+        cc.log("创建武将头像节点 this.generalPool.size() = "+this.generalPool.size())
+        general.getComponent(GeneralCell).setCellClickEnable(bClick);
+        general.getComponent(GeneralCell).initGeneralData(info, bShowTip, selCallBack);
+        return general;
+    }
+    removeGeneral(general: cc.Node){
+        this.generalPool.put(general); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
     }
 }
 
