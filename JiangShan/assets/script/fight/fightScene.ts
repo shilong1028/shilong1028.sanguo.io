@@ -57,8 +57,6 @@ export default class FightScene extends cc.Component {
     selectBlock: Block = null;    //选中的将要移动的卡牌地块
     selCardNode: cc.Node = null;   //选中的卡牌对象（新创建）
 
-    cardPool: cc.NodePool =  null;   //卡牌缓存池
-
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -69,39 +67,13 @@ export default class FightScene extends cc.Component {
 
         NoticeMgr.on(NoticeType.GameOverNotice, this.handleGameOverNotice, this);  //游戏结束通知
 
-        this.cardPool =  new cc.NodePool(Card);   //武将卡牌缓存池
-        for(let i=0; i<15; i++){
-            let general = cc.instantiate(this.pfCard);
-            this.cardPool.put(general);
-        }
-
         this.createDefaultCards();  //初始化棋盘
     }
 
     onDestroy(){
-        if(this.cardPool){
-            this.cardPool.clear();
-        }
-
         SDKMgr.removeBannerAd();  
         this.node.targetOff(this);
         NoticeMgr.offAll(this);
-    }
-
-    /**缓存池创建卡牌节点 */
-    createrCard(info: CardInfo){
-        let card: cc.Node = null;
-        if (this.cardPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
-            card = this.cardPool.get();
-        } else { // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
-            card = cc.instantiate(this.pfCard);
-        }
-        card.getComponent(Card).initCardData(info);
-        return card;
-    }
-    /**缓存池回收卡牌节点 */
-    removeCard(card: cc.Node){
-        this.cardPool.put(card); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
     }
 
     start () {
@@ -257,7 +229,8 @@ export default class FightScene extends cc.Component {
             return;
         }
         if(this.selCardNode == null){   //选中的卡牌对象（新创建）
-            this.selCardNode = this.createrCard(this.selectBlock.cardInfo);
+            this.selCardNode = cc.instantiate(this.pfCard);
+            this.selCardNode.getComponent(Card).initCardData(this.selectBlock.cardInfo);
             //this.selCardNode.setPosition(-3000, -3000);
             this.node.addChild(this.selCardNode, 100);
         }else{

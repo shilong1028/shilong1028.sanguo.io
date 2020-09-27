@@ -127,13 +127,11 @@ export default class Block extends cc.Component {
             this.cardInfo = info;
 
             if(this.cardNode == null){
-                let cardNode = cc.instantiate(FightMgr.getFightScene().createrCard(info));
+                let cardNode = cc.instantiate(FightMgr.getFightScene().pfCard);
                 this.headNode.addChild(cardNode);
                 this.cardNode = cardNode;
-            }else{
-                this.cardNode.getComponent(Card).initCardData(info);
             }
-            this.cardNode.active = true; 
+            this.cardNode.getComponent(Card).initCardData(info);
         }
     }
 
@@ -345,9 +343,7 @@ export default class Block extends cc.Component {
     onRemoveCardNode(){
         if(this.cardNode){
             cc.log("onRemoveCardNode(), this.blockId = "+this.blockId);
-            //this.cardNode.destroy();
-            FightMgr.getFightScene().removeCard(this.cardNode);   //缓存池回收卡牌节点
-            this.cardNode = null;
+            this.cardNode.destroy();
         }
         this.cardInfo = null;
     }
@@ -548,6 +544,7 @@ export default class Block extends cc.Component {
     handleBlockAutoAIResult(destBlock: Block){
         if(!destBlock){
             cc.log("处理砖块AutoAI结果 对方砖块 异常 ");
+            return;
         }
         NoticeMgr.emit(NoticeType.SelBlockMove, this);  //准备拖动砖块,显示周边移动和攻击范围
         destBlock.handleBlockOptWithBlock(this);   //处理本砖块和目标砖块的移动，战斗等处理

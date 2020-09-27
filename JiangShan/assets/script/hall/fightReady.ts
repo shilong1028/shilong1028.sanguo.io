@@ -150,7 +150,7 @@ export default class FightReady extends cc.Component {
                 this.enemyCardArr.push(cardInfo);
             } 
 
-            cc.log("敌方部曲 this.enemyCardArr = "+JSON.stringify(this.enemyCardArr))
+            //cc.log("敌方部曲 this.enemyCardArr = "+JSON.stringify(this.enemyCardArr))
             this.enemyList.numItems = this.enemyCardArr.length;
         }
 
@@ -161,7 +161,7 @@ export default class FightReady extends cc.Component {
     /** 初始化我方武将列表 */
     initGeneralList() {
         this.generalArr = MyUserMgr.getGeneralListClone();  //获取武将列表克隆
-        cc.log("初始化我方武将列表 this.generalArr = "+JSON.stringify(this.generalArr))
+        //cc.log("初始化我方武将列表 this.generalArr = "+JSON.stringify(this.generalArr))
         if(!this.generalArr || this.generalArr.length == 0){
             return;
         }
@@ -262,7 +262,7 @@ export default class FightReady extends cc.Component {
         this.nameLabel.string = "武将信息";   //武将名称
 
         let info:GeneralInfo = this.generalArr[this.selGeneralIdx];
-        cc.log("showRecruitInfo 初始招募信息 info = "+JSON.stringify(info))
+        //cc.log("showRecruitInfo 初始招募信息 info = "+JSON.stringify(info))
         if(info && info.generalCfg){
             this.nameLabel.string = info.generalCfg.name + "信息";   //武将名称
             this.recruitMaxCount = 500;   //部曲最大兵力
@@ -319,58 +319,31 @@ export default class FightReady extends cc.Component {
     onZhenBtn(sender: any, customData: string){
         AudioMgr.playBtnClickEffect();
         let zhenIdx = parseInt(customData)-1;
-        cc.log(" 阵 zhenIdx = "+zhenIdx+"; this.selZhenIdx = "+this.selZhenIdx)
         if(this.selZhenIdx == zhenIdx){
             return;
         }
-
-        let oldZhenNode = this.zhenNode[this.selZhenIdx];
-        if(oldZhenNode){
-            let selNode = oldZhenNode.getChildByName("selNode");
-            if(selNode){
-                selNode.active = false;
-            }
-            let changeImg = oldZhenNode.getChildByName("changeImg");
-            if(changeImg){
-                changeImg.active = false;
-            }
-            let generalNode = oldZhenNode.getChildByName("generalNode");
-            let generalChild = null;
-            if(generalNode){
-                generalChild = generalNode.getChildByName("generalChild");
-            }
-            let addImg = oldZhenNode.getChildByName("addImg");
-            if(addImg){
-                if(generalChild){
-                    addImg.active = false;
-                }else{
-                    addImg.active = true;
-                }
-            }
-        }
-
+        this.setZhenSelState(this.selZhenIdx, false);  //设置阵位选中状态
         this.selZhenIdx = zhenIdx;   //出战位置
-
-        let selZhenNode = this.zhenNode[this.selZhenIdx];
-        if(selZhenNode){
-            let selNode = selZhenNode.getChildByName("selNode");
+        this.setZhenSelState(zhenIdx, true);  //设置阵位选中状态
+    }
+    /**设置阵位选中状态 */
+    setZhenSelState(idx: number, bSel:boolean){
+        let zhenNode = this.zhenNode[idx];
+        if(zhenNode){
+            let selNode = zhenNode.getChildByName("selNode");
             if(selNode){
-                selNode.active = true;
+                selNode.active = bSel;
             }
-            let generalNode = selZhenNode.getChildByName("generalNode");
-            let generalChild = null;
-            if(generalNode){
-                generalChild = generalNode.getChildByName("generalChild");
-            }
-            let changeImg = selZhenNode.getChildByName("changeImg");
+            let generalChild = this.getZhenGeneralChildNode(idx);  //获取指定阵位上的武将节点
+            let changeImg = zhenNode.getChildByName("changeImg");
             if(changeImg){
                 if(generalChild){
-                    changeImg.active = true;
+                    changeImg.active = bSel;
                 }else{
                     changeImg.active = false;
                 }
             }
-            let addImg = selZhenNode.getChildByName("addImg");
+            let addImg = zhenNode.getChildByName("addImg");
             if(addImg){
                 if(generalChild){
                     addImg.active = false;
@@ -385,63 +358,58 @@ export default class FightReady extends cc.Component {
     initZhenNode(){
         this.removeZhenGeneral();   //回收武将头像到缓存池 默认全部回收
         for(let i=0; i<7; i++){
-            let selNode = this.zhenNode[i].getChildByName("selNode");
-            if(selNode){
-                selNode.active = false;
-            }
-            let changeImg = this.zhenNode[i].getChildByName("changeImg");
-            if(changeImg){
-                changeImg.active = false;
-            }
-            let addImg = this.zhenNode[i].getChildByName("addImg");
-            if(addImg){
-                addImg.active = true;
-            }
+            this.setZhenSelState(i, false);  //设置阵位选中状态
         }
+        this.autoSelNextPriority();   //设置阵位武将后，选中框自动选中优先级最高的空阵位 
+    }
 
-        //默认选中主将阵位
-        this.selZhenIdx = 0;   //选择的出战位索引
-        let selZhenNode = this.zhenNode[this.selZhenIdx];
-        let selNode = selZhenNode.getChildByName("selNode");
-        if(selNode){
-            selNode.active = true;
+    /**设置阵位武将后，选中框自动选中优先级最高的空阵位 */
+    autoSelNextPriority(){
+        let priorityIdxs = [0, 1, 3, 2, 4, 5, 6];   //主将，左前锋，后卫，有前锋，3个侧卫
+        let zhenIdx = 0;
+        for(let i=0; i<this.zhenNode.length; i++){
+            let idx = priorityIdxs[i];
+            let generalChild = this.getZhenGeneralChildNode(idx);  //获取指定阵位上的武将节点
+            if(!generalChild){
+                zhenIdx = idx;
+                break;
+            }
         }
+        if(zhenIdx >= 0 && zhenIdx != this.selZhenIdx){
+            this.setZhenSelState(this.selZhenIdx, false);  //设置阵位选中状态
+            this.selZhenIdx = zhenIdx;   //出战位置
+            this.setZhenSelState(zhenIdx, true);  //设置阵位选中状态
+        }
+    }
+
+    /**获取指定阵位上的武将节点 */
+    getZhenGeneralChildNode(idx: number){
+        let zhenNode = this.zhenNode[idx];
+        if(zhenNode){
+            let generalNode = zhenNode.getChildByName("generalNode");
+            if(generalNode){
+                let generalChild = generalNode.getChildByName("generalChild");
+                return generalChild;
+            }
+        }
+        return null;
     }
 
     /**回收武将头像到缓存池 默认全部回收*/
     removeZhenGeneral(idx:number=-1){
         if(idx == -1){   //全部
             for(let i=0; i<7; i++){
-                let zhenNode = this.zhenNode[i];
-                if(zhenNode){
-                    let generalNode = zhenNode.getChildByName("generalNode");
-                    if(generalNode){
-                        let generalChild = generalNode.getChildByName("generalChild");
-                        if(generalChild){
-                            ROOT_NODE.removeGeneral(generalChild);
-                        }
-                    }
+                let generalChild = this.getZhenGeneralChildNode(i);  //获取指定阵位上的武将节点
+                if(generalChild){
+                    ROOT_NODE.removeGeneral(generalChild);
                 }
             }
         }else{
-            let zhenNode = this.zhenNode[idx];
-            if(zhenNode){
-                let generalNode = zhenNode.getChildByName("generalNode");
-                if(generalNode){
-                    let generalChild = generalNode.getChildByName("generalChild");
-                    if(generalChild){
-                        ROOT_NODE.removeGeneral(generalChild);
-                    }
-                }
-                let changeImg = zhenNode.getChildByName("changeImg");
-                if(changeImg){
-                    changeImg.active = false;
-                }
-                let addImg = zhenNode.getChildByName("addImg");
-                if(addImg){
-                    addImg.active = true;
-                }
+            let generalChild = this.getZhenGeneralChildNode(idx);  //获取指定阵位上的武将节点
+            if(generalChild){
+                ROOT_NODE.removeGeneral(generalChild);
             }
+            this.setZhenSelState(idx, true);  //设置阵位选中状态
         }
     }
 
@@ -460,14 +428,7 @@ export default class FightReady extends cc.Component {
                     generalNode.addChild(generalChild);
                 }
             }
-            let changeImg = this.zhenNode[idx].getChildByName("changeImg");
-            if(changeImg){
-                changeImg.active = true;
-            }
-            let addImg = this.zhenNode[idx].getChildByName("addImg");
-            if(addImg){
-                addImg.active = false;
-            }
+            this.autoSelNextPriority();   //设置阵位武将后，选中框自动选中优先级最高的空阵位 
         }
     }
 
@@ -477,12 +438,6 @@ export default class FightReady extends cc.Component {
         if(this.selZhenIdx < 0){   //选择的出战位索引
             ROOT_NODE.showTipsText("请先选择出战阵位，再选择武将出战")
             this.infoNode.active = false;
-            return;
-        }
-
-        let generalNode = this.zhenNode[this.selZhenIdx].getChildByName("generalNode");
-        if(!generalNode){
-            cc.log("出战阵位异常，无法添加")
             return;
         }
 
@@ -501,7 +456,7 @@ export default class FightReady extends cc.Component {
                     this.infoNode.active = false;
                     return;
                 }
-                let generalChild = generalNode.getChildByName("generalChild");
+                let generalChild = this.getZhenGeneralChildNode(this.selZhenIdx);  //获取指定阵位上的武将节点
                 if(generalChild){
                     ROOT_NODE.showTipsDialog("出战阵位已有武将部曲出战，确定要替换？", ()=>{
                         this.switchMyFightCards(info, this.selZhenIdx);   //替换已出站卡牌
@@ -515,24 +470,21 @@ export default class FightReady extends cc.Component {
         }else if(info.state == 1){
             let oldZhenIdx = -1;
             for(let i=0; i<7; i++){
-                let generalNode = this.zhenNode[i].getChildByName("generalNode");
-                if(generalNode){
-                    let generalChild = generalNode.getChildByName("generalChild");
-                    if(generalChild){
-                        let oldCellSpript = generalChild.getComponent(GeneralCell);
-                        if(oldCellSpript && oldCellSpript.generalInfo){
-                            if(oldCellSpript.generalInfo.timeId == info.timeId){
-                                oldZhenIdx = i;
-                                break;
-                            }
+                let generalChild = this.getZhenGeneralChildNode(i);  //获取指定阵位上的武将节点
+                if(generalChild){
+                    let oldCellSpript = generalChild.getComponent(GeneralCell);
+                    if(oldCellSpript && oldCellSpript.generalInfo){
+                        if(oldCellSpript.generalInfo.timeId == info.timeId){
+                            oldZhenIdx = i;
+                            break;
                         }
                     }
                 }
             }
             if(oldZhenIdx >= 0 && oldZhenIdx != this.selZhenIdx){
-                let generalChild = generalNode.getChildByName("generalChild");
+                let generalChild = this.getZhenGeneralChildNode(this.selZhenIdx);  //获取指定阵位上的武将节点
                 if(generalChild){
-                    ROOT_NODE.showTipsText("武将部曲已经在本阵位出战中, 且指定阵位也有武将部曲出战")
+                    ROOT_NODE.showTipsText("武将部曲已经在其他阵位出战中, 且指定阵位也有武将部曲出战")
                 }else{
                     ROOT_NODE.showTipsDialog("武将部曲已经处于出战状态，确定要变换阵位？", ()=>{
                         this.switchMyFightCardZhenIdx(info, oldZhenIdx, this.selZhenIdx);   //变换武将出战位
@@ -550,7 +502,7 @@ export default class FightReady extends cc.Component {
 
     /**添加或删除我方出战卡牌 */
     addMyFightCards(generalInfo: GeneralInfo, zhenNode:cc.Node){
-        cc.log("addMyFightCards generalInfo =" + JSON.stringify(generalInfo))
+        //cc.log("addMyFightCards generalInfo =" + JSON.stringify(generalInfo))
         if(!generalInfo || !zhenNode|| generalInfo.state > 0){   //选择的出战位索引
             return;
         }
@@ -562,7 +514,6 @@ export default class FightReady extends cc.Component {
         cardInfo.type = CardTypeArr[this.selZhenIdx];  //类型，0普通，1主将，2前锋，3后卫
         this.myCardArr.push(cardInfo);     
         this.fightReadySoliderCount += generalInfo.bingCount;  //出兵数量
-        cc.log("addMyFightCards this.myCardArr =" + JSON.stringify(this.myCardArr))
 
         this.myList.updateAll();   //更新我方武将列表显示
         this.soliderCountLbl.string = "出征兵力:"+this.fightReadySoliderCount;
@@ -584,15 +535,9 @@ export default class FightReady extends cc.Component {
             ROOT_NODE.showTipsText("请先选择出战阵位，再删除武将出战")
             return;
         }
-        let generalNode = this.zhenNode[this.selZhenIdx].getChildByName("generalNode");
-        if(generalNode){
-            let generalChild = generalNode.getChildByName("generalChild");
-            if(!generalChild){
-                ROOT_NODE.showTipsText("出战阵位上无出战武将")
-                return;
-            }
-        }else{
-            cc.log("出战阵位异常，无法删除出战武将")
+        let generalChild = this.getZhenGeneralChildNode(this.selZhenIdx);  //获取指定阵位上的武将节点
+        if(!generalChild){
+            ROOT_NODE.showTipsText("出战阵位上无出战武将")
             return;
         }
 
@@ -606,7 +551,7 @@ export default class FightReady extends cc.Component {
 
     /**删除我方出战卡牌 */
     delMyFightCards(generalInfo: GeneralInfo, zhenIdx:number){
-        cc.log("addMyFightCards generalInfo =" + JSON.stringify(generalInfo))
+        //cc.log("delMyFightCards generalInfo =" + JSON.stringify(generalInfo))
         if(!generalInfo || zhenIdx < 0 || generalInfo.state != 1){   //选择的出战位索引
             return;
         }
@@ -621,7 +566,6 @@ export default class FightReady extends cc.Component {
                 break;
             }
         }
-        cc.log("delMyFightCards this.myCardArr =" + JSON.stringify(this.myCardArr))
 
         this.myList.updateAll();   //更新我方武将列表显示
         this.soliderCountLbl.string = "出征兵力:"+this.fightReadySoliderCount;
@@ -638,50 +582,42 @@ export default class FightReady extends cc.Component {
 
     /**替换我方已出战卡牌 */
     switchMyFightCards(newInfo: GeneralInfo, zhenIdx:number){
-        cc.log("switchMyFightCards newInfo =" + JSON.stringify(newInfo))
+        //cc.log("switchMyFightCards newInfo =" + JSON.stringify(newInfo))
         if(!newInfo || zhenIdx < 0){   //选择的出战位索引
             return;
         }
 
-        let generalNode = this.zhenNode[zhenIdx].getChildByName("generalNode");
-        if(generalNode){
-            let generalChild = generalNode.getChildByName("generalChild");
-            if(generalChild){
-                //先移除旧的武将卡牌数据
-                let oldCellSpript = generalChild.getComponent(GeneralCell);
-                if(oldCellSpript && oldCellSpript.generalInfo){
-                    let oldInfo = oldCellSpript.generalInfo;
-                    for(let i=0; i<this.myCardArr.length; i++){
-                        let cardInfo = this.myCardArr[i]
-                        if(cardInfo.generalInfo.timeId == oldInfo.timeId){
-                            oldInfo.state = 0;  //0默认，1出战中，2驻守中
-                            this.updateGeneralFightState(oldInfo);  //更新武将列表出战状态
-                            this.fightReadySoliderCount -= oldInfo.bingCount;  //出兵数量
-                            this.myCardArr.splice(i, 1);
-                            break;
-                        }
+        let generalChild = this.getZhenGeneralChildNode(zhenIdx);  //获取指定阵位上的武将节点
+        if(generalChild){
+            //先移除旧的武将卡牌数据
+            let oldCellSpript = generalChild.getComponent(GeneralCell);
+            if(oldCellSpript && oldCellSpript.generalInfo){
+                let oldInfo = oldCellSpript.generalInfo;
+                for(let i=0; i<this.myCardArr.length; i++){
+                    let cardInfo = this.myCardArr[i]
+                    if(cardInfo.generalInfo.timeId == oldInfo.timeId){
+                        oldInfo.state = 0;  //0默认，1出战中，2驻守中
+                        this.updateGeneralFightState(oldInfo);  //更新武将列表出战状态
+                        this.fightReadySoliderCount -= oldInfo.bingCount;  //出兵数量
+                        this.myCardArr.splice(i, 1);
+                        break;
                     }
-                    cc.log("switchMyFightCards 先移除旧的武将卡牌 this.myCardArr =" + JSON.stringify(this.myCardArr))
-                }else{
-                    cc.log("获取阵位旧的武将信息异常")
                 }
+            }else{
+                cc.log("获取阵位旧的武将信息异常")
             }
-            this.addMyFightCards(newInfo, this.zhenNode[zhenIdx]);   //添加我方出战卡牌
         }
+        this.addMyFightCards(newInfo, this.zhenNode[zhenIdx]);   //添加我方出战卡牌
     }
 
     /**变换武将出战位 */
     switchMyFightCardZhenIdx(info: GeneralInfo, oldZhenIdx:number, zhenIdx:number){
-        cc.log("switchMyFightCardZhenIdx 变换武将出战位 oldZhenIdx = "+oldZhenIdx+"; zhenIdx = "+zhenIdx)
-        let generalNode = this.zhenNode[zhenIdx].getChildByName("generalNode");
-        if(!generalNode){
-            return;
-        }
-        let generalChild = generalNode.getChildByName("generalChild");
+        //cc.log("switchMyFightCardZhenIdx 变换武将出战位 oldZhenIdx = "+oldZhenIdx+"; zhenIdx = "+zhenIdx)
+        let generalChild = this.getZhenGeneralChildNode(zhenIdx);  //获取指定阵位上的武将节点
         if(generalChild){
             ROOT_NODE.showTipsText("武将部曲已经在本阵位出战中, 且指定阵位也有武将部曲出战")
+            return;
         }
-
         if(info && oldZhenIdx != zhenIdx && zhenIdx >= 0){
             this.removeZhenGeneral(oldZhenIdx);   //回收武将头像到缓存池 默认全部回收
 
@@ -705,13 +641,10 @@ export default class FightReady extends cc.Component {
     onFightBtn(){
         AudioMgr.playBtnClickEffect();
 
-        let generalNode = this.zhenNode[0].getChildByName("generalNode");
-        if(generalNode){
-            let generalChild = generalNode.getChildByName("generalChild");
-            if(!generalChild){
-                ROOT_NODE.showTipsText("未选定主将，无法出征")
-                return;
-            }
+        let chiefGeneral = this.getZhenGeneralChildNode(0);  //获取指定阵位上的武将节点
+        if(!chiefGeneral){
+            ROOT_NODE.showTipsText("未选定主将，无法出征")
+            return;
         }
 
         let maxCount = Math.min(MyUserData.GeneralList.length, 7);
@@ -720,28 +653,21 @@ export default class FightReady extends cc.Component {
                 this.handleFight();
             });
         }else{
-            let generalNode = this.zhenNode[3].getChildByName("generalNode");
-            if(generalNode){
-                let generalChild = generalNode.getChildByName("generalChild");
-                if(!generalChild){
-                    ROOT_NODE.showTipsDialog("未选定后卫武将保护辎重粮草，战斗中粮仓可能会被敌军攻陷，降低我军士气，确定要开始战斗？", ()=>{
-                        this.handleFight();
-                    });
-                    return;
-                }
+            let guardGeneral = this.getZhenGeneralChildNode(3);  //获取指定阵位上的武将节点
+            if(!guardGeneral){
+                ROOT_NODE.showTipsDialog("未选定后卫武将保护辎重粮草，战斗中粮仓可能会被敌军攻陷，降低我军士气，确定要开始战斗？", ()=>{
+                    this.handleFight();
+                });
+                return;
             }
 
-            let generalNode1 = this.zhenNode[1].getChildByName("generalNode");
-            let generalNode2 = this.zhenNode[2].getChildByName("generalNode");
-            if(generalNode1 && generalNode2){
-                let generalChild1 = generalNode1.getChildByName("generalChild");
-                let generalChild2 = generalNode2.getChildByName("generalChild");
-                if(!generalChild1 && !generalChild2){
-                    ROOT_NODE.showTipsDialog("两个前锋阵位均未设置武将，确定要开始战斗？", ()=>{
-                        this.handleFight();
-                    });
-                    return;
-                }
+            let forawardGeneral1 = this.getZhenGeneralChildNode(1);  //获取指定阵位上的武将节点
+            let forawardGeneral2 = this.getZhenGeneralChildNode(2);  //获取指定阵位上的武将节点
+            if(!forawardGeneral1 && !forawardGeneral2){
+                ROOT_NODE.showTipsDialog("两个前锋阵位均未设置武将，确定要开始战斗？", ()=>{
+                    this.handleFight();
+                });
+                return;
             }
 
             this.handleFight();

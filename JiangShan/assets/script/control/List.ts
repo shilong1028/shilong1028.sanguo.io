@@ -54,6 +54,11 @@ enum SelectedType {
     MULT = 2,//多选
 }
 
+enum AdaptiveType {
+    SINGLE = 1,
+    MULTI = 2,
+}
+
 @ccclass
 @disallowMultiple()
 @menu('自定义组件/List')
@@ -169,6 +174,16 @@ export default class List extends cc.Component {
     }
     get updateRate() {
         return this._updateRate;
+    }
+    
+    //初始显示时分帧加载
+    private _frameByFrameRenderInitAni: boolean = false;
+    //初始显示时分帧加载，用于客户端表现cell自上向下的动态出现。一旦初始显示完毕，随机关闭分帧加载，否则滑动时也会出现闪屏
+    set frameByFrameRenderInitAni(bAni: boolean){
+        this._frameByFrameRenderInitAni = bAni;
+        if(bAni == true){
+            this.frameByFrameRenderNum = 1;
+        }
     }
     //分帧渲染（每帧渲染的Item数量（<=0时关闭分帧渲染））
     @property({
@@ -1406,22 +1421,30 @@ export default class List extends cc.Component {
             this._onScrolling();
     }
     //当Item自适应
-    _onItemAdaptive(item) {
+    _onItemAdaptive(item, adaptiveMode) {
         // if (this.checkInited(false)) {
         if (
             (!this._sizeType && item.width != this._itemSize.width)
             || (this._sizeType && item.height != this._itemSize.height)
         ) {
-            if (!this._customSize)
+            if (!this._customSize || adaptiveMode == AdaptiveType.SINGLE)   //Cell自适应有种情况 A先变动，后又触发了 B变动A还原 的情况
                 this._customSize = {};
             let val = this._sizeType ? item.height : item.width;
             if (this._customSize[item._listId] != val) {
                 this._customSize[item._listId] = val;
                 this._resizeContent();
-                // this.content.children.forEach((child: cc.Node) => {
-                //     this._updateItemPos(child);
-                // });
-                this.updateAll();
+
+                this.content.children.forEach((child: cc.Node) => {
+                    this._updateItemPos(child);
+                });
+                if (this.renderEvent) {
+                    cc.Component.EventHandler.emitEvents([this.renderEvent], item, item._listId % this._actualNumItems);
+                }
+                if(this.renderCallBack){
+                    this.renderCallBack(item, item._listId % this._actualNumItems);
+                }
+                //this.updateAll();  //使用updateAll会因为强制刷新而有闪屏，因此使用_updateItemPos
+
                 // 如果当前正在运行 scrollTo，肯定会不准确，在这里做修正
                 if (this._scrollToListId != null) {
                     this._scrollPos = null;
@@ -1500,6 +1523,12 @@ export default class List extends cc.Component {
                     this._updateDone = false;
                     // if (!this._scrollView.isScrolling())
                     this._doneAfterUpdate = false;
+
+                    if(this._frameByFrameRenderInitAni){
+                        //初始显示时分帧加载，用于客户端表现cell自上向下的动态出现。一旦初始显示完毕，随机关闭分帧加载，否则滑动时也会出现闪屏
+                        this._frameByFrameRenderInitAni = false;
+                        this.frameByFrameRenderNum = 0;
+                    }
                 } else {
                     this._updateDone = true;
                     this._delRedundantItem();
@@ -1729,9 +1758,9 @@ export default class List extends cc.Component {
             if (item){
                 if(this.renderEvent){
                     cc.Component.EventHandler.emitEvents([this.renderEvent], item, listId % this._actualNumItems);
-                    if(this.renderCallBack){
-                        this.renderCallBack(item, listId % this._actualNumItems);
-                    }
+                }
+                if(this.renderCallBack){
+                    this.renderCallBack(item, listId % this._actualNumItems);
                 }
             }  
         }
@@ -1739,10 +1768,22 @@ export default class List extends cc.Component {
     /**
      * 更新全部
      */
-    updateAll() {
+    updateAll(bReset:boolean=false) {
         if (!this.checkInited())
             return;
-        this.numItems = this.numItems;
+        if(bReset){  //重新设定数量而重新创建，可能会闪屏
+            this.numItems = this.numItems;
+        }else{
+            this.content.children.forEach((item: any) => {
+                this._updateItemPos(item);
+                if (this.renderEvent) {
+                    cc.Component.EventHandler.emitEvents([this.renderEvent], item, item._listId % this._actualNumItems);
+                }
+                if(this.renderCallBack){
+                    this.renderCallBack(item, item._listId % this._actualNumItems);
+                } 
+            });
+        }
     }
     /**
      * 根据ListID获取Item

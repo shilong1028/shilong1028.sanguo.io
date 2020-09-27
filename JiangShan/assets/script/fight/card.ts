@@ -1,6 +1,5 @@
 
 import GeneralCell from "../comui/general";
-import { ROOT_NODE } from "../login/rootNode";
 import { CardInfo, FunMgr } from "../manager/Enum";
 
 //卡牌节点
@@ -69,7 +68,7 @@ export default class Card extends cc.Component {
     }
 
     initView () {
-        this.campSpr.node.active = false;
+        this.campSpr.spriteFrame = null;
 
         this.hpProgressBar.progress = 0;
         this.bingProgressBar.progress = 0;
@@ -148,14 +147,11 @@ export default class Card extends cc.Component {
             this.defProgressBar.progress = cardCfg.def/100;
         }
 
-        let generalChild = this.generalNode.getChildByName("generalChild");
-        if(!generalChild){
-            generalChild = cc.instantiate(ROOT_NODE.pfGeneral);
-            generalChild.name = "generalChild";
-            this.generalNode.addChild(generalChild);
+        if(this.generalNode){
+            cc.log("设置卡牌武将");
+            this.generalNode.getComponent(GeneralCell).setBgImgVisible(false, false);
+            this.generalNode.getComponent(GeneralCell).initGeneralData(this.cardInfo.generalInfo);
         }
-        generalChild.getComponent(GeneralCell).setCellClickEnable(false);
-        generalChild.getComponent(GeneralCell).initGeneralData(this.cardInfo.generalInfo);
     }
 
 }

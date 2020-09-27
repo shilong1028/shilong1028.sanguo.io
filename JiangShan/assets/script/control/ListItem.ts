@@ -16,6 +16,11 @@ enum SelectedType {
     SWITCH = 2,
 }
 
+enum AdaptiveType {
+    SINGLE = 1,
+    MULTI = 2,
+}
+
 @ccclass
 @disallowMultiple()
 @menu('自定义组件/List Item')
@@ -46,6 +51,14 @@ export default class ListItem extends cc.Component {
         tooltip: CC_DEV && '自适应尺寸（宽或高）',
     })
     adaptiveSize: boolean = false;
+    //自适应类型
+    @property({
+        type: cc.Enum(AdaptiveType),
+        tooltip: CC_DEV && '选择自适应类型',
+        visible() { return this.adaptiveSize; }
+    })
+    adaptiveMode: AdaptiveType = AdaptiveType.SINGLE;
+
     //选择
     _selected: boolean = false;
     set selected(val: boolean) {
@@ -108,7 +121,7 @@ export default class ListItem extends cc.Component {
     }
 
     _onSizeChange() {
-        this.list._onItemAdaptive(this.node);
+        this.list._onItemAdaptive(this.node, this.adaptiveMode);
     }
     /**
      * 创建事件

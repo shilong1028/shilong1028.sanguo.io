@@ -70,6 +70,15 @@ export default class GeneralCell extends cc.Component {
         this.node.getComponent(cc.Button).enabled = bEnable
     }
 
+    /**隐藏背景图，及屏蔽点击事件 */
+    setBgImgVisible(show:boolean, bClick: boolean=false){
+        //默认ListCell是开启的，当通过缓存池添加时，需要设定是否可点击
+        this.node.getComponent(cc.Button).enabled = bClick
+        if(this.cellBg){
+            this.cellBg.active = show;
+        }
+    }
+
     /**初始化武将头像 */
     //如果是缓存池的节点，则调用顺序为 reuse -> initItemData-> onLoad，故如果在OnLoad.initView则会刷掉initItemData的数据
     initGeneralData(info: GeneralInfo, bShowTip: boolean = false, selCallBack:any=null){
@@ -78,7 +87,7 @@ export default class GeneralCell extends cc.Component {
         this.selCallBack = selCallBack;   //响应点击选中回调
         this.generalInfo = info;   //武将数据
 
-        this.initView();
+        //this.initView();
         
         if(info){
             this.lvLabel.string = "Lv "+info.generalLv;
