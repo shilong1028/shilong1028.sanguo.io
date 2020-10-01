@@ -55,6 +55,7 @@ export default class FightScene extends cc.Component {
     pfResult: cc.Prefab = null;   //战斗结果
 
     selectBlock: Block = null;    //选中的将要移动的卡牌地块
+    selectTouchOffset: cc.Vec2 = cc.Vec2.ZERO;  //选中砖块首次触摸相对砖块锚点偏移
     selCardNode: cc.Node = null;   //选中的卡牌对象（新创建）
 
     // LIFE-CYCLE CALLBACKS:
@@ -159,6 +160,7 @@ export default class FightScene extends cc.Component {
         this.enemyDesc.node.active = false; 
 
         this.selectBlock = null;  //选中的将要移动的卡牌地块
+        this.selectTouchOffset = cc.Vec2.ZERO;  //选中砖块首次触摸相对砖块锚点偏移
         if(this.selCardNode){
             //this.selCardNode.setPosition(-3000, -3000);
             this.selCardNode.active = false;
@@ -199,7 +201,7 @@ export default class FightScene extends cc.Component {
         }
     }
 
-    /**设置选中的将要移动的卡牌地块 */
+    /**设置选中的将要移动的卡牌地块*/
     setSelectCard(block: Block){
         this.selectBlock = block;  
         NoticeMgr.emit(NoticeType.SelBlockMove, block);  //准备拖动砖块,显示周边移动和攻击范围
@@ -207,7 +209,7 @@ export default class FightScene extends cc.Component {
 
     onTouchStart(event: cc.Event.EventTouch) {  
         if(FightMgr.bStopTouch == false && this.selectBlock){ //是否停止触摸反应
-            this.updateSelectCard(event.getLocation());   //拖动更新选中的小球模型的位置
+            this.updateSelectCard(event.getLocation(), true);   //拖动更新选中的小球模型的位置
         }
     }
 
@@ -223,22 +225,29 @@ export default class FightScene extends cc.Component {
         }
     }
 
-    /**拖动更新选中的卡牌的位置 */
-    updateSelectCard(touchPos: cc.Vec2){
+    /**拖动更新选中的卡牌的位置 bStart 是否touchStart触摸 */
+    updateSelectCard(touchPos: cc.Vec2, bStart:boolean = false){
         if(this.selectBlock == null){
             return;
         }
         if(this.selCardNode == null){   //选中的卡牌对象（新创建）
             this.selCardNode = cc.instantiate(this.pfCard);
-            this.selCardNode.getComponent(Card).initCardData(this.selectBlock.cardInfo);
+            this.selCardNode.getComponent(Card).initCardData(this.selectBlock.getBlockCardInfo());
             //this.selCardNode.setPosition(-3000, -3000);
             this.node.addChild(this.selCardNode, 100);
         }else{
             let card = this.selCardNode.getComponent(Card);
-            card.initCardData(this.selectBlock.cardInfo);   //设置地块卡牌模型数据 
+            card.initCardData(this.selectBlock.getBlockCardInfo());   //设置地块卡牌模型数据 
         }
-        let pos = this.node.convertToNodeSpaceAR(touchPos);
-        //pos.y += this.gridNode.y;
+        if(bStart){   //touchStart触摸
+            let blockTouchPos = this.selectBlock.node.convertToNodeSpaceAR(touchPos);   //触摸点在砖块内的坐标
+            this.selectTouchOffset = blockTouchPos;  //选中砖块首次触摸相对砖块锚点偏移
+            // this.selCardNode.anchorX = (this.selectBlock.node.width/2 + blockTouchPos.x)/this.selectBlock.node.width;
+            // this.selCardNode.anchorY = (this.selectBlock.node.height/2 + blockTouchPos.y)/this.selectBlock.node.height;
+            // cc.log("blockTouchPos = "+blockTouchPos+"; anchor = "+this.selCardNode.getAnchorPoint())
+        }
+        let pos = this.node.convertToNodeSpaceAR(touchPos).sub(this.selectTouchOffset);
+        //cc.log("touchPos = "+touchPos+"; pos = "+pos+"; this.selectTouchOffset = "+this.selectTouchOffset)
         this.selCardNode.setPosition(pos);
         this.selCardNode.active = true;
     }
@@ -251,7 +260,6 @@ export default class FightScene extends cc.Component {
 
         //this.selCardNode.setPosition(-3000, -3000);
         this.selCardNode.active = false;
-        //touchPos.y += this.gridNode.y;
 
         let dropBlock: Block = this.getBlockSlotIndex(touchPos);   //根据位置找到对应的地块
         if(dropBlock == null){   //未找到合适的地块
@@ -261,18 +269,17 @@ export default class FightScene extends cc.Component {
             dropBlock.handleBlockOptWithBlock(this.selectBlock);   //处理本砖块和目标砖块的移动，战斗等处理
         }
         this.selectBlock = null;   //拖动的地块数据
+        this.selectTouchOffset = cc.Vec2.ZERO;  //选中砖块首次触摸相对砖块锚点偏移
         NoticeMgr.emit(NoticeType.SelBlockMove, null);  //取消显示周边移动和攻击范围
     }
 
     /**根据位置找到对应的地块 */
     getBlockSlotIndex(touchPos: cc.Vec2): Block{
-        let pos = this.gridNode.parent.convertToNodeSpaceAR(touchPos);
-        cc.log("getBlockSlotIndex touchPos = "+touchPos+"; pos = "+pos);
-        pos.x += this.gridNode.width/2;
-        pos.y += this.gridNode.height/2;
-        cc.log("change pos = "+pos);
-        let pos_Row = Math.floor(pos.y/this.gridNode.children[0].height);
-        let pos_Col = Math.floor(pos.x/this.gridNode.children[0].width);
+        let pos = this.gridNode.convertToNodeSpaceAR(touchPos);
+        let offPos = cc.v2(pos.x + this.gridNode.width/2, pos.y + this.gridNode.height/2)
+        //cc.log("getBlockSlotIndex touchPos = "+touchPos+"; pos = "+pos+ "; offPos = "+offPos);
+        let pos_Row = (FightMgr.cardsRow - 1) - Math.floor(offPos.y/this.gridNode.children[0].height);
+        let pos_Col = Math.floor(offPos.x/this.gridNode.children[0].width);
         return this.getBlockById(pos_Row*FightMgr.cardsCol + pos_Col);  //通过指定的索引返回砖块
     }
 

@@ -1,6 +1,8 @@
 
 import GeneralCell from "../comui/general";
-import { CardInfo, FunMgr } from "../manager/Enum";
+import { ROOT_NODE } from "../login/rootNode";
+import { CardInfo, CardState, FunMgr } from "../manager/Enum";
+import { FightMgr } from "../manager/FightManager";
 
 //卡牌节点
 const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
@@ -87,12 +89,34 @@ export default class Card extends cc.Component {
     // update (dt) {}
 
     /** 更新士气值 */
-    updateCardShiqi(){
+    updateCardShiqi(val: number=0){
         if(this.cardInfo){
+            let oldShiqi = this.cardInfo.shiqi;
+            this.cardInfo.shiqi += val;
+            if(this.cardInfo.shiqi < 0){
+                this.cardInfo.shiqi = 0;
+            }
+
             this.qiLabel.string = "气"+this.cardInfo.shiqi;
             let progess = this.cardInfo.shiqi/100;
             this.qiProgressBar.progress = FunMgr.num2progess(progess);
+
+            if(oldShiqi > 0 && this.cardInfo.shiqi < 10){  //混乱(部曲士气过低<10)
+                this.cardInfo.state = CardState.Confusion
+                ROOT_NODE.showTipsText("部曲士气过低，处于混乱状态，不听调令")
+            }else if(oldShiqi < 10 && this.cardInfo.shiqi >= 10){   //混乱恢复
+                if(this.cardInfo.state == CardState.Confusion){
+                    this.cardInfo.state = CardState.Normal
+                    ROOT_NODE.showTipsText("部曲士气从混乱状态恢复")
+                }
+            } 
+
+            if(val != 0){
+                FightMgr.handleUpdateBlockCardInfo(this.cardInfo);   //更新同步卡牌数据（战斗士气变动）
+            }
+            return [oldShiqi, this.cardInfo.shiqi]
         }
+        return [0, 0]
     }
     /** 更新士兵数量 */
     updateCardBingCount(){
@@ -119,13 +143,40 @@ export default class Card extends cc.Component {
         }
     }
 
+    /**获取砖块阵营 */
+    getCardCampId(){
+        if(this.cardInfo){
+            return this.cardInfo.campId;
+        }
+        return 0;  //阵营，0默认，1蓝方(我方)，2红方
+    }
+
+    /**获取砖块兵种 */
+    getBlockBingzhong(){
+        if(this.cardInfo){
+            return this.cardInfo.bingzhong;
+        }
+        return 0;   //作战兵种 401骑兵402刀兵403枪兵404弓兵
+    }
+
+    /**更新卡牌战斗数据 */
+    updateCardFightResult(info: CardInfo){
+        this.cardInfo = info;
+        let progess = this.cardInfo.generalInfo.bingCount/3000;
+        this.bingProgressBar.progress = FunMgr.num2progess(progess);
+        this.updateCardShiqi();  //更新士气值
+        this.updateCardBingCount();  //更新士兵数量
+        this.updateCardHp();  //更新血量
+        this.updateCardMp();  //更新智力
+    }
+
     /**设置卡牌数据(战斗) */
     initCardData(info: CardInfo){
         this.cardInfo = info;
         this.initView();
         //如果是缓存池的节点，则调用顺序为 reuse -> initItemData-> onLoad，故如果在OnLoad.initView则会刷掉initItemData的数据
 
-        cc.log("initCardData(), info = "+JSON.stringify(info));
+        //cc.log("initCardData(), info = "+JSON.stringify(info));
         if(this.cardInfo.campId == 1){  //阵营，0默认，1蓝方(我方)，2红方
             this.campSpr.spriteFrame = this.campFrames[0];
         }else if(this.cardInfo.campId == 2){
@@ -148,7 +199,6 @@ export default class Card extends cc.Component {
         }
 
         if(this.generalNode){
-            cc.log("设置卡牌武将");
             this.generalNode.getComponent(GeneralCell).setBgImgVisible(false, false);
             this.generalNode.getComponent(GeneralCell).initGeneralData(this.cardInfo.generalInfo);
         }

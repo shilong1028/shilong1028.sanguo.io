@@ -143,7 +143,7 @@ class FightManager {
                 }else if(cardInfo.type == CardType.Forward){  //前锋
                     for(let b=0; b<boundBlockArr.length;++b){   
                         let block: Block = boundBlockArr[b];
-                        if(block && block.cardInfo == null && block.buildType == BlockBuildType.Watchtower){ //箭楼
+                        if(block && block.cardNode == null && block.buildType == BlockBuildType.Watchtower){ //箭楼
                             block.showBlockCard(cardInfo);  //显示地块上卡牌
                             break;
                         }
@@ -162,7 +162,7 @@ class FightManager {
                     let bSet = false;
                     for(let b=0; b<boundBlockArr.length;++b){   
                         let block: Block = boundBlockArr[b];
-                        if(block && block.cardInfo == null && block.buildType == BlockBuildType.None){ 
+                        if(block && block.cardNode == null && block.buildType == BlockBuildType.None){ 
                             let rand = Math.random() + offRand;
                             if(rand > 0.8){
                                 bSet = true;
@@ -176,7 +176,7 @@ class FightManager {
                     if(bSet != true){   //很不幸，第一次没有随机存放，第二次遇到空位即存放
                         for(let b=0; b<boundBlockArr.length;++b){   
                             let block: Block = boundBlockArr[b];
-                            if(block && block.cardInfo == null && block.buildType == BlockBuildType.None){ 
+                            if(block && block.cardNode == null && block.buildType == BlockBuildType.None){ 
                                 block.showBlockCard(cardInfo);  //显示地块上卡牌
                                 break;
                             }
@@ -192,11 +192,13 @@ class FightManager {
     checkBlocksRelation_AI(block_src: Block, block_tar: Block){
         let abs_Row = Math.abs(block_src.blockRow - block_tar.blockRow);
         let abs_Col = Math.abs(block_src.blockColumn - block_tar.blockColumn);
-        if(block_src.cardInfo == null || abs_Row > 2 || abs_Col > 2){  //地块行 Row 列 Column
+        if(block_src.cardNode == null || abs_Row > 2 || abs_Col > 2){  //地块行 Row 列 Column
             return BlockRelation.None;  //砖块之间的AI战斗联系 0无（距离远） 1可移动范围内  2攻击范围内 3可移动可攻击  4中间有阻碍
         }else{
-            let bingzhong = block_src.cardInfo.bingzhong;     //作战兵种 401骑兵402刀兵403枪兵404弓兵
-            if(bingzhong == SoliderType.qiangbing){ //骑兵四方向前进两格，四方向攻击一格；
+            let bingzhong = block_src.getBlockBingzhong();     //作战兵种 401骑兵402刀兵403枪兵404弓兵
+            // cc.log("srcId: "+block_src.blockId+"; tarId: "+block_tar.blockId)
+            // cc.log("abs_Row: "+abs_Row+"; abs_Col: "+abs_Col+"; bingzhong = "+bingzhong)
+            if(bingzhong == SoliderType.qibing){ //骑兵四方向前进两格，四方向攻击一格；
                 if(abs_Row == 0){  //同行
                     if(abs_Col == 1){
                         return BlockRelation.ReachAndAtk;
@@ -204,7 +206,7 @@ class FightManager {
                         let mid_Row = (block_src.blockRow + block_tar.blockRow)/2;
                         let mid_Col = (block_src.blockColumn + block_tar.blockColumn)/2;
                         let midBlock = this.getFightScene().getBlockById(mid_Row*this.cardsCol + mid_Col);  //通过指定的索引返回砖块
-                        if(midBlock && midBlock.cardInfo){  //中间有人
+                        if(midBlock && midBlock.cardNode){  //中间有人
                             return BlockRelation.Obstruct; 
                         }else{
                             return BlockRelation.Reach;
@@ -217,7 +219,7 @@ class FightManager {
                         let mid_Row = (block_src.blockRow + block_tar.blockRow)/2;
                         let mid_Col = (block_src.blockColumn + block_tar.blockColumn)/2;
                         let midBlock = this.getFightScene().getBlockById(mid_Row*this.cardsCol + mid_Col);  //通过指定的索引返回砖块
-                        if(midBlock && midBlock.cardInfo){  //中间有人
+                        if(midBlock && midBlock.cardNode){  //中间有人
                             return BlockRelation.Obstruct; 
                         }else{
                             return BlockRelation.Reach;
@@ -296,8 +298,8 @@ class FightManager {
             if(block_v2.x < 0 || block_v2.y < 0){   //0非法砖块（边框外）
             }else{
                 let tempBlock = this.getFightScene().getBlockById(block_v2.x*this.cardsCol + block_v2.y);  //通过指定的索引返回砖块
-                if(tempBlock && tempBlock.cardInfo){  //有人
-                    if(tempBlock.cardInfo.campId != campId){
+                if(tempBlock && tempBlock.cardNode){  //有人
+                    if(tempBlock.getBlockCampId() != campId){
                         return true;   //有对方部曲
                     }
                 }
@@ -308,9 +310,14 @@ class FightManager {
 
     /** 检测指定砖块周边情况，并AutoAI处理。如包围士气变化，敌军下一步自动攻击预处理等*/
     checkBlocksRelation_AutoAtkAI(tar_block: Block){
-        if(tar_block.cardInfo == null){
+        if(tar_block.cardNode == null){
             return null;
         }
+        let tarBlockCardInfo = tar_block.getBlockCardInfo();
+        if(tarBlockCardInfo == null){
+            return null;
+        }
+
         //------------- 1、检测地块卡牌周边敌对攻击接触情况  ----------------
         let otherBlocks: any[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];   
         //0-3前后左右，4-7左前右前左后右后，8-11两格前后左右 卡牌情况 0非法砖块（边框外） 1空砖块 2队友 3对方空建筑 4己方空建筑 5对角或两格不处理，obj对方卡牌砖块
@@ -335,7 +342,7 @@ class FightManager {
                 otherBlocks[i] = 0;  //0非法砖块（边框外）
             }else{
                 let tempBlock: Block = null;
-                let bingzhong = tar_block.cardInfo.bingzhong;     //作战兵种 401骑兵402刀兵403枪兵404弓兵
+                let bingzhong = tar_block.getBlockBingzhong();     //作战兵种 401骑兵402刀兵403枪兵404弓兵
                 if(i>=8){ 
                     if(bingzhong == SoliderType.qiangbing || bingzhong == SoliderType.gongbing){
                         //骑兵四方向前进两格，四方向攻击一格； //弓兵九方向前进一格，九方向攻击一格，四方向攻击两格；
@@ -357,8 +364,8 @@ class FightManager {
                     if(i < 4){
                         surroundBlockCount ++;   //前后左右对方地块数量
                     }
-                    if(tempBlock.cardInfo){
-                        if(tempBlock.cardInfo.campId != tar_block.cardInfo.campId){   //不同阵营
+                    if(tempBlock.cardNode){
+                        if(tempBlock.getBlockCampId() != tar_block.getBlockCampId()){   //不同阵营
                             otherBlocks[i] = tempBlock;  //obj对方卡牌砖块
                             if(i < 4){
                                 surroundOtherCount ++;   //前后左右对方部曲数量
@@ -368,7 +375,7 @@ class FightManager {
                         }
                     }else{
                         if(i < 4){
-                            otherBlocks[i] = tempBlock.checkBuildRelationByCard(tar_block.cardInfo);   //1空砖块 3对方空建筑 4我方空建筑
+                            otherBlocks[i] = tempBlock.checkBuildRelationByCard(tar_block.getBlockCampId());   //1空砖块 3对方空建筑 4我方空建筑
                             //空建筑用于后续AI算法使用
                             if(otherBlocks[i] == 3){
                                 otherEmptyBuildBlock = tempBlock;  //3对方空建筑
@@ -424,49 +431,52 @@ class FightManager {
         for(let i=0; i<12; i++){
             //------------- 2.2、检测地块卡牌一击必杀情况  ----------------
             if((typeof(otherBlocks[i]) == "object")){
-                let atkInfo = this.handleAttackOpt(tar_block.cardInfo, otherBlocks[i].cardInfo, false);  //预计算攻击伤害
-                let killHp = Math.floor(atkInfo[0]/5) - otherBlocks[i].generalInfo.fightHp;
-                if(killHp >= 0){
-                    if(otherBlocks[i].cardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
-                        cc.log("一击必杀对方主将")
-                        let aiResult: EnemyAIResult = new EnemyAIResult(150, tar_block, otherBlocks[i])
+                let otherBlockCardInfo = otherBlocks[i].getBlockCardInfo();
+                if(otherBlockCardInfo && tarBlockCardInfo){
+                    let atkInfo = this.handleAttackOpt(tarBlockCardInfo, otherBlockCardInfo, false);  //预计算攻击伤害
+                    let killHp = Math.floor(atkInfo[0]/5) - otherBlocks[i].generalInfo.fightHp;
+                    if(killHp >= 0){
+                        if(otherBlockCardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
+                            cc.log("一击必杀对方主将")
+                            let aiResult: EnemyAIResult = new EnemyAIResult(150, tar_block, otherBlocks[i])
+                            this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
+                            bNextAuto = false;  //是否继续后续大步AI检测
+                            return;
+                        }
+                        cc.log("一击必杀对方")
+                        let aiWeight = 100 + Math.ceil(killHp/10)
+                        let aiResult: EnemyAIResult = new EnemyAIResult(aiWeight, tar_block, otherBlocks[i])
                         this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
                         bNextAuto = false;  //是否继续后续大步AI检测
-                        return;
-                    }
-                    cc.log("一击必杀对方")
-                    let aiWeight = 100 + Math.ceil(killHp/10)
-                    let aiResult: EnemyAIResult = new EnemyAIResult(aiWeight, tar_block, otherBlocks[i])
-                    this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
-                    bNextAuto = false;  //是否继续后续大步AI检测
-                }else{
-                    if(otherBlocks[i].cardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
-                        cc.log("一击必杀对方主将部曲")
-                        let aiResult: EnemyAIResult = new EnemyAIResult(150, tar_block, otherBlocks[i])
+                    }else{
+                        if(otherBlockCardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
+                            cc.log("一击必杀对方主将部曲")
+                            let aiResult: EnemyAIResult = new EnemyAIResult(150, tar_block, otherBlocks[i])
+                            this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
+                            bNextAuto = false;  //是否继续后续大步AI检测
+                            return;
+                        }
+                        cc.log("一击必杀对方部曲")
+                        let killCount = atkInfo[0] - otherBlocks[i].bingCount;
+                        let aiWeight = 100 + Math.ceil(killCount/10)
+                        let aiResult: EnemyAIResult = new EnemyAIResult(aiWeight, tar_block, otherBlocks[i])
                         this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
                         bNextAuto = false;  //是否继续后续大步AI检测
-                        return;
                     }
-                    cc.log("一击必杀对方部曲")
-                    let killCount = atkInfo[0] - otherBlocks[i].bingCount;
-                    let aiWeight = 100 + Math.ceil(killCount/10)
-                    let aiResult: EnemyAIResult = new EnemyAIResult(aiWeight, tar_block, otherBlocks[i])
-                    this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
-                    bNextAuto = false;  //是否继续后续大步AI检测
-                }
-
-                //保留最高攻击记录，以供以后随机攻击使用
-                if(killedBlock.atkInfo == null){
-                    killedBlock.atkInfo = atkInfo
-                    killedBlock.destBlock = otherBlocks[i]
-                }else if(atkInfo[0] > killedBlock.atkInfo[0]){
-                    killedBlock.atkInfo = atkInfo
-                    killedBlock.destBlock = otherBlocks[i]
+    
+                    //保留最高攻击记录，以供以后随机攻击使用
+                    if(killedBlock.atkInfo == null){
+                        killedBlock.atkInfo = atkInfo
+                        killedBlock.destBlock = otherBlocks[i]
+                    }else if(atkInfo[0] > killedBlock.atkInfo[0]){
+                        killedBlock.atkInfo = atkInfo
+                        killedBlock.destBlock = otherBlocks[i]
+                    }
                 }
 
                 //--------------  2.3、检测是否可以攻击对方大营   -------------------
                 if(otherBlocks[i].buildNode.active && otherBlocks[i].buildType == BlockBuildType.Barracks){   //建筑类型  0无，1营寨，2箭楼, 3粮仓
-                    if(otherBlocks[i].blockType == tar_block.cardInfo.campId){   //地块类型， 0中间地带，1我方范围，2敌方范围
+                    if(otherBlocks[i].blockType == tarBlockCardInfo.campId){   //地块类型， 0中间地带，1我方范围，2敌方范围
                         //己方建筑
                     }else{  //对方大营
                         cc.log("攻击对方大营")
@@ -483,14 +493,14 @@ class FightManager {
 
         //--------------  3、检测己方大营四方是否有对手，有则最近非驻守部曲回防大营   -------------------
         if(tar_block.isGarrisonBlock() == 0){  //是否驻守卡牌地块
-            if(this.checkBarracksBlockIsDanger(tar_block.cardInfo.campId)){  //检测大营周边是否有对方部曲
+            if(this.checkBarracksBlockIsDanger(tarBlockCardInfo.campId)){  //检测大营周边是否有对方部曲
                 //0-3前后左右，4-7左前右前左后右后，8-11两格前后左右 卡牌情况 0非法砖块（边框外） 1空砖块 2队友 3对方空建筑 4己方空建筑 5对角或两格不处理，obj对方卡牌砖块
                 for(let i=0; i<12; i++){
                     if((typeof(otherBlocks[i]) == "number")){
                         if(otherBlocks[i] == 1 || otherBlocks[i] == 3 || otherBlocks[i] == 4){
                             let row = 0;
                             let col = 2;
-                            if(tar_block.cardInfo.campId == this.myCampId){
+                            if(tarBlockCardInfo.campId == this.myCampId){
                                 row = this.cardsRow - 1;
                             }
                             let moveStep = Math.floor(Math.abs(tar_block.blockRow-row) + Math.abs(tar_block.blockColumn-col)/2)
@@ -599,8 +609,9 @@ class FightManager {
 
     /**检测是否已经攻入对方本阵范围*/
     isInOtherBlockBound(tar_block:Block){
-        if(tar_block.cardInfo){
-            if(tar_block.cardInfo.campId == this.myCampId){   //我方卡牌
+        let tarBlockCardInfo = tar_block.getBlockCardInfo();
+        if(tarBlockCardInfo){
+            if(tarBlockCardInfo.campId == this.myCampId){   //我方卡牌
                 if(tar_block.blockRow < 2){
                     return true;
                 }
@@ -732,40 +743,40 @@ class FightManager {
         }
     }
 
-    /** 因部曲（阵亡，逃逸，被俘） 检查是否游戏结束 */
-    checkGameOverByDead(deadCampId:number){
-        if(this.GameFightOver > GameOverState.None){
-            cc.log("游戏已经结束")
-            return;
-        }
-        if(deadCampId == this.myCampId){   //我方部曲卡牌消亡
-            let aliveCount = 0;   //还存活有效的部曲数量
-            for(let i=0; i<this.battleGeneralArr.length;++i){  
-                let state = this.battleGeneralArr[i].state
-                if(state == CardState.Confusion || state == CardState.Dead || state == CardState.Flee || state == CardState.Prisoner){  //混乱，阵亡，逃逸，被俘
-                }else{
-                    aliveCount ++
-                    return;
-                }
-            }
-            if(aliveCount <= 0){
-                NoticeMgr.emit(NoticeType.GameOverNotice, GameOverState.MyUnitLose);  //游戏结束通知
-            }
-        }else{  //敌方部曲卡牌消亡
-            let aliveCount = 0;   //还存活有效的部曲数量
-            for(let i=0; i<this.battleEnemyArr.length;++i){  
-                let state = this.battleEnemyArr[i].state
-                if(state == CardState.Confusion || state == CardState.Dead || state == CardState.Flee || state == CardState.Prisoner){  //混乱，阵亡，逃逸，被俘
-                }else{
-                    aliveCount ++
-                    return;
-                }
-            }
-            if(aliveCount <= 0){
-                NoticeMgr.emit(NoticeType.GameOverNotice, GameOverState.EnemyUnitLose);  //游戏结束通知
-            }
-        }
-    }
+    // /** 因部曲（阵亡，逃逸，被俘） 检查是否游戏结束 */
+    // checkGameOverByDead(deadCampId:number){
+    //     if(this.GameFightOver > GameOverState.None){
+    //         cc.log("游戏已经结束")
+    //         return;
+    //     }
+    //     if(deadCampId == this.myCampId){   //我方部曲卡牌消亡
+    //         let aliveCount = 0;   //还存活有效的部曲数量
+    //         for(let i=0; i<this.battleGeneralArr.length;++i){  
+    //             let state = this.battleGeneralArr[i].state
+    //             if(state == CardState.Confusion || state == CardState.Dead || state == CardState.Flee || state == CardState.Prisoner){  //混乱，阵亡，逃逸，被俘
+    //             }else{
+    //                 aliveCount ++
+    //                 return;
+    //             }
+    //         }
+    //         if(aliveCount <= 0){
+    //             NoticeMgr.emit(NoticeType.GameOverNotice, GameOverState.MyUnitLose);  //游戏结束通知
+    //         }
+    //     }else{  //敌方部曲卡牌消亡
+    //         let aliveCount = 0;   //还存活有效的部曲数量
+    //         for(let i=0; i<this.battleEnemyArr.length;++i){  
+    //             let state = this.battleEnemyArr[i].state
+    //             if(state == CardState.Confusion || state == CardState.Dead || state == CardState.Flee || state == CardState.Prisoner){  //混乱，阵亡，逃逸，被俘
+    //             }else{
+    //                 aliveCount ++
+    //                 return;
+    //             }
+    //         }
+    //         if(aliveCount <= 0){
+    //             NoticeMgr.emit(NoticeType.GameOverNotice, GameOverState.EnemyUnitLose);  //游戏结束通知
+    //         }
+    //     }
+    // }
 
     /** 游戏结束通知 */
     handleGameOverNotice(overState: GameOverState){
@@ -781,22 +792,22 @@ class FightManager {
 
     /**下回合处理 */
     nextRoundOpt(){
-        cc.log("nextRoundOpt() 下回合处理, this.bMyRound = "+this.bMyRound);
-        if(this.GameFightOver == GameOverState.None){
-            this.EnemyAIResult = null;   //敌方AI返回结果
-            this.fightRoundCount ++;   //战斗回合数
-            if(this.fightRoundCount > this.MaxFightRouncCount){   //最大战斗回合
-                ROOT_NODE.showTipsText("回合数已用完")
-                NoticeMgr.emit(NoticeType.GameOverNotice, GameOverState.MyRoundOver);  //游戏结束通知
-            }else{
-                NoticeMgr.emit(NoticeType.PerNextRound, null);  //通知地块准备下一个回合(砖块接收到消息通知后，会AutoAI被围士气和AI攻击)
-                if(this.bMyRound == true){
-                    this.handleEnemyRoundOpt();   //敌方回合处理
-                }else{
-                    this.handleMyRoundOpt();   //我方回合处理
-                }
-            }
-        }
+        // cc.log("nextRoundOpt() 下回合处理, this.bMyRound = "+this.bMyRound);
+        // if(this.GameFightOver == GameOverState.None){
+        //     this.EnemyAIResult = null;   //敌方AI返回结果
+        //     this.fightRoundCount ++;   //战斗回合数
+        //     if(this.fightRoundCount > this.MaxFightRouncCount){   //最大战斗回合
+        //         ROOT_NODE.showTipsText("回合数已用完")
+        //         NoticeMgr.emit(NoticeType.GameOverNotice, GameOverState.MyRoundOver);  //游戏结束通知
+        //     }else{
+        //         NoticeMgr.emit(NoticeType.PerNextRound, null);  //通知地块准备下一个回合(砖块接收到消息通知后，会AutoAI被围士气和AI攻击)
+        //         if(this.bMyRound == true){
+        //             this.handleEnemyRoundOpt();   //敌方回合处理
+        //         }else{
+        //             this.handleMyRoundOpt();   //我方回合处理
+        //         }
+        //     }
+        // }
     }
 
     /**我方回合处理 */

@@ -18,6 +18,8 @@ class AudioMgr_class {
     KEY_Music_Volume: number = 0.5;     //本地音乐音量
     KEY_Sound_Volume: number = 0.5;    //本地音效音量
 
+    audioIdArrs: any[] = [];
+
     //初始化音频信息
     initAudioData(){
         this.KEY_Music_onOff = this.getMusicOnOffState();
@@ -66,6 +68,10 @@ class AudioMgr_class {
     resumeAll() {
         cc.audioEngine.resumeAll();
     }
+    stopAll() {
+        cc.audioEngine.stopAll();
+        this.audioIdArrs = [];
+    }
 
     /***播放背景音乐 */
     bgmAudio : any = null;
@@ -85,8 +91,8 @@ class AudioMgr_class {
         }
     }
 
-    /**播放Effect bOverlap是否覆盖类型的音效 */
-    playEffect(fileName: string, loop:boolean = false, bOverlap: boolean=false) {
+    /**播放Effect */
+    playEffect(fileName: string, loop:boolean = false) {
         if(this.KEY_Music_onOff == 0){   //开启
             cc.loader.loadRes("sound/" + fileName, cc.AudioClip, function (err, ac) {
                 this.lastEffectName = "";  //上一个音效名称
@@ -94,11 +100,18 @@ class AudioMgr_class {
                     cc.log(err+"; fileName = "+fileName);
                     return;
                 }
-                let idx = cc.audioEngine.playEffect(ac, loop);
-                if(bOverlap == true){
-                    this.lastOverlap = idx;
-                }
+                let id = cc.audioEngine.playEffect(ac, loop);
+                this.audioIdArrs.push(id);
+                cc.audioEngine.setFinishCallback(id, this.handleRemoveEffect.bind(this, id));
+
             }.bind(this)); 
+        }
+    }
+
+    handleRemoveEffect(id){
+        let idx = this.audioIdArrs.indexOf(id);
+        if(idx >= 0){
+            this.audioIdArrs.splice(idx, 1);
         }
     }
 

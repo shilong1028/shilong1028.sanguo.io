@@ -318,7 +318,6 @@ export enum BlockRelation{
     Obstruct = 4,  //4中间有阻碍
 }
 
-
 /** 出战武将卡牌类型 */
 export enum CardType{  
     Normal = 0,   //0普通
