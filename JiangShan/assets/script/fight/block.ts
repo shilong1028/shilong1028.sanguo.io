@@ -293,7 +293,8 @@ export default class Block extends cc.Component {
             }else{    //战斗
                 optBlock.handleUpdateShiqiByAtk();  //因攻击而改变士气 
                 FightMgr.showFightDetailLayer(optBlock, this, (atkCardInfo:CardInfo, defCardInfo:CardInfo)=>{
-                    cc.log("战斗结束")
+                    cc.log("战斗结束 atkCardInfo = "+JSON.stringify(atkCardInfo))
+                    cc.log("战斗结束 defCardInfo = "+JSON.stringify(defCardInfo))
                     optBlock.handleBlockCardFightResult(atkCardInfo);  //处理攻击方战斗后的卡牌数据
                     this.handleBlockCardFightResult(defCardInfo);  //处理防守方战斗后的卡牌数据
 

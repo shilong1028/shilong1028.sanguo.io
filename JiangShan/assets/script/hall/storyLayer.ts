@@ -57,7 +57,6 @@ export default class StoryLayer extends cc.Component {
     onDestroy(){
         //this.node.targetOff(this);
         //NoticeMgr.offAll(this);
-        this.removeRewardItems();
     }
 
     removeRewardItems(){
@@ -82,7 +81,6 @@ export default class StoryLayer extends cc.Component {
             
             this.setTalkStr();   //设置话本内容
 
-            this.removeRewardItems();
             let rewards: Array<ItemInfo> = GameMgr.getItemArrByKeyVal(this.taskConf.rewards);
             if(rewards.length > 0){
                 this.rewardNode.active = true;
@@ -102,6 +100,7 @@ export default class StoryLayer extends cc.Component {
             this.curTalkConf = null;
             this.curTalkStrIdx = 0;
             this.rewardNode.active = false;
+            this.removeRewardItems();
 
             if(this.curTalkIdx < this.taskConf.talks.length){
                 if(this.curTalkIdx >= this.taskConf.talks.length-1){

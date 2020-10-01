@@ -4,7 +4,6 @@ import { ROOT_NODE } from "../login/rootNode";
 import { CfgMgr, CityInfo, SkillInfo } from "./ConfigManager";
 import { BlockBuildType, BlockRelation, CardInfo, CardState, CardType, GameOverState, SoliderType } from "./Enum";
 import { GameMgr } from "./GameManager";
-import { NoticeMgr, NoticeType } from "./NoticeManager";
 
 //敌方AI处理结果
 class EnemyAIResult{
@@ -20,14 +19,32 @@ class EnemyAIResult{
     }
 }
 
+//攻击结果结果
+export class AttackResult{
+    atkVal = 0;  //攻击方的净攻击力
+    beatBackVal = 0;  //对方反击的反击攻击力
+    atkHp = 0;   //攻击导致对方损失的武将血量
+    beatBackHp = 0;  //对方还击对攻击方造成的武将损失血量
+    usedMp = 0;  //攻击过程使用技能，使用的智力值
+    killCount = 0;  //攻击造成的对方部曲士兵死亡数量
+    beadBackCount = 0;  //对方还击对攻击方造成的部曲士兵损失量
+
+    constructor(){
+        this.atkVal = 0;
+        this.beatBackVal = 0;
+        this.atkHp = 0;
+        this.beatBackHp = 0;
+        this.usedMp = 0;
+        this.killCount = 0;
+        this.beadBackCount = 0;
+    }
+}
+
 //战斗管理器
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 class FightManager { 
-    battleEnemyArr: CardInfo[] = [];   //出战敌方部曲（和士兵），注意，战斗中使用的是拷贝数据
-    battleGeneralArr: CardInfo[] = [];   //出战我方部曲， 注意，战斗中使用的是拷贝数据
-
     battleEnemyArr_copy: CardInfo[] = [];   //出战敌方部曲（和士兵），注意，战斗中使用的是拷贝数据
     battleGeneralArr_copy: CardInfo[] = [];   //出战我方部曲， 注意，战斗中使用的是拷贝数据
 
@@ -42,7 +59,12 @@ class FightManager {
 
     MaxFightRouncCount: number = 50;  //最大战斗回合
 
+    maxFightHp: number = 0;   //战斗卡牌最大血量，用于进度条显示
+    maxFightBingCount: number = 0;  //战斗卡牌最大士兵数量，用于进度条显示
+
     //------------ 以上数据重置时不需要重新赋值 ------------
+    battleEnemyArr: CardInfo[] = [];   //出战敌方部曲（和士兵）
+    battleGeneralArr: CardInfo[] = [];   //出战我方部曲
 
     myCampId: number = 1;   //阵营，0默认，1蓝方(我方），2红方
     bStopTouch: boolean = false;   //是否停止触摸反应
@@ -92,10 +114,24 @@ class FightManager {
         this.battleGeneralArr = [];   //出战我方部曲 ，注意，战斗中使用的是拷贝数据
         if(bReset){
             for(let i=0; i<this.battleEnemyArr_copy.length;++i){    //出战敌方部曲（和士兵） ，注意，战斗中使用的是拷贝数据
-                this.battleEnemyArr.push(this.battleEnemyArr_copy[i].clone());
+                let cardInfo:CardInfo = this.battleEnemyArr_copy[i].clone();
+                this.battleEnemyArr.push(cardInfo);
+                if(cardInfo.generalInfo.fightHp >  this.maxFightHp){
+                    this.maxFightHp = cardInfo.generalInfo.fightHp   //战斗卡牌最大血量，用于进度条显示
+                }
+                if(cardInfo.generalInfo.bingCount >  this.maxFightBingCount){
+                    this.maxFightBingCount = cardInfo.generalInfo.bingCount   //战斗卡牌最大士兵数量，用于进度条显示
+                }
             }
             for(let i=0; i<this.battleGeneralArr_copy.length;++i){    //出战敌方部曲（和士兵） ，注意，战斗中使用的是拷贝数据
-                this.battleGeneralArr.push(this.battleGeneralArr_copy[i].clone());
+                let cardInfo:CardInfo = this.battleGeneralArr_copy[i].clone();
+                this.battleGeneralArr.push(cardInfo);
+                if(cardInfo.generalInfo.fightHp >  this.maxFightHp){
+                    this.maxFightHp = cardInfo.generalInfo.fightHp   //战斗卡牌最大血量，用于进度条显示
+                }
+                if(cardInfo.generalInfo.bingCount >  this.maxFightBingCount){
+                    this.maxFightBingCount = cardInfo.generalInfo.bingCount   //战斗卡牌最大士兵数量，用于进度条显示
+                }
             }
         }
     }
@@ -426,15 +462,16 @@ class FightManager {
             bNextAuto = false;  //是否继续后续大步AI检测
         }
 
-        let killedBlock:any = {atkInfo:null, destBlock:null};   //保留最高攻击记录，以供以后随机攻击使用
+        let killedBlock:any = {atkInfo:null, destBlock:null, sortPar: 0};   //保留最高攻击记录，以供以后随机攻击使用
         //0-3前后左右，4-7左前右前左后右后，8-11两格前后左右 卡牌情况 0非法砖块（边框外） 1空砖块 2队友 3对方空建筑 4己方空建筑 5对角或两格不处理，obj对方卡牌砖块
         for(let i=0; i<12; i++){
             //------------- 2.2、检测地块卡牌一击必杀情况  ----------------
             if((typeof(otherBlocks[i]) == "object")){
                 let otherBlockCardInfo = otherBlocks[i].getBlockCardInfo();
                 if(otherBlockCardInfo && tarBlockCardInfo){
-                    let atkInfo = this.handleAttackOpt(tarBlockCardInfo, otherBlockCardInfo, false);  //预计算攻击伤害
-                    let killHp = Math.floor(atkInfo[0]/5) - otherBlocks[i].generalInfo.fightHp;
+                    let atkInfo:AttackResult = this.handleAttackOpt(tarBlockCardInfo, otherBlockCardInfo, false);  //预计算攻击伤害
+                    let killHp = atkInfo.atkHp - otherBlockCardInfo.generalInfo.fightHp;
+                    let killCount = atkInfo.killCount - otherBlocks[i].generalInfo.bingCount;
                     if(killHp >= 0){
                         if(otherBlockCardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
                             cc.log("一击必杀对方主将")
@@ -448,7 +485,7 @@ class FightManager {
                         let aiResult: EnemyAIResult = new EnemyAIResult(aiWeight, tar_block, otherBlocks[i])
                         this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
                         bNextAuto = false;  //是否继续后续大步AI检测
-                    }else{
+                    }else if(killCount >= 100){
                         if(otherBlockCardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
                             cc.log("一击必杀对方主将部曲")
                             let aiResult: EnemyAIResult = new EnemyAIResult(150, tar_block, otherBlocks[i])
@@ -457,7 +494,6 @@ class FightManager {
                             return;
                         }
                         cc.log("一击必杀对方部曲")
-                        let killCount = atkInfo[0] - otherBlocks[i].bingCount;
                         let aiWeight = 100 + Math.ceil(killCount/10)
                         let aiResult: EnemyAIResult = new EnemyAIResult(aiWeight, tar_block, otherBlocks[i])
                         this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
@@ -465,13 +501,18 @@ class FightManager {
                     }
     
                     //保留最高攻击记录，以供以后随机攻击使用
+                    let sortPar = killHp*0.4 + killCount*0.6;
                     if(killedBlock.atkInfo == null){
                         killedBlock.atkInfo = atkInfo
                         killedBlock.destBlock = otherBlocks[i]
-                    }else if(atkInfo[0] > killedBlock.atkInfo[0]){
-                        killedBlock.atkInfo = atkInfo
-                        killedBlock.destBlock = otherBlocks[i]
-                    }
+                        killedBlock.sortPar = sortPar
+                    }else{
+                        if(sortPar > killedBlock.sortPar){
+                            killedBlock.atkInfo = atkInfo
+                            killedBlock.destBlock = otherBlocks[i]
+                            killedBlock.sortPar = sortPar
+                        }
+                    } 
                 }
 
                 //--------------  2.3、检测是否可以攻击对方大营   -------------------
@@ -636,27 +677,58 @@ class FightManager {
         }
     }
 
+    /**兵种相克 */
+    checkBingRestriction(srcType: SoliderType, destType: SoliderType){  
+        //兵种相克，401骑兵克制402刀兵， 402刀兵克制403枪兵，403枪兵克制401骑兵， 404弓兵为不克制兵种
+        if(srcType == SoliderType.qibing){
+            if(destType == SoliderType.daobing){
+                return 1;
+            }else if(destType == SoliderType.qiangbing){
+                return -1;
+            }
+        }else if(srcType == SoliderType.daobing){
+            if(destType == SoliderType.qiangbing){
+                return 1;
+            }else if(destType == SoliderType.qibing){
+                return -1;
+            }
+        }else if(srcType == SoliderType.qiangbing){
+            if(destType == SoliderType.qibing){
+                return 1;
+            }else if(destType == SoliderType.daobing){
+                return -1;
+            }
+        }
+        return 0;
+    }
+
     /** 预计算攻击伤害*/
-    handleAttackOpt(atkCard:CardInfo, defCard:CardInfo, bBeatBack:boolean = true){
+    handleAttackOpt(atkCard:CardInfo, defCard:CardInfo, bBeatBack:boolean = true): AttackResult{
+        let atkResult = new AttackResult();
+
         if(atkCard == null || defCard == null){
             cc.log("handleAttackOpt 卡牌有误")
-            return [0, 0];
+            return atkResult;
         }
         if(atkCard.campId == defCard.campId ){
             cc.log("handleAttackOpt 异常， 同阵营攻击")
-            return [0, 0];
+            return atkResult;
         }
         if(atkCard.generalInfo == null || defCard.generalInfo == null){
             cc.log("handleAttackOpt 武将信息有误")
-            return [0, 0];
+            return atkResult;
         }
 
         let atk_bing = CfgMgr.getGeneralConf(atkCard.bingzhong.toString());
-        let def_bing = CfgMgr.getGeneralConf(atkCard.bingzhong.toString());
+        let def_bing = CfgMgr.getGeneralConf(defCard.bingzhong.toString());
         if(atkCard == null || defCard == null){
             cc.log("handleAttackOpt 兵种配置有误")
-            return [0, 0];
+            return atkResult;
         }
+        // cc.log("atkCard.generalInfo = "+JSON.stringify(atkCard.generalInfo))
+        // cc.log("atk_bing = "+JSON.stringify(atk_bing))
+        // cc.log("defCard.generalInfo = "+JSON.stringify(defCard.generalInfo))
+        // cc.log("def_bing = "+JSON.stringify(def_bing))
 
         let atkSkillScale = 1.0;   //攻击方技能提升的攻击倍率
         let defSkillScale = 1.0;   //攻击方技能降低的对方防御倍率
@@ -667,47 +739,67 @@ class FightManager {
         }else{
             attackVal = atk_bing.atk * atkCard.generalInfo.bingCount/1000;
         }
+        if(this.checkBingRestriction(atkCard.bingzhong, defCard.bingzhong) > 0){  //兵种相克
+            attackVal *= 1.2;   //兵种相克，攻击力提升20%
+        }
         let defVal = 0
         if(defCard.generalInfo.generalId.length >= 4){
             defVal = (defCard.generalInfo.fightDef + def_bing.def * defCard.generalInfo.bingCount/1000)*defSkillScale*(defCard.shiqi/100);
         }else{
             defVal = (def_bing.def * defCard.generalInfo.bingCount/1000)*defSkillScale*(defCard.shiqi/100);
+            defVal = defVal * (Math.random()*0.5 + 0.5);  //无武将的部曲防御力在0.5-1.0之间随机
         }
 
-        //有效攻击 =  攻击士气倍率 *（（攻击武将攻击力+部曲士兵攻击力）*攻击武将技能攻击倍率 - （防守武将防御力+部曲士兵防御力）*攻击武将技能防御倍率*防守士气倍率 ）
-        let atkRealVal = Math.floor((attackVal - defVal)*(atkCard.shiqi/100));
-        if(atkRealVal < 10){
-            atkRealVal = 10;
-        }
-        if(bBeatBack != true){
-            return [atkRealVal, 0]
-        }
-
-        //-------------- 防守反击处理 ----------------
-        if(atkCard.bingzhong == SoliderType.gongbing){   //弓兵攻击无反击
-            return [atkRealVal, 0]
-        }
-        if(defCard.generalInfo.generalId.length < 4){   //防守方为纯士兵部曲，无反击
-            return [atkRealVal, 0]
-        }
-
-        let beatBackAtk = 0;
-        if(defCard.generalInfo.generalId.length >= 4){
-            beatBackAtk = (defCard.generalInfo.fightAtk + def_bing.atk * defCard.generalInfo.bingCount/1000)*(defCard.shiqi/100);
-        }
-        let beatBackDef = 0;
-        if(atkCard.generalInfo.generalId.length >= 4){
-            beatBackDef = (atkCard.generalInfo.fightDef + atk_bing.def * atkCard.generalInfo.bingCount/1000);
+        if(attackVal <= defVal){
+            cc.log("不破防")
+            atkResult.usedMp = 0;  //攻击过程使用技能，使用的智力值
+            atkResult.killCount = 10;  //攻击造成的对方部曲士兵死亡数量
         }else{
-            beatBackDef = atk_bing.def * atkCard.generalInfo.bingCount/1000;
+            //有效攻击 =  攻击士气倍率 *（（攻击武将攻击力+部曲士兵攻击力）*攻击武将技能攻击倍率 - （防守武将防御力+部曲士兵防御力）*攻击武将技能防御倍率*防守士气倍率 ）
+            let atkRealVal = Math.floor((attackVal - defVal)*(atkCard.shiqi/100));
+            atkResult.atkVal = atkRealVal;  //攻击方的净攻击力
+            atkResult.usedMp = 0;  //攻击过程使用技能，使用的智力值
+            atkResult.atkHp = Math.ceil(atkRealVal/2);   //攻击导致对方损失的武将血量  //有效攻击的50%直接作用武将血量减少
+            atkResult.killCount = Math.ceil(atkRealVal*1000/def_bing.hp);  //攻击造成的对方部曲士兵死亡数量
         }
 
-        //有效反击 = 防守士气倍率 *（（防守武将攻击力+部曲士兵攻击力）*防守士气倍率 - （攻击武将防御力+部曲士兵防御力））
-        let beatBackRealAtk = Math.floor((beatBackAtk - beatBackDef)*(defCard.shiqi/100));
-        if(beatBackRealAtk < 0){
-            beatBackRealAtk = 0;
+        if(bBeatBack){   //有反击
+            //-------------- 防守反击处理 ----------------
+            if(atkCard.bingzhong == SoliderType.gongbing){   //弓兵攻击无反击
+                return atkResult;
+            }
+            if(defCard.generalInfo.generalId.length < 4){   //防守方为纯士兵部曲，无反击
+                return atkResult;
+            }
+
+            //反击不可触发技能
+            let beatBackAtk = 0;
+            if(defCard.generalInfo.generalId.length >= 4){
+                beatBackAtk = (defCard.generalInfo.fightAtk + def_bing.atk * defCard.generalInfo.bingCount/1000)*(defCard.shiqi/100);
+            }
+            //反击不加成兵种相克
+            // if(this.checkBingRestriction(defCard.bingzhong, atkCard.bingzhong) > 0){  //兵种相克
+            //     beatBackAtk *= 1.2;   //兵种相克，攻击力提升20%
+            // }
+            let beatBackDef = 0;
+            if(atkCard.generalInfo.generalId.length >= 4){
+                beatBackDef = (atkCard.generalInfo.fightDef + atk_bing.def * atkCard.generalInfo.bingCount/1000);
+            }else{
+                beatBackDef = atk_bing.def * atkCard.generalInfo.bingCount/1000;
+                beatBackDef = beatBackDef * (Math.random()*0.5 + 0.5);  //无武将的部曲防御力在0.5-1.0之间随机
+            }
+
+            if(beatBackAtk <= beatBackDef){
+                cc.log("反击不破防")
+            }else{
+                //有效反击 = 防守士气倍率 *（（防守武将攻击力+部曲士兵攻击力）*防守士气倍率 - （攻击武将防御力+部曲士兵防御力））
+                let beatBackRealAtk = Math.floor((beatBackAtk - beatBackDef)*(defCard.shiqi/100));
+                atkResult.beatBackVal = beatBackRealAtk; //对方反击的反击攻击力
+                atkResult.beatBackHp = Math.ceil(beatBackAtk/2);  //对方还击对攻击方造成的武将损失血量  //有效攻击的50%直接作用武将血量减少
+                atkResult.beadBackCount = Math.ceil(beatBackAtk*1000/atk_bing.hp);  //对方还击对攻击方造成的部曲士兵损失量
+            }
         }
-        return [atkRealVal, beatBackRealAtk]
+        return atkResult;
     }
 
 
@@ -716,6 +808,67 @@ class FightManager {
         // let layer = FightMgr.showLayer(FightMgr.getFightScene().pfFightShow);
         // layer.y += 100;
         // layer.getComponent(FightShow).initFightShowData(nType, srcBlock, this);
+        this.handleAttackAndNoShow(atkBlock, defBlock, callback);
+    }
+
+    /**无展示攻击 */
+    handleAttackAndNoShow(atkBlock: Block, defBlock: Block, callback:Function){
+        let atkCardInfo = atkBlock.getBlockCardInfo();
+        let defCardInfo = defBlock.getBlockCardInfo();
+        if(!atkCardInfo || !defCardInfo){
+            cc.log("handleAttackAndNoShow 攻击卡牌或防御卡牌数据有误")
+            return;
+        }
+        let atkInfo:AttackResult = this.handleAttackOpt(atkCardInfo, defCardInfo, true);  //预计算攻击伤害
+        cc.log("handleAttackAndNoShow 无展示攻击 atkInfo = "+JSON.stringify(atkInfo))
+        //攻击
+        let defGeneralHp = defCardInfo.generalInfo.fightHp - atkInfo.atkHp;
+        if(defGeneralHp < 0){
+            defGeneralHp = 0;
+            defCardInfo.state = CardState.Dead;   //武将死亡
+        }
+        defCardInfo.generalInfo.fightHp = defGeneralHp;
+
+        let defBingCount = defCardInfo.generalInfo.bingCount - atkInfo.killCount;
+        if(defBingCount < 0){
+            defBingCount = 0;
+        }
+        if(defBingCount < 100){
+            defCardInfo.state = CardState.Flee;   //部曲逃逸(部曲士兵数量过少<100)
+        }
+        defCardInfo.generalInfo.bingCount = defBingCount;
+
+        let atkGeneralMp = atkCardInfo.generalInfo.fightMp - atkInfo.usedMp;
+        if(atkGeneralMp < 0){
+            atkGeneralMp = 0;
+        }
+        defCardInfo.generalInfo.fightMp = atkGeneralMp;
+        
+        ROOT_NODE.showTipsText(`攻击：${atkInfo.atkHp}，杀敌：${atkInfo.killCount}`)
+
+        //反击
+        let atkGeneralHp = atkCardInfo.generalInfo.fightHp - atkInfo.beatBackHp;
+        if(atkGeneralHp < 0){
+            atkGeneralHp = 0;
+            atkCardInfo.state = CardState.Dead;   //武将死亡
+        }
+        atkCardInfo.generalInfo.fightHp = atkGeneralHp;
+
+        let atkBingCount = atkCardInfo.generalInfo.bingCount - atkInfo.beadBackCount;
+        if(atkBingCount < 0){
+            atkBingCount = 0;
+        }
+        if(atkBingCount < 100){
+            atkCardInfo.state = CardState.Flee;   //部曲逃逸(部曲士兵数量过少<100)
+        }
+        atkCardInfo.generalInfo.bingCount = atkBingCount;
+
+        ROOT_NODE.showTipsText(`反击：${atkInfo.beatBackHp}，反杀：${atkInfo.beadBackCount}`)
+
+        if(callback){
+            callback(atkCardInfo, defCardInfo);
+        }
+
     }
 
     /**更新同步卡牌数据（战斗士气变动）*/
@@ -723,8 +876,8 @@ class FightManager {
         if(cardInfo.campId == this.myCampId){   //我方部曲卡牌
             for(let i=0; i<this.battleGeneralArr.length;++i){  
                 if(cardInfo.cardIdStr == this.battleGeneralArr[i].cardIdStr){   //卡牌编号，用于定位 campId_generalId_bingzhong
-                    cc.log("我方卡牌变动 cardInfo = "+JSON.stringify(cardInfo))
-                    cc.log("卡牌原数据 this.battleGeneralArr[i] = "+JSON.stringify(this.battleGeneralArr[i]))
+                    //cc.log("我方卡牌变动 cardInfo = "+JSON.stringify(cardInfo))
+                    //cc.log("卡牌原数据 this.battleGeneralArr[i] = "+JSON.stringify(this.battleGeneralArr[i]))
                     this.battleGeneralArr[i] = cardInfo;
                     this.getFightScene().handleUpdateBlockCardInfo(cardInfo.campId, i);
                     return;
@@ -733,8 +886,8 @@ class FightManager {
         }else{  //敌方部曲卡牌
             for(let i=0; i<this.battleEnemyArr.length;++i){  
                 if(cardInfo.cardIdStr == this.battleEnemyArr[i].cardIdStr){   //卡牌编号，用于定位 campId_generalId_bingzhong
-                    cc.log("敌方卡牌变动 cardInfo = "+JSON.stringify(cardInfo))
-                    cc.log("卡牌原数据 this.battleEnemyArr[i] = "+JSON.stringify(this.battleEnemyArr[i]))
+                    //cc.log("敌方卡牌变动 cardInfo = "+JSON.stringify(cardInfo))
+                    //cc.log("卡牌原数据 this.battleEnemyArr[i] = "+JSON.stringify(this.battleEnemyArr[i]))
                     this.battleEnemyArr[i] = cardInfo;
                     this.getFightScene().handleUpdateBlockCardInfo(cardInfo.campId, i);
                     return;
@@ -856,30 +1009,7 @@ class FightManager {
         return new SkillInfo(skillId)
     }
 
-    /**兵种相克 */
-    checkBingRestriction(srcType: number, destType: number){  
-        //兵种相克，401骑兵克制402刀兵， 402刀兵克制403枪兵，403枪兵克制401骑兵， 404弓兵为不克制兵种
-        if(srcType == SoliderType.qibing){
-            if(destType == SoliderType.daobing){
-                return 1;
-            }else if(destType == SoliderType.qiangbing){
-                return -1;
-            }
-        }else if(srcType == SoliderType.daobing){
-            if(destType == SoliderType.qiangbing){
-                return 1;
-            }else if(destType == SoliderType.qibing){
-                return -1;
-            }
-        }else if(srcType == SoliderType.qiangbing){
-            if(destType == SoliderType.qibing){
-                return 1;
-            }else if(destType == SoliderType.daobing){
-                return -1;
-            }
-        }
-        return 0;
-    }
+
 
 
 }

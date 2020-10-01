@@ -96,6 +96,9 @@ export default class Card extends cc.Component {
             if(this.cardInfo.shiqi < 0){
                 this.cardInfo.shiqi = 0;
             }
+            // else if(this.cardInfo.shiqi > 100){
+            //     this.cardInfo.shiqi = 100;
+            // }
 
             this.qiLabel.string = "气"+this.cardInfo.shiqi;
             let progess = this.cardInfo.shiqi/100;
@@ -122,7 +125,7 @@ export default class Card extends cc.Component {
     updateCardBingCount(){
         if(this.cardInfo){
             this.bingLabel.string = "兵"+this.cardInfo.generalInfo.bingCount;
-            let progess = this.cardInfo.generalInfo.bingCount/3000;
+            let progess = this.cardInfo.generalInfo.bingCount/FightMgr.maxFightBingCount;
             this.bingProgressBar.progress = FunMgr.num2progess(progess);
         }
     }
@@ -130,7 +133,7 @@ export default class Card extends cc.Component {
     updateCardHp(){
         if(this.cardInfo){
             this.hpLabel.string = "血"+this.cardInfo.generalInfo.fightHp;
-            let progess = this.cardInfo.generalInfo.fightHp/1000;
+            let progess = this.cardInfo.generalInfo.fightHp/FightMgr.maxFightHp;
             this.hpProgressBar.progress = FunMgr.num2progess(progess);
         }
     }
