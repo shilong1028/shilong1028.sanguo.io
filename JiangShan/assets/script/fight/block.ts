@@ -196,6 +196,7 @@ export default class Block extends cc.Component {
             let bAttack:boolean = false;
             let bReach:boolean = false;
             let relation_ai = FightMgr.checkBlocksRelation_AI(selBlock, this);  //检测两个砖块之间的AI战斗联系 block_src为检测源，block_tar为周边砖块
+            //cc.log("handleSelBlockMove selBlockId = "+selBlock.blockId+"; this.blockId = "+this.blockId+"; relation_ai = "+relation_ai)
             if(relation_ai == BlockRelation.ReachAndAtk){  //3可移动可攻击
                 bAttack = true;
                 bReach = true;
@@ -205,19 +206,20 @@ export default class Block extends cc.Component {
                 bReach = true;
             }
 
-            if(bAttack && this.cardNode && this.getBlockCampId() != selBlock.getBlockCampId()){   //敌对阵营
+            if(bAttack){
                 this.boundNode.active = true;   //攻击或路径范围
-                this.atkBg.active = true;   //攻击范围显示图片
+                if(this.cardNode && this.getBlockCampId() != selBlock.getBlockCampId()){  //敌对阵营
+                    this.atkBg.active = true;   //攻击范围显示图片
+                }
             }
             if(bReach){
+                this.boundNode.active = true;   //攻击或路径范围
                 if(this.cardNode == null){  //空砖块
-                    this.boundNode.active = true;   //攻击或路径范围
                     this.runBg.active = true;    //路径范围显示图片
                 }else if(this.getBlockCampId() == selBlock.getBlockCampId()){  //主将可以和我方临近部曲交换位置
                     let abs_Row = Math.abs(selBlock.blockRow - this.blockRow);
                     let abs_Col = Math.abs(selBlock.blockColumn - this.blockColumn);
                     if(abs_Row == 1 || abs_Col == 1){
-                        this.boundNode.active = true;   //攻击或路径范围
                         this.runBg.active = true;    //路径范围显示图片
                     }
                 }
@@ -304,6 +306,7 @@ export default class Block extends cc.Component {
                         }else{  //防守方消亡了
                             optBlock.handleUpdateShiqiByKillOther(true);   //因击溃对方部曲而改变士气 
                             this.showBlockCard(optBlock.getBlockCardInfo());  //设置地块上的卡牌模型
+                            optBlock.onRemoveCardNode();
                             //已经在handleBlockCardFightResult处理了消亡
                         }
                     }else{  //攻击方消亡了
@@ -427,16 +430,24 @@ export default class Block extends cc.Component {
         return 0;
     }
 
-    /**检测当前砖块对目标卡牌的建筑关系 1空砖块 3对方空建筑 4我方空建筑 */
+    /**检测当前砖块对目标卡牌的建筑关系 1空砖块 3对方空建筑 4己方空建筑 */
     checkBuildRelationByCard(tarCamp: number){
         if(this.cardNode == null && this.buildNode.active){
-            if(this.blockType == tarCamp){   //地块类型， 0中间地带，1我方范围，2敌方范围
-                return 4;    //4己方空建筑
+            if(tarCamp == FightMgr.myCampId){
+                if(this.blockType == 1){   //地块类型， 0中间地带，1我方范围，2敌方范围
+                    return 4;   
+                }else{
+                    return 3;  
+                }
             }else{
-                return 3;   //3对方空建筑
+                if(this.blockType == 2){   //地块类型， 0中间地带，1我方范围，2敌方范围
+                    return 4;   
+                }else{
+                    return 3;  
+                }
             }
         }
-        return 1;  //1空砖块
+        return 1;  //1空砖块 3对方空建筑 4己方空建筑
     }
 
     /**士气改变通知 */
@@ -538,7 +549,7 @@ export default class Block extends cc.Component {
     /** 处理本砖块和目标砖块的移动，战斗等处理 */
     handleBlockOptWithBlock(tarBlock: Block){
         if(!tarBlock){
-            cc.log("异常，没有目标砖块")
+            cc.log("handleBlockOptWithBlock 异常，没有目标砖块")
             return;
         }
         cc.log("handleBlockOptWithBlock this blockId = "+this.blockId + "; tarBlock blockId = "+tarBlock.blockId);
@@ -564,9 +575,12 @@ export default class Block extends cc.Component {
             cc.log("处理砖块AutoAI结果 对方砖块 异常 ");
             return;
         }
-        NoticeMgr.emit(NoticeType.SelBlockMove, this);  //准备拖动砖块,显示周边移动和攻击范围
-        destBlock.handleBlockOptWithBlock(this);   //处理本砖块和目标砖块的移动，战斗等处理
-        NoticeMgr.emit(NoticeType.SelBlockMove, null);  //取消显示周边移动和攻击范围
+        cc.log("handleBlockAutoAIResult 处理砖块AutoAI结果 this.blockId = "+this.blockId+"; destBlockId = "+destBlock.blockId);
+        this.cardNode.stopAllActions();
+        //this.cardNode.opacity = 120; 
+        this.cardNode.runAction(cc.sequence(cc.fadeTo(1.0, 120), cc.callFunc(()=>{
+            FightMgr.getFightScene().handleBlockAutoAIResultSelOpt(this, destBlock);   //拖动更新选中的卡牌模型的位置
+        })))
     }
 
 }

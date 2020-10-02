@@ -35,6 +35,10 @@ export default class FightScene extends cc.Component {
     myList: List = null;
 
     @property(cc.Label)
+    titleLbl: cc.Label = null; 
+    @property(cc.Label)
+    roundLbl: cc.Label = null; 
+    @property(cc.Label)
     myDesc: cc.Label = null;  //敌方回合/我方回合
     @property(cc.Label)
     enemyDesc: cc.Label = null;  
@@ -89,6 +93,14 @@ export default class FightScene extends cc.Component {
 
         this.updateMySoliderTotalCount();   //更新我方士兵总数
         this.updateEnemySoliderTotalCount();  //更新敌方士兵总数
+
+        if(FightMgr.fightCityInfo){
+            this.titleLbl.string = FightMgr.fightCityInfo.cityCfg.name +"之战"
+        }else{
+            let storyConf = GameMgr.curTaskConf;
+            this.titleLbl.string = storyConf.name;
+        }
+        this.showMyRoundDesc();
     }
     // update (dt) {}
 
@@ -159,12 +171,7 @@ export default class FightScene extends cc.Component {
         this.myDesc.node.active = false;  //敌方回合/我方回合
         this.enemyDesc.node.active = false; 
 
-        this.selectBlock = null;  //选中的将要移动的卡牌地块
-        this.selectTouchOffset = cc.Vec2.ZERO;  //选中砖块首次触摸相对砖块锚点偏移
-        if(this.selCardNode){
-            //this.selCardNode.setPosition(-3000, -3000);
-            this.selCardNode.active = false;
-        }
+        this.removeSelCardNode();   //移除选中时显示的仅供移动的卡牌节点
     }
 
     /**通过指定的索引返回砖块*/
@@ -185,7 +192,7 @@ export default class FightScene extends cc.Component {
     showMyRoundDesc(){
         this.myDesc.node.active = false;  //敌方回合/我方回合
         this.enemyDesc.node.active = false; 
-
+        this.roundLbl.string = `第${FightMgr.fightRoundCount}/${FightMgr.MaxFightRouncCount}回合`; 
         if(FightMgr.bMyRound == true){
             this.myDesc.node.active = true;  //"我方回合"
         }
@@ -195,7 +202,7 @@ export default class FightScene extends cc.Component {
     showEnemyRoundDesc(){
         this.myDesc.node.active = false;   //敌方回合/我方回合
         this.enemyDesc.node.active = false; 
-
+        this.roundLbl.string = `第${FightMgr.fightRoundCount}/${FightMgr.MaxFightRouncCount}回合`; 
         if(FightMgr.bMyRound != true){
             this.enemyDesc.node.active = true;  //"敌方回合"
         }
@@ -225,6 +232,40 @@ export default class FightScene extends cc.Component {
         }
     }
 
+    /** 处理砖块AutoAI结果的选择显示及攻击移动动作 */
+    handleBlockAutoAIResultSelOpt(aiBlock: Block, destBlock: Block){
+        if(!aiBlock || !destBlock){
+            cc.log("处理砖块AutoAI结果的选择显示及攻击移动动作 砖块 异常 ");
+            return;
+        }
+        cc.log("handleBlockAutoAIResultSelOpt 处理砖块AutoAI结果的选择显示及攻击移动动作 aiBlock.blockId = "+aiBlock.blockId+"; destBlock.blockId = "+destBlock.blockId);
+        this.setSelectCard(aiBlock);
+
+        let touchPos = aiBlock.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        this.selectTouchOffset = cc.Vec2.ZERO;  //选中砖块首次触摸相对砖块锚点偏移
+        this.updateSelectCard(touchPos, false);
+
+        let offsetPos = cc.v2(destBlock.node.x - aiBlock.node.x, destBlock.node.y - aiBlock.node.y)
+        cc.log("touchPos = "+touchPos+"; offsetPos = "+offsetPos)
+        this.selCardNode.runAction(cc.sequence(cc.delayTime(1.0), cc.moveBy(1.1, offsetPos).easing(cc.easeBackInOut()), 
+            cc.callFunc(()=>{
+                cc.log("处理砖块AutoAI结果的选择显示及攻击移动动作 攻击")
+                destBlock.handleBlockOptWithBlock(aiBlock);   //处理本砖块和目标砖块的移动，战斗等处理
+                NoticeMgr.emit(NoticeType.SelBlockMove, null);  //取消显示周边移动和攻击范围
+                this.removeSelCardNode();   //移除选中时显示的仅供移动的卡牌节点
+            })))
+    }
+
+    /**移除选中时显示的仅供移动的卡牌节点 */
+    removeSelCardNode(){
+        this.selectBlock = null;  //选中的将要移动的卡牌地块
+        this.selectTouchOffset = cc.Vec2.ZERO;  //选中砖块首次触摸相对砖块锚点偏移
+        if(this.selCardNode){
+            //this.selCardNode.setPosition(-3000, -3000);
+            this.selCardNode.active = false;
+        }
+    }
+
     /**拖动更新选中的卡牌的位置 bStart 是否touchStart触摸 */
     updateSelectCard(touchPos: cc.Vec2, bStart:boolean = false){
         if(this.selectBlock == null){
@@ -246,6 +287,7 @@ export default class FightScene extends cc.Component {
             // this.selCardNode.anchorY = (this.selectBlock.node.height/2 + blockTouchPos.y)/this.selectBlock.node.height;
             // cc.log("blockTouchPos = "+blockTouchPos+"; anchor = "+this.selCardNode.getAnchorPoint())
         }
+        this.selCardNode.stopAllActions();
         let pos = this.node.convertToNodeSpaceAR(touchPos).sub(this.selectTouchOffset);
         //cc.log("touchPos = "+touchPos+"; pos = "+pos+"; this.selectTouchOffset = "+this.selectTouchOffset)
         this.selCardNode.setPosition(pos);
@@ -257,10 +299,6 @@ export default class FightScene extends cc.Component {
         if(this.selCardNode == null || this.selectBlock == null){
             return;
         }
-
-        //this.selCardNode.setPosition(-3000, -3000);
-        this.selCardNode.active = false;
-
         let dropBlock: Block = this.getBlockSlotIndex(touchPos);   //根据位置找到对应的地块
         if(dropBlock == null){   //未找到合适的地块
             cc.log("未找到合适的地块");
@@ -268,9 +306,8 @@ export default class FightScene extends cc.Component {
         }else{
             dropBlock.handleBlockOptWithBlock(this.selectBlock);   //处理本砖块和目标砖块的移动，战斗等处理
         }
-        this.selectBlock = null;   //拖动的地块数据
-        this.selectTouchOffset = cc.Vec2.ZERO;  //选中砖块首次触摸相对砖块锚点偏移
         NoticeMgr.emit(NoticeType.SelBlockMove, null);  //取消显示周边移动和攻击范围
+        this.removeSelCardNode();   //移除选中时显示的仅供移动的卡牌节点
     }
 
     /**根据位置找到对应的地块 */
@@ -286,7 +323,7 @@ export default class FightScene extends cc.Component {
     /** 游戏结束通知 */
     handleGameOverNotice(overState: GameOverState){
         FightMgr.handleGameOverNotice(overState);
-        GameMgr.showLayer(this.pfResult);
+        //GameMgr.showLayer(this.pfResult);
     }
 
     /**更新同步卡牌显示（战斗士气变动）*/
