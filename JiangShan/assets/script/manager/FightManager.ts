@@ -475,11 +475,11 @@ class FightManager {
                 let tempBlock = <Block>otherBlocks[i];
                 let otherBlockCardInfo:CardInfo = tempBlock.getBlockCardInfo();
                 if(otherBlockCardInfo && otherBlockCardInfo.generalInfo){
-                    let atkInfo:AttackResult = this.handleAttackOpt(tarBlockCardInfo, otherBlockCardInfo, false);  //预计算攻击伤害
+                    let atkInfo:AttackResult = this.handleAttackOpt(tarBlockCardInfo, otherBlockCardInfo, tar_block.buildType, tempBlock.buildType, false);  //预计算攻击伤害
                     cc.log("击杀预判结果 atkInfo = "+JSON.stringify(atkInfo))
-                    let killHp = atkInfo.atkHp - otherBlockCardInfo.generalInfo.fightHp;
-                    let killCount = atkInfo.killCount - otherBlockCardInfo.generalInfo.bingCount;
-                    if(killHp >= 0){
+                    let residueHp = atkInfo.atkHp - otherBlockCardInfo.generalInfo.fightHp
+                    let residueBing = atkInfo.killCount - otherBlockCardInfo.generalInfo.bingCount;
+                    if(residueHp >= 0){
                         if(otherBlockCardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
                             cc.log("一击必杀对方主将")
                             let aiResult: EnemyAIResult = new EnemyAIResult(150, tar_block, tempBlock)
@@ -488,11 +488,11 @@ class FightManager {
                             return;
                         }
                         cc.log("一击必杀对方")
-                        let aiWeight = 100 + Math.ceil(killHp/10)
+                        let aiWeight = 100 + Math.ceil(residueHp/10)
                         let aiResult: EnemyAIResult = new EnemyAIResult(aiWeight, tar_block, tempBlock)
                         this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
                         bNextAuto = false;  //是否继续后续大步AI检测
-                    }else if(killCount >= 100){
+                    }else if(residueBing >= 100){
                         if(otherBlockCardInfo.type == CardType.Chief){  //类型，0普通，1主将，2前锋，3后卫
                             cc.log("一击必杀对方主将部曲")
                             let aiResult: EnemyAIResult = new EnemyAIResult(150, tar_block, tempBlock)
@@ -501,14 +501,14 @@ class FightManager {
                             return;
                         }
                         cc.log("一击必杀对方部曲")
-                        let aiWeight = 100 + Math.ceil(killCount/10)
+                        let aiWeight = 100 + Math.ceil(residueBing/10)
                         let aiResult: EnemyAIResult = new EnemyAIResult(aiWeight, tar_block, tempBlock)
                         this.updateEnemyAutoAIResult(aiResult);  //保存下回合前的敌方卡牌AutoAI预处理结果
                         bNextAuto = false;  //是否继续后续大步AI检测
                     }
     
                     //保留最高攻击记录，以供以后随机攻击使用
-                    let sortPar = killHp*0.4 + killCount*0.6;
+                    let sortPar = atkInfo.atkHp*0.4 + atkInfo.killCount*0.6;
                     if(tar_block.buildType != BlockBuildType.Barracks){  //建筑类型  0无，1营寨，2箭楼, 3粮仓)
                         sortPar *= 0.8;
                     }
@@ -724,9 +724,8 @@ class FightManager {
     }
 
     /** 预计算攻击伤害*/
-    handleAttackOpt(atkCard:CardInfo, defCard:CardInfo, bBeatBack:boolean = true): AttackResult{
+    handleAttackOpt(atkCard:CardInfo, defCard:CardInfo, atkBuild:BlockBuildType, defBuild:BlockBuildType, bBeatBack:boolean = true): AttackResult{
         let atkResult = new AttackResult();
-
         if(atkCard == null || defCard == null){
             cc.log("handleAttackOpt 卡牌有误")
             return atkResult;
@@ -761,7 +760,12 @@ class FightManager {
             attackVal = atk_bing.atk * atkCard.generalInfo.bingCount/1000;
         }
         if(this.checkBingRestriction(atkCard.bingzhong, defCard.bingzhong) > 0){  //兵种相克
+            cc.log("兵种相克，攻击力增加20%！")
             attackVal *= 1.2;   //兵种相克，攻击力提升20%
+        }
+        if(atkBuild == BlockBuildType.Watchtower){   //建筑类型  0无，1营寨，2箭楼, 3粮仓
+            cc.log("箭塔辅助，攻击力增加20%！")
+            attackVal *= 1.2;    //箭塔辅助，攻击力增加20%
         }
         let defVal = 0
         if(defCard.generalInfo.generalId.length >= 4){
@@ -769,6 +773,13 @@ class FightManager {
         }else{
             defVal = (def_bing.def * defCard.generalInfo.bingCount/1000)*defSkillScale*(defCard.shiqi/100);
             defVal = defVal * (Math.random()*0.5 + 0.5);  //无武将的部曲防御力在0.5-1.0之间随机
+        }
+        if(defBuild == BlockBuildType.Barracks){   //建筑类型  0无，1营寨，2箭楼, 3粮仓
+            cc.log("营寨辅助，防御力增加30%！")
+            defVal *= 1.3;    //营寨辅助，防御力增加30%
+        }else if(defBuild == BlockBuildType.Granary){   //建筑类型  0无，1营寨，2箭楼, 3粮仓
+            cc.log("粮仓辅助，防御力增加20%！")
+            defVal *= 1.2;    //粮仓辅助，防御力增加20%
         }
 
         if(attackVal <= defVal){
@@ -784,13 +795,13 @@ class FightManager {
             atkResult.killCount = Math.ceil(atkRealVal*1000/def_bing.hp);  //攻击造成的对方部曲士兵死亡数量
         }
 
+        //bBeatBack=true反击多为autoAi计算使用，故反击不计技能、兵种、及建筑加成。
         if(bBeatBack){   //有反击
             //-------------- 防守反击处理 ----------------
-            if(atkCard.bingzhong == SoliderType.gongbing){   //弓兵攻击无反击
-                return atkResult;
-            }
-            if(defCard.generalInfo.generalId.length < 4){   //防守方为纯士兵部曲，无反击
-                return atkResult;
+            if(defCard.bingzhong != SoliderType.gongbing){   //对方不是弓兵部曲
+                if(atkCard.bingzhong == SoliderType.gongbing || defCard.generalInfo.generalId.length < 4){   //弓兵攻击无反击  //防守方为纯士兵部曲，无反击
+                    return atkResult;
+                }
             }
 
             //反击不可触发技能
@@ -840,7 +851,15 @@ class FightManager {
             cc.log("handleAttackAndNoShow 攻击卡牌或防御卡牌数据有误")
             return;
         }
-        let atkInfo:AttackResult = this.handleAttackOpt(atkCardInfo, defCardInfo, true);  //预计算攻击伤害
+
+        let bBeatBack:boolean = true
+        if(defCardInfo.bingzhong != SoliderType.gongbing){   //对方不是弓兵部曲
+            if(atkCardInfo.bingzhong == SoliderType.gongbing || defCardInfo.generalInfo.generalId.length < 4){   //弓兵攻击无反击  //防守方为纯士兵部曲，无反击
+                bBeatBack = false;
+            }
+        }
+
+        let atkInfo:AttackResult = this.handleAttackOpt(atkCardInfo, defCardInfo, atkBlock.buildType, defBlock.buildType, bBeatBack);  //预计算攻击伤害
         cc.log("handleAttackAndNoShow 无展示攻击 atkInfo = "+JSON.stringify(atkInfo))
         //攻击
         let defGeneralHp = defCardInfo.generalInfo.fightHp - atkInfo.atkHp;
@@ -858,16 +877,18 @@ class FightManager {
             defCardInfo.state = CardState.Flee;   //部曲逃逸(部曲士兵数量过少<100)
         }
         defCardInfo.generalInfo.bingCount = defBingCount;
+        atkCardInfo.killCount += atkInfo.killCount; //杀敌（士兵）数量（战斗后会转换为经验）
 
         let atkGeneralMp = atkCardInfo.generalInfo.fightMp - atkInfo.usedMp;
         if(atkGeneralMp < 0){
             atkGeneralMp = 0;
         }
-        defCardInfo.generalInfo.fightMp = atkGeneralMp;
+        atkCardInfo.generalInfo.fightMp = atkGeneralMp;
         
         ROOT_NODE.showTipsText(`攻击：${atkInfo.atkHp}，杀敌：${atkInfo.killCount}`)
 
         //反击
+        //bBeatBack=true反击多为autoAi计算使用，故反击不计技能、兵种、及建筑加成。
         let atkGeneralHp = atkCardInfo.generalInfo.fightHp - atkInfo.beatBackHp;
         if(atkGeneralHp < 0){
             atkGeneralHp = 0;
@@ -883,6 +904,7 @@ class FightManager {
             atkCardInfo.state = CardState.Flee;   //部曲逃逸(部曲士兵数量过少<100)
         }
         atkCardInfo.generalInfo.bingCount = atkBingCount;
+        defCardInfo.killCount += atkInfo.beadBackCount; //杀敌（士兵）数量（战斗后会转换为经验）
 
         ROOT_NODE.showTipsText(`反击：${atkInfo.beatBackHp}，反杀：${atkInfo.beadBackCount}`)
 

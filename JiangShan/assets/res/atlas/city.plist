@@ -7,11 +7,11 @@
             <key>city_blue_big.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{110,2},{177,106}}</string>
+                <string>{{2,218},{177,106}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{177,106}}</string>
                 <key>sourceSize</key>
@@ -20,11 +20,11 @@
             <key>city_blue_normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{370,166},{134,80}}</string>
+                <string>{{181,138},{134,80}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{134,80}}</string>
                 <key>sourceSize</key>
@@ -33,20 +33,20 @@
             <key>city_guanai.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{370,84},{134,80}}</string>
+                <string>{{138,326},{100,80}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{134,80}}</string>
+                <string>{{0,0},{100,80}}</string>
                 <key>sourceSize</key>
-                <string>{134,80}</string>
+                <string>{100,80}</string>
             </dict>
             <key>city_red_big.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,181},{177,106}}</string>
+                <string>{{2,110},{177,106}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -59,7 +59,7 @@
             <key>city_red_normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{370,2},{134,80}}</string>
+                <string>{{2,408},{134,80}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -76,7 +76,7 @@
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{177,106}}</string>
                 <key>sourceSize</key>
@@ -85,7 +85,7 @@
             <key>city_yellow_normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{181,181},{134,80}}</string>
+                <string>{{2,326},{134,80}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,24 +98,24 @@
             <key>city_yizu.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{218,2},{150,150}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{150,150}}</string>
-                <key>sourceSize</key>
-                <string>{150,150}</string>
-            </dict>
-            <key>cityflag_blue.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{426,248},{51,54}}</string>
+                <string>{{181,2},{134,80}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{134,80}}</string>
+                <key>sourceSize</key>
+                <string>{134,80}</string>
+            </dict>
+            <key>cityflag_blue.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{220,386},{51,54}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{51,54}}</string>
                 <key>sourceSize</key>
@@ -124,11 +124,11 @@
             <key>cityflag_green.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{370,248},{51,54}}</string>
+                <string>{{220,330},{51,54}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{51,54}}</string>
                 <key>sourceSize</key>
@@ -137,7 +137,7 @@
             <key>cityflag_red.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{317,210},{51,54}}</string>
+                <string>{{220,274},{51,54}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -150,7 +150,7 @@
             <key>cityflag_yellow.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{317,154},{51,54}}</string>
+                <string>{{138,428},{51,54}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -168,9 +168,9 @@
             <key>realTextureFileName</key>
             <string>city.png</string>
             <key>size</key>
-            <string>{506,301}</string>
+            <string>{273,490}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:fd998e95bee384095f29f547d829e535:e1d7ab29cd042cf673a6d41b47dd1084:39e36121e34d88ee9f5e38e7ee6d9b8e$</string>
+            <string>$TexturePacker:SmartUpdate:927ce9390f4f6118304afdb423cc5702:5a04807eae555c7d633567e840bb476b:39e36121e34d88ee9f5e38e7ee6d9b8e$</string>
             <key>textureFileName</key>
             <string>city.png</string>
         </dict>

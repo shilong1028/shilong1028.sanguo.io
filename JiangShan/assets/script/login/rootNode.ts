@@ -54,7 +54,7 @@ export default class RootNode extends cc.Component {
     generalPool: cc.NodePool =  null;   //武将卡牌缓存池
 
     tipsPool: cc.NodePool =  null;   //缓存池
-    tipsArr: string[] = [];   //提示文本数组
+    tipsArr: any[] = [];   //提示文本数组
     tipsStep: number = 0;   //提示步骤
 
     onLoad () {
@@ -133,8 +133,8 @@ export default class RootNode extends cc.Component {
     }
 
     /**显示提示文本 */
-    showTipsText(tipStr: string){
-        this.tipsArr.push(tipStr);
+    showTipsText(tipStr: string, tipColor: cc.Color = cc.Color.WHITE, tipPos: cc.Vec2 = cc.v2(cc.winSize.width/2, cc.winSize.height/2+100)){
+        this.tipsArr.push({str: tipStr, color: tipColor, pos: tipPos});
 
         if(this.tipsArr.length == 1 && this.tipsStep == 0){
             this.createTipsText();  //创建并提示文本
@@ -148,13 +148,13 @@ export default class RootNode extends cc.Component {
         }else{
             this.tipsStep = 20;
 
-            let tipStr = this.tipsArr.shift();
+            let tipInfo = this.tipsArr.shift();
 
             let tips = this.createTipsFromPool();  //cc.instantiate(this.pfTipsText);
-            tips.y = 700;
-            tips.x = cc.winSize.width/2;
+            tips.y = tipInfo["pos"].y;
+            tips.x = tipInfo["pos"].x;
             cc.director.getScene().addChild(tips, 10000);
-            tips.getComponent(TipsText).initTipsText(tipStr);
+            tips.getComponent(TipsText).initTipsText(tipInfo["str"], tipInfo["color"]);
         }
     }
 

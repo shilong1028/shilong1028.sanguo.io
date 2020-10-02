@@ -43,16 +43,11 @@ export default class TipsText extends cc.Component {
         ROOT_NODE.removeTipsToPool(this.node);   //将砖块回收到缓存池
     }
 
-    initTipsText(tips: string, bRichText: boolean=false){
+    /**显示提示内容文本 */
+    initTipsText(tips: string, tipColor: cc.Color = cc.Color.WHITE){
         this.node.stopAllActions();
-        if(bRichText == false){
-            this.tipsLabel.string = tips;
-        }else{   //富文本
-            this.tipsLabel.string = "";
-            let richText = this.tipsLabel.addComponent(cc.RichText);
-            richText.fontSize = 37;
-            richText.string = tips;
-        }
+        this.tipsLabel.node.color = tipColor;
+        this.tipsLabel.string = tips;
         this.node.opacity = 255;   //初始透明
         this.node.runAction(cc.sequence(cc.moveBy(0.5, cc.v2(0, 200)), cc.delayTime(1.0), cc.spawn(cc.fadeOut(0.5), cc.moveBy(0.3, cc.v2(0, 200))), cc.callFunc(function(){
             this.handleRemoveMySelf();
