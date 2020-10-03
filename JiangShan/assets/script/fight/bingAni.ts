@@ -24,15 +24,15 @@ export default class BingAni extends cc.Component {
     onLoad () {
         this.bingAni = this.node.getComponent(cc.Animation);  
 
-        let atkClip = cc.AnimationClip.createWithSpriteFrames(this.atkAtlas.getSpriteFrames(), 18);
-        atkClip.name = "attackAniClip";
-        atkClip.wrapMode = cc.WrapMode.Default;
-        this.bingAni.addClip(atkClip);
-
-        let defClip = cc.AnimationClip.createWithSpriteFrames(this.defAtlas.getSpriteFrames(), 18);
+        let defClip = cc.AnimationClip.createWithSpriteFrames(this.defAtlas.getSpriteFrames(), 6);
         defClip.name = "defaultAniClip";
         defClip.wrapMode = cc.WrapMode.Loop;
         this.bingAni.addClip(defClip);
+
+        let atkClip = cc.AnimationClip.createWithSpriteFrames(this.atkAtlas.getSpriteFrames(), 6);
+        atkClip.name = "attackAniClip";
+        atkClip.wrapMode = cc.WrapMode.Loop;
+        this.bingAni.addClip(atkClip);
 
         // this.bingAni.on("stop", function () {
         //     if(this.oldAniName == "attackAniClip"){
@@ -55,15 +55,21 @@ export default class BingAni extends cc.Component {
      * @param optType  1默认动作，2攻击动作
      */
     changeAniByType(optType: number){
-        if(this.bingAni && this.oldAniName.length > 0){
-            this.bingAni.stop(this.oldAniName);
-        }
-        if(optType == 1){   //默认动画
-            this.oldAniName = "defaultAniClip";
-            this.bingAni.play("defaultAniClip");
-        }else{   //=0为攻击动画
-            this.oldAniName = "attackAniClip";
-            this.bingAni.play("attackAniClip");
+        cc.log("changeAniByType optType = "+optType)
+        if(this.bingAni){
+            if(optType == 1 && this.oldAniName != "defaultAniClip"){   //默认动画
+                if(this.oldAniName.length > 0){
+                    this.bingAni.stop(this.oldAniName);
+                }
+                this.oldAniName = "defaultAniClip";
+                this.bingAni.play("defaultAniClip");
+            }else if(this.oldAniName != "attackAniClip"){   //=0为攻击动画
+                if(this.oldAniName.length > 0){
+                    this.bingAni.stop(this.oldAniName);
+                }
+                this.oldAniName = "attackAniClip";
+                this.bingAni.play("attackAniClip");
+            }
         }
     }
 }

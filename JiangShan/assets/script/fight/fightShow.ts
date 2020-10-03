@@ -1,6 +1,7 @@
 
 import Radar from "../control/Radar";
 import { ROOT_NODE } from "../login/rootNode";
+import { AudioMgr } from "../manager/AudioMgr";
 import { GeneralInfo } from "../manager/ConfigManager";
 import { BlockBuildType, CardInfo, CardState, SoliderType } from "../manager/Enum";
 import { AttackResult, FightMgr } from "../manager/FightManager";
@@ -42,6 +43,11 @@ export default class FightShow extends cc.Component {
     leftDef: cc.Label = null;
     @property(cc.Label)
     rightDef: cc.Label = null;
+
+    @property(cc.Node)
+    leftEffect: cc.Node = null;  
+    @property(cc.Node)
+    rightEffect: cc.Node = null;
     @property(cc.Node)
     leftCardNode: cc.Node = null;   //左侧部曲头像
     @property(cc.Node)
@@ -58,10 +64,8 @@ export default class FightShow extends cc.Component {
     @property(cc.Node)
     solidersNode: cc.Node = null;   //左右四种兵种预制体
 
-    @property(Radar)
-    leftRadar: Radar = null;
-    @property(Radar)
-    rightRadar: Radar = null;
+    @property(cc.Node)
+    closeTIpNode: cc.Node = null;
 
     @property(cc.SpriteAtlas)
     attackAtlas: cc.SpriteAtlas = null;   //攻击序列帧
@@ -79,7 +83,17 @@ export default class FightShow extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        FightMgr.bStopTouch = true;   //是否停止触摸反应
+    }
+
+    //战斗详情界面是隐藏复用的
+    onEnable(){
+        this.solidersNode.active = false;
+        this.closeTIpNode.active = false;
+        FightMgr.bStopTouch = true;   //是否停止触摸反应 
+    }
+
+    onDisable(){
+        this.node.stopAllActions();
     }
 
     start () {
@@ -99,22 +113,39 @@ export default class FightShow extends cc.Component {
         cc.log("initFightShowData(), this.leftCardInfo = "+JSON.stringify(this.leftCardInfo));
         cc.log("initFightShowData(), this.rightCardInfo = "+JSON.stringify(this.rightCardInfo));
 
+        if(this.leftCardInfo.generalInfo.generalId.length < 4){   //无武将
+            this.leftGenNode.active = false;
+        }else{
+            this.leftGenNode.active = true;
+        }
+        if(this.rightCardInfo.generalInfo.generalId.length < 4){   //无武将
+            this.rightGenNode.active = false;
+        }else{
+            this.rightGenNode.active = true;
+        }
+
         this.updateLeftAndRightUI(); //更新左右侧卡牌UI
+        if(this.leftGenNode.active){
+            this.leftGenNode.getComponent(BingAni).changeAniByType(1);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+        }
+        if(this.rightGenNode.active){
+            this.rightGenNode.getComponent(BingAni).changeAniByType(1);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+        }
+        this.showLeftAniUi(1);  //显示主动方(左侧)动画 1默认动作，2攻击动作
+        this.showRightAniUi(1);  //显示被动方（右侧）(被攻击者或被合成吸收者)动画  1默认动作，2攻击动作
 
-        GameMgr.createAtlasAniNode(this.attackAtlas, 18, cc.WrapMode.Default, this.node);
-
-        this.node.runAction(cc.sequence(cc.delayTime(0.1), cc.callFunc(function(){
+        this.node.runAction(cc.sequence(cc.delayTime(1.0), cc.callFunc(function(){
             this.FightAiOpt();   //双方战斗操作过程
         }.bind(this))));
     }
 
     /**显示战斗信息提示 */
     showTipsLable(str: string, col: cc.Color = cc.Color.WHITE, posType: number = 0){
-        let pos = cc.v2(0, 80);
+        let pos = cc.v2(cc.winSize.width/2, cc.winSize.height/2);
         if(posType < 0){  //posType=0 中间位置 -1为左侧将军位置 1为右侧将军位置
-            pos = cc.v2(this.leftGenNode.x + cc.winSize.width/2, 0);
+            pos = cc.v2(cc.winSize.width/2 -100, cc.winSize.height/2);
         }else if(posType > 0){
-            pos = cc.v2(this.rightGenNode.x + cc.winSize.width/2, 0);
+            pos = cc.v2(cc.winSize.width/2 +100, cc.winSize.height/2);
         }
         ROOT_NODE.showTipsText(str, col, pos);
     }
@@ -138,35 +169,6 @@ export default class FightShow extends cc.Component {
         this.rightMp.string = "智力：" + this.rightCardInfo.generalInfo.fightMp;
         this.rightAtk.string = "攻击：" + cardCfg.atk;
         this.rightDef.string = "防御：" + cardCfg.def;
-
-        this.showGeneralAttrRadar(this.leftCardInfo.generalInfo, 1);   //显示武将属性雷达图
-        this.showGeneralAttrRadar(this.leftCardInfo.generalInfo, 2);   //显示武将属性雷达图
-
-        this.leftGenNode.getComponent(BingAni).changeAniByType(1);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
-        this.rightGenNode.getComponent(BingAni).changeAniByType(1);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
-        this.showLeftAniUi(1);  //显示主动方(左侧)动画 1默认动作，2攻击动作
-        this.showRightAniUi(1);  //显示被动方（右侧）(被攻击者或被合成吸收者)动画  1默认动作，2攻击动作
-    }
-    /**显示武将属性雷达图 */
-    showGeneralAttrRadar(info: GeneralInfo, showPos: number=1){
-        let radar = this.leftRadar;
-        if(showPos == 2){
-            radar = this.rightRadar
-        }
-
-        if(radar){
-            let preArr = [1, 1, 1, 1, 1]
-            let attrVal = [0, 0, 0, 0, 0]
-            if(info && info.generalCfg){
-                attrVal = [ info.generalLv, info.generalCfg.hp, 
-                    info.generalCfg.mp, info.generalCfg.atk, info.generalCfg.def
-                ];//等级、血量、智力、攻击、防御
-                preArr = attrVal;   //每种属性，最高值为100
-                preArr[1] = attrVal[1]/10;   //血量最大1000
-
-                radar.changeSidePercent(preArr);
-            }
-        }
     }
     //显示主动方(左侧)动画 1默认动作，2攻击动作
     showLeftAniUi(optType: number){
@@ -220,30 +222,55 @@ export default class FightShow extends cc.Component {
     }
 
     //----------------------- 以下为 战斗逻辑  ------------------------------
+    onCloseBtn(){
+        AudioMgr.playBtnClickEffect();
+
+        if(this.resultCallback){  //战斗结果回调
+            this.resultCallback(this.leftCardInfo, this.rightCardInfo);
+        }
+
+        this.leftSoliderNode.destroyAllChildren();
+        this.rightSoliderNode.destroyAllChildren();
+
+        this.leftBlock= null;  // 主动方(左侧)地块
+        this.rightBlock= null;  //被动方（右侧）地块
+        this.resultCallback = null;
+        this.leftCardInfo = null;
+        this.rightCardInfo = null;
+
+        this.node.active = false;
+    }
 
     //双方战斗操作过程
     FightAiOpt(){
         this.showTipsLable("开始战斗", cc.Color.YELLOW);
-        let stepDelay = 0.5;
-        this.node.runAction(cc.sequence(
-            cc.repeat(cc.sequence(cc.delayTime(stepDelay), cc.callFunc(function(){
+        
+        this.node.runAction(cc.sequence(cc.delayTime(0.5), cc.callFunc(function(){
                 this.leftHitRight();  //左侧攻击右侧（主动方攻击被动方）
-            }.bind(this)), cc.delayTime(stepDelay), cc.callFunc(function(){
+            }.bind(this)), cc.delayTime(1.0), cc.callFunc(function(){
                 this.rightHitLeft();  //右侧攻击左侧（被动方还击主动方）
-            }.bind(this))), 3), 
-        cc.delayTime(0.1), cc.callFunc(function(){
-            if(this.resultCallback){  //战斗结果回调
-                this.resultCallback(this.leftCardInfo, this.rightCardInfo);
-            }
-            this.node.active = false;
+            }.bind(this)),
+        cc.delayTime(1.0), cc.callFunc(function(){
+            this.closeTIpNode.active = true;
+            // cc.log("战斗结束 atkCardInfo = "+JSON.stringify(this.leftCardInfo))
+            // cc.log("战斗结束 defCardInfo = "+JSON.stringify(this.rightCardInfo))
+            this.onCloseBtn();
         }.bind(this))));
     }
 
     //左侧攻击右侧（主动方攻击被动方）
     leftHitRight(){
+        this.showTipsLable("攻击方进攻", cc.Color.YELLOW);
+        GameMgr.createAtlasAniNode(this.attackAtlas, 10, cc.WrapMode.Default, this.rightEffect);
+
+        if(this.leftGenNode.active){
+            this.leftGenNode.getComponent(BingAni).changeAniByType(2);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+        }
+        if(this.rightGenNode.active){
+            this.rightGenNode.getComponent(BingAni).changeAniByType(1);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+        }
         this.showLeftAniUi(2);  //显示主动方(左侧)动画 1默认动作，2攻击动作
         this.showRightAniUi(1);  //显示被动方（右侧）(被攻击者或被合成吸收者)动画  1默认动作，2攻击动作
-        this.showTipsLable("攻击方进攻", cc.Color.YELLOW);
         this.showFightProgress(this.leftCardInfo, this.rightCardInfo, this.leftBlock.buildType, this.rightBlock.buildType);  
         this.updateLeftAndRightUI(); //更新左右侧卡牌UI
     }
@@ -257,9 +284,17 @@ export default class FightShow extends cc.Component {
             }
         }
         if(bBeatBack == true){
-            this.showRightAniUi(2);  //显示被动方（右侧）(被攻击者或被合成吸收者)动画  1默认动作，2攻击动作
-            this.showLeftAniUi(1);  
             this.showTipsLable("防御方反击", cc.Color.YELLOW);
+            GameMgr.createAtlasAniNode(this.attackAtlas, 10, cc.WrapMode.Default, this.leftEffect);
+
+            if(this.leftGenNode.active){
+                this.leftGenNode.getComponent(BingAni).changeAniByType(1);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+            }
+            if(this.rightGenNode.active){
+                this.rightGenNode.getComponent(BingAni).changeAniByType(2);  //1站在左侧，面向右侧, 1默认动作，2攻击动作
+            }
+            this.showLeftAniUi(1); 
+            this.showRightAniUi(2);  //显示被动方（右侧）(被攻击者或被合成吸收者)动画  1默认动作，2攻击动作
             this.showFightProgress(this.rightCardInfo, this.leftCardInfo, this.rightBlock.buildType, this.leftBlock.buildType);
             this.updateLeftAndRightUI(); //更新左右侧卡牌UI
         }

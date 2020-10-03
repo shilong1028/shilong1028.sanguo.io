@@ -213,7 +213,7 @@
       "array": [
         0,
         0,
-        510.0889628290344,
+        382.9968351850393,
         0,
         0,
         0,
@@ -33639,7 +33639,9 @@
     "pfCard": {
       "__uuid__": "b9a6dcd7-37d8-46f0-94c3-21a8dd09b20a"
     },
-    "pfFightShow": null,
+    "pfFightShow": {
+      "__uuid__": "0549ef72-5f3f-492f-87e0-8c716db044fd"
+    },
     "pfHelp": null,
     "pfResult": null,
     "_id": "b8nJ2CjDVGuLHC9M9haxuE"

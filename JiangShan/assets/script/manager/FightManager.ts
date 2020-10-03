@@ -1,5 +1,6 @@
 import Block from "../fight/block";
 import FightScene from "../fight/fightScene";
+import FightShow from "../fight/fightShow";
 import { ROOT_NODE } from "../login/rootNode";
 import { CfgMgr, CityInfo, SkillInfo } from "./ConfigManager";
 import { BlockBuildType, BlockRelation, CardInfo, CardState, CardType, GameOverState, SoliderType } from "./Enum";
@@ -758,6 +759,8 @@ class FightManager {
             attackVal = (atkCard.generalInfo.fightAtk + atk_bing.atk * atkCard.generalInfo.bingCount/1000)*atkSkillScale;
         }else{
             attackVal = atk_bing.atk * atkCard.generalInfo.bingCount/1000;
+            //为了快速战斗，攻击力暂时增加
+            attackVal *= 1.5;
         }
         if(this.checkBingRestriction(atkCard.bingzhong, defCard.bingzhong) > 0){  //兵种相克
             cc.log("兵种相克，攻击力增加20%！")
@@ -767,6 +770,10 @@ class FightManager {
             cc.log("箭塔辅助，攻击力增加20%！")
             attackVal *= 1.2;    //箭塔辅助，攻击力增加20%
         }
+
+        //为了快速战斗，攻击力暂时增加
+        attackVal *= 3;
+
         let defVal = 0
         if(defCard.generalInfo.generalId.length >= 4){
             defVal = (defCard.generalInfo.fightDef + def_bing.def * defCard.generalInfo.bingCount/1000)*defSkillScale*(defCard.shiqi/100);
@@ -813,6 +820,10 @@ class FightManager {
             // if(this.checkBingRestriction(defCard.bingzhong, atkCard.bingzhong) > 0){  //兵种相克
             //     beatBackAtk *= 1.2;   //兵种相克，攻击力提升20%
             // }
+
+            //为了快速战斗，攻击力暂时增加
+            beatBackAtk *= 2;
+
             let beatBackDef = 0;
             if(atkCard.generalInfo.generalId.length >= 4){
                 beatBackDef = (atkCard.generalInfo.fightDef + atk_bing.def * atkCard.generalInfo.bingCount/1000);
@@ -837,10 +848,11 @@ class FightManager {
 
     /**显示战斗详情界面 */
     showFightDetailLayer(atkBlock: Block, defBlock: Block, callback:Function){
-        // let layer = FightMgr.showLayer(FightMgr.getFightScene().pfFightShow);
-        // layer.y += 100;
-        // layer.getComponent(FightShow).initFightShowData(nType, srcBlock, this);
-        this.handleAttackAndNoShow(atkBlock, defBlock, callback);
+        let layer = GameMgr.showLayer(FightMgr.getFightScene().pfFightShow);
+        layer.active = true;   //战斗详情界面是隐藏复用的
+        layer.getComponent(FightShow).initFightShowData(atkBlock, defBlock, callback);
+
+        //this.handleAttackAndNoShow(atkBlock, defBlock, callback);
     }
 
     /**无展示攻击 */
@@ -1008,7 +1020,7 @@ class FightManager {
 
     /**我方回合处理 */
     handleMyRoundOpt(){
-        cc.log("handleMyRoundOpt() 我方回合处理");
+        ROOT_NODE.showTipsText("我方回合");
         this.bMyRound = true;
         this.bStopTouch = false;  //是否停止触摸反应
         this.getFightScene().showMyRoundDesc();
@@ -1016,7 +1028,7 @@ class FightManager {
 
     /**敌方回合处理 */
     handleEnemyRoundOpt(){
-        cc.log("handleEnemyRoundOpt() 敌方回合处理");
+        ROOT_NODE.showTipsText("敌方回合");
         this.bMyRound = false;
         this.getFightScene().showEnemyRoundDesc();
         if(this.EnemyAutoAi == true){
