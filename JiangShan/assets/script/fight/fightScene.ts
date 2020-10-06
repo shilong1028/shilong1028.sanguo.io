@@ -2,12 +2,11 @@ import GeneralCell from "../comui/general";
 import List from "../control/List";
 import { ROOT_NODE } from "../login/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
-import { CardInfo, GameOverState } from "../manager/Enum";
+import { GameOverState } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
 import { MyUserData } from "../manager/MyUserData";
 import { NoticeMgr, NoticeType } from "../manager/NoticeManager";
-import { SDKMgr } from "../manager/SDKManager";
 import Block from "./block";
 import Card from "./card";
 
@@ -76,7 +75,6 @@ export default class FightScene extends cc.Component {
     }
 
     onDestroy(){
-        SDKMgr.removeBannerAd();  
         this.node.targetOff(this);
         NoticeMgr.offAll(this);
     }
@@ -85,7 +83,6 @@ export default class FightScene extends cc.Component {
         if(MyUserData.roleLv <= 3){   //主角小于三级开启战斗帮助说明
             this.onHelpBtn();
         }
-        SDKMgr.createrBannerAd();   //创建Banner
         FightMgr.initGeneralToBlock();  //初始化双方武将初始布局
 
         this.enemyList.numItems = FightMgr.battleEnemyArr.length;
@@ -334,5 +331,26 @@ export default class FightScene extends cc.Component {
             let cardInfo = FightMgr.battleEnemyArr[idx];
         }
     }
+
+    // onRecordBtn(){
+    //     AudioMgr.playEffect("effect/ui_click");
+    //     if(sdkTT.is_recording_video == true){     //录屏中
+    //         sdkTT.stopGameRecord();
+    //     }else{ 
+    //         sdkTT.createGameRecordManager();
+    //     }
+    // }
+    //头条录屏
+    // showRecordSpr(){
+    //     if(SDKMgr.isSDK == true && SDKMgr.TT){
+    //         if(sdkTT.is_recording_video == true){     //录屏中
+    //             this.recordSpr.spriteFrame = this.recordEndFrame;
+    //         }else{ 
+    //             this.recordSpr.spriteFrame = this.recordStartFrame;
+    //         }
+    //     }else{
+    //         this.recordSpr.node.active = false;
+    //     }
+    // }
 
 }

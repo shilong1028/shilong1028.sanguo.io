@@ -3,7 +3,7 @@ import FightScene from "../fight/fightScene";
 import FightShow from "../fight/fightShow";
 import { ROOT_NODE } from "../login/rootNode";
 import { CfgMgr, CityInfo, SkillInfo } from "./ConfigManager";
-import { BlockBuildType, BlockRelation, CardInfo, CardState, CardType, GameOverState, SoliderType } from "./Enum";
+import { AttackResult, BlockBuildType, BlockRelation, CardInfo, CardState, CardType, GameOverState, SoliderType } from "./Enum";
 import { GameMgr } from "./GameManager";
 import { NoticeMgr, NoticeType } from "./NoticeManager";
 
@@ -18,27 +18,6 @@ class EnemyAIResult{
         this.aiWeight = aiWeight;
         this.srcBlock = srcBlock;
         this.destBlock = destBlock;
-    }
-}
-
-//攻击结果结果
-export class AttackResult{
-    atkVal = 0;  //攻击方的净攻击力
-    beatBackVal = 0;  //对方反击的反击攻击力
-    atkHp = 0;   //攻击导致对方损失的武将血量
-    beatBackHp = 0;  //对方还击对攻击方造成的武将损失血量
-    usedMp = 0;  //攻击过程使用技能，使用的智力值
-    killCount = 0;  //攻击造成的对方部曲士兵死亡数量
-    beadBackCount = 0;  //对方还击对攻击方造成的部曲士兵损失量
-
-    constructor(){
-        this.atkVal = 0;
-        this.beatBackVal = 0;
-        this.atkHp = 0;
-        this.beatBackHp = 0;
-        this.usedMp = 0;
-        this.killCount = 0;
-        this.beadBackCount = 0;
     }
 }
 

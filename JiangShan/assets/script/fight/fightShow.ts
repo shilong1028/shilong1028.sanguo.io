@@ -1,10 +1,8 @@
 
-import Radar from "../control/Radar";
 import { ROOT_NODE } from "../login/rootNode";
 import { AudioMgr } from "../manager/AudioMgr";
-import { GeneralInfo } from "../manager/ConfigManager";
-import { BlockBuildType, CardInfo, CardState, SoliderType } from "../manager/Enum";
-import { AttackResult, FightMgr } from "../manager/FightManager";
+import { AttackResult, BlockBuildType, CardInfo, CardState, SoliderType } from "../manager/Enum";
+import { FightMgr } from "../manager/FightManager";
 import { GameMgr } from "../manager/GameManager";
 import BingAni from "./bingAni";
 import Block from "./block";
@@ -76,9 +74,6 @@ export default class FightShow extends cc.Component {
     leftCardInfo: CardInfo = null;  // 主动方(左侧)卡牌信息
     rightCardInfo: CardInfo = null;  //被动方（右侧）卡牌信息
     resultCallback:Function = null;   //战斗结果回调
-
-    bLeftUsedSkill: boolean = false;    //一次对战只能使用一次技能
-    bRightUsedSkill: boolean = false;
 
     // LIFE-CYCLE CALLBACKS:
 

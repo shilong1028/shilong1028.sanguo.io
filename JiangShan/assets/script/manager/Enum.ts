@@ -396,6 +396,153 @@ export class CardInfo{
     }
 }
 
+//攻击结果结果
+export class AttackResult{
+    atkVal = 0;  //攻击方的净攻击力
+    beatBackVal = 0;  //对方反击的反击攻击力
+    atkHp = 0;   //攻击导致对方损失的武将血量
+    beatBackHp = 0;  //对方还击对攻击方造成的武将损失血量
+    usedMp = 0;  //攻击过程使用技能，使用的智力值
+    killCount = 0;  //攻击造成的对方部曲士兵死亡数量
+    beadBackCount = 0;  //对方还击对攻击方造成的部曲士兵损失量
+
+    constructor(){
+        this.atkVal = 0;
+        this.beatBackVal = 0;
+        this.atkHp = 0;
+        this.beatBackHp = 0;
+        this.usedMp = 0;
+        this.killCount = 0;
+        this.beadBackCount = 0;
+    }
+}
+
+
+//----------------------------  以下为弹射战斗相关数据类结构体定义  --------------------------
+
+/**球的状态 */
+export enum BallState {  //(初始--排序）--待机--瞄准--移动发射--飞行--碰撞--下落回收---排序--下一回合待机
+    init = 0, //初始状态
+    readySort = 1,  //等待排序
+    normal = 2,   //待机
+    aim = 3,   //瞄准
+    moveLaunch = 4,   //移动发射
+    fly = 5,  //飞行
+    collider = 6,  //碰撞状态
+    bezierDrop = 7,  //曲线下落
+    verticalDrop = 8,   //垂直下落
+}
+
+/**小球属性类 */
+export class BallInfo{
+    ballId: number = 0;  //小球编号
+    bingCount: number = 0;   //每个小球的兵力
+    //generalInfo: GeneralInfo = null;   //小球相关联的部曲武将数据（用于战斗计算，不可修改）
+
+    constructor(ballId: number, bingCount: number){
+        this.ballId = ballId;
+        this.bingCount = bingCount;
+    };
+}
+
+/**砖块数据 */
+export class BrickInfo{
+    brickId: number = 0;   //砖块ID
+    bingCount: number = 0;   //每个砖块的兵力
+    column: number = 0;  //砖块行列位置
+    row: number = 0;
+    //generalInfo: GeneralInfo = null;   //小球相关联的部曲武将数据（用于战斗计算，不可修改）
+
+    constructor(brickId: number, bingCount: number){
+        this.brickId = brickId;
+        this.bingCount = bingCount;
+    };
+}
+
+/**小球射线路径数据 */
+export class IntersectRay{
+    srcPos: cc.Vec2 = null;   //射线起点
+    oldDir: cc.Vec2 = null;   //射线方向
+    hitType:number = 0;   //  0碰撞，1无碰撞, 2偏转，3穿透, 4砖块死亡通知
+    point: cc.Vec2 = null;    //综合交点（射线末端的新反射起点）
+    newDir: cc.Vec2 = null;  //射线末端的反射新方向
+    nodeIds: number[] = [];   //射线末端碰撞的非移动砖块ID集合
+    itemNodes: cc.Node[] = [];   //射线经过的道具节点集合
+    borderIdxs: number[] = [];  //与游戏边界相交的边界索引集合
+
+    constructor(){
+        this.srcPos = null;
+        this.oldDir = null;
+        this.hitType = 0;
+        this.point = null;
+        this.newDir = null;
+        this.nodeIds = [];
+        this.itemNodes = [];
+        this.borderIdxs = [];
+    }
+
+    clone(){
+        let tempInRay = new IntersectRay();
+        if(this.srcPos){
+            tempInRay.srcPos = this.srcPos.clone();
+        }
+        if(this.oldDir){
+            tempInRay.oldDir = this.oldDir.clone();
+        }
+        tempInRay.hitType = this.hitType;
+        if(this.point){
+            tempInRay.point = this.point.clone();
+        }
+        if(this.newDir){
+            tempInRay.newDir = this.newDir.clone();
+        }
+        for(let i=0; i<this.nodeIds.length; ++i){
+            tempInRay.nodeIds.push(this.nodeIds[i]);
+        }
+        for(let i=0; i<this.itemNodes.length; ++i){
+            tempInRay.itemNodes.push(this.itemNodes[i]);
+        }
+        for(let i=0; i<this.borderIdxs.length; ++i){
+            tempInRay.borderIdxs.push(this.borderIdxs[i]);
+        }
+        return tempInRay;
+    }
+}
+/**射线和单个矩形相交的数据 */
+export class IntersectData{
+    point: cc.Vec2 = null;    //综合交点（射线末端的新反射起点）
+    newDir: cc.Vec2 = null;  //射线末端的反射新方向
+    node: cc.Node = null;   //射线末端碰撞的砖块
+    borderIdx: number = -1;  //与游戏边界相交的边界索引
+    distLen: number = -1;   //相交点和射线起始点的距离
+    bGameBorder:boolean = false;   //是否撞游戏边界墙
+
+    constructor(point:cc.Vec2, newDir:cc.Vec2, node:cc.Node, borderIdx: number, distLen: number){
+        this.point = point;
+        this.newDir = newDir;
+        this.node = node;
+        this.borderIdx = borderIdx;
+        this.distLen = distLen;
+        this.bGameBorder = false;
+    }
+}
+/**射线碰撞临时相交数据 */
+export class TempIntersectData{
+    bIntersected:boolean = false;  //是否相交（边界相交或四角弧度相交）
+    intersectPoint: cc.Vec2 = null;  //相交点
+    broderIdx: number = -1;  //相交点所在的矩形边界索引 0-2分别为三个顶点
+    intersectDist:number = -1;  //相交点和射线起始点的距离
+    bIntersectBorder: boolean = false;  //true边界相交(镜面反射)或者false四角弧度相交(弧度反射)
+    newDir: cc.Vec2 = null;   //相交后的新反射方向 
+    borders: cc.Vec2[] = null;   //砖块顶点集合
+}
+
+
+
+
+
+
+
 //特殊故事节点
 export const SpecialStory = {
     huangjinover: 1022,  //黄巾之乱结束(黄巾叛军占据城池旗帜复原)

@@ -65,6 +65,21 @@ export default class RootNode extends cc.Component {
         }
         //在creator的引擎里面只有根节点才能够被成功的设置为常驻节点，这一点貌似官方文档是没用提到的
         ROOT_NODE = this;
+
+        cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
+        cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
+    }
+
+    /**后台切回前台 */
+    onShow() {
+        cc.log("************* onShow() 后台切回前台 ***********************")
+        cc.game.resume();
+    }
+
+    /**游戏切入后台 */
+    onHide() {
+        cc.log("_____________  onHide()游戏切入后台  _____________________")
+        cc.game.pause();
     }
 
     start () {

@@ -305,9 +305,8 @@ export default class Block extends cc.Component {
                             optBlock.onCardMoveBlock(optBlock);   //复原砖块
                         }else{  //防守方消亡了
                             optBlock.handleUpdateShiqiByKillOther(true);   //因击溃对方部曲而改变士气 
-                            this.showBlockCard(optBlock.getBlockCardInfo());  //设置地块上的卡牌模型
-                            optBlock.onRemoveCardNode();
                             //已经在handleBlockCardFightResult处理了消亡
+                            this.onCardMoveBlock(optBlock);
                         }
                     }else{  //攻击方消亡了
                         if(this.cardNode){  //防守方活着
@@ -357,9 +356,7 @@ export default class Block extends cc.Component {
                         ROOT_NODE.showTipsText("敌方主将阵亡")
                         NoticeMgr.emit(NoticeType.GameOverNotice, GameOverState.EnemyChiefDead);
                     }
-                }else{
-                    this.checkBlockBuildState();  //检测建筑(1营寨，2箭楼, 3粮仓)是否被攻占
-                } 
+                }
             }
         }
     }
