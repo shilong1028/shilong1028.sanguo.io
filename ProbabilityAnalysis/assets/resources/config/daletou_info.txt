@@ -1,0 +1,989 @@
+[20107]
+first = 1
+second = 4
+third = 13
+fourth = 17
+fifth = 28
+sixth = 3
+seventh = 7
+count = 14
+
+[20106]
+first = 2
+second = 3
+third = 11
+fourth = 14
+fifth = 27
+sixth = 4
+seventh = 10
+count = 6
+
+[20105]
+first = 3
+second = 8
+third = 12
+fourth = 13
+fifth = 22
+sixth = 4
+seventh = 12
+count = 4
+
+[20104]
+first = 3
+second = 12
+third = 23
+fourth = 26
+fifth = 30
+sixth = 4
+seventh = 7
+count = 35
+
+[20103]
+first = 7
+second = 12
+third = 13
+fourth = 19
+fifth = 23
+sixth = 2
+seventh = 8
+count = 7
+
+[20102]
+first = 7
+second = 11
+third = 18
+fourth = 20
+fifth = 29
+sixth = 9
+seventh = 12
+count = 2
+
+[20101]
+first = 3
+second = 4
+third = 5
+fourth = 9
+fifth = 34
+sixth = 7
+seventh = 9
+count = 5
+
+[20100]
+first = 4
+second = 5
+third = 8
+fourth = 22
+fifth = 33
+sixth = 7
+seventh = 10
+count = 4
+
+[20099]
+first = 2
+second = 3
+third = 11
+fourth = 15
+fifth = 27
+sixth = 4
+seventh = 12
+count = 7
+
+[20098]
+first = 4
+second = 9
+third = 15
+fourth = 24
+fifth = 35
+sixth = 4
+seventh = 10
+count = 7
+
+[20097]
+first = 5
+second = 25
+third = 27
+fourth = 30
+fifth = 34
+sixth = 6
+seventh = 12
+count = 8
+
+[20096]
+first = 7
+second = 8
+third = 10
+fourth = 25
+fifth = 28
+sixth = 3
+seventh = 11
+count = 3
+
+[20095]
+first = 2
+second = 18
+third = 25
+fourth = 26
+fifth = 32
+sixth = 2
+seventh = 7
+count = 5
+
+[20094]
+first = 4
+second = 6
+third = 7
+fourth = 8
+fifth = 16
+sixth = 2
+seventh = 8
+count = 1
+
+[20093]
+first = 6
+second = 14
+third = 25
+fourth = 27
+fifth = 28
+sixth = 4
+seventh = 11
+count = 1
+
+[20092]
+first = 8
+second = 11
+third = 17
+fourth = 31
+fifth = 35
+sixth = 7
+seventh = 11
+count = 3
+
+[20091]
+first = 12
+second = 16
+third = 20
+fourth = 23
+fifth = 31
+sixth = 5
+seventh = 12
+count = 2
+
+[20090]
+first = 5
+second = 6
+third = 27
+fourth = 28
+fifth = 29
+sixth = 11
+seventh = 12
+count = 18
+
+[20089]
+first = 13
+second = 16
+third = 20
+fourth = 22
+fifth = 27
+sixth = 1
+seventh = 2
+count = 2
+
+[20088]
+first = 2
+second = 7
+third = 23
+fourth = 26
+fifth = 35
+sixth = 1
+seventh = 12
+count = 3
+
+[20087]
+first = 1
+second = 4
+third = 20
+fourth = 23
+fifth = 29
+sixth = 4
+seventh = 8
+count = 2
+
+[20086]
+first = 8
+second = 11
+third = 15
+fourth = 20
+fifth = 28
+sixth = 4
+seventh = 10
+count = 6
+
+[20085]
+first = 3
+second = 4
+third = 11
+fourth = 15
+fifth = 28
+sixth = 2
+seventh = 3
+count = 19
+
+[20084]
+first = 2
+second = 10
+third = 20
+fourth = 24
+fifth = 31
+sixth = 6
+seventh = 12
+count = 6
+
+[20083]
+first = 1
+second = 2
+third = 17
+fourth = 32
+fifth = 34
+sixth = 4
+seventh = 9
+count = 5
+
+[20082]
+first = 2
+second = 11
+third = 12
+fourth = 21
+fifth = 34
+sixth = 4
+seventh = 8
+count = 7
+
+[20081]
+first = 1
+second = 13
+third = 15
+fourth = 32
+fifth = 35
+sixth = 8
+seventh = 10
+count = 2
+
+[20080]
+first = 3
+second = 6
+third = 22
+fourth = 24
+fifth = 25
+sixth = 9
+seventh = 10
+count = 8
+
+[20079]
+first = 4
+second = 16
+third = 24
+fourth = 29
+fifth = 35
+sixth = 2
+seventh = 12
+count = 5
+
+[20078]
+first = 14
+second = 18
+third = 20
+fourth = 28
+fifth = 34
+sixth = 10
+seventh = 11
+count = 2
+
+[20077]
+first = 17
+second = 23
+third = 28
+fourth = 29
+fifth = 32
+sixth = 1
+seventh = 3
+count = 0
+
+[20076]
+first = 1
+second = 8
+third = 18
+fourth = 28
+fifth = 30
+sixth = 10
+seventh = 12
+count = 7
+
+[20075]
+first = 2
+second = 9
+third = 10
+fourth = 21
+fifth = 35
+sixth = 1
+seventh = 7
+count = 4
+
+[20074]
+first = 3
+second = 9
+third = 10
+fourth = 12
+fifth = 21
+sixth = 4
+seventh = 11
+count = 8
+
+[20073]
+first = 4
+second = 10
+third = 12
+fourth = 23
+fifth = 27
+sixth = 8
+seventh = 9
+count = 7
+
+[20072]
+first = 11
+second = 15
+third = 18
+fourth = 20
+fifth = 27
+sixth = 5
+seventh = 6
+count = 22
+
+[20071]
+first = 1
+second = 12
+third = 16
+fourth = 28
+fifth = 33
+sixth = 3
+seventh = 12
+count = 7
+
+[20070]
+first = 1
+second = 22
+third = 30
+fourth = 31
+fifth = 32
+sixth = 4
+seventh = 12
+count = 2
+
+[20069]
+first = 5
+second = 7
+third = 26
+fourth = 30
+fifth = 31
+sixth = 7
+seventh = 10
+count = 3
+
+[20068]
+first = 15
+second = 20
+third = 23
+fourth = 26
+fifth = 33
+sixth = 2
+seventh = 8
+count = 5
+
+[20067]
+first = 1
+second = 8
+third = 14
+fourth = 16
+fifth = 28
+sixth = 4
+seventh = 10
+count = 1
+
+[20066]
+first = 6
+second = 14
+third = 21
+fourth = 34
+fifth = 35
+sixth = 3
+seventh = 10
+count = 4
+
+[20065]
+first = 13
+second = 15
+third = 26
+fourth = 32
+fifth = 33
+sixth = 5
+seventh = 7
+count = 2
+
+[20064]
+first = 5
+second = 10
+third = 23
+fourth = 34
+fifth = 35
+sixth = 1
+seventh = 11
+count = 3
+
+[20063]
+first = 11
+second = 18
+third = 20
+fourth = 21
+fifth = 33
+sixth = 6
+seventh = 7
+count = 3
+
+[20062]
+first = 1
+second = 5
+third = 14
+fourth = 23
+fifth = 31
+sixth = 2
+seventh = 7
+count = 5
+
+[20061]
+first = 7
+second = 8
+third = 12
+fourth = 21
+fifth = 26
+sixth = 1
+seventh = 6
+count = 5
+
+[20060]
+first = 12
+second = 14
+third = 25
+fourth = 34
+fifth = 35
+sixth = 3
+seventh = 12
+count = 7
+
+[20059]
+first = 1
+second = 15
+third = 22
+fourth = 28
+fifth = 32
+sixth = 3
+seventh = 11
+count = 2
+
+[20058]
+first = 1
+second = 15
+third = 19
+fourth = 26
+fifth = 27
+sixth = 5
+seventh = 10
+count = 5
+
+[20057]
+first = 17
+second = 20
+third = 21
+fourth = 22
+fifth = 31
+sixth = 2
+seventh = 8
+count = 2
+
+[20056]
+first = 3
+second = 11
+third = 25
+fourth = 29
+fifth = 34
+sixth = 3
+seventh = 6
+count = 2
+
+[20055]
+first = 3
+second = 4
+third = 12
+fourth = 18
+fifth = 34
+sixth = 10
+seventh = 12
+count = 0
+
+[20054]
+first = 11
+second = 14
+third = 15
+fourth = 19
+fifth = 20
+sixth = 3
+seventh = 7
+count = 8
+
+[20053]
+first = 2
+second = 15
+third = 18
+fourth = 21
+fifth = 27
+sixth = 3
+seventh = 6
+count = 2
+
+[20052]
+first = 9
+second = 11
+third = 26
+fourth = 28
+fifth = 35
+sixth = 6
+seventh = 7
+count = 1
+
+[20051]
+first = 2
+second = 7
+third = 9
+fourth = 19
+fifth = 33
+sixth = 1
+seventh = 7
+count = 3
+
+[20050]
+first = 3
+second = 14
+third = 16
+fourth = 22
+fifth = 34
+sixth = 2
+seventh = 6
+count = 3
+
+[20049]
+first = 3
+second = 11
+third = 15
+fourth = 22
+fifth = 30
+sixth = 8
+seventh = 10
+count = 7
+
+[20048]
+first = 3
+second = 9
+third = 10
+fourth = 15
+fifth = 16
+sixth = 7
+seventh = 9
+count = 6
+
+[20047]
+first = 4
+second = 18
+third = 27
+fourth = 28
+fifth = 30
+sixth = 3
+seventh = 10
+count = 5
+
+[20046]
+first = 15
+second = 24
+third = 27
+fourth = 30
+fifth = 34
+sixth = 4
+seventh = 12
+count = 2
+
+[20045]
+first = 2
+second = 9
+third = 16
+fourth = 23
+fifth = 27
+sixth = 3
+seventh = 8
+count = 56
+
+[20044]
+first = 1
+second = 3
+third = 22
+fourth = 28
+fifth = 30
+sixth = 2
+seventh = 5
+count = 4
+
+[20043]
+first = 12
+second = 13
+third = 17
+fourth = 31
+fifth = 32
+sixth = 1
+seventh = 6
+count = 2
+
+[20042]
+first = 3
+second = 4
+third = 5
+fourth = 11
+fifth = 22
+sixth = 5
+seventh = 6
+count = 73
+
+[20041]
+first = 7
+second = 13
+third = 20
+fourth = 29
+fifth = 34
+sixth = 4
+seventh = 7
+count = 10
+
+[20040]
+first = 2
+second = 17
+third = 20
+fourth = 28
+fifth = 29
+sixth = 1
+seventh = 7
+count = 3
+
+[20039]
+first = 1
+second = 5
+third = 15
+fourth = 22
+fifth = 31
+sixth = 2
+seventh = 9
+count = 2
+
+[20038]
+first = 4
+second = 15
+third = 20
+fourth = 22
+fifth = 24
+sixth = 1
+seventh = 9
+count = 1
+
+[20037]
+first = 1
+second = 4
+third = 10
+fourth = 11
+fifth = 14
+sixth = 2
+seventh = 5
+count = 11
+
+[20036]
+first = 1
+second = 5
+third = 11
+fourth = 12
+fifth = 26
+sixth = 2
+seventh = 7
+count = 6
+
+[20035]
+first = 10
+second = 11
+third = 22
+fourth = 26
+fifth = 28
+sixth = 2
+seventh = 4
+count = 2
+
+[20034]
+first = 11
+second = 13
+third = 20
+fourth = 27
+fifth = 31
+sixth = 2
+seventh = 4
+count = 8
+
+[20033]
+first = 7
+second = 19
+third = 20
+fourth = 31
+fifth = 34
+sixth = 5
+seventh = 8
+count = 6
+
+[20032]
+first = 2
+second = 3
+third = 9
+fourth = 16
+fifth = 32
+sixth = 3
+seventh = 4
+count = 19
+
+[20031]
+first = 1
+second = 2
+third = 5
+fourth = 15
+fifth = 21
+sixth = 4
+seventh = 5
+count = 7
+
+[20030]
+first = 1
+second = 8
+third = 17
+fourth = 27
+fifth = 30
+sixth = 5
+seventh = 6
+count = 6
+
+[20029]
+first = 11
+second = 14
+third = 17
+fourth = 22
+fifth = 30
+sixth = 7
+seventh = 9
+count = 4
+
+[20028]
+first = 4
+second = 5
+third = 28
+fourth = 34
+fifth = 35
+sixth = 1
+seventh = 8
+count = 13
+
+[20027]
+first = 4
+second = 7
+third = 20
+fourth = 25
+fifth = 32
+sixth = 3
+seventh = 9
+count = 6
+
+[20026]
+first = 3
+second = 15
+third = 26
+fourth = 32
+fifth = 34
+sixth = 8
+seventh = 12
+count = 7
+
+[20025]
+first = 2
+second = 14
+third = 21
+fourth = 22
+fifth = 26
+sixth = 5
+seventh = 7
+count = 5
+
+[20024]
+first = 3
+second = 5
+third = 6
+fourth = 24
+fifth = 30
+sixth = 3
+seventh = 7
+count = 4
+
+[20023]
+first = 4
+second = 11
+third = 23
+fourth = 26
+fifth = 30
+sixth = 1
+seventh = 6
+count = 5
+
+[20022]
+first = 4
+second = 14
+third = 20
+fourth = 28
+fifth = 35
+sixth = 2
+seventh = 3
+count = 1
+
+[20021]
+first = 10
+second = 12
+third = 24
+fourth = 31
+fifth = 33
+sixth = 4
+seventh = 9
+count = 9
+
+[20020]
+first = 8
+second = 10
+third = 12
+fourth = 26
+fifth = 32
+sixth = 5
+seventh = 9
+count = 3
+
+[20019]
+first = 1
+second = 12
+third = 22
+fourth = 23
+fifth = 33
+sixth = 1
+seventh = 12
+count = 4
+
+[20018]
+first = 9
+second = 14
+third = 16
+fourth = 24
+fifth = 26
+sixth = 4
+seventh = 12
+count = 0
+
+[20017]
+first = 1
+second = 6
+third = 7
+fourth = 9
+fifth = 10
+sixth = 2
+seventh = 11
+count = 6
+
+[20016]
+first = 4
+second = 8
+third = 19
+fourth = 31
+fifth = 35
+sixth = 1
+seventh = 2
+count = 3
+
+[20015]
+first = 1
+second = 7
+third = 23
+fourth = 24
+fifth = 26
+sixth = 3
+seventh = 7
+count = 2
+
+[20014]
+first = 3
+second = 7
+third = 9
+fourth = 17
+fifth = 21
+sixth = 3
+seventh = 6
+count = 4
+
+[20013]
+first = 1
+second = 4
+third = 5
+fourth = 11
+fifth = 35
+sixth = 3
+seventh = 9
+count = 9
+
+[20012]
+first = 1
+second = 6
+third = 18
+fourth = 32
+fifth = 34
+sixth = 1
+seventh = 3
+count = 2
+
+[20011]
+first = 2
+second = 13
+third = 19
+fourth = 22
+fifth = 23
+sixth = 2
+seventh = 7
+count = 5
+
+[20010]
+first = 1
+second = 8
+third = 13
+fourth = 24
+fifth = 32
+sixth = 2
+seventh = 9
+count = 6
+
+[20009]
+first = 19
+second = 29
+third = 31
+fourth = 34
+fifth = 35
+sixth = 6
+seventh = 10
+count = 6

@@ -202,6 +202,7 @@ export default class List extends cc.Component {
     private renderCallBack: Function = null;
     private destroyCallBack: Function = null;
     private scroll_renderCallBack: Function = null;   //滑动时可见区域Cell做的特殊处理回调
+    private scroll_renderIdxCallBack: Function = null; //反馈滑动修改的所有Item索引集合
     private list_touch_CallBack: Function = null;   
     //选择模式
     @property({
@@ -310,6 +311,13 @@ export default class List extends cc.Component {
     })
     private _numItems: number = 0;
     set numItems(val: number) {
+        this._InitItemNumAndOffsetContent(val)
+    }
+    //设定列表长度，并设定初始界面的直接偏移（相当于jumpTo)。如果不直接设定，可以使用scrollTo滚动到指定Cell
+    public setListItemCountAndOffsetContent(val: number, offset:number=0){
+        this._InitItemNumAndOffsetContent(val, offset)
+    }
+    private _InitItemNumAndOffsetContent(val: number, offset:number=0) {
         let t = this;
         if (!t.checkInited(false))
             return;
@@ -324,6 +332,35 @@ export default class List extends cc.Component {
             t._resizeContent();
             if (t.cyclic) {
                 t._numItems = t._cyclicNum * t._numItems;
+            }
+            if(offset > 0){
+                switch (this._align) {
+                    case cc.Layout.Type.HORIZONTAL:
+                        switch (this._horizontalDir) {
+                            case cc.Layout.HorizontalDirection.LEFT_TO_RIGHT: {
+                                this.content.x -= offset;
+                                break;
+                            }
+                            case cc.Layout.HorizontalDirection.RIGHT_TO_LEFT: {
+                                this.content.x += offset;
+                                break;
+                            }
+                        }
+                        break;
+                    case cc.Layout.Type.VERTICAL: {
+                        switch (this._verticalDir) {
+                            case cc.Layout.VerticalDirection.TOP_TO_BOTTOM: {
+                                this.content.y += offset;
+                                break;
+                            }
+                            case cc.Layout.VerticalDirection.BOTTOM_TO_TOP: {
+                                this.content.y -= offset;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
             }
             t._onScrolling();
             if (!t.frameByFrameRenderNum && t.slideMode == SlideType.PAGE)
@@ -432,8 +469,9 @@ export default class List extends cc.Component {
     setRenderCallBack(callback: Function){
         this.renderCallBack = callback;
     }
-    setScrollRenderCallBack(callback: Function){
+    setScrollRenderCallBack(callback: Function, idxsCallback:Function=null){
         this.scroll_renderCallBack = callback;   //滑动时可见区域Cell做的特殊处理回调
+        this.scroll_renderIdxCallBack = idxsCallback; //反馈滑动修改的所有Item索引集合
     }
     setListTouchCallBack(callback: Function){
         this.list_touch_CallBack = callback;   
@@ -1001,9 +1039,7 @@ export default class List extends cc.Component {
             this.displayItemNum = this.displayData.length;
 
             if(this.scroll_renderCallBack && this.displayItemNum>0){  //滑动时可见区域Cell做的特殊处理回调
-                for (let c = 0; c < this.displayItemNum; c++) {
-                    this._scrollUpdateItem(this.displayData[c]);
-                }
+                this._scrollUpdateAllItem();
             }
             let len: number = this._lastDisplayData.length;
 
@@ -1557,13 +1593,29 @@ export default class List extends cc.Component {
     }
     //滑动时可见区域Cell做的特殊处理回调
     _scrollUpdateItem(data: any) {
+        let itemIdx = -1;
         if(this.scroll_renderCallBack && data){  //滑动时可见区域Cell做的特殊处理回调
             let item: any = this.getItemByListId(data.id);
             if (item) { 
-                this.scroll_renderCallBack(item, data.id % this._actualNumItems);
+                itemIdx = data.id % this._actualNumItems;
+                this.scroll_renderCallBack(item, itemIdx);
             }
         }
+        return itemIdx;
     }
+    _scrollUpdateAllItem() {
+        let itemIdxs:number[] = [];
+        for (let c = 0; c < this.displayItemNum; c++) {
+            let itemIdx = this._scrollUpdateItem(this.displayData[c]);
+            if(itemIdx >= 0){
+                itemIdxs.push(itemIdx)
+            }
+        }
+        if(this.scroll_renderIdxCallBack){  //反馈滑动修改的所有Item索引集合
+            this.scroll_renderIdxCallBack(itemIdxs);
+        }
+    }
+
     /**
      * 创建或更新Item（虚拟列表用）
      * @param {Object} data 数据
@@ -2008,7 +2060,8 @@ export default class List extends cc.Component {
         let viewPos: any = t.content.getPosition();
         viewPos = Math.abs(t._sizeType ? viewPos.y : viewPos.x);
 
-        let comparePos = t._sizeType ? pos.y : pos.x;
+        //let comparePos = t._sizeType ? pos.y : pos.x;
+        let comparePos = t._sizeType ? targetY : targetX;
         let runScroll = Math.abs((t._scrollPos != null ? t._scrollPos : viewPos) - comparePos) > .5;
         // cc.log(runScroll, t._scrollPos, viewPos, comparePos)
 

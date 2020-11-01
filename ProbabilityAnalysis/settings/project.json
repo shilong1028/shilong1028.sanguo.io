@@ -1,0 +1,52 @@
+{
+  "group-list": [
+    "default"
+  ],
+  "collision-matrix": [
+    [
+      true
+    ]
+  ],
+  "excluded-modules": [
+    "Audio",
+    "AudioSource",
+    "Collider",
+    "DragonBones",
+    "MotionStreak",
+    "Native Socket",
+    "Physics",
+    "Spine Skeleton",
+    "StudioComponent",
+    "TiledMap",
+    "3D",
+    "3D Primitive",
+    "3D Physics/cannon.js",
+    "3D Physics/Builtin",
+    "3D Particle",
+    "SafeArea"
+  ],
+  "preview-port": 7456,
+  "design-resolution-width": 1334,
+  "design-resolution-height": 750,
+  "fit-width": true,
+  "fit-height": false,
+  "use-project-simulator-setting": false,
+  "simulator-orientation": false,
+  "use-customize-simulator": true,
+  "simulator-resolution": {
+    "height": 640,
+    "width": 960
+  },
+  "clear-simulator-cache": true,
+  "facebook": {
+    "appID": "",
+    "audience": {
+      "enable": false
+    },
+    "enable": false,
+    "live": {
+      "enable": false
+    }
+  },
+  "start-scene": "5c121f29-21d2-45e1-8b45-7044ad07849f"
+}
