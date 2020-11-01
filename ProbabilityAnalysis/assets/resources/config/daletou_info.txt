@@ -1,3 +1,13 @@
+[20108]
+first = 2
+second = 3
+third = 6
+fourth = 7
+fifth = 33
+sixth = 8
+seventh = 9
+count = 13
+
 [20107]
 first = 1
 second = 4
@@ -976,14 +986,4 @@ fourth = 24
 fifth = 32
 sixth = 2
 seventh = 9
-count = 6
-
-[20009]
-first = 19
-second = 29
-third = 31
-fourth = 34
-fifth = 35
-sixth = 6
-seventh = 10
 count = 6
