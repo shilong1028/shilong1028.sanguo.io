@@ -33,6 +33,7 @@ export default class MainScene extends cc.Component {
     }
 
     start () {
+		this.handleShuangseqiuAnalysis();
     }
 
 
@@ -186,13 +187,22 @@ export default class MainScene extends cc.Component {
 		for(let idx=0; idx<this.redNum; idx++){
             if(this.totalBlueArr[idx]){   //总的蓝球分布数据
                 this.totalBlueArr[idx].adjustAnalysis(this.allDataCount, this.offsetCount, this.blueNum);   //根据总数据和短期数据进行数据矫正
-				this.totalBlueArr[idx].chanceAdjust = this.totalBlueArr[idx].probability;   //累计概率%
+				if(this.analysisType == AnalysisType.daletou){
+					this.totalBlueArr[idx].adjustAnalysisByTotal(2/this.blueNum*this.allDataCount);
+				}else{
+					this.totalBlueArr[idx].adjustAnalysisByTotal(1/this.blueNum*this.allDataCount);
+				}
             }
             if(this.totalRedArr[idx]){   //总的红球分布数据
                 this.totalRedArr[idx].adjustAnalysis(this.allDataCount, this.offsetCount, this.redNum);   //根据总数据和短期数据进行数据矫正
-				this.totalRedArr[idx].chanceAdjust = this.totalRedArr[idx].probability;   //累计概率%
+				if(this.analysisType == AnalysisType.daletou){
+					this.totalRedArr[idx].adjustAnalysisByTotal(5/this.redNum*this.allDataCount);
+				}else{
+					this.totalRedArr[idx].adjustAnalysisByTotal(6/this.redNum*this.allDataCount);
+				}
             }
         } 
+		
 		for(let cow=0; cow<this.cowNum; cow++){
             if(this.cowAnalysis[cow]){   //列分布数据
                 if(cow >= this.blueIdx){  //篮球
@@ -203,10 +213,9 @@ export default class MainScene extends cc.Component {
             }
         } 
 
-		
-		
 		cc.log("根据最近10期后继进行概率修正")
-		for(let idx=this.allDataCount-11; idx<this.allDataCount-1; idx++){
+		let adjustCount = 0;   //修正次数
+		for(let idx=this.allDataCount-51; idx<this.allDataCount-1; idx++){
 			lastConf1 = null;  //上一期数据
 			lastConf2 = null;  //上二期数据
 			lastConf3 = null;  //上三期数据
@@ -234,12 +243,13 @@ export default class MainScene extends cc.Component {
 					conf.first, conf.second, conf.third, conf.fourth, conf.fifth, conf.sixth, conf.seventh
 				];
 			}
+			adjustCount++;
 			for(let cow=0; cow<this.cowNum; cow++){
 				if(this.cowAnalysis[cow]){   //列分布数据
 					if(cow >= this.blueIdx){  //篮球
-						this.cowAnalysis[cow].adjustCowAnalysisByLast(this.blueNum, lotteryConf[cow], lastConf1[cow], lastConf2[cow], lastConf3[cow]);   //根据总数据和短期数据进行数据矫正
+						this.cowAnalysis[cow].adjustCowAnalysisByLast(this.blueNum, lotteryConf[cow], adjustCount, lastConf1[cow], lastConf2[cow], lastConf3[cow]);   //根据总数据和短期数据进行数据矫正
 					}else{
-						this.cowAnalysis[cow].adjustCowAnalysisByLast(this.redNum, lotteryConf[cow], lastConf1[cow], lastConf2[cow], lastConf3[cow]);   //根据总数据和短期数据进行数据矫正
+						this.cowAnalysis[cow].adjustCowAnalysisByLast(this.redNum, lotteryConf[cow], adjustCount, lastConf1[cow], lastConf2[cow], lastConf3[cow]);   //根据总数据和短期数据进行数据矫正
 					}
 				}
 			} 
@@ -265,15 +275,15 @@ export default class MainScene extends cc.Component {
 		}
         
         cc.log("推荐")
-        this.recommendReds = [];   //推荐红球
+		this.recommendReds = [];   //推荐红球
         let recommendReds:ball_info[] = []
         for(let i=0; i<this.redNum; i++){  
             recommendReds.push(this.totalRedArr[i])
         }
         recommendReds.sort((a:ball_info, b:ball_info)=>{
-            return b.chanceAdjust - a.chanceAdjust;
+            return b.recommendChance - a.recommendChance;
         })
-        for(let i=0; i<10; i++){
+        for(let i=0; i<15; i++){
             this.recommendReds.push(new recommend_ball_info(recommendReds[i]));
         }
         
@@ -283,12 +293,12 @@ export default class MainScene extends cc.Component {
             recommendBlues.push(this.totalBlueArr[i])
         }
         recommendBlues.sort((a:ball_info, b:ball_info)=>{
-            return b.chanceAdjust - a.chanceAdjust;
+            return b.recommendChance - a.recommendChance;
         })
-        for(let i=0; i<5; i++){
+        for(let i=0; i<8; i++){
             this.recommendBlues.push(new recommend_ball_info(recommendBlues[i]));
         }
-
+		
         this.recommendCows = [];  //推荐列
         for(let cow=0; cow<this.cowNum; cow++){
             let recommendBalls:recommend_ball_info[] = []
@@ -300,11 +310,11 @@ export default class MainScene extends cc.Component {
                 }
             }
             this.recommendCows.push(recommendBalls)
-			cc.log("推荐的列 cow = "+(cow+1))
+			cc.log("推荐的列 cow = "+(cow+1)+"; boundary = "+this.cowAnalysis[cow].boundary)
 			cc.log("recommendBalls = "+JSON.stringify(recommendBalls))
         }
-        //cc.log("推荐的红球 this.recommendReds = "+JSON.stringify(this.recommendReds))
-        //cc.log("推荐的篮球 this.recommendBlues = "+JSON.stringify(this.recommendBlues))
+        cc.log("推荐的红球 this.recommendReds = "+JSON.stringify(this.recommendReds))
+        cc.log("推荐的篮球 this.recommendBlues = "+JSON.stringify(this.recommendBlues))
 
 
     }

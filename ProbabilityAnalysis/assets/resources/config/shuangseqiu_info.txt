@@ -1,3 +1,23 @@
+[20109]
+first = 6
+second = 13
+third = 16
+fourth = 20
+fifth = 23
+sixth = 32
+seventh = 13
+count = 23
+
+[20108]
+first = 10
+second = 12
+third = 15
+fourth = 17
+fifth = 23
+sixth = 32
+seventh = 5
+count = 18
+
 [20107]
 first = 3
 second = 9
@@ -6,7 +26,7 @@ fourth = 24
 fifth = 25
 sixth = 28
 seventh = 16
-count = 0
+count = 5
 
 [20106]
 first = 2
@@ -16,7 +36,7 @@ fourth = 15
 fifth = 18
 sixth = 28
 seventh = 10
-count = 0
+count = 14
 
 [20105]
 first = 6
@@ -26,7 +46,7 @@ fourth = 20
 fifth = 22
 sixth = 24
 seventh = 1
-count = 0
+count = 6
 
 [20104]
 first = 4
@@ -36,7 +56,7 @@ fourth = 16
 fifth = 27
 sixth = 29
 seventh = 9
-count = 0
+count = 9
 
 [20103]
 first = 4
@@ -46,7 +66,7 @@ fourth = 22
 fifth = 28
 sixth = 32
 seventh = 8
-count = 0
+count = 13
 
 [20102]
 first = 9
@@ -56,7 +76,7 @@ fourth = 25
 fifth = 26
 sixth = 29
 seventh = 8
-count = 0
+count = 73
 
 [20101]
 first = 10
@@ -66,7 +86,7 @@ fourth = 25
 fifth = 28
 sixth = 30
 seventh = 15
-count = 0
+count = 7
 
 [20100]
 first = 1
@@ -76,7 +96,7 @@ fourth = 16
 fifth = 20
 sixth = 23
 seventh = 7
-count = 0
+count = 9
 
 [20099]
 first = 5
@@ -86,7 +106,7 @@ fourth = 12
 fifth = 15
 sixth = 30
 seventh = 12
-count = 0
+count = 7
 
 [20098]
 first = 6
@@ -96,7 +116,7 @@ fourth = 22
 fifth = 25
 sixth = 33
 seventh = 2
-count = 0
+count = 7
 
 [20097]
 first = 2
@@ -106,7 +126,7 @@ fourth = 25
 fifth = 26
 sixth = 30
 seventh = 10
-count = 0
+count = 22
 
 [20096]
 first = 1
@@ -116,7 +136,7 @@ fourth = 26
 fifth = 27
 sixth = 32
 seventh = 15
-count = 0
+count = 8
 
 [20095]
 first = 3
@@ -126,7 +146,7 @@ fourth = 17
 fifth = 20
 sixth = 26
 seventh = 2
-count = 0
+count = 6
 
 [20094]
 first = 10
@@ -136,7 +156,7 @@ fourth = 27
 fifth = 29
 sixth = 31
 seventh = 8
-count = 0
+count = 2
 
 [20093]
 first = 4
@@ -146,7 +166,7 @@ fourth = 13
 fifth = 15
 sixth = 19
 seventh = 15
-count = 0
+count = 4
 
 [20092]
 first = 1
@@ -156,7 +176,7 @@ fourth = 18
 fifth = 22
 sixth = 24
 seventh = 3
-count = 0
+count = 6
 
 [20091]
 first = 1
@@ -166,7 +186,7 @@ fourth = 12
 fifth = 16
 sixth = 19
 seventh = 16
-count = 0
+count = 11
 
 [20090]
 first = 2
@@ -176,7 +196,7 @@ fourth = 26
 fifth = 31
 sixth = 32
 seventh = 6
-count = 0
+count = 6
 
 [20089]
 first = 2
@@ -186,7 +206,7 @@ fourth = 21
 fifth = 29
 sixth = 30
 seventh = 10
-count = 0
+count = 11
 
 [20088]
 first = 1
@@ -196,7 +216,7 @@ fourth = 26
 fifth = 29
 sixth = 30
 seventh = 12
-count = 0
+count = 14
 
 [20087]
 first = 11
@@ -206,7 +226,7 @@ fourth = 23
 fifth = 25
 sixth = 33
 seventh = 10
-count = 0
+count = 5
 
 [20086]
 first = 2
@@ -216,7 +236,7 @@ fourth = 15
 fifth = 24
 sixth = 27
 seventh = 6
-count = 0
+count = 7
 
 [20085]
 first = 1
@@ -226,7 +246,7 @@ fourth = 9
 fifth = 19
 sixth = 24
 seventh = 16
-count = 0
+count = 3
 
 [20084]
 first = 3
@@ -236,7 +256,7 @@ fourth = 17
 fifth = 23
 sixth = 30
 seventh = 7
-count = 0
+count = 15
 
 [20083]
 first = 1
@@ -246,7 +266,7 @@ fourth = 26
 fifth = 30
 sixth = 31
 seventh = 12
-count = 0
+count = 7
 
 [20082]
 first = 2
@@ -256,7 +276,7 @@ fourth = 17
 fifth = 21
 sixth = 30
 seventh = 9
-count = 0
+count = 22
 
 [20081]
 first = 1
@@ -266,7 +286,7 @@ fourth = 14
 fifth = 27
 sixth = 33
 seventh = 15
-count = 0
+count = 11
 
 [20080]
 first = 14
@@ -276,7 +296,7 @@ fourth = 22
 fifth = 31
 sixth = 33
 seventh = 1
-count = 0
+count = 2
 
 [20079]
 first = 5
@@ -286,7 +306,7 @@ fourth = 21
 fifth = 22
 sixth = 29
 seventh = 14
-count = 0
+count = 6
 
 [20078]
 first = 3
@@ -296,7 +316,7 @@ fourth = 16
 fifth = 21
 sixth = 32
 seventh = 4
-count = 0
+count = 1
 
 [20077]
 first = 3
@@ -306,7 +326,7 @@ fourth = 21
 fifth = 25
 sixth = 27
 seventh = 12
-count = 0
+count = 27
 
 [20076]
 first = 10
@@ -316,7 +336,7 @@ fourth = 18
 fifth = 20
 sixth = 27
 seventh = 6
-count = 0
+count = 8
 
 [20075]
 first = 3
@@ -326,7 +346,7 @@ fourth = 20
 fifth = 24
 sixth = 30
 seventh = 16
-count = 0
+count = 1
 
 [20074]
 first = 4
@@ -336,7 +356,7 @@ fourth = 13
 fifth = 19
 sixth = 33
 seventh = 12
-count = 0
+count = 5
 
 [20073]
 first = 5
@@ -346,7 +366,7 @@ fourth = 13
 fifth = 27
 sixth = 29
 seventh = 3
-count = 0
+count = 8
 
 [20072]
 first = 6
@@ -356,7 +376,7 @@ fourth = 15
 fifth = 17
 sixth = 26
 seventh = 4
-count = 0
+count = 7
 
 [20071]
 first = 9
@@ -366,7 +386,7 @@ fourth = 13
 fifth = 22
 sixth = 23
 seventh = 8
-count = 0
+count = 12
 
 [20070]
 first = 1
@@ -376,7 +396,7 @@ fourth = 6
 fifth = 19
 sixth = 21
 seventh = 15
-count = 0
+count = 23
 
 [20069]
 first = 3
@@ -386,7 +406,7 @@ fourth = 13
 fifth = 18
 sixth = 26
 seventh = 4
-count = 0
+count = 7
 
 [20068]
 first = 12
@@ -396,7 +416,7 @@ fourth = 26
 fifth = 27
 sixth = 32
 seventh = 10
-count = 0
+count = 17
 
 [20067]
 first = 4
@@ -406,7 +426,7 @@ fourth = 23
 fifth = 27
 sixth = 30
 seventh = 8
-count = 0
+count = 10
 
 [20066]
 first = 2
@@ -416,7 +436,7 @@ fourth = 17
 fifth = 26
 sixth = 28
 seventh = 7
-count = 0
+count = 15
 
 [20065]
 first = 9
@@ -426,7 +446,7 @@ fourth = 21
 fifth = 23
 sixth = 26
 seventh = 8
-count = 0
+count = 5
 
 [20064]
 first = 1
@@ -436,7 +456,7 @@ fourth = 21
 fifth = 27
 sixth = 32
 seventh = 1
-count = 0
+count = 1
 
 [20063]
 first = 12
@@ -446,7 +466,7 @@ fourth = 22
 fifth = 29
 sixth = 32
 seventh = 14
-count = 0
+count = 3
 
 [20062]
 first = 10
@@ -456,7 +476,7 @@ fourth = 22
 fifth = 26
 sixth = 27
 seventh = 5
-count = 0
+count = 5
 
 [20061]
 first = 8
@@ -466,7 +486,7 @@ fourth = 26
 fifth = 27
 sixth = 31
 seventh = 4
-count = 0
+count = 1
 
 [20060]
 first = 5
@@ -476,7 +496,7 @@ fourth = 20
 fifth = 24
 sixth = 30
 seventh = 8
-count = 0
+count = 38
 
 [20059]
 first = 2
@@ -486,7 +506,7 @@ fourth = 17
 fifth = 22
 sixth = 25
 seventh = 14
-count = 0
+count = 4
 
 [20058]
 first = 1
@@ -496,7 +516,7 @@ fourth = 12
 fifth = 19
 sixth = 26
 seventh = 7
-count = 0
+count = 18
 
 [20057]
 first = 9
@@ -506,7 +526,7 @@ fourth = 23
 fifth = 26
 sixth = 32
 seventh = 3
-count = 0
+count = 3
 
 [20056]
 first = 2
@@ -516,7 +536,7 @@ fourth = 12
 fifth = 26
 sixth = 31
 seventh = 14
-count = 0
+count = 17
 
 [20055]
 first = 1
@@ -526,7 +546,7 @@ fourth = 23
 fifth = 28
 sixth = 30
 seventh = 12
-count = 0
+count = 14
 
 [20054]
 first = 3
@@ -536,7 +556,7 @@ fourth = 25
 fifth = 26
 sixth = 31
 seventh = 2
-count = 0
+count = 11
 
 [20053]
 first = 2
@@ -546,7 +566,7 @@ fourth = 16
 fifth = 32
 sixth = 33
 seventh = 1
-count = 0
+count = 19
 
 [20052]
 first = 2
@@ -556,7 +576,7 @@ fourth = 29
 fifth = 32
 sixth = 33
 seventh = 15
-count = 0
+count = 2
 
 [20051]
 first = 3
@@ -566,7 +586,7 @@ fourth = 11
 fifth = 19
 sixth = 28
 seventh = 8
-count = 0
+count = 23
 
 [20050]
 first = 4
@@ -576,7 +596,7 @@ fourth = 20
 fifth = 32
 sixth = 33
 seventh = 15
-count = 0
+count = 5
 
 [20049]
 first = 1
@@ -586,7 +606,7 @@ fourth = 12
 fifth = 18
 sixth = 22
 seventh = 4
-count = 0
+count = 7
 
 [20048]
 first = 12
@@ -596,7 +616,7 @@ fourth = 23
 fifth = 30
 sixth = 32
 seventh = 2
-count = 0
+count = 6
 
 [20047]
 first = 4
@@ -606,7 +626,7 @@ fourth = 19
 fifth = 28
 sixth = 32
 seventh = 1
-count = 0
+count = 10
 
 [20046]
 first = 13
@@ -616,7 +636,7 @@ fourth = 26
 fifth = 27
 sixth = 32
 seventh = 8
-count = 0
+count = 7
 
 [20045]
 first = 2
@@ -626,7 +646,7 @@ fourth = 21
 fifth = 22
 sixth = 33
 seventh = 16
-count = 0
+count = 16
 
 [20044]
 first = 7
@@ -636,7 +656,7 @@ fourth = 17
 fifth = 19
 sixth = 24
 seventh = 7
-count = 0
+count = 10
 
 [20043]
 first = 1
@@ -646,7 +666,7 @@ fourth = 25
 fifth = 27
 sixth = 30
 seventh = 7
-count = 0
+count = 5
 
 [20042]
 first = 2
@@ -656,7 +676,7 @@ fourth = 11
 fifth = 14
 sixth = 31
 seventh = 3
-count = 0
+count = 5
 
 [20041]
 first = 6
@@ -666,7 +686,7 @@ fourth = 22
 fifth = 24
 sixth = 25
 seventh = 13
-count = 0
+count = 2
 
 [20040]
 first = 1
@@ -676,7 +696,7 @@ fourth = 16
 fifth = 19
 sixth = 21
 seventh = 4
-count = 0
+count = 5
 
 [20039]
 first = 2
@@ -686,7 +706,7 @@ fourth = 11
 fifth = 16
 sixth = 29
 seventh = 2
-count = 0
+count = 9
 
 [20038]
 first = 1
@@ -696,7 +716,7 @@ fourth = 18
 fifth = 23
 sixth = 24
 seventh = 15
-count = 0
+count = 15
 
 [20037]
 first = 1
@@ -706,7 +726,7 @@ fourth = 13
 fifth = 17
 sixth = 24
 seventh = 15
-count = 0
+count = 6
 
 [20036]
 first = 7
@@ -716,7 +736,7 @@ fourth = 22
 fifth = 24
 sixth = 32
 seventh = 6
-count = 0
+count = 3
 
 [20035]
 first = 10
@@ -726,7 +746,7 @@ fourth = 25
 fifth = 28
 sixth = 33
 seventh = 11
-count = 0
+count = 4
 
 [20034]
 first = 2
@@ -736,7 +756,7 @@ fourth = 16
 fifth = 26
 sixth = 32
 seventh = 3
-count = 0
+count = 11
 
 [20033]
 first = 7
@@ -746,7 +766,7 @@ fourth = 21
 fifth = 31
 sixth = 32
 seventh = 1
-count = 0
+count = 4
 
 [20032]
 first = 3
@@ -756,7 +776,7 @@ fourth = 14
 fifth = 15
 sixth = 26
 seventh = 13
-count = 0
+count = 11
 
 [20031]
 first = 2
@@ -766,7 +786,7 @@ fourth = 15
 fifth = 16
 sixth = 27
 seventh = 9
-count = 0
+count = 14
 
 [20030]
 first = 17
@@ -776,7 +796,7 @@ fourth = 29
 fifth = 30
 sixth = 32
 seventh = 3
-count = 0
+count = 1
 
 [20029]
 first = 1
@@ -786,7 +806,7 @@ fourth = 20
 fifth = 30
 sixth = 32
 seventh = 5
-count = 0
+count = 7
 
 [20028]
 first = 5
@@ -796,7 +816,7 @@ fourth = 18
 fifth = 26
 sixth = 32
 seventh = 8
-count = 0
+count = 7
 
 [20027]
 first = 12
@@ -806,7 +826,7 @@ fourth = 24
 fifth = 25
 sixth = 28
 seventh = 6
-count = 0
+count = 3
 
 [20026]
 first = 1
@@ -816,7 +836,7 @@ fourth = 18
 fifth = 19
 sixth = 31
 seventh = 6
-count = 0
+count = 3
 
 [20025]
 first = 1
@@ -826,7 +846,7 @@ fourth = 15
 fifth = 20
 sixth = 29
 seventh = 2
-count = 0
+count = 4
 
 [20024]
 first = 10
@@ -836,7 +856,7 @@ fourth = 28
 fifth = 29
 sixth = 31
 seventh = 8
-count = 0
+count = 8
 
 [20023]
 first = 4
@@ -846,7 +866,7 @@ fourth = 21
 fifth = 30
 sixth = 33
 seventh = 8
-count = 0
+count = 6
 
 [20022]
 first = 2
@@ -856,7 +876,7 @@ fourth = 22
 fifth = 25
 sixth = 30
 seventh = 2
-count = 0
+count = 8
 
 [20021]
 first = 2
@@ -866,7 +886,7 @@ fourth = 16
 fifth = 27
 sixth = 31
 seventh = 7
-count = 0
+count = 5
 
 [20020]
 first = 1
@@ -876,7 +896,7 @@ fourth = 13
 fifth = 15
 sixth = 22
 seventh = 14
-count = 0
+count = 4
 
 [20019]
 first = 15
@@ -886,7 +906,7 @@ fourth = 28
 fifth = 30
 sixth = 33
 seventh = 3
-count = 0
+count = 7
 
 [20018]
 first = 5
@@ -896,7 +916,7 @@ fourth = 11
 fifth = 17
 sixth = 22
 seventh = 13
-count = 0
+count = 8
 
 [20017]
 first = 2
@@ -906,7 +926,7 @@ fourth = 15
 fifth = 20
 sixth = 27
 seventh = 4
-count = 0
+count = 15
 
 [20016]
 first = 5
@@ -916,7 +936,7 @@ fourth = 17
 fifth = 24
 sixth = 27
 seventh = 7
-count = 0
+count = 12
 
 [20015]
 first = 8
@@ -926,7 +946,7 @@ fourth = 24
 fifth = 30
 sixth = 33
 seventh = 1
-count = 0
+count = 1
 
 [20014]
 first = 2
@@ -936,7 +956,7 @@ fourth = 10
 fifth = 12
 sixth = 16
 seventh = 7
-count = 0
+count = 5
 
 [20013]
 first = 2
@@ -946,7 +966,7 @@ fourth = 20
 fifth = 21
 sixth = 30
 seventh = 14
-count = 0
+count = 4
 
 [20012]
 first = 4
@@ -956,7 +976,7 @@ fourth = 23
 fifth = 26
 sixth = 31
 seventh = 9
-count = 0
+count = 3
 
 [20011]
 first = 4
@@ -966,7 +986,7 @@ fourth = 17
 fifth = 18
 sixth = 29
 seventh = 1
-count = 0
+count = 8
 
 [20010]
 first = 11
@@ -976,7 +996,7 @@ fourth = 27
 fifth = 31
 sixth = 32
 seventh = 9
-count = 0
+count = 2
 
 [20009]
 first = 3
@@ -986,7 +1006,7 @@ fourth = 14
 fifth = 19
 sixth = 26
 seventh = 12
-count = 0
+count = 16
 
 [20008]
 first = 1
@@ -1046,24 +1066,4 @@ fourth = 29
 fifth = 30
 sixth = 32
 seventh = 3
-count = 0
-
-[20002]
-first = 4
-second = 9
-third = 14
-fourth = 15
-fifth = 16
-sixth = 29
-seventh = 11
-count = 0
-
-[20001]
-first = 2
-second = 15
-third = 23
-fourth = 26
-fifth = 29
-sixth = 30
-seventh = 2
 count = 0

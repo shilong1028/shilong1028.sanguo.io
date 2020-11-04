@@ -24,6 +24,7 @@ export class recommend_ball_info{
 	public probability: string = "";  //累计概率%
     public chanceShort: string = "";  //短期概率%
     public chanceAdjust: string = "";   //概率矫正%
+	public recommendChance: number = 0;  //推荐概率%
 
     constructor(ball:ball_info){
         this.ballId = ball.ballId;
@@ -32,6 +33,7 @@ export class recommend_ball_info{
 		this.probability = ball.probability.toFixed(5);  //累计概率%
         this.chanceShort = ball.chanceShort.toFixed(5);  //短期概率%
         this.chanceAdjust = ball.chanceAdjust.toFixed(5);   //概率矫正%
+		this.recommendChance = ball.recommendChance.toFixed(5);   //推荐概率%
     }
 }
 
@@ -44,6 +46,7 @@ export class ball_info{
     public chanceShort: number = 0;  //短期概率%
     public chanceAdjust: number = 0;   //概率矫正%
 	public probability: number = 0;  //累计概率%
+	public recommendChance: number = 0;  //推荐概率%
 
     //以下列统计用到
     public spacesArr: number[] = [];  //间隔再现数组
@@ -59,44 +62,91 @@ export class ball_info{
 
     //根据总数据和短期数据进行数据矫正
     public adjustAnalysis(allCount:number, offsetCount:number, valNum:number){
-        let averageLong = this.ballCount/allCount;
-        let averagePeriod = this.ballPeriodNum/(allCount-offsetCount);
-		let averageShort = (this.ballCount - this.ballPeriodNum)/offsetCount; 
-        this.chanceLong = averageLong;   //长期概率%
-        this.chancePeriod = averagePeriod;  //前期概率%
-        this.chanceShort = averageShort;  //短期内的概率
-        let averageMid = (averagePeriod+averageLong)/2;  //长期和前期的概率折中，可能会比较接近现实概率
-		this.probability = averageMid;   //累计概率%
+        this.chanceLong = this.ballCount/allCount;  //长期概率%
+        this.chancePeriod = this.ballPeriodNum/(allCount-offsetCount);  //前期概率%
+		this.chanceShort = (this.ballCount - this.ballPeriodNum)/offsetCount;   //短期内的概率
+    }
+	
+    //外围总计矫正
+    public adjustAnalysisByTotal(averageVal:number){
+		if(this.chanceShort < 0.001 || this.chanceLong < 0.001){   //近期很少出现
+			this.probability = 0;  
+		}else{
+			let chanceMax = Math.max(this.chanceLong, this.chanceShort);
+			let tempTimes = this.chanceShort/this.chanceLong;
+			if(this.ballCount > averageVal*1.5){   //高概率区间，对应峰值周边部分
+				if(tempTimes >= 0.8 && tempTimes <1.1){  //合理正常范围内，后续继续保持改概率
+					this.probability = this.chanceShort*1.1;
+				}else if(tempTimes >=1.1 && tempTimes <=1.5){  //合理正常范围内，后续继续保持改概率
+					this.probability = this.chanceShort*0.95;
+				}else if(tempTimes > 1.5){  //虽然在高概率区间内，但是短期概率过高，后续可能会降低
+					this.probability = this.chanceShort*(1.0-tempTimes/15);
+				}else if(tempTimes < 0.8){  //虽然在高概率区间内，但是短期概率过低，后续可能会稍微增加
+					this.probability = this.chanceShort*(1.0+0.1/tempTimes);
+				}
+			}else if(this.ballCount > averageVal*0.8){  //半腰区间，一般对待
+				if(tempTimes >= 0.8 && tempTimes <=1.3){  //合理正常范围内，后续继续保持改概率
+					this.probability = this.chanceShort;
+				}else if(tempTimes > 1.3){  //短期概率过高，后续可能会降低
+					this.probability = this.chanceShort*(1.0-tempTimes/10);
+				}else if(tempTimes < 0.8){  //短期概率过低，后续可能会稍微增加
+					this.probability = this.chanceShort*(1.0+0.1/tempTimes);
+				}
+			}else{   //平谷区间，出现概率较少
+				this.probability = (this.chanceShort + this.chanceLong)/2;
+			}
+		}
+		this.recommendChance = this.probability;  //推荐概率%
     }
 	
     //有效区间内进行校正
     public adjustAnalysisByBoundary(boundaryAverage:number, analysisType:AnalysisType){
-		if(analysisType == AnalysisType.shuangseqiu){
-			if(this.ballCount < boundaryAverage/2 || this.ballCount > boundaryAverage*2){
-				if(this.chanceShort < 0.001){   //近期很少出现
-					this.chanceAdjust = this.chanceAdjust * 0.7;
-				}else{
-					this.chanceAdjust = this.chanceAdjust * 0.8;
+		if(this.chanceShort < 0.001 || this.chanceLong < 0.001){   //近期很少出现
+			this.probability = 0;
+		}else{
+			let chanceMax = Math.max(this.chanceLong, this.chanceShort);
+			let tempTimes = this.chanceShort/this.chanceLong;
+			if(this.ballCount > boundaryAverage*1.5){   //高概率区间，对应峰值周边部分
+				if(tempTimes >= 0.8 && tempTimes <1.1){  //合理正常范围内，后续继续保持改概率
+					this.probability = this.chanceShort*1.1;
+				}else if(tempTimes >=1.1 && tempTimes <=1.5){  //合理正常范围内，后续继续保持改概率
+					this.probability = this.chanceShort*0.95;
+				}else if(tempTimes > 1.5){  //虽然在高概率区间内，但是短期概率过高，后续可能会降低
+					this.probability = this.chanceShort*(1.0-tempTimes/15);
+				}else if(tempTimes < 0.8){  //虽然在高概率区间内，但是短期概率过低，后续可能会稍微增加
+					this.probability = this.chanceShort*(1.0+0.1/tempTimes);
 				}
-				return;
+			}else if(this.ballCount > boundaryAverage*0.8){  //半腰区间，一般对待
+				if(tempTimes >= 0.8 && tempTimes <=1.3){  //合理正常范围内，后续继续保持改概率
+					this.probability = this.chanceShort;
+				}else if(tempTimes > 1.3){  //短期概率过高，后续可能会降低
+					this.probability = this.chanceShort*(1.0-tempTimes/10);
+				}else if(tempTimes < 0.8){  //短期概率过低，后续可能会稍微增加
+					this.probability = this.chanceShort*(1.0+0.1/tempTimes);
+				}
+			}else{   //平谷区间，出现概率较少
+				this.probability = (this.chanceShort + this.chanceLong)/2;
 			}
 		}
-		if(this.chanceShort < 0.001){   //近期很少出现
-			this.chanceAdjust = this.chanceAdjust * 0.8;
-		}else{
-			if(Math.abs(this.probability - this.chanceShort) <= 0.0001){  //折中概率和短期概率基本持平，后续变化不大
-				this.chanceAdjust = this.probability;  //概率矫正%
-			}else if(this.probability > this.chanceShort){  //折中概率高于短期概率，后续概率增加
-				this.chanceAdjust = this.probability *(1.0+((this.probability - this.chanceShort)/this.probability));  //概率矫正%
-			}else{  //折中概率低于短期概率，后续可能概率降低
-				this.chanceAdjust = this.probability *(1.0-(this.chanceShort/this.probability)*0.2);  //概率矫正%
-			}
+		this.chanceAdjust = 0;   //先设定一个假的矫正概率，使得每个小球出现的概率达到一定高度（比如0.5），然后根据最后10-20期的数据来修正这个矫正概率chanceAdjust
+		
+		if(analysisType == AnalysisType.shuangseqiu){
 		}
     }
 	
     //由后继而校正的概率
-    public adjustAnalysisByLast(last_chance:number){
-        this.chanceAdjust += last_chance*0.1;  //概率矫正%
+    public adjustAnalysisByLast(last_chance:number, lottery:number, adjustCount:number){
+		if(lottery < 0){  //最后的推测，不用参与修正
+			this.chanceAdjust += last_chance*0.1;
+			this.recommendChance = this.probability + this.chanceAdjust;  //推荐概率%
+		}else if(lottery > 0){   //添加后继因素，并修正概率
+			if(lottery == this.ballId){   //压中
+				let adjust_chance = 0.5 - (this.probability + last_chance*0.1)
+				this.chanceAdjust = (this.chanceAdjust*(adjustCount-1) + adjust_chance)/adjustCount  //概率矫正%
+			}else{    //未压中
+				this.chanceAdjust = (this.chanceAdjust*(adjustCount-1)*0.95)/adjustCount  //概率矫正%
+			}
+		}
     }
 
     //短期累计次数
@@ -129,7 +179,6 @@ export class ball_info{
 export class cow_info{
     public cowId: number = 0;
     public boundary: cc.Vec2 = cc.Vec2.ZERO;   //取值范围
-	public lastChance: number[] = [];  //后继的作用概率
     public recommends: recommend_ball_info[] = [];   //推荐球集合（概率由高到低）
     public ballArr: ball_info[] = [];   //具体球的分布数据
 
@@ -139,7 +188,6 @@ export class cow_info{
         for(let i=0; i<valNum; i++){
             let ballInfo = new ball_info(i+1)
             this.ballArr.push(ballInfo)
-			this.lastChance.push(0)  //后继的作用概率
         }
     }
 
@@ -149,7 +197,7 @@ export class cow_info{
 		let boundaryPeriodNum: number = 0;
         for(let idx=0; idx<valNum; idx++){
             this.ballArr[idx].adjustAnalysis(allCount, offsetCount, valNum);   //根据总数据和短期数据进行数据矫正
-			if(this.ballArr[idx].probability >= 0.01){
+			if(this.ballArr[idx].chanceLong >= 0.01){
 				if(this.boundary.x == 0){
 					this.boundary.x = idx+1;
 				}
@@ -166,12 +214,13 @@ export class cow_info{
     }
 	
     //根据后继中奖进行数据矫正
-    public adjustCowAnalysisByLast(valNum:number, lottery:number, last1:number, last2:number, last3:number){
+    public adjustCowAnalysisByLast(valNum:number, lottery:number, adjustCount:number, last1:number, last2:number, last3:number){
         let nextIdArr1 = this.ballArr[last1-1].nextIdArr1;
         let nextIdArr2 = this.ballArr[last2-1].nextIdArr2;
         let nextIdArr3 = this.ballArr[last3-1].nextIdArr3;
 		let boundaryLimit = this.boundary.y - this.boundary.x + 1;
-        for(let i=this.boundary.x-1; i<this.boundary.y; i++){
+		let last_chance: number[] = []; 
+        for(let i=0; i<valNum; i++){
 			let ballId = (i+1);
             let chance = 0;  //后继球概率
             if(nextIdArr1.length > 0){
@@ -181,7 +230,7 @@ export class cow_info{
                         num1 ++;
                     }
                 }
-                chance = (num1/boundaryLimit)*0.4
+                chance = (num1/valNum)*0.4
             }
             if(nextIdArr2.length > 0){
                 let num2 = 0;
@@ -190,7 +239,7 @@ export class cow_info{
                         num2 ++;
                     }
                 }
-                chance += (num2/boundaryLimit)*0.3
+                chance += (num2/valNum)*0.3
             }
             if(nextIdArr3.length > 0){
                 let num3 = 0;
@@ -199,36 +248,28 @@ export class cow_info{
                         num3 ++;
                     }
                 }
-                chance += (num3/boundaryLimit)*0.3
+                chance += (num3/valNum)*0.3
             }
+			last_chance[i] = chance;
 			
-			if(lottery < 0){
-				//最后的推测，需要this.lastChance因子作用
-				this.ballArr[i].adjustAnalysisByLast(chance*this.lastChance[i]);   //根据总数据和短期数据进行数据矫正
-			}else if(lottery > 0){
-				//会连续推测10次
-				if(ballId == lottery){   //后继猜中了
-					this.lastChance[i] += 0.1  //后继的作用概率
-				}else{
-					this.lastChance[i] += chance*0.01  //后继的作用概率
-				}
-			}
+			//添加后继因素，并修正概率
+			this.ballArr[i].adjustAnalysisByLast(chance, lottery, adjustCount); 
         }
     }
 
     public getRecommendBalls(ballNum:number, last1:number, last2:number, last3:number): recommend_ball_info[]{
-		this.adjustCowAnalysisByLast(ballNum, -1, last1, last2, last3);
+		this.adjustCowAnalysisByLast(ballNum, -1, -1, last1, last2, last3);
 		
         let recommendBalls:ball_info[] = []
         for(let i=0; i<ballNum; i++){  
             recommendBalls.push(this.ballArr[i])
         }
         recommendBalls.sort((a:ball_info, b:ball_info)=>{
-            return b.chanceAdjust - a.chanceAdjust;
+            return b.recommendChance - a.recommendChance;   //推荐概率%
         })
         this.recommends = []
         for(let i=0; i<10; i++){
-			if(recommendBalls[i].chanceAdjust >= 0.01){
+			if(recommendBalls[i].recommendChance >= 0.01){
 				this.recommends.push(new recommend_ball_info(recommendBalls[i]))
 			}
         }
