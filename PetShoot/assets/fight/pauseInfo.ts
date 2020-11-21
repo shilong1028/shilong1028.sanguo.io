@@ -1,10 +1,10 @@
 import { NotificationMy } from "../manager/NoticeManager";
 import { NoticeType, SkillInfo } from "../manager/Enum";
-import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { FightMgr } from "../manager/FightManager";
-import TableView from "../tableView/tableView";
 import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
+import List from "../manager/List";
+import FightSkillCell from "./fightSkillCell";
 
 
 //暂停界面
@@ -19,11 +19,12 @@ export default class PauseInfo extends cc.Component {
     descLabel: cc.Label = null;
     @property(cc.Node)
     touchNode: cc.Node = null;
-    @property(TableView)
-    tableView: TableView = null;
+    @property(List)
+    listView: List = null;
     @property(cc.Node)
     listBg: cc.Node = null;
 
+    skillList:SkillInfo[] = [];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -35,9 +36,9 @@ export default class PauseInfo extends cc.Component {
     start () {
         NotificationMy.emit(NoticeType.GamePause, null);   //游戏暂停，停止小球和砖块的动作，但动画特效不受影响
 
-        let skillList = FightMgr.getFightScene().skillList;
-        this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
-        this.tableView.initTableView(skillList.length, { array: skillList, target: this}); 
+        this.skillList = FightMgr.getFightScene().skillList;
+        this.listView.numItems = this.skillList.length;
+        this.listView.selectedId = 0;
 
         if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.FightSet_Guide_Step2, this.guideSkillInfo, this) == false){  //点击技能，查看战斗技能说明。
         }
@@ -48,6 +49,21 @@ export default class PauseInfo extends cc.Component {
             this.descLabel.string = FightMgr.getFightScene().skillList[0].skillCfg.desc;
         });
     }
+
+    //列表渲染器
+    onListRender(item: cc.Node, idx: number) {
+        if(item){
+            let info = this.skillList[idx];
+            item.getComponent(FightSkillCell).initCell(idx, info, this);
+        }
+    }
+
+    //当列表项被选择...
+    onListSelected(item: any, selectedId: number, lastSelectedId: number, val: number) {
+        if (!item)
+            return;
+        item.getComponent(FightSkillCell).onSelected(true);
+    } 
 
     handleSelCell(cellIdx: number, skillInfo: SkillInfo){
         this.descLabel.string = skillInfo.skillCfg.desc;

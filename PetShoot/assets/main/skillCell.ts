@@ -1,5 +1,4 @@
-import viewCell from "../tableView/viewCell";
-import { AudioMgr } from "../manager/AudioMgr";
+
 import { SkillInfo } from "../manager/Enum";
 import Skill from "../common/skill";
 import { ROOT_NODE } from "../common/rootNode";
@@ -7,7 +6,7 @@ import { ROOT_NODE } from "../common/rootNode";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class SkillCell extends viewCell {
+export default class SkillCell extends cc.Component {
 
     @property(cc.Sprite)
     cellBg: cc.Sprite = null;
@@ -28,22 +27,9 @@ export default class SkillCell extends viewCell {
     // LIFE-CYCLE CALLBACKS:
 
     //加载需要初始化数据时调用
-    init (index, data, reload, group) {
-        if (index >= data.array.length) {
-            //不显示
-            this.cellData = null;  
-            this.node.active = false;
-            return;
-        }
-
-        //if(reload){
-            this.data = data;   //{ array: list, target: x.js }
-            this.cellIdx = index; 
-            this.cellData = this.data.array[this.cellIdx];
-            this.node.active = true;
-        //}
-
-        this.onSelected(this._selectState);
+    initCell (index, cellData: SkillInfo, target: any) {
+        this.cellIdx = index;  
+        this.cellData = cellData;
 
         if(this.cellIdx%2 == 0){
             this.cellBg.spriteFrame = this.bgFrames[0];

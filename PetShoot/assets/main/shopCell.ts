@@ -1,10 +1,8 @@
-import viewCell from "../tableView/viewCell";
+
 import { AudioMgr } from "../manager/AudioMgr";
 import { st_shop_info, CfgMgr } from "../manager/ConfigManager";
 import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
-import { ROOT_NODE } from "../common/rootNode";
 import { BallInfo, ItemInfo } from "../manager/Enum";
-import { sdkWechat } from "../manager/SDK_Wechat";
 import { GameMgr } from "../manager/GameManager";
 import { SDKMgr } from "../manager/SDKManager";
 import ShopLayer from "./shopLayer";
@@ -12,7 +10,7 @@ import ShopLayer from "./shopLayer";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class ShopCell extends viewCell {
+export default class ShopCell extends cc.Component {
 
     @property(cc.Sprite)
     cellBg: cc.Sprite = null;
@@ -50,24 +48,15 @@ export default class ShopCell extends viewCell {
   
     // LIFE-CYCLE CALLBACKS:
 
+    onLoad(){
+
+    }
+
     //加载需要初始化数据时调用
-    init (index, data, reload, group) {
-        if (index >= data.array.length) {
-            //不显示
-            this.cellData = null;  
-            this.node.active = false;
-            return;
-        }
-
-        //if(reload){
-            this.data = data;   //{ array: list, target: x.js }
-            this.targetLayer = data.target;
-            this.cellIdx = index; 
-            this.cellData = this.data.array[this.cellIdx];
-            this.node.active = true;
-        //}
-
-        this.onSelected(this._selectState);
+    initCell (index, cellData: st_shop_info, target: any) {
+        this.cellIdx = index;  
+        this.targetLayer = target;
+        this.cellData = cellData;
 
         if(SDKMgr.bOpenVedioShop == true){   //视频商城
             this.goldLabel.string = "已看次数："+SDKMgr.getAdCountByKey(this.cellData.name);

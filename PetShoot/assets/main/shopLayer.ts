@@ -1,4 +1,4 @@
-import TableView from "../tableView/tableView";
+
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { CfgMgr, st_shop_info } from "../manager/ConfigManager";
@@ -7,14 +7,18 @@ import { GuideStepEnum, GuideMgr } from "../manager/GuideMgr";
 import { MyUserDataMgr } from "../manager/MyUserData";
 import { BallInfo, ItemInfo } from "../manager/Enum";
 import { ROOT_NODE } from "../common/rootNode";
+import List from "../manager/List";
+import ShopCell from "./shopCell";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ShopLayer extends cc.Component {
 
-    @property(TableView)
-    tableView: TableView = null;
+    @property(List)
+    listView: List = null;
+
+    shopArr: st_shop_info[] = [];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -27,10 +31,7 @@ export default class ShopLayer extends cc.Component {
     // update (dt) {}
 
     initTableData(bClear:boolean = false){
-        if(bClear == true && this.tableView){
-            this.tableView.clear();
-        }
-        let shopArr = [];
+        this.shopArr = [];
 
         if(SDKMgr.bOpenVedioShop == true){   //视频商城
             let adKeys = [
@@ -45,20 +46,27 @@ export default class ShopLayer extends cc.Component {
             for(let i=0; i< 7; ++i){
                 let temp = new st_shop_info();
                 temp.initAdShopCell(adKeys[i]);
-                shopArr.push(temp);
+                this.shopArr.push(temp);
             }
         }else{
             for(let i=1; i<= GameMgr.ShopCount; ++i){
                 let shopCfg = CfgMgr.getShopConf(i);
                 if(!SDKMgr.isSDK && shopCfg.vedio > 0){
                 }else{
-                    shopArr.push(shopCfg);
+                    this.shopArr.push(shopCfg);
                 }
             }
         }
 
-        this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
-        this.tableView.initTableView(shopArr.length, { array: shopArr, target: this }); 
+        this.listView.numItems = this.shopArr.length;
+    }
+
+    //列表渲染器
+    onListRender(item: cc.Node, idx: number) {
+        if(item){
+            let info = this.shopArr[idx];
+            item.getComponent(ShopCell).initCell(idx, info, this);
+        }
     }
 
     onCloseBtn(){

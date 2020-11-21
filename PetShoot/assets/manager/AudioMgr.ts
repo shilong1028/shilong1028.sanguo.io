@@ -84,13 +84,13 @@ class AudioMgr_class {
         }
     }
     stopBGM(){
-        if(SDKMgr.isSDK && SDKMgr.WeiChat){
-            if(this.bgmAudio != null){
-                this.bgmAudio.stop();
-            }
-        }else{
-            cc.audioEngine.stopMusic();
-        }
+        // if(SDKMgr.isSDK && SDKMgr.WeiChat){
+        //     if(this.bgmAudio != null){
+        //         this.bgmAudio.stop();
+        //     }
+        // }else{
+        //     cc.audioEngine.stopMusic();
+        // }
     }
 
     /**播放Effect bOverlap是否覆盖类型的音效 */

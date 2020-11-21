@@ -1,15 +1,19 @@
-import TableView from "../tableView/tableView";
+
 import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { SkillInfo } from "../manager/Enum";
+import List from "../manager/List";
+import SkillCell from "./skillCell";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class SkillLayer extends cc.Component {
 
-    @property(TableView)
-    tableView: TableView = null;
+    @property(List)
+    listView: List = null;
+
+    skillArr:SkillInfo[] = [];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -22,13 +26,20 @@ export default class SkillLayer extends cc.Component {
     // update (dt) {}
 
     initTableData(){
-        let skillArr = [];
+        this.skillArr = [];
         for(let i=1; i<= GameMgr.SkillCount; ++i){
-            skillArr.push(new SkillInfo(i));
+            this.skillArr.push(new SkillInfo(i));
         }
 
-        this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
-        this.tableView.initTableView(skillArr.length, { array: skillArr, target: this }); 
+        this.listView.numItems = this.skillArr.length;
+    }
+
+    //列表渲染器
+    onListRender(item: cc.Node, idx: number) {
+        if(item){
+            let info = this.skillArr[idx];
+            item.getComponent(SkillCell).initCell(idx, info, this);
+        }
     }
 
     onCloseBtn(){

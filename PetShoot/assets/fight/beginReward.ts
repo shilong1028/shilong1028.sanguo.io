@@ -1,10 +1,12 @@
-import TableView from "../tableView/tableView";
+
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
 import { SkillInfo, TipsStrDef } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
 import { SDKMgr } from "../manager/SDKManager";
 import { ROOT_NODE } from "../common/rootNode";
+import List from "../manager/List";
+import FightSkillCell from "./fightSkillCell";
 
 //开局奖励
 const {ccclass, property} = cc._decorator;
@@ -19,9 +21,10 @@ export default class NewClass extends cc.Component {
 
     @property(cc.Label)
     descLabel: cc.Label = null;
-    @property(TableView)
-    tableView: TableView = null;
+    @property(List)
+    listView: List = null;
 
+    skillList:SkillInfo[] = [];
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -38,15 +41,30 @@ export default class NewClass extends cc.Component {
     }
 
     start () {
-        let skillList = [];
+        this.skillList = [];
         for(let i=1; i<= GameMgr.SkillCount; ++i){
-            skillList.push(new SkillInfo(i));
+            this.skillList.push(new SkillInfo(i));
         }
-        this.tableView.openListCellSelEffect(false);   //是否开启Cell选中状态变换
-        this.tableView.initTableView(skillList.length, { array: skillList, target: this}); 
+        this.listView.numItems = this.skillList.length;
+        this.listView.selectedId = 0;
 
         FightMgr.getFightScene().bShowBeginReward = false;   //该章节战斗不在显示开局奖励
     }
+
+    //列表渲染器
+    onListRender(item: cc.Node, idx: number) {
+        if(item){
+            let info = this.skillList[idx];
+            item.getComponent(FightSkillCell).initCell(idx, info, this);
+        }
+    }
+
+    //当列表项被选择...
+    onListSelected(item: any, selectedId: number, lastSelectedId: number, val: number) {
+        if (!item)
+            return;
+        item.getComponent(FightSkillCell).onSelected(true);
+    }  
 
     handleSelCell(cellIdx: number, skillInfo: SkillInfo){
         this.descLabel.string = skillInfo.skillCfg.desc;

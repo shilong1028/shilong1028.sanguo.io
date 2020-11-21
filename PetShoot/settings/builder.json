@@ -49,13 +49,25 @@
   "xxteaKey": "a6353c5c-e0ab-47",
   "zipCompressJs": true,
   "android": {
+    "REMOTE_SERVER_ROOT": "",
     "packageName": "org.cocos2d.AttackFortress"
   },
   "ios": {
+    "REMOTE_SERVER_ROOT": "",
     "packageName": "org.cocos2d.AttackFortress"
   },
   "mac": {
-    "packageName": "org.cocos2d.AttackFortress"
+    "REMOTE_SERVER_ROOT": "",
+    "height": 720,
+    "packageName": "org.cocos2d.AttackFortress",
+    "width": 1280
   },
-  "win32": {}
+  "win32": {
+    "REMOTE_SERVER_ROOT": "",
+    "height": 720,
+    "width": 1280
+  },
+  "mainCompressionType": "merge_all_json",
+  "mainIsRemote": false,
+  "nativeMd5Cache": true
 }

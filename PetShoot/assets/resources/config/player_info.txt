@@ -1,5 +1,5 @@
 [1]
-name = 喵主
+name = 喵星人
 cost = 0
 attack = 1
 baoji = 10
@@ -9,10 +9,10 @@ update_atk = 1
 update_gold = 2000
 update_diamond = 50
 update_vedio = 1
-desc = 喵主，初始攻击力1，可以发射5个武器，具有“指示”技能，10%的概率双倍暴击。
+desc = 喵星人，初始攻击力1，可以发射5个武器，具有“指示”技能，10%的概率双倍暴击。
 
 [2]
-name = 二狗
+name = 二狗蛋
 cost = 0
 attack = 2
 baoji = 20
@@ -22,4 +22,4 @@ update_atk = 1
 update_gold = 1000
 update_diamond = 20
 update_vedio = 1
-desc = 二狗，初始攻击力2，可以发射3个武器，具有“强化”技能，20%的概率双倍暴击。
+desc = 二狗蛋，初始攻击力2，可以发射3个武器，具有“强化”技能，20%的概率双倍暴击。
