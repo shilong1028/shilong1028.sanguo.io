@@ -21,8 +21,10 @@ export var MyUserData = {
 
     ballList: [],   //未出战小球列表 
     
-    curPlayerId: 1,  //当前使用的炮Id
+    curPlayerId: 0,  //当前使用的炮Id
     playerList: [],   //拥有的炮列表
+    myPlayerCount: 0,   //当前拥有的萌宠数量
+    playerOpenVedioCOunt: 0,   //观看视频解锁第二只宠物的已看视频次数
 
     curChapterId: 1, //当前章节Id
     curLevelId: 0,  //当前通关的最大id
@@ -59,6 +61,9 @@ class MyUserManager {
         MyUserData.playerList = []; //拥有的炮列表
         LDMgr.setItem(LDKey.KEY_PlayerList, JSON.stringify(MyUserData.playerList));
         MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表(并初始化未拥有的炮台)
+        MyUserData.myPlayerCount = 0  //当前拥有的萌宠数量
+        MyUserData.playerOpenVedioCOunt =  0; 
+        LDMgr.setItem(LDKey.KEY_PlayerVedioCount, MyUserData.playerOpenVedioCOunt);    //观看视频解锁第二只宠物的已看视频次数
 
         this.updateCurChapterId(1); //当前章节Id
         this.updateCurLevelId(0);  //当前通关的最大id
@@ -79,6 +84,7 @@ class MyUserManager {
         MyUserData.UserName = "";
         this.checkUserName();
         
+        //新玩家默认拥有小猫咪
         let playerInfo = new PlayerInfo(1);
         playerInfo.useState = 1;  //使用状态，0未拥有，1已拥有
         playerInfo.ballId = 1;  //默认炮台拥有1级小球
@@ -87,12 +93,12 @@ class MyUserManager {
 
         this.updateCurLevelId(0);  //当前通关的最大id
 
-        this.updateUserGold(500);
+        this.updateUserGold(50000);
         this.updateUserDiamond(50);
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
 
-        //cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+        cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
 
@@ -126,6 +132,7 @@ class MyUserManager {
 
         MyUserData.curPlayerId = LDMgr.getItemInt(LDKey.KEY_CurPlayerId, 0);  //当前使用的炮索引
         MyUserData.playerList = this.getPlayerListByLD();  //拥有的炮列表(并初始化未拥有的炮台)
+        MyUserData.playerOpenVedioCOunt = LDMgr.getItemInt(LDKey.KEY_PlayerVedioCount);   //观看视频解锁第二只宠物的已看视频次数
 
         MyUserData.curChapterId = LDMgr.getItemInt(LDKey.KEY_CurChapterId, 1);  //当前章节id
         MyUserData.curLevelId = LDMgr.getItemInt(LDKey.KEY_CurLevelId, 0);  //当前通关的最大id
@@ -139,7 +146,7 @@ class MyUserManager {
         if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
             this.clearUserData();  //新玩家初始化
         }
-        //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+        cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
     /**更新新手引导数据 */
@@ -225,6 +232,12 @@ class MyUserManager {
         }
     }
 
+
+    /**观看视频解锁第二只宠物的已看视频次数 */
+    updatePlayerOpenVedioCOunt(){
+        MyUserData.playerOpenVedioCOunt ++;
+        LDMgr.setItem(LDKey.KEY_PlayerVedioCount, MyUserData.playerOpenVedioCOunt);    //观看视频解锁第二只宠物的已看视频次数
+    }
     /**更新当前使用炮ID */
     updateCurPlayerById(playerId: number){
         MyUserData.curPlayerId = playerId;
@@ -257,10 +270,15 @@ class MyUserManager {
                 let playerInfo = new PlayerInfo(k);
                 for(let i=0; i<PalyerList.length; ++i){
                     if(k == PalyerList[i].playerId){
+                        MyUserData.myPlayerCount ++  //当前拥有的萌宠数量
+
                         playerInfo.level = PalyerList[i].level;   
                         playerInfo.useState = 1;  //PalyerList[i].useState;
                         playerInfo.ballId = PalyerList[i].ballId;   
                         playerInfo.itemId = PalyerList[i].itemId;
+                        playerInfo.getTime = PalyerList[i].getTime;   
+                        playerInfo.feedTime = PalyerList[i].feedTime;
+                        playerInfo.feedVals = PalyerList[i].feedVals;
                         break;
                     }
                 }
@@ -284,14 +302,51 @@ class MyUserManager {
     updatePlayerFromList(playerInfo: PlayerInfo){
         NotificationMy.emit(NoticeType.UpdatePlayerList, playerInfo);   //更新炮台
 
+        let myPlayerCount = 0;
         for(let i=0; i<MyUserData.playerList.length; ++i){
             if(MyUserData.playerList[i].playerId == playerInfo.playerId){
                 MyUserData.playerList[i] = playerInfo;
-                break;
+                if(playerInfo.useState == 1){
+                    myPlayerCount ++;
+                }
             }
         }
+
+        MyUserData.myPlayerCount = myPlayerCount  //当前拥有的萌宠数量
+
         if(playerInfo.useState == 1){
             this.savePlayerList();
+        }
+    }
+
+    /**检查宠物喂养信息 */
+    checkPlayerFeedState(){
+        for(let i=0; i<MyUserData.playerList.length; ++i){
+            let playerInfo: PlayerInfo = MyUserData.playerList[i];
+            if(playerInfo.useState == 1 && playerInfo.level > GameMgr.FeedLv){   //3级以上需要投喂
+                if(GameMgr.isSameDayWithCurTime(playerInfo.feedTime) == false){  //同一天
+                    for(let j=0; j<3; j++){
+                        if(playerInfo.feedVals[j] <= 0){   //没有投喂
+                            NotificationMy.emit(NoticeType.ShowPlayerFeedVedio, playerInfo);   //宠物补喂
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    /**更新宠物喂养数据 */
+    updatePlayerFeedInfo(playerInfo: PlayerInfo, feedIdx:number, feedVal:number, bFeedVedio:boolean=false){
+        for(let i=0; i<MyUserData.playerList.length; ++i){
+            let playerInfo: PlayerInfo = MyUserData.playerList[i];
+            if(playerInfo.useState == 1 && playerInfo.level > GameMgr.FeedLv){   //3级以上需要投喂
+                playerInfo.feedVals[feedIdx] = feedVal;
+                if(bFeedVedio != true){
+                    playerInfo.feedTime = new Date().getTime();
+                }
+                this.updatePlayerFromList(playerInfo);
+            }
         }
     }
 
@@ -359,6 +414,7 @@ class MyUserManager {
             ROOT_NODE.showTipsText(TipsStrDef.KEY_BagMaxTip)
             return;
         }
+        //cc.log(new Error().stack);
 
         if(bSave == true){
             if(itemInfo.timeId <= this.lastItemTime){   //重复timeId

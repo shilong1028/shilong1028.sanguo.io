@@ -1,7 +1,7 @@
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
 import { FightMgr } from "../manager/FightManager";
-import { ChapterInfo } from "../manager/Enum";
+import { ChapterInfo, TipsStrDef } from "../manager/Enum";
 import { MyUserDataMgr, MyUserData } from "../manager/MyUserData";
 import { SDKMgr } from "../manager/SDKManager";
 import { ROOT_NODE } from "../common/rootNode";
@@ -22,6 +22,8 @@ export default class ChapterResult extends cc.Component {
 
     @property(cc.Button)
     vedioBtn: cc.Button = null;
+    @property(cc.Button)
+    shareBtn: cc.Button = null;
 
     chapterInfo: ChapterInfo = null;
     diamondReward: number = 0;
@@ -29,7 +31,15 @@ export default class ChapterResult extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        
+        if(SDKMgr.bShowVedioBtn){   //显示视频或分享按钮)
+            this.vedioBtn.interactable = true; 
+            this.vedioBtn.node.active = true;
+            this.shareBtn.node.active = false; 
+        }else{
+            this.shareBtn.interactable = true; 
+            this.shareBtn.node.active = true;
+            this.vedioBtn.node.active = false; 
+        }
     }
 
     start () {
@@ -63,6 +73,16 @@ export default class ChapterResult extends cc.Component {
             this.handleReward(2);    //成功
         });  
     }
+    onShareBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+
+        this.shareBtn.interactable = false; 
+
+        SDKMgr.shareGame(TipsStrDef.KEY_Share, (succ:boolean)=>{
+            this.shareBtn.interactable = true; 
+            this.handleReward(1.5);    //成功
+        }, this);
+    }
 
     onCloseBtn(){
         AudioMgr.playEffect("effect/ui_click");
@@ -70,9 +90,9 @@ export default class ChapterResult extends cc.Component {
     }
 
     handleReward(times: number=1){
-        let gold = this.chapterInfo.chapterCfg.gold * times;
+        let gold = Math.floor(this.chapterInfo.chapterCfg.gold * times);
         MyUserDataMgr.updateUserGold(gold);
-        let diamond = this.diamondReward * times;
+        let diamond = Math.floor(this.diamondReward * times);
         MyUserDataMgr.updateUserDiamond(diamond);
 
         ROOT_NODE.showTipsText("获得金币："+gold);

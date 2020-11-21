@@ -7,19 +7,6 @@
             <key>player_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{606,2},{300,300}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{300,300}}</string>
-                <key>sourceSize</key>
-                <string>{300,300}</string>
-            </dict>
-            <key>player_2.png</key>
-            <dict>
-                <key>frame</key>
                 <string>{{304,2},{300,300}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
@@ -30,7 +17,7 @@
                 <key>sourceSize</key>
                 <string>{300,300}</string>
             </dict>
-            <key>player_3.png</key>
+            <key>player_2.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2,2},{300,300}}</string>
@@ -51,9 +38,9 @@
             <key>realTextureFileName</key>
             <string>player.png</string>
             <key>size</key>
-            <string>{908,304}</string>
+            <string>{606,304}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:55814a7b01ca4d77c8ab7e9d1ee9a6fc:11477e0d027f7206a02871f835d830e4:6f6c59c3c6b7e98e5fb22e47122cb74a$</string>
+            <string>$TexturePacker:SmartUpdate:48893fef28a1a58e095c17235a3b10f5:3ce7ff6bbd32b9e6e19d7d4636a7369c:6f6c59c3c6b7e98e5fb22e47122cb74a$</string>
             <key>textureFileName</key>
             <string>player.png</string>
         </dict>

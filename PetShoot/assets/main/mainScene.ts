@@ -1,9 +1,9 @@
 import { NotificationMy } from "../manager/NoticeManager";
-import { NoticeType, TipsStrDef } from "../manager/Enum";
+import { NoticeType, PlayerInfo, TipsStrDef } from "../manager/Enum";
 import { SDKMgr } from "../manager/SDKManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
-import { MyUserData } from "../manager/MyUserData";
+import { MyUserData, MyUserDataMgr } from "../manager/MyUserData";
 import { GuideMgr, GuideStepEnum } from "../manager/GuideMgr";
 import ChapterLayer from "./chapterLayer";
 import ShopLayer from "./shopLayer";
@@ -70,6 +70,7 @@ export default class MainScene extends cc.Component {
 
         NotificationMy.on(NoticeType.UpdateGold, this.UpdateGold, this);  //金币更新
         NotificationMy.on(NoticeType.UpdateDiamond, this.UpdateDiamond, this);   //更新钻石显示
+        NotificationMy.on(NoticeType.ShowPlayerFeedVedio, this.showPlayerFeedVedio, this);    //宠物补喂
 
         this.shareBtn.active = false;  //分享
         if(SDKMgr.isSDK == true){
@@ -106,6 +107,18 @@ export default class MainScene extends cc.Component {
         this.UpdateGold();  
         this.UpdateDiamond();  
 
+        let bGuide = true;
+        let usedPlayerInfo = MyUserDataMgr.getCurPlayerInfo();   //当前使用的炮台信息
+        if(!usedPlayerInfo){
+            GameMgr.bToMainPetPage = true;
+            bGuide = false;
+        }
+
+        if(MyUserDataMgr.checkPlayerFeedState()){
+            GameMgr.bToMainPetPage = true;
+            bGuide = false;
+        }  //有宠物需要补喂
+
         if(GameMgr.bToMainPetPage == true){  //主界面是否跳转至宠物界面
             this.showMidUI(1, 0.01); 
         }else{
@@ -113,14 +126,16 @@ export default class MainScene extends cc.Component {
         }
         GameMgr.bToMainPetPage = false;
 
-        if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step, this.guideFight, this) == false){   //战斗引导   
-            if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Shop_Guide_Step, this.guideShop, this) == false){   //点击商店，购买武器或饰品。
-                if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Player_Guide_Step, this.guidePlayer, this) == false){   //点击萌宠，查看萌宝信息。
-                    if(GameMgr.isSameDayWithCurTime(MyUserData.lastSignTime) == false && SDKMgr.bAutoPlayVedio != true){  //同一天
-                        this.onSignBtn();
+        if(bGuide){
+            if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Fight_Guide_Step, this.guideFight, this) == false){   //战斗引导   
+                if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Shop_Guide_Step, this.guideShop, this) == false){   //点击商店，购买武器或饰品。
+                    if(GuideMgr.checkGuide_NewPlayer(GuideStepEnum.Player_Guide_Step, this.guidePlayer, this) == false){   //点击萌宠，查看萌宝信息。
+                        if(GameMgr.isSameDayWithCurTime(MyUserData.lastSignTime) == false && SDKMgr.bAutoPlayVedio != true){  //同一天
+                            this.onSignBtn();
+                        }
                     }
-                }
-            } 
+                } 
+            }
         }
     }
     checkGuidePlayer(){
@@ -210,6 +225,27 @@ export default class MainScene extends cc.Component {
         }
         if(moveTime > 0){
             this.midPageView.scrollToPage(this.curPageIdx, moveTime);
+        }
+
+        if(this.curPageIdx > 0){  //有宠物需要补喂
+            MyUserDataMgr.checkPlayerFeedState() 
+        }
+    }
+
+    /**宠物补喂*/
+    showPlayerFeedVedio(playerInfo: PlayerInfo){
+        if(playerInfo){   //有宠物需要补喂
+            GameMgr.showTipsDialog(`萌宠${playerInfo.playerCfg.name}昨天没有投喂，将要降级，是否进行补喂？`, ()=>{
+                this.curMidUIType = 0;
+                this.showMidUI(1, 0.01); 
+            }, ()=>{
+                //不补喂则降级
+                playerInfo.level --;
+                if(playerInfo.level < GameMgr.FeedLv){   //3级以上需要投喂
+                    playerInfo.level = GameMgr.FeedLv;
+                }
+                MyUserDataMgr.updatePlayerFromList(playerInfo);   //更新新炮台到拥有的炮列表
+            });
         }
     }
 

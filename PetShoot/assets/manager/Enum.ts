@@ -69,10 +69,15 @@ export class ItemInfo{
 /**炮数据 */
 export class PlayerInfo{
     playerId: number = 0;   //炮配置ID
-    level: number = 1;   //炮等级
+    level: number = 1;   //炮等级（只有当天投喂过方可升级）
     useState: number = 0;  //使用状态，0未拥有，1已拥有
     ballId: number = 0;   //装备小球ID
     itemId: number = 0;    //饰品道具Id
+
+    getTime: number = 0;   //领养时间
+    feedTime: number = 0;   //上一次头尾时间
+    feedVals: number[] = [0, 0, 0];   //每天12点之前，18点之前，24点之前投喂的食物热量
+
     playerCfg: st_player_info = null;
 
     constructor(playerId: number){
@@ -86,6 +91,9 @@ export class PlayerInfo{
         temp.useState = this.useState; 
         temp.ballId = this.ballId;   
         temp.itemId = this.itemId; 
+        temp.getTime = this.getTime; 
+        temp.feedTime = this.feedTime;   
+        temp.feedVals = this.feedVals; 
 
         //不必写入本地存储的变量s
         temp.playerCfg = null;
@@ -98,6 +106,9 @@ export class PlayerInfo{
         temp.useState = this.useState;
         temp.ballId = this.ballId;   
         temp.itemId = this.itemId;
+        temp.getTime = this.getTime; 
+        temp.feedTime = this.feedTime;   
+        temp.feedVals = this.feedVals; 
         return temp;
     };
 }
@@ -291,7 +302,7 @@ export const TipsStrDef = {
     KEY_PlayerTip: "请先解锁萌宠!",
     KEY_BagMaxTip: "背包已满，请整理背包（合成或删除）!",
      
-    KEY_Share: "一起来逗一逗，分享联萌快乐！"
+    KEY_Share: "一起来捉鸡鸡，分享联萌快乐！"
 }
 
 /**异步消息通知类型 */
@@ -309,6 +320,7 @@ export const NoticeType = {
     BlockBallSel: "BlockBallSel",   //地块上小球被选择，相同等级的小球地块要显示光圈
     BlockItemSel: "BlockItemSel",   //地块上道具被选择，相同等级的道具地块要显示光圈
     UpdatePlayerList: "UpdatePlayerList",   //更新炮台列表
+    ShowPlayerFeedVedio: "ShowPlayerFeedVedio",   //宠物补喂
     
     BrickLineCreateOver: "BrickLineCreateOver",   //砖块行创建完毕
 

@@ -70,14 +70,26 @@ export default class BagLayer extends cc.Component {
     // update (dt) {}
 
     initPageView(){
+        this.pageView.removeAllPages();
         for(let i=0; i<MyUserData.playerList.length; ++i){
             let page = cc.instantiate(this.pfPlayer);
             this.pageView.addPage(page);
-            page.getComponent(PlayerCell).initPlayerInfo(MyUserData.playerList[i].clone(), this);
 
-            if(MyUserData.playerList[i].playerId == MyUserData.curPlayerId){
+            let playerInfo: PlayerInfo = MyUserData.playerList[i];
+            page.getComponent(PlayerCell).initPlayerInfo(playerInfo.clone(), this);
+
+            if(playerInfo.playerId == MyUserData.curPlayerId){
                 this.curPageIdx = i;
                 this.usedPlayerPage = page.getComponent(PlayerCell);   //当前使用的炮台
+            }
+            if(playerInfo.useState == 1 && playerInfo.level > GameMgr.FeedLv){   //3级以上需要投喂
+                if(GameMgr.isSameDayWithCurTime(playerInfo.feedTime) == false){  //同一天
+                    for(let j=0; j<3; j++){
+                        if(playerInfo.feedVals[j] <= 0){   //没有投喂
+                            this.curPageIdx = i;
+                        }
+                    }
+                }
             }
         }
         this.showCurPlayerInfo();  //显示当前炮台的装备道具等信息
@@ -108,8 +120,10 @@ export default class BagLayer extends cc.Component {
         if(this.curPageIdx <= 0){
             this.curPageIdx = 0;
             this.leftArrowNode.active = false;
+            this.rightArrowNode.active = true;
         }else if(this.curPageIdx >= GameMgr.PlayerCount-1){
             this.curPageIdx = GameMgr.PlayerCount-1;
+            this.leftArrowNode.active = true;
             this.rightArrowNode.active = false;
         }else{
             this.leftArrowNode.active = true;

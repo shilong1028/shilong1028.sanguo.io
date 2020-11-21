@@ -4,7 +4,7 @@ import { GameMgr } from "../manager/GameManager";
 import { AudioMgr } from "../manager/AudioMgr";
 import { ROOT_NODE } from "../common/rootNode";
 import { CfgMgr } from "../manager/ConfigManager";
-import { BallInfo, NoticeType, ItemInfo } from "../manager/Enum";
+import { BallInfo, NoticeType, ItemInfo, TipsStrDef } from "../manager/Enum";
 import { NotificationMy } from "../manager/NoticeManager";
 import { SDKMgr } from "../manager/SDKManager";
 
@@ -23,6 +23,8 @@ export default class SignLayer extends cc.Component {
     signBtn: cc.Button = null;
     @property(cc.Button)
     vedioBtn: cc.Button = null;
+    @property(cc.Button)
+    shareBtn: cc.Button = null;
       
     @property(cc.Prefab)
     pfSignCell: cc.Prefab = null;
@@ -32,6 +34,15 @@ export default class SignLayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        if(SDKMgr.bShowVedioBtn){   //显示视频或分享按钮)
+            this.vedioBtn.interactable = true; 
+            this.vedioBtn.node.active = true;
+            this.shareBtn.node.active = false; 
+        }else{
+            this.shareBtn.interactable = true; 
+            this.shareBtn.node.active = true;
+            this.vedioBtn.node.active = false; 
+        }
     }
 
     start () {
@@ -98,6 +109,19 @@ export default class SignLayer extends cc.Component {
         }
     }
 
+    onShareBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+        if(this.curSelCell && this.curSelCell.signIdx > 0 && this.curSelCell.signData){
+            this.setBtnGray();
+            this.curSelCell.onSigned();
+            
+            SDKMgr.shareGame(TipsStrDef.KEY_Share, (succ:boolean)=>{
+                this.shareBtn.interactable = true; 
+                this.handleReward(1.5);    //成功
+            }, this);
+        }
+    }
+
     handleReward(times: number=1){
         let gold = 0;
         let diamond = 0;
@@ -105,11 +129,11 @@ export default class SignLayer extends cc.Component {
         let ballInfo = null;
 
         if(this.curSelCell.signData.type == 1){   //金币
-            gold = this.curSelCell.signData.num *times;
+            gold = Math.floor(this.curSelCell.signData.num *times);
             ROOT_NODE.showTipsText("获得金币："+gold);
             MyUserDataMgr.updateUserGold(gold);
         }else if(this.curSelCell.signData.type == 2){   //钻石
-            diamond = this.curSelCell.signData.num *times;
+            diamond = Math.floor(this.curSelCell.signData.num *times);
             ROOT_NODE.showTipsText("获得钻石："+diamond);
             MyUserDataMgr.updateUserDiamond(diamond);
         }else if(this.curSelCell.signData.type == 3){   //饰品道具

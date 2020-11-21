@@ -14,8 +14,9 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 class GameManager {
     BagGridCount: number = 20;  //背包空间
-    PlayerCount: number = 3;   //炮台萌猫数量
-    PlayerMaxLv: number = 10;  //炮台最大等级
+    PlayerCount: number = 2;   //炮台萌猫数量
+    PlayerMaxLv: number = 15;  //炮台最大等级
+    FeedLv: number = 3;   //投喂开始等级
     ChapterCount: number = 7;  //章节数量
     QualityCount: number = 5;  //品质最大等级
     ShopCount: number = 4;   //商品种类
@@ -186,9 +187,9 @@ class GameManager {
     }
 
     //通用提示框
-    showTipsDialog(tipStr: string, okCallback: any=null){
+    showTipsDialog(tipStr: string, okCallback: any=null, cancelCallback: any=null){
         let tips = this.showLayer(ROOT_NODE.pfTipsDialog);
-        tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback);
+        tips.getComponent(TipsDialog).setTipStr(tipStr, okCallback, cancelCallback);
     }
 
     //通用奖励提示框

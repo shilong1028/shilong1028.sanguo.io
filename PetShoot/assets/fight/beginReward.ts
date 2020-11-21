@@ -1,7 +1,7 @@
 import TableView from "../tableView/tableView";
 import { AudioMgr } from "../manager/AudioMgr";
 import { GameMgr } from "../manager/GameManager";
-import { SkillInfo } from "../manager/Enum";
+import { SkillInfo, TipsStrDef } from "../manager/Enum";
 import { FightMgr } from "../manager/FightManager";
 import { SDKMgr } from "../manager/SDKManager";
 import { ROOT_NODE } from "../common/rootNode";
@@ -14,6 +14,8 @@ export default class NewClass extends cc.Component {
 
     @property(cc.Button)
     vedioBtn: cc.Button = null;
+    @property(cc.Button)
+    shareBtn: cc.Button = null;
 
     @property(cc.Label)
     descLabel: cc.Label = null;
@@ -24,6 +26,15 @@ export default class NewClass extends cc.Component {
 
     onLoad () {
         this.descLabel.string = "";
+        if(SDKMgr.bShowVedioBtn){   //显示视频或分享按钮)
+            this.vedioBtn.interactable = true; 
+            this.vedioBtn.node.active = true;
+            this.shareBtn.node.active = false; 
+        }else{
+            this.shareBtn.interactable = true; 
+            this.shareBtn.node.active = true;
+            this.vedioBtn.node.active = false; 
+        }
     }
 
     start () {
@@ -55,6 +66,17 @@ export default class NewClass extends cc.Component {
         }, ()=>{
             this.handleReward(true);    //成功
         });  
+    }
+
+    onShareBtn(){
+        AudioMgr.playEffect("effect/ui_click");
+
+        this.shareBtn.interactable = false; 
+
+        SDKMgr.shareGame(TipsStrDef.KEY_Share, (succ:boolean)=>{
+            this.shareBtn.interactable = true; 
+            this.handleReward(true);    //成功
+        }, this);
     }
 
     onCloseBtn(){

@@ -4,12 +4,13 @@ import { ROOT_NODE } from "../common/rootNode";
 import { FightMgr } from "./FightManager";
 
 var TT_VedioIds = {
+    GoldVedioId:    "7lh9np2328p474e5im",    //添加金币    》15
+    //其他都用一个
     ChapterVedioId: "lmjod6cnnq13f9uahs",   //章节奖励  》15
     FuhuoVedioId:   "9abi0s9o7bs108bcdh",    //复活
     KaijuVedioId:   "k41g2m9pbjj2e9fe8j",   //开局奖励
     UpLvVedioId:    "6tntmadmh753m4a0bg",   //宠物升级
     ShopVedioId:    "55p8tr0qnkdm94g59j",    //商店    》15
-    GoldVedioId:    "7lh9np2328p474e5im",    //添加金币    》15
     SignVedioId:    "5m1knnlfhf95bgi1o1",    //签到    》15
 }
 
@@ -496,10 +497,10 @@ export class SDK_TT  {
             //     rewardedVideoAd.offLoad()
             // }
         });
-        rewardedVideoAd.show().then(() => {
-            //console.log("视频显示")
-        })
-        .catch(err => {
+        // rewardedVideoAd.show().then(() => {
+        //     //console.log("视频显示")
+        // })
+        // .catch(err => {
             // 可以手动加载一次
             //console.log("视频显示失败， 手动拉去一次")
             rewardedVideoAd.load().then(() => {
@@ -513,7 +514,7 @@ export class SDK_TT  {
                     sdkTT.errorCallBack.call(sdkTT.callTarget, false);
                 }
             });
-        });
+        //});
         rewardedVideoAd.onClose(res => {
             // if (rewardedVideoAd){
             //     rewardedVideoAd.offClose()//防止多次回调

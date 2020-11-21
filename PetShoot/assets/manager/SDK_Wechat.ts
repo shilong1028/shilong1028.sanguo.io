@@ -3,12 +3,13 @@ import { GameMgr } from "./GameManager";
 import { ROOT_NODE } from "../common/rootNode";
 
 var WeChat_VedioIds = {
+    GoldVedioId:    "adunit-3f7122a44141289f",    //添加金币    》15
+    //其他都用一个
     ChapterVedioId: "adunit-6ec807cbe470c213",   //章节奖励  》15
     FuhuoVedioId:   "adunit-7505f4b340540021",    //复活
     KaijuVedioId:   "adunit-80d169035974b323",   //开局奖励
     UpLvVedioId:    "adunit-ab72dd32b2400263",   //宠物升级
     ShopVedioId:    "adunit-6b823e3a6e8787b3",    //商店    》15
-    GoldVedioId:    "adunit-3f7122a44141289f",    //添加金币    》15
     SignVedioId:    "adunit-2bf5e3c24f054824",    //签到    》15
 }
 
@@ -139,9 +140,9 @@ export class SDK_Wechat  {
             //     rewardedVideoAd.offLoad()
             // }
         });
-        rewardedVideoAd.show().then(() => {
-        })
-        .catch(err => {
+        // rewardedVideoAd.show().then(() => {
+        // })
+        // .catch(err => {
             // 可以手动加载一次
             rewardedVideoAd.load().then(() => {
                 // 加载成功后需要再显示广告
@@ -154,7 +155,7 @@ export class SDK_Wechat  {
                     sdkWechat.errorCallBack.call(sdkWechat.callTarget, false);
                 }
             });
-        });
+        //});
         rewardedVideoAd.onClose(res => {
             // if (rewardedVideoAd){
             //     rewardedVideoAd.offClose()//防止多次回调

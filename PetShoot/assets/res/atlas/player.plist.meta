@@ -3,7 +3,7 @@
   "uuid": "1692beb9-821a-4563-9573-9bdaa44fcbc9",
   "rawTextureUuid": "2dc73fba-5681-4a5b-94f8-895ce9430391",
   "size": {
-    "width": 908,
+    "width": 606,
     "height": 304
   },
   "type": "Texture Packer",
@@ -11,28 +11,6 @@
     "player_1.png": {
       "ver": "1.0.4",
       "uuid": "752460fb-090a-4170-a36f-181ae7252e19",
-      "rawTextureUuid": "2dc73fba-5681-4a5b-94f8-895ce9430391",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 0,
-      "offsetY": 0,
-      "trimX": 606,
-      "trimY": 2,
-      "width": 300,
-      "height": 300,
-      "rawWidth": 300,
-      "rawHeight": 300,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "spriteType": "normal",
-      "subMetas": {}
-    },
-    "player_2.png": {
-      "ver": "1.0.4",
-      "uuid": "f7d81da0-4d4a-4cc0-af18-120b9062be3f",
       "rawTextureUuid": "2dc73fba-5681-4a5b-94f8-895ce9430391",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -52,9 +30,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "player_3.png": {
+    "player_2.png": {
       "ver": "1.0.4",
-      "uuid": "3af0cb78-97ea-46b4-b660-d49ac62edda5",
+      "uuid": "f7d81da0-4d4a-4cc0-af18-120b9062be3f",
       "rawTextureUuid": "2dc73fba-5681-4a5b-94f8-895ce9430391",
       "trimType": "auto",
       "trimThreshold": 1,

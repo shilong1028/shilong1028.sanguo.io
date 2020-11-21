@@ -33,6 +33,13 @@ export default class FightRenew extends cc.Component {
     onLoad () {
         this.progressLabel.string = "5s";
         this.progressBar.progress = 100;
+
+        if(SDKMgr.bShowVedioBtn){   //显示视频或分享按钮)
+            this.vedioBtn.interactable = true; 
+            this.vedioBtn.node.active = true;
+        }else{
+            this.vedioBtn.node.active = false; 
+        }
     }
 
     start () {

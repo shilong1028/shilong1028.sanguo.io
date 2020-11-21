@@ -12,6 +12,8 @@ class SDKManager_class  {
     WeiChat: any = null;   //微信小游戏
     TT: any = null;  //字节跳动
 
+    bShowVedioBtn: boolean = false;   //显示视频或分享按钮
+
     bAutoPlayVedio: boolean = false;
     adVedioPlaying: boolean = false;
 
@@ -40,6 +42,7 @@ class SDKManager_class  {
             SDKMgr.WeiChat = null;
             SDKMgr.adMaxCount = 20;   //头条最多20次
             sdkTT.initSDK();
+            this.bShowVedioBtn = true;   //显示视频或分享按钮
         }
         else if(SDKMgr.WeiChat != null){   //微信小游戏
             SDKMgr.isSDK = true;
@@ -164,7 +167,10 @@ class SDKManager_class  {
     }
 
     canPlayAdByCount(){
-        return SDKMgr.adTotalCount < SDKMgr.adMaxCount;
+        if(SDKMgr.bAutoPlayVedio){
+            return SDKMgr.adTotalCount < SDKMgr.adMaxCount;
+        }
+        return true;
     }
 
     closeAutoPlayAdVedio(){
