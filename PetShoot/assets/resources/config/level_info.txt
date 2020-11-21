@@ -1,0 +1,1099 @@
+[1]
+resId = 1
+chapterId = 1
+enemy_count = 1
+enemy_ids = 1|1
+total_lines = 1
+init_lines = 1
+name = 初识汉奸
+diamond = 1
+gold = 20
+
+[2]
+resId = 1
+chapterId = 1
+enemy_count = 3
+enemy_ids = 1|2
+total_lines = 1
+init_lines = 1
+name = 赶跑汉奸
+diamond = 1
+gold = 20
+
+[3]
+resId = 1
+chapterId = 1
+enemy_count = 5
+enemy_ids = 1|2
+total_lines = 2
+init_lines = 2
+name = 打败汉奸
+diamond = 1
+gold = 20
+
+[4]
+resId = 1
+chapterId = 1
+enemy_count = 6
+enemy_ids = 1|3
+total_lines = 2
+init_lines = 2
+name = 活捉汉奸
+diamond = 2
+gold = 20
+
+[5]
+resId = 1
+chapterId = 1
+enemy_count = 7
+enemy_ids = 1|3
+total_lines = 2
+init_lines = 2
+name = 击毙汉奸
+diamond = 2
+gold = 20
+
+[6]
+resId = 2
+chapterId = 2
+enemy_count = 8
+enemy_ids = 2|2
+total_lines = 3
+init_lines = 3
+name = 初识大头兵
+diamond = 2
+gold = 50
+
+[7]
+resId = 2
+chapterId = 2
+enemy_count = 9
+enemy_ids = 2|3
+total_lines = 3
+init_lines = 3
+name = 赶跑大头兵
+diamond = 3
+gold = 50
+
+[8]
+resId = 2
+chapterId = 2
+enemy_count = 10
+enemy_ids = 2|3
+total_lines = 3
+init_lines = 3
+name = 打败大头兵
+diamond = 3
+gold = 50
+
+[9]
+resId = 2
+chapterId = 2
+enemy_count = 11
+enemy_ids = 2|4
+total_lines = 3
+init_lines = 3
+name = 活捉大头兵
+diamond = 3
+gold = 50
+
+[10]
+resId = 2
+chapterId = 2
+enemy_count = 12
+enemy_ids = 2|4
+total_lines = 3
+init_lines = 3
+name = 击毙大头兵
+diamond = 3
+gold = 50
+
+[11]
+resId = 3
+chapterId = 2
+enemy_count = 13
+enemy_ids = 3|3
+total_lines = 4
+init_lines = 3
+name = 初识三等兵
+diamond = 3
+gold = 70
+
+[12]
+resId = 3
+chapterId = 2
+enemy_count = 14
+enemy_ids = 3|4
+total_lines = 4
+init_lines = 3
+name = 赶跑三等兵
+diamond = 4
+gold = 70
+
+[13]
+resId = 3
+chapterId = 3
+enemy_count = 15
+enemy_ids = 3|4
+total_lines = 4
+init_lines = 3
+name = 打败三等兵
+diamond = 4
+gold = 70
+
+[14]
+resId = 3
+chapterId = 3
+enemy_count = 16
+enemy_ids = 3|5
+total_lines = 4
+init_lines = 3
+name = 活捉三等兵
+diamond = 4
+gold = 70
+
+[15]
+resId = 3
+chapterId = 3
+enemy_count = 17
+enemy_ids = 3|5
+total_lines = 4
+init_lines = 3
+name = 击毙三等兵
+diamond = 4
+gold = 70
+
+[16]
+resId = 4
+chapterId = 3
+enemy_count = 18
+enemy_ids = 4|4
+total_lines = 5
+init_lines = 3
+name = 初识二等兵
+diamond = 4
+gold = 100
+
+[17]
+resId = 4
+chapterId = 3
+enemy_count = 19
+enemy_ids = 4|5
+total_lines = 5
+init_lines = 3
+name = 赶跑二等兵
+diamond = 5
+gold = 100
+
+[18]
+resId = 4
+chapterId = 3
+enemy_count = 20
+enemy_ids = 4|5
+total_lines = 5
+init_lines = 3
+name = 打败二等兵
+diamond = 5
+gold = 100
+
+[19]
+resId = 4
+chapterId = 3
+enemy_count = 21
+enemy_ids = 4|6
+total_lines = 5
+init_lines = 3
+name = 活捉二等兵
+diamond = 5
+gold = 100
+
+[20]
+resId = 4
+chapterId = 3
+enemy_count = 22
+enemy_ids = 4|6
+total_lines = 6
+init_lines = 3
+name = 击毙二等兵
+diamond = 5
+gold = 100
+
+[21]
+resId = 5
+chapterId = 4
+enemy_count = 23
+enemy_ids = 5|5
+total_lines = 6
+init_lines = 3
+name = 初识一等兵
+diamond = 5
+gold = 120
+
+[22]
+resId = 5
+chapterId = 4
+enemy_count = 24
+enemy_ids = 5|6
+total_lines = 6
+init_lines = 3
+name = 赶跑一等兵
+diamond = 6
+gold = 120
+
+[23]
+resId = 5
+chapterId = 4
+enemy_count = 25
+enemy_ids = 5|6
+total_lines = 6
+init_lines = 3
+name = 打败一等兵
+diamond = 6
+gold = 120
+
+[24]
+resId = 5
+chapterId = 4
+enemy_count = 26
+enemy_ids = 5|7
+total_lines = 7
+init_lines = 3
+name = 活捉一等兵
+diamond = 6
+gold = 120
+
+[25]
+resId = 5
+chapterId = 4
+enemy_count = 27
+enemy_ids = 5|7
+total_lines = 7
+init_lines = 3
+name = 击毙一等兵
+diamond = 6
+gold = 120
+
+[26]
+resId = 6
+chapterId = 4
+enemy_count = 28
+enemy_ids = 6|6
+total_lines = 7
+init_lines = 3
+name = 初识上等兵
+diamond = 6
+gold = 150
+
+[27]
+resId = 6
+chapterId = 4
+enemy_count = 29
+enemy_ids = 6|7
+total_lines = 7
+init_lines = 3
+name = 赶跑上等兵
+diamond = 7
+gold = 150
+
+[28]
+resId = 6
+chapterId = 4
+enemy_count = 30
+enemy_ids = 6|7
+total_lines = 7
+init_lines = 3
+name = 打败上等兵
+diamond = 7
+gold = 150
+
+[29]
+resId = 6
+chapterId = 4
+enemy_count = 31
+enemy_ids = 6|8
+total_lines = 7
+init_lines = 3
+name = 活捉上等兵
+diamond = 7
+gold = 150
+
+[30]
+resId = 6
+chapterId = 4
+enemy_count = 32
+enemy_ids = 6|8
+total_lines = 8
+init_lines = 3
+name = 击毙上等兵
+diamond = 7
+gold = 150
+
+[31]
+resId = 7
+chapterId = 5
+enemy_count = 33
+enemy_ids = 7|7
+total_lines = 8
+init_lines = 3
+name = 初识伍长
+diamond = 7
+gold = 180
+
+[32]
+resId = 7
+chapterId = 5
+enemy_count = 34
+enemy_ids = 7|8
+total_lines = 8
+init_lines = 3
+name = 赶跑伍长
+diamond = 8
+gold = 180
+
+[33]
+resId = 7
+chapterId = 5
+enemy_count = 35
+enemy_ids = 7|8
+total_lines = 8
+init_lines = 3
+name = 打败伍长
+diamond = 8
+gold = 180
+
+[34]
+resId = 7
+chapterId = 5
+enemy_count = 36
+enemy_ids = 7|9
+total_lines = 8
+init_lines = 3
+name = 活捉伍长
+diamond = 8
+gold = 180
+
+[35]
+resId = 7
+chapterId = 5
+enemy_count = 37
+enemy_ids = 7|9
+total_lines = 8
+init_lines = 3
+name = 击毙伍长
+diamond = 8
+gold = 180
+
+[36]
+resId = 8
+chapterId = 5
+enemy_count = 38
+enemy_ids = 8|8
+total_lines = 9
+init_lines = 3
+name = 初识军曹
+diamond = 8
+gold = 200
+
+[37]
+resId = 8
+chapterId = 5
+enemy_count = 39
+enemy_ids = 8|9
+total_lines = 9
+init_lines = 3
+name = 赶跑军曹
+diamond = 9
+gold = 200
+
+[38]
+resId = 8
+chapterId = 5
+enemy_count = 40
+enemy_ids = 8|9
+total_lines = 9
+init_lines = 3
+name = 打败军曹
+diamond = 9
+gold = 200
+
+[39]
+resId = 8
+chapterId = 5
+enemy_count = 41
+enemy_ids = 8|10
+total_lines = 9
+init_lines = 3
+name = 活捉军曹
+diamond = 9
+gold = 200
+
+[40]
+resId = 8
+chapterId = 5
+enemy_count = 42
+enemy_ids = 8|10
+total_lines = 9
+init_lines = 3
+name = 击毙军曹
+diamond = 9
+gold = 200
+
+[41]
+resId = 9
+chapterId = 6
+enemy_count = 43
+enemy_ids = 9|9
+total_lines = 9
+init_lines = 3
+name = 初识曹长
+diamond = 9
+gold = 230
+
+[42]
+resId = 9
+chapterId = 6
+enemy_count = 44
+enemy_ids = 9|10
+total_lines = 10
+init_lines = 3
+name = 赶跑曹长
+diamond = 10
+gold = 230
+
+[43]
+resId = 9
+chapterId = 6
+enemy_count = 45
+enemy_ids = 9|10
+total_lines = 10
+init_lines = 3
+name = 打败曹长
+diamond = 10
+gold = 230
+
+[44]
+resId = 9
+chapterId = 6
+enemy_count = 46
+enemy_ids = 9|11
+total_lines = 10
+init_lines = 3
+name = 活捉曹长
+diamond = 10
+gold = 230
+
+[45]
+resId = 9
+chapterId = 6
+enemy_count = 47
+enemy_ids = 9|11
+total_lines = 10
+init_lines = 3
+name = 击毙曹长
+diamond = 10
+gold = 230
+
+[46]
+resId = 10
+chapterId = 6
+enemy_count = 48
+enemy_ids = 10|10
+total_lines = 10
+init_lines = 3
+name = 初识准尉
+diamond = 10
+gold = 250
+
+[47]
+resId = 10
+chapterId = 6
+enemy_count = 49
+enemy_ids = 10|11
+total_lines = 10
+init_lines = 3
+name = 赶跑准尉
+diamond = 11
+gold = 250
+
+[48]
+resId = 10
+chapterId = 6
+enemy_count = 50
+enemy_ids = 10|11
+total_lines = 11
+init_lines = 3
+name = 打败准尉
+diamond = 11
+gold = 250
+
+[49]
+resId = 10
+chapterId = 6
+enemy_count = 51
+enemy_ids = 10|12
+total_lines = 11
+init_lines = 3
+name = 活捉准尉
+diamond = 11
+gold = 250
+
+[50]
+resId = 10
+chapterId = 6
+enemy_count = 52
+enemy_ids = 10|12
+total_lines = 11
+init_lines = 3
+name = 击毙准尉
+diamond = 11
+gold = 250
+
+[51]
+resId = 11
+chapterId = 6
+enemy_count = 53
+enemy_ids = 11|11
+total_lines = 11
+init_lines = 3
+name = 初识少尉
+diamond = 11
+gold = 280
+
+[52]
+resId = 11
+chapterId = 6
+enemy_count = 54
+enemy_ids = 11|12
+total_lines = 11
+init_lines = 3
+name = 赶跑少尉
+diamond = 12
+gold = 280
+
+[53]
+resId = 11
+chapterId = 6
+enemy_count = 55
+enemy_ids = 11|12
+total_lines = 11
+init_lines = 3
+name = 打败少尉
+diamond = 12
+gold = 280
+
+[54]
+resId = 11
+chapterId = 6
+enemy_count = 56
+enemy_ids = 11|13
+total_lines = 12
+init_lines = 3
+name = 活捉少尉
+diamond = 12
+gold = 280
+
+[55]
+resId = 11
+chapterId = 6
+enemy_count = 57
+enemy_ids = 11|13
+total_lines = 12
+init_lines = 3
+name = 击毙少尉
+diamond = 12
+gold = 280
+
+[56]
+resId = 12
+chapterId = 7
+enemy_count = 58
+enemy_ids = 12|12
+total_lines = 12
+init_lines = 3
+name = 初识中尉
+diamond = 12
+gold = 300
+
+[57]
+resId = 12
+chapterId = 7
+enemy_count = 59
+enemy_ids = 12|13
+total_lines = 12
+init_lines = 3
+name = 赶跑中尉
+diamond = 13
+gold = 300
+
+[58]
+resId = 12
+chapterId = 7
+enemy_count = 60
+enemy_ids = 12|13
+total_lines = 12
+init_lines = 3
+name = 打败中尉
+diamond = 13
+gold = 300
+
+[59]
+resId = 12
+chapterId = 7
+enemy_count = 61
+enemy_ids = 12|14
+total_lines = 12
+init_lines = 3
+name = 活捉中尉
+diamond = 13
+gold = 300
+
+[60]
+resId = 12
+chapterId = 7
+enemy_count = 62
+enemy_ids = 12|14
+total_lines = 13
+init_lines = 3
+name = 击毙中尉
+diamond = 13
+gold = 300
+
+[61]
+resId = 13
+chapterId = 7
+enemy_count = 63
+enemy_ids = 13|13
+total_lines = 13
+init_lines = 3
+name = 初识大尉
+diamond = 13
+gold = 320
+
+[62]
+resId = 13
+chapterId = 7
+enemy_count = 64
+enemy_ids = 13|14
+total_lines = 13
+init_lines = 3
+name = 赶跑大尉
+diamond = 14
+gold = 320
+
+[63]
+resId = 13
+chapterId = 7
+enemy_count = 65
+enemy_ids = 13|14
+total_lines = 13
+init_lines = 3
+name = 打败大尉
+diamond = 14
+gold = 320
+
+[64]
+resId = 13
+chapterId = 7
+enemy_count = 66
+enemy_ids = 13|15
+total_lines = 13
+init_lines = 3
+name = 活捉大尉
+diamond = 14
+gold = 320
+
+[65]
+resId = 13
+chapterId = 7
+enemy_count = 67
+enemy_ids = 13|15
+total_lines = 13
+init_lines = 3
+name = 击毙大尉
+diamond = 14
+gold = 320
+
+[66]
+resId = 14
+chapterId = 7
+enemy_count = 68
+enemy_ids = 14|14
+total_lines = 14
+init_lines = 3
+name = 初识少佐
+diamond = 14
+gold = 350
+
+[67]
+resId = 14
+chapterId = 7
+enemy_count = 69
+enemy_ids = 14|15
+total_lines = 14
+init_lines = 3
+name = 赶跑少佐
+diamond = 15
+gold = 350
+
+[68]
+resId = 14
+chapterId = 7
+enemy_count = 70
+enemy_ids = 14|15
+total_lines = 14
+init_lines = 3
+name = 打败少佐
+diamond = 15
+gold = 350
+
+[69]
+resId = 14
+chapterId = 7
+enemy_count = 71
+enemy_ids = 14|16
+total_lines = 14
+init_lines = 3
+name = 活捉少佐
+diamond = 15
+gold = 350
+
+[70]
+resId = 14
+chapterId = 7
+enemy_count = 72
+enemy_ids = 14|16
+total_lines = 14
+init_lines = 3
+name = 击毙少佐
+diamond = 15
+gold = 350
+
+[71]
+resId = 15
+chapterId = 8
+enemy_count = 73
+enemy_ids = 15|15
+total_lines = 15
+init_lines = 3
+name = 初识中佐
+diamond = 15
+gold = 400
+
+[72]
+resId = 15
+chapterId = 8
+enemy_count = 74
+enemy_ids = 15|16
+total_lines = 15
+init_lines = 3
+name = 赶跑中佐
+diamond = 16
+gold = 400
+
+[73]
+resId = 15
+chapterId = 8
+enemy_count = 75
+enemy_ids = 15|16
+total_lines = 15
+init_lines = 3
+name = 打败中佐
+diamond = 16
+gold = 400
+
+[74]
+resId = 15
+chapterId = 8
+enemy_count = 76
+enemy_ids = 15|17
+total_lines = 15
+init_lines = 3
+name = 活捉中佐
+diamond = 16
+gold = 400
+
+[75]
+resId = 15
+chapterId = 8
+enemy_count = 77
+enemy_ids = 15|17
+total_lines = 15
+init_lines = 3
+name = 击毙中佐
+diamond = 16
+gold = 420
+
+[76]
+resId = 16
+chapterId = 8
+enemy_count = 78
+enemy_ids = 16|16
+total_lines = 16
+init_lines = 3
+name = 初识大佐
+diamond = 16
+gold = 420
+
+[77]
+resId = 16
+chapterId = 8
+enemy_count = 79
+enemy_ids = 16|17
+total_lines = 16
+init_lines = 3
+name = 赶跑大佐
+diamond = 17
+gold = 420
+
+[78]
+resId = 16
+chapterId = 8
+enemy_count = 80
+enemy_ids = 16|17
+total_lines = 16
+init_lines = 3
+name = 打败大佐
+diamond = 17
+gold = 420
+
+[79]
+resId = 16
+chapterId = 8
+enemy_count = 81
+enemy_ids = 16|18
+total_lines = 16
+init_lines = 3
+name = 活捉大佐
+diamond = 17
+gold = 420
+
+[80]
+resId = 16
+chapterId = 8
+enemy_count = 82
+enemy_ids = 16|18
+total_lines = 16
+init_lines = 3
+name = 击毙大佐
+diamond = 17
+gold = 420
+
+[81]
+resId = 17
+chapterId = 8
+enemy_count = 83
+enemy_ids = 17|17
+total_lines = 17
+init_lines = 3
+name = 初识少将
+diamond = 17
+gold = 450
+
+[82]
+resId = 17
+chapterId = 8
+enemy_count = 84
+enemy_ids = 17|18
+total_lines = 17
+init_lines = 3
+name = 赶跑少将
+diamond = 18
+gold = 450
+
+[83]
+resId = 17
+chapterId = 8
+enemy_count = 85
+enemy_ids = 17|18
+total_lines = 17
+init_lines = 3
+name = 打败少将
+diamond = 18
+gold = 450
+
+[84]
+resId = 17
+chapterId = 8
+enemy_count = 86
+enemy_ids = 17|19
+total_lines = 17
+init_lines = 3
+name = 活捉少将
+diamond = 18
+gold = 450
+
+[85]
+resId = 17
+chapterId = 8
+enemy_count = 87
+enemy_ids = 17|19
+total_lines = 17
+init_lines = 3
+name = 击毙少将
+diamond = 18
+gold = 450
+
+[86]
+resId = 18
+chapterId = 8
+enemy_count = 88
+enemy_ids = 18|18
+total_lines = 18
+init_lines = 3
+name = 初识中将
+diamond = 18
+gold = 480
+
+[87]
+resId = 18
+chapterId = 8
+enemy_count = 89
+enemy_ids = 18|19
+total_lines = 18
+init_lines = 3
+name = 赶跑中将
+diamond = 19
+gold = 480
+
+[88]
+resId = 18
+chapterId = 8
+enemy_count = 90
+enemy_ids = 18|19
+total_lines = 18
+init_lines = 3
+name = 打败中将
+diamond = 19
+gold = 480
+
+[89]
+resId = 18
+chapterId = 8
+enemy_count = 91
+enemy_ids = 18|20
+total_lines = 18
+init_lines = 3
+name = 活捉中将
+diamond = 19
+gold = 480
+
+[90]
+resId = 18
+chapterId = 8
+enemy_count = 92
+enemy_ids = 18|20
+total_lines = 18
+init_lines = 3
+name = 击毙中将
+diamond = 19
+gold = 480
+
+[91]
+resId = 19
+chapterId = 9
+enemy_count = 93
+enemy_ids = 19|19
+total_lines = 19
+init_lines = 3
+name = 初识大将
+diamond = 19
+gold = 500
+
+[92]
+resId = 19
+chapterId = 9
+enemy_count = 94
+enemy_ids = 1|19
+total_lines = 19
+init_lines = 3
+name = 赶跑大将
+diamond = 20
+gold = 500
+
+[93]
+resId = 19
+chapterId = 9
+enemy_count = 95
+enemy_ids = 5|19
+total_lines = 19
+init_lines = 3
+name = 打败大将
+diamond = 20
+gold = 500
+
+[94]
+resId = 19
+chapterId = 9
+enemy_count = 96
+enemy_ids = 10|20
+total_lines = 19
+init_lines = 3
+name = 活捉大将
+diamond = 20
+gold = 500
+
+[95]
+resId = 19
+chapterId = 9
+enemy_count = 97
+enemy_ids = 15|20
+total_lines = 19
+init_lines = 3
+name = 击毙大将
+diamond = 20
+gold = 500
+
+[96]
+resId = 20
+chapterId = 9
+enemy_count = 98
+enemy_ids = 20|20
+total_lines = 20
+init_lines = 3
+name = 初识元帅
+diamond = 20
+gold = 500
+
+[97]
+resId = 20
+chapterId = 9
+enemy_count = 99
+enemy_ids = 1|20
+total_lines = 20
+init_lines = 3
+name = 赶跑元帅
+diamond = 20
+gold = 500
+
+[98]
+resId = 20
+chapterId = 9
+enemy_count = 100
+enemy_ids = 5|20
+total_lines = 20
+init_lines = 3
+name = 打败元帅
+diamond = 20
+gold = 500
+
+[99]
+resId = 20
+chapterId = 9
+enemy_count = 100
+enemy_ids = 10|20
+total_lines = 20
+init_lines = 3
+name = 活捉元帅
+diamond = 20
+gold = 500
+
+[100]
+resId = 20
+chapterId = 9
+enemy_count = 100
+enemy_ids = 15|20
+total_lines = 20
+init_lines = 3
+name = 击毙元帅
+diamond = 20
+gold = 500

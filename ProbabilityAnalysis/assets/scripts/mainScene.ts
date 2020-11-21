@@ -33,7 +33,6 @@ export default class MainScene extends cc.Component {
     }
 
     start () {
-		this.handleShuangseqiuAnalysis();
     }
 
 
@@ -59,7 +58,9 @@ export default class MainScene extends cc.Component {
             return;
         }
         let keys = Object.getOwnPropertyNames(C_Config);
-        this.allDataCount = keys.length;  //总数据数量
+		keys.reverse();  //k=0为最早期的数据，故需要取反
+		//cc.log("ProbabilityAnalysis keys = "+JSON.stringify(keys))
+        this.allDataCount = Math.min(keys.length, 50);  //总数据数量
 
         let temp = this.allDataCount*0.2; 
         if(temp >= 50){
@@ -94,8 +95,8 @@ export default class MainScene extends cc.Component {
         let lastConf1:number[] = null;  //上一期数据
         let lastConf2:number[] = null;  //上二期数据
         let lastConf3:number[] = null;  //上三期数据
-        for(let k=this.allDataCount-1; k>=0; k--){   //从最近开始遍历
-            let key = keys[k];   //k=0为最早期的数据
+        for(let k=0; k<this.allDataCount; k++){   //从最近开始遍历
+            let key = keys[k];  
             let conf:config_ball_info = C_Config[key];
             if(conf){
                 let valArr: number[] = [
@@ -126,7 +127,7 @@ export default class MainScene extends cc.Component {
                         }
                     }
 
-                    if(k < this.allDataCount - this.offsetCount){   //已经在修整偏移范围之外的期数
+                    if(k >= this.offsetCount){   //已经在修整偏移范围之外的期数
                         if(cow >= this.blueIdx){  //篮球
                             if(this.totalBlueArr[ballVal-1]){   //总的蓝球分布数据
                                 this.totalBlueArr[ballVal-1].addPeriodNum();   //短期累计次数
@@ -215,12 +216,12 @@ export default class MainScene extends cc.Component {
 
 		cc.log("根据最近10期后继进行概率修正")
 		let adjustCount = 0;   //修正次数
-		for(let idx=this.allDataCount-51; idx<this.allDataCount-1; idx++){
+		for(let idx=this.offsetCount; idx>0; idx--){
 			lastConf1 = null;  //上一期数据
 			lastConf2 = null;  //上二期数据
 			lastConf3 = null;  //上三期数据
 			for(let k=0; k<3; k++){   //从最近开始遍历
-				let key = keys[idx-k]   //k=0为最早期的数据
+				let key = keys[idx+k]   
 				let conf:config_ball_info = C_Config[key];
 				if(conf){
 					let valArr: number[] = [
@@ -235,14 +236,18 @@ export default class MainScene extends cc.Component {
 					}
 				}
 			}
+			//cc.log("lastConf1 = "+JSON.stringify(lastConf1))
+			//cc.log("lastConf2 = "+JSON.stringify(lastConf2))
+			//cc.log("lastConf3 = "+JSON.stringify(lastConf3))
 			let lotteryConf: number[]= null;
-			let lottery_key = keys[idx+1]   //k=0为最早期的数据
+			let lottery_key = keys[idx-1]  
 			let conf:config_ball_info = C_Config[lottery_key];
 			if(conf){
 				lotteryConf = [
 					conf.first, conf.second, conf.third, conf.fourth, conf.fifth, conf.sixth, conf.seventh
 				];
 			}
+			//cc.log("lotteryConf = "+JSON.stringify(lotteryConf))
 			adjustCount++;
 			for(let cow=0; cow<this.cowNum; cow++){
 				if(this.cowAnalysis[cow]){   //列分布数据
@@ -258,7 +263,7 @@ export default class MainScene extends cc.Component {
 		lastConf2 = null;  //上二期数据
 		lastConf3 = null;  //上三期数据
 		for(let k=0; k<3; k++){   //从最近开始遍历
-			let key = keys[this.allDataCount-1-k]   //k=0为最早期的数据
+			let key = keys[k]  
 			let conf:config_ball_info = C_Config[key];
 			if(conf){
 				let valArr: number[] = [
