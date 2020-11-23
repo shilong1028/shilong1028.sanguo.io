@@ -14,7 +14,7 @@ class SDKManager_class  {
 
     bShowVedioBtn: boolean = false;   //显示视频或分享按钮
 
-    bAutoPlayVedio: boolean = false;
+    bAutoPlayVedio: boolean = false;    //是否开放视频
     adVedioPlaying: boolean = false;
 
     adMaxCount: number = 20;
@@ -33,7 +33,7 @@ class SDKManager_class  {
     initSDK(){
         SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
         SDKMgr.TT = (window as any).tt;;  //字节跳动   
-        SDKMgr.bannerCheckTime = 1578754065000;  //毫秒数 字节跳动屏蔽Banner时间戳
+        SDKMgr.bannerCheckTime = 1606319551000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
         SDKMgr.initAdDayCount();
 
@@ -84,32 +84,51 @@ class SDKManager_class  {
     }
 
     //************************** 分享  ******************************** */
+    shareAppTime: number = 0;
     shareCallTarget:any = null;
     shareCallback: any = null;
 
     /**分享 */
     shareGame(titleStr: string, callback:any = null, callTarget:any = null){
-        this.shareCallback = callback;
-        this.shareCallTarget = callTarget;
+        SDKMgr.shareCallback = callback;
+        SDKMgr.shareCallTarget = callTarget;
+
+        SDKMgr.shareAppTime = new Date().getTime();
+
         if(SDKMgr.TT != null){   //小程序
-            sdkTT.share(titleStr);
+            sdkTT.share(titleStr, callback, callTarget);
         }
         else if(SDKMgr.WeiChat != null){   //微信小游戏
-            sdkWechat.share(titleStr);
+            sdkWechat.share(titleStr, callback, callTarget);
+        }else{
+            this.handleShareSucc("");
         }
     }
 
-    // handleShareSucc(){
-    //     if(this.shareCallback && this.shareCallTarget){
-    //         setTimeout(()=>{
-    //             if(this.shareCallback && this.shareCallTarget){
-    //                 this.shareCallback.call(this.shareCallTarget, true);
-    //             }else{
-    //             }
-    //         }, 500)
-    //     }else{
-    //     }
-    // }
+    handleShareSucc(show_query:string){
+        if(SDKMgr.isSDK){
+            let query = parseFloat(show_query);
+            console.log("show_query = "+show_query+"; SDKMgr.shareAppTime = "+SDKMgr.shareAppTime)
+            if (SDKMgr.shareAppTime > 0) {
+                let curTime = new Date().getTime();
+                if(curTime - SDKMgr.shareAppTime < 20000){   //十秒之内返回，则发送奖励
+                    if(SDKMgr.shareCallback && SDKMgr.shareCallTarget){
+                        SDKMgr.shareCallback.call(SDKMgr.shareCallTarget, true);
+                    }
+                }
+            }
+        }else{
+            if(this.shareCallback && this.shareCallTarget){
+                setTimeout(()=>{
+                    if(this.shareCallback && this.shareCallTarget){
+                        this.shareCallback.call(this.shareCallTarget, true);
+                    }else{
+                    }
+                }, 500)
+            }
+        }
+        SDKMgr.shareAppTime = 0;
+    }
 
     //Banner管理
     createrBannerAd(){
@@ -119,14 +138,16 @@ class SDKManager_class  {
                 sdkTT.createBannerWithWidth("33a5n4jxb5h23h07h7");  //Banner广告
                 setInterval(()=>{
                     sdkTT.createBannerWithWidth("33a5n4jxb5h23h07h7");
-                }, 1000);   //每隔固定时间被调用一次
+                }, 100000);   //每隔固定时间100s被调用一次
             }
         }
         else if(SDKMgr.WeiChat != null){
-            sdkWechat.createBannerWithWidth("adunit-311e568f40c7b724");  //Banner广告
-            setInterval(()=>{
-                sdkWechat.createBannerWithWidth("adunit-311e568f40c7b724");
-            }, 1000);   //每隔固定时间被调用一次
+            if(SDKMgr.bAutoPlayVedio){
+                sdkWechat.createBannerWithWidth("adunit-311e568f40c7b724");  //Banner广告
+                setInterval(()=>{
+                    sdkWechat.createBannerWithWidth("adunit-311e568f40c7b724");
+                }, 100000);   //每隔固定时间被调用一次
+            }
         }
     }
 

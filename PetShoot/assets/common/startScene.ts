@@ -20,7 +20,6 @@ export default class StartScene extends cc.Component {
     updateStep: number = 0;
 
     onLoad () {
-        GameMgr.adaptBgByScene();   //场景背景图适配
         this.tipText.string = "加载配置中."
     }
 

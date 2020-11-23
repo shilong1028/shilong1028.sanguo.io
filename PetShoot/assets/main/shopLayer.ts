@@ -51,7 +51,7 @@ export default class ShopLayer extends cc.Component {
         }else{
             for(let i=1; i<= GameMgr.ShopCount; ++i){
                 let shopCfg = CfgMgr.getShopConf(i);
-                if(!SDKMgr.isSDK && shopCfg.vedio > 0){
+                if(!SDKMgr.bOpenVedioShop && shopCfg.vedio > 0){
                 }else{
                     this.shopArr.push(shopCfg);
                 }
@@ -81,7 +81,7 @@ export default class ShopLayer extends cc.Component {
             this.handleGuideBuy();
 
             GameMgr.getMainScene().checkGuidePlayer();
-        }, cc.size(200, 90), cc.v2(190, 105));
+        }, cc.size(200, 90), cc.v2(190, 75));
     }
 
     handleGuideBuy(){

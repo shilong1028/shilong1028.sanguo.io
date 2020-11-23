@@ -1,10 +1,8 @@
 
 import { GameMgr } from "../manager/GameManager";
-import { ROOT_NODE } from "./rootNode";
 import { MyUserDataMgr } from "../manager/MyUserData";
 import { LDMgr, LDKey } from "../manager/StorageManager";
 import { SDKMgr } from "../manager/SDKManager";
-import { sdkWechat } from "../manager/SDK_Wechat";
 import { AudioMgr } from "../manager/AudioMgr";
 
 //初始场景，用于初始化加载数据
@@ -28,7 +26,6 @@ export default class LoginScene extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        GameMgr.adaptBgByScene();   //场景背景图适配
         this.beginNode.active = false;
         this.descLabel.string = "";
     }
@@ -40,7 +37,7 @@ export default class LoginScene extends cc.Component {
             MyUserDataMgr.initUserData();    //初始化用户信息
         }
         this.bUpdateStr = true;
-        this.beginNode.active = false;
+        this.beginNode.active = true;
         this.btnNode.active = true;   //测试重置按钮
 
         SDKMgr.createrBannerAd();   //创建Banner

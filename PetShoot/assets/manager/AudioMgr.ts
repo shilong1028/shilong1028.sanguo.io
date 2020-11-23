@@ -1,4 +1,5 @@
 
+import { GameMgr } from "./GameManager";
 import { SDKMgr } from "./SDKManager";
 import { LDMgr, LDKey } from "./StorageManager";
 
@@ -37,6 +38,8 @@ class AudioMgr_class {
         LDMgr.setItem(LDKey.KEY_Music_onOff, keyVal);
         if(this.KEY_Music_onOff === 1){   //关闭
             this.stopBGM();
+        }else{
+            this.resumeBGM();
         }
     }
     /*** 设置背景音乐音量 0 - 1.0 */
@@ -72,7 +75,7 @@ class AudioMgr_class {
     /***播放背景音乐 */
     bgmAudio : any = null;
     playBGM(fileName: string, loop:boolean = true) {
-        this.stopBGM();
+        //this.stopBGM();
         if(this.KEY_Music_onOff === 0){   //开启
             cc.loader.loadRes("sound/" + fileName, cc.AudioClip, function (err, ac) {
                 if (err) {
@@ -84,13 +87,21 @@ class AudioMgr_class {
         }
     }
     stopBGM(){
-        // if(SDKMgr.isSDK && SDKMgr.WeiChat){
+        cc.audioEngine.stopMusic();
+        // if(SDKMgr.isSDK){
         //     if(this.bgmAudio != null){
         //         this.bgmAudio.stop();
         //     }
         // }else{
         //     cc.audioEngine.stopMusic();
         // }
+    }
+    resumeBGM(){
+        if(GameMgr.getMainScene()){
+            AudioMgr.playBGM("hallbgmusic");
+        }else{
+            AudioMgr.playBGM("fightbgmusic");
+        }
     }
 
     /**播放Effect bOverlap是否覆盖类型的音效 */

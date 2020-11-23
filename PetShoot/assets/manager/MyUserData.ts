@@ -93,7 +93,7 @@ class MyUserManager {
 
         this.updateCurLevelId(0);  //当前通关的最大id
 
-        this.updateUserGold(50000);
+        this.updateUserGold(1000);
         this.updateUserDiamond(50);
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户

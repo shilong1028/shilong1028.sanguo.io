@@ -60,39 +60,41 @@ class GameManager {
         //let visibleSize = cc.view.getVisibleSize(); //为按照设计分辨率等比放缩后的尺寸，肯能为小数比如1333.4
 
         let frameScale = frameSize.height/frameSize.width; 
-        if(frameScale > 1.77 && frameScale < 1.8){   //等比拉伸，背景填充   和设计分辨率750*1334宽高比差不多
-            let scaleW = frameSize.width/designSize.width;
-            let scaleH = frameSize.height/designSize.height;
-            //console.log("等比拉伸，背景填充")
-            if(scaleH < scaleW){
-                //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_HEIGHT);
-                cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_HEIGHT); 
-            }else{
-                //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_WIDTH);
-                cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_WIDTH); 
-            }
-        }else if(frameScale <= 1.77){   //等高放缩，背景宽拉伸，左右侧按钮位移
-            //console.log("等高放缩，背景宽拉伸，左右侧按钮位移")
-            //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_HEIGHT);   //表示固定高度
-            cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_HEIGHT); 
-        }else if(frameScale >= 1.8){   //等宽放缩，背景高拉伸，顶底按钮位移
-            //console.log("等宽放缩，背景高拉伸，顶底按钮位移")
-            //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_WIDTH);
-            cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_WIDTH);   //表示固定宽度
-        }
+        // if(frameScale > 1.77 && frameScale < 1.8){   //等比拉伸，背景填充   和设计分辨率750*1334宽高比差不多
+        //     let scaleW = frameSize.width/designSize.width;
+        //     let scaleH = frameSize.height/designSize.height;
+        //     //console.log("等比拉伸，背景填充")
+        //     if(scaleH < scaleW){
+        //         //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_HEIGHT);
+        //         cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_HEIGHT); 
+        //     }else{
+        //         //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_WIDTH);
+        //         cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_WIDTH); 
+        //     }
+        // }else if(frameScale <= 1.77){   //等高放缩，背景宽拉伸，左右侧按钮位移
+        //     //console.log("等高放缩，背景宽拉伸，左右侧按钮位移")
+        //     //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_HEIGHT);   //表示固定高度
+        //     cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_HEIGHT); 
+        // }else if(frameScale >= 1.8){   //等宽放缩，背景高拉伸，顶底按钮位移
+        //     //console.log("等宽放缩，背景高拉伸，顶底按钮位移")
+        //     //cc.view.setResolutionPolicy(cc.ResolutionPolicy.FIXED_WIDTH);
+        //     cc.view.setDesignResolutionSize(designSize.width, designSize.height, cc.ResolutionPolicy.FIXED_WIDTH);   //表示固定宽度
+        // }
 
-        let layer = cc.director.getScene().getChildByName("Canvas");
-        if(layer){
-            let bg = layer.getChildByName("bg");
-            if(bg){
-                bg.width = cc.winSize.width;
-                bg.height = cc.winSize.height;
-            }
-        }
+        // let layer = cc.director.getScene().getChildByName("Canvas");
+        // if(layer){
+        //     let bg = layer.getChildByName("bg");
+        //     if(bg){
+        //         bg.width = cc.winSize.width;
+        //         bg.height = cc.winSize.height;
+        //     }
+        // }
 
-        if(topNode){
-            if(frameScale < 1.8){
-                topNode.y = cc.winSize.height/2;
+        if(topNode && frameScale >= 1.8){   //窄屏手机，可能有刘海
+            let topWidget = topNode.getComponent(cc.Widget);
+            if(topWidget){
+                topWidget.top = 70;
+                topWidget.updateAlignment();
             }else{
                 topNode.y = cc.winSize.height/2 - 70;   //窄屏手机，可能有刘海
             }

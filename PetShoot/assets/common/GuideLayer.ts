@@ -38,6 +38,8 @@ export default class GuideLayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.node.width = cc.winSize.width;
+        this.node.width = cc.winSize.height;
         this.touchNode.width = cc.winSize.width;
         this.touchNode.height = cc.winSize.height;
         this.touchNode.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);

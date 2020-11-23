@@ -15,6 +15,8 @@ var WeChat_VedioIds = {
 
 export class SDK_Wechat  {
 
+    shareImageUrl: string = "https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksJB5QHQ8anlZGWdicrK3Cllk7a8XOPCD2jicENfrRR9XVQaKZOV1VyfnZ/0";
+
     ///////////////////////初始化SDK 更新和分享按钮
     initSDK(){
         let wx = (window as any).wx;  //微信小游戏
@@ -42,17 +44,34 @@ export class SDK_Wechat  {
             // 新版本下载失败
         });
 
-        //微信分享菜单
+        wx.onShow(res => {
+            console.log("onShow res = "+JSON.stringify(res))
+            SDKMgr.handleShareSucc(res.query);
+        });
+
+        //微信分享菜单  
         wx.showShareMenu({
             withShareTicket: true,
+            menus: ['shareAppMessage', 'shareTimeline'],   //"shareAppMessage"表示“发送给朋友”按钮，"shareTimeline"表示“分享到朋友圈”按钮
             success(res) {
             },
             fail(res) {
             }
         })
-    }
 
-    share(titleStr: string){
+        // 分享回调  监听用户点击右上角菜单的「转发」按钮时触发的事件
+        wx.onShareAppMessage(res => {
+            cc.log('wx.onShareAppMessage res:', res);
+            SDKMgr.shareAppTime = new Date().getTime();
+            return {
+                title: "一起来捉鸡鸡，分享联萌快乐！",  //"萌宠们根本停不下来，一起疯狂弹射打怪。",
+                imageUrl: this.shareImageUrl,
+                query: 'shareTime='+SDKMgr.shareAppTime,
+            };
+        });
+    }
+    
+    share(titleStr: string, callback:any = null, callTarget:any = null){
         let wx = SDKMgr.WeiChat;
         if (wx == null) {
             return;
@@ -60,8 +79,9 @@ export class SDK_Wechat  {
 
         wx.shareAppMessage({
             title: titleStr,
-            imageUrlId: "1IqtE4CzQUyV5TP0MTxYCw",
-            imageUrl: "https://mmocgame.qpic.cn/wechatgame/ap8QGBf5gXg4n7Ese58NnzS4saYJf4THM3aOx394fcRVHKrp9bSgDjjrsyYL1gbS/0",
+            query: 'shareTime='+SDKMgr.shareAppTime,
+            imageUrlId: "UwQ91XcgTm+zYaZbYTnJ2A==",
+            imageUrl: this.shareImageUrl,
         });
     }
 

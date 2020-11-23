@@ -1,3 +1,4 @@
+import { SDKMgr } from "./SDKManager";
 
 //本地存储管理器
 const {ccclass, property} = cc._decorator;
@@ -6,13 +7,25 @@ const {ccclass, property} = cc._decorator;
 class StorageManager_class  {
 
     setItem(key:string, value:any) {
-        cc.sys.localStorage.setItem(key, value);
-
-        //SDKMgr.setUserCloudStorage(key, ""+value);
+        if(SDKMgr.TT != null){   //字节跳动小程序
+            SDKMgr.TT.setStorageSync(key, value)
+        }
+        else if(SDKMgr.WeiChat != null){   //微信小游戏
+            SDKMgr.WeiChat.setStorageSync(key, value)
+        }
+        else {
+            cc.sys.localStorage.setItem(key, value);
+        }
     }
 
     getItem(key:string) : string{
         let val = cc.sys.localStorage.getItem(key);
+        if(SDKMgr.TT != null){   //字节跳动小程序
+            val = SDKMgr.TT.getStorageSync(key)
+        }
+        else if(SDKMgr.WeiChat != null){   //微信小游戏
+            val = SDKMgr.WeiChat.getStorageSync(key)
+        }
         if(val == null || val == undefined){
             val = "";
         }
@@ -21,6 +34,12 @@ class StorageManager_class  {
 
     getItemKeyVal(key: string){
         let val = cc.sys.localStorage.getItem(key);
+        if(SDKMgr.TT != null){   //字节跳动小程序
+            val = SDKMgr.TT.getStorageSync(key)
+        }
+        else if(SDKMgr.WeiChat != null){   //微信小游戏
+            val = SDKMgr.WeiChat.getStorageSync(key)
+        }
         if(val == null || val == undefined){
             val = null;
         }else{
@@ -37,6 +56,12 @@ class StorageManager_class  {
 
     getItemInt(key:string, defaultVal:number=0) : number{
         let val = cc.sys.localStorage.getItem(key);
+        if(SDKMgr.TT != null){   //字节跳动小程序
+            val = SDKMgr.TT.getStorageSync(key)
+        }
+        else if(SDKMgr.WeiChat != null){   //微信小游戏
+            val = SDKMgr.WeiChat.getStorageSync(key)
+        }
         //console.log("getItemInt(), key = "+key+"; val = "+val+"; isNaN(val) = "+isNaN(val));
         if(isNaN(val) == true || val == null || val == undefined || val == ""){  
             val = defaultVal;
@@ -49,6 +74,12 @@ class StorageManager_class  {
 
     getItemFloat(key:string, defaultVal:number=0) : number{
         let val = cc.sys.localStorage.getItem(key);
+        if(SDKMgr.TT != null){   //字节跳动小程序
+            val = SDKMgr.TT.getStorageSync(key)
+        }
+        else if(SDKMgr.WeiChat != null){   //微信小游戏
+            val = SDKMgr.WeiChat.getStorageSync(key)
+        }
         if(isNaN(val) == true || val == null || val == undefined || val == ""){  
             val = defaultVal;
             this.setItem(key, defaultVal);
@@ -62,6 +93,12 @@ class StorageManager_class  {
 	getItemIntAry(key: string, sp: string = "|"): Array<number> {
         let ret: Array<number> = [];
         let str = cc.sys.localStorage.getItem(key);
+        if(SDKMgr.TT != null){   //字节跳动小程序
+            str = SDKMgr.TT.getStorageSync(key)
+        }
+        else if(SDKMgr.WeiChat != null){   //微信小游戏
+            str = SDKMgr.WeiChat.getStorageSync(key)
+        }
         if(str && str.length > 0){
             let sL = str.toString().split(sp);
             for (let p of sL) {
@@ -91,6 +128,12 @@ class StorageManager_class  {
     //检查一个string是否为Json并返回string或json对象
     getJsonItem(key: string) {
         let str = cc.sys.localStorage.getItem(key);
+        if(SDKMgr.TT != null){   //字节跳动小程序
+            str = SDKMgr.TT.getStorageSync(key)
+        }
+        else if(SDKMgr.WeiChat != null){   //微信小游戏
+            str = SDKMgr.WeiChat.getStorageSync(key)
+        }
         if(str == null || str == undefined || str == ""){
             return null;
         }

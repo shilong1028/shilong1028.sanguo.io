@@ -14,8 +14,6 @@ var TT_VedioIds = {
     SignVedioId:    "5m1knnlfhf95bgi1o1",    //签到    》15
 }
 
-var shareImageUrl= 'https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksJB5QHQ8anlZGWdicrK3Cllk7a8XOPCD2jicENfrRR9XVQaKZOV1VyfnZ/0';
-
 export class SDK_TT  {
 
     ///////////////////////初始化SDK 更新和分享按钮
@@ -25,7 +23,8 @@ export class SDK_TT  {
     networkType: any = null;
     toutiao_hide: boolean = false;
     has_tt_videoad: boolean = false;
-    is_shareAppMessage: boolean = false;
+
+    shareImageUrl: string = 'https://mmocgame.qpic.cn/wechatgame/jTqetgM5ksJB5QHQ8anlZGWdicrK3Cllk7a8XOPCD2jicENfrRR9XVQaKZOV1VyfnZ/0';
 
     initSDK(){
         let tt = (window as any).tt;  
@@ -71,9 +70,7 @@ export class SDK_TT  {
                 this.has_tt_videoad = false;
             }
 
-            if (this.is_shareAppMessage) {
-                this.is_shareAppMessage = false;
-            }
+            SDKMgr.handleShareSucc(res.query);
 
             this.checkToutiaoUpdate();
             this.getSetting();
@@ -91,13 +88,14 @@ export class SDK_TT  {
             },
         });
 
-        // 分享回调
+        // 分享回调  监听用户点击右上角菜单的「转发」按钮时触发的事件
         tt.onShareAppMessage(res => {
             cc.log('tt.onShareAppMessage res:', res);
+            SDKMgr.shareAppTime = new Date().getTime();
             return {
-                title: "萌宠们根本停不下来，一起疯狂弹射打怪。",
-                imageUrl: shareImageUrl,
-                query: "",
+                title: "一起来捉鸡鸡，分享联萌快乐！",  //"萌宠们根本停不下来，一起疯狂弹射打怪。",
+                imageUrl: this.shareImageUrl,
+                query: 'shareTime='+SDKMgr.shareAppTime,
                 success(res) {
                 },
                 fail(res) {
@@ -106,21 +104,17 @@ export class SDK_TT  {
         });
     }
 
-
-    share(titleStr: string){
+    share(titleStr: string, callback:any = null, callTarget:any = null){
         let tt = (window as any).tt;  
         if (tt == null) {
             return;
         }
 
-        this.is_shareAppMessage = true;
-
         tt.shareAppMessage({
-            channel: '',
             title: titleStr,
-            imageUrlId: shareImageUrl,
+            imageUrlId: this.shareImageUrl,
             imageUrl: '1e29bdm71eg5b2pcp0',
-            query: '',
+            query: 'shareTime='+SDKMgr.shareAppTime,
             success: res => {
             },
             fail: res => {
@@ -670,7 +664,7 @@ export class SDK_TT  {
             }
             tt.shareAppMessage({
                 channel: 'video',
-                imageUrl: shareImageUrl,
+                imageUrl: this.shareImageUrl,
                 query: '',
                 extra: {
                     videoPath: videoPath,
