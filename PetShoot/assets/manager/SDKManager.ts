@@ -33,7 +33,7 @@ class SDKManager_class  {
     initSDK(){
         SDKMgr.WeiChat = (window as any).wx;  //微信小游戏
         SDKMgr.TT = (window as any).tt;;  //字节跳动   
-        SDKMgr.bannerCheckTime = 1606319551000;  //毫秒数 字节跳动屏蔽Banner时间戳
+        SDKMgr.bannerCheckTime = 1606398552000;  //毫秒数 字节跳动屏蔽Banner时间戳
 
         SDKMgr.initAdDayCount();
 

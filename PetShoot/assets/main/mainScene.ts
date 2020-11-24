@@ -89,10 +89,6 @@ export default class MainScene extends cc.Component {
         console.log("************* onShow() 后台切回前台 ***********************")
         //NotificationMy.emit(NoticeType.GameResume, null);  //继续游戏
         cc.game.resume();
-
-        if(SDKMgr.WeiChat){
-            SDKMgr.handleShareSucc();   //微信分享回调
-        }
     }
 
     /**游戏切入后台 */

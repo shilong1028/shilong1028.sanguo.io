@@ -46,7 +46,7 @@ export class SDK_Wechat  {
 
         wx.onShow(res => {
             console.log("onShow res = "+JSON.stringify(res))
-            //SDKMgr.handleShareSucc(res.query);
+            SDKMgr.handleShareSucc();
         });
 
         //微信分享菜单  

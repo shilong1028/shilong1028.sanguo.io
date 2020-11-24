@@ -71,6 +71,7 @@ export default class SignLayer extends cc.Component {
         let bInteractable = !bGray;
         this.signBtn.interactable = bInteractable;
         this.vedioBtn.interactable = bInteractable;
+        this.shareBtn.interactable = bInteractable;
     }
 
     onSelectSignCell(cell: SignCell){

@@ -51,7 +51,7 @@ export default class ShopLayer extends cc.Component {
         }else{
             for(let i=1; i<= GameMgr.ShopCount; ++i){
                 let shopCfg = CfgMgr.getShopConf(i);
-                if(!SDKMgr.bOpenVedioShop && shopCfg.vedio > 0){
+                if(SDKMgr.WeiChat && shopCfg.vedio > 0){   //显示视频或分享按钮
                 }else{
                     this.shopArr.push(shopCfg);
                 }

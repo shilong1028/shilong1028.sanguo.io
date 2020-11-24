@@ -274,10 +274,6 @@ export default class FightScene extends cc.Component {
         }else{
             cc.game.resume();
         }
-
-        if(SDKMgr.WeiChat){
-            SDKMgr.handleShareSucc();   //微信分享回调
-        }
     }
 
     /**游戏切入后台 */
