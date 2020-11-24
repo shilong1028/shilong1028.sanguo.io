@@ -81,7 +81,7 @@ export default class ShopLayer extends cc.Component {
             this.handleGuideBuy();
 
             GameMgr.getMainScene().checkGuidePlayer();
-        }, cc.size(200, 90), cc.v2(190, 75));
+        }, cc.size(200, 100), cc.v2(190, 90));
     }
 
     handleGuideBuy(){

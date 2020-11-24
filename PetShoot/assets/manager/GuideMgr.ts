@@ -66,9 +66,8 @@ class GuideMgr_class {
             let maskSpr: cc.SpriteFrame = null;
             let worldPos = cc.v2(cc.winSize.width/2, cc.winSize.height/2);
             if(btn){
-                worldPos = btn.parent.convertToWorldSpaceAR(cc.Vec2.ZERO);
-                worldPos.x += btn.x;
-                worldPos.y += btn.y;
+                worldPos = btn.parent.convertToWorldSpaceAR(btn.position);
+                //cc.log("showGuideLayer worldPos = "+worldPos+"; offsetPos = "+offsetPos)
 
                 if(btnSize == null){
                     btnSize = btn.getContentSize();
@@ -83,7 +82,9 @@ class GuideMgr_class {
                     btnSize = cc.size(100, 100);
                 }
             }
-            guideSc.initGuideData(worldPos, maskSpr, callback, btnSize, offsetPos);
+            worldPos.x += offsetPos.x;
+            worldPos.y += offsetPos.y;
+            guideSc.initGuideData(worldPos, maskSpr, callback, btnSize, cc.v2(0, 0));
         }
         return guideLayer;
     }

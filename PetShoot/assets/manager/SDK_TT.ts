@@ -70,8 +70,6 @@ export class SDK_TT  {
                 this.has_tt_videoad = false;
             }
 
-            SDKMgr.handleShareSucc(res.query);
-
             this.checkToutiaoUpdate();
             this.getSetting();
         });
@@ -90,12 +88,11 @@ export class SDK_TT  {
 
         // 分享回调  监听用户点击右上角菜单的「转发」按钮时触发的事件
         tt.onShareAppMessage(res => {
-            cc.log('tt.onShareAppMessage res:', res);
             SDKMgr.shareAppTime = new Date().getTime();
             return {
                 title: "一起来捉鸡鸡，分享联萌快乐！",  //"萌宠们根本停不下来，一起疯狂弹射打怪。",
                 imageUrl: this.shareImageUrl,
-                query: 'shareTime='+SDKMgr.shareAppTime,
+                query: '',
                 success(res) {
                 },
                 fail(res) {
@@ -104,7 +101,7 @@ export class SDK_TT  {
         });
     }
 
-    share(titleStr: string, callback:any = null, callTarget:any = null){
+    share(titleStr: string, shareCallback:any = null, shareCallTarget:any = null){
         let tt = (window as any).tt;  
         if (tt == null) {
             return;
@@ -114,10 +111,16 @@ export class SDK_TT  {
             title: titleStr,
             imageUrlId: this.shareImageUrl,
             imageUrl: '1e29bdm71eg5b2pcp0',
-            query: 'shareTime='+SDKMgr.shareAppTime,
+            query: '',
             success: res => {
+                if(shareCallback && shareCallTarget){
+                    shareCallback.call(shareCallTarget, true);
+                }
             },
             fail: res => {
+                if(shareCallback && shareCallTarget){
+                    shareCallback.call(shareCallTarget, false);
+                }
             },
             complete: res => {
             },

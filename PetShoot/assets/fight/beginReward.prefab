@@ -427,7 +427,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 450,
+      "width": 390,
       "height": 44.1
     },
     "_anchorPoint": {
@@ -479,8 +479,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "观看视频开局随机开启一个技能！",
-    "_N$string": "观看视频开局随机开启一个技能！",
+    "_string": "观看视频随机开启一个技能！",
+    "_N$string": "观看视频随机开启一个技能！",
     "_fontSize": 30,
     "_lineHeight": 35,
     "_enableWrapText": true,

@@ -87,6 +87,7 @@ class SDKManager_class  {
     shareAppTime: number = 0;
     shareCallTarget:any = null;
     shareCallback: any = null;
+    shareTimeOutId: any = null;
 
     /**分享 */
     shareGame(titleStr: string, callback:any = null, callTarget:any = null){
@@ -101,30 +102,25 @@ class SDKManager_class  {
         else if(SDKMgr.WeiChat != null){   //微信小游戏
             sdkWechat.share(titleStr, callback, callTarget);
         }else{
-            this.handleShareSucc("");
+            if(SDKMgr.shareTimeOutId){
+                clearTimeout(SDKMgr.shareTimeOutId)
+            }
+            SDKMgr.shareTimeOutId = setTimeout(()=>{
+                if(this.shareCallback && this.shareCallTarget){
+                    this.shareCallback.call(this.shareCallTarget, true);
+                }
+            }, 1000)   //1s自动回调
         }
     }
 
-    handleShareSucc(show_query:string){
-        if(SDKMgr.isSDK){
-            let query = parseFloat(show_query);
-            console.log("show_query = "+show_query+"; SDKMgr.shareAppTime = "+SDKMgr.shareAppTime)
-            if (SDKMgr.shareAppTime > 0) {
+    handleShareSucc(){
+        if(SDKMgr.WeiChat){   // //微信分享回调
+            if(SDKMgr.shareCallback && SDKMgr.shareCallTarget){
                 let curTime = new Date().getTime();
-                if(curTime - SDKMgr.shareAppTime < 20000){   //十秒之内返回，则发送奖励
-                    if(SDKMgr.shareCallback && SDKMgr.shareCallTarget){
-                        SDKMgr.shareCallback.call(SDKMgr.shareCallTarget, true);
-                    }
+                console.log("handleShareSucc SDKMgr.shareAppTime = "+SDKMgr.shareAppTime+"; curTime = "+curTime)
+                if (SDKMgr.shareAppTime > 0 && curTime - SDKMgr.shareAppTime < 20000){   //十秒之内返回，则发送奖励
+                    SDKMgr.shareCallback.call(SDKMgr.shareCallTarget, true);
                 }
-            }
-        }else{
-            if(this.shareCallback && this.shareCallTarget){
-                setTimeout(()=>{
-                    if(this.shareCallback && this.shareCallTarget){
-                        this.shareCallback.call(this.shareCallTarget, true);
-                    }else{
-                    }
-                }, 500)
             }
         }
         SDKMgr.shareAppTime = 0;

@@ -37,10 +37,14 @@ export default class LoginScene extends cc.Component {
             MyUserDataMgr.initUserData();    //初始化用户信息
         }
         this.bUpdateStr = true;
-        this.beginNode.active = true;
-        this.btnNode.active = true;   //测试重置按钮
 
-        SDKMgr.createrBannerAd();   //创建Banner
+        if(SDKMgr.isSDK){
+            this.beginNode.active = true;
+            this.btnNode.active = false;   //测试重置按钮
+            SDKMgr.createrBannerAd();   //创建Banner
+        }else{
+            this.btnNode.active = true;   //测试重置按钮
+        }
     }
 
     update (dt) {

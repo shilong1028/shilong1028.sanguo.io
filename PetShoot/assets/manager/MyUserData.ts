@@ -98,12 +98,12 @@ class MyUserManager {
 
         LDMgr.setItem(LDKey.KEY_NewUser, 1);  //是否新用户
 
-        cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+        //cc.log("initNewUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
 
     checkUserName(){
-        console.log("MyUserData.UserName = "+MyUserData.UserName);
+        //console.log("MyUserData.UserName = "+MyUserData.UserName);
         if(MyUserData.UserName && MyUserData.UserName.indexOf("萌宠") >= 0 && MyUserData.UserName.length > 10){
         }else{
             MyUserData.UserName = "萌宠_"+Math.ceil(Math.random()*99)+"_"+(new Date().getTime());
@@ -146,7 +146,7 @@ class MyUserManager {
         if(LDMgr.getItemInt(LDKey.KEY_NewUser) == 0){  //新用户 
             this.clearUserData();  //新玩家初始化
         }
-        cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
+        //cc.log("initUserData() 初始化用户信息 MyUserData = "+JSON.stringify(MyUserData));
     }
 
     /**更新新手引导数据 */

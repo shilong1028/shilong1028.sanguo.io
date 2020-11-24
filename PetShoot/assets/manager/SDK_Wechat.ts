@@ -46,7 +46,7 @@ export class SDK_Wechat  {
 
         wx.onShow(res => {
             console.log("onShow res = "+JSON.stringify(res))
-            SDKMgr.handleShareSucc(res.query);
+            //SDKMgr.handleShareSucc(res.query);
         });
 
         //微信分享菜单  
@@ -61,17 +61,15 @@ export class SDK_Wechat  {
 
         // 分享回调  监听用户点击右上角菜单的「转发」按钮时触发的事件
         wx.onShareAppMessage(res => {
-            cc.log('wx.onShareAppMessage res:', res);
-            SDKMgr.shareAppTime = new Date().getTime();
             return {
                 title: "一起来捉鸡鸡，分享联萌快乐！",  //"萌宠们根本停不下来，一起疯狂弹射打怪。",
                 imageUrl: this.shareImageUrl,
-                query: 'shareTime='+SDKMgr.shareAppTime,
+                query: '',
             };
         });
     }
     
-    share(titleStr: string, callback:any = null, callTarget:any = null){
+    share(titleStr: string, shareCallback:any = null, shareCallTarget:any = null){
         let wx = SDKMgr.WeiChat;
         if (wx == null) {
             return;
