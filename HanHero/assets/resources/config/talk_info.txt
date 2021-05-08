@@ -1,0 +1,725 @@
+[101]
+id_str = 101
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 东汉末年
+desc = 东汉末年政局不稳，外戚专政，宦官专权，连年战争，频繁叛乱，民不聊生。
+
+[102]
+id_str = 102
+city = 0
+type = 0
+head = 13
+generals = 
+official = 
+skip = 1
+date = 光和七年·二月
+desc = 汉灵帝光和七年二月，巨鹿人张角自称天公将军，高喊“苍天已死，黄天当立，岁在甲子，天下大吉”在北方冀州一带起事。
+
+[103]
+id_str = 103
+city = 0
+type = 0
+head = 13
+generals = 
+official = 
+skip = 1
+date = 光和七年·四月
+desc = 汉灵帝怕党人与黄巾一同作乱，遂于夏四月丁酉日大赦天下，免除了亲属关系与党人在小功以外者的禁锢。
+
+[104]
+id_str = 104
+city = 0
+type = 0
+head = 10
+generals = 101
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，党禁已解除，主公得到了朝廷的重新启用。老夫人遣女婢小芳来伺候大人，请主公新定一个昵称，以贺重生。
+
+[105]
+id_str = 105
+city = 0
+type = 0
+head = 10
+generals = 
+official = 102
+skip = 0
+date = 
+desc = 恭喜主公，新名已上报朝廷，朝廷授予主公县令一职。请主公速速前往京师，答谢皇恩，并选择一县前往就任。
+
+[106]
+id_str = 106
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，虽然一路上盗寇四起、流民不断，但我们终于赶到了县城。只是没想到县城如此破败、人烟稀少。请主公速速修葺县衙、整顿吏从，服务一方百姓。
+
+[107]
+id_str = 107
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，县衙已经焕然一新，仆吏均已到位。可是妾身还没有容身之所呢，请主公在县衙旁边修建一座庭院内宅吧，以便妾身早晚服侍主公大人。
+
+[108]
+id_str = 108
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 哇，好漂亮的庭院呀，花园很大，内宅房间也很多。哦，主公这是想要金屋藏娇，收纳更多美姬呀。我要这一间大房子，主公要不要进来点点妾身，妾身可以给你生钱哟。
+
+[109]
+id_str = 109
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 哎哟，生了这么多钱钱，妾身累了，感觉身体都被掏空了。主公快去用这些钱财整修一下城墙吧，免得盗贼流民前来劫掠财粮百姓，妾身可不想被盗贼掳走。
+
+[110]
+id_str = 110
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 1
+date = 
+desc = 主公大人，辛苦了，城墙终于修整完毕。城外部分百姓为了躲避盗寇，希望迁入城内居住，望主公准许。
+
+[111]
+id_str = 111
+city = 0
+type = 0
+head = 1
+generals = 
+official = 
+skip = 0
+date = 
+desc = 嗯，扩充人口有助于城池繁荣，将这些百姓迁入城西，并修建居民住宅。
+
+[112]
+id_str = 112
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，百姓均以迁入城中并安定新居。请主公修建刀盾营，并招募精壮百姓组建轻装刀兵，以拱卫县城、维持治安。
+
+[113]
+id_str = 113
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，轻装刀兵已经征召训练完毕，请主公大人前往挑选勇士，组建主公的亲卫部曲。
+
+[114]
+id_str = 114
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，将士已经训练月余，士气旺盛。城东五里铺的流民已聚集多日，不从政令，请主公率兵剿抚之，以免流民做大作乱。
+
+[115]
+id_str = 115
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，初战大胜，并招抚众多流民百姓。请主公将民众迁往城东安置，并开垦荒地，恢复农业生产。
+
+[116]
+id_str = 116
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，郡守大人接到主公安抚流民文书后，下拨了一些救济粮草，请主公在城中速速修建武库，并将粮草入库存放。
+
+[117]
+id_str = 117
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，城南十里堡的一股乱匪阻断了县城的商贸道路，请主公发兵剿灭，恢复县城商贸来往。
+
+[118]
+id_str = 118
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，乱匪一触即溃，主公声名大噪，四周商贩欣喜若狂，纷纷赶来恢复商贸。请主公速速于南门外建造商铺。
+
+[119]
+id_str = 119
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报，主公大人，不少贼寇垂涎县城的财物，已聚集城外，准备劫掠县城，请主公速速登城备战。
+
+[120]
+id_str = 120
+city = 0
+type = 0
+head = 10
+generals = 1103
+official = 
+skip = 0
+date = 
+desc = 主公大人，贼寇退却了，教头华威枪法精湛，作战勇武，请主公提拔重用。
+
+[121]
+id_str = 121
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，华威将军善使长枪，请主公于内城修建枪戟营，并招募训练轻装枪兵。
+
+[122]
+id_str = 122
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，轻装枪兵已经征召训练完毕，请主公大人为华威将军组建部曲，以扩充县城防御力量。
+
+[123]
+id_str = 123
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，将士们没有护甲，战斗中伤亡会比较大，请主公建造工坊，用于打造护甲。
+
+[124]
+id_str = 124
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，我们获得了一批护甲，请升级主公亲卫部曲，增加将士防护能力。
+
+[125]
+id_str = 125
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，经探明，上次袭击县城的贼寇并未远去，而是躲藏在城东十五里的山坳中，请主公发兵剿灭之，清除隐患。
+
+[126]
+id_str = 126
+city = 0
+type = 0
+head = 10
+generals = 1105
+official = 
+skip = 0
+date = 
+desc = 主公威武，我军大获全胜，缴获钱粮辎重无数，还有一批弓弩箭矢。教头郭强善使弓箭，请主公提拔重用。
+
+[127]
+id_str = 127
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，缴获的弓弩箭矢数量不足，请主公于西门外修建弓弩营，并招募训练轻装弓兵。
+
+[128]
+id_str = 128
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，轻装弓兵已经征召训练完毕，请主公大人为郭强将军组建部曲，打造一支远程攻击部队。
+
+[129]
+id_str = 129
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，我方目前已有三支部曲兵力，为了将士们更好的训练，请主公在城西建造校场。
+
+[130]
+id_str = 130
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，校场已经建造完毕，请主公前往校验将士，并开始整训升级部曲吧。
+
+[201]
+id_str = 201
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报，主公大人，城北县界出现一处匪寨。贼寇四处扰民，烧杀劫掠，请主公率军前往平定，保护一方百姓。
+
+[202]
+id_str = 202
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公威武，一举荡平贼寇老巢，剿灭俘获众多民众和财物，请主公于城北外修建监牢以关押贼寇头领。
+
+[203]
+id_str = 203
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报，主公，大事不好，城北贼寇与北邻县县令关系密切，北邻县县令对主公剿匪之事大为不满，请主公早做防备。
+
+[204]
+id_str = 204
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，要想增强城墙防御，需要先扩建县衙后方可升级城墙、内宅、兵营等建筑设施，请主公立即升级县衙。
+
+[205]
+id_str = 205
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公，县衙扩建成功，请主公择机升级其他建筑设施吧，设施等级越高，产出效果过好。
+
+[206]
+id_str = 206
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，别忘升级内宅哟，之后才能收纳更多侍妾美姬，如此才能点出更多小钱钱哟。
+
+[207]
+id_str = 207
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报主公，大事不好，北邻县县令领兵入境，朝县城赶来，准备营救贼寇头目，并向主公讨要说法。请主公布置兵力，积极防御。
+
+[208]
+id_str = 208
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公威武，北邻县县令被主公打的落荒而逃，请主公趁胜追击，将这贪官污吏绳之以法。
+
+[209]
+id_str = 209
+city = 1
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，北邻县县令已被我军击杀，乱军余者愿降，县城已在我军控制之下。
+
+[210]
+id_str = 210
+city = 0
+type = 0
+head = 10
+generals = 102
+official = 
+skip = 0
+date = 
+desc = 主公大人，北邻县县丞奉上厚礼，愿听主公差遣，并献其妹双儿来侍奉主公，请主公前往后宅问候探视，多多点击生小钱钱。
+
+[211]
+id_str = 211
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，县丞、县尉职位目前空缺，可以安排郭强、华威两位曲将担任。
+
+[212]
+id_str = 212
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报主公，郡守大人派来使者询问我军与北邻县的争端，请主公备上厚礼，并休书一封，说明事情缘由，打消郡守大人的疑虑。
+
+[213]
+id_str = 213
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 嗯，爱妾速去准备，多备些好礼送予郡守大人。
+
+[214]
+id_str = 214
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报主公，东邻县率军正在围攻北邻县，北邻县县丞向主公发来求援信，请主公整军前往解救。
+
+[215]
+id_str = 215
+city = 0
+type = 0
+head = 10
+generals = 1102
+official = 
+skip = 0
+date = 
+desc = 主公威武，东邻县在北邻县和我军的内外夹击之下大败，并四散溃逃。北邻县县丞韩兴率军归附，请主公出城迎接。
+
+[216]
+id_str = 216
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，我军又得一名武将。请主公速速招募轻装刀盾兵士，为韩兴将军补充部曲。
+
+[217]
+id_str = 217
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，我军士气如虹，兵强马壮，请主公发兵攻打东邻县，一劳永逸地解决后顾之忧。
+
+[218]
+id_str = 218
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公威武，我军大胜，攻陷东邻县县城，缴获甚多。东邻县县令出逃，东邻县尉付民被俘，已收押监牢。
+
+[219]
+id_str = 219
+city = 0
+type = 0
+head = 10
+generals = 1104
+official = 
+skip = 0
+date = 
+desc = 主公，付民作战勇武，为官清廉，爱护百姓，请主公委身前往牢狱说服招降。
+
+[301]
+id_str = 301
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报主公，大事不好，郡守大人对我军的行动极为不满，准备新任命北邻县和东邻县县令，并责令主公解散部曲。
+
+[302]
+id_str = 302
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，我军如今兵多将广，取代郡守也未尝不可，请主公扩军备战，择机取代郡守，打下一处安身之地。
+
+[303]
+id_str = 303
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报主公，郡守大人率军前往讨伐我军，城西峡谷为绝佳伏击之地，请主公前往埋伏准备。
+
+[304]
+id_str = 304
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公威武，我军大获全胜，郡守狼狈逃窜，我军缴获大批粮草辎重。西邻县距此不足三十里，请主公乘胜攻之。
+
+[305]
+id_str = 305
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，我军攻陷西邻县。南邻县和郡治互为犄角，我军应先攻击防御较弱的南邻县，从而孤立围困郡治。
+
+[306]
+id_str = 306
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报主公，我军已攻占南邻县，但郡守率军奔袭我军老巢，请主公速速率军前往解救。
+
+[307]
+id_str = 307
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公鸿运，我军终于及时赶到，经过苦战，大胜郡守，斩杀无数郡兵，郡守在少数骑兵护卫下，逃至郡治。
+
+[308]
+id_str = 308
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，我军已连战数场，将士疲惫，减员严重，请招募将士，扩充部曲，围困郡治。
+
+[309]
+id_str = 309
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，我军已围困郡治月余，郡兵士气低落。州刺史大人派遣长吏大人前来调停，我军应于长吏到达之前攻陷郡治。
+
+[310]
+id_str = 310
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，我军已攻陷郡治，郡守被杀。州长吏大人已到郡治十里外，请主公前往迎接，从而获得郡守之职。
+
+[311]
+id_str = 311
+city = 0
+type = 0
+head = 10
+generals = 
+official = 105
+skip = 0
+date = 
+desc = 恭喜主公，州刺史已经向朝廷表举主公为郡守，我军粮草辎重、府中财物美姬均已迁至郡治。
+
+[312]
+id_str = 312
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，请主公将官府升级到府衙等级，并适时升级其他建筑设施。
+
+[313]
+id_str = 313
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 报主公，城东荒原发现大批马匹，如此稀缺珍贵的战马应该迁移至城中安全之处。请主公于城东建造马厩，用于饲养繁育马匹。
+
+[314]
+id_str = 314
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，马匹已悉数迁至马厩。主公可以将亲卫改组成骑兵部曲，提高我军机动性和战斗力。
+
+[315]
+id_str = 315
+city = 0
+type = 0
+head = 10
+generals = 103
+official = 
+skip = 0
+date = 
+desc = 恭喜主公，郡中富豪张家欲结交主公，愿送小女桃儿至府中侍奉，请前往后宅问候探视，多多点击生小钱钱。
+
+[316]
+id_str = 316
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，为了我军的强盛，请主公于南城修建酒肆，用以招揽贤才猛将。
+
+[317]
+id_str = 317
+city = 0
+type = 0
+head = 10
+generals = 
+official = 
+skip = 0
+date = 
+desc = 主公大人，酒肆已修建完成，请主公前往巡视，看是否能偶遇贤才猛将。

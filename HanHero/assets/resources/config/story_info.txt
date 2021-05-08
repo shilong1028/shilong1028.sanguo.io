@@ -1,0 +1,659 @@
+[1001]
+id_str = 1001
+next_id = 1002
+chapterId = 1
+type = 1
+targetCity = 
+name = 重获新生
+battleId = 
+rewards = 101-500;201-500
+talks = 101;102;103;104
+desc = 党禁解除,重获新生，授予县令一职。
+
+[1002]
+id_str = 1002
+next_id = 1003
+chapterId = 1
+type = 1
+targetCity = 
+name = 就任县令
+battleId = 
+rewards = 101-500;201-500
+talks = 105
+desc = 选择就任的具体县城。
+
+[1003]
+id_str = 1003
+next_id = 1004
+chapterId = 1
+type = 5
+targetCity = 
+name = 修葺官衙
+battleId = 
+rewards = 101-500;201-500
+talks = 106
+desc = 抵达县城，修葺官衙。
+
+[1004]
+id_str = 1004
+next_id = 1005
+chapterId = 1
+type = 5
+targetCity = 
+name = 修建内宅
+battleId = 
+rewards = 101-500;201-500
+talks = 107
+desc = 修建内宅，以备收纳美姬。
+
+[1005]
+id_str = 1005
+next_id = 1006
+chapterId = 1
+type = 9
+targetCity = 
+name = 美姬生金
+battleId = 
+rewards = 101-500;201-500
+talks = 108
+desc = 进入内宅，享受美姬，点击成金。
+
+[1006]
+id_str = 1006
+next_id = 1007
+chapterId = 1
+type = 5
+targetCity = 
+name = 抢修城墙
+battleId = 
+rewards = 101-500;201-500
+talks = 109
+desc = 抢修城墙，加强城防。
+
+[1007]
+id_str = 1007
+next_id = 1008
+chapterId = 1
+type = 5
+targetCity = 
+name = 迁居百姓
+battleId = 
+rewards = 101-500;201-500
+talks = 110;111
+desc = 迁徙百姓入城，修建民居，增加人口。
+
+[1008]
+id_str = 1008
+next_id = 1009
+chapterId = 1
+type = 5
+targetCity = 
+name = 建刀兵营
+battleId = 
+rewards = 101-500;201-500
+talks = 112
+desc = 修建刀兵营，开始自动募集训练轻装刀兵。
+
+[1009]
+id_str = 1009
+next_id = 1010
+chapterId = 1
+type = 3
+targetCity = 
+name = 组刀部曲
+battleId = 
+rewards = 101-500;201-500
+talks = 113
+desc = 挑选勇士，组建扩充武将部曲。
+
+[1010]
+id_str = 1010
+next_id = 1011
+chapterId = 1
+type = 2
+targetCity = 
+name = 剿抚流民
+battleId = 1001
+rewards = 101-500;201-500
+talks = 114
+desc = 初次作战，剿抚城东流民。
+
+[1011]
+id_str = 1011
+next_id = 1012
+chapterId = 1
+type = 5
+targetCity = 
+name = 修建农田
+battleId = 
+rewards = 101-500;201-500
+talks = 115
+desc = 安置流民，修建农田，恢复农业生产。
+
+[1012]
+id_str = 1012
+next_id = 1013
+chapterId = 1
+type = 5
+targetCity = 
+name = 修建武库
+battleId = 
+rewards = 101-500;201-500
+talks = 116
+desc = 修建武库，用于存放辎重粮草及宝物器具。
+
+[1013]
+id_str = 1013
+next_id = 1014
+chapterId = 1
+type = 2
+targetCity = 
+name = 城南剿匪
+battleId = 1002
+rewards = 101-500;201-500
+talks = 117
+desc = 剿灭城南乱匪，恢复县城商贸来往。
+
+[1014]
+id_str = 1014
+next_id = 1015
+chapterId = 1
+type = 5
+targetCity = 
+name = 修建商铺
+battleId = 
+rewards = 101-500;201-500
+talks = 118
+desc = 修建商铺，恢复商贸，增加税收。
+
+[1015]
+id_str = 1015
+next_id = 1016
+chapterId = 1
+type = 2
+targetCity = 
+name = 保卫县城
+battleId = 1003
+rewards = 101-500;201-500
+talks = 119
+desc = 备战迎敌，痛打贼寇，保卫县城。
+
+[1016]
+id_str = 1016
+next_id = 1017
+chapterId = 1
+type = 7
+targetCity = 
+name = 提拔华威
+battleId = 
+rewards = 101-500;201-500
+talks = 120
+desc = 教头华威枪法精湛，准备提拔重用。
+
+[1017]
+id_str = 1017
+next_id = 1018
+chapterId = 1
+type = 5
+targetCity = 
+name = 建枪戟营
+battleId = 
+rewards = 101-500;201-500
+talks = 121
+desc = 城修建枪戟营，并招募训练轻装枪兵。
+
+[1018]
+id_str = 1018
+next_id = 1019
+chapterId = 1
+type = 3
+targetCity = 
+name = 组枪部曲
+battleId = 
+rewards = 101-500;201-500
+talks = 122
+desc = 为华威将军组建枪兵部曲，扩充县城防御力量。
+
+[1019]
+id_str = 1019
+next_id = 1020
+chapterId = 1
+type = 5
+targetCity = 
+name = 建造工坊
+battleId = 
+rewards = 101-500;201-500
+talks = 123
+desc = 建造工坊，打造护甲。
+
+[1020]
+id_str = 1020
+next_id = 1021
+chapterId = 1
+type = 3
+targetCity = 
+name = 升级部曲
+battleId = 
+rewards = 101-500;201-500
+talks = 124
+desc = 升级亲卫部曲，增加将士防护能力。
+
+[1021]
+id_str = 1021
+next_id = 1022
+chapterId = 1
+type = 2
+targetCity = 
+name = 剿灭贼寇
+battleId = 1004
+rewards = 101-500;201-500
+talks = 125
+desc = 主动发兵，剿灭贼寇，清除隐患。
+
+[1022]
+id_str = 1022
+next_id = 1023
+chapterId = 1
+type = 7
+targetCity = 
+name = 提拔郭强
+battleId = 
+rewards = 101-500;201-500
+talks = 126
+desc = 教头郭强善使弓箭，准备提拔重用。
+
+[1023]
+id_str = 1023
+next_id = 1024
+chapterId = 1
+type = 5
+targetCity = 
+name = 建弓弩营
+battleId = 
+rewards = 101-500;201-500
+talks = 127
+desc = 修建弓弩营，并招募训练轻装弓兵。
+
+[1024]
+id_str = 1024
+next_id = 1025
+chapterId = 1
+type = 3
+targetCity = 
+name = 组弓部曲
+battleId = 
+rewards = 101-500;201-500
+talks = 128
+desc = 为郭强将军组建弓兵部曲，打造一支远程攻击部队。
+
+[1025]
+id_str = 1025
+next_id = 1026
+chapterId = 1
+type = 5
+targetCity = 
+name = 建造校场
+battleId = 
+rewards = 101-500;201-500
+talks = 129
+desc = 城西建造校场，用于修整训练部曲。
+
+[1026]
+id_str = 1026
+next_id = 2001
+chapterId = 1
+type = 3
+targetCity = 
+name = 升级部曲
+battleId = 
+rewards = 101-500;201-500
+talks = 130
+desc = 开始整训升级部曲
+
+[2001]
+id_str = 2001
+next_id = 2002
+chapterId = 2
+type = 2
+targetCity = 
+name = 北上平匪
+battleId = 2001
+rewards = 101-500;201-500
+talks = 201
+desc = 率军前往平定城北县界匪寨，保护一方百姓。
+
+[2002]
+id_str = 2002
+next_id = 2003
+chapterId = 2
+type = 5
+targetCity = 
+name = 修建牢狱
+battleId = 
+rewards = 101-500;201-500
+talks = 202
+desc = 城北外修建牢狱，关押贼寇头领。
+
+[2003]
+id_str = 2003
+next_id = 2004
+chapterId = 2
+type = 5
+targetCity = 
+name = 升级县衙
+battleId = 
+rewards = 101-500;201-500
+talks = 203;204
+desc = 升级县衙，准备扩升县城建筑等级。
+
+[2004]
+id_str = 2004
+next_id = 2005
+chapterId = 2
+type = 5
+targetCity = 
+name = 升级内宅
+battleId = 
+rewards = 101-500;201-500
+talks = 205;206
+desc = 升级内宅，随后伺机升级城中建筑设施。
+
+[2005]
+id_str = 2005
+next_id = 2006
+chapterId = 2
+type = 2
+targetCity = 
+name = 邻县入侵
+battleId = 2002
+rewards = 101-500;201-500
+talks = 207
+desc = 邻县县令领兵入境，请布置兵力，积极防御。
+
+[2006]
+id_str = 2006
+next_id = 2007
+chapterId = 2
+type = 2
+targetCity = 
+name = 趁胜追击
+battleId = 2003
+rewards = 101-500;201-500
+talks = 208
+desc = 趁胜追击，攻击接收邻县。
+
+[2007]
+id_str = 2007
+next_id = 2008
+chapterId = 2
+type = 1
+targetCity = 
+name = 攻陷县城
+battleId = 
+rewards = 101-500;201-500
+talks = 209
+desc = 攻陷县城，我军控制范围增大。
+
+[2008]
+id_str = 2008
+next_id = 2009
+chapterId = 2
+type = 9
+targetCity = 
+name = 新纳双儿
+battleId = 
+rewards = 101-500;201-500
+talks = 210
+desc = 邻县县丞献妹双儿,前往后宅问候探视，多多点击生小钱钱。
+
+[2009]
+id_str = 2009
+next_id = 2010
+chapterId = 2
+type = 4
+targetCity = 
+name = 曲将封官
+battleId = 
+rewards = 101-500;201-500
+talks = 211
+desc = 县丞、县尉职位目前空缺，安排郭强、华威两位曲将担任。
+
+[2010]
+id_str = 2010
+next_id = 2011
+chapterId = 2
+type = 2
+targetCity = 
+name = 救援邻县
+battleId = 2004
+rewards = 101-500;201-500
+talks = 212;213;214
+desc = 给郡守大人送礼表心意，北邻县被攻击，率军救援。
+
+[2011]
+id_str = 2011
+next_id = 2012
+chapterId = 2
+type = 7
+targetCity = 
+name = 接纳韩兴
+battleId = 
+rewards = 101-500;201-500
+talks = 215
+desc = 北邻县县丞韩兴率军归附，请主公出城迎接。
+
+[2012]
+id_str = 2012
+next_id = 2013
+chapterId = 2
+type = 3
+targetCity = 
+name = 扩充部曲
+battleId = 
+rewards = 101-500;201-500
+talks = 216
+desc = 招募轻装刀盾兵士，为韩兴将军补充部曲。
+
+[2013]
+id_str = 2013
+next_id = 2014
+chapterId = 2
+type = 2
+targetCity = 
+name = 攻击邻县
+battleId = 2005
+rewards = 101-500;201-500
+talks = 217
+desc = 发兵攻打东邻县，一劳永逸地解决后顾之忧。
+
+[2014]
+id_str = 2014
+next_id = 2015
+chapterId = 2
+type = 1
+targetCity = 
+name = 县尉收监
+battleId = 
+rewards = 101-500;201-500
+talks = 218
+desc = 攻陷邻县县城，县尉付民被俘，收押监牢。
+
+[2015]
+id_str = 2015
+next_id = 3001
+chapterId = 2
+type = 7
+targetCity = 
+name = 招降付民
+battleId = 
+rewards = 101-500;201-500
+talks = 219
+desc = 委身前往牢狱说服招降付民。
+
+[3001]
+id_str = 3001
+next_id = 3002
+chapterId = 3
+type = 3
+targetCity = 
+name = 扩军备战
+battleId = 
+rewards = 101-500;201-500
+talks = 301;302
+desc = 郡守不满，我军扩军备战，择机取代郡守，打下一处安身之地。
+
+[3002]
+id_str = 3002
+next_id = 3003
+chapterId = 3
+type = 2
+targetCity = 
+name = 伏击郡守
+battleId = 3001
+rewards = 101-500;201-500
+talks = 303
+desc = 郡守大人率军前往，在城西峡谷被伏击，郡守大败逃走。
+
+[3003]
+id_str = 3003
+next_id = 3004
+chapterId = 3
+type = 2
+targetCity = 
+name = 乘胜追击
+battleId = 3002
+rewards = 101-500;201-500
+talks = 304
+desc = 郡守逃窜，我军乘胜攻击西邻县。
+
+[3004]
+id_str = 3004
+next_id = 3005
+chapterId = 3
+type = 2
+targetCity = 
+name = 破击犄角
+battleId = 3003
+rewards = 101-500;201-500
+talks = 305
+desc = 南邻县和郡治互为犄角，攻击防御较弱的南邻县，孤立围困郡治。
+
+[3005]
+id_str = 3005
+next_id = 3006
+chapterId = 3
+type = 2
+targetCity = 
+name = 回援大营
+battleId = 3004
+rewards = 101-500;201-500
+talks = 306
+desc = 攻占南邻县，速率军前往解救我军本县大营。
+
+[3006]
+id_str = 3006
+next_id = 3007
+chapterId = 3
+type = 3
+targetCity = 
+name = 扩充部曲
+battleId = 
+rewards = 101-500;201-500
+talks = 307;308
+desc = 连战数场，将士疲惫，减员严重，招募将士，扩充部曲，围困郡治。
+
+[3007]
+id_str = 3007
+next_id = 3008
+chapterId = 3
+type = 2
+targetCity = 
+name = 围攻郡治
+battleId = 3005
+rewards = 101-500;201-500
+talks = 309
+desc = 围困郡治月余，应于州长吏到达调停之前攻陷郡治。
+
+[3008]
+id_str = 3008
+next_id = 3009
+chapterId = 3
+type = 1
+targetCity = 
+name = 升迁郡守
+battleId = 
+rewards = 101-500;201-500
+talks = 310;311
+desc = 十里相迎州长吏大人，获得郡守之职，粮草辎重、府中财物美姬均迁至郡治。
+
+[3009]
+id_str = 3009
+next_id = 3010
+chapterId = 3
+type = 5
+targetCity = 
+name = 升级官府
+battleId = 
+rewards = 101-500;201-500
+talks = 312
+desc = 升级官府等级，并适时升级其他建筑设施。
+
+[3010]
+id_str = 3010
+next_id = 3011
+chapterId = 3
+type = 5
+targetCity = 
+name = 修建马厩
+battleId = 
+rewards = 101-500;201-500
+talks = 313
+desc = 于城东建造马厩，用于饲养繁育马匹。
+
+[3011]
+id_str = 3011
+next_id = 3012
+chapterId = 3
+type = 5
+targetCity = 
+name = 改组部曲
+battleId = 
+rewards = 101-500;201-500
+talks = 314
+desc = 将亲卫改组成骑兵部曲，提高我军机动性和战斗力。
+
+[3012]
+id_str = 3012
+next_id = 3013
+chapterId = 3
+type = 9
+targetCity = 
+name = 新纳桃儿
+battleId = 
+rewards = 101-500;201-500
+talks = 315
+desc = 郡中富豪张家送小女桃儿至府中侍奉，请前往后宅问候探视。
+
+[3013]
+id_str = 3013
+next_id = 3014
+chapterId = 3
+type = 5
+targetCity = 
+name = 修建酒肆
+battleId = 
+rewards = 101-500;201-500
+talks = 316
+desc = 南城修建酒肆，用以招揽贤才猛将。
+
+[3014]
+id_str = 3014
+next_id = 4001
+chapterId = 3
+type = 6
+targetCity = 
+name = 招募武将
+battleId = 
+rewards = 101-500;201-500
+talks = 317
+desc = 酒肆巡视，看是否能偶遇贤才猛将。
