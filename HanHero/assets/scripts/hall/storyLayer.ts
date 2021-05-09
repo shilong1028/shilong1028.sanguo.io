@@ -89,7 +89,7 @@ export default class StoryLayer extends cc.Component {
             this.taskConf = taskConf;
             this.curTalkIdx = -1;
             this.taskTitleLabel.string = `第${taskConf.chapterId}章`  //任务章节
-            let level = `第${parseInt(taskConf.id_str)%100}节 `
+            let level = `第${taskConf.id % 100}节 `
             this.taskNameLabel.string = level + taskConf.name;  //任务名称
             
             this.setTalkStr();   //设置话本内容

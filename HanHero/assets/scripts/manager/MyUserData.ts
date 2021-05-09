@@ -9,7 +9,7 @@ import { LDMgr, LDKey } from "./StorageManager";
 import { GeneralInfo, ItemInfo, BuilderInfo, CfgMgr, BeautyInfo } from "./ConfigManager";
 import { NoticeMgr, NoticeType } from "./NoticeManager";
 import { GuideMgr } from "./GuideMgr";
-import { TaskState } from "./Enum";
+import { TaskState, PlayerGeneral_DefaultId} from "./Enum";
 import AppFacade from '../puremvc/appFacade';
 import PlayerCommand from '../puremvc/playerCommand';
 
@@ -31,7 +31,7 @@ export var MyUserData = {
     roleLv: 1,  //主角等级
     capitalLv: 0,   //主城等级，0则未开启
 
-    TaskId: "1001",   //当前任务ID
+    TaskId: 1001,   //当前任务ID
     TaskState: 0,    //当前任务状态 0未完成，1完成未领取，2已领取
 
     myTownIdxs: [],   //郡守之前我方占据的县城索引，此时myCityIds只有一个且所属县并未全部占领，全部占领则晋升郡守myTownIdxs字段之后无用。
@@ -73,7 +73,7 @@ class MyUserManager {
         MyUserData.capitalLv = 0;   //主城等级，0则未开启
         LDMgr.setItem(LDKey.KEY_CapitalLv, 0);
 
-        MyUserData.TaskId = "1001";   //当前任务ID
+        MyUserData.TaskId = 1001;   //当前任务ID
         MyUserData.TaskState = TaskState.Ready;   //任务状态 0未完成，1对话完成，2完成未领取，3已领取
         LDMgr.setItem(LDKey.KEY_StoryData, "1001-0");
 
@@ -110,7 +110,7 @@ class MyUserManager {
         MyUserData.UserUUid = "";    //用户唯一标识
         this.checkUserUUid();
 
-        let hero = new GeneralInfo("1101");
+        let hero = new GeneralInfo(PlayerGeneral_DefaultId);
         this.addGeneralToList(hero, true)
 
         this.updateRoleLv(1);  //更新主角等级
@@ -152,11 +152,11 @@ class MyUserManager {
 
         let taskInfo = LDMgr.getItemKeyVal(LDKey.KEY_StoryData);  //当前任务ID
         if (taskInfo == null) {
-            MyUserData.TaskId = "1001";   //当前任务ID
+            MyUserData.TaskId = 1001;   //当前任务ID
             MyUserData.TaskState = TaskState.Ready;   //任务状态 0未完成，1对话完成，2完成未领取，3已领取
-            LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString() + "-" + MyUserData.TaskState);
+            LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId + "-" + MyUserData.TaskState);
         } else {
-            MyUserData.TaskId = taskInfo.key;
+            MyUserData.TaskId = parseInt(taskInfo.key);
             MyUserData.TaskState = taskInfo.val;
         }
 
@@ -316,7 +316,7 @@ class MyUserManager {
         let bUpdateItem: boolean = false;
         for (let i = 0; i < MyUserData.BuilderList.length; ++i) {
             let info: BuilderInfo = MyUserData.BuilderList[i];
-            if (info.name == builder.name) {
+            if (info.id_str == builder.id_str) {
                 MyUserData.BuilderList[i] = builder;
                 bUpdateItem = true;
                 break;
@@ -336,7 +336,7 @@ class MyUserManager {
     getBuilderFromList(builder_name: string): BuilderInfo {
         for (let i = 0; i < MyUserData.BuilderList.length; ++i) {
             let info: BuilderInfo = MyUserData.BuilderList[i];
-            if (info.name == builder_name) {
+            if (info.id_str == builder_name) {
                 return info;
             }
         }
@@ -468,11 +468,11 @@ class MyUserManager {
     }
 
     /** 根据经验更新等级 */
-    updateGeneralLvByExp(generalId: string, exp: number) {
+    updateGeneralLvByExp(generalId: number, exp: number) {
         let general: GeneralInfo = null;
         for (let i = 0; i < MyUserData.GeneralList.length; ++i) {
             let tempItem: GeneralInfo = MyUserData.GeneralList[i];
-            if (tempItem.generalId == generalId) {
+            if (tempItem.generalId === generalId) {
                 general = tempItem;
                 break;
             }
@@ -492,7 +492,7 @@ class MyUserManager {
                 }
 
                 this.saveGeneralList();
-                if (generalId == "1101" && general.generalLv > oldLv) {   //主角
+                if (generalId === PlayerGeneral_DefaultId && general.generalLv > oldLv) {   //主角
                     this.updateRoleLv(general.generalLv);
                 }
             }
@@ -503,11 +503,11 @@ class MyUserManager {
     }
 
     /** 更新武将兵力 */
-    updateGeneralSoliderCount(generalId: string, addNum: number, maxCount?: number) {
+    updateGeneralSoliderCount(generalId: number, addNum: number, maxCount?: number) {
         let general: GeneralInfo = null;
         for (let i = 0; i < MyUserData.GeneralList.length; ++i) {
             let tempItem: GeneralInfo = MyUserData.GeneralList[i];
-            if (tempItem.generalId == generalId) {
+            if (tempItem.generalId === generalId) {
                 general = tempItem;
                 break;
             }
@@ -635,7 +635,7 @@ class MyUserManager {
 
     /**更新主角经验 */
     updateRoleExp(exp: number) {
-        this.updateGeneralLvByExp("1101", exp);   //主角
+        this.updateGeneralLvByExp(PlayerGeneral_DefaultId, exp);   //主角
     }
 
     /**修改用户金币 */
@@ -670,7 +670,7 @@ class MyUserManager {
     }
 
     /**修改用户任务  0未完成，1对话完成，2完成未领取，2已领取 */
-    updateTaskState(taskId: string, state: TaskState) {
+    updateTaskState(taskId: number, state: TaskState) {
         cc.log("updateTaskState 更新任务状态 taskId = " + taskId + "; state = " + state + "; MyUserData.TaskState = " + MyUserData.TaskState)
         if (MyUserData.TaskId == taskId && MyUserData.TaskState == state) {
             return;
@@ -686,7 +686,7 @@ class MyUserManager {
             }
         }
 
-        LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId.toString() + "-" + MyUserData.TaskState);
+        LDMgr.setItem(LDKey.KEY_StoryData, MyUserData.TaskId + "-" + MyUserData.TaskState);
         AppFacade.getInstance().sendNotification(PlayerCommand.E_ON_UpdateTaskState);  //任务状态更新
         //大厅会通过消息监听同步任务状态后，进行后续处理
     }

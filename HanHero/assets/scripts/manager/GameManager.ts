@@ -277,7 +277,7 @@ class GameManager {
 
             //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
             if (storyConf.type == TaskType.Story) {
-                if(storyConf.id_str === "1001" || storyConf.id_str === "1002"){   //创建昵称，选择县城
+                if(storyConf.id === 1001 || storyConf.id === 1002){   //创建昵称，选择县城
                     MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Finish);
                 }else{
                     MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Reward);
@@ -327,7 +327,7 @@ class GameManager {
             if(this.curTask_NewGenerals.length > 1 || this.curTask_NewGenerals[0] > 1000){   //武将来投
                 for (let i = 0; i < this.curTask_NewGenerals.length; ++i) {
                     let generalId = this.curTask_NewGenerals[i]
-                    let info = new GeneralInfo(generalId.toString());
+                    let info = new GeneralInfo(generalId);
                     if (i < this.curTask_NewGenerals.length - 1) {
                         MyUserMgr.addGeneralToList(info, false);   //添加武将到列表
                     } else {

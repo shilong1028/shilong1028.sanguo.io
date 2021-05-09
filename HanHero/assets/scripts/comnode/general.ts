@@ -120,7 +120,7 @@ export default class GeneralCell extends cc.Component {
             if (generalConf) {
                 this.nameLabel.string = generalConf.name;
                 this.typeSpr.spriteFrame = ROOT_NODE.commonAtlas.getSpriteFrame("common_" + generalConf.bingzhong);
-                LoaderMgr.setSpriteFrameByImg("head/" + generalConf.id_str, this.headSpr.node);
+                LoaderMgr.setSpriteFrameByImg("head/" + generalConf.id, this.headSpr.node);
             }
         }
     }

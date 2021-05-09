@@ -210,7 +210,7 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
             GameMgr.setGameCurTask(taskConf);  //当前任务配置
 
             this.taskTitleLabel.string = `第${taskConf.chapterId}章`  //任务章节
-            let level = `第${parseInt(taskConf.id_str)%100}节 `
+            let level = `第${taskConf.id % 100}节 `
             this.taskNameLabel.string = level + taskConf.name;  //任务名称
             this.taskDescLabel.string = taskConf.desc;  //任务描述
 
@@ -231,14 +231,14 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
         if(rewards.length > 0){
             LoaderMgr.showRewardLayer(rewards, "剧情任务奖励", ()=>{
                 if(storyConf.type > 0){ 
-                    MyUserMgr.updateTaskState(storyConf.id_str, TaskState.Over); 
+                    MyUserMgr.updateTaskState(storyConf.id, TaskState.Over); 
                 }
             });
         }else{   
             cc.log("没有任务奖励")
             if(storyConf.type > 0){ 
                 //任务状态 0未完成，1对话完成，2完成未领取，3已领取
-                MyUserMgr.updateTaskState(storyConf.id_str, TaskState.Over); 
+                MyUserMgr.updateTaskState(storyConf.id, TaskState.Over); 
             }
         }
     }
@@ -267,7 +267,7 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
             cc.log("任务对话完成，后续操作 storyConf.type = "+storyConf.type)
             switch(storyConf.type){ 
                 case TaskType.Story:  //剧情
-                    if(storyConf.id_str === "1001"){   //创建昵称
+                    if(storyConf.id === 1001){   //创建昵称
                         LoaderMgr.showBundleLayer('ui_nickEditLayer', 'nickEditLayer', null, (layer)=>{
                             let tsComp = layer.getComponent(NickEditLayer)
                             if(!tsComp){
@@ -275,7 +275,7 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
                             }
                             tsComp.setStoryConf(storyConf);
                         }); 
-                    }if(storyConf.id_str === "1002"){   //选择县城
+                    }if(storyConf.id === 1002){   //选择县城
                         LoaderMgr.showBundleLayer('ui_selCityLayer', 'selCityLayer', null, (layer)=>{
                             let tsComp = layer.getComponent(SelCityLayer)
                             if(!tsComp){

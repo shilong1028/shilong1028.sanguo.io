@@ -103,7 +103,7 @@ export default class OfficalLayer extends cc.Component {
 
         let nameStr = "当前官职为"
         for(let i=0; i<idArr.length; ++i){
-            let conf = CfgMgr.getOfficalConf(idArr[i].toString());
+            let conf = CfgMgr.getOfficalConf(idArr[i]);
             nameStr += conf.name;
             if(i < idArr.length-1){
                 nameStr +="、";
@@ -111,17 +111,14 @@ export default class OfficalLayer extends cc.Component {
         }
         this.infoLabel.string = nameStr;
         
-        //let allConf = CfgMgr.getAllOfficalConf();
-        //allConf.forEach(function(conf, key){
         let showIdx = 0;   
-        let keys = Object.getOwnPropertyNames(CfgMgr.C_official_info);
-        //cc.log("getOwnPropertyNames, keys = "+JSON.stringify(keys));
-        //for (let key of keys) {   
+        let keys = Object.getOwnPropertyNames(CfgMgr.getAllOfficalConf());
+        //cc.log("getOwnPropertyNames, keys = "+JSON.stringify(keys)); 
         for (let k=0; k<keys.length; k++) {  
-            let conf = CfgMgr.getOfficalConf(keys[k]);
+            let conf = CfgMgr.getOfficalConf(parseInt(keys[k]));
             this.officalArr.push(conf)
             for(let i=0; i<idArr.length; i++){
-                if(conf.id_str == idArr[i].toString()){
+                if(conf.id === idArr[i]){
                     showIdx = k
                 }
             }

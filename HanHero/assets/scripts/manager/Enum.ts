@@ -19,6 +19,8 @@ export enum ChannelDef {
     TouTiao = "TouTiao",
 }
 
+export const PlayerGeneral_DefaultId = 1101   //玩家主角ID
+
 export const BuilderNameArr = ["government", "residence", "warehouse", "posthouse", "castle",   //官府  内宅  武库  驿馆  城防
                                 "barracks_dao", "barracks_qiang", "barracks_gong", "stable",    //刀盾营  枪戟营  弓弩营  马厩
                                 "workshop", "prison", "farmland", "shops", "tavern", "wharf",   //工坊  牢房  农田  商铺  酒肆  码头

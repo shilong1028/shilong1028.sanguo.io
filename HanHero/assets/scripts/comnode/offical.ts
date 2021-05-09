@@ -74,12 +74,12 @@ export default class OfficalCell extends cc.Component {
         if (conf) {
             this.nameLabel.string = conf.name;
             this.lvLabel.string = lvStr[conf.level];
-            this.iconSpr.spriteFrame = ROOT_NODE.officeAtlas.getSpriteFrame(conf.id_str);
+            this.iconSpr.spriteFrame = ROOT_NODE.officeAtlas.getSpriteFrame(conf.id.toString());
         }
 
         this.stateImg.active = false;
         for (let i = 0; i < idArr.length; i++) {
-            if (parseInt(conf.id_str) == idArr[i]) {
+            if (conf.id  === idArr[i]) {
                 this.stateImg.active = true;   //当前装备使用中的官职
                 break;
             }

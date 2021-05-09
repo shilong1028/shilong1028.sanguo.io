@@ -61,9 +61,7 @@ export default class StartScene extends cc.Component {
 
                 SDKMgr.initSDK();   //初始化SDK平台数据
 
-                CfgMgr.setOverCallback(this.handleLoadConfigOver, this);  //设置加载配置完毕回调
-
-                CfgMgr.loadAllConfig();   //加载配置
+                CfgMgr.setOverCallback(true, this.handleLoadConfigOver, this);  //设置加载配置完毕回调
             })
             .start()
     }

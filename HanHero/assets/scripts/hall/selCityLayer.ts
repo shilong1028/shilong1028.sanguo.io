@@ -21,7 +21,7 @@ export default class SelCityLayer extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
     taskConf: st_story_info = null
-    selCityIdStr: string = ""  //选择县城所属郡ID字符串
+    selCityId: number = 0  //选择县城所属郡ID
     selCityIdx: number = 0    //选择县城在郡属列表中的索引位置
 
     onLoad () {
@@ -75,9 +75,9 @@ export default class SelCityLayer extends cc.Component {
 
 
     private onOkBtnClick(){
-        if(this.selCityIdStr.length > 0){
-            MyUserMgr.updateMyTownIdxs(this.selCityIdx, true, parseInt(this.selCityIdStr));
-            if(this.taskConf && this.taskConf.id_str === "1002"){   //选择县城
+        if(this.selCityId > 0){
+            MyUserMgr.updateMyTownIdxs(this.selCityIdx, true, this.selCityId);
+            if(this.taskConf && this.taskConf.id === 1002){   //选择县城
                 GameMgr.handleStoryShowOver(this.taskConf);   
             }
             this.closeLayer()
@@ -90,7 +90,7 @@ export default class SelCityLayer extends cc.Component {
      * 重新选择
      */
     private onReSelBtnClick(bReSel:boolean = true){
-        this.selCityIdStr = ""  //选择县城所属郡ID字符串
+        this.selCityId = 0  //选择县城所属郡ID字符串
         this.selCityIdx = 0    //选择县城在郡属列表中的索引位置
 
 

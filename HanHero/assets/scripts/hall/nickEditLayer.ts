@@ -71,7 +71,7 @@ export default class NickEditLayer extends cc.Component {
     onOkBtnClick(){
         if(this.nameEditBox.string.length > 0){
             MyUserMgr.setUserName(this.nameEditBox.string);
-            if(this.taskConf && this.taskConf.id_str === "1001"){   //创建昵称
+            if(this.taskConf && this.taskConf.id === 1001){   //创建昵称
                 GameMgr.handleStoryShowOver(this.taskConf);   
             }
             this.closeLayer()
