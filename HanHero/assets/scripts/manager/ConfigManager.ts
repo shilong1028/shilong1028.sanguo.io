@@ -1,8 +1,8 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:38:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 17:16:42
  * @Description: 
  */
 
@@ -432,15 +432,15 @@ export class BuilderInfo {
 }
 //建筑配置数据
 export class st_build_info {
-    id_str
+    id
     name;
     cost;
     desc;
 
     constructor(obj:any) {
-        this.id_str = obj.id;
+        this.id = obj.id;
         this.name = obj.name;
-        this.cost = obj.cost;
+        this.cost = FunMgr.getKeyValAry(obj.cost)[0];
         this.desc = obj.desc;
     }
     clone() {
@@ -641,7 +641,7 @@ class CfgManager_class {
 
     //********************** 以下是一些配置接口 ***************** */
     /**获取城池配置数据 */
-    getCityConf(cityId: number): st_city_info {
+    getCityConf(cityId: number | string): st_city_info {
         let obj = this.hanConf.city_info[cityId];
         if (obj) {
             return new st_city_info(obj);
@@ -650,7 +650,7 @@ class CfgManager_class {
         }
     }
     /**获取州配置数据 */
-    getZhouConf(zhouId: number): st_zhou_info {
+    getZhouConf(zhouId: number | string): st_zhou_info {
         let obj = this.hanConf.zhou_info[zhouId];
         if (obj) {
             return new st_zhou_info(obj);
@@ -659,7 +659,7 @@ class CfgManager_class {
         }
     }
     /**获取官职配置数据 */
-    getOfficalConf(officeId: number): st_official_info {
+    getOfficalConf(officeId: number | string): st_official_info {
         let obj = this.hanConf.official_info[officeId];
         if (obj) {
             return new st_official_info(obj);
@@ -671,7 +671,7 @@ class CfgManager_class {
         return this.hanConf.official_info;
     }
     /**获取武将配置数据 */
-    getGeneralConf(generalId: number): st_general_info {
+    getGeneralConf(generalId: number | string): st_general_info {
         let obj = this.hanConf.general_info[generalId];
         if (obj) {
             return new st_general_info(obj);
@@ -680,7 +680,7 @@ class CfgManager_class {
         }
     }
     /**获取招募配置数据 */
-    getRecruitConf(soldierId: number): st_recruit_info {
+    getRecruitConf(soldierId: number | string): st_recruit_info {
         let obj = this.hanConf.recruit_info[soldierId];
         if (obj) {
             return new st_recruit_info(obj);
@@ -689,7 +689,7 @@ class CfgManager_class {
         }
     }
     /**获取势力阵营配置数据 */
-    getCampConf(campId: number): st_camp_info {
+    getCampConf(campId: number | string): st_camp_info {
         let obj = this.hanConf.camp_info[campId];
         if (obj) {
             return new st_camp_info(obj);
@@ -698,7 +698,7 @@ class CfgManager_class {
         }
     }
     /**获取任务配置数据 */
-    getTaskConf(taskId: number): st_story_info {
+    getTaskConf(taskId: number | string): st_story_info {
         let obj = this.hanConf.story_info[taskId];
         if (obj) {
             return new st_story_info(obj);
@@ -707,7 +707,7 @@ class CfgManager_class {
         }
     }
     /**获取话本配置数据 */
-    getTalkConf(talkId: number): st_talk_info {
+    getTalkConf(talkId: number | string): st_talk_info {
         let obj = this.hanConf.talk_info[talkId];
         if (obj) {
             return new st_talk_info(obj);
@@ -716,7 +716,7 @@ class CfgManager_class {
         }
     }
     /**获取后宫数据 */
-    getBeautifulConf(nvId: number): st_beautiful_info {
+    getBeautifulConf(nvId: number | string): st_beautiful_info {
         let obj = this.hanConf.beautiful_info[nvId];
         if (obj) {
             return new st_beautiful_info(obj);
@@ -738,7 +738,7 @@ class CfgManager_class {
 
 
     /**获取引导配置数据 */
-    getGuideConf(guideId: number): st_guide_info {
+    getGuideConf(guideId: number | string): st_guide_info {
         // let obj = this.hanConf.guide_info[guideId];
         // if(obj){
         //     return new st_guide_info(obj);
@@ -749,7 +749,7 @@ class CfgManager_class {
     }
 
     /**获取道具配置数据 */
-    getItemConf(itemId: number): st_item_info {
+    getItemConf(itemId: number | string): st_item_info {
         let obj = this.hanConf.item_info[itemId];
         if (obj) {
             return new st_item_info(obj);
@@ -759,7 +759,7 @@ class CfgManager_class {
     }
 
     /**获取战场数据 */
-    getBattleConf(battleId: number): st_battle_info {
+    getBattleConf(battleId: number | string): st_battle_info {
         let obj = this.hanConf.battle_info[battleId];
         if (obj) {
             return new st_battle_info(obj);
@@ -769,7 +769,7 @@ class CfgManager_class {
     }
 
     /**获取技能数据 */
-    getSkillConf(skillId: number): st_skill_info {
+    getSkillConf(skillId: number | string): st_skill_info {
         let obj = this.hanConf.skill_info[skillId];
         if (obj) {
             return new st_skill_info(obj);

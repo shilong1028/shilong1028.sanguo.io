@@ -2,8 +2,8 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-19 17:09:33
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 17:58:07
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 16:55:06
  * @Description: 
  */
 
@@ -162,7 +162,8 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
             case "head":  //头像
                 break;
             case "task":   //任务栏
-                this.handleTaskOptAfterTalk();   //根据任务的具体类型，在对话完毕后，处理具体操作
+                //this.handleTaskOptAfterTalk();   //根据任务的具体类型，在对话完毕后，处理具体操作
+                this.showStoryLayer(); 
                 break;
             case "share":    //分享
                 break;
@@ -175,7 +176,7 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
             case "general":    //武将
                 break;
             case "map":    //世界
-                LoaderMgr.loadScene("mapScene");  //进入地图场景
+                //LoaderMgr.loadScene("mapScene");  //进入地图场景
                 break;
             case "city":    //城池
                 break;
@@ -216,6 +217,12 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
 
             this.handleTaskOptAfterTalk();  //根据任务的具体类型，在对话完毕后，处理具体操作
         }
+
+        if(MyUserData.TaskId > 1002){   //1002选择县城, 1003就任县令
+            this.capitalLayer.walkBg.active = false;  //新手县令赴任背景
+        }else{
+            this.capitalLayer.walkBg.active = true;  //新手县令赴任背景
+        }
     }
 
      /**
@@ -243,6 +250,17 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
         }
     }
 
+    private showStoryLayer(){
+        let storyConf: st_story_info = GameMgr.curTaskConf;
+        LoaderMgr.showBundleLayer('hall', 'ui/storyLayer', null, (layer)=>{
+            let tsComp = layer.getComponent(StoryLayer)
+            if(!tsComp){
+                tsComp = layer.addComponent(StoryLayer)
+            }
+            tsComp.initStoryConf(storyConf);
+        }); 
+    }
+
      /**
      * 根据任务的具体类型，在对话完毕后，处理具体操作
      */
@@ -250,19 +268,13 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
         let storyConf: st_story_info = GameMgr.curTaskConf;
         cc.log("handleTaskOptAfterTalk 对话完毕后的任务操作 storyConf = "+JSON.stringify(storyConf));
         //任务状态 0未完成，1对话完成，2完成未领取，3已领取
-        if(MyUserData.TaskState == TaskState.Reward){   //已完成未领取
+        if(MyUserData.TaskState === TaskState.Reward){   //已完成未领取
             this.taskReward.active = true;
             //ROOT_NODE.showTipsText(`任务${taskConf.name}奖励可领取`);
             this.openTaskRewardsLayer(GameMgr.curTaskConf);
-        }else if(MyUserData.TaskState == TaskState.Ready){   //任务初始情况，自动弹开对话
-            LoaderMgr.showBundleLayer('hall', 'ui/storyLayer', null, (layer)=>{
-                let tsComp = layer.getComponent(StoryLayer)
-                if(!tsComp){
-                    tsComp = layer.addComponent(StoryLayer)
-                }
-                tsComp.initStoryConf(storyConf);
-            });   //任务宣读(第一阶段）完毕 会在 GameMgr.handleStoryShowOver 中处理后续操作
-        }else if(MyUserData.TaskState == TaskState.Finish){   //对话完成
+        }else if(MyUserData.TaskState === TaskState.Ready){   //任务初始情况，自动弹开对话
+            this.showStoryLayer();  //任务宣读(第一阶段）完毕 会在 GameMgr.handleStoryShowOver 中处理后续操作
+        }else if(MyUserData.TaskState === TaskState.Finish){   //对话完成
             //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
             cc.log("任务对话完成，后续操作 storyConf.type = "+storyConf.type)
             switch(storyConf.type){ 

@@ -1,14 +1,17 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:44:18
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:54:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 16:41:22
  * @Description: 
  */
 import { ROOT_NODE } from "../login/rootNode";
 import { BuilderInfo } from "../manager/ConfigManager";
 import { MyUserMgr } from "../manager/MyUserData";
 import UI from '../util/ui';
+import { LoaderMgr } from '../manager/LoaderManager';
+import BuilderLayer from './builderLayer';
+import { NoticeMgr, NoticeType } from '../manager/NoticeManager';
 
 //主城建筑显示脚本
 const { ccclass, property, menu, executionOrder, disallowMultiple } = cc._decorator;
@@ -45,13 +48,19 @@ export default class Builder extends cc.Component {
         this.lock.active = false;
         this.board = this.node
         UI.on_click(this.board, this.onClickBuild.bind(this)) 
+
+        NoticeMgr.on(NoticeType.UpdateBuilder, this.HandleUpdateBuilder, this);
+    }
+
+    onDestroy(){
+        //this.node.targetOff(this);
+        NoticeMgr.offAll(this);
     }
 
     start() {
-        let randomTime = Math.random()*2.0;
+        let randomTime = Math.random()*20.0;
         cc.tween(this.tip)
-            .delay(randomTime)
-            .repeatForever(cc.sequence(cc.fadeIn(1.0), cc.delayTime(0.5), cc.fadeOut(0.5)))
+            .repeatForever(cc.sequence(cc.fadeIn(randomTime), cc.delayTime(0.5), cc.fadeOut(0.5)))
             .start()
     }
 
@@ -60,55 +69,36 @@ export default class Builder extends cc.Component {
     initBuilder(builder_name: string) {
         this.builderName = builder_name
         this.builderInfo = MyUserMgr.getBuilderFromList(builder_name);
+        this.showBuilderInfo()
+    }
+
+    showBuilderInfo(){
+        if(!this.builderInfo){
+            return;
+        }
         if(this.builderInfo.level > 0){
             this.lock.active = false;
         }else{
-            this.lock.active = false;
+            this.lock.active = true;
         }
-        this.lvLabel.string = this.builderInfo.level.toString();
-        //this.nameLabel.string = this.builderInfo.
+        this.lvLabel.string = "Lv:"+this.builderInfo.level.toString();
+        //this.nameLabel.string = this.builderInfo.builderCfg.name
     }
 
     onClickBuild() {
-        switch (this.builderName) {
+        LoaderMgr.showBundleLayer('hall', 'ui/builderLayer', null, (layer)=>{
+            let tsComp = layer.getComponent(BuilderLayer)
+            if(!tsComp){
+                tsComp = layer.addComponent(BuilderLayer)
+            }
+            tsComp.initBuilderConf(this.builderInfo);
+        }); 
+    }
 
-
-            
-            case "residence": //内宅
-                break;
-            case "government":   //官府
-                break;
-            case "warehouse":    //武库
-                break;
-            case "posthouse":     //驿馆
-                break;
-            case "castle":   //城防
-                break;
-            case "barracks_dao":  //刀盾营
-                break;
-            case "barracks_qiang":  //枪戟营
-                break;
-            case "barracks_gong": //弓弩营
-                break;
-            case "stable":    //马厩
-                break;
-            case "workshop":    //工坊
-                break;
-            case "prison":     //牢房
-                break;
-            case "farmland":    //农田
-                break;
-            case "shops":    //商铺
-                break;
-            case "tavern":    //酒肆
-                break;
-            case "wharf":     //码头
-                break;
-            case "community":    //居民区
-                break;
-            case "academy":    //校场
-                break;
-            default:
+    HandleUpdateBuilder(builder: BuilderInfo){
+        if (this.builderInfo && this.builderInfo.id_str == builder.id_str) {
+            this.builderInfo = builder;
+            this.showBuilderInfo();
         }
     }
 }

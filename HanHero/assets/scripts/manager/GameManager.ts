@@ -1,14 +1,15 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-23 10:03:47
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 16:24:41
  * @Description: 
  */
 import { st_story_info, ItemInfo, GeneralInfo, BeautyInfo } from "./ConfigManager";
 import { MyUserMgr, MyUserData } from "./MyUserData";
 import { ComItemType, TaskState, TaskType } from "./Enum";
 import { FunMgr } from "./FuncManager";
+import { LoaderMgr } from './LoaderManager';
 
 //游戏管理器
 const { ccclass, property } = cc._decorator;
@@ -23,6 +24,31 @@ class GameManager {
     curTask_NewGenerals: number[] = null;   //当前任务剧情对话获取的新武将集合
 
     CityNearsMap: Map<number, number[]> = new Map<number, number[]>();  //邻近城池Map
+
+
+    /**判定金币是否充足 */
+    checkGoldEnoughOrTips(cost: number, bTips: boolean = true) {
+        if (MyUserData.GoldCount >= cost && cost >= 0) {
+            return true;
+        } else {
+            if (bTips) {
+                LoaderMgr.showGoldAddDialog();
+            }
+            return false;
+        }
+    }
+
+    /**判定粮草是否充足 */
+    checkFoodEnoughOrTips(cost: number, bTips: boolean = true) {
+        if (MyUserData.FoodCount >= cost && cost >= 0) {
+            return true;
+        } else {
+            if (bTips) {
+                LoaderMgr.showGoldAddDialog();
+            }
+            return false;
+        }
+    }
 
 
     /************************  以下为UI接口  ************** */
@@ -156,33 +182,6 @@ class GameManager {
     //     adWidth = Math.max(adWidth, 300);
     //     return adWidth;
     // }
-
-    // /**判定金币是否充足 */
-    // checkGoldEnoughOrTips(cost: number, bTips: boolean = false) {
-    //     if (MyUserData.GoldCount >= cost && cost >= 0) {
-    //         return true;
-    //     } else {
-    //         if (bTips) {
-    //             LoaderMgr.showGoldAddDialog();
-    //         }
-    //         return false;
-    //     }
-    // }
-
-    // /**判定粮草是否充足 */
-    // checkFoodEnoughOrTips(cost: number, bTips: boolean = false) {
-    //     if (MyUserData.FoodCount >= cost && cost >= 0) {
-    //         return true;
-    //     } else {
-    //         if (bTips) {
-    //             LoaderMgr.showGoldAddDialog();
-    //         }
-    //         return false;
-    //     }
-    // }
-
-
-
 
     // //获取城池路径（最多途径10城规划出2条最短路径）
     // getNearCitysLine(srcCityId: number, destCityId: number) {

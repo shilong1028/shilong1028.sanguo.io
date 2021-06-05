@@ -4,8 +4,8 @@ import { AudioMgr } from '../manager/AudioMgr';
 /*
  * @Autor: dongsl
  * @Date: 2021-03-19 17:01:47
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 15:10:53
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 16:27:33
  * @Description: 
  */
 
@@ -78,7 +78,7 @@ export default class UI {
         node.targetOff(this)
         node.on('click', function () {
             AudioMgr.playBtnClickEffect();
-            ExecuteInterval.default_execute_interval.execute(callback)
+            ExecuteInterval.default_execute_interval.execute(callback)   //同一件事（比如弹出提示）时间间隔必须大于一定的时间(0.001秒)
         }, this, useCapture)
     }
 

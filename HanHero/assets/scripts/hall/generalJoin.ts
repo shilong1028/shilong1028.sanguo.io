@@ -89,7 +89,7 @@ export default class GeneralJoin extends cc.Component {
 
         let nameStr = ""
         for(let i=0; i<idArr.length; ++i){
-            let info = new GeneralInfo(idArr[i].toString());
+            let info = new GeneralInfo(idArr[i]);
             this.generalArr.push(info);
 
             nameStr += info.generalCfg.name;

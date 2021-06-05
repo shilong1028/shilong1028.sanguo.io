@@ -1,8 +1,8 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:40:02
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 16:30:26
  * @Description: 
  */
 
@@ -28,6 +28,7 @@ export const NoticeType = {
 
     UpdateBagItem: "UpdateBagItem",  //更新单个背包物品
     UpdateGeneral: "UpdateGeneral",  //更新单个武将
+    UpdateBuilder: "UpdateBuilder",  //更新单个建筑
 
     MapMoveByCity: "MapMoveByCity",   //话本目标通知（地图移动）
 

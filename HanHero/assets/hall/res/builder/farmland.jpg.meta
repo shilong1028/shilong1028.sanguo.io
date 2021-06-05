@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "f3371a2f-f4f4-4f80-a221-43289328fcf9",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 300,
+  "height": 200,
+  "platformSettings": {},
+  "subMetas": {
+    "farmland": {
+      "ver": "1.0.4",
+      "uuid": "3955ce23-e474-4c17-8b3e-d3b5e7fece8b",
+      "rawTextureUuid": "f3371a2f-f4f4-4f80-a221-43289328fcf9",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 300,
+      "height": 200,
+      "rawWidth": 300,
+      "rawHeight": 200,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
