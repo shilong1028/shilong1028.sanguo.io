@@ -2,8 +2,8 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-19 16:05:51
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 17:46:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 16:33:46
  * @Description: 
  */
 
@@ -28,6 +28,7 @@ export default class CapitalScene extends cc.Component {
 
     mapNode: cc.Node = null   //建筑总节点
     menuNode: cc.Node = null    //按钮总节点
+    walkBg: cc.Node = null;   //新手县令赴任背景
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -35,6 +36,7 @@ export default class CapitalScene extends cc.Component {
         AppFacade.getInstance().sendNotification(CommonCommand.E_ON_CHANGE_SCENE_STATE, SceneState.Captical_Ready);
         this.mapNode = UI.find(this.node, "map")    //建筑总节点
         this.menuNode = UI.find(this.node, "menu")   //按钮总节点
+        this.walkBg = UI.find(this.node, "walkBg")   //新手县令赴任背景
     }
 
     start() {
@@ -55,6 +57,7 @@ export default class CapitalScene extends cc.Component {
     public onDestroy() {
         //取消调度所有已调度的回调函数
         this.unscheduleAllCallbacks();
+        //this.node.targetOff(this);
         //this.node.targetOff(this);
 
         AppFacade.getInstance().removeMediator(CapitalMenuMediator.NAME);

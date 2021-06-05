@@ -4,6 +4,7 @@ import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import UI from '../util/ui';
 import List from "../control/List";
 import ListItem from "../control/ListItem";
+import ComMaskBg from "../comui/comMaskBg";
 
 //官职详情
 const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
@@ -48,6 +49,9 @@ export default class OfficalLayer extends cc.Component {
         if (!list_item)
         {
             list_item = list_project.addComponent(ListItem)
+            list_item.selectedMode = 1;    //TOGGLE
+            let selImg = UI.find(list_project, "selBg")
+            list_item.selectedFlag = selImg
         }
 
         this.list_view = list_node.getComponent(List)
@@ -55,6 +59,7 @@ export default class OfficalLayer extends cc.Component {
         {
             this.list_view = list_node.addComponent(List)
             this.list_view.tmpNode = list_project;
+            this.list_view.selectedMode = 1;  //单选
 
             this.list_view.setRenderCallBack(this.onListRender.bind(this));
             this.list_view.setSelectedCallBack(this.onListSelected.bind(this))
@@ -69,6 +74,12 @@ export default class OfficalLayer extends cc.Component {
     }
 
     start () {
+        let maskBg_tsComp = this.node.parent.getComponent(ComMaskBg)
+        if(maskBg_tsComp){
+            maskBg_tsComp.showCloseCallback(()=>{
+                this.closeLayer();
+            })   //设置关闭时，子节点（功能节点）的关闭逻辑处理
+        }
     }
 
     // update (dt) {}
@@ -117,6 +128,13 @@ export default class OfficalLayer extends cc.Component {
         for (let k=0; k<keys.length; k++) {  
             let conf = CfgMgr.getOfficalConf(parseInt(keys[k]));
             this.officalArr.push(conf)
+　　　　 };
+        this.officalArr.sort((a, b)=>{
+            return b.level - a.level;
+        })
+
+        for (let k=0; k<this.officalArr.length; k++) {  
+            let conf = this.officalArr[k];
             for(let i=0; i<idArr.length; i++){
                 if(conf.id === idArr[i]){
                     showIdx = k

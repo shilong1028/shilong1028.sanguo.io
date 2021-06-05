@@ -2,8 +2,8 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-19 17:09:33
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 17:58:07
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 16:55:06
  * @Description: 
  */
 
@@ -21,8 +21,7 @@ import { TaskState, TaskType } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import FuncUtil from "../util/FuncUtil";
 import StoryLayer from './storyLayer';
-import NickEditLayer from './nickEditLayer';
-import SelCityLayer from './selCityLayer';
+import ComTop from '../comnode/comTop';
 
 
 //大厅按钮界面相关中介
@@ -120,6 +119,10 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
         this.taskDescLabel = UI.find(this.taskNode, "taskDesc").getComponent(cc.Label)  //任务描述
 
         this.comTop = UI.find(this.capitalLayer.menuNode, "comTop")   //通用金币粮草栏
+        let tsComp = this.comTop.getComponent(ComTop)
+        if(!tsComp){
+            tsComp = this.comTop.addComponent(ComTop)
+        }
         this.lineTimeLabel = UI.find(this.headNode, "lineTime").getComponent(cc.Label)  //在线时长
         this.lvLabel = UI.find(this.headNode, "lv").getComponent(cc.Label)  //主角等级
 
@@ -138,10 +141,6 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
         cc.log("CapitalMenuMediator initBtnClickListener 初始化按钮等点击事件监听")
         let shareBtn = UI.find(this.capitalLayer.menuNode, "shareBtn")   //分享
         UI.on_click(shareBtn, this.onMenuBtnClick.bind(this, "share"))
-        let goldIcon = UI.find(this.comTop, "goldIcon")    //金币增加
-        UI.on_click(goldIcon, this.onMenuBtnClick.bind(this, "gold"))
-        let foodIcon = UI.find(this.comTop, "foodIcon")   //粮草增加
-        UI.on_click(foodIcon, this.onMenuBtnClick.bind(this, "food"))
 
         UI.on_click(this.head, this.onMenuBtnClick.bind(this, "head"))  //头像
         UI.on_click(this.taskNode, this.onMenuBtnClick.bind(this, "task"))  //任务栏
@@ -162,20 +161,17 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
             case "head":  //头像
                 break;
             case "task":   //任务栏
-                this.handleTaskOptAfterTalk();   //根据任务的具体类型，在对话完毕后，处理具体操作
+                //this.handleTaskOptAfterTalk();   //根据任务的具体类型，在对话完毕后，处理具体操作
+                this.showStoryLayer(); 
                 break;
             case "share":    //分享
-                break;
-            case "gold":    //金币增加
-                break;
-            case "food":  //粮草增加
                 break;
             case "welfare":    //福利
                 break;
             case "general":    //武将
                 break;
             case "map":    //世界
-                LoaderMgr.loadScene("mapScene");  //进入地图场景
+                //LoaderMgr.loadScene("mapScene");  //进入地图场景
                 break;
             case "city":    //城池
                 break;
@@ -216,6 +212,12 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
 
             this.handleTaskOptAfterTalk();  //根据任务的具体类型，在对话完毕后，处理具体操作
         }
+
+        if(MyUserData.TaskId > 1002){   //1002选择县城, 1003就任县令
+            this.capitalLayer.walkBg.active = false;  //新手县令赴任背景
+        }else{
+            this.capitalLayer.walkBg.active = true;  //新手县令赴任背景
+        }
     }
 
      /**
@@ -243,6 +245,17 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
         }
     }
 
+    private showStoryLayer(){
+        let storyConf: st_story_info = GameMgr.curTaskConf;
+        LoaderMgr.showBundleLayer('hall', 'ui/storyLayer', null, (layer)=>{
+            let tsComp = layer.getComponent(StoryLayer)
+            if(!tsComp){
+                tsComp = layer.addComponent(StoryLayer)
+            }
+            tsComp.initStoryConf(storyConf);
+        }); 
+    }
+
      /**
      * 根据任务的具体类型，在对话完毕后，处理具体操作
      */
@@ -250,60 +263,14 @@ export default class CapitalMenuMediator extends puremvc.Mediator implements pur
         let storyConf: st_story_info = GameMgr.curTaskConf;
         cc.log("handleTaskOptAfterTalk 对话完毕后的任务操作 storyConf = "+JSON.stringify(storyConf));
         //任务状态 0未完成，1对话完成，2完成未领取，3已领取
-        if(MyUserData.TaskState == TaskState.Reward){   //已完成未领取
+        if(MyUserData.TaskState === TaskState.Reward){   //已完成未领取
             this.taskReward.active = true;
             //ROOT_NODE.showTipsText(`任务${taskConf.name}奖励可领取`);
             this.openTaskRewardsLayer(GameMgr.curTaskConf);
-        }else if(MyUserData.TaskState == TaskState.Ready){   //任务初始情况，自动弹开对话
-            LoaderMgr.showBundleLayer('hall', 'ui/storyLayer', null, (layer)=>{
-                let tsComp = layer.getComponent(StoryLayer)
-                if(!tsComp){
-                    tsComp = layer.addComponent(StoryLayer)
-                }
-                tsComp.initStoryConf(storyConf);
-            });   //任务宣读(第一阶段）完毕 会在 GameMgr.handleStoryShowOver 中处理后续操作
-        }else if(MyUserData.TaskState == TaskState.Finish){   //对话完成
-            //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
-            cc.log("任务对话完成，后续操作 storyConf.type = "+storyConf.type)
-            switch(storyConf.type){ 
-                case TaskType.Story:  //剧情
-                    if(storyConf.id === 1001){   //创建昵称
-                        LoaderMgr.showBundleLayer('ui_nickEditLayer', 'nickEditLayer', null, (layer)=>{
-                            let tsComp = layer.getComponent(NickEditLayer)
-                            if(!tsComp){
-                                tsComp = layer.addComponent(NickEditLayer)
-                            }
-                            tsComp.setStoryConf(storyConf);
-                        }); 
-                    }if(storyConf.id === 1002){   //选择县城
-                        LoaderMgr.showBundleLayer('ui_selCityLayer', 'selCityLayer', null, (layer)=>{
-                            let tsComp = layer.getComponent(SelCityLayer)
-                            if(!tsComp){
-                                tsComp = layer.addComponent(SelCityLayer)
-                            }
-                            tsComp.setStoryConf(storyConf);
-                        }); 
-                    }
-                    break;
-                case TaskType.Fight:  //战斗
-                    //this.openFightByTask(storyConf);   //战斗选将准备界面
-                    break;
-                case TaskType.Recruit:  // 招募
-                    //this.openGeneralLayer(0);   //武将招募
-                    break;
-                case TaskType.Offical:  //封官拜将
-                    break;
-                case TaskType.Capital:  //主城建设
-                    break;
-                case TaskType.General:   //招武将
-                    break;
-                case TaskType.Garrison:  //驻守
-                    break;
-                case TaskType.Skill:  //技能
-                    break;
-                case TaskType.Belle:  //后宅美姬
-                    break;
-            }
+        }else if(MyUserData.TaskState === TaskState.Ready){   //任务初始情况，自动弹开对话
+            this.showStoryLayer();  //任务宣读(第一阶段）完毕 会在 GameMgr.handleStoryNextOpt 中处理后续操作
+        }else if(MyUserData.TaskState === TaskState.Finish){   //对话完成
+            GameMgr.handleStoryTalkNext(storyConf);   //处理剧情对话展示后的操作
         }
     }
 

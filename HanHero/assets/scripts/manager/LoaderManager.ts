@@ -11,8 +11,8 @@ import RewardLayer from '../comui/rewardLayer';
 /*
  * @Autor: dongsl
  * @Date: 2021-03-19 15:45:18
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-23 10:17:39
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 13:44:24
  * @Description: 
  */
 
@@ -257,7 +257,7 @@ class LoaderManager {
                     return console.error(err);
                 }
                 let layer = LoaderMgr.showLayer(prefab, parent)
-                if(callback){
+                if(callback && layer){
                     callback(layer)
                 }
             });
@@ -271,7 +271,7 @@ class LoaderManager {
                         return console.error(err);
                     }
                     let layer = LoaderMgr.showLayer(prefab, parent)
-                    if(callback){
+                    if(callback && layer){
                         callback(layer)
                     }
                 });

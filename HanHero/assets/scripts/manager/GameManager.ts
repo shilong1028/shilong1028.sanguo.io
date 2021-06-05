@@ -1,14 +1,18 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-23 10:03:47
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 16:24:41
  * @Description: 
  */
 import { st_story_info, ItemInfo, GeneralInfo, BeautyInfo } from "./ConfigManager";
 import { MyUserMgr, MyUserData } from "./MyUserData";
 import { ComItemType, TaskState, TaskType } from "./Enum";
 import { FunMgr } from "./FuncManager";
+import { LoaderMgr } from './LoaderManager';
+import NickEditLayer from "../hall/nickEditLayer";
+import SelCityLayer from "../hall/selCityLayer";
+import BuilderLayer from "../hall/builderLayer";
 
 //游戏管理器
 const { ccclass, property } = cc._decorator;
@@ -23,6 +27,31 @@ class GameManager {
     curTask_NewGenerals: number[] = null;   //当前任务剧情对话获取的新武将集合
 
     CityNearsMap: Map<number, number[]> = new Map<number, number[]>();  //邻近城池Map
+
+
+    /**判定金币是否充足 */
+    checkGoldEnoughOrTips(cost: number, bTips: boolean = true) {
+        if (MyUserData.GoldCount >= cost && cost >= 0) {
+            return true;
+        } else {
+            if (bTips) {
+                LoaderMgr.showGoldAddDialog();
+            }
+            return false;
+        }
+    }
+
+    /**判定粮草是否充足 */
+    checkFoodEnoughOrTips(cost: number, bTips: boolean = true) {
+        if (MyUserData.FoodCount >= cost && cost >= 0) {
+            return true;
+        } else {
+            if (bTips) {
+                LoaderMgr.showGoldAddDialog();
+            }
+            return false;
+        }
+    }
 
 
     /************************  以下为UI接口  ************** */
@@ -157,33 +186,6 @@ class GameManager {
     //     return adWidth;
     // }
 
-    // /**判定金币是否充足 */
-    // checkGoldEnoughOrTips(cost: number, bTips: boolean = false) {
-    //     if (MyUserData.GoldCount >= cost && cost >= 0) {
-    //         return true;
-    //     } else {
-    //         if (bTips) {
-    //             LoaderMgr.showGoldAddDialog();
-    //         }
-    //         return false;
-    //     }
-    // }
-
-    // /**判定粮草是否充足 */
-    // checkFoodEnoughOrTips(cost: number, bTips: boolean = false) {
-    //     if (MyUserData.FoodCount >= cost && cost >= 0) {
-    //         return true;
-    //     } else {
-    //         if (bTips) {
-    //             LoaderMgr.showGoldAddDialog();
-    //         }
-    //         return false;
-    //     }
-    // }
-
-
-
-
     // //获取城池路径（最多途径10城规划出2条最短路径）
     // getNearCitysLine(srcCityId: number, destCityId: number) {
     //     cc.log("getNearCitysLine(), srcCityId = " + srcCityId + "; destCityId = " + destCityId);
@@ -263,31 +265,43 @@ class GameManager {
         }
     }
 
-    /**任务第一阶段操作完毕处理 */
-    handleStoryShowOver(storyConf: st_story_info) {
-        cc.log("handleStoryShowOver(), 任务操作完毕 MyUserData.TaskState = " + MyUserData.TaskState + "; storyConf = " + JSON.stringify(storyConf));
+    /**任务某阶段操作完毕处理 */
+    handleStoryNextOpt(storyConf: st_story_info, nextState:TaskState) {
+        cc.log("handleStoryNextOpt(), 任务操作完毕 MyUserData.TaskState = " + MyUserData.TaskState + "; storyConf = " + JSON.stringify(storyConf));
         if (storyConf == null || storyConf == undefined || storyConf.type == 0) {
             return;
         }
 
-        //任务状态 0未完成，1对话完成，2完成未领取，3已领取
-        if (MyUserData.TaskState == TaskState.Ready) {   //任务对话（第一阶段）处理完毕
-            cc.log("任务对话（第一阶段）处理完毕")
-            GameMgr.saveCurTaskOfficesAndGenerals();  //存储根据当前任务剧情保存的新官职和新武将
-
-            //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
-            if (storyConf.type == TaskType.Story) {
-                if(storyConf.id === 1001 || storyConf.id === 1002){   //创建昵称，选择县城
-                    MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Finish);
-                }else{
+        switch(nextState){
+            case TaskState.Finish:
+                //任务状态 0未完成，1对话完成，2完成未领取，3已领取
+                if (MyUserData.TaskState == TaskState.Ready) {   //任务对话（第一阶段）处理完毕
+                    cc.log("任务对话（第一阶段）处理完毕")
+                    GameMgr.saveCurTaskOfficesAndGenerals();  //存储根据当前任务剧情保存的新官职和新武将
+        
+                    //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
+                    if (storyConf.type == TaskType.Story) {
+                        if(storyConf.id === 1001 || storyConf.id === 1002){   //创建昵称，选择县城
+                            MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Finish);
+                        }else{
+                            MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Reward);
+                        }
+                    } else {
+                        MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Finish);
+                    }
+                }else if (MyUserData.TaskState == TaskState.Finish) {   //任务操作（第二阶段）处理完毕
+                    this.handleStoryTalkNext(storyConf);   //处理剧情对话展示后的操作
+                }
+                break;
+            case TaskState.Reward:
+                //任务状态 0未完成，1对话完成，2完成未领取，3已领取
+                if (MyUserData.TaskState == TaskState.Finish) {   //任务操作（第二阶段）处理完毕
+                    cc.log("任务操作（第二阶段）处理完毕")
                     MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Reward);
                 }
-            } else {
-                MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Finish);
-            }
-        } else if (MyUserData.TaskState == TaskState.Finish) {   //任务操作（第二阶段）处理完毕
-            cc.log("任务操作（第二阶段）处理完毕")
-            MyUserMgr.updateTaskState(MyUserData.TaskId, TaskState.Reward);
+                break;
+            default:
+                cc.log("handleStoryNextOpt 状态异常 nextState = "+nextState+"; MyUserData.TaskState = "+MyUserData.TaskState)
         }
         //大厅会通过消息监听同步任务状态后，进行后续处理
 
@@ -299,6 +313,63 @@ class GameManager {
         //     MyUserMgr.addRuleCitys(ruleCitys);
         //     MyUserMgr.updateMyCityIds(315, true); 
         // }
+    }
+
+    /**处理剧情对话展示后的操作 */
+    handleStoryTalkNext(storyConf: st_story_info){
+        if(MyUserData.TaskState === TaskState.Finish){   //对话完成
+            //任务类型 1 剧情 2战斗 3招募 4封官拜将 5主城建设 6招武将 7驻守 8技能 9攻城略地
+            cc.log("handleStoryTalkNext 任务对话完成，后续操作 storyConf.type = "+storyConf.type)
+            switch(storyConf.type){ 
+                case TaskType.Story:  //剧情
+                    if(storyConf.id === 1001){   //创建昵称
+                        LoaderMgr.showBundleLayer('ui_nickEditLayer', 'nickEditLayer', null, (layer)=>{
+                            let tsComp = layer.getComponent(NickEditLayer)
+                            if(!tsComp){
+                                tsComp = layer.addComponent(NickEditLayer)
+                            }
+                            tsComp.setStoryConf(storyConf);
+                        }); 
+                    }if(storyConf.id === 1002){   //选择县城
+                        LoaderMgr.showBundleLayer('ui_selCityLayer', 'selCityLayer', null, (layer)=>{
+                            let tsComp = layer.getComponent(SelCityLayer)
+                            if(!tsComp){
+                                tsComp = layer.addComponent(SelCityLayer)
+                            }
+                            tsComp.setStoryConf(storyConf);
+                        }); 
+                    }
+                    break;
+                case TaskType.Fight:  //战斗
+                    //this.openFightByTask(storyConf);   //战斗选将准备界面
+                    break;
+                case TaskType.Recruit:  // 招募
+                    //this.openGeneralLayer(0);   //武将招募
+                    break;
+                case TaskType.Offical:  //封官拜将
+                    break;
+                case TaskType.Capital:  //主城建设
+                    let builderInfo = MyUserMgr.getBuilderFromList(storyConf.builder);
+                    if(builderInfo){
+                        LoaderMgr.showBundleLayer('hall', 'ui/builderLayer', null, (layer)=>{
+                            let tsComp = layer.getComponent(BuilderLayer)
+                            if(!tsComp){
+                                tsComp = layer.addComponent(BuilderLayer)
+                            }
+                            tsComp.initBuilderConf(builderInfo);
+                        }); 
+                    }
+                    break;
+                case TaskType.General:   //招武将
+                    break;
+                case TaskType.Garrison:  //驻守
+                    break;
+                case TaskType.Skill:  //技能
+                    break;
+                case TaskType.Belle:  //后宅美姬
+                    break;
+            }
+        }
     }
 
 
@@ -344,6 +415,7 @@ class GameManager {
     }
     /**添加当前剧情获得的新官职ID */
     addCurTaskNewOffices(officeIds: number[]) {
+        cc.log("addCurTaskNewOffices officeIds = "+JSON.stringify(officeIds))
         if (!this.curTask_NewOffices) {
             this.curTask_NewOffices = officeIds;
         } else {

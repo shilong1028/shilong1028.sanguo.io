@@ -25,6 +25,7 @@ import MapRoadUtils from "./road/MapRoadUtils";
 import AstarHoneycombRoadSeeker from "./road/AstarHoneycombRoadSeeker";
 import AStarRoadSeeker from "./road/AStarRoadSeeker";
 import Point from "./road/Point";
+import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 
 //大厅按钮界面相关中介
 
@@ -91,7 +92,7 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
      * @param notification 
      */
     public handleNotification(notification: puremvc.INotification): void {
-        var notifier: any = notification.getBody();
+        let notifier: any = notification.getBody();
         cc.log("MapMediator handleNotification:" + notification.getName())
         switch (notification.getName()) {
             case CommonCommand.E_ON_CHANGE_SCENE_STATE:
@@ -123,13 +124,16 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
         }
         this.player.initPlayerModel(this, "10001");   //初始化玩家形象
 
-        var mapName: string = "mapData"
+        let mapName: string = "cityMap"   //某郡各县小地图
+        if(MyUserData.myTownIdxs.length > 5){   //五个县城及郡治均已占领
+            mapName = "worldMap"   //已有郡城，则全国大地图
+        }
         LoaderMgr.bundle_load("map", "res/data/" + mapName, cc.JsonAsset, (error: Error, res: cc.JsonAsset) => {
             if (!res.json) {
                 cc.log("res.json is null, mapName = " + mapName);
                 return
             }
-            var mapData: MapData = res.json;
+            let mapData: MapData = res.json;
             LoaderMgr.bundle_load("map", "res/bg/" + mapData.bgName, cc.Texture2D, (error: Error, tex: cc.Texture2D) => {   //cc.SpriteFrame
                 this.initMap(res.json, tex)
             });
@@ -155,19 +159,19 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
 
         this.mapLayer.init(mapData.mapWidth, mapData.mapHeight, 256, 256, bgTex);
 
-        var len: number = mapData.roadDataArr.length;
-        var len2: number = mapData.roadDataArr[0].length;
+        let len: number = mapData.roadDataArr.length;
+        let len2: number = mapData.roadDataArr[0].length;
 
-        var value: number = 0;
-        var dx: number = 0;
-        var dy: number = 0;
+        let value: number = 0;
+        let dx: number = 0;
+        let dy: number = 0;
 
-        for (var i: number = 0; i < len; i++) {
-            for (var j: number = 0; j < len2; j++) {
+        for (let i: number = 0; i < len; i++) {
+            for (let j: number = 0; j < len2; j++) {
                 value = mapData.roadDataArr[i][j];
                 dx = j;
                 dy = i;
-                var node: RoadNode = MapRoadUtils.instance.getNodeByDerect(dx, dy);
+                let node: RoadNode = MapRoadUtils.instance.getNodeByDerect(dx, dy);
                 node.value = value;
                 this._roadDic[node.cx + "_" + node.cy] = node;
             }
@@ -202,7 +206,7 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
     */
     public onMapMouseDown(event: cc.Event.EventTouch): void {
         //var pos = this.node.convertToNodeSpaceAR(event.getLocation());
-        var pos = this.mapScene.camera.node.position.add(FunMgr.v2Tov3(event.getLocation()));
+        let pos = this.mapScene.camera.node.position.add(FunMgr.v2Tov3(event.getLocation()));
         cc.log("onMapMouseDown pos = " + pos)
         this.movePlayer(pos.x, pos.y);
 
@@ -215,14 +219,14 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
      * 
      */
     public movePlayer(targetX: number, targetY: number) {
-        var startPoint: Point = MapRoadUtils.instance.getWorldPointByPixel(this.player.node.x, this.player.node.y);
-        var targetPoint: Point = MapRoadUtils.instance.getWorldPointByPixel(targetX, targetY);
+        let startPoint: Point = MapRoadUtils.instance.getWorldPointByPixel(this.player.node.x, this.player.node.y);
+        let targetPoint: Point = MapRoadUtils.instance.getWorldPointByPixel(targetX, targetY);
 
-        var startNode: RoadNode = this._roadDic[startPoint.x + "_" + startPoint.y];
-        var targetNode: RoadNode = this._roadDic[targetPoint.x + "_" + targetPoint.y];
+        let startNode: RoadNode = this._roadDic[startPoint.x + "_" + startPoint.y];
+        let targetNode: RoadNode = this._roadDic[targetPoint.x + "_" + targetPoint.y];
 
-        var roadNodeArr: RoadNode[] = this._roadSeeker.seekPath(startNode, targetNode); //点击到障碍点不会行走
-        //var roadNodeArr:RoadNode[] = this._roadSeeker.seekPath2(startNode,targetNode);  //点击到障碍点会行走到离障碍点最近的可走路点
+        let roadNodeArr: RoadNode[] = this._roadSeeker.seekPath(startNode, targetNode); //点击到障碍点不会行走
+        //let roadNodeArr:RoadNode[] = this._roadSeeker.seekPath2(startNode,targetNode);  //点击到障碍点会行走到离障碍点最近的可走路点
         if (roadNodeArr.length > 0) {
             this.player.walkByRoad(roadNodeArr);
         }
@@ -273,10 +277,8 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
     }
 
     public getMapNodeByPixel(px: number, py: number): RoadNode {
-        var point: Point = MapRoadUtils.instance.getWorldPointByPixel(px, py);
-
-        var node: RoadNode = this._roadDic[point.x + "_" + point.y];
-
+        let point: Point = MapRoadUtils.instance.getWorldPointByPixel(px, py);
+        let node: RoadNode = this._roadDic[point.x + "_" + point.y];
         return node;
     }
 

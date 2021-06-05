@@ -24,7 +24,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 328
+      "__id__": 329
     },
     "_opacity": 255,
     "_color": {
@@ -104,10 +104,13 @@
     "_components": [
       {
         "__id__": 326
+      },
+      {
+        "__id__": 327
       }
     ],
     "_prefab": {
-      "__id__": 327
+      "__id__": 328
     },
     "_opacity": 255,
     "_color": {
@@ -12808,6 +12811,16 @@
     "_atlas": {
       "__uuid__": "a769d82d-0767-41d1-bb25-76ca2a414269"
     },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.BlockInputEvents",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
     "_id": ""
   },
   {

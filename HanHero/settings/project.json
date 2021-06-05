@@ -16,7 +16,6 @@
     "StudioComponent",
     "TiledMap",
     "VideoPlayer",
-    "WebView",
     "3D",
     "3D Primitive",
     "3D Physics/cannon.js",
@@ -32,8 +31,8 @@
   "simulator-orientation": false,
   "use-customize-simulator": true,
   "simulator-resolution": {
-    "height": 640,
-    "width": 960
+    "width": 960,
+    "height": 640
   },
   "clear-simulator-cache": true,
   "facebook": {

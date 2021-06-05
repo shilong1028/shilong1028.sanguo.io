@@ -1,8 +1,8 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
- * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:39:54
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-05 17:12:26
  * @Description: 
  */
 import { LDMgr, LDKey } from "./StorageManager";
@@ -38,6 +38,7 @@ export var MyUserData = {
     myCityIds: [],   //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
     ruleCityIds: [],   //己方统治下未被占领或叛乱的城池ID集合
 
+    MainBuildLv:0,   //根建筑等级
     BuilderList:[],   //建筑列表
     ItemList: [],   //背包物品列表
     GeneralList: [],   //武将列表
@@ -84,6 +85,7 @@ class MyUserManager {
         MyUserData.ruleCityIds = [];   //己方统治下未被占领或叛乱的城池ID集合
         LDMgr.setItem(LDKey.KEY_RuleCityIds, "");
 
+        MyUserData.MainBuildLv = 0;   //根建筑等级
         MyUserData.BuilderList = [];   //建筑列表
         LDMgr.setItem(LDKey.KEY_BuilderList, JSON.stringify(MyUserData.BuilderList));
 
@@ -232,7 +234,7 @@ class MyUserManager {
 
     /**更新主角官职（可身兼数职） */
     updateOfficalIds(officalIds: number[]) {
-        cc.log("updateOfficalIds(), officalIds = " + officalIds);
+        cc.log("updateOfficalIds(), officalIds = " + JSON.stringify(officalIds));
         MyUserData.officalIds = officalIds;
         LDMgr.setItem(LDKey.KEY_OfficalIds, this.getIdsToStr(MyUserData.officalIds));
 
@@ -314,9 +316,12 @@ class MyUserManager {
     /**修改建筑列表 */
     updateBuilderList(builder: BuilderInfo, bSave: boolean = true) {
         let bUpdateItem: boolean = false;
+        if(builder.id_str === "government"){
+            MyUserData.MainBuildLv = builder.level;   //根建筑等级
+        }
         for (let i = 0; i < MyUserData.BuilderList.length; ++i) {
             let info: BuilderInfo = MyUserData.BuilderList[i];
-            if (info.id_str == builder.id_str) {
+            if (info.id_str === builder.id_str) {
                 MyUserData.BuilderList[i] = builder;
                 bUpdateItem = true;
                 break;
@@ -326,7 +331,8 @@ class MyUserManager {
         if (bUpdateItem == false) {
             MyUserData.BuilderList.push(builder);
         }
-        //NoticeMgr.emit(NoticeType.UpdateBagItem, MyUserData.ItemList[i]);  //更新单个背包物品
+        NoticeMgr.emit(NoticeType.UpdateBuilder, builder);  //更新单个建筑
+        //AppFacade.getInstance().sendNotification(CapitalCommand.E_ON_UpdateBuilder, builder);  //更新单个建筑
 
         if (bSave) {
             this.saveBuilderList();
@@ -334,6 +340,9 @@ class MyUserManager {
     }
     /**获取建筑数据 */
     getBuilderFromList(builder_name: string): BuilderInfo {
+        if(!builder_name || builder_name.length === 0){
+            return null;
+        }
         for (let i = 0; i < MyUserData.BuilderList.length; ++i) {
             let info: BuilderInfo = MyUserData.BuilderList[i];
             if (info.id_str == builder_name) {
@@ -349,7 +358,6 @@ class MyUserManager {
             let tempItem = MyUserData.BuilderList[i].cloneNoCfg();
             tempList.push(tempItem);
         }
-
         LDMgr.setItem(LDKey.KEY_BuilderList, JSON.stringify(tempList));
     }
     /**从本地存储中获取建筑列表 */
@@ -358,8 +366,11 @@ class MyUserManager {
         let tempList = [];
         if (builderList) {
             for (let i = 0; i < builderList.length; ++i) {
-                let tempBuilder = new BuilderInfo(builderList[i].name, builderList[i].level);
+                let tempBuilder = new BuilderInfo(builderList[i].id_str, builderList[i].level);
                 tempList.push(tempBuilder);
+                if(tempBuilder.id_str === "government"){
+                    MyUserData.MainBuildLv = tempBuilder.level;   //根建筑等级
+                }
             }
         }
         return tempList;

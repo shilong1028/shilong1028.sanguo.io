@@ -5,6 +5,7 @@ import { ROOT_NODE } from "../login/rootNode";
 import { MyUserMgr } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
 import ComMaskBg from "../comui/comMaskBg";
+import { TaskState } from "../manager/Enum";
 
 
 //修改昵称
@@ -72,7 +73,7 @@ export default class NickEditLayer extends cc.Component {
         if(this.nameEditBox.string.length > 0){
             MyUserMgr.setUserName(this.nameEditBox.string);
             if(this.taskConf && this.taskConf.id === 1001){   //创建昵称
-                GameMgr.handleStoryShowOver(this.taskConf);   
+                GameMgr.handleStoryNextOpt(this.taskConf, TaskState.Reward);   
             }
             this.closeLayer()
         }else{

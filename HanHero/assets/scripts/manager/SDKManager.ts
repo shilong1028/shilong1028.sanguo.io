@@ -12,7 +12,7 @@ class SDKManager_class {
     WeChat: any = null;   //微信小游戏
     TT: any = null;  //字节跳动
 
-    bOpenAdBtn: boolean = true;   //是否开启视频按钮
+    bOpenAdBtn: boolean = false;   //是否开启视频按钮
     bAutoPlayVedio: boolean = false;
     adVedioPlaying: boolean = false;
 
@@ -86,13 +86,16 @@ class SDKManager_class {
         if (SDKMgr.is_tt_platform() == true) {   //字节跳动小程序
             SDKMgr.WeChat = null;
             sdkTT.initSDK();
+            this.bOpenAdBtn = true;   //是否开启视频按钮
         }
         else if (SDKMgr.is_wechat_platform() == true) {   //微信小游戏
             SDKMgr.TT = null;
             sdkWechat.initSDK();
+            this.bOpenAdBtn = true;   //是否开启视频按钮
         }
         else {
             //cc.log("没有找到SDK对应信息");
+            this.bOpenAdBtn = false;   //是否开启视频按钮
         }
     }
 

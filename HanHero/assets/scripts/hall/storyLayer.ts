@@ -8,6 +8,8 @@ import OfficalLayer from './officalLayer';
 import UI from '../util/ui';
 import BeautyJoin from "./beautyJoin";
 import ComMaskBg from "../comui/comMaskBg";
+import { MyUserData } from '../manager/MyUserData';
+import { TaskState } from '../manager/Enum';
 
 //剧情阐述
 const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
@@ -183,16 +185,18 @@ export default class StoryLayer extends cc.Component {
 
     /**显示新官职界面 */
     isShowNewOffical(){
-        if(this.curTalkConf.official.length > 0){ //新官职
+        if(this.curTalkConf.official.length > 0 && MyUserData.TaskState === TaskState.Ready){ //新官职  //任务初始情况
+            let official = this.curTalkConf.official
             LoaderMgr.showBundleLayer('ui_officalLayer', 'officalLayer', null, (layer)=>{
                 let tsComp = layer.getComponent(OfficalLayer)
                 if(!tsComp){
                     tsComp = layer.addComponent(OfficalLayer)
                 }
-                tsComp.initOfficalByIds(this.curTalkConf.official, false, ()=>{
+                tsComp.initOfficalByIds(official, false, ()=>{
                     this.handleOfficalNext();
                 });
             });
+            return true;
         }
         return false;
     }
@@ -207,24 +211,26 @@ export default class StoryLayer extends cc.Component {
     }
     /**展示武将来投界面 */
     isShowNewGeneral(){
-        if(this.curTalkConf.generals.length > 0){ //新武将
+        if(this.curTalkConf.generals.length > 0 && MyUserData.TaskState === TaskState.Ready){ //新武将  //任务初始情况
             if(this.curTalkConf.generals.length > 1 || this.curTalkConf.generals[0] > 1000){   //武将来投
+                let generals = this.curTalkConf.generals
                 LoaderMgr.showBundleLayer('ui_generalJoin', 'generalJoin', null, (layer)=>{
                     let tsComp = layer.getComponent(GeneralJoin)
                     if(!tsComp){
                         tsComp = layer.addComponent(GeneralJoin)
                     }
-                    tsComp.initGeneralByIds(this.curTalkConf.generals, false, ()=>{
+                    tsComp.initGeneralByIds(generals, false, ()=>{
                         this.handleGeneralNext();
                     });
                 });
             }else{    //新纳美姬
+                let beautyId = this.curTalkConf.generals[0]
                 LoaderMgr.showBundleLayer('hall', 'ui/beautyJoin', null, (layer)=>{
                     let tsComp = layer.getComponent(BeautyJoin)
                     if(!tsComp){
                         tsComp = layer.addComponent(BeautyJoin)
                     }
-                    tsComp.initBeautyById(this.curTalkConf.generals[0], ()=>{
+                    tsComp.initBeautyById(beautyId, ()=>{
                         this.handleGeneralNext();
                     });
                 });
@@ -246,7 +252,7 @@ export default class StoryLayer extends cc.Component {
         if(this.curTalkConf && this.curTalkIdx < this.taskConf.talks.length-1){   //跳过
             this.setTalkStr();   //设置话本内容
         }else{  //结束
-            GameMgr.handleStoryShowOver(this.taskConf);   //任务宣读(第一阶段）完毕处理
+            GameMgr.handleStoryNextOpt(this.taskConf, TaskState.Finish);   //任务宣读(第一阶段）完毕处理
             this.node.destroy();
         }
     }

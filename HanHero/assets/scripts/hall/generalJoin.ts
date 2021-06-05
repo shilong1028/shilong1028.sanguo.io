@@ -44,6 +44,9 @@ export default class GeneralJoin extends cc.Component {
         if (!list_item)
         {
             list_item = list_project.addComponent(ListItem)
+            list_item.selectedMode = 1;    //TOGGLE
+            let selImg = UI.find(list_project, "selBg")
+            list_item.selectedFlag = selImg
         }
 
         this.list_view = list_node.getComponent(List)
@@ -51,6 +54,7 @@ export default class GeneralJoin extends cc.Component {
         {
             this.list_view = list_node.addComponent(List)
             this.list_view.tmpNode = list_project;
+            this.list_view.selectedMode = 1;  //单选
 
             this.list_view.setRenderCallBack(this.onListRender.bind(this));
             this.list_view.setSelectedCallBack(this.onListSelected.bind(this))
@@ -89,7 +93,7 @@ export default class GeneralJoin extends cc.Component {
 
         let nameStr = ""
         for(let i=0; i<idArr.length; ++i){
-            let info = new GeneralInfo(idArr[i].toString());
+            let info = new GeneralInfo(idArr[i]);
             this.generalArr.push(info);
 
             nameStr += info.generalCfg.name;
