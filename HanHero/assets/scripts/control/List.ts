@@ -470,10 +470,10 @@ export default class List extends cc.Component {
     }
     setRenderCallBack(callback: Function) {
         this.renderCallBack = callback;
-         //使用脚本添加List组件时，还没有设置Cell模板，后面会报错
-         if(!this._inited){    //还未初始化
+        //使用脚本添加List组件时，还没有设置Cell模板，后面会报错
+        if (!this._inited) {    //还未初始化
             this._init();
-         }
+        }
     }
     setScrollRenderCallBack(callback: Function, idxsCallback: Function = null) {
         this.scroll_renderCallBack = callback;   //滑动时可见区域Cell做的特殊处理回调

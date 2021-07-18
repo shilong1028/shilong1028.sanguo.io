@@ -1,17 +1,19 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:44:18
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-05 16:41:22
+ * @LastEditors: dongsl
+ * @LastEditTime: 2021-07-17 10:29:06
  * @Description: 
  */
-import { ROOT_NODE } from "../login/rootNode";
+
 import { BuilderInfo } from "../manager/ConfigManager";
 import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 import UI from '../util/ui';
 import { LoaderMgr } from '../manager/LoaderManager';
 import BuilderLayer from './builderLayer';
 import { NoticeMgr, NoticeType } from '../manager/NoticeManager';
+import AppFacade from '../puremvc/appFacade';
+import CapitalCommand from '../puremvc/capitalCommand';
 
 //主城建筑显示脚本
 const { ccclass, property, menu, executionOrder, disallowMultiple } = cc._decorator;
@@ -40,25 +42,25 @@ export default class Builder extends cc.Component {
         this.tip = UI.find(this.node, "tip")
         this.tip.opacity = 0;
 
-        this.tipsLabel = UI.find(this.node, "tipLabel").getComponent(cc.Label)  
-        this.nameLabel = UI.find(this.node, "nameLabel").getComponent(cc.Label)  
-        this.lvLabel = UI.find(this.node, "lvLabel").getComponent(cc.Label) 
+        this.tipsLabel = UI.find(this.node, "tipLabel").getComponent(cc.Label)
+        this.nameLabel = UI.find(this.node, "nameLabel").getComponent(cc.Label)
+        this.lvLabel = UI.find(this.node, "lvLabel").getComponent(cc.Label)
 
         this.lock = UI.find(this.node, "lock")
         this.lock.active = false;
         this.board = this.node
-        UI.on_click(this.board, this.onClickBuild.bind(this)) 
+        UI.on_click(this.board, this.onClickBuild.bind(this))
 
         NoticeMgr.on(NoticeType.UpdateBuilder, this.HandleUpdateBuilder, this);
     }
 
-    onDestroy(){
+    onDestroy() {
         //this.node.targetOff(this);
         NoticeMgr.offAll(this);
     }
 
     start() {
-        let randomTime = Math.random()*20.0;
+        let randomTime = Math.random() * 20.0;
         cc.tween(this.tip)
             .repeatForever(cc.sequence(cc.fadeIn(randomTime), cc.delayTime(0.5), cc.fadeOut(0.5)))
             .start()
@@ -72,35 +74,35 @@ export default class Builder extends cc.Component {
         this.showBuilderInfo()
     }
 
-    showBuilderInfo(){
-        if(!this.builderInfo){
+    showBuilderInfo() {
+        if (!this.builderInfo) {
             return;
         }
-        if(MyUserData.MainBuildLv > 0){  //根建筑等级
+        if (MyUserData.MainBuildLv > 0) {  //根建筑等级
             this.lock.active = false;
-        }else if(this.builderInfo.id_str !== "government")
-        {
+        } else if (this.builderInfo.id_str !== "government") {
             this.lock.active = true;
         }
-        this.lvLabel.string = "Lv:"+this.builderInfo.level.toString();
+        this.lvLabel.string = "Lv:" + this.builderInfo.level.toString();
         //this.nameLabel.string = this.builderInfo.builderCfg.name
     }
 
     onClickBuild() {
-        LoaderMgr.showBundleLayer('hall', 'ui/builderLayer', null, (layer)=>{
+        LoaderMgr.showBundleLayer('hall', 'ui/builderLayer', null, (layer) => {
             let tsComp = layer.getComponent(BuilderLayer)
-            if(!tsComp){
+            if (!tsComp) {
                 tsComp = layer.addComponent(BuilderLayer)
             }
             tsComp.initBuilderConf(this.builderInfo);
-        }); 
+        });
+        AppFacade.getInstance().sendNotification(CapitalCommand.E_ON_BuilderHand, null);  //通知显示或隐藏建筑手指
     }
 
-    HandleUpdateBuilder(builder: BuilderInfo){
+    HandleUpdateBuilder(builder: BuilderInfo) {
         if (this.builderInfo && this.builderInfo.id_str == builder.id_str) {
             this.builderInfo = builder;
             this.showBuilderInfo();
-        }else if(builder.id_str === "government" && MyUserData.MainBuildLv === 1){
+        } else if (builder.id_str === "government" && MyUserData.MainBuildLv === 1) {
             //this.showBuilderInfo();
             this.lock.active = false;
         }

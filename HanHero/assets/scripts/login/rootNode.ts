@@ -1,15 +1,16 @@
 import TipsText from '../comnode/tipsText';
 import Item from '../comnode/item';
-import ComTop from '../comnode/comTop';
 import GeneralCell from '../comnode/general';
 import { MyUserMgr } from '../manager/MyUserData';
 import { ItemInfo, GeneralInfo } from '../manager/ConfigManager';
+import { LoaderMgr } from '../manager/LoaderManager';
+// import Transitions = require('../../resources/transitions/transitions');   //ts引用js
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:18:13
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:57:53
- * @Description: 
+ * @LastEditTime: 2021-07-13 11:07:47
+ * @Description: 常驻节点，负责公用资源引用及调用
  */
 
 //游戏常驻节点
@@ -28,35 +29,26 @@ export default class RootNode extends cc.Component {
     pfItem: cc.Prefab = null;   //背包道具通用显示
     @property(cc.Prefab)
     pfGeneral: cc.Prefab = null;   //武将卡牌
-    @property(cc.Prefab)
-    pfComTop: cc.Prefab = null;   //一级界面上的金币钻石粮草公用控件
-    @property(cc.Prefab)
-    pfComMaskBg: cc.Prefab = null;   //通用遮罩层
 
     @property(cc.Prefab)
-    pfReward: cc.Prefab = null;   //获取奖励通用提示框
+    pfComMaskBg: cc.Prefab = null;   //通用遮罩层
     @property(cc.Prefab)
     pfTipsText: cc.Prefab = null;   //提示文本
     @property(cc.Prefab)
-    pfTipsDialog: cc.Prefab = null;  //提示框
-    @property(cc.Prefab)
     pfLoading: cc.Prefab = null;  //加载进度层
-    @property(cc.Prefab)
-    guidePrefab: cc.Prefab = null;   //引导层
-
-    @property(cc.Prefab)
-    pfGoldAdd: cc.Prefab = null;  //获取金币提示框
-
-    @property(cc.SpriteAtlas)
-    cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
-    @property(cc.SpriteAtlas)
-    commonAtlas: cc.SpriteAtlas = null;   //通用图集
-    @property(cc.SpriteAtlas)
-    iconAtlas: cc.SpriteAtlas = null;   //道具图集
-    @property(cc.SpriteAtlas)
-    officeAtlas: cc.SpriteAtlas = null;  //官职图集
 
     // LIFE-CYCLE CALLBACKS:
+
+    pfGoldAdd: cc.Prefab = null;  //获取金币提示框
+    pfTipsDialog: cc.Prefab = null;  //提示框
+    pfReward: cc.Prefab = null;   //获取奖励通用提示框
+    guidePrefab: cc.Prefab = null;   //引导层
+    pfComTop: cc.Prefab = null;   //一级界面上的金币钻石粮草公用控件
+
+    cicleAtlas: cc.SpriteAtlas = null;   //转圈序列帧
+    commonAtlas: cc.SpriteAtlas = null;   //通用图集
+    iconAtlas: cc.SpriteAtlas = null;   //道具图集
+    officeAtlas: cc.SpriteAtlas = null;  //官职图集
 
     itemsPool: cc.NodePool = null;   //道具缓存池
     generalPool: cc.NodePool = null;   //武将卡牌缓存池
@@ -64,6 +56,9 @@ export default class RootNode extends cc.Component {
     tipsPool: cc.NodePool = null;   //缓存池
     tipsArr: any[] = [];   //提示文本数组
     tipsStep: number = 0;   //提示步骤
+
+    _transitions: any = null;   //过渡场景脚本
+    _isLoadingScene: boolean = false;  //是否在过渡场景
 
     onLoad() {
         if (!cc.game.isPersistRootNode(this.node)) {
@@ -123,7 +118,7 @@ export default class RootNode extends cc.Component {
     }
 
     update(dt) {
-        MyUserMgr.updateLineTime(dt);  //总的在线时长（每500s更新记录一次）
+        MyUserMgr.updateLineTime(dt);  //总的在线时长（每100s更新记录一次）
 
         if (this.tipsStep > 0) {
             this.tipsStep--;
@@ -131,17 +126,6 @@ export default class RootNode extends cc.Component {
                 this.tipsStep = 0;
                 this.createTipsText();  //创建并提示文本
             }
-        }
-    }
-
-    //一级界面上的金币钻石粮草公用控件
-    showComTopNode(parent: cc.Node, pos: cc.Vec2, zIndex: number = 10) {
-        let topCom = cc.instantiate(this.pfComTop);
-        topCom.setPosition(pos);
-        parent.addChild(topCom, zIndex);
-        let tsComp = topCom.getComponent(ComTop)
-        if(!tsComp){
-            tsComp = topCom.addComponent(ComTop)
         }
     }
 
@@ -183,7 +167,7 @@ export default class RootNode extends cc.Component {
             cc.director.getScene().addChild(tips, 10000);
 
             let tsComp = tips.getComponent(TipsText)
-            if(!tsComp){
+            if (!tsComp) {
                 tsComp = tips.addComponent(TipsText)
             }
             tsComp.initTipsText(tipInfo["str"], tipInfo["color"]);
@@ -225,7 +209,7 @@ export default class RootNode extends cc.Component {
         }
         cc.log("创建道具 this.itemsPool.size() = " + this.itemsPool.size())
         let tsComp = item.getComponent(Item)
-        if(!tsComp){
+        if (!tsComp) {
             tsComp = item.addComponent(Item)
         }
         tsComp.initItemData(info, bShowTip, selCallBack);
@@ -246,7 +230,7 @@ export default class RootNode extends cc.Component {
         }
         cc.log("创建武将头像节点 this.generalPool.size() = " + this.generalPool.size())
         let tsComp = general.getComponent(GeneralCell)
-        if(!tsComp){
+        if (!tsComp) {
             tsComp = general.addComponent(GeneralCell)
         }
         tsComp.setCellClickEnable(bClick);
@@ -256,6 +240,46 @@ export default class RootNode extends cc.Component {
     removeGeneral(general: cc.Node) {
         this.generalPool.put(general); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
         //注意用for childeren 调用removeGeneral 时，一定从后向前for 便利循环，否则可能内存泄漏
+    }
+
+    /**过渡场景 */
+    transitionScene(sceneName: string, fromCameraPath: string, toCameraPath: string, onLoadSceneFinish?: Function, material_name?: string) {
+        //cc.log("RootNode transitionScene sceneName = " + sceneName + "; material_name = " + material_name+"; this._isLoadingScene = "+this._isLoadingScene)
+        if (this._isLoadingScene) {
+            return true;
+        }
+        switch (sceneName) {
+            case "capitalScene":
+            case "mapScene":
+                {
+                    if (!this._transitions) {
+                        this._transitions = this.node.getComponent("transitions")   //带引号为脚本文件名， 不带引号为脚本组件名
+                        //window["loaderMgr"] = LoaderMgr;
+                    }
+                    if (!this._transitions) {
+                        return false;
+                    }
+
+                    window["loaderMgr"] = LoaderMgr;
+                    if (material_name) {
+                        this._transitions.updatetransitionMaterial(material_name)
+                    }
+                    let result = this._transitions.transitionScene(sceneName, fromCameraPath, toCameraPath, () => {
+                        this._isLoadingScene = false;
+                        if (onLoadSceneFinish) {
+                            onLoadSceneFinish();
+                        }
+                    })
+                    if (!result) {
+                        cc.log("RootNode transitionScene result false")
+                        return false;
+                    }
+
+                    this._isLoadingScene = true;
+                }
+                break;
+            default:
+        }
     }
 }
 

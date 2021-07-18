@@ -2,7 +2,7 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:38:18
+ * @LastEditTime: 2021-07-06 10:52:41
  * @Description: 
  */
 
@@ -231,6 +231,186 @@ class FunManager {
         return ret;
     }
 
+
+    /**
+     * 深拷贝对象
+     * @param obj [] or {}
+     */
+    clone(obj: Array<any> | Object) {
+        if (!obj) return obj;
+        var new_obj = obj.constructor === Array ? [] : {}
+        if (typeof obj !== 'object') {
+            return
+        } else {
+            for (var i in obj) {
+                if (obj.hasOwnProperty(i)) {
+                    new_obj[i] = typeof obj[i] === 'object' ? this.clone(obj[i]) : obj[i]
+                }
+            }
+        }
+        return new_obj
+    }
+
+    /**合并对象 */
+    merge(dest, src) {
+        if (!src) return dest;
+        if (!dest) {
+            dest = Object.create(null)
+        }
+
+        if (src.hasOwnProperty) {//外层判断，性能更好//
+            for (const key in src) {
+                if (src.hasOwnProperty(key)) {
+                    dest[key] = src[key]
+                }
+            }
+        }
+        else {
+            for (const key in src) {
+                dest[key] = src[key]
+            }
+        }
+        return dest
+    }
+
+    /**
+     * %d天%d小时 是符合规范的，但%d小时%2d分%d秒是不合法的--
+     * precision:精度，保留几位精度。如果1，则结果为: xx天 或者 xx小时 或者 xx分钟
+     * 如果为2则为 xx天xx小时,xx小时xx分钟,xx分钟
+     * format_style:example %d天%d小时%2d分%d秒,且这个字符串能省略后面的但不能省略前面的。
+     * first_field: 第一位时间("day","hour","min","sec"之一),为0时也显示
+     */
+    format_time(seconds: number, format_style: string, precision?: number, first_field?: string, bShowDay: boolean = true): string {
+        if (!precision) {
+            precision = 1
+        }
+        if (!first_field) {
+            first_field = "sec"
+        }
+        let time_date = this.convert_time(seconds, bShowDay)
+        let format_array = format_style.split("%")
+        let field_count = format_array.length - 1
+        field_count = Math.min(field_count, 4) //天 时 分 秒,最多四位
+
+        let str_time = ""
+        let concat_count = 0
+        let date = ["day", "hour", "min", "sec"]
+        let time_field
+        for (let index = 0; index < date.length; index++) {
+            if (concat_count >= precision) {
+                break
+            }
+            time_field = date[index]
+            if ((time_date[time_field] > 0 || concat_count > 0 || first_field == time_field) && index + 1 <= field_count) {
+                concat_count++
+                str_time = str_time + this.format_int_number_fix_width("%" + format_array[index + 1], time_date[time_field])
+            }
+        }
+        return str_time
+    }
+
+    /**
+     * 毫秒数时间转换为xxxx-xx-xx xx:xx:xx格式
+     * @param seconds 转换时间毫秒数
+     * @param format 要转换的格式 'yyyy-MM-dd HH:mm:ss'
+     */
+    seconds_to_date(seconds: number, format: string) {
+
+        let t = seconds ? new Date(seconds) : new Date();
+        let tf = function (i) {
+            return (i < 10 ? '0' : '') + i
+        }
+        return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function (a) {
+            switch (a) {
+                case 'yyyy':
+                    return tf(t.getFullYear())
+                case 'MM':
+                    return tf(t.getMonth() + 1)
+                case 'mm':
+                    return tf(t.getMinutes())
+                case 'dd':
+                    return tf(t.getDate())
+                case 'HH':
+                    return tf(t.getHours())
+                case 'ss':
+                    return tf(t.getSeconds())
+            }
+        })
+    }
+
+    /**
+     * 转换时间,把以秒表示的时间转化为{day=xx,hour=xx,minute=xx,second=xx}的形式
+     */
+    convert_time(seconds: number, bShowDay: boolean = true) {
+        let date = { day: 0, hour: 0, min: 0, sec: 0 }
+        if (seconds < 0) {
+            return date
+        }
+        date.sec = seconds % 60
+
+        seconds = (seconds - date.sec) / 60
+        date.min = seconds % 60
+
+        seconds = (seconds - date.min) / 60
+        if (bShowDay) {
+            date.hour = seconds % 24
+            date.day = (seconds - date.hour) / 24
+        } else {
+            date.hour = seconds
+        }
+        return date
+    }
+
+    /**
+     * 格式化整数数字显示为固定宽度,例如%02d效果相同
+     */
+    format_int_number_fix_width(format: string, num: number) {
+        // if (format == "%d")
+        // {
+        //     return num.toString()
+        // }
+        let reg = new RegExp("([\\s\\S]*)%([\\d]*)d([\\s\\S]*)$", "g")
+        let result: RegExpExecArray = reg.exec(format)
+        if (!result) {
+            return format
+        }
+        let width = Number(result[2])
+        let len = num.toString().length
+        if (len < width) {
+            return result[1] + new Array(width - len + 1).join("0") + num + result[3]
+        }
+        return result[1] + num.toString() + result[3]
+    }
+
+    /**
+     * 返回英式数字格式（三个数字+逗号）
+     * @param num_str 
+     * @returns 
+     */
+    dealToEnNum(num_str: string): string {
+        //将100000转为100,000.00形式
+        let left = num_str.split('.')[0]
+        // let right = num_str.split('.')[1];
+        // right = right ? (right.length >= 2 ? '.' + right.substr(0, 2) : '.' + right + '0') : '.00';
+        let temp = left.split('').reverse().join('').match(/(\d{1,3})/g);
+        //num_str = (Number(num_str) < 0 ? "-" : "") + temp.join(',').split('').reverse().join('') + right;
+        num_str = temp.join(',').split('').reverse().join('')
+
+        return num_str
+    }
+
+
+    static trackback() {
+        let caller = this.arguments.callee.caller
+        let i = 0
+        console.log("-------------------------------------------------------------------------------")
+        while (caller && i < 10) {
+            console.log(caller.toString())
+            caller = caller.caller
+            i++
+        }
+        console.log("-------------------------------------------------------------------------------")
+    }
 
 }
 export var FunMgr = new FunManager();

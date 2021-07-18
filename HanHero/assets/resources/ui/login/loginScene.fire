@@ -1343,6 +1343,9 @@
     "_components": [
       {
         "__id__": 29
+      },
+      {
+        "__id__": 30
       }
     ],
     "_prefab": null,
@@ -1407,42 +1410,29 @@
     "pfGeneral": {
       "__uuid__": "811598c3-fe57-4626-b158-2c587df99319"
     },
-    "pfComTop": {
-      "__uuid__": "c9a72e50-946b-409f-b6b3-40d4435d1cc4"
-    },
     "pfComMaskBg": {
       "__uuid__": "bbc0c1ce-01b1-454c-92a1-959c26c2fea9"
-    },
-    "pfReward": {
-      "__uuid__": "f88e3428-6254-4991-91a2-8db0dbf02b00"
     },
     "pfTipsText": {
       "__uuid__": "0f17f26e-4a6c-4e10-81ee-23ee16259b81"
     },
-    "pfTipsDialog": {
-      "__uuid__": "b41fd512-c56a-4134-ae36-8f79fd09ca39"
-    },
     "pfLoading": {
       "__uuid__": "cc0efa3f-f6a5-4aca-ad5b-e511dafbcc2e"
     },
-    "guidePrefab": {
-      "__uuid__": "6619140a-6e9b-41e0-bcb2-2058ea95a26f"
-    },
-    "pfGoldAdd": {
-      "__uuid__": "ab826396-7065-4a83-b3f3-ba20f9fe4a00"
-    },
-    "cicleAtlas": {
-      "__uuid__": "b525faae-bcef-4df8-a4ce-0b5b26faa37b"
-    },
-    "commonAtlas": {
-      "__uuid__": "a769d82d-0767-41d1-bb25-76ca2a414269"
-    },
-    "iconAtlas": {
-      "__uuid__": "e52aa502-9b5e-4757-a520-b8e4b5deb7ad"
-    },
-    "officeAtlas": {
-      "__uuid__": "a61d15cf-b4b8-47a4-9024-acd2d3f745fd"
-    },
     "_id": "ccUUxR+qhJR7w1JFx9yjOI"
+  },
+  {
+    "__type__": "24cfdwVNiRAr45L2SE+u3Ib",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 28
+    },
+    "_enabled": true,
+    "_material": {
+      "__uuid__": "30621a87-1403-493e-9b0e-0e2b3d10bfcc"
+    },
+    "transitionTime": 2,
+    "_id": "64zLP/9AxKJq6/o/MuhmhN"
   }
 ]

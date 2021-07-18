@@ -2,13 +2,14 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:21:41
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:45:30
+ * @LastEditTime: 2021-07-12 10:56:24
  * @Description: 
  */
 
 import UI from '../util/ui';
 import { ROOT_NODE } from "../login/rootNode";
 import { st_official_info } from "../manager/ConfigManager";
+import { LoaderMgr } from '../manager/LoaderManager';
 
 
 //官职头像
@@ -45,7 +46,7 @@ export default class OfficalCell extends cc.Component {
         this.cellBg = UI.find(this.node, "cellBg")
         this.selImg = UI.find(this.node, "selBg")
         this.selImg.active = false;  //默认点击不会显示选中框，只有设定回调函数才会点击显示选中框
-        this.iconSpr = UI.find(this.node, "icon").getComponent(cc.Sprite)  
+        this.iconSpr = UI.find(this.node, "icon").getComponent(cc.Sprite)
         this.stateImg = UI.find(this.node, "stateImg")
         this.stateImg.active = false;
         this.nameLabel = UI.find(this.node, "lblName").getComponent(cc.Label)
@@ -74,12 +75,12 @@ export default class OfficalCell extends cc.Component {
         if (conf) {
             this.nameLabel.string = conf.name;
             this.lvLabel.string = lvStr[conf.level];
-            this.iconSpr.spriteFrame = ROOT_NODE.officeAtlas.getSpriteFrame(conf.id.toString());
+            LoaderMgr.setOfficalAtlasSpriteFrame(this.iconSpr, conf.id.toString());
         }
 
         this.stateImg.active = false;
         for (let i = 0; i < idArr.length; i++) {
-            if (conf.id  === idArr[i]) {
+            if (conf.id === idArr[i]) {
                 this.stateImg.active = true;   //当前装备使用中的官职
                 break;
             }

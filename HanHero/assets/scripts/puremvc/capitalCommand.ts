@@ -2,8 +2,8 @@ import CapitalProxy from './CapitalProxy';
 /*
  * @Autor: dongsl
  * @Date: 2021-03-19 13:43:33
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-05 16:37:57
+ * @LastEditors: dongsl
+ * @LastEditTime: 2021-07-17 15:54:03
  * @Description: 
  */
 
@@ -14,6 +14,12 @@ export default class CapitalCommand extends puremvc.SimpleCommand implements pur
     //----------------  以下为自定义消息名称  -----------------------
     public static E_ON_REGISTER_CAPITAL = "on_RegisterCapital";    //通知开始注册大厅的一些代理
     public static E_ON_UN_REGISTER_CAPITAL = "on_UnRegisterCapital";  //通知开始注销大厅的一些代理
+    public static E_ON_RemoveBundleLayer = "E_ON_RemoveBundleLayer";  //通知移除一些特定Bundle界面资源
+
+    public static E_ON_BuilderHand = "E_ON_BuilderHand";  //通知显示或隐藏建筑手指
+    public static E_ON_TeaseBeauty = "E_ON_TeaseBeauty";  //通知挑逗美姬
+    public static E_ON_GeneralRecruit = "E_ON_GeneralRecruit";  //通知部曲招募
+    public static E_ON_ShowHallMidTab = "E_ON_ShowHallMidTab";  //通知显示大厅底部中间页签
 
     //----------------  以下为继承的核心方法  -----------------------
 

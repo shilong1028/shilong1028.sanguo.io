@@ -52,7 +52,7 @@ export default class LoadingLayer extends cc.Component {
     // update (dt) {}
 
     onProgress(count, total) {
-        cc.log("Loading... this.sceneName = " + this.sceneName + "; count = " + count + "; total = " + total);
+        //cc.log("Loading... this.sceneName = " + this.sceneName + "; count = " + count + "; total = " + total);
         let p = 1;
         if (total != 0) {
             p = count / total;

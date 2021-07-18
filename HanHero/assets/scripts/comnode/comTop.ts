@@ -2,7 +2,7 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:21:41
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:44:42
+ * @LastEditTime: 2021-07-16 11:27:43
  * @Description: 
  */
 
@@ -36,8 +36,11 @@ export default class ComTop extends cc.Component {
 
         let addGoldBtn = UI.find(this.node, "goldAdd")
         let addFoodBtn = UI.find(this.node, "foodAdd")
-        UI.on_btn_click(addGoldBtn, this.onAddGoldBtn.bind(this)) 
-        UI.on_btn_click(addFoodBtn, this.onAddGoldBtn.bind(this)) 
+
+        let goldIcon = UI.find(this.node, "goldIcon")
+        let foodIcon = UI.find(this.node, "foodIcon")
+        UI.on_btn_click(goldIcon, this.onAddGoldBtn.bind(this))
+        UI.on_btn_click(foodIcon, this.onAddGoldBtn.bind(this))
 
         //一些小的公用节点，没有采用pureMVC监听，故使用NoticeMgr来监听消息
         NoticeMgr.on(NoticeType.UpdateGold, this.UpdateGoldCount, this);

@@ -7,7 +7,7 @@
             <key>main_addBtn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{62,434},{58,58}}</string>
+                <string>{{214,399},{58,58}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -17,10 +17,23 @@
                 <key>sourceSize</key>
                 <string>{58,58}</string>
             </dict>
+            <key>main_city.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{216,263},{134,80}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{134,80}}</string>
+                <key>sourceSize</key>
+                <string>{134,80}</string>
+            </dict>
             <key>main_cutBtn.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,434},{58,58}}</string>
+                <string>{{104,393},{58,58}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +46,7 @@
             <key>main_headMask.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,304},{212,128}}</string>
+                <string>{{2,263},{212,128}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,11 +59,11 @@
             <key>main_hm_down.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{238,304},{20,12}}</string>
+                <string>{{118,453},{20,12}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{20,12}}</string>
                 <key>sourceSize</key>
@@ -59,11 +72,11 @@
             <key>main_hm_up.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{216,304},{20,12}}</string>
+                <string>{{104,453},{20,12}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{20,12}}</string>
                 <key>sourceSize</key>
@@ -76,7 +89,7 @@
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{300,259}}</string>
                 <key>sourceSize</key>
@@ -85,15 +98,28 @@
             <key>main_task_icon.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{122,434},{48,64}}</string>
+                <string>{{164,393},{48,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{48,64}}</string>
                 <key>sourceSize</key>
                 <string>{48,64}</string>
+            </dict>
+            <key>main_town.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,393},{100,80}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{100,80}}</string>
+                <key>sourceSize</key>
+                <string>{100,80}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -103,9 +129,9 @@
             <key>realTextureFileName</key>
             <string>main.png</string>
             <key>size</key>
-            <string>{263,494}</string>
+            <string>{304,475}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:ddf125736224f525366026f27d4d0755:b5ca0613f7b99fe8563e258d7927eb5a:693584bbba79ecadf35d6b2cf3a849c9$</string>
+            <string>$TexturePacker:SmartUpdate:4235dbb68a42dcb330f624722044bf6c:81a0c563743b2e8e6562d68d65a0175c:693584bbba79ecadf35d6b2cf3a849c9$</string>
             <key>textureFileName</key>
             <string>main.png</string>
         </dict>

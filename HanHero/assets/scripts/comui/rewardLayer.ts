@@ -2,7 +2,7 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:21:41
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:45:36
+ * @LastEditTime: 2021-07-16 09:47:02
  * @Description: 
  */
 
@@ -56,21 +56,19 @@ export default class RewardLayer extends cc.Component {
         this.descLabel.string = "";
         this.vedioBtn = UI.find(this.node, "vedioBtn")
         this.okBtn = UI.find(this.node, "okBtn")
-        UI.on_btn_click(this.okBtn, this.onOkBtn.bind(this)) 
-        UI.on_btn_click(this.vedioBtn, this.onVedioBtn.bind(this)) 
+        UI.on_btn_click(this.okBtn, this.onOkBtn.bind(this))
+        UI.on_btn_click(this.vedioBtn, this.onVedioBtn.bind(this))
         this.vedioBtn.active = SDKMgr.bOpenAdBtn;
 
         let rewardlist = UI.find(this.node, "rewardList");
         let list_project = UI.find(rewardlist, "item")
         let ts_item = list_project.getComponent(Item)
-        if (!ts_item)
-        {
+        if (!ts_item) {
             ts_item = list_project.addComponent(Item)
         }
 
         let list_item = list_project.getComponent(ListItem)
-        if (!list_item)
-        {
+        if (!list_item) {
             list_item = list_project.addComponent(ListItem)
             list_item.selectedMode = 1;    //TOGGLE
             let selImg = UI.find(list_project, "selImg")
@@ -78,8 +76,7 @@ export default class RewardLayer extends cc.Component {
         }
 
         this.list_view = rewardlist.getComponent(List)
-        if (!this.list_view)
-        {
+        if (!this.list_view) {
             this.list_view = rewardlist.addComponent(List)
             this.list_view.tmpNode = list_project;
             this.list_view.selectedMode = 1;  //单选
@@ -93,8 +90,8 @@ export default class RewardLayer extends cc.Component {
 
     start() {
         let maskBg_tsComp = this.node.parent.getComponent(ComMaskBg)
-        if(maskBg_tsComp){
-            maskBg_tsComp.showCloseCallback(()=>{
+        if (maskBg_tsComp) {
+            maskBg_tsComp.showCloseCallback(() => {
                 this.closeLayer();
             })   //设置关闭时，子节点（功能节点）的关闭逻辑处理
         }
@@ -122,7 +119,7 @@ export default class RewardLayer extends cc.Component {
         if (!item)
             return;
         let tsComp = item.getComponent(Item)
-        if(!tsComp){
+        if (!tsComp) {
             tsComp = item.addComponent(Item)
         }
         tsComp.initItemData(this.rewardArr[idx]);
@@ -143,7 +140,7 @@ export default class RewardLayer extends cc.Component {
             //cc.log("item.itemCfg = "+JSON.stringify(item.itemCfg))
             this.numLabel.string = "数量：" + item.count;
             this.nameLabel.string = item.itemCfg.name;
-            //this.iconSpr.spriteFrame = ROOT_NODE.iconAtlas.getSpriteFrame(item.itemId.toString());
+            //LoaderMgr.setIconAtlasSpriteFrame(this.iconSpr, item.itemId.toString());
             this.descLabel.string = item.itemCfg.desc;
         } else {
             this.iconSpr.spriteFrame = null;
@@ -161,7 +158,7 @@ export default class RewardLayer extends cc.Component {
             str += itemStr;
         }
         ROOT_NODE.showTipsText(str);
-        GameMgr.receiveRewards(this.rewardArr, 2);   //领取奖励
+        GameMgr.receiveRewards(this.rewardArr);   //领取奖励
         this.closeLayer();
     }
 
@@ -180,7 +177,7 @@ export default class RewardLayer extends cc.Component {
                 str += itemStr;
             }
             ROOT_NODE.showTipsText(str);
-            GameMgr.receiveRewards(this.rewardArr, 2);   //领取奖励
+            GameMgr.receiveRewards(this.rewardArr, 2);   //领取奖励 视频翻倍
             this.closeLayer();
         });
     }

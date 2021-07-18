@@ -1,8 +1,8 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-05 17:16:42
+ * @LastEditors: dongsl
+ * @LastEditTime: 2021-07-17 14:35:18
  * @Description: 
  */
 
@@ -13,11 +13,13 @@ import { FunMgr } from "./FuncManager";
 export class CityInfo {
     cityId: number = 0;
     campId: number = 0;    //势力阵营
+    generalIds: number[] = []   //驻守武将ID 关隘1个，大都市5个，部落和县城0个，其他郡城3个
     cityCfg: st_city_info = null;   //配置信息
 
-    constructor(cityId: number) {
+    constructor(cityId: number, generalIds: number[] = []) {
         this.cityId = cityId;
         this.campId = 0;
+        this.generalIds = generalIds
         this.cityCfg = CfgMgr.getCityConf(cityId);
     }
     cloneNoCfg() {
@@ -42,7 +44,7 @@ export class st_city_info {
     counties;   //所属县名称 昌黎;阳乐;令支
     desc;   //城池介绍
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.type = obj.type;
@@ -70,7 +72,7 @@ export class st_zhou_info {
     citys;  //所属郡城关隘ID 1001;1002;1003;1004;1005;9001
     desc;   //城池介绍
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.capital = obj.capital;
@@ -93,6 +95,7 @@ export class GeneralInfo {
     generalExp: number = 0;   //武将经验
     bingCount: number = 0;   //部曲士兵数量
     state: number = 0;   //0默认，1出战中，2驻守中
+    soldiersType: number[] = [];   //兵种类型，401骑兵402刀兵403枪兵404弓兵  后期武将除了默认兵种外，可以通过解锁技能、装备印玺等解锁新的兵种。 后期兵种还有熟练度SABCD等级
     skills: SkillInfo[] = [];
     generalCfg: st_general_info = null;   //卡牌配置信息
 
@@ -102,10 +105,11 @@ export class GeneralInfo {
     fightAtk: number = 0;   //攻击，最大100
     fightDef: number = 0;    //防御，最大100
 
-    constructor(generalId: number, info: any = null) {
+    constructor(generalId: number, info?: any) {
         this.timeId = new Date().getTime();
         this.generalId = generalId;
         this.skills = [];
+        this.soldiersType = [];
         this.generalCfg = CfgMgr.getGeneralConf(generalId);
         //cc.log("generalId = "+generalId+"; this.generalCfg = "+JSON.stringify(this.generalCfg))
 
@@ -115,6 +119,7 @@ export class GeneralInfo {
             this.generalExp = info.generalExp;
             this.bingCount = info.bingCount;
             this.state = 0;   //0默认，1出战中，2驻守中
+            this.soldiersType = info.soldiersType;
             //武将随等级变化的属性(Lv*随机范围*基础值)
             this.fightHp = info.fightHp;    //血量，最大为1000
             this.fightMp = info.fightMp;     //智力，最大100
@@ -196,7 +201,7 @@ export class st_general_info {
     skillNum;   //技能总数
     desc;
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.bingzhong = obj.bingzhong;
@@ -219,14 +224,20 @@ export class st_general_info {
 //后宫信息
 export class BeautyInfo {
     nvId: number = 0;    //美姬ID
-    level: number = 1;    //美姬等级
+    level: number = 1;    //美姬等级（每升一级掉落增加10%）
     exp: number = 0;    //当前被戳经验，被戳一次积累一点经验。
     pokingCount: number = 0;   //美姬已经被戳的次数（需要靠时间来恢复）
-    timeStamp: number = 0;   //美姬最后一次被戳的时间戳（每次打开内宅美姬界面，重新计算恢复的金币池）
+    pokingTime: number = 0;   //美姬最后一次被戳的时间（相当于在线时长秒数）（每次打开内宅美姬界面，重新计算恢复的耐受度）
     nvCfg: st_beautiful_info = null;   //配置信息
 
-    constructor(nvId: number) {
+    constructor(nvId: number, info?:any) {
         this.nvId = nvId;
+        if(info){
+            this.level = info.level;
+            this.exp = info.exp;
+            this.pokingCount = info.pokingCount;
+            this.pokingTime = info.pokingTime;
+        }
         this.nvCfg = CfgMgr.getBeautifulConf(nvId);
     }
 
@@ -244,13 +255,13 @@ export class st_beautiful_info {
     id
     name;
     poking;   //被戳总次数
-    fall;   //每次被戳掉落金币（升级会增加）
+    fall;   //每次被戳掉落金币（升级会增加）  （每升一级掉落增加10%）
     upExp;   //升级所需经验（每次被戳积累一次经验）
     maxLv;    //最大等级
     resume;   //已用点击时恢复一次可用点击所需时间
     desc;
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.poking = obj.poking;
@@ -275,7 +286,7 @@ export class st_recruit_info {
     food;   //百兵行军每月消耗粮草
     desc;   //对话内容
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.gold = obj.gold;
@@ -298,7 +309,7 @@ export class st_official_info {
     subs;  //下属官职
     desc;   //对话内容
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.level = obj.level;
@@ -321,7 +332,7 @@ export class st_camp_info {
     generals;  //所属武将1101-1105
     citys;  //所属城池ID集合
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.flag = obj.flag;
@@ -344,7 +355,7 @@ export class st_chapter_info {
     stories;   //章节剧情  1001-1027
     desc;
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.rewards = FunMgr.getIntAry(obj.rewards, ";");
@@ -371,7 +382,7 @@ export class st_story_info {
     talks;   //对话 104;105
     desc;   //剧情简介
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.next_id = obj.next_id;
         this.chapterId = obj.chapterId;
@@ -402,7 +413,7 @@ export class st_talk_info {
     date;   //对话时间年月
     desc;   //对话内容
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.city = obj.city;
         this.type = obj.type;
@@ -424,7 +435,9 @@ export class st_talk_info {
 export class BuilderInfo {
     id_str: string = "";    //建筑名称id字符串
     level: number = 0;    //建筑等级
-    quality: number = 0;   //建筑品质
+    quality: number = 0;   //建筑品质  
+    //茅草Lv1-5（县令）->土木Lv6-10（郡守）->砖木Lv11-15（将军）->砖瓦Lv16-20（州牧）->宫廷Lv21-30（王侯皇帝），
+    //每个品阶的建筑可升五级，宫廷可升10级。等级每升一级，建筑效用提升20%。
     builderCfg: st_build_info = null;   //配置信息
 
     constructor(id_str: string, level: number) {
@@ -449,9 +462,18 @@ export class BuilderInfo {
         return temp;
     }
 
-    updateBuildLv(){
-        this.level += 1;
-        this.quality = CfgMgr.getBuildQualityByLv(this.level)
+    /**升级或升阶 */
+    updateBuildLv() {
+        let next_level = this.level + 1;
+        let temp_quality = CfgMgr.getBuildQualityByLv(next_level)
+        if (temp_quality > this.quality) {   //升阶不升级
+            this.quality = temp_quality
+            if (this.level === 0) {   //建筑初次开启（0级）即升级也升阶
+                this.level = next_level;
+            }
+        } else {  //升级不升阶
+            this.level = next_level;
+        }
     }
 }
 //建筑配置数据
@@ -459,12 +481,16 @@ export class st_build_info {
     id
     name;
     cost;
+    output;
+    interval;
     desc;
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
-        this.cost = FunMgr.getKeyValAry(obj.cost)[0];
+        this.cost = FunMgr.getKeyValAry(obj.cost)[0];   //"101-500"
+        this.output = obj.output;
+        this.interval = obj.interval;
         this.desc = obj.desc;
     }
     clone() {
@@ -474,13 +500,25 @@ export class st_build_info {
     }
 }
 
+//士兵武器信息（生成中的，整百则存入背包）
+export class WeaponItem {
+    itemId: number = 0;
+    num: number = 0;
+    saveTime: number = 0;   //上次整存时间  （相当于在线时长秒数）
+
+    constructor(itemId: number, num: number = 0, saveTime: number = 0) {
+        this.itemId = itemId;
+        this.num = num;
+        this.saveTime = saveTime;
+    }
+}
 //道具背包信息
 export class ItemInfo {
     itemId: number = 0;
     count: number = 0;
     itemCfg: st_item_info = null;   //配置信息
 
-    constructor(itemId: number, count: number) {
+    constructor(itemId: number, count: number = 0) {
         this.itemId = itemId;
         this.count = count;
         this.itemCfg = CfgMgr.getItemConf(itemId);
@@ -509,7 +547,7 @@ export class st_item_info {
     get_way;   //获取途径
     desc;     //介绍
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.type = obj.type;
@@ -534,7 +572,7 @@ export class st_battle_info {
     soldiers;  //士兵集合（士兵类型-兵力）
     enemys;   //敌方部曲（武将ID-等级） 1004-1;6001-3
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.id = obj.id;
         this.name = obj.name;
         this.generals = FunMgr.getKeyValAry(obj.generals, ";");   //ret.push({"key":ss[0], "val":parseInt(ss[1])});
@@ -583,7 +621,7 @@ export class st_skill_info {
     shiqi;  //技能增加的士气值 0无作用 正值对己方作用 负值对敌方作用
     desc;
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.name = obj.name;
         this.cost = obj.cost;
         this.mp = obj.mp;
@@ -608,7 +646,7 @@ export class st_guide_info {
     offsetY;   //提示相对引导框的上下位置偏移
     desc;    //引导描述
 
-    constructor(obj:any) {
+    constructor(obj: any) {
         this.info = obj.info;
         this.key = obj.key;
         this.end = obj.end;
@@ -632,20 +670,20 @@ class CfgManager_class {
     overCallBack: any = null;   //加载完毕后回调
     overTarget: any = null;   //加载完毕回调注册者
 
-    hanConf: any = null;   
+    hanConf: any = null;
 
     //设置加载配置完毕回调
-    setOverCallback(bLoadAllConf:boolean, callback: any, target: any) {
+    setOverCallback(bLoadAllConf: boolean, callback: any, target: any) {
         this.overCallBack = callback;
         this.overTarget = target;
-        if(bLoadAllConf){
+        if (bLoadAllConf) {
             this.loadHanConf();
         }
     }
 
     //加载配置
-    loadHanConf(){
-        cc.resources.load("confs/hanConf", cc.JsonAsset, (err, file:any) => {
+    loadHanConf() {
+        cc.resources.load("confs/hanConf", cc.JsonAsset, (err, file: any) => {
             if (err) {
                 cc.log(`配置文件不存在, ${err.message}`);
                 // return null;
@@ -660,6 +698,21 @@ class CfgManager_class {
             this.overCallBack = null;
             this.overTarget = null;
         })
+    }
+
+    /**
+     * 通过配置keyVal数据砖块道具列表
+     */
+    getItemArrByKeyVal(rewards: any[]): Array<ItemInfo> {
+        //cc.log("getItemArrByKeyVal(), rewards = "+JSON.stringify(rewards));
+        let rewardArr: ItemInfo[] = [];
+        for (let i = 0; i < rewards.length; ++i) {
+            let itemId = parseInt(rewards[i].key);
+            let count = rewards[i].val;
+            let item = new ItemInfo(itemId, count);
+            rewardArr.push(item);
+        }
+        return rewardArr;
     }
 
 
@@ -692,7 +745,15 @@ class CfgManager_class {
         }
     }
     getAllOfficalConf() {
-        return this.hanConf.official_info;
+        let officalArr: st_official_info[] = []
+        let keys = Object.getOwnPropertyNames(this.hanConf.official_info);
+        //cc.log("getOwnPropertyNames, keys = "+JSON.stringify(keys)); 
+        for (let k = 0; k < keys.length; k++) {
+            let conf = this.getOfficalConf(parseInt(keys[k]));
+            officalArr.push(conf)
+        };
+
+        return officalArr;
     }
     /**获取武将配置数据 */
     getGeneralConf(generalId: number | string): st_general_info {
@@ -748,6 +809,18 @@ class CfgManager_class {
             return null;
         }
     }
+    /**获取所有后宫数据 */
+    getAllBeautifulConf() {
+        let beautyArr: st_beautiful_info[] = []
+        let keys = Object.getOwnPropertyNames(this.hanConf.beautiful_info);
+        //cc.log("getOwnPropertyNames, keys = "+JSON.stringify(keys)); 
+        for (let k = 0; k < keys.length; k++) {
+            let conf = this.getBeautifulConf(parseInt(keys[k]));
+            beautyArr.push(conf)
+        };
+
+        return beautyArr;
+    }
 
     /**获取建筑数据 */
     getBuildConf(buildname: string): st_build_info {
@@ -802,13 +875,37 @@ class CfgManager_class {
         }
     }
 
-    /**根据建筑等级获取品质 */
+    /**根据建筑等级获取品质 1-5 */
     getBuildQualityByLv(lv: number) {
-        if(lv > 20){
+        if (lv > 20) {
             return 5;
-        }else{
-            return Math.ceil(lv/5)
+        } else {
+            return Math.ceil(lv / 5)
         }
+    }
+
+    /**根据建筑品质等级获取属性输出 */
+    getBuildOutputByLv(buildname: string, lv: number, bOpt: boolean = true): number {
+        let output: number = 0;   //单位产出
+        let interval: number = 0;   //时间间隔，-1则没有间隔
+        let conf: st_build_info = this.getBuildConf(buildname);
+        if (conf) {
+            interval = conf.interval;
+            output = conf.output;
+            //每个品阶的建筑可升五级，宫廷可升10级。等级每升一级，建筑效用提升20%。每升一阶，效用倍数+1。
+            let quality = this.getBuildQualityByLv(lv);
+            output += conf.output * (lv - 1 + quality - 1) * 0.2
+        }
+        if (bOpt && interval > 0) {  //时间间隔，-1则没有间隔
+            output = output / interval;
+        }
+
+        return output
+    }
+
+    //**根据美姬等级获取掉落输出 */
+    getBeautyFallPieceByLv(level: number) {
+        return ((level - 1) * 0.1) + 1;   //单次点击掉落金币数  （每升一级掉落增加10%）
     }
 
     //根据武将等级获得升级经验

@@ -1,15 +1,15 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-05 17:12:26
+ * @LastEditors: dongsl
+ * @LastEditTime: 2021-07-17 10:30:41
  * @Description: 
  */
 import { LDMgr, LDKey } from "./StorageManager";
-import { GeneralInfo, ItemInfo, BuilderInfo, CfgMgr, BeautyInfo } from "./ConfigManager";
+import { CityInfo, GeneralInfo, ItemInfo, BuilderInfo, CfgMgr, BeautyInfo, st_beautiful_info, WeaponItem } from './ConfigManager';
 import { NoticeMgr, NoticeType } from "./NoticeManager";
 import { GuideMgr } from "./GuideMgr";
-import { TaskState, PlayerGeneral_DefaultId} from "./Enum";
+import { TaskState, PlayerGeneral_DefaultId } from "./Enum";
 import AppFacade from '../puremvc/appFacade';
 import PlayerCommand from '../puremvc/playerCommand';
 
@@ -21,11 +21,12 @@ export var MyUserData = {
     UserName: "",   //用户名
     UserUUid: "",    //用户唯一标识
 
-    GoldCount: 0,   //用户金锭
-    DiamondCount: 0,   //用户钻石
-    FoodCount: 0,  //用户粮食
+    GoldCount: 0,   //用户金锭   1金锭 = 1000 金币  
+    PieceGold: 0,   //临时保存的金币数，比如点戳美姬掉落，待积攒够1000则自动转存为金锭并更新。
+    DiamondCount: 0,   //用户钻石  10000户百姓招募1000兵，1兵一年消耗军粮1000斤（10石粮）军费10金币。 1000兵一年军粮10屯军费10锭，招募消耗20金锭。
+    FoodCount: 0,  //用户粮食  1屯粮 = 1000 石粮  100斤粮=1石粮=1金币   10000百姓1s缴纳税粮1石税金1金币，一年（12000s)缴纳12屯粮12锭金
 
-    totalLineTime: 0,   //总的在线时长（每100s更新记录一次）
+    totalLineTime: 0,   //总的在线时长（每10s更新记录一次）秒数而非时间戳
     lastGoldTaxTime: 0,   //上一次收税金时间
 
     roleLv: 1,  //主角等级
@@ -35,12 +36,13 @@ export var MyUserData = {
     TaskState: 0,    //当前任务状态 0未完成，1完成未领取，2已领取
 
     myTownIdxs: [],   //郡守之前我方占据的县城索引，此时myCityIds只有一个且所属县并未全部占领，全部占领则晋升郡守myTownIdxs字段之后无用。
-    myCityIds: [],   //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
+    myCityList: [],   //己方占领的城池集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
     ruleCityIds: [],   //己方统治下未被占领或叛乱的城池ID集合
 
-    MainBuildLv:0,   //根建筑等级
-    BuilderList:[],   //建筑列表
+    MainBuildLv: 0,   //根建筑等级
+    BuilderList: [],   //建筑列表
     ItemList: [],   //背包物品列表
+    WeaponItemList: [],   //士兵武器信息（生成中的，整百则存入背包）
     GeneralList: [],   //武将列表
     BeautyList: [],   //美姬列表
     officalIds: [],   //当前官职（可身兼数职）
@@ -57,16 +59,18 @@ class MyUserManager {
         cc.log("清除所有用户数据")
         LDMgr.setItem(LDKey.KEY_NewUser, 0);  //是否新用户
 
-        MyUserData.GoldCount = 0;   //用户金币
+        MyUserData.GoldCount = 0;   //用户金锭
         LDMgr.setItem(LDKey.KEY_GoldCount, 0);
+        MyUserData.PieceGold = 0;   //临时保存的金币数，比如点戳美姬掉落，待积攒够1000则自动转存为金锭并更新。
+        LDMgr.setItem(LDKey.KEY_GoldPiece, 0);
         MyUserData.DiamondCount = 0;   //用户钻石(金锭）数
         LDMgr.setItem(LDKey.KEY_DiamondCount, 0);
         MyUserData.FoodCount = 0;   //用户粮食数量
         LDMgr.setItem(LDKey.KEY_FoodCount, 0);
 
-        MyUserData.totalLineTime = 0;  //总的在线时长（每100s更新记录一次）
+        MyUserData.totalLineTime = 0;  //总的在线时长（每10s更新记录一次）秒数而非时间戳
         LDMgr.setItem(LDKey.KEY_TotalLineTime, 0);
-        MyUserData.lastGoldTaxTime = 0;   //上一次收税金时间
+        MyUserData.lastGoldTaxTime = 0;   //上一次收税金时间 秒数而非时间戳
         LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, 0);
 
         MyUserData.roleLv = 1;  //主角等级
@@ -80,23 +84,26 @@ class MyUserManager {
 
         MyUserData.myTownIdxs = [];   //郡守之前我方占据的县城索引，此时myCityIds只有一个且所属县并未全部占领，全部占领则晋升郡守myTownIdxs字段之后无用。
         LDMgr.setItem(LDKey.KEY_MyTownIdxs, "");
-        MyUserData.myCityIds = [];  //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
-        LDMgr.setItem(LDKey.KEY_MyCityIds, "");
+        MyUserData.myCityList = [];  //己方占领的城池集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
+        LDMgr.setItem(LDKey.KEY_MyCityList, "");
         MyUserData.ruleCityIds = [];   //己方统治下未被占领或叛乱的城池ID集合
         LDMgr.setItem(LDKey.KEY_RuleCityIds, "");
 
         MyUserData.MainBuildLv = 0;   //根建筑等级
         MyUserData.BuilderList = [];   //建筑列表
-        LDMgr.setItem(LDKey.KEY_BuilderList, JSON.stringify(MyUserData.BuilderList));
+        LDMgr.setItem(LDKey.KEY_BuilderList, "");   //JSON.stringify(MyUserData.BuilderList)
 
         MyUserData.ItemList = [];   //背包物品列表
-        LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(MyUserData.ItemList));
+        LDMgr.setItem(LDKey.KEY_ItemList, "");
+
+        MyUserData.WeaponItemList = [];   //士兵武器信息（生成中的，整百则存入背包）
+        LDMgr.setItem(LDKey.KEY_WeaponItemList, "");
 
         MyUserData.GeneralList = [];  //武将列表
-        LDMgr.setItem(LDKey.KEY_GeneralList, JSON.stringify(MyUserData.GeneralList));
+        LDMgr.setItem(LDKey.KEY_GeneralList, "");
 
         MyUserData.BeautyList = [];  //美姬列表
-        LDMgr.setItem(LDKey.KEY_BeautyList, JSON.stringify(MyUserData.BeautyList));
+        LDMgr.setItem(LDKey.KEY_BeautyList, "");
 
         MyUserData.officalIds = [];  //当前官职（可身兼数职）
         LDMgr.setItem(LDKey.KEY_OfficalIds, "");
@@ -127,13 +134,13 @@ class MyUserManager {
         if (MyUserData.UserUUid && MyUserData.UserUUid.indexOf("豪杰") >= 0 && MyUserData.UserUUid.length > 10) {
         } else {
             MyUserData.UserUUid = "豪杰_" + Math.ceil(Math.random() * 99) + "_" + (new Date().getTime());
-            LDMgr.setItem(LDKey.KEY_UserUUid, MyUserData.UserUUid);  
+            LDMgr.setItem(LDKey.KEY_UserUUid, MyUserData.UserUUid);
         }
     }
 
-    setUserName(nickName:string) {
-        MyUserData.UserName = nickName; 
-        LDMgr.setItem(LDKey.KEY_UserName, MyUserData.UserName);  
+    setUserName(nickName: string) {
+        MyUserData.UserName = nickName;
+        LDMgr.setItem(LDKey.KEY_UserName, MyUserData.UserName);
     }
 
     /**初始化用户信息 */
@@ -142,12 +149,13 @@ class MyUserManager {
         MyUserData.UserUUid = LDMgr.getItem(LDKey.KEY_UserUUid);   //用户唯一标识
         this.checkUserUUid();
 
-        MyUserData.GoldCount = LDMgr.getItemInt(LDKey.KEY_GoldCount);   //用户金币
+        MyUserData.GoldCount = LDMgr.getItemInt(LDKey.KEY_GoldCount);   //用户金锭
+        MyUserData.PieceGold = LDMgr.getItemInt(LDKey.KEY_GoldPiece);;   //临时保存的金币数，比如点戳美姬掉落，待积攒够1000则自动转存为金锭并更新。
         MyUserData.DiamondCount = LDMgr.getItemInt(LDKey.KEY_DiamondCount);   //用户钻石(金锭）数
         MyUserData.FoodCount = LDMgr.getItemInt(LDKey.KEY_FoodCount);   //用户粮食数量
 
-        MyUserData.totalLineTime = LDMgr.getItemInt(LDKey.KEY_TotalLineTime);   //总的在线时长（每500s更新记录一次）
-        MyUserData.lastGoldTaxTime = LDMgr.getItemInt(LDKey.KEY_LastGoldTaxTime);   //上一次收税金时间
+        MyUserData.totalLineTime = LDMgr.getItemInt(LDKey.KEY_TotalLineTime);   //总的在线时长（每500s更新记录一次） 秒数而非时间戳
+        MyUserData.lastGoldTaxTime = LDMgr.getItemInt(LDKey.KEY_LastGoldTaxTime);   //上一次收税金时间 秒数而非时间戳
 
         MyUserData.roleLv = LDMgr.getItemInt(LDKey.KEY_RoleLv);   //主角等级
         MyUserData.capitalLv = LDMgr.getItemInt(LDKey.KEY_CapitalLv);   //主城等级，0则未开启
@@ -163,11 +171,12 @@ class MyUserManager {
         }
 
         MyUserData.myTownIdxs = LDMgr.getItemIntAry(LDKey.KEY_MyTownIdxs);  //郡守之前我方占据的县城索引，此时myCityIds只有一个且所属县并未全部占领，全部占领则晋升郡守myTownIdxs字段之后无用。
-        MyUserData.myCityIds = LDMgr.getItemIntAry(LDKey.KEY_MyCityIds);   //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
+        MyUserData.myCityList = this.getMyCityListByLD();  //己方占领的城池集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
         MyUserData.ruleCityIds = LDMgr.getItemIntAry(LDKey.KEY_RuleCityIds);   //己方统治下未被占领或叛乱的城池ID集合
 
         MyUserData.BuilderList = this.getBuilderListByLD();   //建筑列表
         MyUserData.ItemList = this.getItemListByLD();  //背包物品列表
+        MyUserData.WeaponItemList = this.getWeaponItemListByLD();   //士兵武器信息（生成中的，整百则存入背包）
         MyUserData.GeneralList = this.getGeneralListByLD();  //武将列表
         MyUserData.BeautyList = this.getBeautyListByLD();  //美姬列表
 
@@ -185,21 +194,35 @@ class MyUserManager {
 
     /**更新在线总时长 */
     updateLineTime(dt: number) {
-        MyUserData.totalLineTime += dt;   //总的在线时长（每100s更新记录一次）
-
+        MyUserData.totalLineTime += dt;   //总的在线时长（每10s更新记录一次） 秒数而非时间戳
+        //游戏中，1000s（16.67min）在线时长为一个月，12000s（200min=3.33h）在线时长为一年，100s计时器同步记录在线时长。
         let intTime = Math.floor(MyUserData.totalLineTime);
-        if (intTime % 100 == 0) {
+        if (intTime % 10 === 0) {
             LDMgr.setItem(LDKey.KEY_TotalLineTime, intTime);
         }
     }
 
-    /**更新收税金时间 */
-    updateGoldTaxTime() {
-        let intTime = Math.floor(MyUserData.totalLineTime);
+    /**根据总时长获取年月（从184年开始） */
+    getGameDateStr() {
+        let year = Math.floor(MyUserData.totalLineTime / 12000) + 184;  //总的在线时长 秒数而非时间戳
+        let month = Math.floor((MyUserData.totalLineTime % 12000) / 1000) + 1
+        return year + "年" + month + "月"
+    }
 
-        MyUserData.lastGoldTaxTime = intTime;  //上一次收税金时间
-        LDMgr.setItem(LDKey.KEY_TotalLineTime, intTime);   //总的在线时长
+    /**更新收税金时间 */
+    updateGoldTaxTime(tax_gold: number, tax_food: number) {
+        let intTime = Math.floor(MyUserData.totalLineTime);
+        //游戏中，每10000百姓每年（12000s在线时长）可征收税银12锭元宝（12000金币）和12仓粮草（12000石粮）
+        MyUserData.lastGoldTaxTime = intTime;  //上一次收税金时间 秒数而非时间戳
+        LDMgr.setItem(LDKey.KEY_TotalLineTime, intTime);   //总的在线时长 秒数而非时间戳
         LDMgr.setItem(LDKey.KEY_LastGoldTaxTime, MyUserData.lastGoldTaxTime);
+
+        if (tax_gold > 0) {
+            this.updateUserGold(tax_gold)
+        }
+        if (tax_food > 0) {
+            this.updateUserFood(tax_food)
+        }
     }
 
     /**更新主城等级 */
@@ -243,26 +266,44 @@ class MyUserManager {
 
     /**根据城池ID判定是否为我方已占据的城池 */
     isMyCityById(cityId: number) {
-        for (let i = 0; i < MyUserData.myCityIds.length; ++i) {
-            if (cityId == MyUserData.myCityIds[i]) {
+        for (let i = 0; i < MyUserData.myCityList.length; ++i) {
+            if (cityId === MyUserData.myCityList[i].cityId) {
                 return true;
             }
         }
         return false;
     }
 
-    /**更新郡守之前我方占据县城列表 */
+    /**
+     * 更新郡守之前我方占据县城列表 
+     * 游戏中占领县城顺序为我县,北东西南，其中南邻县为郡治所在县，最后是郡治
+     * 初始县城Idx=4即最后一个县城，后按照剧情顺序依次向前为北东西南四个县城。郡治虽在第一个县城，但是游戏中郡治单独出来并作为最后郡守的据点。
+     * */
     updateMyTownIdxs(townIdx: number, bAdd: boolean = true, cityId?: number) {
-        cc.log("updateMyTownIdxs(), townIdx = " + townIdx + "; bAdd = " + bAdd+ "; cityId = " + cityId);
+        cc.log("updateMyTownIdxs(), townIdx = " + townIdx + "; bAdd = " + bAdd + "; cityId = " + cityId);
         //郡守之前我方占据的县城索引，此时myCityIds只有一个且所属县并未全部占领，全部占领则晋升郡守myTownIdxs字段之后无用。
-        if(MyUserData.myCityIds.length === 0 && cityId){
-            MyUserData.myCityIds.push(cityId);
-            LDMgr.setItem(LDKey.KEY_MyCityIds, this.getIdsToStr(MyUserData.myCityIds));
-        }else if(cityId && MyUserData.myCityIds.length === 1 && cityId === MyUserData.myCityIds[0]){
-        }else{
-            return
+        if (cityId) {
+            if (MyUserData.myCityList.length === 0 && bAdd) {
+                this.updateMyCityById(cityId, true)   //新增第一个我方占领的城池
+            } else if (MyUserData.myCityList.length === 1 && bAdd) {
+                // if(MyUserData.myTownIdxs.length > 5){   //五个县城及郡治均已占领
+                // }else{
+                // }
+                if (MyUserData.myTownIdxs.length <= 1 && cityId !== MyUserData.myCityList[0].cityId) {   //新选择的县城
+                    MyUserData.myCityList[0] = new CityInfo(cityId)
+                    this.saveMyCityList();  //保存我方占领城池列表
+                } else if (cityId === MyUserData.myCityList[0].cityId) {   //新增郡城内占领县城IDx
+                } else {
+                    cc.log("增加县城异常1")
+                    return;
+                }
+            } else {
+                cc.log("更新县城异常")
+                return
+            }
         }
-        let bChangeTowns:boolean = false;
+
+        let bChangeTowns: boolean = false;
         if (bAdd == true) {
             MyUserData.myTownIdxs.push(townIdx);
             bChangeTowns = true
@@ -275,17 +316,17 @@ class MyUserManager {
                 }
             }
         }
-        if(bChangeTowns){
+        if (bChangeTowns) {
             LDMgr.setItem(LDKey.KEY_MyTownIdxs, this.getIdsToStr(MyUserData.myTownIdxs));
         }
     }
 
-    /**更新我方占领的城池列表 */
-    updateMyCityIds(cityId: number, bAdd: boolean = true) {
+    /**新增或删除我方占领的城池列表 */
+    updateMyCityById(cityId: number, bAdd: boolean = true) {
         cc.log("updateMyCityIds(), cityId = " + cityId + "; bAdd = " + bAdd);
-        if (bAdd == true) {
-            MyUserData.myCityIds.push(cityId);
-            LDMgr.setItem(LDKey.KEY_MyCityIds, this.getIdsToStr(MyUserData.myCityIds));
+        if (bAdd == true) {   //新增郡城
+            MyUserData.myCityList.push(new CityInfo(cityId));
+            this.saveMyCityList();  //保存我方占领城池列表
 
             let bChangeRuleCitys = false;
             for (let i = 0; i < MyUserData.ruleCityIds.length; ++i) {
@@ -297,26 +338,61 @@ class MyUserManager {
             if (bChangeRuleCitys == true) {
                 LDMgr.setItem(LDKey.KEY_RuleCityIds, this.getIdsToStr(MyUserData.ruleCityIds));
             }
-        } else {
+        } else {   //失守郡城
             MyUserData.ruleCityIds.push(cityId);
             LDMgr.setItem(LDKey.KEY_RuleCityIds, this.getIdsToStr(MyUserData.ruleCityIds));
 
-            for (let i = 0; i < MyUserData.myCityIds.length; ++i) {
-                if (cityId === MyUserData.myCityIds[i]) {
-                    MyUserData.myCityIds.splice(i, 1);
-                    LDMgr.setItem(LDKey.KEY_MyCityIds, this.getIdsToStr(MyUserData.myCityIds));
+            for (let i = 0; i < MyUserData.myCityList.length; ++i) {
+                if (cityId === MyUserData.myCityList[i].cityId) {
+                    MyUserData.myCityList.splice(i, 1);
+                    this.saveMyCityList();  //保存我方占领城池列表
                     break;
                 }
             }
         }
 
-        NoticeMgr.emit(NoticeType.CityFlagStory, 100);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知, 100我我方城池
+        //NoticeMgr.emit(NoticeType.CityFlagStory, 100);  //黄巾之乱，董卓之乱等叛乱的城池旗帜通知, 100我我方城池
+    }
+
+    /**更新我方占领的城池信息 */
+    updateMyCityByInfo(cityInfo: CityInfo) {
+        cc.log("updateMyCityByInfo(), cityInfo = " + JSON.stringify(cityInfo));
+        for (let i = 0; i < MyUserData.myCityList.length; ++i) {
+            if (cityInfo.cityId === MyUserData.myCityList[i].cityId) {
+                MyUserData.myCityList[i] = cityInfo;
+                this.saveMyCityList();  //保存我方占领城池列表
+                break;
+            }
+        }
+    }
+
+    /**从本地存储中获取我方占领城池列表 */
+    getMyCityListByLD() {
+        let myCityList = LDMgr.getJsonObj(LDKey.KEY_MyCityList);
+        let tempList = [];
+        if (myCityList) {
+            for (let i = 0; i < myCityList.length; ++i) {
+                let tempCity = new CityInfo(myCityList[i].cityId, LDMgr.getItemIntAry(myCityList[i].generalIds));
+                tempList.push(tempCity);
+            }
+        }
+        return tempList;
+    }
+
+    /**保存我方占领城池列表 */
+    saveMyCityList() {
+        let tempList = [];
+        for (let i = 0; i < MyUserData.myCityList.length; ++i) {
+            let tempItem = MyUserData.myCityList[i].cloneNoCfg();
+            tempList.push(tempItem);
+        }
+        LDMgr.setItem(LDKey.KEY_MyCityList, JSON.stringify(tempList));
     }
 
     /**修改建筑列表 */
     updateBuilderList(builder: BuilderInfo, bSave: boolean = true) {
         let bUpdateItem: boolean = false;
-        if(builder.id_str === "government"){
+        if (builder.id_str === "government") {
             MyUserData.MainBuildLv = builder.level;   //根建筑等级
         }
         for (let i = 0; i < MyUserData.BuilderList.length; ++i) {
@@ -332,7 +408,6 @@ class MyUserManager {
             MyUserData.BuilderList.push(builder);
         }
         NoticeMgr.emit(NoticeType.UpdateBuilder, builder);  //更新单个建筑
-        //AppFacade.getInstance().sendNotification(CapitalCommand.E_ON_UpdateBuilder, builder);  //更新单个建筑
 
         if (bSave) {
             this.saveBuilderList();
@@ -340,7 +415,7 @@ class MyUserManager {
     }
     /**获取建筑数据 */
     getBuilderFromList(builder_name: string): BuilderInfo {
-        if(!builder_name || builder_name.length === 0){
+        if (!builder_name || builder_name.length === 0) {
             return null;
         }
         for (let i = 0; i < MyUserData.BuilderList.length; ++i) {
@@ -362,13 +437,13 @@ class MyUserManager {
     }
     /**从本地存储中获取建筑列表 */
     getBuilderListByLD() {
-        let builderList = LDMgr.getJsonObj(LDKey.KEY_BuilderList); 
+        let builderList = LDMgr.getJsonObj(LDKey.KEY_BuilderList);
         let tempList = [];
         if (builderList) {
             for (let i = 0; i < builderList.length; ++i) {
                 let tempBuilder = new BuilderInfo(builderList[i].id_str, builderList[i].level);
                 tempList.push(tempBuilder);
-                if(tempBuilder.id_str === "government"){
+                if (tempBuilder.id_str === "government") {
                     MyUserData.MainBuildLv = tempBuilder.level;   //根建筑等级
                 }
             }
@@ -388,7 +463,7 @@ class MyUserManager {
     updateItemByCount(itemId: number, val: number) {
         for (let i = 0; i < MyUserData.ItemList.length; ++i) {
             let bagItem: ItemInfo = MyUserData.ItemList[i];
-            if (bagItem.itemId == itemId) {
+            if (bagItem.itemId === itemId) {
                 MyUserData.ItemList[i].count += val;
                 if (MyUserData.ItemList[i].count <= 0) {
                     MyUserData.ItemList[i].count = 0;
@@ -402,7 +477,7 @@ class MyUserManager {
             }
         }
 
-        if (val > 0) {   //增加的新道具
+        if (itemId > 0 && val > 0) {   //增加的新道具
             let item = new ItemInfo(itemId, val);
             MyUserData.ItemList.push(item);
             NoticeMgr.emit(NoticeType.UpdateBagItem, item);  //更新单个背包物品
@@ -415,7 +490,7 @@ class MyUserManager {
         let bUpdateItem: boolean = false;
         for (let i = 0; i < MyUserData.ItemList.length; ++i) {
             let bagItem: ItemInfo = MyUserData.ItemList[i];
-            if (bagItem.itemId == item.itemId) {
+            if (bagItem.itemId === item.itemId) {
                 MyUserData.ItemList[i].count += item.count;
                 NoticeMgr.emit(NoticeType.UpdateBagItem, MyUserData.ItemList[i]);  //更新单个背包物品
                 bUpdateItem = true;
@@ -423,7 +498,7 @@ class MyUserManager {
             }
         }
 
-        if (bUpdateItem == false) {
+        if (bUpdateItem != true) {
             MyUserData.ItemList.push(item);
             NoticeMgr.emit(NoticeType.UpdateBagItem, item);  //更新单个背包物品
         }
@@ -436,11 +511,21 @@ class MyUserManager {
     getItemFromList(itemId: number): ItemInfo {
         for (let i = 0; i < MyUserData.ItemList.length; ++i) {
             let bagItem: ItemInfo = MyUserData.ItemList[i];
-            if (bagItem.itemId == itemId) {
+            if (bagItem.itemId === itemId) {
                 return bagItem;
             }
         }
         return new ItemInfo(itemId, 0);
+    }
+    /**获取背包中物品数量 */
+    getUserItemCount(itemId: number): number {
+        for (let i = 0; i < MyUserData.ItemList.length; ++i) {
+            let bagItem: ItemInfo = MyUserData.ItemList[i];
+            if (bagItem.itemId === itemId) {
+                return bagItem.count;
+            }
+        }
+        return 0;
     }
     /**保存背包物品列表 */
     saveItemList() {
@@ -449,6 +534,7 @@ class MyUserManager {
             let tempItem = MyUserData.ItemList[i].cloneNoCfg();
             tempList.push(tempItem);
         }
+        cc.log("saveItemList tempList = " + JSON.stringify(tempList))
 
         LDMgr.setItem(LDKey.KEY_ItemList, JSON.stringify(tempList));
     }
@@ -463,6 +549,65 @@ class MyUserManager {
             }
         }
         return tempList;
+    }
+
+    /**从本地存储中获取士兵武器信息（生成中的，整百则存入背包 */
+    getWeaponItemListByLD() {
+        let WeaponItemList = LDMgr.getJsonObj(LDKey.KEY_WeaponItemList);   //士兵武器信息（生成中的，整百则存入背包）
+        let tempList = [];
+        if (WeaponItemList) {
+            for (let i = 0; i < WeaponItemList.length; ++i) {
+                let tempItem = new WeaponItem(WeaponItemList[i].itemId, WeaponItemList[i].num, WeaponItemList[i].saveTime);
+                tempList.push(tempItem);
+            }
+        }
+        return tempList;
+    }
+    /**保存士兵武器信息*/
+    saveWeaponItemList() {
+        LDMgr.setItem(LDKey.KEY_WeaponItemList, JSON.stringify(MyUserData.WeaponItemList));
+    }
+    /**获取士兵武器数量*/
+    getWeaponItemById(weaponItemId: number) {
+        for (let i = 0; i < MyUserData.WeaponItemList.length; ++i) {
+            let weaponItem: WeaponItem = MyUserData.WeaponItemList[i];
+            if (weaponItem.itemId === weaponItemId) {
+                return MyUserData.WeaponItemList[i];
+            }
+        }
+        return null;
+    }
+    /**修改士兵武器信息 */
+    updateWeaponItemByNum(weaponItemId: number, val: number) {
+        for (let i = 0; i < MyUserData.WeaponItemList.length; ++i) {
+            let weaponItem: WeaponItem = MyUserData.WeaponItemList[i];
+            if (weaponItem.itemId === weaponItemId) {
+                let new_num = MyUserData.WeaponItemList[i].num + val;
+                let save_count = Math.floor(new_num / 100)
+                if (save_count > 0) {  //整百则存入背包
+                    MyUserData.WeaponItemList[i].num = Math.floor(new_num % 100);
+                    MyUserData.WeaponItemList[i].saveTime = MyUserData.totalLineTime  //上次整存时间  （相当于在线时长秒数）
+                    this.saveWeaponItemList();
+
+                    let item = new ItemInfo(weaponItemId, save_count);
+                    this.updateItemList(item);
+                    return weaponItem;
+                } else {
+                    MyUserData.WeaponItemList[i].num = new_num;
+                    this.saveWeaponItemList();
+                    break;
+                }
+            }
+        }
+        return null;
+    }
+    /**兵营护甲建筑初次升级，修改武器生产时间  */
+    updateWeaponItemTime(weaponItemId: number) {
+        if (weaponItemId > 0) {   //增加的新道具
+            let weaponItem = new WeaponItem(weaponItemId, 0, MyUserData.totalLineTime);
+            MyUserData.WeaponItemList.push(weaponItem);
+            this.saveWeaponItemList();
+        }
     }
 
     /**获取武将列表克隆 */
@@ -582,7 +727,7 @@ class MyUserManager {
             let tempItem = MyUserData.GeneralList[i].cloneNoCfg();
             GeneralList.push(tempItem);
         }
-        cc.log("GeneralList = " + JSON.stringify(GeneralList));
+        //cc.log("GeneralList = " + JSON.stringify(GeneralList));
         LDMgr.setItem(LDKey.KEY_GeneralList, JSON.stringify(GeneralList));
     }
     /**从本地存储中获取武将列表 */
@@ -601,18 +746,61 @@ class MyUserManager {
         return tempList;
     }
 
+    /**获取指定美姬信息*/
+    getBeautyInfoById(nvId: number | string) {
+        for (let i = 0; i < MyUserData.BeautyList.length; ++i) {
+            let info: BeautyInfo = MyUserData.BeautyList[i];
+            if (nvId === info.nvId) {
+                return MyUserData.BeautyList[i];
+            }
+        }
+        return null;
+    }
+
+    /**根据在线时间更新美姬点击次数 */
+    updateBeautyPokingCount(beauty_info: BeautyInfo, bUpdateSave: boolean = true) {
+        if (!beauty_info || beauty_info.pokingCount <= 0 || beauty_info.pokingTime <= 0) {
+            return;
+        }
+        let beauty_conf: st_beautiful_info = beauty_info.nvCfg;
+        if (!beauty_conf) {
+            return;
+        }
+
+        let resume = beauty_conf.resume   //单次点击恢复时间
+        let pokingTime = beauty_info.pokingTime    //美姬最后一次被戳的时间（相当于在线时长秒数）（每次打开内宅美姬界面，重新计算恢复的耐受度）
+        let curTimeStame = MyUserData.totalLineTime  //总的在线时长  秒数而非时间戳
+        let offsetTime = Math.floor(curTimeStame - pokingTime);
+        let offsetNum = Math.floor(offsetTime / resume);
+        //cc.log("updateBeautyPokingCount offsetNum = " + offsetNum + "; offsetTime = " + offsetTime + "; curTimeStame = " + curTimeStame + "; pokingTime = " + pokingTime)
+        if (offsetNum > 0) {
+            if (offsetNum >= beauty_info.pokingCount) {
+                beauty_info.pokingCount = 0;
+                beauty_info.pokingTime = 0;
+            } else {
+                beauty_info.pokingCount -= offsetNum;
+                beauty_info.pokingTime += (offsetNum * resume);
+            }
+            if (bUpdateSave) {
+                this.updateBeautyList(beauty_info);
+            }
+            return beauty_info
+        }
+        return;
+    }
+
     /**修改用户美姬列表 */
     updateBeautyList(jsonObj: BeautyInfo, bSave: boolean = true) {
         let bFind: boolean = false
         for (let i = 0; i < MyUserData.BeautyList.length; ++i) {
             let info: BeautyInfo = MyUserData.BeautyList[i];
-            if (jsonObj.nvId == info.nvId) {
+            if (jsonObj.nvId === info.nvId) {
                 MyUserData.BeautyList[i] = jsonObj;
                 bFind = true
                 break;
             }
         }
-        if(!bFind){
+        if (!bFind) {
             MyUserData.BeautyList.push(jsonObj)
         }
         //NoticeMgr.emit(NoticeType.UpdateGeneral, jsonObj);  //更新单个武将
@@ -635,9 +823,18 @@ class MyUserManager {
         let BeautyList = LDMgr.getJsonObj(LDKey.KEY_BeautyList);  //美姬列表
         let tempList: BeautyInfo[] = [];
         if (BeautyList) {
+            let bSave: boolean = false;
             for (let i = 0; i < BeautyList.length; ++i) {
-                let tempItem = new BeautyInfo(BeautyList[i].nvId);
+                let tempItem = new BeautyInfo(BeautyList[i].nvId, BeautyList[i]);
+                let newItem = this.updateBeautyPokingCount(tempItem)   //根据在线时间更新美姬点击次数
+                if (newItem) {
+                    tempItem = newItem;
+                    bSave = true;
+                }
                 tempList.push(tempItem);
+            }
+            if (bSave) {
+                this.saveBeautyList();
             }
         }
 
@@ -649,15 +846,29 @@ class MyUserManager {
         this.updateGeneralLvByExp(PlayerGeneral_DefaultId, exp);   //主角
     }
 
-    /**修改用户金币 */
+    /**修改用户金锭 */
     updateUserGold(val: number) {
-        MyUserData.GoldCount += val;
+        MyUserData.GoldCount += val;   //用户金锭   1金锭 = 1000 金币 
         if (MyUserData.GoldCount <= 0) {
             MyUserData.GoldCount = 0;
         }
         LDMgr.setItem(LDKey.KEY_GoldCount, MyUserData.GoldCount);
         //一些小的公用节点，没有采用pureMVC监听，故使用NoticeMgr来监听消息
         NoticeMgr.emit(NoticeType.UpdateGold, null);
+    }
+
+    /**修改临时散碎金币 */
+    updatePieceGold(val: number) {
+        MyUserData.PieceGold += val;  //临时保存的金币数，比如点戳美姬掉落，待积攒够1000则自动转存为金锭并更新。
+        if (MyUserData.PieceGold <= 0) {
+            MyUserData.PieceGold = 0;
+        }
+        if (MyUserData.PieceGold > 1000) {
+            let goldCount = Math.floor(MyUserData.PieceGold / 1000);
+            this.updateUserGold(goldCount);
+            MyUserData.PieceGold = Math.floor(MyUserData.PieceGold % 1000);
+        }
+        LDMgr.setItem(LDKey.KEY_GoldPiece, MyUserData.PieceGold);
     }
 
     /**修改用户钻石(金锭) */
@@ -672,7 +883,7 @@ class MyUserManager {
 
     /**修改用户粮食 */
     updateUserFood(val: number) {
-        MyUserData.FoodCount += val;
+        MyUserData.FoodCount += val;  //用户粮食  1屯粮 = 1000 石粮  100斤粮=1石粮=1金币 
         if (MyUserData.FoodCount <= 0) {
             MyUserData.FoodCount = 0;
         }

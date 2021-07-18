@@ -1,7 +1,6 @@
 import { st_story_info, st_talk_info, CfgMgr, ItemInfo } from "../manager/ConfigManager";
 import { GameMgr } from "../manager/GameManager";
 import { ROOT_NODE } from "../login/rootNode";
-import FuncUtil from "../util/FuncUtil";
 import { LoaderMgr } from '../manager/LoaderManager';
 import GeneralJoin from './generalJoin';
 import OfficalLayer from './officalLayer';
@@ -12,13 +11,13 @@ import { MyUserData } from '../manager/MyUserData';
 import { TaskState } from '../manager/Enum';
 
 //剧情阐述
-const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
+const { ccclass, property, menu, executionOrder, disallowMultiple } = cc._decorator;
 
 @ccclass
 @menu("Hall/storyLayer")
-@executionOrder(0)  
+@executionOrder(0)
 //脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
-@disallowMultiple 
+@disallowMultiple
 // 当本组件添加到节点上后，禁止同类型（含子类）的组件再添加到同一个节点
 
 export default class StoryLayer extends cc.Component {
@@ -41,7 +40,7 @@ export default class StoryLayer extends cc.Component {
     curTalkStrIdx: number = 0;   //当前话本内容显示索引
     bUpdateStr: boolean = false;   //是否更新显示话本内容
 
-    onLoad () {
+    onLoad() {
         this.leftHead = UI.find(this.node, "leftHead")
         this.rightHead = UI.find(this.node, "rightHead")
         this.rewardNode = UI.find(this.node, "rewardNode")
@@ -52,7 +51,7 @@ export default class StoryLayer extends cc.Component {
         this.talkLabel = UI.find(this.node, "talkLabel").getComponent(cc.Label)
         this.skipNode = UI.find(this.node, "skipBtn")
         this.skipLabel = UI.find(this.node, "skipLabel").getComponent(cc.Label)
-        UI.on_btn_click(this.skipNode, this.onSkipBtn.bind(this)) 
+        UI.on_btn_click(this.skipNode, this.onSkipBtn.bind(this))
 
         this.talkLabel.string = "";
         this.leftHead.getComponent(cc.Sprite).spriteFrame = null;
@@ -61,45 +60,45 @@ export default class StoryLayer extends cc.Component {
         this.skipNode.active = false;
     }
 
-    onDestroy(){
+    onDestroy() {
         //this.node.targetOff(this);
         //NoticeMgr.offAll(this);
     }
 
-    removeRewardItems(){
-        if(this.rewardLayout.childrenCount > 0){
-            for(let i=this.rewardLayout.childrenCount-1; i>=0; i--){
+    removeRewardItems() {
+        if (this.rewardLayout.childrenCount > 0) {
+            for (let i = this.rewardLayout.childrenCount - 1; i >= 0; i--) {
                 let item = this.rewardLayout.children[i];
-                if(item){
+                if (item) {
                     ROOT_NODE.removeItem(item);   //注意removeItem 会将item removeFromParent
                 }
             }
         }
     }
 
-    start () {
+    start() {
         let maskBg_tsComp = this.node.parent.getComponent(ComMaskBg)
-        if(maskBg_tsComp){
+        if (maskBg_tsComp) {
             maskBg_tsComp.showCloseTipNode(false)   //设置是否显示关闭节点
         }
     }
 
     /**初始化主线任务 */
-    initStoryConf(taskConf: st_story_info){
-        if(taskConf){
-            cc.log("initStoryConf taskConf = "+JSON.stringify(taskConf))
+    initStoryConf(taskConf: st_story_info) {
+        if (taskConf) {
+            //cc.log("initStoryConf taskConf = " + JSON.stringify(taskConf))
             this.taskConf = taskConf;
             this.curTalkIdx = -1;
             this.taskTitleLabel.string = `第${taskConf.chapterId}章`  //任务章节
             let level = `第${taskConf.id % 100}节 `
             this.taskNameLabel.string = level + taskConf.name;  //任务名称
-            
+
             this.setTalkStr();   //设置话本内容
 
-            let rewards: Array<ItemInfo> = FuncUtil.getItemArrByKeyVal(this.taskConf.rewards);
-            if(rewards.length > 0){
+            let rewards: Array<ItemInfo> = CfgMgr.getItemArrByKeyVal(this.taskConf.rewards);
+            if (rewards.length > 0) {
                 this.rewardNode.active = true;
-                for(let i=0; i<rewards.length; ++i){
+                for (let i = 0; i < rewards.length; ++i) {
                     let item = ROOT_NODE.createrItem(rewards[i], true);
                     this.rewardLayout.addChild(item);
                 }
@@ -108,20 +107,20 @@ export default class StoryLayer extends cc.Component {
     }
 
     /**设置话本内容 */
-    setTalkStr(){
+    setTalkStr() {
         cc.log("setTalkStr 设置话本内容")
-        if(this.taskConf){
+        if (this.taskConf) {
             this.bUpdateStr = false;
-            this.curTalkIdx ++;
+            this.curTalkIdx++;
             this.curTalkConf = null;
             this.curTalkStrIdx = 0;
             this.rewardNode.active = false;
             this.removeRewardItems();
 
-            if(this.curTalkIdx < this.taskConf.talks.length){
-                if(this.curTalkIdx >= this.taskConf.talks.length-1){
+            if (this.curTalkIdx < this.taskConf.talks.length) {
+                if (this.curTalkIdx >= this.taskConf.talks.length - 1) {
                     this.skipLabel.string = "结   束";
-                }else{
+                } else {
                     this.skipLabel.string = "继   续";
                 }
 
@@ -129,20 +128,25 @@ export default class StoryLayer extends cc.Component {
                 this.curTalkConf = CfgMgr.getTalkConf(talkId);
                 //cc.log("this.curTalkConf = "+JSON.stringify(this.curTalkConf));
                 this.bUpdateStr = true;
-     
+
                 // this.leftHead.getComponent(cc.Sprite).spriteFrame = null;
                 // this.rightHead.getComponent(cc.Sprite).spriteFrame = null;
-                let headNode = null
-                if(this.curTalkIdx % 2 === 0){   //左侧头像
+                let headNode: cc.Node = null
+                let fadeHead: cc.Node = null
+                if (this.curTalkIdx % 2 === 0) {   //左侧头像
                     headNode = this.leftHead
-                }else{
+                    fadeHead = this.rightHead
+                } else {
                     headNode = this.rightHead
+                    fadeHead = this.leftHead
                 }
-                if(this.curTalkConf.head > 100){  //对话头像，<100为head_talk中头像，>100为head头像
-                    LoaderMgr.setSpriteFrameByImg("head/"+this.curTalkConf.head, headNode);
-                }else{
-                    LoaderMgr.setBundleSpriteFrameByImg("hall", "res/head_talk/"+this.curTalkConf.head, headNode);
+                if (this.curTalkConf.head > 100) {  //对话头像，<100为head_talk中头像，>100为head头像
+                    LoaderMgr.setResSpriteFrameByImg("head/" + this.curTalkConf.head, headNode);
+                } else {
+                    LoaderMgr.setBundleSpriteFrameByImg("hall", "res/head_talk/" + this.curTalkConf.head, headNode);
                 }
+                headNode.active = true;
+                fadeHead.active = false;
 
                 // if(this.curTalkConf.city > 0){   //话本目标城池
                 //     let cityConf: st_city_info = CfgMgr.getCityConf(this.curTalkConf.city);
@@ -154,45 +158,45 @@ export default class StoryLayer extends cc.Component {
         }
     }
 
-    update (dt) {
-        if(this.bUpdateStr == true && this.curTalkConf){
-            this.curTalkStrIdx ++;
-            if(this.curTalkStrIdx >= this.curTalkConf.desc.length){
+    update(dt) {
+        if (this.bUpdateStr == true && this.curTalkConf) {
+            this.curTalkStrIdx++;
+            if (this.curTalkStrIdx >= this.curTalkConf.desc.length) {
                 this.talkLabel.string = this.curTalkConf.desc;
                 this.bUpdateStr = false;
                 this.skipNode.active = true;   //继续或结束
-            }else{
-                let str = this.curTalkConf.desc.substr(0, this.curTalkStrIdx);  
+            } else {
+                let str = this.curTalkConf.desc.substr(0, this.curTalkStrIdx);
                 //substr(start,length)表示从start位置开始，截取length长度的字符串。
                 //substring(start,end)表示从start到end之间的字符串，包括start位置的字符但是不包括end位置的字符。
                 this.talkLabel.string = str;
             }
 
-            if(this.curTalkConf.skip > 0 && this.curTalkStrIdx >= 10){
+            if (this.curTalkConf.skip > 0 && this.curTalkStrIdx >= 10) {
                 this.skipNode.active = true;
             }
         }
     }
 
-    onSkipBtn(){
-        if(this.isShowNewOffical()){ //新官职
+    onSkipBtn() {
+        if (this.isShowNewOffical()) { //新官职
             return;
-        }else if(this.isShowNewGeneral()){  //武将来投
+        } else if (this.isShowNewGeneral()) {  //武将来投
             return;
         }
         this.handleNextTalk();
     }
 
     /**显示新官职界面 */
-    isShowNewOffical(){
-        if(this.curTalkConf.official.length > 0 && MyUserData.TaskState === TaskState.Ready){ //新官职  //任务初始情况
+    isShowNewOffical() {
+        if (this.curTalkConf.official.length > 0 && MyUserData.TaskState === TaskState.Ready) { //新官职  //任务初始情况
             let official = this.curTalkConf.official
-            LoaderMgr.showBundleLayer('ui_officalLayer', 'officalLayer', null, (layer)=>{
+            LoaderMgr.showBundleLayer('ui_officalLayer', 'officalLayer', null, (layer) => {
                 let tsComp = layer.getComponent(OfficalLayer)
-                if(!tsComp){
+                if (!tsComp) {
                     tsComp = layer.addComponent(OfficalLayer)
                 }
-                tsComp.initOfficalByIds(official, false, ()=>{
+                tsComp.initOfficalByIds(official, false, () => {
                     this.handleOfficalNext();
                 });
             });
@@ -201,36 +205,36 @@ export default class StoryLayer extends cc.Component {
         return false;
     }
     /**处理官职展示后续操作 */
-    handleOfficalNext(){
+    handleOfficalNext() {
         cc.log("新官职展示结束，后续处理")
         GameMgr.addCurTaskNewOffices(this.curTalkConf.official);
-        if(this.isShowNewGeneral()){  //武将来投
-        }else{
+        if (this.isShowNewGeneral()) {  //武将来投
+        } else {
             this.handleNextTalk();
         }
     }
     /**展示武将来投界面 */
-    isShowNewGeneral(){
-        if(this.curTalkConf.generals.length > 0 && MyUserData.TaskState === TaskState.Ready){ //新武将  //任务初始情况
-            if(this.curTalkConf.generals.length > 1 || this.curTalkConf.generals[0] > 1000){   //武将来投
+    isShowNewGeneral() {
+        if (this.curTalkConf.generals.length > 0 && MyUserData.TaskState === TaskState.Ready) { //新武将  //任务初始情况
+            if (this.curTalkConf.generals.length > 1 || this.curTalkConf.generals[0] > 1000) {   //武将来投
                 let generals = this.curTalkConf.generals
-                LoaderMgr.showBundleLayer('ui_generalJoin', 'generalJoin', null, (layer)=>{
+                LoaderMgr.showBundleLayer('ui_generalJoin', 'generalJoin', null, (layer) => {
                     let tsComp = layer.getComponent(GeneralJoin)
-                    if(!tsComp){
+                    if (!tsComp) {
                         tsComp = layer.addComponent(GeneralJoin)
                     }
-                    tsComp.initGeneralByIds(generals, false, ()=>{
+                    tsComp.initGeneralByIds(generals, false, () => {
                         this.handleGeneralNext();
                     });
                 });
-            }else{    //新纳美姬
+            } else {    //新纳美姬
                 let beautyId = this.curTalkConf.generals[0]
-                LoaderMgr.showBundleLayer('hall', 'ui/beautyJoin', null, (layer)=>{
+                LoaderMgr.showBundleLayer('ui_beautyJoin', 'beautyJoin', null, (layer) => {
                     let tsComp = layer.getComponent(BeautyJoin)
-                    if(!tsComp){
+                    if (!tsComp) {
                         tsComp = layer.addComponent(BeautyJoin)
                     }
-                    tsComp.initBeautyById(beautyId, ()=>{
+                    tsComp.initBeautyById(beautyId, () => {
                         this.handleGeneralNext();
                     });
                 });
@@ -240,18 +244,18 @@ export default class StoryLayer extends cc.Component {
         return false;
     }
     /**处理武将来投或新纳美姬后续操作 */
-    handleGeneralNext(){
+    handleGeneralNext() {
         cc.log("武将来投或新纳美姬展示结束，后续处理")
         GameMgr.addCurTaskNewGenerals(this.curTalkConf.generals);
         this.handleNextTalk();
     }
 
-    handleNextTalk(){
+    handleNextTalk() {
         cc.log("下一段剧情对话")
         this.skipNode.active = false;
-        if(this.curTalkConf && this.curTalkIdx < this.taskConf.talks.length-1){   //跳过
+        if (this.curTalkConf && this.curTalkIdx < this.taskConf.talks.length - 1) {   //跳过
             this.setTalkStr();   //设置话本内容
-        }else{  //结束
+        } else {  //结束
             GameMgr.handleStoryNextOpt(this.taskConf, TaskState.Finish);   //任务宣读(第一阶段）完毕处理
             this.node.destroy();
         }

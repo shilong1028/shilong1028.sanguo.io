@@ -3,7 +3,7 @@
  * @Autor: dongsl
  * @Date: 2021-03-19 17:09:33
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-23 11:39:53
+ * @LastEditTime: 2021-07-17 17:26:19
  * @Description: 
  */
 
@@ -27,21 +27,11 @@ import AStarRoadSeeker from "./road/AStarRoadSeeker";
 import Point from "./road/Point";
 import { MyUserData, MyUserMgr } from "../manager/MyUserData";
 
-//大厅按钮界面相关中介
+//地图界面相关中介
 
 export default class MapMediator extends puremvc.Mediator implements puremvc.IMediator {
 
     public static NAME: string = "MapMediator";
-
-    headNode: cc.Node = null   //玩家信息
-    head: cc.Node = null  //头像
-    taskNode: cc.Node = null   //任务栏
-    comTop: cc.Node = null //通用金币粮草栏
-    welfareBtn: cc.Node = null   //福利
-    generalBtn: cc.Node = null   //武将
-    mapBtn: cc.Node = null    //世界
-    cityBtn: cc.Node = null    //城池
-    eventBtn: cc.Node = null   //政务
 
     private _roadDic: { [key: string]: RoadNode } = {};
     private _roadSeeker: IRoadSeeker;
@@ -93,7 +83,7 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
      */
     public handleNotification(notification: puremvc.INotification): void {
         let notifier: any = notification.getBody();
-        cc.log("MapMediator handleNotification:" + notification.getName())
+        //cc.log("MapMediator handleNotification:" + notification.getName())
         switch (notification.getName()) {
             case CommonCommand.E_ON_CHANGE_SCENE_STATE:
                 if (notifier === SceneState.Map_InitOver) {
@@ -108,8 +98,6 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
      * 界面预处理
      */
     private initView() {
-        cc.log("MapMediator initView")
-
         let mapLayerNode = UI.find(this.mapScene.mapNode, "mapLayer")
         this.mapLayer = mapLayerNode.getComponent(MapLayer)
         if (!this.mapLayer) {
@@ -125,7 +113,7 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
         this.player.initPlayerModel(this, "10001");   //初始化玩家形象
 
         let mapName: string = "cityMap"   //某郡各县小地图
-        if(MyUserData.myTownIdxs.length > 5){   //五个县城及郡治均已占领
+        if (MyUserData.myTownIdxs.length > 5) {   //五个县城及郡治均已占领
             mapName = "worldMap"   //已有郡城，则全国大地图
         }
         LoaderMgr.bundle_load("map", "res/data/" + mapName, cc.JsonAsset, (error: Error, res: cc.JsonAsset) => {
@@ -152,7 +140,7 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
      * 初始化地图
      */
     private initMap(mapData: MapData, bgTex: cc.Texture2D) {
-        cc.log("MapMediator initMap 初始化地图")
+        //cc.log("MapMediator initMap 初始化地图 mapData = " + JSON.stringify(mapData))
         this._mapData = mapData;
 
         MapRoadUtils.instance.updateMapInfo(mapData.mapWidth, mapData.mapHeight, mapData.nodeWidth, mapData.nodeHeight, mapData.type);
@@ -207,7 +195,6 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
     public onMapMouseDown(event: cc.Event.EventTouch): void {
         //var pos = this.node.convertToNodeSpaceAR(event.getLocation());
         let pos = this.mapScene.camera.node.position.add(FunMgr.v2Tov3(event.getLocation()));
-        cc.log("onMapMouseDown pos = " + pos)
         this.movePlayer(pos.x, pos.y);
 
     }
@@ -239,9 +226,9 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
     * 
     */
     public setViewToPoint(px: number, py: number): void {
-        cc.log("setViewToPoint px = " + px + "; py = " + py)
         let cameraPos = this.preCheckCameraPos(cc.v3(px, py, 0));  //预处理摄像机将要移动的目标坐标，防止移动过大地图出现黑边
         this.mapScene.camera.node.position = cameraPos;
+        this.mapScene.menuNode.position = cameraPos;   //菜单按钮跟随摄像机移动
     }
 
     /**
@@ -269,11 +256,11 @@ export default class MapMediator extends puremvc.Mediator implements puremvc.IMe
      * @param dt 
      */
     public followPlayer(dt: number) {
-        cc.log("followPlayer ")
         let cameraPos = this.preCheckCameraPos(this.player.node.position);  //预处理摄像机将要移动的目标坐标，防止移动过大地图出现黑边
         //摄像机平滑跟随
         //this.mapScene.camera.node.position.lerp(cameraPos, dt * 2.0, cameraPos);
         this.mapScene.camera.node.position = cameraPos;
+        this.mapScene.menuNode.position = cameraPos;   //菜单按钮跟随摄像机移动
     }
 
     public getMapNodeByPixel(px: number, py: number): RoadNode {

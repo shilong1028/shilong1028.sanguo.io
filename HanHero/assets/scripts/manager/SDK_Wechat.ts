@@ -2,11 +2,10 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:40:26
+ * @LastEditTime: 2021-07-12 11:03:36
  * @Description: 
  */
 import { SDKMgr } from "./SDKManager";
-import { GameMgr } from "./GameManager";
 import { ROOT_NODE } from "../login/rootNode";
 
 
@@ -82,7 +81,7 @@ export class SDK_Wechat {
         }
 
         //const info = wx.getSystemInfoSync();
-        let adWidth = GameMgr.GetBannerWidth();
+        let adWidth = SDKMgr.GetBannerWidth();
         let frameSize = cc.view.getFrameSize();
 
         let bannerAd = wx.createBannerAd({

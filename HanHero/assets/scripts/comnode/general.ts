@@ -2,14 +2,13 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:21:41
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:44:53
+ * @LastEditTime: 2021-07-12 13:55:34
  * @Description: 
  */
 
 import UI from '../util/ui';
 import { ROOT_NODE } from "../login/rootNode";
 import { CfgMgr, GeneralInfo, st_general_info } from "../manager/ConfigManager";
-import { GameMgr } from "../manager/GameManager";
 import { LoaderMgr } from '../manager/LoaderManager';
 
 //武将头像
@@ -58,16 +57,16 @@ export default class GeneralCell extends cc.Component {
         this.selImg = UI.find(this.node, "selBg")
         this.selImg.active = false;  //默认点击不会显示选中框，只有设定回调函数才会点击显示选中框
         this.cellBg = UI.find(this.node, "cellBg")
-        this.headSpr = UI.find(this.node, "head").getComponent(cc.Sprite) 
+        this.headSpr = UI.find(this.node, "head").getComponent(cc.Sprite)
         this.officeSpr = UI.find(this.node, "officeImg").getComponent(cc.Sprite)    //官职
         this.typeSpr = UI.find(this.node, "typeImg").getComponent(cc.Sprite)    //兵种
         this.stateSpr = UI.find(this.node, "stateImg").getComponent(cc.Sprite)   //0默认，1出战中，2驻守中
         this.nameLabel = UI.find(this.node, "lblName").getComponent(cc.Label)
         this.lvLabel = UI.find(this.node, "lblLv").getComponent(cc.Label)
 
-        UI.on_click(this.cellBg, this.onClicked.bind(this)) 
-        UI.on_click(this.officeSpr.node, this.onOfficeClick.bind(this)) 
-        UI.on_click(this.typeSpr.node, this.onTypeClick.bind(this)) 
+        UI.on_click(this.cellBg, this.onClicked.bind(this))
+        UI.on_click(this.officeSpr.node, this.onOfficeClick.bind(this))
+        UI.on_click(this.typeSpr.node, this.onTypeClick.bind(this))
 
         this.headSpr.spriteFrame = null;
         this.officeSpr.spriteFrame = null;
@@ -107,11 +106,11 @@ export default class GeneralCell extends cc.Component {
 
         if (info) {
             this.lvLabel.string = "Lv " + info.generalLv;
-            this.officeSpr.spriteFrame = ROOT_NODE.officeAtlas.getSpriteFrame(info.officialId.toString());
+            LoaderMgr.setOfficalAtlasSpriteFrame(this.officeSpr, info.officialId.toString());
             if (info.state == 1) {  //0默认，1出战中，2驻守中
-                this.stateSpr.spriteFrame = ROOT_NODE.commonAtlas.getSpriteFrame("common_fighting");
+                LoaderMgr.setCommonAtlasSpriteFrame(this.stateSpr, "common_fighting");
             } else if (info.state == 2) {
-                this.stateSpr.spriteFrame = ROOT_NODE.commonAtlas.getSpriteFrame("common_garrison");
+                LoaderMgr.setCommonAtlasSpriteFrame(this.stateSpr, "common_garrison");
             } else {
                 this.stateSpr.spriteFrame = null;
             }
@@ -119,8 +118,8 @@ export default class GeneralCell extends cc.Component {
             let generalConf: st_general_info = info.generalCfg;
             if (generalConf) {
                 this.nameLabel.string = generalConf.name;
-                this.typeSpr.spriteFrame = ROOT_NODE.commonAtlas.getSpriteFrame("common_" + generalConf.bingzhong);
-                LoaderMgr.setSpriteFrameByImg("head/" + generalConf.id, this.headSpr.node);
+                LoaderMgr.setCommonAtlasSpriteFrame(this.typeSpr, "common_" + generalConf.bingzhong);
+                LoaderMgr.setResSpriteFrameByImg("head/" + generalConf.id, this.headSpr.node);
             }
         }
     }

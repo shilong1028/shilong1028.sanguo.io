@@ -1,11 +1,12 @@
 import ExecuteInterval from './ExecuteInterval';
+import Timer from './Timer';
 import { AudioMgr } from '../manager/AudioMgr';
 
 /*
  * @Autor: dongsl
  * @Date: 2021-03-19 17:01:47
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-05 16:27:33
+ * @LastEditors: dongsl
+ * @LastEditTime: 2021-07-15 10:00:56
  * @Description: 
  */
 
@@ -122,14 +123,62 @@ export default class UI {
     }
 
 
+    /**
+     * 设置节点是否置灰
+     * 
+     * @param node 拥有cc.Sprite的节点 
+     * @param shall_gray 是否要置灰
+     */
+    static set_gray(node: cc.Node, shall_gray: boolean) {
+        let sp = node.getComponent(cc.Sprite)
+        if (sp) {
+            let state = sp.getState()
+            let is_gray = state === cc.Sprite.State.GRAY
+            if (shall_gray === is_gray) return
+            Timer.delay_do_safe(node, 0, () => {
+                sp.setState(shall_gray ? cc.Sprite.State.GRAY : cc.Sprite.State.NORMAL)
+            })
+        }
+    }
 
 
+    /**
+     * 设置节点及子节点是否置灰
+     * 
+     * @param node 拥有cc.Sprite的节点 
+     * @param shall_gray 是否要置灰
+     */
+    static set_all_grays(node: cc.Node, shall_gray: boolean, lb_color?: cc.Color, lb_out_color?: cc.Color) {
+        let sp = node.getComponent(cc.Sprite)
+        if (sp) {
+            let state = sp.getState()
+            let is_gray = state === cc.Sprite.State.GRAY
+            if (shall_gray === is_gray) return
+            sp.setState(shall_gray ? cc.Sprite.State.GRAY : cc.Sprite.State.NORMAL)
+        }
 
+        let lb_out = node.getComponent(cc.LabelOutline)
+        if (lb_out) {
+            if (lb_out_color) {
+                Timer.delay_do_safe(node, 0, () => {
+                    lb_out.color = lb_out_color
+                })
+            }
+        }
 
+        let lb = node.getComponent(cc.Label)
+        if (lb) {
+            if (lb_color) {
+                Timer.delay_do_safe(node, 0, () => {
+                    node.color = lb_color
+                })
+            }
+        }
 
-
-
-    
+        for (let i = 0; i < node.childrenCount; i++) {
+            this.set_all_grays(node.children[i], shall_gray, lb_color, lb_out_color)
+        }
+    }
 
 
 }

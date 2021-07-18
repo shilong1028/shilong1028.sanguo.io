@@ -2,8 +2,8 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-19 16:05:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-05 16:33:46
+ * @LastEditors: dongsl
+ * @LastEditTime: 2021-07-17 16:19:17
  * @Description: 
  */
 
@@ -40,7 +40,6 @@ export default class CapitalScene extends cc.Component {
     }
 
     start() {
-        cc.log("CapitalScene start")
         AppFacade.getInstance().sendNotification(CommonCommand.E_ON_CHANGE_SCENE_STATE, SceneState.Captical_Finish);
 
         AppFacade.getInstance().registerMediator(new CapitalMenuMediator(this));
@@ -57,8 +56,7 @@ export default class CapitalScene extends cc.Component {
     public onDestroy() {
         //取消调度所有已调度的回调函数
         this.unscheduleAllCallbacks();
-        //this.node.targetOff(this);
-        //this.node.targetOff(this);
+        this.node.targetOff(this);
 
         AppFacade.getInstance().removeMediator(CapitalMenuMediator.NAME);
         AppFacade.getInstance().removeMediator(CapitalBuilderMediator.NAME);

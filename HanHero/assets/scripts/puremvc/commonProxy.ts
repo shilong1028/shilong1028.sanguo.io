@@ -87,7 +87,7 @@ export default class CommonProxy extends puremvc.Proxy implements puremvc.IProxy
      * @param state 
      */
     public setSceneState(state: SceneState) {
-        cc.log("setSceneState oldState = "+this.curSceneState+"; newState = "+state)
+        //cc.log("setSceneState oldState = "+this.curSceneState+"; newState = "+state)
         this.curSceneState = state;
         if (state >= SceneState.Login_Ready && state <= SceneState.Login_InitOver) {   //登陆场景
             this.setCurSceneType(SceneType.Login)

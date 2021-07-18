@@ -2,17 +2,16 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:21:41
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:45:00
+ * @LastEditTime: 2021-07-06 10:45:35
  * @Description: 
  */
 
 import UI from '../util/ui';
 import { ROOT_NODE } from "../login/rootNode";
-import { ItemInfo } from "../manager/ConfigManager";
+import { ItemInfo, CfgMgr } from '../manager/ConfigManager';
 import { ComItemType } from "../manager/Enum";
 import { GameMgr } from "../manager/GameManager";
 import { SDKMgr } from "../manager/SDKManager";
-import FuncUtil from "../util/FuncUtil";
 
 
 //获得金币界面
@@ -37,8 +36,8 @@ export default class GoldAdd extends cc.Component {
         this.vedioBtn = UI.find(this.node, "vedioBtn")
         this.descLabel = UI.find(this.node, "infoLabel").getComponent(cc.Label)
 
-        UI.on_btn_click(this.shareBtn, this.onShareBtn.bind(this)) 
-        UI.on_btn_click(this.vedioBtn, this.onVedioBtn.bind(this))  
+        UI.on_btn_click(this.shareBtn, this.onShareBtn.bind(this))
+        UI.on_btn_click(this.vedioBtn, this.onVedioBtn.bind(this))
 
         this.vedioBtn.active = SDKMgr.bOpenAdBtn;
         this.descLabel.string = "分享游戏随机获得至多100金锭100石粮草！\n\n观看视频随机获得至多500金锭100石粮草！"
@@ -90,7 +89,7 @@ export default class GoldAdd extends cc.Component {
         let items = [];
         items.push({ "key": ComItemType.Gold, "val": gold });   //金币
         items.push({ "key": ComItemType.Food, "val": food });   //粮草
-        let rewards: ItemInfo[] = FuncUtil.getItemArrByKeyVal(items);   //通过配置keyVal数据砖块道具列表
+        let rewards: ItemInfo[] = CfgMgr.getItemArrByKeyVal(items);   //通过配置keyVal数据砖块道具列表
         GameMgr.receiveRewards(rewards);   //领取奖励
 
         this.node.destroy();

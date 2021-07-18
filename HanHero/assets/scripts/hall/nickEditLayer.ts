@@ -1,3 +1,10 @@
+/*
+ * @Autor: dongsl
+ * @Date: 2021-07-17 11:10:46
+ * @LastEditors: dongsl
+ * @LastEditTime: 2021-07-17 16:00:01
+ * @Description: 
+ */
 
 import { st_story_info } from "../manager/ConfigManager";
 import UI from '../util/ui';
@@ -6,16 +13,18 @@ import { MyUserMgr } from "../manager/MyUserData";
 import { GameMgr } from "../manager/GameManager";
 import ComMaskBg from "../comui/comMaskBg";
 import { TaskState } from "../manager/Enum";
+import AppFacade from '../puremvc/appFacade';
+import CapitalCommand from '../puremvc/capitalCommand';
 
 
 //修改昵称
-const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
+const { ccclass, property, menu, executionOrder, disallowMultiple } = cc._decorator;
 
 @ccclass
 @menu("Hall/nickEditLayer")
-@executionOrder(0)  
+@executionOrder(0)
 //脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
-@disallowMultiple 
+@disallowMultiple
 // 当本组件添加到节点上后，禁止同类型（含子类）的组件再添加到同一个节点
 
 export default class NickEditLayer extends cc.Component {
@@ -24,7 +33,7 @@ export default class NickEditLayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     taskConf: st_story_info = null
 
-    onLoad () {
+    onLoad() {
         this.nameEditBox = UI.find(this.node, "nickEditBox").getComponent(cc.EditBox);
 
         // this.nameEditBox.node.on('editing-did-began', this.editBoxDidBeginEditing.bind(this));
@@ -32,27 +41,28 @@ export default class NickEditLayer extends cc.Component {
         // this.nameEditBox.node.on('text-changed', this.editBoxDidChanged.bind(this));
 
         let okBtn = UI.find(this.node, "okBtn")
-        UI.on_click(okBtn, this.onOkBtnClick.bind(this)) 
+        UI.on_click(okBtn, this.onOkBtnClick.bind(this))
     }
 
-    onDestroy(){
+    onDestroy() {
         //this.node.targetOff(this);
         //NoticeMgr.offAll(this);
+        AppFacade.getInstance().sendNotification(CapitalCommand.E_ON_RemoveBundleLayer, 'ui_nickEditLayer');   //通知移除一些特定Bundle界面资源
     }
 
-    start () {
+    start() {
         let maskBg_tsComp = this.node.parent.getComponent(ComMaskBg)
-        if(maskBg_tsComp){
+        if (maskBg_tsComp) {
             maskBg_tsComp.showCloseTipNode(false)   //设置是否显示关闭节点
         }
     }
 
     // update (dt) {}
 
-     /**
-     * 设置任务数据，此时为任务改名。如果没有任务数据，则仅仅为改名功能
-     */
-    setStoryConf(taskConf: st_story_info){
+    /**
+    * 设置任务数据，此时为任务改名。如果没有任务数据，则仅仅为改名功能
+    */
+    setStoryConf(taskConf: st_story_info) {
         this.taskConf = taskConf;
     }
 
@@ -69,14 +79,14 @@ export default class NickEditLayer extends cc.Component {
     }
 
 
-    onOkBtnClick(){
-        if(this.nameEditBox.string.length > 0){
+    onOkBtnClick() {
+        if (this.nameEditBox.string.length > 0) {
             MyUserMgr.setUserName(this.nameEditBox.string);
-            if(this.taskConf && this.taskConf.id === 1001){   //创建昵称
-                GameMgr.handleStoryNextOpt(this.taskConf, TaskState.Reward);   
+            if (this.taskConf && this.taskConf.id === 1001) {   //创建昵称
+                GameMgr.handleStoryNextOpt(this.taskConf, TaskState.Reward);
             }
             this.closeLayer()
-        }else{
+        } else {
             ROOT_NODE.showTipsText("请输入正确的名号!");
         }
     }

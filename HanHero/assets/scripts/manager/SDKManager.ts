@@ -1,4 +1,4 @@
-import { ChannelDef} from "./Enum";
+import { ChannelDef } from "./Enum";
 import { FunMgr } from "./FuncManager";
 import { sdkTT } from "./SDK_TT";
 import { sdkWechat } from "./SDK_Wechat";
@@ -326,6 +326,29 @@ class SDKManager_class {
         }
     }
 
+    /**获取Banner广告的默认宽度 */
+    GetBannerWidth() {
+        let designSize = cc.view.getDesignResolutionSize();
+        let frameSize = cc.view.getFrameSize();
+        let frameScale = frameSize.height / frameSize.width;
+        let hScale = frameSize.height / (designSize.height / 2);
+        let adWidth = 300;   //最小宽度   //414*144, 315*109.6 349*121.4  300*104.4 369*128.4    高为宽的0.348
+        if (frameScale >= 1.8) {   //等宽放缩，背景高拉伸，顶底按钮位移
+            adWidth = Math.min(Math.floor(315 * (1 + (hScale - 1) / 2)), frameSize.width);
+        } else {
+            if (hScale < 1.0) {   //小屏幕缩小
+                adWidth = 300
+            } else {
+                if (frameSize.width > 315) {
+                    adWidth = 315
+                } else {
+                    adWidth = frameSize.width;
+                }
+            }
+        }
+        adWidth = Math.max(adWidth, 300);
+        return adWidth;
+    }
 
 }
 

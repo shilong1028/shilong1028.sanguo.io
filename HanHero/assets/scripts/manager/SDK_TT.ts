@@ -2,12 +2,11 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:40:21
+ * @LastEditTime: 2021-07-12 11:03:20
  * @Description: 
  */
 
 import { SDKMgr } from "./SDKManager";
-import { GameMgr } from "./GameManager";
 import { ROOT_NODE } from "../login/rootNode";
 
 
@@ -426,7 +425,7 @@ export class SDK_TT {
             this.curBanner = null;
         }
 
-        let adWidth = GameMgr.GetBannerWidth();
+        let adWidth = SDKMgr.GetBannerWidth();
         let frameSize = cc.view.getFrameSize();
 
         let adHeight = (adWidth / 16) * 9; // 根据系统约定尺寸计算出广告高度

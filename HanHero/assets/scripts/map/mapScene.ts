@@ -3,7 +3,7 @@
  * @Autor: dongsl
  * @Date: 2021-03-19 16:05:51
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 17:46:49
+ * @LastEditTime: 2021-07-17 16:19:08
  * @Description: 
  */
 
@@ -12,6 +12,7 @@ import CommonCommand from '../puremvc/commonCommand';
 import { SceneState } from '../puremvc/commonProxy';
 import UI from '../util/ui';
 import MapMediator from './mapMediator';
+import MapMenuMediator from './mapMenuMediator';
 
 //地图寻路场景
 const { ccclass, property, menu, executionOrder, disallowMultiple } = cc._decorator;
@@ -34,15 +35,15 @@ export default class MapScene extends cc.Component {
     onLoad() {
         AppFacade.getInstance().sendNotification(CommonCommand.E_ON_CHANGE_SCENE_STATE, SceneState.Map_Ready);
         this.camera = UI.find(this.node, "Main Camera").getComponent(cc.Camera)
-        this.mapNode = UI.find(this.node, "map")    //建筑总节点
-        //this.menuNode = UI.find(this.node, "menu")   //按钮总节点
+        this.mapNode = UI.find(this.node, "map")    //城池总节点
+        this.menuNode = UI.find(this.node, "menu")   //按钮总节点
     }
 
     start() {
-        cc.log("MapScene start")
         AppFacade.getInstance().sendNotification(CommonCommand.E_ON_CHANGE_SCENE_STATE, SceneState.Map_Finish);
 
         AppFacade.getInstance().registerMediator(new MapMediator(this));
+        AppFacade.getInstance().registerMediator(new MapMenuMediator(this));
 
         cc.tween(this.node)
             .delay(0.1)
@@ -53,7 +54,12 @@ export default class MapScene extends cc.Component {
     }
 
     public onDestroy() {
+        //取消调度所有已调度的回调函数
+        this.unscheduleAllCallbacks();
+        this.node.targetOff(this);
+
         AppFacade.getInstance().removeMediator(MapMediator.NAME);
+        AppFacade.getInstance().removeMediator(MapMenuMediator.NAME);
     }
 
     // update (dt) {}

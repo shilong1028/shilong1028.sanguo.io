@@ -18,7 +18,8 @@ export const LDKey = {
     KEY_UserName: "KEY_UserName",  //用户名
     KEY_UserUUid: "KEY_UserUUid",  //用户唯一标识
     KEY_LoginTime: "KEY_LoginTime",   //上一个登录时间
-    KEY_GoldCount: "KEY_GoldCount",   //金币数量
+    KEY_GoldCount: "KEY_GoldCount",   //金锭数量
+    KEY_GoldPiece: "KEY_GoldPiece",   //金币数量//临时保存的金币数，比如点戳美姬掉落，待积攒够1000则自动转存为金锭并更新。
     KEY_DiamondCount: "KEY_DiamondCount",//钻石（金锭）数量
     KEY_FoodCount: "KEY_FoodCount",   //粮食数量
     KEY_TotalLineTime: "KEY_TotalLineTime",   //总的在线时长（每500s更新记录一次）
@@ -28,11 +29,12 @@ export const LDKey = {
     KEY_StoryData: "KEY_StoryData",  //当前进行的剧情故事  {key=id, val=state}  0未完成，1完成未领取，2已领取
     KEY_BuilderList: "KEY_BuilderList",     //建筑列表
     KEY_ItemList: "KEY_ItemList",     //背包道具列表
+    KEY_WeaponItemList: "KEY_WeaponItemList",     //士兵武器信息（生成中的，整百则存入背包）
     KEY_GeneralList: "KEY_GeneralList",     //武将列表
     KEY_BeautyList: "KEY_BeautyList",     //美姬列表
     KEY_OfficalIds: "KEY_OfficalIds",     //官职列表
     KEY_MyTownIdxs: "KEY_MyTownIdxs",  //郡守之前我方占据的县城索引，此时myCityIds只有一个且所属县并未全部占领，全部占领则晋升郡守myTownIdxs字段之后无用。
-    KEY_MyCityIds: "KEY_MyCityIds",     //己方占领的城池ID集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
+    KEY_MyCityList: "KEY_MyCityList",     //己方占领的城池集合（晋封太守后获得一个城池，开启主城后可以有管辖城池集合）
     KEY_RuleCityIds: "KEY_RuleCityIds",     //己方统治下未被占领或叛乱的城池ID集合
     KEY_GuideSteps: "KEY_GuideSteps",   //新手引导步骤"1000-1100-1200-..."
 

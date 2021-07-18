@@ -3,7 +3,7 @@
  * @Autor: dongsl
  * @Date: 2021-03-19 17:09:33
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 18:06:24
+ * @LastEditTime: 2021-07-17 16:12:11
  * @Description: 
  */
 
@@ -15,6 +15,7 @@ import CommonCommand from '../puremvc/commonCommand';
 import { SceneState } from '../puremvc/commonProxy';
 import Builder from './builder';
 import { BuilderNameArr } from '../manager/Enum';
+import CapitalCommand from '../puremvc/capitalCommand';
 
 //大厅建筑界面相关中介
 
@@ -25,12 +26,14 @@ export default class CapitalBuilderMediator extends puremvc.Mediator implements 
     touchBeginPos: cc.Vec2 = null;  //触摸起点
     MapLimitPos: cc.Vec2 = cc.v2(1000, 667);  //地图位置限制(尺寸大小的一半)
     capital_bg: cc.Node = null   //城池底图
+    handNode: cc.Node = null;   //指引建筑的手指
+    buildsNode: cc.Node = null;   //建筑总父节点
 
     public get capitalProxy(): CapitalProxy {
         return <CapitalProxy><any>(this.facade.retrieveProxy(CapitalProxy.NAME));
     }
 
-    public get capitalLayer(): CapitalScene {
+    public get capitalScene(): CapitalScene {
         return <CapitalScene><any>(this.viewComponent);
     }
 
@@ -58,7 +61,8 @@ export default class CapitalBuilderMediator extends puremvc.Mediator implements 
     public listNotificationInterests(): Array<any> {
         return [
             CommonCommand.E_ON_CHANGE_SCENE_STATE,
-            // LoginProxy.E_LOGIN_RESULT
+            CapitalCommand.E_ON_BuilderHand,
+            CapitalCommand.E_ON_TeaseBeauty
         ];
     }
 
@@ -68,12 +72,18 @@ export default class CapitalBuilderMediator extends puremvc.Mediator implements 
      */
     public handleNotification(notification: puremvc.INotification): void {
         var notifier: any = notification.getBody();
-        cc.log("LoginLayerMediator handleNotification:" + notification.getName())
+        cc.log("CapitalBuilderMediator handleNotification:" + notification.getName())
         switch (notification.getName()) {
             case CommonCommand.E_ON_CHANGE_SCENE_STATE:
-                if(notifier === SceneState.Capical_InitOver){
+                if (notifier === SceneState.Capical_InitOver) {
                     this.initBtnClickListener()
                 }
+                break;
+            case CapitalCommand.E_ON_BuilderHand:   //通知显示或隐藏建筑手指
+                this.showGuideBuilderHand(notifier);
+                break;
+            case CapitalCommand.E_ON_TeaseBeauty:   //通知挑逗美姬
+                this.showGuideBuilderHand("residence");
                 break;
             default:
         }
@@ -83,35 +93,37 @@ export default class CapitalBuilderMediator extends puremvc.Mediator implements 
      * 界面预处理
      */
     private initView() {
-        cc.log("CapitalMenuMediator initView")
-        this.MapLimitPos = cc.v2((this.capitalLayer.mapNode.width-cc.winSize.width)/2, 
-            (this.capitalLayer.mapNode.height-cc.winSize.height)/2);  //地图位置限制(尺寸大小的一半)
+        //cc.log("CapitalMenuMediator initView")
+        this.MapLimitPos = cc.v2((this.capitalScene.mapNode.width - cc.winSize.width) / 2,
+            (this.capitalScene.mapNode.height - cc.winSize.height) / 2);  //地图位置限制(尺寸大小的一半)
 
-        this.capital_bg = UI.find(this.capitalLayer.mapNode, "capital_bg")   //城池底图
+        this.capital_bg = UI.find(this.capitalScene.mapNode, "capital_bg")   //城池底图
+        this.handNode = UI.find(this.capitalScene.mapNode, "handSpr")   //指引建筑的手指
+        this.handNode.active = false;
+        this.buildsNode = UI.find(this.capitalScene.mapNode, "builds")  //建筑总父节点
 
-        let builds = UI.find(this.capitalLayer.mapNode, "builds")
         //主城各种建筑初始化
-        for(let i=0; i<BuilderNameArr.length; i++){
+        for (let i = 0; i < BuilderNameArr.length; i++) {
             let builder_name = BuilderNameArr[i]
-            let builder = UI.find(builds, builder_name) 
-            if(builder){
+            let builder = UI.find(this.buildsNode, builder_name)
+            if (builder) {
                 let tsComp = builder.getComponent(Builder)
-                if(!tsComp){
+                if (!tsComp) {
                     tsComp = builder.addComponent(Builder)
                 }
                 tsComp.initBuilder(builder_name)
-            }else{
-                cc.log("cannot find "+builder_name)
+            } else {
+                cc.log("cannot find " + builder_name)
             }
 
-        } 
+        }
     }
 
     /**
      * 初始化按钮等点击事件监听
      */
     private initBtnClickListener() {
-        cc.log("initBtnClickListener 初始化按钮等点击事件监听")
+        //cc.log("initBtnClickListener 初始化按钮等点击事件监听")
         this.capital_bg.on(cc.Node.EventType.TOUCH_START, this.touchStart.bind(this), this, true);
         this.capital_bg.on(cc.Node.EventType.TOUCH_MOVE, this.touchMove.bind(this), this);
         this.capital_bg.on(cc.Node.EventType.TOUCH_END, this.touchEnd.bind(this), this);
@@ -136,10 +148,10 @@ export default class CapitalBuilderMediator extends puremvc.Mediator implements 
             let offset = pos.sub(this.touchBeginPos);
             this.touchBeginPos = pos;
 
-            this.capitalLayer.mapNode.stopAllActions();
+            this.capitalScene.mapNode.stopAllActions();
 
             let mapPos = this.preCheckMapDestPos(offset);   //预处理地图将要移动的目标坐标，放置移动过大地图出现黑边
-            this.capitalLayer.mapNode.setPosition(mapPos);
+            this.capitalScene.mapNode.setPosition(mapPos);
         }
     }
 
@@ -149,7 +161,7 @@ export default class CapitalBuilderMediator extends puremvc.Mediator implements 
      * @returns 
      */
     preCheckMapDestPos(offset: cc.Vec2) {
-        let destPos = this.capitalLayer.mapNode.position.add(FunMgr.v2Tov3(offset));
+        let destPos = this.capitalScene.mapNode.position.add(FunMgr.v2Tov3(offset));
         if (destPos.x > this.MapLimitPos.x) {
             destPos.x = this.MapLimitPos.x;
         } else if (destPos.x < -this.MapLimitPos.x) {
@@ -163,5 +175,42 @@ export default class CapitalBuilderMediator extends puremvc.Mediator implements 
         return destPos;
     }
 
+    /** 将地图移动到指定目标点
+    */
+    handleMapMoveByCityPos(builderPos: cc.Vec2, callback?: Function) {
+        this.capitalScene.mapNode.stopAllActions();
 
+        let midPos = this.capitalScene.mapNode.position.neg();    //当前视图中心在地图上的坐标
+        let offset = midPos.sub(FunMgr.v2Tov3(builderPos));
+        let destPos = this.preCheckMapDestPos(FunMgr.v3Tov2(offset));   //预处理地图将要移动的目标坐标，放置移动过大地图出现黑边
+        let moveTime = destPos.sub(midPos).mag() / 1000;
+        this.capitalScene.mapNode.runAction(cc.sequence(cc.moveTo(moveTime, FunMgr.v3Tov2(destPos)), cc.callFunc(function () {
+            if (callback) {
+                callback()
+            }
+        }.bind(this))));
+    }
+
+    /**
+    * 显示建筑升级的引导手指
+    */
+    private showGuideBuilderHand(builder_name: string) {
+        if (!this.buildsNode) {
+            return;
+        }
+        if (!builder_name || builder_name.length === 0) {
+            this.handNode.active = false;
+            return;
+        }
+        let builder = UI.find(this.buildsNode, builder_name)
+        if (builder) {
+            this.handNode.setPosition(builder.getPosition())
+            this.handNode.active = true;
+            this.handNode.stopAllActions();
+            this.handNode.scale = 1.2;
+            this.handNode.runAction(cc.repeatForever(cc.sequence(cc.scaleTo(0.3, 1.0), cc.scaleTo(0.3, 1.2))));
+
+            this.handleMapMoveByCityPos(builder.getPosition());   //将地图移动到指定目标点
+        }
+    }
 }

@@ -64,36 +64,36 @@ class GuideMgr_class {
      * @param offsetPos 手动偏移
      */
     showGuideLayer(btn: cc.Node, callback = null, btnSize = null, offsetPos = cc.Vec2.ZERO) {
-        let guideLayer = LoaderMgr.showLayer(ROOT_NODE.guidePrefab);
-        guideLayer.zIndex = 10000;
-        guideLayer.name = "Guide_Layer";
+        return LoaderMgr.showGuideLayer((guideLayer)=>{
+            guideLayer.zIndex = 10000;
+            guideLayer.name = "Guide_Layer";
 
-        let guideSc = guideLayer.getComponent(GuideLayer);
-        if (!guideSc) {
-            guideSc = guideLayer.addComponent(GuideLayer);
-        }
-        let maskSpr: cc.SpriteFrame = null;
-        let worldPos = cc.v2(cc.winSize.width / 2, cc.winSize.height / 2);
-        if (btn) {
-            worldPos = btn.parent.convertToWorldSpaceAR(cc.Vec2.ZERO);
-            worldPos.x += btn.x;
-            worldPos.y += btn.y;
+            let guideSc = guideLayer.getComponent(GuideLayer);
+            if (!guideSc) {
+                guideSc = guideLayer.addComponent(GuideLayer);
+            }
+            let maskSpr: cc.SpriteFrame = null;
+            let worldPos = cc.v2(cc.winSize.width / 2, cc.winSize.height / 2);
+            if (btn) {
+                worldPos = btn.parent.convertToWorldSpaceAR(cc.Vec2.ZERO);
+                worldPos.x += btn.x;
+                worldPos.y += btn.y;
 
-            if (btnSize == null) {
-                btnSize = btn.getContentSize();
-            }
+                if (btnSize == null) {
+                    btnSize = btn.getContentSize();
+                }
 
-            let btnSpr = btn.getComponent(cc.Sprite);
-            if (btnSpr) {
-                maskSpr = btnSpr.spriteFrame;
+                let btnSpr = btn.getComponent(cc.Sprite);
+                if (btnSpr) {
+                    maskSpr = btnSpr.spriteFrame;
+                }
+            } else {
+                if (btnSize == null) {
+                    btnSize = cc.size(100, 100);
+                }
             }
-        } else {
-            if (btnSize == null) {
-                btnSize = cc.size(100, 100);
-            }
-        }
-        guideSc.initGuideData(worldPos, maskSpr, callback, btnSize, offsetPos);
-        return guideLayer;
+            guideSc.initGuideData(worldPos, maskSpr, callback, btnSize, offsetPos);
+        });
     }
 
     showGuideMoveLayer(beginPos, endPos, callback = null, btnSize = null, offsetPos = cc.Vec2.ZERO) {

@@ -3,7 +3,7 @@
  * @Autor: dongsl
  * @Date: 2021-03-19 17:09:33
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 15:24:43
+ * @LastEditTime: 2021-07-17 15:12:27
  * @Description: 
  */
 
@@ -74,7 +74,6 @@ export default class LoginLayerMediator extends puremvc.Mediator implements pure
      * 界面预处理
      */
     private initView() {
-        cc.log("LoginLayerMediator initView")
         UI.on_click(this.loginLayer.loginBtn, this.onLoginBtnClick.bind(this))
         UI.on_click(this.loginLayer.resetBtn, this.onResetBtnClick.bind(this))
 
@@ -105,15 +104,33 @@ export default class LoginLayerMediator extends puremvc.Mediator implements pure
     }
 
     public onLoginBtnClick() {
-        cc.log("onLoginBtnClick")
         this.loginLayer.resetBtn.active = false;
-        LoaderMgr.loadScene("capitalScene");  //进入主场景
+        //LoaderMgr.loadScene("capitalScene");  //进入主场景
+
+        LoaderMgr.transitionScene("capitalScene", "doorway-horizontal");
     }
 
     public onResetBtnClick() {
-        cc.log("onResetBtnClick")
         this.loginLayer.resetBtn.active = false;
         MyUserMgr.clearUserData();   //清除所有用户数据
-        LoaderMgr.loadScene("capitalScene");  //进入主场景
+        //LoaderMgr.loadScene("capitalScene");  //进入主场景
+
+        LoaderMgr.transitionScene("capitalScene", "grid-flip");
+
+        //LoaderMgr.transitionScene("capitalScene", "window-slice");   //过渡场景  百叶窗（比价流畅）
+        //LoaderMgr.transitionScene("capitalScene", "grid-flip");   //过渡场景  方格翻转（比价流畅）
+        //LoaderMgr.transitionScene("capitalScene", "crop-circle");   //过渡场景  向内放缩（比价流畅）
+        //LoaderMgr.transitionScene("capitalScene", "simple-zoom");   //过渡场景  向外扩大（比价流畅）
+        //LoaderMgr.transitionScene("capitalScene", "doom-screen");   //过渡场景  方块坠落（比价流畅）
+        //LoaderMgr.transitionScene("capitalScene", "water-drop");   //过渡场景  水滴映像
+        //LoaderMgr.transitionScene("capitalScene", "doorway-horizontal");   //过渡场景  开门
+        //LoaderMgr.transitionScene("capitalScene", "cube");   //过渡场景  立方体旋转
+        //LoaderMgr.transitionScene("capitalScene", "swap");   //过渡场景  两页交替
+        //LoaderMgr.transitionScene("capitalScene", "ripple-glass-rb");   //过渡场景  波纹擦除
+        //LoaderMgr.transitionScene("capitalScene", "hexo");   //过渡场景  六边模糊
+        //LoaderMgr.transitionScene("capitalScene", "pixelize");   //过渡场景  马赛克模糊
+        //LoaderMgr.transitionScene("capitalScene", "swirl");   //过渡场景  风车旋转
+        //LoaderMgr.transitionScene("capitalScene", "cross-zoom");   //过渡场景  眩晕模糊
+
     }
 }

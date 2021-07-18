@@ -4,15 +4,17 @@ import { MyUserMgr } from "../manager/MyUserData";
 import UI from '../util/ui';
 import List from "../control/List";
 import ListItem from "../control/ListItem";
+import AppFacade from '../puremvc/appFacade';
+import CapitalCommand from '../puremvc/capitalCommand';
 
 //武将来投
-const {ccclass, property, menu, executionOrder, disallowMultiple} = cc._decorator;
+const { ccclass, property, menu, executionOrder, disallowMultiple } = cc._decorator;
 
 @ccclass
 @menu("Hall/generalJoin")
-@executionOrder(0)  
+@executionOrder(0)
 //脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
-@disallowMultiple 
+@disallowMultiple
 // 当本组件添加到节点上后，禁止同类型（含子类）的组件再添加到同一个节点
 
 export default class GeneralJoin extends cc.Component {
@@ -27,7 +29,7 @@ export default class GeneralJoin extends cc.Component {
 
     receiveCallback: any = null;    //领取回调
 
-    onLoad () {
+    onLoad() {
         this.infoLabel = UI.find(this.node, "infoLabel").getComponent(cc.Label)
         this.descLabel = UI.find(this.node, "descLabel").getComponent(cc.Label)
         this.descLabel.string = "";
@@ -35,14 +37,12 @@ export default class GeneralJoin extends cc.Component {
         let list_node = UI.find(this.node, "listNode");
         let list_project = UI.find(list_node, "general")
         let ts_item = list_project.getComponent(GeneralCell)
-        if (!ts_item)
-        {
+        if (!ts_item) {
             ts_item = list_project.addComponent(GeneralCell)
         }
 
         let list_item = list_project.getComponent(ListItem)
-        if (!list_item)
-        {
+        if (!list_item) {
             list_item = list_project.addComponent(ListItem)
             list_item.selectedMode = 1;    //TOGGLE
             let selImg = UI.find(list_project, "selBg")
@@ -50,8 +50,7 @@ export default class GeneralJoin extends cc.Component {
         }
 
         this.list_view = list_node.getComponent(List)
-        if (!this.list_view)
-        {
+        if (!this.list_view) {
             this.list_view = list_node.addComponent(List)
             this.list_view.tmpNode = list_project;
             this.list_view.selectedMode = 1;  //单选
@@ -63,22 +62,23 @@ export default class GeneralJoin extends cc.Component {
         }
     }
 
-    onDestroy(){
+    onDestroy() {
         //this.node.targetOff(this);
         //NoticeMgr.offAll(this);
+        AppFacade.getInstance().sendNotification(CapitalCommand.E_ON_RemoveBundleLayer, 'ui_generalJoin');   //通知移除一些特定Bundle界面资源
     }
 
-    start () {
+    start() {
     }
 
     // update (dt) {}
 
-    onCloseBtn(){
+    onCloseBtn() {
         this.closeLayer();
     }
 
-    closeLayer(){
-        if(this.receiveCallback){
+    closeLayer() {
+        if (this.receiveCallback) {
             this.receiveCallback();
         }
         this.receiveCallback = null;
@@ -87,28 +87,28 @@ export default class GeneralJoin extends cc.Component {
     }
 
     /**初始化武将列表 */
-    initGeneralByIds(idArr: number[], bSave:boolean=false,  callback?: any){
-        cc.log("initGeneralIds(), idArr = "+JSON.stringify(idArr));
+    initGeneralByIds(idArr: number[], bSave: boolean = false, callback?: any) {
+        cc.log("initGeneralIds(), idArr = " + JSON.stringify(idArr));
         this.receiveCallback = callback;
 
         let nameStr = ""
-        for(let i=0; i<idArr.length; ++i){
+        for (let i = 0; i < idArr.length; ++i) {
             let info = new GeneralInfo(idArr[i]);
             this.generalArr.push(info);
 
             nameStr += info.generalCfg.name;
-            if(i < idArr.length-1){
-                nameStr +="、";
-                if(bSave){
+            if (i < idArr.length - 1) {
+                nameStr += "、";
+                if (bSave) {
                     MyUserMgr.addGeneralToList(info, false);   //添加武将到列表
                 }
-            }else{
-                if(bSave){
+            } else {
+                if (bSave) {
                     MyUserMgr.addGeneralToList(info, true);   //添加武将到列表
                 }
             }
         }
-        nameStr +="来投";
+        nameStr += "来投";
         this.infoLabel.string = nameStr;
 
         this.list_view.numItems = this.generalArr.length;
@@ -121,7 +121,7 @@ export default class GeneralJoin extends cc.Component {
         if (!item)
             return;
         let tsComp = item.getComponent(GeneralCell)
-        if(!tsComp){
+        if (!tsComp) {
             tsComp = item.addComponent(GeneralCell)
         }
         tsComp.initGeneralData(this.generalArr[idx]);
@@ -132,16 +132,16 @@ export default class GeneralJoin extends cc.Component {
         if (!item)
             return;
         this.updateSelItemInfoByIdx(selectedId);  //显示底部选中道具信息
-    }  
+    }
 
     /**显示底部选中道具信息 */
-    updateSelItemInfoByIdx(cellIdx:number){
+    updateSelItemInfoByIdx(cellIdx: number) {
         let info = this.generalArr[cellIdx];
-        if(info && info.generalCfg){
+        if (info && info.generalCfg) {
             this.descLabel.string = info.generalCfg.desc;
-        }else{
+        } else {
             this.descLabel.string = "";
         }
     }
-    
+
 }

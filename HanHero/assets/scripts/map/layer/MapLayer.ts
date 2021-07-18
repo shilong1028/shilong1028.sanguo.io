@@ -1,54 +1,51 @@
 
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class MapLayer extends cc.Component {
 
-    /**
+	/**
 	 *游戏视图宽度 
-	 */		
-	private _viewWidth:number;
-	
+	 */
+	private _viewWidth: number;
+
 	/**
 	 *游戏视图高度 
-	 */		
-	private _viewHeight:number;
-	
+	 */
+	private _viewHeight: number;
+
 	/**
 	 *切割的小图片高 
-	 */		
-	private _sliceWidth:number = 200;
-	
+	 */
+	private _sliceWidth: number = 200;
+
 	/**
 	 *切割的小图片宽 
-	 */		
-	private _sliceHeight:number = 200;
-	
+	 */
+	private _sliceHeight: number = 200;
+
 	/**
 	 *切割小图片集 
-	 */		
-	private _sliceImgDic:{[key:string]:cc.Texture2D} = {};
-	
-	private _bitmapDataArr:cc.Texture2D[];
-	
-	private bgImg:cc.Sprite = null;
-	
-	public constructor()
-	{
+	 */
+	private _sliceImgDic: { [key: string]: cc.Texture2D } = {};
+
+	private _bitmapDataArr: cc.Texture2D[];
+
+	private bgImg: cc.Sprite = null;
+
+	public constructor() {
 		super();
 	}
-	
-	public init(viewWidth:number, viewHeight:number, sliceWidth:number, sliceHeight:number, mapImg:cc.Texture2D):void
-	{
+
+	public init(viewWidth: number, viewHeight: number, sliceWidth: number, sliceHeight: number, mapImg: cc.Texture2D): void {
 		this._viewWidth = viewWidth;
 		this._viewHeight = viewHeight;
 		this._sliceWidth = sliceWidth;
 		this._sliceHeight = sliceHeight;
 		this.bgImg = this.node.getChildByName("mapBg").getComponent(cc.Sprite);
-		
-		if(mapImg)
-		{
+
+		if (mapImg) {
 			this.bgImg.spriteFrame = new cc.SpriteFrame(mapImg);
 		}
 
@@ -58,15 +55,13 @@ export default class MapLayer extends cc.Component {
 		//_bitmapDataArr = PictureClip.divide2(mapImg,_sliceWidth,_sliceHeight);
 	}
 
-	
-	
-	public load(url:String):void
-	{
+
+
+	public load(url: String): void {
 		//ResourceLoader.getInstance().load(url,onLoadComplete);	
 	}
-	
-	public onLoadComplete():void
-	{
+
+	public onLoadComplete(): void {
 		//var bitmapData:BitmapData = (content as Bitmap).bitmapData;
 		//_bgImg.bitmapData = bitmapData;
 		//this.dispatchEvent(new MsgEvent(MsgEvent.INIT_COMP,{width:bitmapData.width,height:bitmapData.height}));
@@ -78,22 +73,20 @@ export default class MapLayer extends cc.Component {
 	 * @param px 滚动视图左上角的x坐标 
 	 * @param py 滚动视图左上角的y坐标 
 	 * 
-	 */		
-	public loadSmallImage(px:number,py:number):void
-	{
-		if(!this._bitmapDataArr)
-		{
+	 */
+	public loadSmallImage(px: number, py: number): void {
+		if (!this._bitmapDataArr) {
 			return;
 		}
-		
-		var ix1:number = Math.floor(px / this._sliceWidth);  
-		var iy1:number = Math.floor(py / this._sliceHeight);
-		
-		var ix2:number = Math.floor((px + this._viewWidth) / this._sliceWidth);
-		var iy2:number = Math.floor((py + this._viewHeight) / this._sliceHeight);
-		
-		var key:String;
-		
+
+		var ix1: number = Math.floor(px / this._sliceWidth);
+		var iy1: number = Math.floor(py / this._sliceHeight);
+
+		var ix2: number = Math.floor((px + this._viewWidth) / this._sliceWidth);
+		var iy2: number = Math.floor((py + this._viewHeight) / this._sliceHeight);
+
+		var key: String;
+
 		/*for(var i:number = ix1 ; i <= ix2 ; i++)
 		{
 			for(var j:number = iy1 ; j <= iy2 ; j++)
@@ -117,13 +110,12 @@ export default class MapLayer extends cc.Component {
 				
 			}
 		}*/
-		
+
 	}
-	
-	public clear():void
-	{
+
+	public clear(): void {
 		this.bgImg.spriteFrame = null;
-		
+
 		/*for(var param in this._sliceImgDic)
 		{
 			var bitmap:Bitmap = _sliceImgDic[param];
@@ -131,28 +123,23 @@ export default class MapLayer extends cc.Component {
 			_sliceImgDic[param] = null;
 			delete _sliceImgDic[param];
 		}*/
-		
+
 	}
-	
-	public  get bgImage():cc.Sprite
-	{
+
+	public get bgImage(): cc.Sprite {
 		return this.bgImg;
 	}
 
-	public get width():number
-	{
-		if(this.bgImg)
-		{
+	public get width(): number {
+		if (this.bgImg) {
 			return this.bgImg.node.width;
 		}
 
 		return this._viewWidth;
 	}
 
-	public get height():number
-	{
-		if(this.bgImg)
-		{
+	public get height(): number {
+		if (this.bgImg) {
 			return this.bgImg.node.height;
 		}
 

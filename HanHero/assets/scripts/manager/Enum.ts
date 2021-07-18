@@ -2,7 +2,7 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:38:18
+ * @LastEditTime: 2021-07-16 13:46:56
  * @Description: 
  */
 
@@ -21,10 +21,12 @@ export enum ChannelDef {
 
 export const PlayerGeneral_DefaultId = 1101   //玩家主角ID
 
+//export const BuilderQualityArr = ["未开启", "茅草建筑(县令)", "土木建筑(郡守)", "砖木建筑(将军)", "砖瓦建筑(州牧)", "宫廷建筑(王侯)"]
+export const BuilderQualityArr = ["未开启", "茅草", "土木", "砖木", "砖瓦", "宫廷"]
 export const BuilderNameArr = ["government", "residence", "warehouse", "posthouse", "castle",   //官府  内宅  武库  驿馆  城防
-                                "barracks_dao", "barracks_qiang", "barracks_gong", "stable",    //刀盾营  枪戟营  弓弩营  马厩
-                                "workshop", "prison", "farmland", "shops", "tavern", "wharf",   //工坊  牢房  农田  商铺  酒肆  码头
-                                "community", "academy"];    //居民区   校场
+    "barracks_dao", "barracks_qiang", "barracks_gong", "stable",    //刀盾营  枪戟营  弓弩营  马厩
+    "workshop", "prison", "farmland", "shops", "tavern", "wharf",   //工坊  牢房  农田  商铺  酒肆  码头
+    "community", "academy"];    //居民区   校场
 
 /** 通用道具类型 */
 export enum ComItemType {
@@ -50,6 +52,15 @@ export enum SoliderType {
     //弓兵九方向前进一格，九方向攻击一格，四方向攻击两格；攻击+1士气，回合-1士气，受击-1士气；
 }
 
+/**士兵武器类型 */
+export enum WeaponType {
+    horse = 401,   //战马（百
+    dao = 402,   //"刀盾（百）"
+    qiang = 403,  //枪戟（百）
+    gong = 404,    //弓弩（百）
+    armour = 405  //护甲（百）
+}
+
 /** 任务剧情类型 */
 export enum TaskType {
     Story = 1,   //剧情
@@ -60,7 +71,7 @@ export enum TaskType {
     General = 6,   //招募武将
     Garrison = 7,   //驻守
     Skill = 8,   //技能
-    Belle = 9,  //后宅美姬
+    Beauty = 9,  //后宅美姬  Belle
 }
 /** 任务剧情状态 */
 export enum TaskState {

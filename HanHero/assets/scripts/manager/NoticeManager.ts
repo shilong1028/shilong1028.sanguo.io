@@ -1,8 +1,8 @@
 /*
  * @Autor: dongsl
  * @Date: 2021-03-20 14:14:18
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-05 16:30:26
+ * @LastEditors: dongsl
+ * @LastEditTime: 2021-07-17 14:26:54
  * @Description: 
  */
 
@@ -18,13 +18,12 @@ export const NoticeType = {
 
 
 
-    
+
     GAME_ON_HIDE: "GAME_ON_HIDE", //游戏切入后台
     Guide_TouchMove: "Guide_TouchMove",  //触摸引导移动
 
 
     UpdateRoleLvOffical: "UpdateRoleLvOffical",   //更新主角等级或官职
-    ShowMainMap: "ShowMainMap",  //显示大厅场景的全局地图
 
     UpdateBagItem: "UpdateBagItem",  //更新单个背包物品
     UpdateGeneral: "UpdateGeneral",  //更新单个武将

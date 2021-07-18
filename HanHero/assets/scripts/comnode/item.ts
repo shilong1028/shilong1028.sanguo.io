@@ -2,13 +2,14 @@
  * @Autor: dongsl
  * @Date: 2021-03-20 14:21:41
  * @LastEditors: dongsl
- * @LastEditTime: 2021-03-20 14:45:13
+ * @LastEditTime: 2021-07-12 10:53:40
  * @Description: 
  */
 
 import UI from '../util/ui';
 import { ItemInfo, st_item_info } from "../manager/ConfigManager";
-import RootNode, { ROOT_NODE } from "../login/rootNode";
+import { ROOT_NODE } from "../login/rootNode";
+import { LoaderMgr } from '../manager/LoaderManager';
 
 
 //道具
@@ -55,7 +56,7 @@ export default class Item extends cc.Component {
         this.cellBg = UI.find(this.node, "itemBg")
         this.selImg = UI.find(this.node, "selImg")
         this.selImg.active = false;  //默认点击不会显示选中框，只有设定回调函数才会点击显示选中框
-        this.iconSpr = UI.find(this.node, "icon").getComponent(cc.Sprite)  
+        this.iconSpr = UI.find(this.node, "icon").getComponent(cc.Sprite)
         this.nameLabel = UI.find(this.node, "nameLabel").getComponent(cc.Label)
         this.numLabel = UI.find(this.node, "numLabel").getComponent(cc.Label)
 
@@ -109,7 +110,7 @@ export default class Item extends cc.Component {
             let itemConf: st_item_info = info.itemCfg;
             if (itemConf) {
                 this.nameLabel.string = itemConf.name;
-                this.iconSpr.spriteFrame = ROOT_NODE.iconAtlas.getSpriteFrame(info.itemId.toString());
+                LoaderMgr.setIconAtlasSpriteFrame(this.iconSpr, info.itemId.toString());
             }
         }
     }
